@@ -25,12 +25,23 @@ gem 'jbuilder', '~> 2.7'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
+gem 'slim-rails'
+gem 'sidekiq'
+gem 'name_of_person'
+gem "clockwork"
+gem "faker"
+gem "view_component", require: "view_component/engine"
+gem 'rack-attack'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'pry-rails'
+  gem 'rspec-rails', '~> 5.0.0'
+  gem "standard"
 end
 
 group :development do
@@ -42,10 +53,13 @@ group :development do
   gem 'listen', '~> 3.3'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
-end
-
-group :development, :test do
-  gem 'rspec-rails', '~> 5.0.0'
+  gem 'letter_opener'
+  gem 'annotate'
+  gem 'guard-rspec', require: false
+  gem 'better_errors'
+  gem 'binding_of_caller', '~> 0.8'
+  gem 'database_consistency', require: false
+  gem 'brakeman'
 end
 
 group :test do
@@ -54,6 +68,10 @@ group :test do
   gem 'selenium-webdriver'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
+  gem 'shoulda-matchers', '~> 4.0'
+  gem 'rspec-sidekiq'
+  gem 'rails-controller-testing'
+  gem 'timecop'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
