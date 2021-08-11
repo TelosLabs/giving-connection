@@ -15,7 +15,7 @@ jobs:
       POSTGRES_PASSWORD: ""
       POSTGRES_DB: postgres
 
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     services:
       postgres:
@@ -56,7 +56,7 @@ jobs:
 
   linters:
     name: Linters
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -72,7 +72,7 @@ jobs:
 
   security:
     name: Linters
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
