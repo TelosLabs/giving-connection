@@ -71,8 +71,6 @@ GEM
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
     bindex (0.8.1)
-    binding_of_caller (0.8.0)
-      debug_inspector (>= 0.0.1)
     bootsnap (1.7.7)
       msgpack (~> 1.0)
     brakeman (5.1.1)
@@ -96,7 +94,6 @@ GEM
     crass (1.0.6)
     database_consistency (1.1.2)
       activerecord (>= 3.2)
-    debug_inspector (1.1.0)
     diff-lcs (1.4.4)
     erubi (1.10.0)
     faker (2.18.0)
@@ -295,9 +292,8 @@ GEM
     thor (1.1.0)
     tilt (2.0.10)
     timecop (0.9.4)
-    turbolinks (5.2.1)
-      turbolinks-source (~> 5.2)
-    turbolinks-source (5.2.0)
+    turbo-rails (0.7.0)
+      rails (>= 6.0.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.0.0)
@@ -333,7 +329,6 @@ PLATFORMS
 DEPENDENCIES
   annotate
   better_errors
-  binding_of_caller (~> 0.8)
   bootsnap (>= 1.4.4)
   brakeman
   byebug
@@ -353,6 +348,7 @@ DEPENDENCIES
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.4)
   rails-controller-testing
+  redis (~> 4.0)
   rspec-rails (~> 5.0.0)
   rspec-sidekiq
   sass-rails (>= 6)
@@ -363,7 +359,7 @@ DEPENDENCIES
   spring
   standard
   timecop
-  turbolinks (~> 5)
+  turbo-rails
   tzinfo-data
   view_component
   web-console (>= 4.1.0)
