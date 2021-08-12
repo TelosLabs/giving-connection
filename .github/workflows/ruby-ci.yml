@@ -90,7 +90,7 @@ jobs:
           bundle exec brakeman -q -w2
 
   database:
-    name: Database check
+    name: Database consistency
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
