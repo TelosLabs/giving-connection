@@ -101,6 +101,6 @@ jobs:
         with:
           bundler-cache: true
 
-      - name: Run database checks
-        run: |
-          bundle exec database_consistency
+      # - name: Run database checks
+      #   run: |
+      #     bundle exec database_consistency
