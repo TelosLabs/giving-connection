@@ -4,8 +4,8 @@ on:
     types: [opened, synchronize, reopened]
 
 env:
+  # Add secret key to Repository secrets
   RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-  GEMFILE_RUBY_VERSION: 3.0.2
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/test
   REDIS_URL: redis://localhost:6379/0
 
