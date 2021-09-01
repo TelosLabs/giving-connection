@@ -66,14 +66,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup Ruby and install gems
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
+      # - name: Setup Ruby and install gems
+      #   uses: ruby/setup-ruby@v1
+      #   with:
+      #     bundler-cache: true
 
-      - name: Run linters
-        run: |
-          PRONTO_PULL_REQUEST_ID=$GITHUB_PULL_REQUEST_ID PRONTO_GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN bundle exec pronto run -c origin/main -f github_status -f github_pr_review || exit 0
+      - name: Setup pronto
+        run: gem install pronto pronto-rubocop
+      - name: Run Pronto
+        run: pronto run -f github_status github_pr -c origin/${{ github.base_ref }}
+        env:
+          PRONTO_PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
+          PRONTO_GITHUB_ACCESS_TOKEN: "${{ github.token }}"
+
+      # - name: Run linters
+      #   run: |
+      #     PRONTO_PULL_REQUEST_ID=$GITHUB_PULL_REQUEST_ID PRONTO_GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN bundle exec pronto run -c origin/main -f github_status -f github_pr_review || exit 0
 
   security:
     name: Security
