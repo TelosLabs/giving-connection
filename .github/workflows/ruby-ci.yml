@@ -66,13 +66,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # - name: Setup Ruby and install gems
-      #   uses: ruby/setup-ruby@v1
-      #   with:
-      #     bundler-cache: true
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
 
-      - name: Setup pronto
-        run: gem install pronto pronto-rubocop
+      # - name: Setup pronto
+      #   run: gem install pronto pronto-rubocop
       - name: Run Pronto
         run: pronto run -f github_status github_pr -c origin/${{ github.base_ref }}
         env:
