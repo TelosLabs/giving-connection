@@ -8,6 +8,8 @@ env:
   RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/test
   REDIS_URL: redis://localhost:6379/0
+  GITHUB_PULL_REQUEST_ID: ${{ github.event.number }}
+  GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   tests:
@@ -71,7 +73,7 @@ jobs:
 
       - name: Run linters
         run: |
-          bundle exec standardrb
+          PRONTO_PULL_REQUEST_ID=$GITHUB_PULL_REQUEST_ID PRONTO_GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN bundle exec pronto run -c origin/main -f github_status -f github_pr_review || exit 0
 
   security:
     name: Security
