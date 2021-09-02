@@ -76,7 +76,8 @@ jobs:
         run: gem install pronto pronto-standardrb
 
       - name: Run Pronto
-        run: PRONTO_PULL_REQUEST_ID=${{ github.event.pull_request.number }} PRONTO_GITHUB_ACCESS_TOKEN="${{ github.token }}" bundle exec pronto run -f github_status github_pr -c origin/${{ github.base_ref }}
+        run: PRONTO_PULL_REQUEST_ID=${{ github.event.pull_request.number }} PRONTO_GITHUB_ACCESS_TOKEN="${{ github.token }}" bundle exec pronto run -c origin/main -f github_status -f github_pr_review
+
         # env:
         #   PRONTO_PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
         #   PRONTO_GITHUB_ACCESS_TOKEN: "${{ github.token }}"
