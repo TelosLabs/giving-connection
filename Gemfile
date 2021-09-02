@@ -38,6 +38,9 @@ gem "rack-attack"
 # Use Turbo for rails
 gem "turbo-rails"
 
+# Use administrate admin framework
+gem "administrate"
+
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.4.4", require: false
 
