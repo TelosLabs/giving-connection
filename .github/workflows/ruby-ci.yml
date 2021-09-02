@@ -61,14 +61,20 @@ jobs:
     name: Linter
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+
       - run: |
           git fetch --no-tags --prune --depth=10 origin +refs/heads/*:refs/remotes/origin/*
-      - name: Setup Ruby
+
+      - name: Set up Ruby
         uses: ruby/setup-ruby@v1
+        with:
+          # runs 'bundle install' and caches installed gems automatically
+          bundler-cache: true
+
       - name: Setup pronto
         run: gem install pronto pronto-standardrb
+
       - name: Run Pronto
         run: PRONTO_PULL_REQUEST_ID=${{ github.event.pull_request.number }} PRONTO_GITHUB_ACCESS_TOKEN="${{ github.token }}" bundle exec pronto run -f github_status github_pr -c origin/${{ github.base_ref }}
         # env:
