@@ -70,10 +70,10 @@ jobs:
       - name: Setup pronto
         run: gem install pronto pronto-standardrb
       - name: Run Pronto
-        run: pronto run -f github_status github_pr -c origin/${{ github.base_ref }}
-        env:
-          PRONTO_PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
-          PRONTO_GITHUB_ACCESS_TOKEN: "${{ github.token }}"
+        run: PRONTO_PULL_REQUEST_ID=${{ github.event.pull_request.number }} PRONTO_GITHUB_ACCESS_TOKEN="${{ github.token }}" bundle exec pronto run -f github_status github_pr -c origin/${{ github.base_ref }}
+        # env:
+        #   PRONTO_PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
+        #   PRONTO_GITHUB_ACCESS_TOKEN: "${{ github.token }}"
 
 
       # - name: Run linters
