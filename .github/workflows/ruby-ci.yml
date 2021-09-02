@@ -99,6 +99,12 @@ jobs:
           bundle exec brakeman -w3 -o tmp/brakeman.html
 
   database:
+    env:
+      RAILS_ENV: test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ""
+      POSTGRES_DB: postgres
+
     services:
       postgres:
         image: postgres:10.8
@@ -112,7 +118,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-          
+
     name: Database consistency check
     runs-on: ubuntu-latest
     steps:
