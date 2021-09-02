@@ -98,18 +98,21 @@ jobs:
         run: |
           bundle exec brakeman -w3 -o tmp/brakeman.html
 
-  # database:
-  #   name: Database consistency check
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
-  #
-  #     - name: Setup Ruby and install gems
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         bundler-cache: true
-  #
-  #     - name: Run database checks
-  #       run: |
-  #         bundle exec database_consistency
+  database:
+    name: Database consistency check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Setup database checks
+        run: |
+          bundle exec database_consistency install
+      - name: Run database checks
+        run: |
+          bundle exec database_consistency
