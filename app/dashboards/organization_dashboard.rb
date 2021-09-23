@@ -8,21 +8,24 @@ class OrganizationDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    text_translations: Field::HasMany,
     created_by: Field::BelongsTo,
     id: Field::Number,
     name: Field::String,
     ein_number: Field::String,
     irs_ntee_code: Field::String,
-    mission_statement: Field::Text,
-    vision_statement: Field::Text,
-    tagline: Field::Text,
-    description: Field::Text,
     impact: Field::Text,
     website: Field::String,
     scope_of_working: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
+    mission_statement_en: Field::Text,
+    mission_statement_es: Field::Text,
+    vision_statement_en: Field::Text,
+    vision_statement_es: Field::Text,
+    tagline_en: Field::Text,
+    tagline_es: Field::Text,
+    description_en: Field::Text,
+    description_es: Field::Text,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -31,31 +34,33 @@ class OrganizationDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-    id
     created_by
+    id
     name
-    website
     ein_number
-    irs_ntee_code  
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
-  SHOW_PAGE_ATTRIBUTES = %i[ 
+  SHOW_PAGE_ATTRIBUTES = %i[
     created_by
     id
     name
     ein_number
     irs_ntee_code
-    mission_statement
-    vision_statement
-    tagline
-    description
     impact
     website
     scope_of_working
     created_at
     updated_at
+    mission_statement_en
+    mission_statement_es
+    vision_statement_en
+    vision_statement_es
+    tagline_en
+    tagline_es
+    description_en
+    description_es
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -66,13 +71,17 @@ class OrganizationDashboard < Administrate::BaseDashboard
     name
     ein_number
     irs_ntee_code
-    mission_statement
-    vision_statement
-    tagline
-    description
     impact
     website
     scope_of_working
+    mission_statement_en
+    mission_statement_es
+    vision_statement_en
+    vision_statement_es
+    tagline_en
+    tagline_es
+    description_en
+    description_es
   ].freeze
 
   # COLLECTION_FILTERS

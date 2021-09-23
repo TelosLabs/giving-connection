@@ -9,7 +9,7 @@ Mobility.configure do
     # To default to a different backend globally, replace +:key_value+ by another
     # backend name.
     #
-    backend :key_value
+    backend :column
 
     # ActiveRecord
     #
@@ -102,7 +102,7 @@ Mobility.configure do
     # locale_accessors
     #
     # Or define specific defaults by uncommenting line below
-    locale_accessors [:en, :es]
+    # locale_accessors [:en, :ja]
 
     # Attribute Methods
     #
