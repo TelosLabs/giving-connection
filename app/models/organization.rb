@@ -1,12 +1,12 @@
 class Organization < ApplicationRecord
-  belongs_to :user
+  extend Mobility
+  translates :tagline,               type: :text
+  translates :description,           type: :text
+  translates :vision_statement,      type: :text
+  translates :mission_statement,     type: :text
+
+  belongs_to :created_by, class_name: "User"
 
   validates :ein_number, uniqueness: true
-
-  extend Mobility
-  translates :mission_statement, type: :text
-  translates :vision_statement, type: :text
-  translates :tagline_statement, type: :text
-  translates :description_statement, type: :text
   
 end

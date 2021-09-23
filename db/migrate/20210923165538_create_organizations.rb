@@ -11,7 +11,7 @@ class CreateOrganizations < ActiveRecord::Migration[6.1]
       t.text :impact
       t.string :website
       t.string :scope_of_working
-      t.references :created_by, null: false, index: true, foreign_key: { to_table: :users }
+      t.references :created_by, null: false, foreign_key: { to_table: :users }
 
       t.timestamps
     end
