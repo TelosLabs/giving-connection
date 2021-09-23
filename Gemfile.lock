@@ -103,6 +103,10 @@ GEM
     concurrent-ruby (1.1.9)
     connection_pool (2.2.5)
     crass (1.0.6)
+    database_cleaner-active_record (2.0.1)
+      activerecord (>= 5.a)
+      database_cleaner-core (~> 2.0.0)
+    database_cleaner-core (2.0.1)
     database_consistency (1.1.2)
       activerecord (>= 3.2)
     datetime_picker_rails (0.0.7)
@@ -115,6 +119,11 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.4.4)
     erubi (1.10.0)
+    factory_bot (6.2.0)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.2.0)
+      factory_bot (~> 6.2.0)
+      railties (>= 5.0.0)
     faker (2.18.0)
       i18n (>= 1.6, < 2)
     ffi (1.15.3)
@@ -384,8 +393,10 @@ DEPENDENCIES
   byebug
   capybara (>= 3.26)
   clockwork
+  database_cleaner-active_record
   database_consistency
   devise
+  factory_bot_rails
   faker
   guard-rspec
   jbuilder (~> 2.7)
