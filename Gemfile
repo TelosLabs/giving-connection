@@ -34,6 +34,7 @@ gem "clockwork"
 gem "faker"
 gem "view_component", require: "view_component/engine"
 gem "rack-attack"
+gem 'mobility', '~> 1.1.3'
 
 # Use Turbo for rails
 gem "turbo-rails"
