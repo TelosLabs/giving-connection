@@ -26,7 +26,7 @@ FactoryBot.define do
   factory :organization do
     name { 'user@example.com' }
     ein_number { 'testing' }
-    irs_ntee_code { 'testing' }
+    irs_ntee_code { 'A90' }
     mission_statement_en { 'testing' }
     mission_statement_es { 'pruebas' }
     vision_statement_en { 'testing' }
@@ -35,9 +35,8 @@ FactoryBot.define do
     tagline_es { 'pruebas' }
     description_en { 'testing' }
     description_es { 'pruebas' }
-    impact { 'testing' }
     website { 'testing' }
-    scope_of_working { 'testing' }
-    created_by { association :user }
+    scope_of_work { 'International' }
+    creator { association :user }
   end
 end
