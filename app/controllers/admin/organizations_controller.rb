@@ -8,6 +8,23 @@ module Admin
     #   send_foo_updated_email(requested_resource)
     # end
 
+    def create
+      resource = resource_class.new(resource_params)
+      resource.creator = current_admin_user
+      authorize_resource(resource)
+
+      if resource.save
+        redirect_to(
+          [namespace, resource],
+          notice: translate_with_resource("create.success"),
+        )
+      else
+        render :new, locals: {
+          page: Administrate::Page::Form.new(dashboard, resource),
+        }, status: :unprocessable_entity
+      end
+    end
+
     # Override this method to specify custom lookup behavior.
     # This will be used to set the resource for the `show`, `edit`, and `update`
     # actions.

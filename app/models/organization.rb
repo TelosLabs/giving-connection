@@ -1,7 +1,7 @@
 class Organization < ApplicationRecord
   
-  belongs_to :created_by, class_name: "User"
-
+  belongs_to :creator , polymorphic: true
+  
   validates :ein_number, uniqueness: true
 
   SCOPE = %w[International National Regional]

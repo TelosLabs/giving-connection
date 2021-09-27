@@ -41,7 +41,8 @@ ActiveRecord::Schema.define(version: 2021_09_23_212719) do
     t.string "irs_ntee_code"
     t.string "website"
     t.string "scope_of_work"
-    t.bigint "created_by_id", null: false
+    t.string "creator_type"
+    t.bigint "creator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.text "mission_statement_en"
@@ -52,7 +53,7 @@ ActiveRecord::Schema.define(version: 2021_09_23_212719) do
     t.text "tagline_es"
     t.text "description_en"
     t.text "description_es"
-    t.index ["created_by_id"], name: "index_organizations_on_created_by_id"
+    t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
   end
 
   create_table "users", force: :cascade do |t|
@@ -81,5 +82,4 @@ ActiveRecord::Schema.define(version: 2021_09_23_212719) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
-  add_foreign_key "organizations", "users", column: "created_by_id"
 end
