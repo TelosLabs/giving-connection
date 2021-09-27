@@ -12,10 +12,12 @@ class OrganizationDashboard < Administrate::BaseDashboard
     id: Field::Number,
     name: Field::String,
     ein_number: Field::String,
-    irs_ntee_code: Field::String,
-    impact: Field::Text,
+    irs_ntee_code: Field::SelectBasic.with_options({
+      choices: Organization::NTEE_CODE }),
     website: Field::String,
-    scope_of_working: Field::String,
+    # scope_of_work: Field::String,
+    scope_of_work: Field::SelectBasic.with_options({
+      choices: Organization::SCOPE }),
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     mission_statement_en: Field::Text,
@@ -48,9 +50,8 @@ class OrganizationDashboard < Administrate::BaseDashboard
     name
     ein_number
     irs_ntee_code
-    impact
     website
-    scope_of_working
+    scope_of_work
     created_at
     updated_at
     mission_statement_en
@@ -71,17 +72,13 @@ class OrganizationDashboard < Administrate::BaseDashboard
     name
     ein_number
     irs_ntee_code
-    impact
     website
-    scope_of_working
+    scope_of_work
     mission_statement_en
-    mission_statement_es
     vision_statement_en
-    vision_statement_es
     tagline_en
-    tagline_es
     description_en
-    description_es
+
   ].freeze
 
   # COLLECTION_FILTERS

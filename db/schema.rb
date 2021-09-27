@@ -39,9 +39,8 @@ ActiveRecord::Schema.define(version: 2021_09_23_212719) do
     t.string "name"
     t.string "ein_number"
     t.string "irs_ntee_code"
-    t.text "impact"
     t.string "website"
-    t.string "scope_of_working"
+    t.string "scope_of_work"
     t.bigint "created_by_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
