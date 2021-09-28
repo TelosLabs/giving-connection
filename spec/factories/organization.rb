@@ -24,7 +24,7 @@
 
 FactoryBot.define do
   factory :organization do
-    name { 'user@example.com' }
+    name { 'organization' }
     ein_number { 'testing' }
     irs_ntee_code { 'A90' }
     mission_statement_en { 'testing' }

@@ -25,6 +25,21 @@ module Admin
       end
     end
 
+    def update
+      requested_resource.creator = current_admin_user
+      requested_resource.update(resource_params)
+      if requested_resource
+        redirect_to(
+          [namespace, requested_resource],
+          notice: translate_with_resource("update.success"),
+        )
+      else
+        render :edit, locals: {
+          page: Administrate::Page::Form.new(dashboard, requested_resource),
+        }, status: :unprocessable_entity
+      end
+    end
+
     # Override this method to specify custom lookup behavior.
     # This will be used to set the resource for the `show`, `edit`, and `update`
     # actions.
