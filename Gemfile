@@ -84,6 +84,7 @@ group :test do
   gem "rspec-sidekiq"
   gem "rails-controller-testing"
   gem "timecop"
+  gem 'simplecov', require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
