@@ -14,6 +14,7 @@ module Admin
       authorize_resource(resource)
 
       if resource.save
+        SocialMedia.create!(organization: resource)
         redirect_to(
           [namespace, resource],
           notice: translate_with_resource("create.success"),

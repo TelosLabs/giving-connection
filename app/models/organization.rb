@@ -2,6 +2,7 @@ class Organization < ApplicationRecord
   include OrganizationConstants
 
   belongs_to :creator , polymorphic: true
+  has_one :social_media
   
   validates :name, presence: true, uniqueness: true
   validates :ein_number, presence: true, uniqueness: true

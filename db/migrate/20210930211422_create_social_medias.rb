@@ -1,6 +1,6 @@
-class CreateSocialMedia < ActiveRecord::Migration[6.1]
+class CreateSocialMedias < ActiveRecord::Migration[6.1]
   def change
-    create_table :social_media do |t|
+    create_table :social_medias do |t|
       t.string :facebook
       t.string :instagram
       t.string :twitter
