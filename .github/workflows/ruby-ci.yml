@@ -76,15 +76,17 @@ jobs:
       #   run: |
       #     export PRONTO_PULL_REQUEST_ID=`echo $CI_PULL_REQUEST | grep -o 'pull.*' | cut -f2- -d/`
       #     PRONTO_PULL_REQUEST_ID=$PRONTO_PULL_REQUEST_ID PRONTO_GITHUB_ACCESS_TOKEN=$PRONTO_GITHUB_ACCESS_TOKEN bundle exec pronto run -c origin/main -f github_status -f github_pr_review || exit 0
-      - name: Install CMAKE
-        run: sudo apt-get update --allow-releaseinfo-change && sudo apt-get install -y cmake
+      # - name: Install CMAKE
+      #   run: sudo apt-get update --allow-releaseinfo-change && sudo apt-get install -y cmake
 
-      - name: Run linters
-        run: |
-          PRONTO_PULL_REQUEST_ID=$GITHUB_PULL_REQUEST_ID PRONTO_GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN bundle exec pronto run -c origin/main -f github_status -f github_pr_review || exit 0
+      - name: Setup pronto
+        run: gem install pronto pronto-rubocop
+      - name: Run Pronto
+        run: bundle exec pronto run -f github_status github_pr -c origin/${{ github.base_ref }}
         env:
           PRONTO_PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
           PRONTO_GITHUB_ACCESS_TOKEN: "${{ github.token }}"
+          BUNDLE_PATH: "vendor/bundle"
 
   security:
     name: Security
