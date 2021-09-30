@@ -76,6 +76,8 @@ jobs:
       #   run: |
       #     export PRONTO_PULL_REQUEST_ID=`echo $CI_PULL_REQUEST | grep -o 'pull.*' | cut -f2- -d/`
       #     PRONTO_PULL_REQUEST_ID=$PRONTO_PULL_REQUEST_ID PRONTO_GITHUB_ACCESS_TOKEN=$PRONTO_GITHUB_ACCESS_TOKEN bundle exec pronto run -c origin/main -f github_status -f github_pr_review || exit 0
+      - name: Install CMAKE
+        run: sudo apt-get update --allow-releaseinfo-change && sudo apt-get install -y cmake
 
       - name: Run linters
         run: |
