@@ -24,13 +24,17 @@ RSpec.describe "Admin Organization System Spec", type: :system do
     end
   end
 
-  context 'Creating new organizaton' do
+  context 'Creating new organizaton when form is correctly filled' do
     before { visit new_admin_organization_path }
 
     before(:each) do
-      fill_in('organization_name',                   with: 'Testing')
+      fill_in('organization_name',                   with: 'testing')
       fill_in('organization_ein_number',             with: '161616')
       fill_in('organization_website',                with: 'www.org.com')
+      fill_in('organization_mission_statement_en',   with: 'mission testing')
+      fill_in('organization_vision_statement_en',    with: 'vision testing')
+      fill_in('organization_tagline_en',             with: 'tagline testing')
+      fill_in('organization_description_en',         with: 'description testing')
       select('A51',                                  from: 'organization_irs_ntee_code')
       select('National',                             from: 'organization_scope_of_work')
 
@@ -44,6 +48,28 @@ RSpec.describe "Admin Organization System Spec", type: :system do
     it 'creates new organization' do
       expect(Organization.count).to eq 2
     end
+  end
+
+  context 'Creating new organizaton when form is not correctly filled' do
+    before { visit new_admin_organization_path }
+
+    before(:each) do
+      fill_in('organization_ein_number',             with: '161616')
+      fill_in('organization_website',                with: 'www.org.com')
+      fill_in('organization_mission_statement_en',   with: 'mission testing')
+      fill_in('organization_vision_statement_en',    with: 'vision testing')
+      fill_in('organization_tagline_en',             with: 'tagline testing')
+      fill_in('organization_description_en',         with: 'description testing')
+      select('A51',                                  from: 'organization_irs_ntee_code')
+      select('National',                             from: 'organization_scope_of_work')
+
+      click_button 'Create Organization'
+    end
+
+    it 'should flash error message' do
+      expect(page).to have_content('Name can\'t be blank')
+    end
+
   end
 
   context 'Deleting organizaton' do
