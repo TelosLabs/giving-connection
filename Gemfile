@@ -24,6 +24,9 @@ gem "redis", "~> 4.0"
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
+# Use Devise for authentication
+gem "devise"
+
 gem "slim-rails"
 gem "sidekiq"
 gem "name_of_person"
@@ -34,6 +37,9 @@ gem "rack-attack"
 
 # Use Turbo for rails
 gem "turbo-rails"
+
+# Use administrate admin framework
+gem "administrate"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.4.4", require: false
