@@ -39,9 +39,6 @@ gem 'mobility', '~> 1.1.3'
 # Use Turbo for rails
 gem "turbo-rails"
 
-# Stimulus for rails
-gem 'stimulus-rails'
-
 # Use administrate admin framework
 gem "administrate"
 gem 'administrate-field-select', '~> 2.0', require: 'administrate/field/select_basic'

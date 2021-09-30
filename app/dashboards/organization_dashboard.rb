@@ -51,12 +51,12 @@ class OrganizationDashboard < Administrate::BaseDashboard
     created_at
     updated_at
     mission_statement_en
-    mission_statement_es
     vision_statement_en
-    vision_statement_es
     tagline_en
-    tagline_es
     description_en
+    mission_statement_es
+    vision_statement_es
+    tagline_es
     description_es
   ].freeze
 
@@ -70,12 +70,12 @@ class OrganizationDashboard < Administrate::BaseDashboard
     website
     scope_of_work
     mission_statement_en
-    mission_statement_es
     vision_statement_en
-    vision_statement_es
     tagline_en
-    tagline_es
     description_en
+    mission_statement_es
+    vision_statement_es
+    tagline_es
     description_es
   ].freeze
 
