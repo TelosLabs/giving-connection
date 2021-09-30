@@ -1,7 +1,7 @@
 class Testing < ApplicationRecord
-  attr_accessor  :name
+  attr_accessor :name
 
   def get_name
-    return  self.name
+    name
   end
 end
