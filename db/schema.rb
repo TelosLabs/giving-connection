@@ -36,24 +36,31 @@ ActiveRecord::Schema.define(version: 2021_09_23_212719) do
   end
 
   create_table "organizations", force: :cascade do |t|
-    t.string "name"
-    t.string "ein_number"
-    t.string "irs_ntee_code"
+    t.string "name", null: false
+    t.string "ein_number", null: false
+    t.string "irs_ntee_code", null: false
     t.string "website"
-    t.string "scope_of_work"
+    t.string "scope_of_work", null: false
     t.string "creator_type"
     t.bigint "creator_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.text "mission_statement_en"
+    t.text "mission_statement_en", null: false
     t.text "mission_statement_es"
-    t.text "vision_statement_en"
+    t.text "vision_statement_en", null: false
     t.text "vision_statement_es"
-    t.text "tagline_en"
+    t.text "tagline_en", null: false
     t.text "tagline_es"
-    t.text "description_en"
+    t.text "description_en", null: false
     t.text "description_es"
     t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
+    t.index ["description_en"], name: "index_organizations_on_description_en"
+    t.index ["ein_number"], name: "index_organizations_on_ein_number", unique: true
+    t.index ["mission_statement_en"], name: "index_organizations_on_mission_statement_en"
+    t.index ["name"], name: "index_organizations_on_name", unique: true
+    t.index ["scope_of_work"], name: "index_organizations_on_scope_of_work"
+    t.index ["tagline_en"], name: "index_organizations_on_tagline_en"
+    t.index ["vision_statement_en"], name: "index_organizations_on_vision_statement_en"
   end
 
   create_table "users", force: :cascade do |t|
