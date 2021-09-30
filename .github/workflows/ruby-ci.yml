@@ -72,20 +72,17 @@ jobs:
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
 
-      - name: Setup pronto
-        run: gem install pronto pronto-standardrb
-
-      - name: Run Pronto
-        run: PRONTO_PULL_REQUEST_ID=${{ github.event.pull_request.number }} PRONTO_GITHUB_ACCESS_TOKEN=${{ github.token }} bundle exec pronto run -c origin/main -f github_status -f github_pr_review
-
-        # env:
-        #   PRONTO_PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
-        #   PRONTO_GITHUB_ACCESS_TOKEN: "${{ github.token }}"
-
-
-      # - name: Run linters
+      # - name: Run pronto and comment with RuboCop issues
       #   run: |
-      #     PRONTO_PULL_REQUEST_ID=$GITHUB_PULL_REQUEST_ID PRONTO_GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN bundle exec pronto run -c origin/main -f github_status -f github_pr_review || exit 0
+      #     export PRONTO_PULL_REQUEST_ID=`echo $CI_PULL_REQUEST | grep -o 'pull.*' | cut -f2- -d/`
+      #     PRONTO_PULL_REQUEST_ID=$PRONTO_PULL_REQUEST_ID PRONTO_GITHUB_ACCESS_TOKEN=$PRONTO_GITHUB_ACCESS_TOKEN bundle exec pronto run -c origin/main -f github_status -f github_pr_review || exit 0
+
+      - name: Run linters
+        run: |
+          PRONTO_PULL_REQUEST_ID=$GITHUB_PULL_REQUEST_ID PRONTO_GITHUB_ACCESS_TOKEN=$GITHUB_ACCESS_TOKEN bundle exec pronto run -c origin/main -f github_status -f github_pr_review || exit 0
+        env:
+          PRONTO_PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
+          PRONTO_GITHUB_ACCESS_TOKEN: "${{ github.token }}"
 
   security:
     name: Security
