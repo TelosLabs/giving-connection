@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_23_212719) do
+ActiveRecord::Schema.define(version: 2021_09_30_211422) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,19 @@ ActiveRecord::Schema.define(version: 2021_09_23_212719) do
     t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
   end
 
+  create_table "social_media", force: :cascade do |t|
+    t.string "facebook"
+    t.string "instagram"
+    t.string "twitter"
+    t.string "linkedin"
+    t.string "youtube"
+    t.string "blog"
+    t.bigint "organization_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["organization_id"], name: "index_social_media_on_organization_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -82,4 +95,5 @@ ActiveRecord::Schema.define(version: 2021_09_23_212719) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "social_media", "organizations"
 end
