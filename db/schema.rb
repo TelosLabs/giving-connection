@@ -10,81 +10,83 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_210_923_212_719) do
+ActiveRecord::Schema.define(version: 2021_09_23_212719) do
+
   # These are extensions that must be enabled in order to support this database
-  enable_extension 'plpgsql'
+  enable_extension "plpgsql"
 
-  create_table 'admin_users', force: :cascade do |t|
-    t.string 'email', default: '', null: false
-    t.string 'encrypted_password', default: '', null: false
-    t.string 'reset_password_token'
-    t.datetime 'reset_password_sent_at'
-    t.datetime 'remember_created_at'
-    t.integer 'sign_in_count', default: 0, null: false
-    t.datetime 'current_sign_in_at'
-    t.datetime 'last_sign_in_at'
-    t.string 'current_sign_in_ip'
-    t.string 'last_sign_in_ip'
-    t.integer 'failed_attempts', default: 0, null: false
-    t.string 'unlock_token'
-    t.datetime 'locked_at'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.index ['email'], name: 'index_admin_users_on_email', unique: true
-    t.index ['reset_password_token'], name: 'index_admin_users_on_reset_password_token', unique: true
+  create_table "admin_users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.integer "failed_attempts", default: 0, null: false
+    t.string "unlock_token"
+    t.datetime "locked_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["email"], name: "index_admin_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
-  create_table 'organizations', force: :cascade do |t|
-    t.string 'name', null: false
-    t.string 'ein_number', null: false
-    t.string 'irs_ntee_code', null: false
-    t.string 'website'
-    t.string 'scope_of_work', null: false
-    t.string 'creator_type'
-    t.bigint 'creator_id'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.text 'mission_statement_en', null: false
-    t.text 'mission_statement_es'
-    t.text 'vision_statement_en', null: false
-    t.text 'vision_statement_es'
-    t.text 'tagline_en', null: false
-    t.text 'tagline_es'
-    t.text 'description_en', null: false
-    t.text 'description_es'
-    t.index %w[creator_type creator_id], name: 'index_organizations_on_creator'
-    t.index ['description_en'], name: 'index_organizations_on_description_en'
-    t.index ['ein_number'], name: 'index_organizations_on_ein_number', unique: true
-    t.index ['mission_statement_en'], name: 'index_organizations_on_mission_statement_en'
-    t.index ['name'], name: 'index_organizations_on_name', unique: true
-    t.index ['scope_of_work'], name: 'index_organizations_on_scope_of_work'
-    t.index ['tagline_en'], name: 'index_organizations_on_tagline_en'
-    t.index ['vision_statement_en'], name: 'index_organizations_on_vision_statement_en'
+  create_table "organizations", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "ein_number", null: false
+    t.string "irs_ntee_code", null: false
+    t.string "website"
+    t.string "scope_of_work", null: false
+    t.string "creator_type"
+    t.bigint "creator_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.text "mission_statement_en", null: false
+    t.text "mission_statement_es"
+    t.text "vision_statement_en", null: false
+    t.text "vision_statement_es"
+    t.text "tagline_en", null: false
+    t.text "tagline_es"
+    t.text "description_en", null: false
+    t.text "description_es"
+    t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
+    t.index ["description_en"], name: "index_organizations_on_description_en"
+    t.index ["ein_number"], name: "index_organizations_on_ein_number", unique: true
+    t.index ["mission_statement_en"], name: "index_organizations_on_mission_statement_en"
+    t.index ["name"], name: "index_organizations_on_name", unique: true
+    t.index ["scope_of_work"], name: "index_organizations_on_scope_of_work"
+    t.index ["tagline_en"], name: "index_organizations_on_tagline_en"
+    t.index ["vision_statement_en"], name: "index_organizations_on_vision_statement_en"
   end
 
-  create_table 'users', force: :cascade do |t|
-    t.string 'email', default: '', null: false
-    t.string 'encrypted_password', default: '', null: false
-    t.string 'reset_password_token'
-    t.datetime 'reset_password_sent_at'
-    t.datetime 'remember_created_at'
-    t.integer 'sign_in_count', default: 0, null: false
-    t.datetime 'current_sign_in_at'
-    t.datetime 'last_sign_in_at'
-    t.string 'current_sign_in_ip'
-    t.string 'last_sign_in_ip'
-    t.string 'confirmation_token'
-    t.datetime 'confirmed_at'
-    t.datetime 'confirmation_sent_at'
-    t.string 'unconfirmed_email'
-    t.integer 'failed_attempts', default: 0, null: false
-    t.string 'unlock_token'
-    t.datetime 'locked_at'
-    t.datetime 'created_at', precision: 6, null: false
-    t.datetime 'updated_at', precision: 6, null: false
-    t.index ['confirmation_token'], name: 'index_users_on_confirmation_token', unique: true
-    t.index ['email'], name: 'index_users_on_email', unique: true
-    t.index ['reset_password_token'], name: 'index_users_on_reset_password_token', unique: true
-    t.index ['unlock_token'], name: 'index_users_on_unlock_token', unique: true
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
+    t.integer "failed_attempts", default: 0, null: false
+    t.string "unlock_token"
+    t.datetime "locked_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
+
 end
