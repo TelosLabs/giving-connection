@@ -57,21 +57,25 @@ jobs:
         run: |
           bundle exec rspec
 
-  linters:
-    name: Linter
+  # linters:
+  #   jobs:
+  pronto:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Setup Ruby and install gems
+      - run: |
+          git fetch --no-tags --prune origin +refs/heads/*:refs/remotes/origin/*
+      - name: Setup Ruby
         uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-
-      - name: Run linters
-        run: |
-          bundle exec standardrb
+      - name: Setup pronto
+        run: gem install pronto pronto-rubocop
+      - name: Run Pronto
+        run: pronto run -f github_status github_pr -c origin/main
+        env:
+          PRONTO_PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
+          PRONTO_GITHUB_ACCESS_TOKEN: "${{ github.token }}"
 
   security:
     name: Security
@@ -87,20 +91,43 @@ jobs:
 
       - name: Run security checks
         run: |
-          bundle exec brakeman -q -w2
+          bundle exec brakeman -w3 -o tmp/brakeman.html
 
-  database:
-    name: Database consistency
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup Ruby and install gems
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-
-      - name: Run database checks
-        run: |
-          bundle exec database_consistency
+  # database:
+  #   env:
+  #     RAILS_ENV: test
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: ""
+  #     POSTGRES_DB: postgres
+  #
+  #   services:
+  #     postgres:
+  #       image: postgres:10.8
+  #       ports:
+  #         - 5432:5432
+  #       # needed because the postgres container does not provide a healthcheck
+  #       # tmpfs makes DB faster by using RAM
+  #       options: >-
+  #         --mount type=tmpfs,destination=/var/lib/postgresql/data
+  #         --health-cmd pg_isready
+  #         --health-interval 10s
+  #         --health-timeout 5s
+  #         --health-retries 5
+  #
+  #   name: Database consistency check
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
+  #
+  #     - name: Setup Ruby and install gems
+  #       uses: ruby/setup-ruby@v1
+  #       with:
+  #         bundler-cache: true
+  #
+  #     - name: Setup database checks
+  #       run: |
+  #         bundle exec database_consistency install
+  #     - name: Run database checks
+  #       run: |
+  #         bundle exec database_consistency
