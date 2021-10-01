@@ -3,6 +3,7 @@ class Organization < ApplicationRecord
 
   belongs_to :creator , polymorphic: true
   has_one :social_media
+  accepts_nested_attributes_for :social_media
   
   validates :name, presence: true, uniqueness: true
   validates :ein_number, presence: true, uniqueness: true

@@ -30,5 +30,6 @@ User.create!(email: "user@example.com", password: "testing", password_confirmati
 
 	if org.save!
 		puts "#{org.id} sucessfully created"
+		SocialMedia.create!(organization: org)
 	end
 end
