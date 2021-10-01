@@ -6,15 +6,14 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-
 # Admin Users
-AdminUser.create!(email: "admin@example.com", password: "testing", password_confirmation: "testing")
+AdminUser.create!(email: 'admin@example.com', password: 'testing', password_confirmation: 'testing')
 
 # Users
 User.create!(email: "user@example.com", password: "testing", password_confirmation: "testing")
 
 # Orgs
-3.times do 
+3.times do
 	org = Organization.new(
 				name: Faker::Company.name,
 				ein_number: rand(0..1000),
