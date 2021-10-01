@@ -40,7 +40,7 @@ gem 'view_component', require: 'view_component/engine'
 gem 'turbo-rails'
 
 # Use administrate admin framework
-gem "administrate"
+gem 'administrate'
 gem 'administrate-field-select', '~> 2.0', require: 'administrate/field/select_basic'
 
 # Reduces boot times through caching; required in config/boot.rb
@@ -51,12 +51,12 @@ gem 'pronto-rubocop', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
-  gem "pry-rails"
-  gem "rspec-rails", "~> 5.0.0"
-  gem 'rubocop', require: false
-  gem 'factory_bot_rails'
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'database_cleaner-active_record'
+  gem 'factory_bot_rails'
+  gem 'pry-rails'
+  gem 'rspec-rails', '~> 5.0.0'
+  gem 'rubocop', require: false
 end
 
 group :development do
@@ -84,8 +84,8 @@ group :test do
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'rails-controller-testing'
   gem 'rspec-sidekiq'
-  gem 'simplecov', require: false
   gem 'shoulda-matchers', '~> 4.0'
+  gem 'simplecov', require: false
   gem 'timecop'
   gem 'webdrivers'
 end

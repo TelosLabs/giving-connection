@@ -1,4 +1,4 @@
-require "administrate/base_dashboard"
+require 'administrate/base_dashboard'
 
 class OrganizationDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -12,10 +12,12 @@ class OrganizationDashboard < Administrate::BaseDashboard
     name: Field::String,
     ein_number: Field::String,
     irs_ntee_code: Field::SelectBasic.with_options({
-          choices: Organization::NTEE_CODE }),
+                                                     choices: Organization::NTEE_CODE
+                                                   }),
     website: Field::String,
     scope_of_work: Field::SelectBasic.with_options({
-          choices: Organization::SCOPE }),
+                                                     choices: Organization::SCOPE
+                                                   }),
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     mission_statement_en: Field::Text,
@@ -25,7 +27,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     tagline_en: Field::Text,
     tagline_es: Field::Text,
     description_en: Field::Text,
-    description_es: Field::Text,
+    description_es: Field::Text
   }.freeze
 
   # COLLECTION_ATTRIBUTES

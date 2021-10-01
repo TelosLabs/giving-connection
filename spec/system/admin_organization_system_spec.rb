@@ -1,7 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Admin Organization System Spec", type: :system do
-
+RSpec.describe 'Admin Organization System Spec', type: :system do
   before(:each) do
     @admin        = create(:admin_user)
     @organization = create(:organization)
@@ -69,7 +68,6 @@ RSpec.describe "Admin Organization System Spec", type: :system do
     it 'should flash error message' do
       expect(page).to have_content('Name can\'t be blank')
     end
-
   end
 
   context 'Deleting organizaton' do
@@ -94,7 +92,7 @@ RSpec.describe "Admin Organization System Spec", type: :system do
     before { visit  edit_admin_organization_path(@organization) }
 
     before(:each) do
-      fill_in('organization_name',         with: 'Testing')
+      fill_in('organization_name', with: 'Testing')
       click_button 'Update Organization'
     end
 
@@ -106,5 +104,4 @@ RSpec.describe "Admin Organization System Spec", type: :system do
       expect(Organization.find(@organization.id).name).to eq 'Testing'
     end
   end
-
 end
