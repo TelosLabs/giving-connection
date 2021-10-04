@@ -33,11 +33,11 @@ module Admin
       if resource.save
         redirect_to(
           [namespace, resource],
-          notice: translate_with_resource("create.success"),
+          notice: translate_with_resource('create.success')
         )
       else
         render :new, locals: {
-          page: Administrate::Page::Form.new(dashboard, resource),
+          page: Administrate::Page::Form.new(dashboard, resource)
         }, status: :unprocessable_entity
       end
     end
@@ -48,11 +48,11 @@ module Admin
       if requested_resource
         redirect_to(
           [namespace, requested_resource],
-          notice: translate_with_resource("update.success"),
+          notice: translate_with_resource('update.success')
         )
       else
         render :edit, locals: {
-          page: Administrate::Page::Form.new(dashboard, requested_resource),
+          page: Administrate::Page::Form.new(dashboard, requested_resource)
         }, status: :unprocessable_entity
       end
     end

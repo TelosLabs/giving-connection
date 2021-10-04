@@ -13,6 +13,4 @@ class Organization < ApplicationRecord
   validates :tagline_en, presence: true
   validates :description_en, presence: true
   validates :scope_of_work, presence: true, inclusion: { in: OrganizationConstants::SCOPE }
-
 end
-
