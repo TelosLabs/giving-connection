@@ -2,7 +2,7 @@ class Organization < ApplicationRecord
   include OrganizationConstants
 
   belongs_to :creator , polymorphic: true
-  has_one :social_media
+  has_one :social_media, dependent: :destroy
   accepts_nested_attributes_for :social_media
   
   validates :name, presence: true, uniqueness: true
