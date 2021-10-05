@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_30_211422) do
+ActiveRecord::Schema.define(version: 2021_10_05_184719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,17 @@ ActiveRecord::Schema.define(version: 2021_09_30_211422) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
+  create_table "contact_informations", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "title"
+    t.string "email"
+    t.bigint "organization_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["organization_id"], name: "index_contact_informations_on_organization_id"
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -61,6 +72,15 @@ ActiveRecord::Schema.define(version: 2021_09_30_211422) do
     t.index ["scope_of_work"], name: "index_organizations_on_scope_of_work"
     t.index ["tagline_en"], name: "index_organizations_on_tagline_en"
     t.index ["vision_statement_en"], name: "index_organizations_on_vision_statement_en"
+  end
+
+  create_table "phone_numbers", force: :cascade do |t|
+    t.string "number"
+    t.boolean "main", default: true
+    t.bigint "contact_information_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["contact_information_id"], name: "index_phone_numbers_on_contact_information_id"
   end
 
   create_table "social_medias", force: :cascade do |t|
@@ -102,5 +122,7 @@ ActiveRecord::Schema.define(version: 2021_09_30_211422) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "contact_informations", "organizations"
+  add_foreign_key "phone_numbers", "contact_informations"
   add_foreign_key "social_medias", "organizations"
 end
