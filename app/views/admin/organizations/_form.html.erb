@@ -38,6 +38,8 @@ and renders all form fields for a resource's editable attributes.
       </div>
   <% end -%>
 
+  <h1>Social Media</h1>
+
   <%= f.fields_for :social_media do |social| %>
     <%= social.label :facebook %>
     <%= social.text_field :facebook %>
@@ -52,6 +54,20 @@ and renders all form fields for a resource's editable attributes.
     <%= social.label :blog %>
     <%= social.text_field :blog %>
   <% end %>
+
+   <h1>Contact Info</h1>
+
+  <%= f.fields_for :contact_information do |contact| %>
+    <%= contact.label :first_name %>
+    <%= contact.text_field :first_name %>
+    <%= contact.label :last_name %>
+    <%= contact.text_field :last_name %>
+    <%= contact.label :title %>
+    <%= contact.text_field :title %>
+    <%= contact.label :email %>
+    <%= contact.text_field :email %>
+  <% end %>
+
 
   <div class="form-actions">
     <%= f.submit %>

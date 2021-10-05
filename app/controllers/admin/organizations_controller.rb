@@ -21,6 +21,7 @@ module Admin
       resource = new_resource
       authorize_resource(resource)
       resource.build_social_media
+      resource.build_contact_information
       render locals: {
         page: Administrate::Page::Form.new(dashboard, resource),
       }
@@ -84,7 +85,9 @@ module Admin
     # and `dashboard`:
     #
     def resource_params
-      permit = dashboard.permitted_attributes << {social_media_attributes: [:facebook, :instagram, :twitter, :linkedin, :youtube, :blog]}
+      nested_attributes = {social_media_attributes: [:facebook, :instagram, :twitter, :linkedin, :youtube, :blog],
+                          contact_information_attributes: [:first_name, :last_name, :title, :email]}
+      permit = dashboard.permitted_attributes << nested_attributes
       params.require(resource_class.model_name.param_key).
         permit(permit).
         transform_values { |value| value == "" ? nil : value }

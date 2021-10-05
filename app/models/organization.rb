@@ -4,6 +4,8 @@ class Organization < ApplicationRecord
   belongs_to :creator , polymorphic: true
   has_one :social_media, dependent: :destroy
   accepts_nested_attributes_for :social_media
+  has_one :contact_information, dependent: :destroy
+  accepts_nested_attributes_for :contact_information
   
   validates :name, presence: true, uniqueness: true
   validates :ein_number, presence: true, uniqueness: true

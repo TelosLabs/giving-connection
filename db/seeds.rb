@@ -35,5 +35,3 @@ User.create!(email: 'user@example.com', password: 'testing', password_confirmati
   puts "#{org.id} sucessfully created" if org.save!
   
 end
-
-

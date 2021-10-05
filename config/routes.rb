@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     resources :users
     resources :organizations 
     resources :social_medias 
+    resources :contact_informations 
    
 
     root to: 'admin_users#index'
