@@ -36,9 +36,14 @@ ActiveRecord::Schema.define(version: 2021_10_05_225218) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
-  create_table "branches", force: :cascade do |t|
+  create_table "locations", force: :cascade do |t|
     t.string "address"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
     t.geography "lonlat", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
   end
 
   create_table "organizations", force: :cascade do |t|
