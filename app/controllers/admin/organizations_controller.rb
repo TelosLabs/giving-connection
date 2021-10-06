@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   class OrganizationsController < Admin::ApplicationController
     # Overwrite any of the RESTful controller actions to implement custom behavior
@@ -13,7 +15,7 @@ module Admin
       authorize_resource(resource)
       resource.build_social_media
       render locals: {
-        page: Administrate::Page::Form.new(dashboard, resource),
+        page: Administrate::Page::Form.new(dashboard, resource)
       }
     end
 
@@ -75,10 +77,11 @@ module Admin
     # and `dashboard`:
     #
     def resource_params
-      permit = dashboard.permitted_attributes << {social_media_attributes: [:facebook, :instagram, :twitter, :linkedin, :youtube, :blog]}
-      params.require(resource_class.model_name.param_key).
-        permit(permit).
-        transform_values { |value| value == "" ? nil : value }
+      permit = dashboard.permitted_attributes << { social_media_attributes: %i[facebook instagram twitter linkedin
+                                                                               youtube blog] }
+      params.require(resource_class.model_name.param_key)
+            .permit(permit)
+            .transform_values { |value| value == '' ? nil : value }
     end
 
     # See https://administrate-prototype.herokuapp.com/customizing_controller_actions
