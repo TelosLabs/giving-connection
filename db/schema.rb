@@ -10,10 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_23_212719) do
+ActiveRecord::Schema.define(version: 2021_10_05_225218) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "postgis"
 
   create_table "admin_users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -33,6 +34,11 @@ ActiveRecord::Schema.define(version: 2021_09_23_212719) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
+  end
+
+  create_table "branches", force: :cascade do |t|
+    t.string "address"
+    t.geography "lonlat", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}, null: false
   end
 
   create_table "organizations", force: :cascade do |t|
