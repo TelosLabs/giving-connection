@@ -1,8 +1,6 @@
-# frozen_string_literal: true
+require "administrate/base_dashboard"
 
-require 'administrate/base_dashboard'
-
-class ContactInformationDashboard < Administrate::BaseDashboard
+class PhoneNumberDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -10,15 +8,12 @@ class ContactInformationDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    organization: Field::BelongsTo,
+    contact_information: Field::BelongsTo,
     id: Field::Number,
-    first_name: Field::String,
-    last_name: Field::String,
-    title: Field::String,
-    email: Field::String,
+    number: Field::String,
+    main: Field::Boolean,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    phone_numbers: Field::NestedHasMany
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -27,36 +22,30 @@ class ContactInformationDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-    organization
+    contact_information
     id
-    first_name
-    last_name
+    number
+    main
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-    organization
+    contact_information
     id
-    first_name
-    last_name
-    title
-    email
+    number
+    main
     created_at
     updated_at
-    phone_numbers
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    organization
-    first_name
-    last_name
-    title
-    email
-    phone_numbers
+    contact_information
+    number
+    main
   ].freeze
 
   # COLLECTION_FILTERS
@@ -71,10 +60,10 @@ class ContactInformationDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how contact informations are displayed
+  # Overwrite this method to customize how phone numbers are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(contact_information)
-  #   "ContactInformation ##{contact_information.id}"
+  # def display_resource(phone_number)
+  #   "PhoneNumber ##{phone_number.id}"
   # end
 end

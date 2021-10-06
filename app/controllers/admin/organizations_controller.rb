@@ -9,29 +9,11 @@ module Admin
     #   super
     #   send_foo_updated_email(requested_resource)
     # end
-
-    def show
-      social_media = requested_resource.social_media
-      render locals: {
-        page: Administrate::Page::Show.new(dashboard, requested_resource),
-        social_media: social_media
-      }
-      # raise
-    end
-
-    def new
-      resource = new_resource
-      authorize_resource(resource)
-      resource.build_social_media
-      resource.build_contact_information
-      render locals: {
-        page: Administrate::Page::Form.new(dashboard, resource)
-      }
-    end
-
+    
     def create
       resource = resource_class.new(resource_params)
       resource.creator = current_admin_user
+      # raise
       authorize_resource(resource)
       if resource.save
         redirect_to(
@@ -88,7 +70,8 @@ module Admin
     #
     def resource_params
       nested_attributes = { social_media_attributes: %i[facebook instagram twitter linkedin youtube blog],
-                            contact_information_attributes: %i[first_name last_name title email] }
+                            contact_information_attributes: %i[first_name last_name title email],
+                            phone_number_attributes: %i[number main] }
       permit = dashboard.permitted_attributes << nested_attributes
       params.require(resource_class.model_name.param_key)
             .permit(permit)

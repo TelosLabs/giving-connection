@@ -46,16 +46,5 @@ as well as a link to its edit page.
           ><%= render_field attribute, page: page %></dd>
     <% end %>
 
-    <% social_media.attributes.each do |label, value| %>
-      <% unless ["id", "organization_id", "created_at", "updated_at"].include?(label) %>
-        <dt class="attribute-label">
-        <h2><%= label %></h2>
-        </dt>
-
-        <dd class="attribute-data"
-            ><%= value %></dd>
-      <% end %>
-    <% end %>
-
   </dl>
 </section>

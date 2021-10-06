@@ -44,6 +44,7 @@ gem 'turbo-rails'
 # Use administrate admin framework
 gem 'administrate'
 gem 'administrate-field-select', '~> 2.0', require: 'administrate/field/select_basic'
+gem "administrate-field-nested_has_many"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
@@ -74,7 +75,7 @@ group :development do
   gem 'guard-rspec', require: false
   gem 'letter_opener'
   gem 'spring'
-  # gem "binding_of_caller"
+  gem "binding_of_caller"
   gem 'brakeman'
   gem 'database_consistency', require: false
 end
