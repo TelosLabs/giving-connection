@@ -8,15 +8,6 @@ module Admin
     #   send_foo_updated_email(requested_resource)
     # end
 
-    def show
-      social_media = requested_resource.social_media
-      render locals: {
-         page: Administrate::Page::Show.new(dashboard, requested_resource),
-         social_media: social_media
-       }
-      # raise
-    end
-
     def new
       resource = new_resource
       authorize_resource(resource)
