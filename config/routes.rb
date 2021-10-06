@@ -1,11 +1,12 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   namespace :admin do
     resources :admin_users
     resources :users
-    resources :organizations 
-    resources :social_medias 
-    resources :contact_informations 
-   
+    resources :organizations
+    resources :social_medias
+    resources :contact_informations
 
     root to: 'admin_users#index'
   end

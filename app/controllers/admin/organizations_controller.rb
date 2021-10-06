@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   class OrganizationsController < Admin::ApplicationController
     # Overwrite any of the RESTful controller actions to implement custom behavior
@@ -11,9 +13,9 @@ module Admin
     def show
       social_media = requested_resource.social_media
       render locals: {
-         page: Administrate::Page::Show.new(dashboard, requested_resource),
-         social_media: social_media
-       }
+        page: Administrate::Page::Show.new(dashboard, requested_resource),
+        social_media: social_media
+      }
       # raise
     end
 
@@ -23,7 +25,7 @@ module Admin
       resource.build_social_media
       resource.build_contact_information
       render locals: {
-        page: Administrate::Page::Form.new(dashboard, resource),
+        page: Administrate::Page::Form.new(dashboard, resource)
       }
     end
 
@@ -85,12 +87,12 @@ module Admin
     # and `dashboard`:
     #
     def resource_params
-      nested_attributes = {social_media_attributes: [:facebook, :instagram, :twitter, :linkedin, :youtube, :blog],
-                          contact_information_attributes: [:first_name, :last_name, :title, :email]}
+      nested_attributes = { social_media_attributes: %i[facebook instagram twitter linkedin youtube blog],
+                            contact_information_attributes: %i[first_name last_name title email] }
       permit = dashboard.permitted_attributes << nested_attributes
-      params.require(resource_class.model_name.param_key).
-        permit(permit).
-        transform_values { |value| value == "" ? nil : value }
+      params.require(resource_class.model_name.param_key)
+            .permit(permit)
+            .transform_values { |value| value == '' ? nil : value }
     end
 
     # See https://administrate-prototype.herokuapp.com/customizing_controller_actions

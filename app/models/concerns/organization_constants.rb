@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module OrganizationConstants
-  SCOPE = %w[International National Regional]
+  SCOPE = %w[International National Regional].freeze
 
   NTEE_CODE = %w[A00 A90 A26 A91 A02 Q21 A25 A24 A23 A40 A41
                  A48 A47 A44 A46 A45 A42 A43 A49 A60 A62 A63
@@ -51,5 +53,5 @@ module OrganizationConstants
                  P52 P54 P53 P59 P57 L00 P70 P43 L24 P73 P72
                  P75 L22 E91 L80 L83 L81 L82 L41 L40 J33 J30
                  P80 P82 P85 P89 P81 P83 Q00 Q50 Q20 Q30 Q51
-                 Q23 Q42 Q40 Q41 Q44 Z00]
+                 Q23 Q42 Q40 Q41 Q44 Z00].freeze
 end

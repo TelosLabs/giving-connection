@@ -1,4 +1,6 @@
-require "administrate/base_dashboard"
+# frozen_string_literal: true
+
+require 'administrate/base_dashboard'
 
 class SocialMediaDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -17,7 +19,7 @@ class SocialMediaDashboard < Administrate::BaseDashboard
     youtube: Field::String,
     blog: Field::String,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES
