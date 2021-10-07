@@ -12,6 +12,7 @@ class Organization < ApplicationRecord
   accepts_nested_attributes_for :contact_information
 
   has_many :phone_numbers, through: :contact_information
+  accepts_nested_attributes_for :phone_numbers
 
   validates :name, presence: true, uniqueness: true
   validates :ein_number, presence: true, uniqueness: true

@@ -13,9 +13,13 @@ module Admin
     def create
       resource = resource_class.new(resource_params)
       resource.creator = current_admin_user
-      # raise
       authorize_resource(resource)
       if resource.save
+        phone_numbers = params['organization']['contact_information_attributes']['phone_numbers_attributes']
+        phone_numbers.values.each do |phone_number|
+        phone_number_attr = { number: phone_number['number'], main: phone_number['main'] }
+        resource.contact_information.phone_numbers.build(phone_number_attr).save!
+      end
         redirect_to(
           [namespace, resource],
           notice: translate_with_resource('create.success')

@@ -36,13 +36,13 @@ module Admin
     # empty values into nil values. It uses other APIs such as `resource_class`
     # and `dashboard`:
     #
-    def resource_params
-      nested_attributes = { phone_number_attributes: %i[number] }
-      permit = dashboard.permitted_attributes << nested_attributes
-      params.require(resource_class.model_name.param_key)
-            .permit(permit)
-            .transform_values { |value| value == '' ? nil : value }
-    end
+    # def resource_params
+    #   nested_attributes = { phone_number_attributes: %i[number main] }
+    #   permit = dashboard.permitted_attributes << nested_attributes
+    #   params.require(resource_class.model_name.param_key)
+    #         .permit(permit)
+    #         .transform_values { |value| value == '' ? nil : value }
+    # end
 
     # See https://administrate-prototype.herokuapp.com/customizing_controller_actions
     # for more information

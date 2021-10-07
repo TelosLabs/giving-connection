@@ -5,9 +5,9 @@ Rails.application.routes.draw do
     resources :admin_users
     resources :users
     resources :organizations
-    resources :social_medias, except: :index
+    resources :social_medias
     resources :contact_informations
-    resources :phone_numbers, except: :index
+    resources :phone_numbers
 
     root to: 'admin_users#index'
   end

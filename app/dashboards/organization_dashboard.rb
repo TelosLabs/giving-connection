@@ -31,8 +31,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     description_en: Field::Text,
     description_es: Field::Text,
     social_media: Field::HasOne,
-    contact_information: Field::HasOne,
-    phone_numbers: Field::HasMany
+    contact_information: Field::HasOne
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -67,7 +66,6 @@ class OrganizationDashboard < Administrate::BaseDashboard
     description_es
     social_media
     contact_information
-    phone_numbers
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -89,7 +87,6 @@ class OrganizationDashboard < Administrate::BaseDashboard
     description_es
     social_media
     contact_information
-    phone_numbers
   ].freeze
 
   # COLLECTION_FILTERS
