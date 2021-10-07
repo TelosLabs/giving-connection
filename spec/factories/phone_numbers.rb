@@ -2,8 +2,8 @@
 
 FactoryBot.define do
   factory :phone_number do
-    number { 'MyString' }
-    main { false }
-    contact_information { nil }
+    number { '+5521988381616' }
+    main { true }
+    contact_information { association :contact_information }
   end
 end

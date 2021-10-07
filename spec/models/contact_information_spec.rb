@@ -3,5 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe ContactInformation, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context 'ContactInformation model validation test' do
+    subject { create(:contact_information) }
+
+    it 'ensures contact information can be created' do
+      expect(subject).to be_valid
+    end
+  end
 end
