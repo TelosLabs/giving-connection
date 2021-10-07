@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'Admin Organization System Spec', type: :system do
   before(:each) do
     @admin        = create(:admin_user)
     @organization = create(:organization)
+    @social_media = create(:social_media, organization: @organization)
     login_as(@admin, scope: :admin_user)
   end
 
@@ -16,7 +19,7 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
   end
 
   context 'Organization show page' do
-    before { visit admin_organization_path(@organization) }
+    before { visit admin_organization_path(@organization, social_media: @social_media) }
 
     it 'displays specific organization show page' do
       expect(page).to have_content 'Show Organization'
@@ -27,13 +30,14 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
     before { visit new_admin_organization_path }
 
     before(:each) do
-      fill_in('organization_name',                   with: 'testing')
-      fill_in('organization_ein_number',             with: '161616')
-      fill_in('organization_website',                with: 'www.org.com')
-      fill_in('organization_mission_statement_en',   with: 'mission testing')
-      fill_in('organization_vision_statement_en',    with: 'vision testing')
-      fill_in('organization_tagline_en',             with: 'tagline testing')
-      fill_in('organization_description_en',         with: 'description testing')
+      fill_in('organization_name',                             with: 'testing')
+      fill_in('organization_ein_number',                       with: '161616')
+      fill_in('organization_website',                          with: 'www.org.com')
+      fill_in('organization_mission_statement_en',             with: 'mission testing')
+      fill_in('organization_vision_statement_en',              with: 'vision testing')
+      fill_in('organization_tagline_en',                       with: 'tagline testing')
+      fill_in('organization_description_en',                   with: 'description testing')
+      fill_in('organization_social_media_attributes_facebook', with: 'facebook.com/test')
       select('A51',                                  from: 'organization_irs_ntee_code')
       select('National',                             from: 'organization_scope_of_work')
 
@@ -46,6 +50,10 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
 
     it 'creates new organization' do
       expect(Organization.count).to eq 2
+    end
+
+    it 'creates social media associated with organization' do
+      expect(Organization.last.social_media.facebook).to eq('facebook.com/test')
     end
   end
 
@@ -92,7 +100,9 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
     before { visit  edit_admin_organization_path(@organization) }
 
     before(:each) do
-      fill_in('organization_name', with: 'Testing')
+      fill_in('organization_name',                             with: 'Testing')
+      fill_in('organization_social_media_attributes_twitter',  with: 'twitter.com/update')
+
       click_button 'Update Organization'
     end
 
@@ -100,8 +110,12 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
       expect(page).to have_content('Organization was successfully updated.')
     end
 
-    it 'updates the organization' do
+    it 'updates the organization name' do
       expect(Organization.find(@organization.id).name).to eq 'Testing'
+    end
+
+    it 'updates the organization twitter' do
+      expect(Organization.find(@organization.id).social_media.twitter).to eq 'twitter.com/update'
     end
   end
 end
