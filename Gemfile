@@ -46,7 +46,7 @@ gem 'turbo-rails'
 gem 'administrate'
 gem 'administrate-field-active_storage'
 gem 'administrate-field-select', '~> 2.0', require: 'administrate/field/select_basic'
-gem "image_processing"
+gem 'image_processing'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false

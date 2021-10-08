@@ -19,5 +19,5 @@ class Organization < ApplicationRecord
   validates :description_en, presence: true
   validates :scope_of_work, presence: true, inclusion: { in: OrganizationConstants::SCOPE }
   validates :logo, content_type: ['image/png', 'image/jpg', 'image/jpeg'],
-                          size: { less_than: 5.megabytes , message: 'must be less than 5MB in size' }
+                   size: { less_than: 5.megabytes, message: 'must be less than 5MB in size' }
 end
