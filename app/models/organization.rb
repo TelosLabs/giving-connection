@@ -7,6 +7,9 @@ class Organization < ApplicationRecord
   has_one :social_media, dependent: :destroy
   accepts_nested_attributes_for :social_media
 
+  has_one_attached :logo
+  has_one_attached :cover_photo
+
   validates :name, presence: true, uniqueness: true
   validates :ein_number, presence: true, uniqueness: true
   validates :irs_ntee_code, presence: true, inclusion: { in: OrganizationConstants::NTEE_CODE }
@@ -15,4 +18,6 @@ class Organization < ApplicationRecord
   validates :tagline_en, presence: true
   validates :description_en, presence: true
   validates :scope_of_work, presence: true, inclusion: { in: OrganizationConstants::SCOPE }
+  validates :logo, content_type: ['image/png', 'image/jpg', 'image/jpeg'],
+                          size: { less_than: 5.megabytes , message: 'must be less than 5MB in size' }
 end
