@@ -21,7 +21,7 @@ class Organization < ApplicationRecord
   validates :description_en, presence: true
   validates :scope_of_work, presence: true, inclusion: { in: OrganizationConstants::SCOPE }
   validates :logo, content_type: ['image/png', 'image/jpg', 'image/jpeg'],
-                   size: { less_than: 5.megabytes, message: 'must be less than 5MB in size' }
+                   size: { less_than: 5.megabytes, message: 'File too large. Must be less than 5MB in size' }
 
   private 
 
@@ -29,7 +29,7 @@ class Organization < ApplicationRecord
     self.cover_photo.attach(io: File.open('app/assets/images/cover-default.png'), filename: 'cover-default.png')
     unless self.logo.attached?
       logo = "logo-default#{rand(1..6)}"
-      self.cover_photo.attach(io: File.open("app/assets/images/#{logo}.png"), filename: "#{logo}.png")
+      self.logo.attach(io: File.open("app/assets/images/#{logo}.png"), filename: "#{logo}.png")
     end
   end
 

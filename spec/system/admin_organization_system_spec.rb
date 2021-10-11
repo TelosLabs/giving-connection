@@ -40,6 +40,7 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
       fill_in('organization_social_media_attributes_facebook', with: 'facebook.com/test')
       select('A51',                                  from: 'organization_irs_ntee_code')
       select('National',                             from: 'organization_scope_of_work')
+      attach_file('organization_logo', "#{Rails.root}/spec/support/images/testing.png")
 
       click_button 'Create Organization'
     end
@@ -55,6 +56,15 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
     it 'creates social media associated with organization' do
       expect(Organization.last.social_media.facebook).to eq('facebook.com/test')
     end
+
+    it 'attaches a default cover photo'do
+      expect(Organization.last.cover_photo.attached?).to eq(true)
+    end
+
+    it 'attaches the uploaded logo when file is provided'do
+      expect(Organization.last.logo.blob.filename).to eq('testing.png')
+    end
+
   end
 
   context 'Creating new organizaton when form is not correctly filled' do
@@ -69,12 +79,17 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
       fill_in('organization_description_en',         with: 'description testing')
       select('A51',                                  from: 'organization_irs_ntee_code')
       select('National',                             from: 'organization_scope_of_work')
+      attach_file('organization_logo', "#{Rails.root}/spec/support/images/large_testing.jpg")
 
       click_button 'Create Organization'
     end
 
-    it 'should flash error message' do
+    it 'should flash error message requiring name' do
       expect(page).to have_content('Name can\'t be blank')
+    end
+
+    it 'should flash error message regarding image size' do
+      expect(page).to have_content('Must be less than 5MB in size')
     end
   end
 
