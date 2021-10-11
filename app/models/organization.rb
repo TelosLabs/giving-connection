@@ -23,14 +23,13 @@ class Organization < ApplicationRecord
   validates :logo, content_type: ['image/png', 'image/jpg', 'image/jpeg'],
                    size: { less_than: 5.megabytes, message: 'File too large. Must be less than 5MB in size' }
 
-  private 
+  private
 
   def attach_logo_and_cover
-    self.cover_photo.attach(io: File.open('app/assets/images/cover-default.png'), filename: 'cover-default.png')
-    unless self.logo.attached?
+    cover_photo.attach(io: File.open('app/assets/images/cover-default.png'), filename: 'cover-default.png')
+    unless logo.attached?
       logo = "logo-default#{rand(1..6)}"
       self.logo.attach(io: File.open("app/assets/images/#{logo}.png"), filename: "#{logo}.png")
     end
   end
-
 end

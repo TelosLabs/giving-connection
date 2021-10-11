@@ -10,11 +10,11 @@ RSpec.describe Organization, type: :model do
       expect(subject).to be_valid
     end
 
-    it 'attaches a default logo'do
+    it 'attaches a default logo' do
       expect(subject.logo.attached?).to eq(true)
     end
 
-    it 'attaches a default cover photo'do
+    it 'attaches a default cover photo' do
       expect(subject.cover_photo.attached?).to eq(true)
     end
   end

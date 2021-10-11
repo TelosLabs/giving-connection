@@ -57,14 +57,13 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
       expect(Organization.last.social_media.facebook).to eq('facebook.com/test')
     end
 
-    it 'attaches a default cover photo'do
+    it 'attaches a default cover photo' do
       expect(Organization.last.cover_photo.attached?).to eq(true)
     end
 
-    it 'attaches the uploaded logo when file is provided'do
+    it 'attaches the uploaded logo when file is provided' do
       expect(Organization.last.logo.blob.filename).to eq('testing.png')
     end
-
   end
 
   context 'Creating new organizaton when form is not correctly filled' do
