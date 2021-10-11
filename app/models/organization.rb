@@ -3,6 +3,8 @@
 class Organization < ApplicationRecord
   include OrganizationConstants
 
+  after_create :attach_logo_and_cover
+
   belongs_to :creator, polymorphic: true
   has_one :social_media, dependent: :destroy
   accepts_nested_attributes_for :social_media
@@ -20,4 +22,15 @@ class Organization < ApplicationRecord
   validates :scope_of_work, presence: true, inclusion: { in: OrganizationConstants::SCOPE }
   validates :logo, content_type: ['image/png', 'image/jpg', 'image/jpeg'],
                    size: { less_than: 5.megabytes, message: 'must be less than 5MB in size' }
+
+  private 
+
+  def attach_logo_and_cover
+    self.cover_photo.attach(io: File.open('app/assets/images/cover-default.png'), filename: 'cover-default.png')
+    unless self.logo.attached?
+      logo = "logo-default#{rand(1..6)}"
+      self.cover_photo.attach(io: File.open("app/assets/images/#{logo}.png"), filename: "#{logo}.png")
+    end
+  end
+
 end
