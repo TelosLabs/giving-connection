@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   devise_for :users
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
-  resource :locations, only: [:new, :create]
-  root to: 'locations#new'
+  resource :locations, only: [:index, :new, :create]
+  resource :searches, only: [:new, :create]
+
+  get '/locations', to: 'locations#index' # TODO remove
+  root to: 'locations#index'
 end

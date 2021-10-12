@@ -1,6 +1,11 @@
 class LocationsController < ApplicationController
   skip_before_action :authenticate_user!
 
+  def index
+    @locations = Location.find(params[:ids]) if params[:ids].present?
+    @locations ||= Location.all
+  end
+
   def new
     @location = Location.new()
   end
