@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_05_225218) do
+ActiveRecord::Schema.define(version: 2021_10_12_203819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,15 @@ ActiveRecord::Schema.define(version: 2021_10_05_225218) do
     t.index ["scope_of_work"], name: "index_organizations_on_scope_of_work"
     t.index ["tagline_en"], name: "index_organizations_on_tagline_en"
     t.index ["vision_statement_en"], name: "index_organizations_on_vision_statement_en"
+  end
+
+  create_table "pg_search_documents", force: :cascade do |t|
+    t.text "content"
+    t.string "searchable_type"
+    t.bigint "searchable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
   end
 
   create_table "users", force: :cascade do |t|
