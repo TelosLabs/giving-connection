@@ -1,4 +1,4 @@
 class Subcategory < ApplicationRecord
   belongs_to :organization
-  has_one :category
+  belongs_to :category
 end

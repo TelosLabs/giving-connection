@@ -10,7 +10,7 @@ class Organization < ApplicationRecord
   accepts_nested_attributes_for :social_media
 
   has_many :subcategories
-  has_one :category, through: :subcategories
+  has_many :categories, through: :subcategories
 
   has_one_attached :logo
   has_one_attached :cover_photo

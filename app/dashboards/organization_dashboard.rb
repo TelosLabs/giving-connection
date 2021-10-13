@@ -30,9 +30,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     tagline_es: Field::Text,
     description_en: Field::Text,
     description_es: Field::Text,
-    category: Field::SelectBasic.with_options({
-                                                  choices: Organization::CATEGORIES_AND_SUBCATEGORIES.keys
-                                                 }),
+    subcategories: SubcategoryField,
     social_media: Field::HasOne,
     logo: Field::ActiveStorage
   }.freeze
@@ -87,7 +85,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     vision_statement_es
     tagline_es
     description_es
-    category
+    subcategories
     social_media
     logo
   ].freeze

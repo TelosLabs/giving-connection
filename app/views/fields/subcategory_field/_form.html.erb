@@ -1,0 +1,15 @@
+<div class="field-unit__label">
+  <%= f.label 'Subcategories' %>
+</div>
+
+<div style="margin-left: 100px">
+  <% field.subcategory_types.keys.each do |category| %>
+    <h3><%= category %></h3>
+    <% field.subcategory_types[category].each do |subcategory| %>
+      <div class="">
+        <%= check_box_tag "organization[subcategory_id]" %>
+        <%= subcategory %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
