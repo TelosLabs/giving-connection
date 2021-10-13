@@ -24,14 +24,9 @@ module Admin
       resource.creator = current_admin_user
       authorize_resource(resource)
       if resource.save
-        redirect_to(
-          [namespace, resource],
-          notice: translate_with_resource('create.success')
-        )
+        redirect_to([namespace, resource], notice: translate_with_resource('create.success'))
       else
-        render :new, locals: {
-          page: Administrate::Page::Form.new(dashboard, resource)
-        }, status: :unprocessable_entity
+        render :new, locals: { page: Administrate::Page::Form.new(dashboard, resource) }, status: :unprocessable_entity
       end
     end
 
@@ -39,14 +34,10 @@ module Admin
       requested_resource.creator = current_admin_user
       requested_resource.update(resource_params)
       if requested_resource
-        redirect_to(
-          [namespace, requested_resource],
-          notice: translate_with_resource('update.success')
-        )
+        redirect_to([namespace, requested_resource], notice: translate_with_resource('update.success'))
       else
-        render :edit, locals: {
-          page: Administrate::Page::Form.new(dashboard, requested_resource)
-        }, status: :unprocessable_entity
+        render :edit, locals: { page: Administrate::Page::Form.new(dashboard, requested_resource) },
+                      status: :unprocessable_entity
       end
     end
 

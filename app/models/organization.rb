@@ -27,9 +27,8 @@ class Organization < ApplicationRecord
 
   def attach_logo_and_cover
     cover_photo.attach(io: File.open('app/assets/images/cover-default.png'), filename: 'cover-default.png')
-    unless logo.attached?
-      logo = "logo-default#{rand(1..6)}"
-      self.logo.attach(io: File.open("app/assets/images/#{logo}.png"), filename: "#{logo}.png")
-    end
+    logo = "logo-default#{rand(1..6)}"
+    filepath = File.open("app/assets/images/#{logo}.png")
+    logo.attach(io: filepath, filename: "#{logo}.png") unless logo.attached?
   end
 end
