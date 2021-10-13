@@ -45,8 +45,6 @@ class SocialMediaDashboard < Administrate::BaseDashboard
     linkedin
     youtube
     blog
-    created_at
-    updated_at
   ].freeze
 
   # FORM_ATTRIBUTES
