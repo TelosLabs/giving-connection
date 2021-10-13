@@ -1,10 +1,9 @@
 class Search
   include ActiveModel::Model
 
-  # TODO Change to center of Nashville
   DEFAULT_LOCATION = {
-    latitude: 25.499213,
-    longitude: -100.190962
+    latitude: 36.16404968727089,
+    longitude: -86.78125827725053
   }
 
   attr_accessor :keyword, :kilometers, :results

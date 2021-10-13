@@ -41,9 +41,16 @@ ActiveRecord::Schema.define(version: 2021_10_12_203819) do
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
     t.geography "lonlat", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}, null: false
+    t.string "website"
+    t.string "string"
+    t.boolean "main", default: false, null: false
+    t.boolean "physical"
+    t.boolean "offer_services"
+    t.bigint "organization_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
+    t.index ["organization_id"], name: "index_locations_on_organization_id"
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -109,4 +116,5 @@ ActiveRecord::Schema.define(version: 2021_10_12_203819) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "locations", "organizations"
 end
