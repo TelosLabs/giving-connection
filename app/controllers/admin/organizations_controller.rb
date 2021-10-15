@@ -38,7 +38,6 @@ module Admin
     def update
       requested_resource.creator = current_admin_user
       requested_resource.update(resource_params)
-      raise
       if requested_resource
         redirect_to(
           [namespace, requested_resource],
