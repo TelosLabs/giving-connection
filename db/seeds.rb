@@ -28,3 +28,20 @@ User.create!(email: 'user@example.com', password: 'testing', password_confirmati
 
   puts "#{org.id} sucessfully created" if org.save!
 end
+
+# Add all categories and subcategories
+# Organization::CATEGORIES_AND_SUBCATEGORIES.keys.each do |category|
+#   new_category = Category.new(name: category)
+
+#   if new_category.save!
+#     puts "#{new_category.name} created!"
+#   end
+
+#   Organization::CATEGORIES_AND_SUBCATEGORIES[category].each do |subcategory|
+#     new_subcategory = Subcategory.new(name: subcategory, category: new_category)
+
+#     if new_subcategory.save!
+#       puts "#{new_subcategory.name} created!"
+#     end
+#   end
+# end

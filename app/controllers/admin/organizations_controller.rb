@@ -13,7 +13,6 @@ module Admin
     def new
       resource = new_resource
       authorize_resource(resource)
-      resource.build_social_media
       render locals: {
         page: Administrate::Page::Form.new(dashboard, resource)
       }
@@ -24,6 +23,7 @@ module Admin
       resource.creator = current_admin_user
       authorize_resource(resource)
       if resource.save
+        create_subcategories(params['organization']['subcategory'], resource)
         redirect_to(
           [namespace, resource],
           notice: translate_with_resource('create.success')
@@ -38,6 +38,7 @@ module Admin
     def update
       requested_resource.creator = current_admin_user
       requested_resource.update(resource_params)
+      raise
       if requested_resource
         redirect_to(
           [namespace, requested_resource],
@@ -84,7 +85,25 @@ module Admin
             .transform_values { |value| value == '' ? nil : value }
     end
 
+    def create_subcategories(subcategories, organization)
+      subcategories.each do |subcategory|
+        category_name = Organization::CATEGORIES_AND_SUBCATEGORIES.find do |_key, values|
+          values.include?(subcategory)
+        end.first
+        category = Category.create!(name: category_name)
+        Subcategory.create!(name: subcategory,
+                            category: category, organization: organization)
+      end
+    end
+
     # See https://administrate-prototype.herokuapp.com/customizing_controller_actions
     # for more information
   end
 end
+
+# "subcategory_id"=>["Economic development",
+#   "Housing development", "Adult education", "Higher education",
+#   "Student services", "Environmental education", "Natural resources",
+#   "In-patient medical care", "Out-patient medical care", "Social rights",
+#   "Family services", "Personal services", "Libraries", "Goodwill promotion",
+#   "Venture philanthropy"]

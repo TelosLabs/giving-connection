@@ -55,68 +55,69 @@ module OrganizationConstants
                  P80 P82 P85 P89 P81 P83 Q00 Q50 Q20 Q30 Q51
                  Q23 Q42 Q40 Q41 Q44 Z00].freeze
 
-    CATEGORIES_AND_SUBCATEGORIES = {
-                "Agriculture, fishing and forestry"=> 
-                [ "Agriculture","Fishing and aquaculture", "Food security", "Forestry"],
-                "Arts and culture"=> 
-                [ "Arts services", "Cultural awareness", "Folk arts", "Historical activities", 
-                  "Humanities", "Museums", "Performing arts","Public arts", "Visual arts"], 
-                "Community and economic development"=> 
-                [ "Business and industry", "Community improvement", "Economic development", 
-                  "Financial services", "Housing development", "Sustainable development" ], 
-                "Education"=> [ "Adult education", "Early childhood education", 
-                "Education services", "Educational management", "Elementary and secondary education", 
-                "Equal opportunity in education", "Graduate and professional education", 
-                "Higher education", "Student services", "Vocational education" ], 
-                "Environment"=> 
-                [ "Biodiversity", "Climate change", "Domesticated animals", 
-                "Environmental education", "Environmental justice", "Natural resources" ] , 
-                "Health"=> 
-                [ "Diseases and conditions", "Health care access", "Health care administration and financing", 
-                "Health care quality", "Holistic medicine", "In-patient medical care", 
-                "Medical specialties", "Medical support services", "Mental health care", 
-                "Nursing care", "Out-patient medical care", "Public health", "Rehabilitation", 
-                "Reproductive health care", "Traditional medicine and healing" ], 
-                "Human rights"=> 
-                [ "Antidiscrimination", "Diversity and intergroup relations", 
-                "Individual liberties", "Justice rights", "Social rights", 
-                "Basic and emergency aid", "Family services", "Human services information", 
-                "Human services management", "Job services", "Personal services", 
-                "Shelter and residential care", "Special population support", "Youth development" ], 
-                "Information and communications"=> 
-                [ "Communication media", 
-                "Information and communications technology", "Libraries", "Media access and policy", 
-                "News and public information" ] , 
-                "International relations"=> 
-                [ "Foreign policy", "Goodwill promotion", "International development", 
-                  "International economics and trade", "International exchange", 
-                  "International peace and security", "Multilateral cooperation" ], 
-                "Philanthropy"=> 
-                [ "Foundations", "Nonprofits", "Philanthropy and public policy", 
-                  "Venture philanthropy", "Voluntarism" ], 
-                "Public affairs"=> 
-                [ "Democracy", "Leadership development", "National security", 
-                "Public administration", "Public policy", "Public utilities", 
-                "Public/private ventures" ], 
-                "Public safety"=> 
-                [ "Abuse prevention", "Consumer protection", "Corrections and penology", 
-                "Courts", "Crime prevention", "Disasters and emergency management", "Fire prevention and control",
-                "Legal services", "Safety education" ], 
-                "Religion"=> 
-                [ "Baha'i", "Buddhism", "Christianity", "Confucianism", "Hinduism", "Interfaith", 
-                  "Islam", "Judaism", "Shintoism", "Sikhism", "Spirituality", 
-                  "Theology", "Tribal and indigenous religions" ],  
-                "Science"=> 
-                [ "Biology", "Engineering", "Forensic science", "Mathematics", 
-                "Physical and earth sciences", "Technology"], 
-                "Social sciences"=> 
-                [ "Anthropology", "Economics", "Geography", 
-                "Interdisciplinary studies", "Law", "Paranormal and mystic studies", 
-                "Political science", "Population studies", "Psychology and behavioral science", 
-                "Sociology"], 
-                "Sports and recreation"=> 
-                ["Community recreation", "Sports"], 
-                "Unknown or not classified"=>[
-                  "Unknown or not classified"] }
-
+  CATEGORIES_AND_SUBCATEGORIES = {
+    'Agriculture, fishing and forestry' =>
+      ['Agriculture', 'Fishing and aquaculture', 'Food security', 'Forestry'],
+    'Arts and culture' =>
+              ['Arts services', 'Cultural awareness', 'Folk arts', 'Historical activities',
+               'Humanities', 'Museums', 'Performing arts', 'Public arts', 'Visual arts'],
+    'Community and economic development' =>
+              ['Business and industry', 'Community improvement', 'Economic development',
+               'Financial services', 'Housing development', 'Sustainable development'],
+    'Education' => ['Adult education', 'Early childhood education',
+                    'Education services', 'Educational management', 'Elementary and secondary education',
+                    'Equal opportunity in education', 'Graduate and professional education',
+                    'Higher education', 'Student services', 'Vocational education'],
+    'Environment' =>
+              ['Biodiversity', 'Climate change', 'Domesticated animals',
+               'Environmental education', 'Environmental justice', 'Natural resources'],
+    'Health' =>
+              ['Diseases and conditions', 'Health care access', 'Health care administration and financing',
+               'Health care quality', 'Holistic medicine', 'In-patient medical care',
+               'Medical specialties', 'Medical support services', 'Mental health care',
+               'Nursing care', 'Out-patient medical care', 'Public health', 'Rehabilitation',
+               'Reproductive health care', 'Traditional medicine and healing'],
+    'Human rights' =>
+              ['Antidiscrimination', 'Diversity and intergroup relations',
+               'Individual liberties', 'Justice rights', 'Social rights',
+               'Basic and emergency aid', 'Family services', 'Human services information',
+               'Human services management', 'Job services', 'Personal services',
+               'Shelter and residential care', 'Special population support', 'Youth development'],
+    'Information and communications' =>
+              ['Communication media',
+               'Information and communications technology', 'Libraries', 'Media access and policy',
+               'News and public information'],
+    'International relations' =>
+              ['Foreign policy', 'Goodwill promotion', 'International development',
+               'International economics and trade', 'International exchange',
+               'International peace and security', 'Multilateral cooperation'],
+    'Philanthropy' =>
+              ['Foundations', 'Nonprofits', 'Philanthropy and public policy',
+               'Venture philanthropy', 'Voluntarism'],
+    'Public affairs' =>
+              ['Democracy', 'Leadership development', 'National security',
+               'Public administration', 'Public policy', 'Public utilities',
+               'Public/private ventures'],
+    'Public safety' =>
+              ['Abuse prevention', 'Consumer protection', 'Corrections and penology',
+               'Courts', 'Crime prevention', 'Disasters and emergency management', 'Fire prevention and control',
+               'Legal services', 'Safety education'],
+    'Religion' =>
+              ["Baha'i", 'Buddhism', 'Christianity', 'Confucianism', 'Hinduism', 'Interfaith',
+               'Islam', 'Judaism', 'Shintoism', 'Sikhism', 'Spirituality',
+               'Theology', 'Tribal and indigenous religions'],
+    'Science' =>
+              ['Biology', 'Engineering', 'Forensic science', 'Mathematics',
+               'Physical and earth sciences', 'Technology'],
+    'Social sciences' =>
+              ['Anthropology', 'Economics', 'Geography',
+               'Interdisciplinary studies', 'Law', 'Paranormal and mystic studies',
+               'Political science', 'Population studies', 'Psychology and behavioral science',
+               'Sociology'],
+    'Sports and recreation' =>
+              ['Community recreation', 'Sports'],
+    'Unknown or not classified' => [
+      'Unknown or not classified'
+    ]
+  }.freeze
 end

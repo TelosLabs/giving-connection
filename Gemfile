@@ -49,7 +49,6 @@ gem 'administrate-field-active_storage'
 gem 'administrate-field-select', '~> 2.0', require: 'administrate/field/select_basic'
 gem 'image_processing'
 
-
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'pronto'
@@ -76,12 +75,12 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'annotate'
   gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'brakeman'
+  gem 'database_consistency', require: false
   gem 'guard-rspec', require: false
   gem 'letter_opener'
   gem 'spring'
-  gem "binding_of_caller"
-  gem 'brakeman'
-  gem 'database_consistency', require: false
 end
 
 group :test do

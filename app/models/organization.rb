@@ -9,7 +9,9 @@ class Organization < ApplicationRecord
   has_one :social_media, dependent: :destroy
   accepts_nested_attributes_for :social_media
 
-  has_many :subcategories
+  has_many :subcategories, dependent: :destroy
+  accepts_nested_attributes_for :subcategories
+
   has_many :categories, through: :subcategories
 
   has_one_attached :logo

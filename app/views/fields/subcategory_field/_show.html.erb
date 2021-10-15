@@ -1,1 +1,7 @@
-<%= field.to_s %>
+<ul>
+	<% field.to_s.each do |subcategory| %>
+		<li>
+			<%= subcategory.name %>
+		</li> 
+	<% end %>
+</ul>
