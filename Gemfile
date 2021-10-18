@@ -29,6 +29,7 @@ gem 'redis', '~> 4.0'
 # Use Devise for authentication
 gem 'devise'
 
+gem 'active_storage_validations'
 gem 'clockwork'
 gem 'faker'
 gem 'mobility', '~> 1.1.3'
@@ -43,7 +44,9 @@ gem 'turbo-rails'
 
 # Use administrate admin framework
 gem 'administrate'
+gem 'administrate-field-active_storage'
 gem 'administrate-field-select', '~> 2.0', require: 'administrate/field/select_basic'
+gem 'image_processing'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false

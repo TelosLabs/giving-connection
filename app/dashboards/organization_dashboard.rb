@@ -30,7 +30,8 @@ class OrganizationDashboard < Administrate::BaseDashboard
     tagline_es: Field::Text,
     description_en: Field::Text,
     description_es: Field::Text,
-    social_media: Field::HasOne
+    social_media: Field::HasOne,
+    logo: Field::ActiveStorage
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -84,6 +85,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     tagline_es
     description_es
     social_media
+    logo
   ].freeze
 
   # COLLECTION_FILTERS
