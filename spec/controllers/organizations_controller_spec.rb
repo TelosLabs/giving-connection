@@ -86,4 +86,3 @@ RSpec.describe Admin::OrganizationsController, type: :controller do
     end
   end
 end
-

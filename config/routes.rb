@@ -15,9 +15,9 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
   resources :organizations, only: [:show] do
-    resource :locations, only: [:index, :new, :create]
+    resource :locations, only: %i[index new create]
   end
-  resource :searches, only: [:new, :create]
+  resource :searches, only: %i[new create]
 
   root to: 'locations#index'
 end

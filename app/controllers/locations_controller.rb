@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LocationsController < ApplicationController
   skip_before_action :authenticate_user!
 
@@ -7,7 +9,7 @@ class LocationsController < ApplicationController
   end
 
   def new
-    @location = Location.new()
+    @location = Location.new
   end
 
   def create
@@ -15,7 +17,7 @@ class LocationsController < ApplicationController
       name: Faker::Company.name,
       ein_number: rand(0..1000),
       irs_ntee_code: %w[A00 A90 A26 A91 A02 Q21].sample,
-      website: "org@example.com",
+      website: 'org@example.com',
       scope_of_work: %w[International National Regional].sample,
       mission_statement_en: Faker::Company.catch_phrase,
       vision_statement_en: Faker::Company.catch_phrase,
