@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# This migration comes from active_storage
 class CreateOrganizations < ActiveRecord::Migration[6.1]
   def change
     create_table :organizations do |t|

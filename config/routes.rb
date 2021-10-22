@@ -1,8 +1,11 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   namespace :admin do
     resources :admin_users
     resources :users
     resources :organizations
+    resources :social_medias
 
     root to: 'admin_users#index'
   end
@@ -11,9 +14,10 @@ Rails.application.routes.draw do
   devise_for :users
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
-  resource :locations, only: [:index, :new, :create]
+  resources :organizations, only: [:show] do
+    resource :locations, only: [:index, :new, :create]
+  end
   resource :searches, only: [:new, :create]
 
-  get '/locations', to: 'locations#index' # TODO remove
   root to: 'locations#index'
 end

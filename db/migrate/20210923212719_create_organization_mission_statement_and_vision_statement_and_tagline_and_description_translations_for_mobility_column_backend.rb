@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# This migration comes from active_storage
 class CreateOrganizationMissionStatementAndVisionStatementAndTaglineAndDescriptionTranslationsForMobilityColumnBackend < ActiveRecord::Migration[6.1]
   def change
     add_column :organizations, :mission_statement_en, :text, null: false
