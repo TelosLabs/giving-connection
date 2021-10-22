@@ -4,7 +4,11 @@ module Locations
     include PgSearch::Model
 
     included do
-      pg_search_scope :search_by_keyword, against: :address
+      pg_search_scope :search_by_keyword,
+                      against: :address,
+                      using: {
+                        tsearch: { prefix: true }
+                      }
     end
 
     class_methods do
