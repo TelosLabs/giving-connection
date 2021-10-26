@@ -7,10 +7,13 @@
   = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
     .c-form
       .c-form--group 
-        = f.label :email
-        = f.email_field :email, autofocus: true, autocomplete: "email"
-      .c-form--group 
+        = f.label :email_Address
+        = f.email_field :email, autofocus: true, autocomplete: "email", class:"c-input"
+      .c-form--group.mb-3
         = f.label :password
-        = f.password_field :password, autocomplete: "current-password"
-      .c-form--action
-        = f.submit "Log in", class:"c-button"
+        = f.password_field :password, autocomplete: "current-password", class:"c-input"
+      - if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations'
+        = link_to "Forgot your password?", new_password_path(resource_name), class:'font-bold flex self-end'
+      .c-form--action.mt-12
+        = f.submit "Sign in", class:"c-button"
+  
