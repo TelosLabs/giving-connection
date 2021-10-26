@@ -6,18 +6,18 @@ Rails.application.routes.draw do
     resources :users
     resources :organizations
     resources :social_medias
+    resources :locations
 
     root to: 'admin_users#index'
   end
 
   devise_for :admin_users
   devise_for :users
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  resources :locations, only: %i[index new create]
-  resources :organizations, only: [:show]
-  #   resources :locations, only: %i[index new create]
-  # end
+
+  resources :organizations, only: [:show] do
+    resources :locations, only: %i[index new create]
+  end
   resource :searches, only: %i[new create]
 
-  root to: 'locations#index'
+  root to: 'searches#new'
 end
