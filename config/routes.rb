@@ -13,10 +13,10 @@ Rails.application.routes.draw do
   devise_for :admin_users
   devise_for :users
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-
-  resources :organizations, only: [:show] do
-    resource :locations, only: %i[index new create]
-  end
+  resources :locations, only: %i[index new create]
+  resources :organizations, only: [:show]
+  #   resources :locations, only: %i[index new create]
+  # end
   resource :searches, only: %i[new create]
 
   root to: 'locations#index'
