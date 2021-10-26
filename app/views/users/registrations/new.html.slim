@@ -1,22 +1,48 @@
-h2 Create an account on Giving Connection
+.main
+  h2.c-title
+    ' Create an account 
+    | on Giving Connection
 
-= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-  = render "users/shared/error_messages", resource: resource
-  .field
-    = f.label :email
+  .main-description.max-w-md.mx-auto 
+    | Our search experience is free, but you can create an account to have a more personalized experience.
+
+  .max-w-sm.mb-6.mx-auto.px-6.sm:px-1.sm:text-lg
+    .flex.pb-2
+      .mr-4.flex.items-center
+        = inline_svg_tag 'green-check.svg', size: '16*16'
+      .text-gray-gray-7 Create Saved Lists of Non Profits
+    .flex.pb-2
+      .mr-4.flex.items-center
+        = inline_svg_tag 'green-check.svg', size: '16*16'
+      .text-gray-gray-7 Receive Search Alerts via email
+    .flex
+      .mr-4.pt-1
+        = inline_svg_tag 'green-check.svg', size: '16*16'
+      .text-gray-gray-7 Claim an organization and manage a page
+
+  = render "users/shared/links"
+
+  = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+    .c-form
+      = render "users/shared/error_messages", resource: resource
+      .c-form--group
+        = f.label :name
+        = f.text_field :email, autofocus: true, autocomplete: "name", class:"c-input"
+      .c-form--group
+        = f.label :email
+        = f.email_field :email, autofocus: true, autocomplete: "email", class:"c-input"
+      .c-form--group
+        = f.label :password
+        = f.password_field :password, autocomplete: "new-password", class:"c-input", placeholder: "(6+ characters)"
+      .c-form--group
+        = f.label :password_confirmation
+        = f.password_field :password_confirmation, autocomplete: "new-password", class: "c-input", placeholder: "Confirm your password"
+      .c-form--action
+        = f.submit "Create Account", class:"c-button"
+
+  .max-w-sm.text-center.mx-auto.text-xs.pb-terms
+    | By continuing, you agree to Giving Connection’s
     br/
-    = f.email_field :email, autofocus: true, autocomplete: "email"
-  .field
-    = f.label :password
-    - if @minimum_password_length
-      em
-        | (#{@minimum_password_length} characters minimum)
-    br/
-    = f.password_field :password, autocomplete: "new-password"
-  .field
-    = f.label :password_confirmation
-    br/
-    = f.password_field :password_confirmation, autocomplete: "new-password"
-  .actions
-    = f.submit "Sign up"
-= render "users/shared/links"
+    = link_to 'Terms & Conditions ', '#', class:'font-bold'
+    ' and
+    = link_to 'Privacy Policy', '#', class:'font-bold'

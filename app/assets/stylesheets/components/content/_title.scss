@@ -1,0 +1,11 @@
+.c-title {
+  padding: 54px 0 25px 0;
+  line-height: 32px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.5rem;
+
+  @media (min-width: 640px) {
+    padding: 135px 0 25px 0;
+  }
+}

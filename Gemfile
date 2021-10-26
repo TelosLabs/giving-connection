@@ -34,6 +34,7 @@ gem 'rack-attack'
 gem 'sidekiq'
 gem 'slim-rails'
 gem 'view_component', require: 'view_component/engine'
+gem 'inline_svg'
 
 # Use Turbo for rails
 gem 'turbo-rails'
