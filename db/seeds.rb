@@ -38,10 +38,10 @@ User.create!(email: 'user@example.com', password: 'testing', password_confirmati
 end
 
 # Services
-OrganizationConstants::SERVICES.each do |service|
-  new_service = Service.new(name: service)
+# OrganizationConstants::SERVICES.each do |service|
+#   new_service = Service.new(name: service)
 
-  if new_service.save!
-    puts "#{new_service.name} sucessfully created"
-  end
-end
+#   if new_service.save!
+#     puts "#{new_service.name} sucessfully created"
+#   end
+# end

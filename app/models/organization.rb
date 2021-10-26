@@ -15,6 +15,10 @@ class Organization < ApplicationRecord
   has_one :service
   accepts_nested_attributes_for :service
 
+  has_many :organization_categories
+
+  has_many :categories, throught: :organization_categories
+
   validates :name, presence: true, uniqueness: true
   validates :ein_number, presence: true, uniqueness: true
   validates :irs_ntee_code, presence: true, inclusion: { in: OrganizationConstants::NTEE_CODE }
