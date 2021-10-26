@@ -27,11 +27,12 @@ class Organization < ApplicationRecord
   include OrganizationConstants
 
   has_many :locations
+  has_many :additional_locations, -> { where(main: false) }, class_name: 'Location', foreign_key: :organization_id
+  has_one :main_location, -> { where(main: true) }, class_name: 'Location', foreign_key: :organization_id
   has_one :social_media, dependent: :destroy
-  belongs_to :creator, polymorphic: true
-
   has_one_attached :logo
   has_one_attached :cover_photo
+  belongs_to :creator, polymorphic: true
 
   validates :name, presence: true, uniqueness: true
   validates :ein_number, presence: true, uniqueness: true
