@@ -12,6 +12,9 @@ class Organization < ApplicationRecord
   has_one_attached :logo
   has_one_attached :cover_photo
 
+  has_one :service
+  accepts_nested_attributes_for :service
+
   validates :name, presence: true, uniqueness: true
   validates :ein_number, presence: true, uniqueness: true
   validates :irs_ntee_code, presence: true, inclusion: { in: OrganizationConstants::NTEE_CODE }

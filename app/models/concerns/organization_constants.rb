@@ -54,4 +54,42 @@ module OrganizationConstants
                  P75 L22 E91 L80 L83 L81 L82 L41 L40 J33 J30
                  P80 P82 P85 P89 P81 P83 Q00 Q50 Q20 Q30 Q51
                  Q23 Q42 Q40 Q41 Q44 Z00].freeze
+
+  SERVICES = ["Advocacy", "Human & Civil Rights", 
+              "Animals", 
+              "Arts & Culture", 
+              "Clothing", 
+              "Community & Economic Development", 
+              "Children & Family Services", 
+              "Disability Services & Advocates", 
+              "Disaster Relief & Preparedness", 
+              "Drug & Alcohol Treatment", 
+              "Education", 
+              "Emergency", "Safety & Legal Related", 
+              "Employment", 
+              "Environment", 
+              "Faith-Based", 
+              "Inmate & Formerly Incarcerated Services", 
+              "Housing & Homelessness ", 
+              "Hunger & Food Security", 
+              "Immigrant & Refugee Services", 
+              "International", 
+              "Justice & Legal Services", 
+              "LGBTQ+", 
+              "Health ", 
+              "Media & Broadcasting", 
+              "Mental Health ", 
+              "Philanthropy", 
+              "Race & Ethnicity", 
+              "Research & Public Policy", 
+              "Science", 
+              "Social Sciences", 
+              "Human & Social Services", 
+              "Seniors", 
+              "Sports & Recreation", 
+              "Transportation", 
+              "Veteran Services ", 
+              "Women's Rights", 
+              "Youth Development"  ]
+                                                    
 end

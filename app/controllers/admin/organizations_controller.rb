@@ -69,7 +69,8 @@ module Admin
     #
     def resource_params
       permit = dashboard.permitted_attributes << { social_media_attributes: %i[facebook instagram twitter linkedin
-                                                                               youtube blog] }
+                                                                               youtube blog],
+                                                    service_attributes: %i[name description] }
       params.require(resource_class.model_name.param_key)
             .permit(permit)
             .transform_values { |value| value == '' ? nil : value }

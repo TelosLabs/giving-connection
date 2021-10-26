@@ -31,6 +31,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     description_en: Field::Text,
     description_es: Field::Text,
     social_media: Field::HasOne,
+    service: Field::HasOne,
     logo: Field::ActiveStorage
   }.freeze
 
@@ -64,6 +65,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     vision_statement_es
     tagline_es
     description_es
+    service
     social_media
   ].freeze
 
@@ -85,6 +87,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     tagline_es
     description_es
     social_media
+    service
     logo
   ].freeze
 
