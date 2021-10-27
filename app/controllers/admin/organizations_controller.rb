@@ -25,7 +25,7 @@ module Admin
       resource.creator = current_admin_user
       authorize_resource(resource)
       if resource.save
-        create_organization_beneficiaries(resource, resource_params['beneficiary_subcategories_id'])
+        create_organization_beneficiaries(resource, resource_params['beneficiary_subcategories_id']) unless resource_params['beneficiary_subcategories_id'].nil?
         redirect_to([namespace, resource], notice: translate_with_resource('create.success'))
       else
         render :new, locals: { page: Administrate::Page::Form.new(dashboard, resource) }, status: :unprocessable_entity
@@ -37,7 +37,7 @@ module Admin
       requested_resource.creator = current_admin_user
       requested_resource.update(organization_resource_params)
       if requested_resource
-        update_organization_beneficiaries(requested_resource, resource_params['beneficiary_subcategories_id'])
+        update_organization_beneficiaries(requested_resource, resource_params['beneficiary_subcategories_id']) unless resource_params['beneficiary_subcategories_id'].nil?
         redirect_to([namespace, requested_resource], notice: translate_with_resource('update.success'))
       else
         render :edit, locals: { page: Administrate::Page::Form.new(dashboard, requested_resource) },

@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :organization_category do
-    organization { nil }
-    category { nil }
+    organization { association :organization }
+    category { association :category }
   end
 end

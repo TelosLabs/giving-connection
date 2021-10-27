@@ -51,7 +51,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-    id
+    logo
     name
     ein_number
     irs_ntee_code
