@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_26_183648) do
+ActiveRecord::Schema.define(version: 2021_10_27_143733) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,10 +63,33 @@ ActiveRecord::Schema.define(version: 2021_10_26_183648) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
+  create_table "beneficiaries", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "beneficiary_subcategories", force: :cascade do |t|
+    t.string "name"
+    t.bigint "beneficiary_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["beneficiary_id"], name: "index_beneficiary_subcategories_on_beneficiary_id"
+  end
+
   create_table "categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "organization_beneficiaries", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.bigint "beneficiary_subcategory_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["beneficiary_subcategory_id"], name: "index_organization_beneficiaries_on_beneficiary_subcategory_id"
+    t.index ["organization_id"], name: "index_organization_beneficiaries_on_organization_id"
   end
 
   create_table "organization_categories", force: :cascade do |t|
@@ -156,6 +179,9 @@ ActiveRecord::Schema.define(version: 2021_10_26_183648) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "beneficiary_subcategories", "beneficiaries"
+  add_foreign_key "organization_beneficiaries", "beneficiary_subcategories"
+  add_foreign_key "organization_beneficiaries", "organizations"
   add_foreign_key "organization_categories", "categories"
   add_foreign_key "organization_categories", "organizations"
   add_foreign_key "services", "organizations"

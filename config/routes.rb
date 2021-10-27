@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :organizations
     resources :social_medias, only: [ :new, :create, :edit, :update ]
     resources :services, only: [ :new, :create, :edit, :update ]
+    resources :categories, only: [ :new, :create, :edit, :update ]
 
     root to: 'admin_users#index'
   end

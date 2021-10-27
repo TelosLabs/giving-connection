@@ -16,8 +16,11 @@ class Organization < ApplicationRecord
   accepts_nested_attributes_for :service
 
   has_many :organization_categories
+  has_many :categories, through: :organization_categories
 
-  has_many :categories, throught: :organization_categories
+  has_many :organization_beneficiaries, dependent: :destroy
+  accepts_nested_attributes_for :organization_beneficiaries
+  has_many :beneficiaries, through: :organization_beneficiaries
 
   validates :name, presence: true, uniqueness: true
   validates :ein_number, presence: true, uniqueness: true

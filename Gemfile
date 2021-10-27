@@ -77,7 +77,7 @@ group :development do
   gem 'guard-rspec', require: false
   gem 'letter_opener'
   gem 'spring'
-  # gem "binding_of_caller"
+  gem "binding_of_caller"
   gem 'brakeman'
   gem 'database_consistency', require: false
 end

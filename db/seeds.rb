@@ -45,3 +45,31 @@ end
 #     puts "#{new_service.name} sucessfully created"
 #   end
 # end
+
+# Categories
+OrganizationConstants::CATEGORIES.each do |category|
+  new_category = Category.new(name: category)
+
+  if new_category.save!
+    puts "#{new_category.name} sucessfully created"
+  end
+end
+
+# Beneficiaries
+OrganizationConstants::BENEFICIARIES.each do |beneficiary, subbeneficiaries|
+  new_beneficiary = Beneficiary.new(name: beneficiary)
+
+  if new_beneficiary.save!
+    puts "#{new_beneficiary.name} sucessfully created"
+  end
+
+  subbeneficiaries.each do |subbeneficiary|
+    new_subbeneficiary = BeneficiarySubcategory.new(name: subbeneficiary, beneficiary: new_beneficiary)
+
+    if new_subbeneficiary.save!
+      puts "#{new_subbeneficiary.name} sucessfully created"
+    end
+  end
+end
+
+

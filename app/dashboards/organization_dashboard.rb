@@ -32,6 +32,8 @@ class OrganizationDashboard < Administrate::BaseDashboard
     description_es: Field::Text,
     social_media: Field::HasOne,
     service: Field::HasOne,
+    categories: Field::HasMany,
+    organization_beneficiaries: CheckboxField,
     logo: Field::ActiveStorage
   }.freeze
 
@@ -66,6 +68,8 @@ class OrganizationDashboard < Administrate::BaseDashboard
     tagline_es
     description_es
     service
+    categories
+    organization_beneficiaries
     social_media
   ].freeze
 
@@ -73,6 +77,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
+    logo
     name
     ein_number
     irs_ntee_code
@@ -86,9 +91,10 @@ class OrganizationDashboard < Administrate::BaseDashboard
     vision_statement_es
     tagline_es
     description_es
-    social_media
     service
-    logo
+    categories
+    organization_beneficiaries
+    social_media
   ].freeze
 
   # COLLECTION_FILTERS

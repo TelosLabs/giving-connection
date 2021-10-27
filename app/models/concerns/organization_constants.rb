@@ -130,5 +130,30 @@ module OrganizationConstants
                 "Transportation", 
                 "Veteran Services ", 
                 "Women's Rights" ]
+
+    BENEFICIARIES = { 
+                    "Age" => [ "Adults", "Children and Youth" ],
+                    "Ethnic and Racial Groups" => 
+                                  [ "Indigenous peoples", "Multiracial people", "People of African descent", 
+                                    "People of Asian descent", "People of European descent", 
+                                    "People of Latin American descent", "People of Middle Eastern descent" ],
+                    "Family Relationships" => [ "Caregivers", "Families", "Non-adults", "Parents", 
+                                                "Widows and widowers" ],
+                    "Gender and Sexual Identity" =>  [ "Heterosexuals", "Intersex People", "LGBTQ People", 
+                                                       "Men and Boys", "Women and girls" ],
+                    "Health" => [ "People with disabilities", "People with diseases and illness", 
+                                  "Pregnant people", "People with substance abuse issues" ],
+                    "Religious Groups" => [ "Baha'is", "Buddhists", "Christians", 
+                                            "Confucists", "Hindus", "Interfaith groups", 
+                                            "Jewish People", "Muslims", "Secular groups", 
+                                            "Shintos", "Sikhs", "Tribal and indigenous religivous groups" ],
+                    "Social and Economic Status" => [ "At-risk youth", "Economically disavantaged people", 
+                                                      "Immigrants and migrants", "Incarcerated people", 
+                                                      "Nomadic People", "Victims and oppressed people (victims of conflict and war, victims of crime and abuse, victims of disaster)" ],
+                    "Work and Status Occupations" => [ "Academics", "Activists", "Artists and performers", 
+                                                       "Domestic workers", "Emergency responders", "Farmers", 
+                                                       "Military personnel", "Retired people", "Self employed people", 
+                                                       "Sex workers", "Unemployed people", "Veterans" ] }
                                                     
 end
+
