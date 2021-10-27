@@ -43,7 +43,6 @@ class LocationDashboard < Administrate::BaseDashboard
     latitude
     longitude
     website
-    string
     main
     physical
     offer_services
@@ -54,12 +53,10 @@ class LocationDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    organization
     address
     latitude
     longitude
     website
-    string
     main
     physical
     offer_services

@@ -32,7 +32,8 @@ class OrganizationDashboard < Administrate::BaseDashboard
     description_es: Field::Text,
     social_media: Field::HasOne,
     logo: Field::ActiveStorage,
-    locations: Field::HasMany
+    # locations: Field::NestedHasMany
+    main_location: Field::HasOne
     # additional_locations: Field::NestedHasMany
   }.freeze
 
@@ -67,7 +68,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     tagline_es
     description_es
     social_media
-    locations
+    main_location
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -89,7 +90,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     description_es
     social_media
     logo
-    locations
+    main_location
   ].freeze
 
   # COLLECTION_FILTERS

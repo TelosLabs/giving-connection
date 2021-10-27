@@ -46,6 +46,7 @@ gem 'turbo-rails'
 # Use administrate admin framework
 gem 'administrate'
 gem 'administrate-field-active_storage'
+gem "administrate-field-nested_has_many"
 gem 'administrate-field-select', '~> 2.0', require: 'administrate/field/select_basic'
 gem 'image_processing'
 

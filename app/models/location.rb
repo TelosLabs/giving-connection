@@ -21,8 +21,8 @@
 class Location < ActiveRecord::Base
   include Locations::Searchable
 
-  has_many :office_hours
-  belongs_to :organization
+  # has_many :office_hours
+  belongs_to :organization, optional: true
 
   # TODO add validations
   validates :address, presence: true
@@ -41,10 +41,6 @@ class Location < ActiveRecord::Base
   before_validation :lonlat_geo_point
 
   private
-
-  # def single_main_location
-  #   organization.locations.
-  # end
 
   def lonlat_geo_point
     self.lonlat = Geo.point(longitude, latitude)

@@ -14,6 +14,7 @@ module Admin
       resource = new_resource
       authorize_resource(resource)
       resource.build_social_media
+      resource.build_main_location
       render locals: {
         page: Administrate::Page::Form.new(dashboard, resource)
       }
@@ -21,6 +22,7 @@ module Admin
 
     def create
       resource = resource_class.new(resource_params)
+      # binding.pry
       resource.creator = current_admin_user
       authorize_resource(resource)
       if resource.save
@@ -68,8 +70,11 @@ module Admin
     # and `dashboard`:
     #
     def resource_params
-      permit = dashboard.permitted_attributes << { social_media_attributes: %i[facebook instagram twitter linkedin
-                                                                               youtube blog] }
+      permit = dashboard.permitted_attributes << {
+        social_media_attributes: %i[facebook instagram twitter linkedin youtube blog],
+        main_location_attributes: %i[address latitude longitude website main physical offer_services]
+      }
+
       params.require(resource_class.model_name.param_key)
             .permit(permit)
             .transform_values { |value| value == '' ? nil : value }

@@ -7,7 +7,7 @@ class AddSpatialData < ActiveRecord::Migration[6.1]
       t.decimal :latitude, precision: 10, scale: 6
       t.decimal :longitude, precision: 10, scale: 6
       t.st_point :lonlat, geographic: true, null: false
-      t.string :website, :string
+      t.string :website
       t.boolean :main, null: false, default: false
       t.boolean :physical
       t.boolean :offer_services
