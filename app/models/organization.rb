@@ -7,7 +7,7 @@ class Organization < ApplicationRecord
 
   belongs_to :creator, polymorphic: true
   has_one :social_media, dependent: :destroy
-  accepts_nested_attributes_for :social_media
+  accepts_nested_attributes_for :social_media, allow_destroy: true
 
   has_one_attached :logo
   has_one_attached :cover_photo
@@ -15,12 +15,13 @@ class Organization < ApplicationRecord
   has_one :service
   accepts_nested_attributes_for :service
 
-  has_many :organization_categories
+  has_many :organization_categories, dependent: :destroy
   has_many :categories, through: :organization_categories
 
   has_many :organization_beneficiaries, dependent: :destroy
-  accepts_nested_attributes_for :organization_beneficiaries
-  has_many :beneficiaries, through: :organization_beneficiaries
+  accepts_nested_attributes_for :organization_beneficiaries, allow_destroy: true
+
+  has_many :beneficiary_subcategories, through: :organization_beneficiaries
 
   validates :name, presence: true, uniqueness: true
   validates :ein_number, presence: true, uniqueness: true

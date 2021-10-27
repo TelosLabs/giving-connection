@@ -37,7 +37,7 @@ module Admin
       requested_resource.creator = current_admin_user
       requested_resource.update(organization_resource_params)
       if requested_resource
-        update_organization_subcategories(requested_resource, resource_params['beneficiary_subcategories_id'])
+        update_organization_beneficiaries(requested_resource, resource_params['beneficiary_subcategories_id'])
         redirect_to([namespace, requested_resource], notice: translate_with_resource('update.success'))
       else
         render :edit, locals: { page: Administrate::Page::Form.new(dashboard, requested_resource) },
@@ -53,8 +53,8 @@ module Admin
     end
 
     def update_organization_beneficiaries(organization, beneficiaries_sub_ids)
-      to_create = beneficiaries_sub_ids - organization.beneficiaries.ids
-      to_delete = organization.beneficiaries.ids - beneficiaries_sub_ids
+      to_create = beneficiaries_sub_ids - organization.beneficiary_subcategories.ids
+      to_delete = organization.beneficiary_subcategories.ids - beneficiaries_sub_ids
 
       create_organization_beneficiaries(organization, to_create)
       delete_organization_beneficiaries(organization, to_delete)
@@ -68,8 +68,8 @@ module Admin
 
     def resource_params
       permit = dashboard.permitted_attributes << { social_media_attributes: %i[facebook instagram twitter linkedin
-                                                                               youtube blog],
-                                                    service_attributes: %i[name description],
+                                                                               youtube blog id],
+                                                    service_attributes: %i[name description id],
                                                     :beneficiary_subcategories_id => [] }
       params.require(resource_class.model_name.param_key)
             .permit(permit)
