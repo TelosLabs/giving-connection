@@ -3,6 +3,8 @@
 .c-button {
   display: flex;
   margin: auto;
+  align-items: center;
+  justify-content: center;
   padding: 18px 40px;
   border-radius: 6px;
   border: 0;
@@ -12,4 +14,12 @@
   text-transform: uppercase;
   color: $primary-dark-blue;
   background-color: $secondary-seafoam;
+
+  &--secondary {
+    width: 200px;
+    height: 39px;
+    color: $copy-white;
+    padding: 10px 20px;
+    background-color: $primary-medium-blue;
+  }
 }

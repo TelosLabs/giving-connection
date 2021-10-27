@@ -1,5 +1,18 @@
 header
-  .navbar
-    .navbar--menu
+  .navbar.navbar--mobile
+    .navbar--mobile__menu
       = inline_svg_tag 'menu.svg', size:'24*24'
-    = inline_svg_tag 'logo.svg', size:'152*58'
+    = inline_svg_tag 'logo.svg', size:'130*32'
+  .navbar.navbar--desktop
+    div.flex.items-center
+      = inline_svg_tag 'logo.svg', size:'130*32', class:'mr-2 lg:mr-11'
+      .mr-2.lg:mr-11 Search
+      .mr-2.lg:mr-11 Add a Nonprofit
+      .mr-2.lg:mr-11 About Us
+      .mr-2.lg:mr-11.flex
+        div Donate
+        .flex.items-center
+          = inline_svg_tag 'heart.svg', size:'9*9'
+    div.flex.items-center
+      = link_to "Sign in", new_session_path(resource_name), class:'text-base font-bold mr-1 lg:mr-6'
+      = link_to "Create Account", new_registration_path(resource_name), class:'c-button c-button--secondary'
