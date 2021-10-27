@@ -1,0 +1,23 @@
+@import "/settings/variables";
+
+.navbar {
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  height: 79px;
+  color: $copy-white;
+  background-color: $primary-dark-blue;
+
+  @media (max-width: 640px) {
+    height: 91px;
+  }
+  
+  &::after {
+    content: "";
+    flex: 1;
+  }
+
+  &--menu {
+    flex: 1;
+  }
+}
