@@ -10,8 +10,8 @@ class LocationDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     organization: Field::BelongsTo,
     id: Field::Number,
-    latitude: Field::String.with_options(searchable: false),
-    longitude: Field::String.with_options(searchable: false),
+    latitude: HiddenField,
+    longitude: HiddenField,
     lonlat: Field::String.with_options(searchable: false),
     website: Field::String,
     string: Field::String,

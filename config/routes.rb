@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   devise_for :admin_users
   devise_for :users
 
-  resources :locations, only: %i[index new create]
+  resources :locations, only: %i[index new]
 
   resources :organizations, only: [:show] do
     resources :locations, only: %i[index new create]

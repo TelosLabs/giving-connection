@@ -14,7 +14,6 @@ class Search
 
   def save
     if valid?
-      # from tee zone
       @results = Location.geo_near(Geo.to_wkt(Geo.point(DEFAULT_LOCATION[:longitude], DEFAULT_LOCATION[:latitude])), kilometers.to_i).search_by_keyword(keyword)
     end
   end

@@ -47,7 +47,7 @@ class Organization < ApplicationRecord
 
   after_create :attach_logo_and_cover
 
-  accepts_nested_attributes_for :social_media
+  accepts_nested_attributes_for :social_media, :locations
 
   private
 

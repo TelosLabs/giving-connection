@@ -33,7 +33,7 @@ class Location < ActiveRecord::Base
   validates :physical, presence: true
   validates :offer_services, presence: true
   # validate :single_main_location
-  validates :office_hours, length: { minimum: 7, maximum: 7 }
+  # validates :office_hours, length: { minimum: 7, maximum: 7 }
 
   scope :additional, -> { where(main: false) }
   scope :main, -> { where(main: true) }

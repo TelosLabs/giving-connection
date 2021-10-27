@@ -32,8 +32,8 @@ class OrganizationDashboard < Administrate::BaseDashboard
     description_es: Field::Text,
     social_media: Field::HasOne,
     logo: Field::ActiveStorage,
-    main_location: Field::HasOne,
-    additional_locations: Field::HasMany
+    locations: Field::HasMany
+    # additional_locations: Field::NestedHasMany
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -67,8 +67,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     tagline_es
     description_es
     social_media
-    main_location
-    additional_locations
+    locations
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -90,6 +89,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     description_es
     social_media
     logo
+    locations
   ].freeze
 
   # COLLECTION_FILTERS
@@ -107,7 +107,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how organizations are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(organization)
-  #   "Organization ##{organization.id}"
-  # end
+  def display_resource(organization)
+    organization.name.titleize
+  end
 end
