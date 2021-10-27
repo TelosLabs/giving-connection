@@ -38,7 +38,7 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
       fill_in('organization_tagline_en',                       with: 'tagline testing')
       fill_in('organization_description_en',                   with: 'description testing')
       fill_in('organization_social_media_attributes_facebook', with: 'facebook.com/test')
-      fill_in('organization_service_attributes_name',with: 'service nametesting')
+      fill_in('organization_service_attributes_name', with: 'service nametesting')
       select('A51',                                  from: 'organization_irs_ntee_code')
       select('National',                             from: 'organization_scope_of_work')
       attach_file('organization_logo', "#{Rails.root}/spec/support/images/testing.png")

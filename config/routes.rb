@@ -5,9 +5,9 @@ Rails.application.routes.draw do
     resources :admin_users
     resources :users
     resources :organizations
-    resources :social_medias, only: [ :new, :create, :edit, :update ]
-    resources :services, only: [ :new, :create, :edit, :update ]
-    resources :categories, only: [ :new, :create, :edit, :update ]
+    resources :social_medias, only: %i[new create edit update]
+    resources :services, only: %i[new create edit update]
+    resources :categories, only: %i[new create edit update]
 
     root to: 'admin_users#index'
   end

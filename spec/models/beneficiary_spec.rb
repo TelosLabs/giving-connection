@@ -11,4 +11,3 @@ RSpec.describe Beneficiary, type: :model do
     end
   end
 end
-

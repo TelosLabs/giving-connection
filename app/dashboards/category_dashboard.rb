@@ -1,4 +1,6 @@
-require "administrate/base_dashboard"
+# frozen_string_literal: true
+
+require 'administrate/base_dashboard'
 
 class CategoryDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -12,7 +14,7 @@ class CategoryDashboard < Administrate::BaseDashboard
     id: Field::Number,
     name: Field::String,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -59,5 +61,4 @@ class CategoryDashboard < Administrate::BaseDashboard
   def display_resource(category)
     category.name
   end
-  
 end
