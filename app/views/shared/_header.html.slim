@@ -15,5 +15,8 @@ header
         .flex.items-center
           = inline_svg_tag 'heart.svg', size:'9*9', class:'mt-1'
     div.flex.items-center
-      = link_to "Sign in", new_session_path(resource_name), class:'text-base font-bold mr-1 lg:mr-6'
-      = link_to "Create Account", new_registration_path(resource_name), class:'c-button c-button--secondary'
+      - if user_signed_in?
+        = link_to "Log out", destroy_user_session_path, method: :delete, class:'text-base font-bold mr-1 lg:mr-6'
+      - else
+        = link_to "Sign in", new_session_path(resource_name), class:'text-base font-bold mr-1 lg:mr-6'
+        = link_to "Create Account", new_registration_path(resource_name), class:'c-button c-button--secondary'
