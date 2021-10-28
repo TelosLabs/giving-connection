@@ -91,7 +91,6 @@ class OrganizationDashboard < Administrate::BaseDashboard
     vision_statement_es
     tagline_es
     description_es
-    service
     categories
     organization_beneficiaries
     social_media
