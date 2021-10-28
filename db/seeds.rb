@@ -55,12 +55,12 @@ end
 
 # Beneficiaries
 OrganizationConstants::BENEFICIARIES.each do |beneficiary, subbeneficiaries|
-  new_beneficiary = Beneficiary.new(name: beneficiary)
+  new_beneficiary = BeneficiaryGroup.new(name: beneficiary)
 
   puts "#{new_beneficiary.name} sucessfully created" if new_beneficiary.save!
 
   subbeneficiaries.each do |subbeneficiary|
-    new_subbeneficiary = BeneficiarySubcategory.new(name: subbeneficiary, beneficiary: new_beneficiary)
+    new_subbeneficiary = BeneficiarySubcategory.new(name: subbeneficiary, beneficiary_group: new_beneficiary)
 
     puts "#{new_subbeneficiary.name} sucessfully created" if new_subbeneficiary.save!
   end

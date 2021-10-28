@@ -8,6 +8,6 @@ class CheckboxField < Administrate::Field::Base
   end
 
   def beneficiary_types
-    Beneficiary.all
+    BeneficiaryGroup.all
   end
 end
