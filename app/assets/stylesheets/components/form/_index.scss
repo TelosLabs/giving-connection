@@ -1,3 +1,5 @@
+@import "/settings/variables";
+
 .c-form {
 	display: flex;
 	flex-direction: column;
@@ -7,10 +9,11 @@
 	padding: 16px 24px 0;
 	border-radius: 2px;
 	font-size: 14px;
+	color: $copy-gray-7;
 
 	&--group {
 		margin-bottom: 20px;
-		width: 327px;
+		width: 100%;
 	}
 
 	&--action {
