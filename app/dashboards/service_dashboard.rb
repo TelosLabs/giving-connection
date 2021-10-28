@@ -2,7 +2,7 @@
 
 require 'administrate/base_dashboard'
 
-class SocialMediaDashboard < Administrate::BaseDashboard
+class ServiceDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -12,12 +12,8 @@ class SocialMediaDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     organization: Field::BelongsTo,
     id: Field::Number,
-    facebook: Field::String,
-    instagram: Field::String,
-    twitter: Field::String,
-    linkedin: Field::String,
-    youtube: Field::String,
-    blog: Field::String,
+    name: Field::String,
+    description: Field::Text,
     created_at: Field::DateTime,
     updated_at: Field::DateTime
   }.freeze
@@ -30,31 +26,23 @@ class SocialMediaDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
     organization
     id
-    facebook
-    instagram
+    name
+    description
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-    facebook
-    instagram
-    twitter
-    linkedin
-    youtube
-    blog
+    name
+    description
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    facebook
-    instagram
-    twitter
-    linkedin
-    youtube
-    blog
+    name
+    description
   ].freeze
 
   # COLLECTION_FILTERS
@@ -69,10 +57,10 @@ class SocialMediaDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how social medias are displayed
+  # Overwrite this method to customize how services are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(social_media)
-  #   "SocialMedia ##{social_media.id}"
+  # def display_resource(service)
+  #   "Service ##{service.id}"
   # end
 end

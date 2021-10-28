@@ -89,6 +89,8 @@ GEM
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
     bindex (0.8.1)
+    binding_of_caller (1.0.0)
+      debug_inspector (>= 0.0.1)
     bootsnap (1.9.1)
       msgpack (~> 1.0)
     brakeman (5.1.1)
@@ -118,6 +120,7 @@ GEM
       activerecord (>= 3.2)
     datetime_picker_rails (0.0.7)
       momentjs-rails (>= 2.8.1)
+    debug_inspector (1.1.0)
     devise (4.8.0)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -470,6 +473,7 @@ DEPENDENCIES
   administrate-field-select (~> 2.0)
   annotate
   better_errors
+  binding_of_caller
   bootsnap (>= 1.4.4)
   brakeman
   byebug

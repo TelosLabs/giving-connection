@@ -53,6 +53,7 @@ Style/Documentation:
     - 'app/models/testing.rb'
     - 'config/application.rb'
     - 'config/initializers/devise.rb'
+    - 'db/schema.rb'
     - 'db/migrate/20210902164512_devise_create_users.rb'
     - 'db/migrate/20210902212849_devise_create_admin_users.rb'
     - 'db/migrate/20210923165538_create_organizations.rb'

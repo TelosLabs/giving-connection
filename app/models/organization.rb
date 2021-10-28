@@ -3,14 +3,15 @@
 class Organization < ApplicationRecord
   include OrganizationConstants
 
-  after_create :attach_logo_and_cover
-
-  belongs_to :creator, polymorphic: true
+  has_many :organization_categories, dependent: :destroy
+  has_many :categories, through: :organization_categories
+  has_many :organization_beneficiaries, dependent: :destroy
+  has_many :beneficiary_subcategories, through: :organization_beneficiaries
   has_one :social_media, dependent: :destroy
-  accepts_nested_attributes_for :social_media
-
+  has_one :service
   has_one_attached :logo
   has_one_attached :cover_photo
+  belongs_to :creator, polymorphic: true
 
   validates :name, presence: true, uniqueness: true
   validates :ein_number, presence: true, uniqueness: true
@@ -22,6 +23,12 @@ class Organization < ApplicationRecord
   validates :scope_of_work, presence: true, inclusion: { in: OrganizationConstants::SCOPE }
   validates :logo, content_type: ['image/png', 'image/jpg', 'image/jpeg'],
                    size: { less_than: 5.megabytes, message: 'File too large. Must be less than 5MB in size' }
+
+  after_create :attach_logo_and_cover
+
+  accepts_nested_attributes_for :organization_beneficiaries, allow_destroy: true
+  accepts_nested_attributes_for :social_media, allow_destroy: true
+  accepts_nested_attributes_for :service
 
   private
 

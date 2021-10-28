@@ -74,12 +74,12 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'annotate'
   gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'brakeman'
+  gem 'database_consistency', require: false
   gem 'guard-rspec', require: false
   gem 'letter_opener'
   gem 'spring'
-  # gem "binding_of_caller"
-  gem 'brakeman'
-  gem 'database_consistency', require: false
 end
 
 group :test do

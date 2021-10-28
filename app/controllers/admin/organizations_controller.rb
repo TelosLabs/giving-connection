@@ -20,10 +20,12 @@ module Admin
     end
 
     def create
-      resource = resource_class.new(resource_params)
+      organization_resource_params = resource_params.except('beneficiary_subcategories_id')
+      resource = resource_class.new(organization_resource_params)
       resource.creator = current_admin_user
       authorize_resource(resource)
       if resource.save
+        create_organization_beneficiaries(resource, resource_params['beneficiary_subcategories_id']) unless resource_params['beneficiary_subcategories_id'].nil?
         redirect_to([namespace, resource], notice: translate_with_resource('create.success'))
       else
         render :new, locals: { page: Administrate::Page::Form.new(dashboard, resource) }, status: :unprocessable_entity
@@ -31,9 +33,11 @@ module Admin
     end
 
     def update
+      organization_resource_params = resource_params.except('beneficiary_subcategories_id')
       requested_resource.creator = current_admin_user
-      requested_resource.update(resource_params)
+      requested_resource.update(organization_resource_params)
       if requested_resource
+        update_organization_beneficiaries(requested_resource, resource_params['beneficiary_subcategories_id']) unless resource_params['beneficiary_subcategories_id'].nil?
         redirect_to([namespace, requested_resource], notice: translate_with_resource('update.success'))
       else
         render :edit, locals: { page: Administrate::Page::Form.new(dashboard, requested_resource) },
@@ -41,35 +45,32 @@ module Admin
       end
     end
 
-    # Override this method to specify custom lookup behavior.
-    # This will be used to set the resource for the `show`, `edit`, and `update`
-    # actions.
-    #
-    # def find_resource(param)
-    #   Foo.find_by!(slug: param)
-    # end
+    def create_organization_beneficiaries(organization, beneficiaries_sub_ids)
+      beneficiaries_sub_ids.each do |beneficiary_sub_id|
+        beneficiary_subcategory = BeneficiarySubcategory.find(beneficiary_sub_id)
+        OrganizationBeneficiary.create!(organization: organization, beneficiary_subcategory: beneficiary_subcategory)
+      end
+    end
 
-    # The result of this lookup will be available as `requested_resource`
+    def update_organization_beneficiaries(organization, beneficiaries_sub_ids)
+      to_create = beneficiaries_sub_ids - organization.beneficiary_subcategories.ids
+      to_delete = organization.beneficiary_subcategories.ids - beneficiaries_sub_ids
 
-    # Override this if you have certain roles that require a subset
-    # this will be used to set the records shown on the `index` action.
-    #
-    # def scoped_resource
-    #   if current_user.super_admin?
-    #     resource_class
-    #   else
-    #     resource_class.with_less_stuff
-    #   end
-    # end
+      create_organization_beneficiaries(organization, to_create)
+      delete_organization_beneficiaries(organization, to_delete)
+    end
 
-    # Override `resource_params` if you want to transform the submitted
-    # data before it's persisted. For example, the following would turn all
-    # empty values into nil values. It uses other APIs such as `resource_class`
-    # and `dashboard`:
-    #
+    def delete_organization_beneficiaries(organization, beneficiaries_sub_ids)
+      beneficiaries_sub_ids.each do |beneficiary_sub_id|
+        organization.organization_beneficiaries.find_by(beneficiary_subcategory_id: beneficiary_sub_id).delete
+      end
+    end
+
     def resource_params
       permit = dashboard.permitted_attributes << { social_media_attributes: %i[facebook instagram twitter linkedin
-                                                                               youtube blog] }
+                                                                               youtube blog id],
+                                                   service_attributes: %i[name description id],
+                                                   beneficiary_subcategories_id: [] }
       params.require(resource_class.model_name.param_key)
             .permit(permit)
             .transform_values { |value| value == '' ? nil : value }

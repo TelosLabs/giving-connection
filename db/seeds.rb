@@ -36,3 +36,32 @@ User.create!(email: 'user@example.com', password: 'testing', password_confirmati
 
   puts "#{org.id} sucessfully created" if org.save!
 end
+
+# Services
+# OrganizationConstants::SERVICES.each do |service|
+#   new_service = Service.new(name: service)
+
+#   if new_service.save!
+#     puts "#{new_service.name} sucessfully created"
+#   end
+# end
+
+# Categories
+OrganizationConstants::CATEGORIES.each do |category|
+  new_category = Category.new(name: category)
+
+  puts "#{new_category.name} sucessfully created" if new_category.save!
+end
+
+# Beneficiaries
+OrganizationConstants::BENEFICIARIES.each do |beneficiary, subbeneficiaries|
+  new_beneficiary = BeneficiaryGroup.new(name: beneficiary)
+
+  puts "#{new_beneficiary.name} sucessfully created" if new_beneficiary.save!
+
+  subbeneficiaries.each do |subbeneficiary|
+    new_subbeneficiary = BeneficiarySubcategory.new(name: subbeneficiary, beneficiary_group: new_beneficiary)
+
+    puts "#{new_subbeneficiary.name} sucessfully created" if new_subbeneficiary.save!
+  end
+end
