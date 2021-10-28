@@ -1,0 +1,40 @@
+@import "/settings/variables";
+
+footer {
+  color: $copy-white;
+  background-color: $primary-dark-blue;
+}
+
+.c-footer {
+  max-width: 1140px;
+  margin: auto;
+  padding-top: 84px;
+
+  &--container {
+    display: flex;
+    justify-content: space-around;
+    padding-bottom: 51px;
+  }
+
+  &--links {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &--media {
+    width: 165px;
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between ;
+    line-height: 32px;
+    margin-bottom: 26px;
+  }
+
+  &--content {
+    color: $secondary-seafoam;
+    padding: 38px 0 60px 0;
+    font-size: 12px;
+    line-height: 22px;
+  }
+}
