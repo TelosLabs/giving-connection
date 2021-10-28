@@ -14,6 +14,6 @@
         = f.password_field :password, autocomplete: "current-password", class:"c-input"
       - if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations'
         = link_to "Forgot your password?", new_password_path(resource_name), class:'font-bold flex self-end'
-      .c-form--action.mt-12
+      .c-form--action.mt-12.mb-28.md:mb-52
         = f.submit "Sign in", class:"c-button"
   
