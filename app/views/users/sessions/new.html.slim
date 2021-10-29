@@ -1,6 +1,18 @@
-.main
+main
   h2.c-title
     | Welcome back!
+
+  .md:hidden
+    .absolute.top-0.left-0.z-index-1.svg-xs-screen
+      = inline_svg_tag 'mob-purple-blur-login.svg'
+    .absolute.top-0.right-0.z-index-1
+      = inline_svg_tag 'mob-green-blur-login.svg'
+
+  .hidden.md:flex
+    .absolute.top-0.left-0.z-index-1.pl-blur-desk
+      = inline_svg_tag 'desk-purple-blur-login.svg'
+    .absolute.top-0.right-0.z-index-1.pr-blur-desk
+      = inline_svg_tag 'desk-green-blur-login.svg'
 
   = render "users/shared/links"
 

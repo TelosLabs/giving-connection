@@ -1,7 +1,19 @@
-.main
+main
   h2.c-title
     ' Create an account 
     | on Giving Connection
+
+  .md:hidden
+    .absolute.top-0.left-0.z-index-1
+      = inline_svg_tag 'mob-green-blur-signup.svg'
+    .absolute.top-0.right-0.z-index-1
+      = inline_svg_tag 'mob-purple-blur-signup.svg'
+
+  .hidden class="md:flex"
+    .absolute.top-0.left-0.z-index-1.pl-20.xl:pl-40
+      = inline_svg_tag 'desk-green-blur-signup.svg'
+    .absolute.top-0.right-0.z-index-1.pr-20.xl:pr-40
+      = inline_svg_tag 'desk-purple-blur-signup.svg'
 
   .main-description.max-w-md.mx-auto 
     | Our search experience is free, but you can create an account to have a more personalized experience.

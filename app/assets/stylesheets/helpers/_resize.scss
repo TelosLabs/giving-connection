@@ -1,0 +1,8 @@
+.svg-xs-screen {
+  width: 373px;
+  height: 342px; 
+
+  @media (max-width: 374px) {
+    width: 310px;
+  }
+}
