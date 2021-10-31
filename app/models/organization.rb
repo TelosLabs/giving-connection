@@ -5,6 +5,8 @@ class Organization < ApplicationRecord
 
   after_create :attach_logo_and_cover
 
+  has_many :tags, dependent: :destroy
+
   belongs_to :creator, polymorphic: true
   has_one :social_media, dependent: :destroy
   accepts_nested_attributes_for :social_media, allow_destroy: true

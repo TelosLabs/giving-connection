@@ -34,7 +34,8 @@ class OrganizationDashboard < Administrate::BaseDashboard
     service: Field::HasOne,
     categories: Field::HasMany,
     organization_beneficiaries: CheckboxField,
-    logo: Field::ActiveStorage
+    logo: Field::ActiveStorage,
+    tags: Field::HasMany
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -70,6 +71,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     service
     categories
     organization_beneficiaries
+    tags
     social_media
   ].freeze
 
@@ -94,6 +96,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     service
     categories
     organization_beneficiaries
+    tags
     social_media
   ].freeze
 
