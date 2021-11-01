@@ -17,6 +17,13 @@
 	}
 
 	&::placeholder {
-		color: $var-gray-4;
+		color: $var-gray-6;
+		font-size: 16px;
+	}
+
+	&--search {
+		max-width: 327px;
+		margin: 0;
+		padding: 11px 35px 11px 40px
 	}
 }
