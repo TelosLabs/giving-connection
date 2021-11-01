@@ -119,13 +119,13 @@ ActiveRecord::Schema.define(version: 2021_10_22_224442) do
     t.index ["vision_statement_en"], name: "index_organizations_on_vision_statement_en"
   end
 
-  create_table "pg_search_documents", force: :cascade do |t|
-    t.text "content"
-    t.string "searchable_type"
-    t.bigint "searchable_id"
+  create_table "services", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.bigint "organization_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
+    t.index ["organization_id"], name: "index_services_on_organization_id"
   end
 
   create_table "social_medias", force: :cascade do |t|

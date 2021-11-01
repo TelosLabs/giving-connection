@@ -112,3 +112,23 @@ org.locations.build(
 )
 
 puts "Org with id #{org.id} sucessfully created" if org.save!
+
+# Categories
+OrganizationConstants::CATEGORIES.each do |category|
+  new_category = Category.new(name: category)
+
+  puts "#{new_category.name} sucessfully created" if new_category.save!
+end
+
+# Beneficiaries
+OrganizationConstants::BENEFICIARIES.each do |beneficiary, subbeneficiaries|
+  new_beneficiary = BeneficiaryGroup.new(name: beneficiary)
+
+  puts "#{new_beneficiary.name} sucessfully created" if new_beneficiary.save!
+
+  subbeneficiaries.each do |subbeneficiary|
+    new_subbeneficiary = BeneficiarySubcategory.new(name: subbeneficiary, beneficiary_group: new_beneficiary)
+
+    puts "#{new_subbeneficiary.name} sucessfully created" if new_subbeneficiary.save!
+  end
+end

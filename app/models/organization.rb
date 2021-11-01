@@ -26,10 +26,15 @@
 class Organization < ApplicationRecord
   include OrganizationConstants
 
+  has_many :organization_categories, dependent: :destroy
+  has_many :categories, through: :organization_categories
+  has_many :organization_beneficiaries, dependent: :destroy
+  has_many :beneficiary_subcategories, through: :organization_beneficiaries
   has_many :locations
   has_many :additional_locations, -> { where(main: false) }, class_name: 'Location', foreign_key: :organization_id
   has_one :main_location, -> { where(main: true) }, class_name: 'Location', foreign_key: :organization_id
   has_one :social_media, dependent: :destroy
+  has_one :service
   has_one_attached :logo
   has_one_attached :cover_photo
   belongs_to :creator, polymorphic: true
@@ -47,7 +52,10 @@ class Organization < ApplicationRecord
 
   after_create :attach_logo_and_cover
 
-  accepts_nested_attributes_for :social_media, :main_location
+  accepts_nested_attributes_for :organization_beneficiaries, allow_destroy: true
+  accepts_nested_attributes_for :social_media, allow_destroy: true
+  accepts_nested_attributes_for :service
+  accepts_nested_attributes_for :main_location
 
   private
 
