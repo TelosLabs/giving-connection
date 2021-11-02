@@ -32,7 +32,8 @@ module.exports = {
           disabled: '#eff2f7'
         },
         copy: {
-          white: '#ffffff'
+          white: '#ffffff',
+          'light-black': '#1f2d3d'
         }
       },
     },
