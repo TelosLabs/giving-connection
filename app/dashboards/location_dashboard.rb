@@ -20,7 +20,8 @@ class LocationDashboard < Administrate::BaseDashboard
     offer_services: Field::Boolean,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    address: AddressField
+    address: AddressField,
+    services: Field::NestedHasMany
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -33,6 +34,7 @@ class LocationDashboard < Administrate::BaseDashboard
     id
     address
     latitude
+    services
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -47,6 +49,7 @@ class LocationDashboard < Administrate::BaseDashboard
     physical
     offer_services
     address
+    services
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -60,6 +63,7 @@ class LocationDashboard < Administrate::BaseDashboard
     main
     physical
     offer_services
+    services
   ].freeze
 
   # COLLECTION_FILTERS

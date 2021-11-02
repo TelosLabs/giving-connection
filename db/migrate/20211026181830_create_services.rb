@@ -5,7 +5,7 @@ class CreateServices < ActiveRecord::Migration[6.1]
     create_table :services do |t|
       t.string :name
       t.text :description
-      t.references :organization, null: false, foreign_key: true
+      t.references :location, null: false, foreign_key: true
 
       t.timestamps
     end

@@ -22,6 +22,7 @@ class Location < ActiveRecord::Base
   include Locations::Searchable
 
   # has_many :office_hours
+  has_many :services
   belongs_to :organization, optional: true
 
   # TODO add validations
@@ -39,6 +40,12 @@ class Location < ActiveRecord::Base
   scope :main, -> { where(main: true) }
 
   before_validation :lonlat_geo_point
+
+  accepts_nested_attributes_for(
+    :services,
+    reject_if: :all_blank,
+    allow_destroy: true
+  )
 
   private
 

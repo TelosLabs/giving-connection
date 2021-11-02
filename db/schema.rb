@@ -169,10 +169,10 @@ ActiveRecord::Schema.define(version: 2021_10_27_143733) do
   create_table "services", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.bigint "organization_id", null: false
+    t.bigint "location_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["organization_id"], name: "index_services_on_organization_id"
+    t.index ["location_id"], name: "index_services_on_location_id"
   end
 
   create_table "social_medias", force: :cascade do |t|
@@ -222,6 +222,6 @@ ActiveRecord::Schema.define(version: 2021_10_27_143733) do
   add_foreign_key "organization_beneficiaries", "organizations"
   add_foreign_key "organization_categories", "categories"
   add_foreign_key "organization_categories", "organizations"
-  add_foreign_key "services", "organizations"
+  add_foreign_key "services", "locations"
   add_foreign_key "social_medias", "organizations"
 end

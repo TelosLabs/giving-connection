@@ -39,14 +39,14 @@ gem 'rack-attack'
 gem 'sidekiq'
 gem 'slim-rails'
 gem 'view_component', require: 'view_component/engine'
-
+gem "cocoon"
 # Use Turbo for rails
 gem 'turbo-rails'
 
 # Use administrate admin framework
 gem 'administrate'
 gem 'administrate-field-active_storage'
-gem "administrate-field-nested_has_many"
+gem "administrate-field-nested_has_many", :git => 'https://github.com/TelosLabs/administrate-field-nested_has_many.git', :branch => 'feature/stimulus-controller'
 gem 'administrate-field-select', '~> 2.0', require: 'administrate/field/select_basic'
 gem 'image_processing'
 
