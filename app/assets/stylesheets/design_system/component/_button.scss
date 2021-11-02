@@ -18,10 +18,21 @@
   letter-spacing: 0.8px;
 
   &--secondary {
-    width: 200px;
     height: 39px;
     color: $copy-white;
     padding: 10px 20px;
     background-color: $primary-medium-blue;
+
+    &__md {
+      height: auto;
+      max-width: 266px;
+      padding: 18px 40px;
+    }
+  }
+
+  &--contact {
+    background-color: $primary-dark-blue;
+    color: $copy-white;
+    max-width: 193px;
   }
 }
