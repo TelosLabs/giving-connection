@@ -8,4 +8,10 @@
   @media (min-width: 640px) {
     padding: 135px 0 25px 0;
   }
+
+  &--mob {
+    @media (max-width: 639px) {
+      padding: 48px 0 39px 0;
+    }
+  }
 }
