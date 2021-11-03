@@ -29,7 +29,7 @@ main
           = inline_svg_tag 'connect.svg', class:'mx-auto'
         h5.uppercase.font-bold.pb-3.md:pb-1 2. Connect with organizations
         p.px-8 Browse through nonprofit profiles to find the one that matches your needs.
-      div.text-center.max-w-xs.mx-auto.mb-20.md:mb-28.lg:mb-0
+      div.text-center.max-w-xs.mx-auto.mb-48.lg:mb-0
         .svg-landing.flex.items-end.mb-2
           = inline_svg_tag 'help.svg', class:'mx-auto'
         h5.uppercase.font-bold.pb-3.md:pb-1 3. Receive help
@@ -39,10 +39,18 @@ main
         = image_tag 'group-friends.png'
       .landing-image--mob
         = image_tag 'group-friends-mob.png', class:'w-full'
-      .max-w-sm.text-center.flex.flex-col.items-center.justify-center.mx-auto.md:mx-0.mb-16.md:mb-0
+      .relative.max-w-sm.text-center.flex.flex-col.items-center.justify-center.mx-auto.md:mx-0.mb-16.md:mb-0
         h2.c-title.pt-4.lg:pt-16.mb-1.px-10 We want to make living and giving simpler.
         p.px-4.pb-7.md:pb-0 We are a nonprofit search tool connecting you with resources in your community.
         = link_to "Start your search", '#', class:'c-button c-button--secondary c-button--secondary__md'
+        .landing-start-search--desk.-top-20.-left-32.z-index-1
+          = inline_svg_tag 'lw-desk-blur-left.svg'
+        .landing-start-search--desk.-top-40.right-0.xl:-right-28.z-index-1.overflow-hidden
+          = inline_svg_tag 'lw-desk-blur-right.svg'
+        .landing-start-search--mob.-left-6.z-index-1.sm:hidden
+          = inline_svg_tag 'lw-mob-blur-left.svg', size:'320*428'
+        .landing-start-search--mob.-top-40.-right-8.z-index-1.sm:hidden
+          = inline_svg_tag 'lw-mob-blur-right.svg'
   section.bg-seafoam.relative.z-index-2
     .max-w-sm.mx-auto.pb-20
       h2.c-title.pt-20.md:pt-28.text-blue-dark.pb-11
