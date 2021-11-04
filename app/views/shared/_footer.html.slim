@@ -1,0 +1,36 @@
+footer
+  .c-footer
+    .c-footer--upper-content
+      .c-footer--logo
+        = inline_svg_tag 'logo.svg', size:'180*44', class:'mb-10'
+      .c-footer--links
+        = link_to 'About Us', '#', class:'mb-2'
+        = link_to 'Contact Us', '#', class:'mb-2'
+        = link_to 'Donate to Giving Connection' , '#', class:'mb-2'
+        = link_to 'Help', '#', class:'mb-2'
+        = link_to 'Privacy Policy', '#', class:'mb-2'
+        = link_to 'Terms and Conditions', '#'
+      div
+        .c-footer--media
+          div
+            = inline_svg_tag 'footer-facebook.svg', size:'16*16', class:'c-footer--media__icon'
+          div
+            = inline_svg_tag 'footer-linkedin.svg', size:'16*16'
+          div
+            = inline_svg_tag 'footer-twitter.svg', size:'16*16'
+          div
+            = inline_svg_tag 'footer-instagram.svg', size:'16*16'
+        .flex.items-center.pb-7
+          | Made with 
+          = inline_svg_tag 'heart.svg', size:'12*12', class:'mt-1 ml-2'
+        .c-footer--email
+          | info@givingconnection.org
+    .pl-1.pr-2.md:px-0
+      hr
+    .c-footer--content
+      div
+        | Giving Connection Inc (EIN: 86-3459449) is exempt from federal income tax under Internal Revenue Code Section 501(c)(3). 
+      div
+        | All donations made since 4/26/21 will be tax deductible to the extent allowable by law.
+      .mt-2
+        | © Copyright Giving Connection 2021.  All Rights Reserved.

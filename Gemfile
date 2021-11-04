@@ -29,6 +29,7 @@ gem 'devise'
 
 gem 'clockwork'
 gem 'faker'
+gem 'inline_svg'
 gem 'name_of_person'
 gem 'rack-attack'
 gem 'sidekiq'
