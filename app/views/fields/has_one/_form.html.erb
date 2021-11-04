@@ -17,14 +17,12 @@ The form will be rendered as nested_from to parent relationship.
 %>
 
 <%= f.fields_for field.attribute, field.data || field.nested_form.resource.class.new do |has_one_f| %>
-  <div data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}">
-    <fieldset class="field-unit--nested">
-      <legend><%= t "helpers.label.#{f.object_name}.#{field.nested_form.resource_name}", default: field.nested_form.resource_name.titleize %></legend>
-      <% field.nested_form.attributes.each do |attribute| -%>
-        <div class="field-unit field-unit--<%= attribute.html_class %>">
-          <%= render_field attribute, f: has_one_f %>
-        </div>
-      <% end -%>
-    </fieldset>
-  </div>
+  <fieldset class="field-unit--nested">
+    <legend><%= t "helpers.label.#{f.object_name}.#{field.nested_form.resource_name}", default: field.nested_form.resource_name.titleize %></legend>
+    <% field.nested_form.attributes.each do |attribute| -%>
+      <div class="field-unit field-unit--<%= attribute.html_class %>">
+        <%= render_field attribute, f: has_one_f %>
+      </div>
+    <% end -%>
+  </fieldset>
 <% end %>

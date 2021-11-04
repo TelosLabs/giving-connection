@@ -18,13 +18,11 @@ and is augmented with [Selectize].
 [1]: http://www.rubydoc.info/gems/administrate/Administrate/Field/HasMany
 [Selectize]: http://brianreavis.github.io/selectize.js
 %>
-<div data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}">
-  <div class="field-unit__label">
-    <%= f.label field.attribute, for: "#{f.object_name}_#{field.attribute_key}" %>
-  </div>
-  <div class="field-unit__field">
-    <%= f.select(field.attribute_key, nil, {}, multiple: true) do %>
-      <%= options_for_select(field.associated_resource_options, field.selected_options) %>
-    <% end %>
-  </div>
+<div class="field-unit__label">
+  <%= f.label field.attribute, for: "#{f.object_name}_#{field.attribute_key}" %>
+</div>
+<div class="field-unit__field">
+  <%= f.select(field.attribute_key, nil, {}, multiple: true) do %>
+    <%= options_for_select(field.associated_resource_options, field.selected_options) %>
+  <% end %>
 </div>

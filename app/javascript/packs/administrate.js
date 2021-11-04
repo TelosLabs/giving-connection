@@ -11,19 +11,12 @@ import "channels"
 import "jquery"
 import "@nathanvda/cocoon"
 import "moment"
-import 'selectize/dist/js/selectize.min.js';
 
 Rails.start()
 ActiveStorage.start()
 
 import "../administrate"
-
-$(document).on("turbo:load", function() {
-  alert("aaa")
-  $('.field-unit--belongs-to select').selectize({});
-  $(".field-unit--has-many select").selectize({});
-  $('.field-unit--polymorphic select').selectize({});
-})
+import "controllers"
 
 window.initMap = function(...args) {
   const event = document.createEvent("Events")
