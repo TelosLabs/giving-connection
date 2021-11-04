@@ -1,5 +1,28 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: organizations
+#
+#  id                   :bigint           not null, primary key
+#  name                 :string           not null
+#  ein_number           :string           not null
+#  irs_ntee_code        :string           not null
+#  website              :string
+#  scope_of_work        :string           not null
+#  creator_type         :string
+#  creator_id           :bigint
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  mission_statement_en :text             not null
+#  mission_statement_es :text
+#  vision_statement_en  :text             not null
+#  vision_statement_es  :text
+#  tagline_en           :text             not null
+#  tagline_es           :text
+#  description_en       :text             not null
+#  description_es       :text
+#
 class Organization < ApplicationRecord
   include OrganizationConstants
 
@@ -7,8 +30,10 @@ class Organization < ApplicationRecord
   has_many :categories, through: :organization_categories
   has_many :organization_beneficiaries, dependent: :destroy
   has_many :beneficiary_subcategories, through: :organization_beneficiaries
+  has_many :locations
+  has_many :additional_locations, -> { where(main: false) }, class_name: 'Location', foreign_key: :organization_id
+  has_one :main_location, -> { where(main: true) }, class_name: 'Location', foreign_key: :organization_id
   has_one :social_media, dependent: :destroy
-  has_one :service
   has_one_attached :logo
   has_one_attached :cover_photo
   belongs_to :creator, polymorphic: true
@@ -28,7 +53,8 @@ class Organization < ApplicationRecord
 
   accepts_nested_attributes_for :organization_beneficiaries, allow_destroy: true
   accepts_nested_attributes_for :social_media, allow_destroy: true
-  accepts_nested_attributes_for :service
+  accepts_nested_attributes_for :locations
+  accepts_nested_attributes_for :additional_locations, reject_if: :all_blank, allow_destroy: true
 
   private
 
