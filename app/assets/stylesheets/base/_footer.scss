@@ -3,6 +3,8 @@
 footer {
   color: $copy-white;
   background-color: $primary-dark-blue;
+  position: relative;
+  z-index: 999;
 }
 
 .c-footer {
