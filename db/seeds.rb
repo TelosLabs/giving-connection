@@ -35,8 +35,9 @@ org.locations.build(
   address: 'Centerstone, 8th Street, Clarksville, TN, USA',
   main: true,
   offer_services: true,
-  physical: true
+  physical: true,
 )
+
 puts "Org with id #{org.id} sucessfully created" if org.save!
 
 org = Organization.new(
@@ -59,8 +60,9 @@ org.locations.build(
   address: 'NAMI Tennessee, Kermit Drive, Nashville, Tennessee, USA',
   main: true,
   offer_services: true,
-  physical: true
+  physical: true,
 )
+
 puts "Org with id #{org.id} sucessfully created" if org.save!
 
 org = Organization.new(
@@ -83,7 +85,7 @@ org.locations.build(
   address: 'Mental Health America of the MidSouth, Nashville, TN, USA',
   main: true,
   offer_services: true,
-  physical: true
+  physical: true,
 )
 
 puts "Org with id #{org.id} sucessfully created" if org.save!
@@ -108,9 +110,8 @@ org.locations.build(
   address: 'System of Care Across Tennessee',
   main: true,
   offer_services: true,
-  physical: true
+  physical: true,
 )
-
 puts "Org with id #{org.id} sucessfully created" if org.save!
 
 # Categories

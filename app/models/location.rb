@@ -21,7 +21,7 @@
 class Location < ActiveRecord::Base
   include Locations::Searchable
 
-  # has_many :office_hours
+  has_many :office_hours
   has_many :services
   belongs_to :organization, optional: true
 
@@ -33,8 +33,8 @@ class Location < ActiveRecord::Base
   validates :main, presence: true
   validates :physical, presence: true
   validates :offer_services, presence: true
-  # validate :single_main_location
   # validates :office_hours, length: { minimum: 7, maximum: 7 }
+  validate :single_main_location
 
   scope :additional, -> { where(main: false) }
   scope :main, -> { where(main: true) }
@@ -46,8 +46,17 @@ class Location < ActiveRecord::Base
     reject_if: :all_blank,
     allow_destroy: true
   )
+  accepts_nested_attributes_for(
+    :office_hours,
+    reject_if: :all_blank,
+    allow_destroy: true
+  )
 
   private
+
+  def single_main_location
+    errors.add(:base, "only one main location is allowed") if organization.locations.where(main: true).size > 1
+  end
 
   def lonlat_geo_point
     self.lonlat = Geo.point(longitude, latitude)
