@@ -1,5 +1,6 @@
 import './components/table'
 import './components/date_time_picker'
+// import './components/associative'
 import { Application } from "stimulus"
 import { definitionsFromContext } from "stimulus/webpack-helpers"
 
