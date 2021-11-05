@@ -74,15 +74,18 @@ development:
 staging:
   <<: *default
 
-  # staging depends on precompilation of packs prior to booting for performance.
-  compile: false
+  # Production depends on precompilation of packs prior to booting for performance.
+  compile: true
+
+  # Verifies that correct packages and versions are installed by inspecting package.json, yarn.lock, and node_modules
+  check_yarn_integrity: true
 
   # Extract and emit a css file
   extract_css: true
 
   # Cache manifest.json for performance
   cache_manifest: true
-
+  
 test:
   <<: *default
   compile: true
