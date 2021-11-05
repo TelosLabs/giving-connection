@@ -1,0 +1,10 @@
+h1 Locations
+
+- @locations.each do |location|
+  div
+    p = location.address
+    p = "Latitude: #{location.latitude}"
+    p = "Longitude: #{location.longitude}"
+    p = "Lonlat: #{location.lonlat}"
+    iframe allowfullscreen="" style="border:0;" height="447" width="375" loading="lazy" src="https://www.google.com/maps/embed/v1/place?key=#{Rails.application.credentials.dig(:google_api_key)}&q=#{CGI.escape(location.address)}"
+    hr style="border-top: 3px solid #bbb;"

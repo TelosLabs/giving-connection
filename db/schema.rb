@@ -14,6 +14,7 @@ ActiveRecord::Schema.define(version: 2021_10_28_214229) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "postgis"
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -83,6 +84,33 @@ ActiveRecord::Schema.define(version: 2021_10_28_214229) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "locations", force: :cascade do |t|
+    t.string "address"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+    t.geography "lonlat", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}, null: false
+    t.string "website"
+    t.boolean "main", default: false, null: false
+    t.boolean "physical"
+    t.boolean "offer_services"
+    t.bigint "organization_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
+    t.index ["organization_id"], name: "index_locations_on_organization_id"
+  end
+
+  create_table "office_hours", force: :cascade do |t|
+    t.string "day", null: false
+    t.time "open_time"
+    t.time "close_time"
+    t.boolean "closed", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "location_id"
+    t.index ["location_id"], name: "index_office_hours_on_location_id"
+  end
+
   create_table "organization_beneficiaries", force: :cascade do |t|
     t.bigint "organization_id", null: false
     t.bigint "beneficiary_subcategory_id", null: false
@@ -129,13 +157,22 @@ ActiveRecord::Schema.define(version: 2021_10_28_214229) do
     t.index ["vision_statement_en"], name: "index_organizations_on_vision_statement_en"
   end
 
+  create_table "pg_search_documents", force: :cascade do |t|
+    t.text "content"
+    t.string "searchable_type"
+    t.bigint "searchable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
+  end
+
   create_table "services", force: :cascade do |t|
     t.string "name"
     t.text "description"
-    t.bigint "organization_id", null: false
+    t.bigint "location_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["organization_id"], name: "index_services_on_organization_id"
+    t.index ["location_id"], name: "index_services_on_location_id"
   end
 
   create_table "social_medias", force: :cascade do |t|
@@ -188,11 +225,12 @@ ActiveRecord::Schema.define(version: 2021_10_28_214229) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "beneficiary_subcategories", "beneficiary_groups"
+  add_foreign_key "locations", "organizations"
   add_foreign_key "organization_beneficiaries", "beneficiary_subcategories"
   add_foreign_key "organization_beneficiaries", "organizations"
   add_foreign_key "organization_categories", "categories"
   add_foreign_key "organization_categories", "organizations"
-  add_foreign_key "services", "organizations"
+  add_foreign_key "services", "locations"
   add_foreign_key "social_medias", "organizations"
   add_foreign_key "tags", "organizations"
 end

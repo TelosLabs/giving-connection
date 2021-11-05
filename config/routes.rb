@@ -6,18 +6,22 @@ Rails.application.routes.draw do
     resources :users
     resources :organizations
     resources :social_medias, only: %i[new create edit update]
-    resources :services, only: %i[new create edit update]
+    resources :services
     resources :categories, only: %i[new create edit update]
+    resources :locations
 
     root to: 'admin_users#index'
   end
 
   devise_for :admin_users
   devise_for :users
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
-  resource :home, only: [:index]
-  root to: 'home#index'
+  resources :locations, only: %i[index new]
 
-  resources :organizations, only: [:show]
+  resources :organizations, only: [:show] do
+    resources :locations, only: %i[index new create]
+  end
+  resource :searches, only: %i[new create]
+
+  root to: 'searches#new'
 end

@@ -1,0 +1,7 @@
+= form_with model: @search, method: :post, class: 'flex flex-col overflow-hidden items-center' do |f|
+  = f.label :keyword
+  = f.text_field :keyword, class: 'form-control'
+  = f.label :kilometers
+  = f.number_field :kilometers, class: 'form-control'
+
+  = f.submit
