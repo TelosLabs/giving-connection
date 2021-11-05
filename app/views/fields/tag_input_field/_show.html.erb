@@ -1,1 +1,3 @@
-<%= field.to_s %>
+<% field.to_s.each do |tag| %>
+	<h2> <%= tag.name %> </h2>
+<% end %>

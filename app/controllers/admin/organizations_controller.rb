@@ -27,6 +27,7 @@ module Admin
       authorize_resource(resource)
       if resource.save
         create_organization_beneficiaries(resource, resource_params['beneficiary_subcategories_id']) unless resource_params['beneficiary_subcategories_id'].nil?
+        create_tags(resource, JSON.parse(params["tags_attributes"])) unless params["tags_attributes"].nil?
         redirect_to([namespace, resource], notice: translate_with_resource('create.success'))
       else
         render :new, locals: { page: Administrate::Page::Form.new(dashboard, resource) }, status: :unprocessable_entity
@@ -39,6 +40,7 @@ module Admin
       requested_resource.update(organization_resource_params)
       if requested_resource
         update_organization_beneficiaries(requested_resource, resource_params['beneficiary_subcategories_id']) unless resource_params['beneficiary_subcategories_id'].nil?
+        update_tags(requested_resource, JSON.parse(params["tags_attributes"])) unless params["tags_attributes"].nil?
         redirect_to([namespace, requested_resource], notice: translate_with_resource('update.success'))
       else
         render :edit, locals: { page: Administrate::Page::Form.new(dashboard, requested_resource) },
@@ -67,12 +69,33 @@ module Admin
       end
     end
 
+    def create_tags(organization, tags)
+      tags.each do |tag_hash|
+        Tag.create!(organization: organization, name: tag_hash['value'])
+      end
+    end
+
+    def update_tags(organization, tags)
+      to_create = tags - organization.tags.map { |tag| tag.name }
+      to_delete = organization.tags.map { |tag| tag.name } - tags  
+      
+      create_tags(organization, to_create)
+      delete_tags(organization, to_delete)
+    end
+
+    def delete_tags(organization, tags)
+      tags.each do |tag_name|
+        organization.tags.find_by(name: tag_name).delete
+      end
+    end
+
     def resource_params
       permit = dashboard.permitted_attributes << { social_media_attributes: %i[facebook instagram twitter linkedin
                                                                                youtube blog id],
                                                    service_attributes: %i[name description id],
                                                    beneficiary_subcategories_id: [],
-                                                   main_location_attributes: %i[address latitude longitude website main physical offer_services] }
+                                                   main_location_attributes: %i[address latitude longitude website main physical offer_services],
+                                                   tags_attributes: []}
       params.require(resource_class.model_name.param_key)
             .permit(permit)
             .transform_values { |value| value == '' ? nil : value }
