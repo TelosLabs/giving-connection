@@ -1,5 +1,13 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Tag, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context 'Tag model validation test' do
+    subject { create(:tag) }
+
+    it 'ensures tags can be created' do
+      expect(subject).to be_valid
+    end
+  end
 end

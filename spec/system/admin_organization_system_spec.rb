@@ -38,9 +38,10 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
       fill_in('organization_tagline_en',                       with: 'tagline testing')
       fill_in('organization_description_en',                   with: 'description testing')
       fill_in('organization_social_media_attributes_facebook', with: 'facebook.com/test')
-      fill_in('organization_service_attributes_name', with: 'service nametesting')
-      select('A51',                                  from: 'organization_irs_ntee_code')
-      select('National',                             from: 'organization_scope_of_work')
+      # fill_in('tags_attributes',                               with: 'special care')
+      select('A51',                                            from: 'organization_irs_ntee_code')
+      select('National',                                       from: 'organization_scope_of_work')
+      # select('Advocacy',                                       from: 'organization_category_ids')
       attach_file('organization_logo', "#{Rails.root}/spec/support/images/testing.png")
 
       click_button 'Create Organization'
@@ -51,10 +52,12 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
     end
 
     it 'creates new organization' do
+      sleep(3)
       expect(Organization.count).to eq 2
     end
 
     it 'creates social media associated with organization' do
+      sleep(3)
       expect(Organization.last.social_media.facebook).to eq('facebook.com/test')
     end
 
@@ -63,6 +66,7 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
     end
 
     it 'attaches the uploaded logo when file is provided' do
+      sleep(3)
       expect(Organization.last.logo.blob.filename).to eq('testing.png')
     end
   end

@@ -25,7 +25,7 @@ class Location < ActiveRecord::Base
   has_many :services
   belongs_to :organization, optional: true
 
-  # TODO add validations
+  # TODO: add validations
   validates :address, presence: true
   validates :latitude, presence: true
   validates :longitude, presence: true
@@ -55,7 +55,7 @@ class Location < ActiveRecord::Base
   private
 
   def single_main_location
-    errors.add(:base, "only one main location is allowed") if organization.locations.where(main: true).size > 1
+    errors.add(:base, 'only one main location is allowed') if organization.locations.where(main: true).size > 1
   end
 
   def lonlat_geo_point

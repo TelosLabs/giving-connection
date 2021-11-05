@@ -1,4 +1,6 @@
-require "administrate/base_dashboard"
+# frozen_string_literal: true
+
+require 'administrate/base_dashboard'
 
 class TagDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -12,7 +14,7 @@ class TagDashboard < Administrate::BaseDashboard
     id: Field::Number,
     name: Field::String,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

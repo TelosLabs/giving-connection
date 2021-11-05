@@ -1,4 +1,6 @@
-require "administrate/base_dashboard"
+# frozen_string_literal: true
+
+require 'administrate/base_dashboard'
 
 class OfficeHourDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -13,7 +15,7 @@ class OfficeHourDashboard < Administrate::BaseDashboard
     day: Field::String,
     open_time: Field::Time,
     close_time: Field::Time,
-    closed: Field::Boolean,
+    closed: Field::Boolean
   }.freeze
 
   # COLLECTION_ATTRIBUTES

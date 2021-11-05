@@ -8,7 +8,7 @@
     <div data-controller="tags">
       <% values = field.data.map { |tag| tag.name }.join(', ') %>
       <input placeholder='write some tags' data-tags-target="output" 
-        value="<%= values %>"  name='tags_attributes' >
+        value="<%= values %>"  name='tags_attributes' id='tags_attributes' >
     </div>
   </div>
 
@@ -16,7 +16,8 @@
 
 <div class="field-unit__field">
   <div data-controller="tags">
-    <input placeholder='write some tags' data-tags-target="output" name='tags_attributes' >
+    <input placeholder='write some tags' data-tags-target="output" 
+    name='tags_attributes' id='tags_attributes' >
   </div>
 </div>
 
