@@ -38,7 +38,7 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
       fill_in('organization_tagline_en',                       with: 'tagline testing')
       fill_in('organization_description_en',                   with: 'description testing')
       fill_in('organization_social_media_attributes_facebook', with: 'facebook.com/test')
-      fill_in('organization_service_attributes_name', with: 'service nametesting')
+      # fill_in('organization_service_attributes_name', with: 'service nametesting')
       select('A51',                                  from: 'organization_irs_ntee_code')
       select('National',                             from: 'organization_scope_of_work')
       attach_file('organization_logo', "#{Rails.root}/spec/support/images/testing.png")
@@ -47,22 +47,27 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
     end
 
     it 'should redirect to the organization show page after creating new organization' do
+      sleep(3)
       expect(page).to have_content('Organization was successfully created.')
     end
 
     it 'creates new organization' do
+      sleep(3)
       expect(Organization.count).to eq 2
     end
 
     it 'creates social media associated with organization' do
+      sleep(3)
       expect(Organization.last.social_media.facebook).to eq('facebook.com/test')
     end
 
     it 'attaches a default cover photo' do
+      sleep(3)
       expect(Organization.last.cover_photo.attached?).to eq(true)
     end
 
     it 'attaches the uploaded logo when file is provided' do
+      sleep(3)
       expect(Organization.last.logo.blob.filename).to eq('testing.png')
     end
   end
@@ -85,10 +90,12 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
     end
 
     it 'should flash error message requiring name' do
+      sleep(3)
       expect(page).to have_content('Name can\'t be blank')
     end
 
     it 'should flash error message regarding image size' do
+      sleep(3)
       expect(page).to have_content('Must be less than 5MB in size')
     end
   end
@@ -103,11 +110,13 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
     end
 
     it 'should redirect to the organizations index page after deleting organization' do
+      sleep(3)
       expect(page).to have_content('Organization was successfully destroyed.')
     end
 
     it 'deletes organization' do
-      expect(Organization.count).to eq 1
+      sleep(3)
+      expect(Organization.count).to eq 0
     end
   end
 
@@ -124,6 +133,7 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
     end
 
     it 'should redirect to the organization show page after updating organization' do
+      sleep(3)
       expect(page).to have_content('Organization was successfully updated.')
     end
 
