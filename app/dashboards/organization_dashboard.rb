@@ -35,7 +35,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     categories: Field::HasMany,
     organization_beneficiaries: CheckboxField,
     logo: Field::ActiveStorage,
-    tags: Field::HasMany
+    tags: TagInputField
   }.freeze
 
   # COLLECTION_ATTRIBUTES
