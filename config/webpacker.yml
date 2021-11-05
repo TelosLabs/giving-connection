@@ -71,6 +71,17 @@ development:
     watch_options:
       ignored: '**/node_modules/**'
 
+staging:
+  <<: *default
+
+  # staging depends on precompilation of packs prior to booting for performance.
+  compile: false
+
+  # Extract and emit a css file
+  extract_css: true
+
+  # Cache manifest.json for performance
+  cache_manifest: true
 
 test:
   <<: *default
