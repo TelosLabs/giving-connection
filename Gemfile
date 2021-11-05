@@ -41,7 +41,7 @@ gem 'slim-rails'
 gem 'view_component', require: 'view_component/engine'
 gem "cocoon"
 # Use Turbo for rails
-gem 'turbo-rails'
+gem 'turbo-rails', '~> 0.8.1'
 
 # Use administrate admin framework
 gem 'administrate'
