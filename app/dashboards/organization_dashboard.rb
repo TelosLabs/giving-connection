@@ -34,6 +34,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     categories: Field::HasMany,
     organization_beneficiaries: CheckboxField,
     logo: Field::ActiveStorage,
+    tags: TagInputField,
     # main_location: Field::HasOne,
     locations: Field::NestedHasMany
   }.freeze
@@ -70,6 +71,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     description_es
     categories
     organization_beneficiaries
+    tags
     social_media
     locations
   ].freeze
@@ -94,6 +96,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     description_es
     categories
     organization_beneficiaries
+    tags
     social_media
     locations
   ].freeze

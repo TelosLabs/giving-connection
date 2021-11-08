@@ -26,6 +26,7 @@
 class Organization < ApplicationRecord
   include OrganizationConstants
 
+  has_many :tags, dependent: :destroy
   has_many :organization_categories, dependent: :destroy
   has_many :categories, through: :organization_categories
   has_many :organization_beneficiaries, dependent: :destroy

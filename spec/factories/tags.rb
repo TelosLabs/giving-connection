@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :service do
-    name { 'MyString' }
-    description { 'MyText' }
+  factory :tag do
+    name { 'Special Care' }
     organization { association :organization }
   end
 end
