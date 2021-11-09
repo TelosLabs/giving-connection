@@ -18,7 +18,6 @@
 #  updated_at      :datetime         not null
 #
 class Location < ActiveRecord::Base
-  include Locations::Searchable
 
   has_many :office_hours
   has_many :services
