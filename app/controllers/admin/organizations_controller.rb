@@ -21,7 +21,7 @@ module Admin
     end
 
     def create
-      organization_resource_params = resource_params.except('beneficiary_subcategories_id') #.except('services_id')
+      organization_resource_params = resource_params.except('beneficiary_subcategories_id') # .except('services_id')
       resource = resource_class.new(organization_resource_params)
       resource.creator = current_admin_user
       authorize_resource(resource)

@@ -1,4 +1,6 @@
-require "administrate/base_dashboard"
+# frozen_string_literal: true
+
+require 'administrate/base_dashboard'
 
 class LocationServiceDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -13,7 +15,7 @@ class LocationServiceDashboard < Administrate::BaseDashboard
     description: Field::Text,
     id: Field::Number,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

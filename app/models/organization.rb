@@ -56,6 +56,7 @@ class Organization < ApplicationRecord
   accepts_nested_attributes_for :social_media, allow_destroy: true
   accepts_nested_attributes_for :additional_locations, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :locations
+
   private
 
   def attach_logo_and_cover

@@ -49,10 +49,9 @@ class Location < ActiveRecord::Base
 
   accepts_nested_attributes_for(
     :location_services,
-    reject_if: :all_blank, 
+    reject_if: :all_blank,
     allow_destroy: true
-  ) 
-
+  )
 
   private
 
