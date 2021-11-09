@@ -21,13 +21,14 @@ module Admin
     end
 
     def create
-      organization_resource_params = resource_params.except('beneficiary_subcategories_id')
+      organization_resource_params = resource_params.except('beneficiary_subcategories_id') #.except('services_id')
       resource = resource_class.new(organization_resource_params)
       resource.creator = current_admin_user
       authorize_resource(resource)
       if resource.save
         create_organization_beneficiaries(resource, resource_params['beneficiary_subcategories_id']) unless resource_params['beneficiary_subcategories_id'].nil?
         create_tags(resource, JSON.parse(params['tags_attributes'])) unless params['tags_attributes'].strip.empty?
+        # create_services(resource, resource_params['services_id']) unless resource_params['services_id'].nil?
         redirect_to([namespace, resource], notice: translate_with_resource('create.success'))
       else
         render :new, locals: { page: Administrate::Page::Form.new(dashboard, resource) }, status: :unprocessable_entity
@@ -89,11 +90,21 @@ module Admin
       end
     end
 
+    def create_services(organization, services_id)
+
+      services_id.each do |service_id|
+        service = Service.find(service_id)
+        LocationService.create!(location: organization.locations.last, service: service)
+      end
+    end
+
+
     def resource_params
       permit = dashboard.permitted_attributes << { social_media_attributes: %i[facebook instagram twitter linkedin
                                                                                youtube blog id],
                                                    service_attributes: %i[name description id],
                                                    beneficiary_subcategories_id: [],
+                                                   services_id: [],
                                                    main_location_attributes: %i[address latitude longitude website main physical offer_services],
                                                    tags_attributes: [] }
       params.require(resource_class.model_name.param_key)

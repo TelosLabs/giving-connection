@@ -24,7 +24,7 @@ class LocationDashboard < Administrate::BaseDashboard
     updated_at: Field::DateTime,
     address: AddressField,
     office_hours: Field::NestedHasMany,
-    services: Field::NestedHasMany
+    location_services: Field::NestedHasMany
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -50,8 +50,8 @@ class LocationDashboard < Administrate::BaseDashboard
     physical
     offer_services
     address
-    services
     office_hours
+    location_services
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -66,7 +66,7 @@ class LocationDashboard < Administrate::BaseDashboard
     main
     physical
     offer_services
-    services
+    location_services
     office_hours
   ].freeze
 
@@ -88,4 +88,8 @@ class LocationDashboard < Administrate::BaseDashboard
   # def display_resource(location)
   #   "Location ##{location.id}"
   # end
+
+  def display_resource(location)
+    "#{location.address[0..30]}..."
+  end
 end

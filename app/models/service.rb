@@ -1,6 +1,4 @@
-# frozen_string_literal: true
-
 class Service < ApplicationRecord
-  belongs_to :location, optional: true
-  validates :name, presence: true
+  belongs_to :cause
+  has_many :location_services, dependent: :destroy
 end

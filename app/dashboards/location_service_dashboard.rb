@@ -1,8 +1,6 @@
-# frozen_string_literal: true
+require "administrate/base_dashboard"
 
-require 'administrate/base_dashboard'
-
-class ServiceDashboard < Administrate::BaseDashboard
+class LocationServiceDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -11,10 +9,10 @@ class ServiceDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     location: Field::BelongsTo,
+    service: Field::BelongsTo,
     id: Field::Number,
-    name: Field::String,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime
+    updated_at: Field::DateTime,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -24,21 +22,26 @@ class ServiceDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
     location
+    service
     id
-    name
+    created_at
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-    name
+    location
+    service
+    id
+    created_at
+    updated_at
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    name
+    service
   ].freeze
 
   # COLLECTION_FILTERS
@@ -53,14 +56,10 @@ class ServiceDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how services are displayed
+  # Overwrite this method to customize how location services are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(service)
-  #   "Service ##{service.id}"
+  # def display_resource(location_service)
+  #   "LocationService ##{location_service.id}"
   # end
-
-  def display_resource(service)
-    service.name
-  end
 end
