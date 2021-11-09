@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(version: 2021_11_08_202634) do
   end
 
   create_table "location_services", force: :cascade do |t|
+    t.string "description"
     t.bigint "location_id", null: false
     t.bigint "service_id", null: false
     t.datetime "created_at", precision: 6, null: false

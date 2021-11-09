@@ -90,6 +90,6 @@ class LocationDashboard < Administrate::BaseDashboard
   # end
 
   def display_resource(location)
-    "#{location.address[0..30]}..."
+    "#{location.address[0..20]}..."
   end
 end

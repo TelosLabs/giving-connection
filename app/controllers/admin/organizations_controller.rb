@@ -28,7 +28,6 @@ module Admin
       if resource.save
         create_organization_beneficiaries(resource, resource_params['beneficiary_subcategories_id']) unless resource_params['beneficiary_subcategories_id'].nil?
         create_tags(resource, JSON.parse(params['tags_attributes'])) unless params['tags_attributes'].strip.empty?
-        # create_services(resource, resource_params['services_id']) unless resource_params['services_id'].nil?
         redirect_to([namespace, resource], notice: translate_with_resource('create.success'))
       else
         render :new, locals: { page: Administrate::Page::Form.new(dashboard, resource) }, status: :unprocessable_entity
@@ -89,15 +88,6 @@ module Admin
         organization.tags.find_by(name: tag_name).delete
       end
     end
-
-    def create_services(organization, services_id)
-
-      services_id.each do |service_id|
-        service = Service.find(service_id)
-        LocationService.create!(location: organization.locations.last, service: service)
-      end
-    end
-
 
     def resource_params
       permit = dashboard.permitted_attributes << { social_media_attributes: %i[facebook instagram twitter linkedin

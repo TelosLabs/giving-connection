@@ -10,6 +10,7 @@ class LocationServiceDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     location: Field::BelongsTo,
     service: Field::BelongsTo,
+    description: Field::Text,
     id: Field::Number,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -23,8 +24,8 @@ class LocationServiceDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
     location
     service
+    description
     id
-    created_at
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -32,6 +33,7 @@ class LocationServiceDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = %i[
     location
     service
+    description
     id
     created_at
     updated_at
@@ -42,6 +44,7 @@ class LocationServiceDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
     service
+    description
   ].freeze
 
   # COLLECTION_FILTERS
