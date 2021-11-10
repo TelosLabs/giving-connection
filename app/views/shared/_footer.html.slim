@@ -1,29 +1,28 @@
 footer
-  .c-footer
-    .c-footer--upper-content
-      .c-footer--logo
+  .c-footer class="px-5 pt-6 pb-3 mx-auto md:pt-9 md:pb-6 xl:px-0"
+    section class="flex flex-col py-5 px-2.5 md:flex-row md:justify-around md:py-12"
+      div class="items-center hidden md:flex"
         = inline_svg_tag 'logo.svg', size:'180*44', class:'mb-10'
-      .c-footer--links
-        = link_to 'About Us', '#', class:'mb-2'
-        = link_to 'Contact Us', '#', class:'mb-2'
-        = link_to 'Donate to Giving Connection' , '#', class:'mb-2'
-        = link_to 'Help', '#', class:'mb-2'
-        = link_to 'Privacy Policy', '#', class:'mb-2'
-        = link_to 'Terms and Conditions', '#'
-      .flex.flex-col
-        ul.c-footer--media class='text-seafoam'
+      ul class="flex flex-col pb-9 md:pb-0"
+        li = link_to 'About Us', '#', class:"leading-8"
+        li = link_to 'Contact Us', '#', class:"leading-8"
+        li = link_to 'Donate to Giving Connection' , '#', class:"leading-8"
+        li = link_to 'Help', '#', class:"leading-8"
+        li = link_to 'Privacy Policy', '#', class:"leading-8"
+        li = link_to 'Terms and Conditions', '#', class:"leading-8"
+      div class="flex flex-col"
+        ul class="flex justify-between w-40 pl-1 leading-8 pb-7 md:pb-9 md:pl-0 text-seafoam"
           li = inline_svg_tag 'footer-facebook.svg', size:'16*16'
           li = inline_svg_tag 'footer-linkedin.svg', size:'16*16'
           li = inline_svg_tag 'footer-twitter.svg', size:'16*16'
           li = inline_svg_tag 'footer-instagram.svg', size:'16*16'
-        .flex.items-center.pb-7
+        div class="flex items-center md:pb-7"
           | Made with 
-          = inline_svg_tag 'heart.svg', size:'12*12', class:'mt-1 ml-2 text-red'
-        .c-footer--email
+          = inline_svg_tag 'heart.svg', size:'12*12', class:"mt-1 ml-2 text-red"
+        div class="hidden md:block"
           | info@givingconnection.org
-    .pl-1.pr-2.md:px-0
-      hr
-    .c-footer--content
+    hr class="pl-1 pr-2 md:px-0"
+    section class="px-3 py-6 text-xs leading-5 text-seafoam md:py-9 md:px-0"
       div
         | Giving Connection Inc (EIN: 86-3459449) is exempt from federal income tax under Internal Revenue Code Section 501(c)(3). 
       div
