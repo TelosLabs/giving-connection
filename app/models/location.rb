@@ -21,9 +21,12 @@
 class Location < ActiveRecord::Base
   include Locations::Searchable
 
+  belongs_to :organization, optional: true
   has_many :office_hours
   has_many :location_services, dependent: :destroy
-  belongs_to :organization, optional: true
+  has_many :services, through: :location_services
+  has_many :tags, through: :organization
+  has_one  :social_media, through: :organization
 
   # TODO: add validations
   validates :address, presence: true

@@ -13,6 +13,8 @@ class Search
   validates :keyword, presence: true
 
   def save
-    @results = Location.geo_near(Geo.to_wkt(Geo.point(DEFAULT_LOCATION[:longitude], DEFAULT_LOCATION[:latitude])), kilometers.to_i).search_by_keyword(keyword) if valid?
+    # @results = Location.geo_near(Geo.to_wkt(Geo.point(DEFAULT_LOCATION[:longitude], DEFAULT_LOCATION[:latitude])), kilometers.to_i).search_by_keyword(keyword) if valid?
+    # @results = Location.search_by_keyword(keyword) if valid?
+    @results = Location.search_by_keyword(keyword) if valid?
   end
 end
