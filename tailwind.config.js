@@ -35,6 +35,9 @@ module.exports = {
           white: '#ffffff'
         }
       },
+      zIndex: {
+        '-1' : '-1',
+      },
     },
   },
   variants: {
