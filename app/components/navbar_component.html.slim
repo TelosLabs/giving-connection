@@ -2,10 +2,12 @@ nav data-controller="navbar"
   .navbar.navbar--mobile class="h-20"
     .navbar--mobile__menu
       = inline_svg_tag 'menu.svg', size:'24*24', data: { action: "click->navbar#openSideNavBar" }
-    = inline_svg_tag 'logo.svg', size:'130*32'
+    = link_to root_path
+      = inline_svg_tag 'logo.svg', size:'130*32'
   .navbar.navbar--desktop
     ul class="flex items-center"
-      = inline_svg_tag 'logo.svg', size:'130*32', class:'mr-2 lg:mr-11'
+      = link_to root_path
+        = inline_svg_tag 'logo.svg', size:'130*32', class:'mr-2 lg:mr-11'
       li class='mr-2 lg:mr-11' Search
       li class='mr-2 lg:mr-11' Add a Nonprofit
       li class='mr-2 lg:mr-11' About Us
