@@ -4,21 +4,21 @@ nav data-controller="navbar"
       = inline_svg_tag 'menu.svg', size:'24*24', data: { action: "click->navbar#openSideNavBar" }
     = inline_svg_tag 'logo.svg', size:'130*32'
   .navbar.navbar--desktop
-    div.flex.items-center
+    ul class="flex items-center"
       = inline_svg_tag 'logo.svg', size:'130*32', class:'mr-2 lg:mr-11'
-      .mr-2.lg:mr-11 Search
-      .mr-2.lg:mr-11 Add a Nonprofit
-      .mr-2.lg:mr-11 About Us
-      .mr-2.lg:mr-11.flex
-        .mr-2 
+      li class='mr-2 lg:mr-11' Search
+      li class='mr-2 lg:mr-11' Add a Nonprofit
+      li class='mr-2 lg:mr-11' About Us
+      li class='flex mr-2 lg:mr-11'
+        div class='mr-2'
           | Donate
-        .flex.items-center
+        div class='flex items-center'
           = inline_svg_tag 'heart.svg', size:'9*9', class:'mt-1 fill-current text-red'
-    div.flex.items-center
+    ul class='flex items-center'
       - if @signed_in
-        = link_to "My Account", '#', class:'text-base font-bold mr-1 lg:mr-6'
+        li = link_to "My Account", '#', class:'text-base font-bold mr-1 lg:mr-6'
       - else
-        = link_to "Log in", '/users/sign_in', class:'text-base font-bold mr-1 lg:mr-6'
-        = link_to "Create Account", '/users/sign_up', class:'c-button c-button--secondary'
+        li = link_to "Log in", '/users/sign_in', class:'text-base font-bold mr-1 lg:mr-6'
+        li = link_to "Create Account", '/users/sign_up', class:'c-button c-button--secondary'
 
   = render SideNavbarComponent.new(signed_in: @signed_in)
