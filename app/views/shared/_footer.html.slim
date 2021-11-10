@@ -10,19 +10,15 @@ footer
         = link_to 'Help', '#', class:'mb-2'
         = link_to 'Privacy Policy', '#', class:'mb-2'
         = link_to 'Terms and Conditions', '#'
-      div
-        .c-footer--media
-          div
-            = inline_svg_tag 'footer-facebook.svg', size:'16*16', class:'c-footer--media__icon'
-          div
-            = inline_svg_tag 'footer-linkedin.svg', size:'16*16'
-          div
-            = inline_svg_tag 'footer-twitter.svg', size:'16*16'
-          div
-            = inline_svg_tag 'footer-instagram.svg', size:'16*16'
+      .flex.flex-col
+        ul.c-footer--media class='text-seafoam'
+          li = inline_svg_tag 'footer-facebook.svg', size:'16*16'
+          li = inline_svg_tag 'footer-linkedin.svg', size:'16*16'
+          li = inline_svg_tag 'footer-twitter.svg', size:'16*16'
+          li = inline_svg_tag 'footer-instagram.svg', size:'16*16'
         .flex.items-center.pb-7
           | Made with 
-          = inline_svg_tag 'heart.svg', size:'12*12', class:'mt-1 ml-2'
+          = inline_svg_tag 'heart.svg', size:'12*12', class:'mt-1 ml-2 text-red'
         .c-footer--email
           | info@givingconnection.org
     .pl-1.pr-2.md:px-0
