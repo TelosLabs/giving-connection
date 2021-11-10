@@ -13,7 +13,7 @@ nav data-controller="navbar"
         .mr-2 
           | Donate
         .flex.items-center
-          = inline_svg_tag 'heart.svg', size:'9*9', class:'mt-1'
+          = inline_svg_tag 'heart.svg', size:'9*9', class:'mt-1 fill-current text-red'
     div.flex.items-center
       - if @signed_in
         = link_to "My Account", '#', class:'text-base font-bold mr-1 lg:mr-6'

@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       colors: {
         gray: {
+          'gray-1': '#050504',
           'gray-3': '#3c4858',
           'gray-4': '#8492a6',
           'gray-5': '#c2cedB',
@@ -12,6 +13,9 @@ module.exports = {
           'gray-7': '#e5e9f2',
           'gray-8': '#eff2f7',
           'gray-9': '#f9fafc'
+        },
+        red: {
+          DEFAULT: '#F48284',
         }
       }
     },

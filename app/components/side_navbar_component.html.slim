@@ -2,7 +2,7 @@
   section class="pt-16 pb-4 px-7 #{ @signed_in ? 'h-4/5' : 'h-3/4' }" 
     div class='flex justify-end pb-16'
       button class='p-2.5' data-action="navbar#collapseSideNavBar"
-        = inline_svg_tag 'x-icon.svg', size:'12*12'
+        = inline_svg_tag 'x-icon.svg', size:'12*12', class:"fill-current text-gray-gray-1"
     ul class='flex flex-col text-2xl font-bold text-center gap-9 text-gray-gray-3'
       - if @signed_in
         li = link_to "My Account", '#'
