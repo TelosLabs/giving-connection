@@ -33,6 +33,7 @@ gem 'inline_svg'
 gem 'name_of_person'
 gem 'rack-attack'
 gem 'sidekiq'
+gem 'simple_form'
 gem 'slim-rails'
 gem 'view_component', require: 'view_component/engine'
 
