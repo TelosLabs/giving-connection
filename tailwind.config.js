@@ -27,7 +27,7 @@ module.exports = {
         },
         states: {
           success: '#37ccb2',
-          error: '#f95b6e',
+          error: '#ea343e',
           warning: '#febb5a',
           disabled: '#eff2f7'
         },
