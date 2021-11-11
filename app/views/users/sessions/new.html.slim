@@ -3,15 +3,15 @@
     | Welcome back!
 
   div class="md:hidden"
-    .svg-xs-screen class="absolute top-0 left-0 -z-1 "
+    div class="absolute top-0 left-0 -z-1 w-72 sm:w-80 sm:h-80"
       = inline_svg_tag 'mob-purple-blur-login.svg'
     div class="absolute top-0 right-0 -z-1"
       = inline_svg_tag 'mob-green-blur-login.svg'
 
   div class="hidden md:flex"
-    .pl-blur-desk class="absolute top-0 left-0 -z-1"
+    div class="absolute top-0 left-0 pl-16 -z-1 lg:pl-32 xl:pl-80"
       = inline_svg_tag 'desk-purple-blur-login.svg'
-    .pr-blur-desk class="absolute top-0 right-0 -z-1"
+    div class="absolute top-0 right-0 pt-20 pr-20 -z-1 lg:pr-52 xl:pr-96"
       = inline_svg_tag 'desk-green-blur-login.svg'
 
   = render "users/shared/links"

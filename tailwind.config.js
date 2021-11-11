@@ -38,6 +38,9 @@ module.exports = {
       zIndex: {
         '-1' : '-1',
       },
+      screens: {
+        'xs': '375px',
+      }
     },
   },
   variants: {
