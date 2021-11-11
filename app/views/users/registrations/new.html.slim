@@ -1,36 +1,36 @@
-main
-  h2 class="pb-6 text-2xl font-bold text-center pt-14 md:pt-32 md:mt-2 md:pb-9"
+.main
+  h2 class="px-12 pb-6 text-2xl font-bold text-center pt-14 md:pt-32 md:mt-2 md:pb-9 text-gray-gray-7"
     ' Create an account 
     | on Giving Connection
 
-  .md:hidden
-    .absolute.top-0.left-0.-z-1
+  div class="md:hidden"
+    div class="absolute top-0 left-0 -z-1"
       = inline_svg_tag 'mob-green-blur-signup.svg'
-    .absolute.top-0.right-0.-z-1
+    div class="absolute top-0 right-0 -z-1"
       = inline_svg_tag 'mob-purple-blur-signup.svg'
 
-  .hidden class="md:flex"
-    .absolute.top-0.left-0.-z-1.pl-20.xl:pl-40
+  div class="hidden md:flex"
+    div class="absolute top-0 left-0 pl-20 -z-1 xl:pl-40"
       = inline_svg_tag 'desk-green-blur-signup.svg'
-    .absolute.top-0.right-0.-z-1.pr-20.xl:pr-40
+    div class="absolute top-0 right-0 pr-20 -z-1 xl:pr-40"
       = inline_svg_tag 'desk-purple-blur-signup.svg'
 
-  .main-description.max-w-md.mx-auto 
+  div class="max-w-md px-6 mx-auto text-center pb-7 sm:text-lg sm:pb-12"
     | While our search experience is free and available to everyone, you can create an account to have a more personalized experience.
 
-  .max-w-sm.mb-14.mx-auto.px-6.sm:px-1.sm:text-lg
-    .flex.pb-2
-      .mr-4.flex.items-center
+  div class="max-w-sm px-6 mx-auto mb-14 sm:px-1 sm:text-lg text-gray-gray-7"
+    div class="flex pb-2"
+      div class="flex items-center mr-4"
         = inline_svg_tag 'green-check.svg', size: '16*16'
-      .text-gray-gray-7 Save nonprofits that meet your needs
-    .flex.pb-2
-      .mr-4.flex.items-center
+      div Save nonprofits that meet your needs
+    div class="flex pb-2"
+      div class="flex items-center mr-4"
         = inline_svg_tag 'green-check.svg', size: '16*16'
-      .text-gray-gray-7 Receive search alerts via email when new profits are added
-    .flex
-      .mr-4.pt-1
+      div Receive search alerts via email when new profits are added
+    div class="flex pr-1"
+      div class="pt-1 mr-4"
         = inline_svg_tag 'green-check.svg', size: '16*16'
-      .text-gray-gray-7 Claim a nonprofit profile and manage the page
+      div Claim a nonprofit profile and manage the page
 
   = render "users/shared/links"
 
@@ -52,7 +52,7 @@ main
       .c-form--action
         = f.submit "Create Account", class:"c-button"
 
-  .max-w-sm.text-center.mx-auto.text-xs.pb-terms.px-8
+  div class="max-w-sm px-8 mx-auto text-xs text-center pb-terms"
     ' By continuing, you agree to Giving Connection’s
     = link_to 'Terms & Conditions ', '#', class:'font-bold'
     ' and
