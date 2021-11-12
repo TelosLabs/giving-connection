@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
 class FilterQuery
-
   attr_reader :locations
 
-  def initialize(params={})
+  def initialize(params = {})
     @locations = Location.all
     @service_name = params[:services]
     @closed = params[:open_now] == 'true'
@@ -14,11 +13,11 @@ class FilterQuery
   end
 
   def by_service
-    @service_name.empty? ? @locations : @locations.joins(:services).where(services: {name: @service_name })
+    @service_name.empty? ? @locations : @locations.joins(:services).where(services: { name: @service_name })
   end
 
   def by_location_and_service
-    by_service.where("address ILIKE ? AND address ILIKE ?", "%#{@city}%", "%#{@state}%")
+    by_service.where('address ILIKE ? AND address ILIKE ?', "%#{@city}%", "%#{@state}%")
   end
 
   def search_by_filter
@@ -36,5 +35,4 @@ class FilterQuery
   # def by_open_now
   #   @locations.joins(:office_hours).where(office_hours: {closed: @closed })
   # end
-
 end

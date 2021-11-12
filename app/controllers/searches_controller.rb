@@ -30,7 +30,7 @@ class SearchesController < ApplicationController
   end
 
   def create_params
-    params.permit(:distance, :city, :state, :beneficiary_groups, 
+    params.permit(:distance, :city, :state, :beneficiary_groups,
                   :services, :open_now, :open_weekends)
   end
 end
