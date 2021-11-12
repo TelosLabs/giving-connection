@@ -23,6 +23,7 @@ class Location < ActiveRecord::Base
 
   has_many :office_hours
   has_many :services
+  has_many :favorite_locations
   belongs_to :organization, optional: true
 
   # TODO add validations

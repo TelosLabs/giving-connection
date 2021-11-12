@@ -18,6 +18,8 @@ Rails.application.routes.draw do
 
   resources :locations, only: %i[index new]
 
+  resources :favorite_locations, only: %i[ create destroy ]
+
   resources :organizations, only: [:show] do
     resources :locations, only: %i[index new create]
   end
