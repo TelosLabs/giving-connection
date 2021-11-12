@@ -17,7 +17,6 @@ class SearchesController < ApplicationController
 
   def filter_search
     search = Search.new(create_params)
-    # raise
     if search.filter_search && search.results.any?
       @results = search.results
       redirect_to locations_path(ids: @results.ids)
@@ -32,6 +31,6 @@ class SearchesController < ApplicationController
 
   def create_params
     params.permit(:distance, :city, :state, :beneficiary_groups, 
-                  :cause_and_services, :open_now, :open_weekends)
+                  :services, :open_now, :open_weekends)
   end
 end

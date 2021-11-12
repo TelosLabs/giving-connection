@@ -33,8 +33,8 @@ class FilterQuery
     @beneficiary_group.empty? ? by_location_and_service : by_location_and_service.find_by_sql(query)
   end
 
-  def by_open_now
-    @locations.joins(:office_hours).where(office_hours: {closed: @closed })
-  end
+  # def by_open_now
+  #   @locations.joins(:office_hours).where(office_hours: {closed: @closed })
+  # end
 
 end
