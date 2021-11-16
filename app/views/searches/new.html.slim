@@ -1,10 +1,10 @@
-= form_with url: keyword_search_path, method: :post, class: 'flex flex-col overflow-hidden items-center' do |f|
+= form_with url: searches_path, method: :post, class: 'flex flex-col overflow-hidden items-center' do |f|
   = f.label :keyword
   = f.text_field :keyword, class: 'form-control'
 
   = f.submit "Search"
 
-= form_with url: filter_search_path, method: :post, class: 'flex flex-col overflow-hidden items-center' do |f|
+= form_with url: searches_path, method: :post, class: 'flex flex-col overflow-hidden items-center' do |f|
 
   = f.label "Distance"
   = f.text_field :distance, class: 'form-control'

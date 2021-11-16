@@ -5,19 +5,9 @@ class SearchesController < ApplicationController
     @search = Search.new
   end
 
-  def keyword_search
-    search = Search.new(keyword_params)
-    if search.keyword_search && search.results.any?
-      @results = search.results
-      redirect_to locations_path(ids: @results.ids)
-    else
-      puts 'didnt work'
-    end
-  end
-
-  def filter_search
+  def create
     search = Search.new(create_params)
-    if search.filter_search && search.results.any?
+    if search.search && search.results.any?
       @results = search.results
       redirect_to locations_path(ids: @results.ids)
     else
@@ -31,6 +21,6 @@ class SearchesController < ApplicationController
 
   def create_params
     params.permit(:distance, :city, :state, :beneficiary_groups,
-                  :services, :open_now, :open_weekends)
+                  :services, :open_now, :open_weekends, :keyword)
   end
 end

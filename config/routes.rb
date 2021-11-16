@@ -23,9 +23,7 @@ Rails.application.routes.draw do
   resources :organizations, only: [:show] do
     resources :locations, only: %i[index new create]
   end
-  resource :searches, only: %i[new]
-  post '/keyword_search', to: 'searches#keyword_search', as: :keyword_search
-  post '/filter_search', to: 'searches#filter_search', as: :filter_search
+  resource :searches, only: %i[new create]
 
   root to: 'searches#new'
 end

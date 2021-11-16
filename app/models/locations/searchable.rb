@@ -31,10 +31,3 @@ module Locations
     end
   end
 end
-
-# {"authenticity_token"=>"oC6MgxESKc3yo7iI8daKz-HOEsFXkp9C_
-#   pwoo1kgD6_g1htkqf1Ge-sd2pDb pQP1ek7YVR23LkPFe5L0vuKnsg",
-#   "distance"=>"10mi", "city"=>"Nashville", "state"=>"TN",
-#   "beneficiary_groups"=>"blacks", "cause_and_services"=>"homecare",
-#   "open_now"=>"true", "open_weekends"=>"true", "commit"=>"Search",
-#   "controller"=>"searches", "action"=>"filter_search"}

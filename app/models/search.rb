@@ -13,6 +13,10 @@ class Search
 
   validates :keyword, presence: true
 
+  def search
+    keyword.nil? ? filter_search : keyword_search
+  end
+
   def keyword_search
     # @results = Location.geo_near(Geo.to_wkt(Geo.point(DEFAULT_LOCATION[:longitude], DEFAULT_LOCATION[:latitude])), kilometers.to_i).search_by_keyword(keyword) if valid?
     @results = Location.search_by_keyword(keyword) if valid?
