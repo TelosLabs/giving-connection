@@ -18,7 +18,7 @@
       = inline_svg_tag 'desk-blur-right-contact.svg', size:"258*248"
 
   = form_with url: '/contact', method: :post, data: { controller: 'contact-form'} do |f|
-    .c-form class="w-full gap-6 pb-11 md:pb-36"
+    .c-form class="gap-6 pb-11 md:pb-36"
       div class="w-full"
         = f.label :name, "*Name"
         = f.text_field :name, autofocus: true, class:"c-input", required: true
