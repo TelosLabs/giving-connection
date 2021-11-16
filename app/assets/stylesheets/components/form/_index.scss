@@ -10,36 +10,4 @@
 	border-radius: 2px;
 	font-size: 14px;
 	color: $copy-gray-7;
-
-	&--group {
-		margin-bottom: 20px;
-		width: 100%;
-
-		&__search {
-			@media (min-width: 640px) {
-				margin-bottom: 0;
-			}
-		}
-	}
-
-	&--action {
-		margin-top: 18px;
-		margin-bottom: 45px;
-
-		&__search {
-			@media (min-width: 640px) {
-				margin: 0;
-			}
-		}
-	}
-
-	&--search {
-		padding-top: 0;
-
-		@media (min-width: 640px) {
-			flex-direction: row;
-			max-width: 546px;
-			padding-bottom: 104px;
-		}
-	}
 }
