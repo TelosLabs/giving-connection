@@ -22,6 +22,7 @@ class Location < ActiveRecord::Base
   has_many :office_hours
   has_many :favorite_locations
   has_many :location_services, dependent: :destroy
+  has_many :services, through: :location_services
   belongs_to :organization, optional: true
 
   # TODO: add validations
