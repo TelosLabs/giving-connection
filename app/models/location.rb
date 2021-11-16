@@ -10,7 +10,6 @@
 #  longitude       :decimal(10, 6)
 #  lonlat          :geography        not null, point, 4326
 #  website         :string
-#  string          :string
 #  main            :boolean          default(FALSE), not null
 #  physical        :boolean
 #  offer_services  :boolean
@@ -19,14 +18,13 @@
 #  updated_at      :datetime         not null
 #
 class Location < ActiveRecord::Base
-  include Locations::Searchable
 
   has_many :office_hours
   has_many :services
   has_many :favorite_locations
   belongs_to :organization, optional: true
 
-  # TODO add validations
+  # TODO: add validations
   validates :address, presence: true
   validates :latitude, presence: true
   validates :longitude, presence: true
@@ -56,7 +54,7 @@ class Location < ActiveRecord::Base
   private
 
   def single_main_location
-    errors.add(:base, "only one main location is allowed") if organization.locations.where(main: true).size > 1
+    errors.add(:base, 'only one main location is allowed') if organization.locations.where(main: true).size > 1
   end
 
   def lonlat_geo_point

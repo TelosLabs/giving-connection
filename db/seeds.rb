@@ -1,13 +1,5 @@
 # frozen_string_literal: true
 
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
-
 # Admin Users
 AdminUser.create!(email: 'admin@example.com', password: 'testing', password_confirmation: 'testing')
 
@@ -115,14 +107,14 @@ org.locations.build(
 puts "Org with id #{org.id} sucessfully created" if org.save!
 
 # Categories
-OrganizationConstants::CATEGORIES.each do |category|
+Organizations::Constants::CATEGORIES.each do |category|
   new_category = Category.new(name: category)
 
   puts "#{new_category.name} sucessfully created" if new_category.save!
 end
 
 # Beneficiaries
-OrganizationConstants::BENEFICIARIES.each do |beneficiary, subbeneficiaries|
+Organizations::Constants::BENEFICIARIES.each do |beneficiary, subbeneficiaries|
   new_beneficiary = BeneficiaryGroup.new(name: beneficiary)
 
   puts "#{new_beneficiary.name} sucessfully created" if new_beneficiary.save!

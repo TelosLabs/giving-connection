@@ -24,8 +24,10 @@
 #  description_es       :text
 #
 class Organization < ApplicationRecord
-  include OrganizationConstants
+  include Organizations::Constants
+  include Organizations::Searchable
 
+  has_many :tags, dependent: :destroy
   has_many :organization_categories, dependent: :destroy
   has_many :categories, through: :organization_categories
   has_many :organization_beneficiaries, dependent: :destroy
@@ -40,12 +42,12 @@ class Organization < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
   validates :ein_number, presence: true, uniqueness: true
-  validates :irs_ntee_code, presence: true, inclusion: { in: OrganizationConstants::NTEE_CODE }
+  validates :irs_ntee_code, presence: true, inclusion: { in: Organizations::Constants::NTEE_CODE }
   validates :mission_statement_en, presence: true
   validates :vision_statement_en, presence: true
   validates :tagline_en, presence: true
   validates :description_en, presence: true
-  validates :scope_of_work, presence: true, inclusion: { in: OrganizationConstants::SCOPE }
+  validates :scope_of_work, presence: true, inclusion: { in: Organizations::Constants::SCOPE }
   validates :logo, content_type: ['image/png', 'image/jpg', 'image/jpeg'],
                    size: { less_than: 5.megabytes, message: 'File too large. Must be less than 5MB in size' }
 

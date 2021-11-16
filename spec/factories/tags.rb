@@ -11,14 +11,9 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #
-require 'rails_helper'
-
-RSpec.describe Service, type: :model do
-  context 'Service model validation test' do
-    subject { create(:service) }
-
-    it 'ensures service can be created' do
-      expect(subject).to be_valid
-    end
+FactoryBot.define do
+  factory :tag do
+    name { 'Special Care' }
+    organization { association :organization }
   end
 end

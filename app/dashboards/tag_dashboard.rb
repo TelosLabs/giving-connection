@@ -2,7 +2,7 @@
 
 require 'administrate/base_dashboard'
 
-class OfficeHourDashboard < Administrate::BaseDashboard
+class TagDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -10,12 +10,11 @@ class OfficeHourDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    location: Field::BelongsTo,
+    organization: Field::BelongsTo,
     id: Field::Number,
-    day: Field::String,
-    open_time: Field::Time,
-    close_time: Field::Time,
-    closed: Field::Boolean
+    name: Field::String,
+    created_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -24,21 +23,18 @@ class OfficeHourDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-    location
+    organization
     id
-    day
-    open_time
+    name
+    created_at
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-    location
+    organization
     id
-    day
-    open_time
-    close_time
-    closed
+    name
     created_at
     updated_at
   ].freeze
@@ -47,11 +43,8 @@ class OfficeHourDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    location
-    day
-    open_time
-    close_time
-    closed
+    organization
+    name
   ].freeze
 
   # COLLECTION_FILTERS
@@ -66,10 +59,10 @@ class OfficeHourDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how office hours are displayed
+  # Overwrite this method to customize how tags are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(office_hour)
-  #   "OfficeHour ##{office_hour.id}"
+  # def display_resource(tag)
+  #   "Tag ##{tag.id}"
   # end
 end

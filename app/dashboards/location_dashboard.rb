@@ -1,4 +1,6 @@
-require "administrate/base_dashboard"
+# frozen_string_literal: true
+
+require 'administrate/base_dashboard'
 
 class LocationDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -56,7 +58,6 @@ class LocationDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    organization
     address
     latitude
     longitude

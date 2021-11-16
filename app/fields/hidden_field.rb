@@ -1,4 +1,6 @@
-require "administrate/field/base"
+# frozen_string_literal: true
+
+require 'administrate/field/base'
 
 class HiddenField < Administrate::Field::Base
   def to_s
@@ -8,11 +10,9 @@ class HiddenField < Administrate::Field::Base
   def stimulus_controller
     case attribute
     when :latitude
-      "places"
+      'places'
     when :longitude
-      "places"
-    else
-      nil
+      'places'
     end
   end
 
@@ -22,8 +22,6 @@ class HiddenField < Administrate::Field::Base
       attribute.to_s
     when :longitude
       attribute.to_s
-    else
-      nil
     end
   end
 end
