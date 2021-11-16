@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     resources :social_medias, only: %i[new create edit update]
     resources :services
     resources :categories, only: %i[new create edit update]
-    resources :locations
+    resources :locations, only: %i[new create edit update]
     resources :location_services
     resources :office_hours
 

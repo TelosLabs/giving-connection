@@ -208,6 +208,7 @@ ActiveRecord::Schema.define(version: 2021_11_08_202634) do
     t.bigint "organization_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_tags_on_name"
     t.index ["organization_id"], name: "index_tags_on_organization_id"
   end
 
