@@ -10,7 +10,6 @@
 #  longitude       :decimal(10, 6)
 #  lonlat          :geography        not null, point, 4326
 #  website         :string
-#  string          :string
 #  main            :boolean          default(FALSE), not null
 #  physical        :boolean
 #  offer_services  :boolean
