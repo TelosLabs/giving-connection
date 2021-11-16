@@ -12,6 +12,4 @@ Rails.application.routes.draw do
 
   resource :home, only: [:index]
   root to: 'home#index'
-  get '/landing', to: 'landing_page#index'
-  get '/contact', to: 'contact#index'
 end
