@@ -33,4 +33,8 @@ class User < ApplicationRecord
          :timeoutable, :trackable
 
   has_many :organizations, as: :creator
+  has_many :fav_locs, class_name: "FavoriteLocation"
+  has_many :favorited_locations, through: :fav_locs, source: :location
+  # has_many :manifests
+  # has_many :assemblies, through: :manifests
 end

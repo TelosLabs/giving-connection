@@ -8,10 +8,9 @@ Rails.application.routes.draw do
     resources :social_medias, only: %i[new create edit update]
     resources :services
     resources :categories, only: %i[new create edit update]
-    resources :locations, only: %i[new create edit update]
+    resources :locations, only: %i[show new create edit update]
     resources :location_services
     resources :office_hours
-
     root to: 'admin_users#index'
   end
 
@@ -19,6 +18,8 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :locations, only: %i[index new]
+
+  resources :favorite_locations, only: %i[ create destroy ]
 
   resources :organizations, only: [:show] do
     resources :locations, only: %i[index new create]

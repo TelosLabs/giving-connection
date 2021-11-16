@@ -20,6 +20,7 @@
 class Location < ActiveRecord::Base
 
   has_many :office_hours
+  has_many :favorite_locations
   has_many :location_services, dependent: :destroy
   belongs_to :organization, optional: true
 
