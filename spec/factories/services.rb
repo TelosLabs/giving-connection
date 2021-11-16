@@ -10,7 +10,9 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-class Service < ApplicationRecord
-  belongs_to :cause
-  has_many :location_services, dependent: :destroy
+FactoryBot.define do
+  factory :service do
+    name { 'MyString' }
+    cause { nil }
+  end
 end
