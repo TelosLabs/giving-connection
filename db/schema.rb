@@ -177,11 +177,10 @@ ActiveRecord::Schema.define(version: 2021_11_12_203518) do
 
   create_table "services", force: :cascade do |t|
     t.string "name"
-    t.text "description"
-    t.bigint "location_id", null: false
+    t.bigint "cause_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["location_id"], name: "index_services_on_location_id"
+    t.index ["cause_id"], name: "index_services_on_cause_id"
   end
 
   create_table "social_medias", force: :cascade do |t|
@@ -235,14 +234,12 @@ ActiveRecord::Schema.define(version: 2021_11_12_203518) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "beneficiary_subcategories", "beneficiary_groups"
-  add_foreign_key "favorite_locations", "locations"
-  add_foreign_key "favorite_locations", "users"
   add_foreign_key "locations", "organizations"
   add_foreign_key "organization_beneficiaries", "beneficiary_subcategories"
   add_foreign_key "organization_beneficiaries", "organizations"
   add_foreign_key "organization_categories", "categories"
   add_foreign_key "organization_categories", "organizations"
-  add_foreign_key "services", "locations"
+  add_foreign_key "services", "causes"
   add_foreign_key "social_medias", "organizations"
   add_foreign_key "tags", "organizations"
 end

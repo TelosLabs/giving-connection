@@ -9,7 +9,8 @@ Rails.application.routes.draw do
     resources :services
     resources :categories, only: %i[new create edit update]
     resources :locations, only: %i[show new create edit update]
-
+    resources :location_services
+    resources :office_hours
     root to: 'admin_users#index'
   end
 

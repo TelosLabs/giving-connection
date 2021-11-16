@@ -21,7 +21,7 @@ module Admin
     end
 
     def create
-      organization_resource_params = resource_params.except('beneficiary_subcategories_id')
+      organization_resource_params = resource_params.except('beneficiary_subcategories_id') # .except('services_id')
       resource = resource_class.new(organization_resource_params)
       resource.creator = current_admin_user
       authorize_resource(resource)
@@ -94,6 +94,7 @@ module Admin
                                                                                youtube blog id],
                                                    service_attributes: %i[name description id],
                                                    beneficiary_subcategories_id: [],
+                                                   services_id: [],
                                                    main_location_attributes: %i[address latitude longitude website main physical offer_services],
                                                    tags_attributes: [] }
       params.require(resource_class.model_name.param_key)

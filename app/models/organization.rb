@@ -32,7 +32,7 @@ class Organization < ApplicationRecord
   has_many :categories, through: :organization_categories
   has_many :organization_beneficiaries, dependent: :destroy
   has_many :beneficiary_subcategories, through: :organization_beneficiaries
-  has_many :locations
+  has_many :locations, dependent: :destroy
   has_many :additional_locations, -> { where(main: false) }, class_name: 'Location', foreign_key: :organization_id
   has_one :main_location, -> { where(main: true) }, class_name: 'Location', foreign_key: :organization_id
   has_one :social_media, dependent: :destroy
@@ -55,8 +55,8 @@ class Organization < ApplicationRecord
 
   accepts_nested_attributes_for :organization_beneficiaries, allow_destroy: true
   accepts_nested_attributes_for :social_media, allow_destroy: true
-  accepts_nested_attributes_for :locations
   accepts_nested_attributes_for :additional_locations, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :locations
 
   private
 

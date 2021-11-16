@@ -20,8 +20,8 @@
 class Location < ActiveRecord::Base
 
   has_many :office_hours
-  has_many :services
   has_many :favorite_locations
+  has_many :location_services, dependent: :destroy
   belongs_to :organization, optional: true
 
   # TODO: add validations
@@ -41,12 +41,13 @@ class Location < ActiveRecord::Base
   before_validation :lonlat_geo_point
 
   accepts_nested_attributes_for(
-    :services,
+    :office_hours,
     reject_if: :all_blank,
     allow_destroy: true
   )
+
   accepts_nested_attributes_for(
-    :office_hours,
+    :location_services,
     reject_if: :all_blank,
     allow_destroy: true
   )
