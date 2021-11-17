@@ -2,7 +2,11 @@
 
 .error {
   color: $state-error;
-  text-transform: capitalize;
+  display: block;
+
+  &::first-letter {
+    text-transform: capitalize;
+  }
 }
 
 .field_with_errors input {
