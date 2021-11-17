@@ -20,7 +20,7 @@ Rails.application.routes.draw do
 
   resources :locations, only: %i[index new]
 
-  resources :organizations, only: [:show] do
+  resources :organizations, only: %i[ show edit update ] do
     resources :locations, only: %i[index new create]
   end
   resource :searches, only: %i[new create]
