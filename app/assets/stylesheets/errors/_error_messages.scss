@@ -1,18 +1,13 @@
 @import "/settings/variables";
 
-.error {
-  color: $state-error;
-  display: block;
-
-  &::first-letter {
-    text-transform: capitalize;
-  }
+.error::first-letter {
+  text-transform: capitalize;
 }
 
 .field_with_errors input {
   border-color: #f9999c;
   background-image: url("error-icon.svg");
   background-repeat: no-repeat;
-  background-position: 97% 50%;
+  background-position: 96% 50%;
   background-size: 17px 17px;
 }
