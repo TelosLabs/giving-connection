@@ -3,7 +3,7 @@
 # Helper module for error messages in forms
 module FormHelper
   def errors_for(form, field)
-      content_tag(:p, form.object.errors[field].try(:first), class: 'error block text-states-error')
+    content_tag(:p, form.object.errors[field].try(:first), class: 'error block text-states-error')
   end
 
   def form_group_for(form, field, opts = {}, &block)
