@@ -5,12 +5,15 @@
   div class="max-w-md px-4 mx-auto mb-5 text-sm text-center text-black pb-7 sm:text-lg sm:pb-12"
     | Please create a new password
 
-  = simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f|
+  = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f|
     .c-form
-      = f.input :reset_password_token, as: => hidden
+      = render "users/shared/error_messages", resource: resource
+      = f.hidden_field :reset_password_token
       .c-form--group
-        = f.input :password, placeholder: "(6+ characters)", error: "Your password must be more than 6 characters.", input_html: {class:"c-input", autocomplete: "new-password"}
+        = f.label :password, "New password"
+        = f.password_field :password, autofocus: true, autocomplete: "new-password", class:"c-input", placeholder: "(6+ characters)"
       .c-form--group
-        = f.input :password_confirmation, placeholder: "Confirm your password", input_html: {class: "c-input", autocomplete: "new-password"}
+        = f.label :password_confirmation
+        = f.password_field :password_confirmation, autocomplete: "new-password", class: "c-input", placeholder: "Confirm your password"
       .c-form--action
-        = f.button :submit, "Reset password", class:"c-button"
+        = f.submit "Reset password", class:"c-button"
