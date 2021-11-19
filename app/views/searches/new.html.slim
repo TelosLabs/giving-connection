@@ -1,26 +1,117 @@
-= form_with url: searches_path, method: :post, class: 'flex flex-col overflow-hidden items-center' do |f|
-  = f.label :keyword
-  = f.text_field :keyword, class: 'form-control'
 
-  = f.submit "Search"
+=  @results
+- results = [\
+  { \
+    title: 'Centerstone Clarksville',\
+    address: '511 8th Street Clarksville, TN 37040',\
+    image_url: 'https://www.florisumc.org/wp-content/uploads/2019/05/nami.jpeg',\
+    id: 1,\
+    webpage: 'www.centerstone.org',\
+    description: 'Centerstone is a non-for-profit health care organization dedicated to delivering care that changes people’s lives. We provide mental health care, addiction treatment and community education in Florida, Illinois, Indiana, Kentucky and Tennessee.'\
+  },\
+  { \
+    title: 'NAMI Tennessee',\
+    address: '1101 Kermit Dr # 605, Nashville, TN 37217',\
+    image_url: 'logo-default1.png',\
+    id: 2,\
+    webpage: 'www.namitennessee.org',\
+    description: 'NAMI is a non-for-profit health care organization dedicated to delivering care that changes people’s lives. We provide mental health care, addiction treatment and community education in Kentucky and Tennessee.'\
+  },\
+  { \
+    title: 'Mental Health America of the MidSouth',\
+    address: '446 Metroplex Drive, Suite A-224, Nashville, TN 37211',\
+    image_url: 'logo-default2.png',\
+    id: 3,\
+    webpage: 'www.mentalhealth.org',\
+    description: 'Mental Health America is a non-for-profit health care organization dedicated to delivering care that changes people’s lives. We provide mental health care, addiction treatment and community education in Florida, Illinois, Indiana, Kentucky and Tennessee.'\
+  },\
+  { \
+    title: 'NAMI Florida',\
+    address: '1101 Kermit Dr # 605, Nashville, TN 37217',\
+    image_url: 'logo-default3.png',\
+    id: 4,\
+    webpage: 'www.namiflorida.org',\
+    description: 'NAMI is a non-for-profit health care organization dedicated to delivering care that changes people’s lives. We provide mental health care, addiction treatment and community education in Kentucky and Tennessee.'\
+  },\
+  { \
+    title: 'NAMI Kentucky',\
+    address: '1101 Kermit Dr # 605, Nashville, TN 37217',\
+    image_url: 'logo-default4.png',\
+    id: 5,\
+    webpage: 'www.namikentucky.org',\
+    description: 'NAMI is a non-for-profit health care organization dedicated to delivering care that changes people’s lives. We provide mental health care, addiction treatment and community education in Kentucky and Tennessee.'\
+  },\
+  { \
+    title: 'NAMI Tennessee',\
+    address: '1101 Kermit Dr # 605, Nashville, TN 37217',\
+    image_url: 'logo-default5.png',\
+    id: 6,\
+    webpage: 'www.namitennessee.org',\
+    description: 'NAMI is a non-for-profit health care organization dedicated to delivering care that changes people’s lives. We provide mental health care, addiction treatment and community education in Kentucky and Tennessee.'\
+  },\
+  { \
+    title: 'NAMI Tennessee',\
+    address: '1101 Kermit Dr # 605, Nashville, TN 37217',\
+    image_url: 'logo-default4.png',\
+    id: 7,\
+    webpage: 'www.namitennessee.org',\
+  },\
+]
 
-= form_with url: searches_path, method: :post, class: 'flex flex-col overflow-hidden items-center' do |f|
 
-  = f.label "Distance"
-  = f.text_field :distance, class: 'form-control'
-  = f.label "City"
-  = f.text_field :city, class: 'form-control'
-  = f.label "State"
-  = f.text_field :state, class: 'form-control' 
-  = f.label "Beneficiary Groups Served"
-  = f.text_field :beneficiary_groups, class: 'form-control'
-  = f.label "Cause & Services"
-  = f.text_field :services, class: 'form-control'
-  / = f.label "Distance"
-  / = f.check_box "Distance", {"1mi"s}
-  = f.label "Open Now?"
-  = f.check_box :open_now, {}, true, false
-  = f.label "Open on Weekends?"
-  = f.check_box :open_weekends, {}, true, false
+= form_with model: @search, url: searches_path, class: 'relative min-h-screen', method: :post do |f|
+  = render SearchBar::Component.new(form: f, search: @search)
+  div class="flex flex-row justify-center w-full md:h-screen pt-28" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3" 
+    div class="flex flex-row justify-center w-full min-h-full"
+      div class="flex flex-col w-full h-full min-h-full max-w-470px md:border-r border-grey-7"
+        div class="flex flex-row justify-between w-full p-4 bg-grey-9"  data-controller="modal"
+          button.inline-flex.items-center.px-3.py-2.text-sm.leading-4 type="button" data-action="click->modal#open"
+            /! Heroicon name: solid/mail
+            = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative'
+            span class="flex w-3 h-3 mr-2 text-grey-2"
+              span class="relative inline-flex w-2 h-2 rounded-full bg-salmon"
+            | Filters
+          /! Modal Container
+          div class="fixed inset-0 flex items-center justify-center hidden min-h-screen overflow-y-auto animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;") 
+            /! Modal Inner Container
+            .max-h-full.w-full.max-w-375px.relative.py-20
+              /! Modal Card
+              = render partial: 'filter', locals: { form: f, search: @search }
+          span class="relative z-0 inline-flex shadow-sm md:hidden rounded-6px"
+            / active bg-blue-dark.focus:text-white
+            / inactive bg-white text-gray-3
+            button.relative.inline-flex.items-center.px-5.py-1.rounded-l-6px.border.text-sm type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="0"
+              | List
+            button.-ml-px.relative.inline-flex.items-center.px-5.py-1.rounded-r-6px.border.text-sm type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="1"
+              | Map
 
-  = f.submit "Search"
+        div class="flex flex-row items-center justify-between w-full p-4"
+          span class="text-xs text-grey-3"
+            | 20 results found
+
+          button class="inline-flex items-center px-3 py-2 text-xs text-grey-3" type="button"
+            /! Heroicon name: solid/mail
+            = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
+            | Create Search Alert
+
+        div class="hidden w-full h-full md:overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
+          ul class="flex flex-col divide-y divide-gray-8" 
+            - results.each do |result|
+              li
+                = render ResultCard::Component.new(title: result[:title],\
+                                                  address: result[:address],\
+                                                  image_url: result[:image_url],\
+                                                  id: result[:id],\
+                                                  webpage: result[:webpage],\
+                                                  description: result[:description])
+          div class="h-40 mt-24"
+            | Pagination
+        div class="hidden w-full h-screen md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
+          div# class="w-full h-full" data-places-target="map" 
+
+      div  class="relative hidden w-full md:flex " data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
+        div# class="absolute inset-0 w-full h-full" data-places-target="map"
+
+div class="h-40"
+
+  | footer
