@@ -6,6 +6,7 @@ class LocationsController < ApplicationController
   def index
     @locations = Location.find(params[:ids]) if params[:ids].present?
     @locations ||= Location.all
+    @alert_params = params[:alert_params]
   end
 
   def new

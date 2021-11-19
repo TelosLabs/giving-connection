@@ -33,4 +33,5 @@ class User < ApplicationRecord
          :timeoutable, :trackable
 
   has_many :organizations, as: :creator
+  has_many :alerts
 end
