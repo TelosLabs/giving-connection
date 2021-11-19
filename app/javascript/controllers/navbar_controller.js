@@ -15,7 +15,7 @@ export default class extends Controller {
     this.sideNavBarTarget.classList.remove('sidebar-slide-in')
     this.sideNavBarTarget.classList.add('sidebar-slide-out')
     setTimeout(() => {
-    this.sideNavBarTarget.classList.add('hidden')
+      this.sideNavBarTarget.classList.add('hidden')
     }, 500);
   }
 }
