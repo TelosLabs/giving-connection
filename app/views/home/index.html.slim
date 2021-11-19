@@ -1,6 +1,6 @@
 main
   section id="search" class="pt-6 pb-12 gradient-blue sm:pt-10 sm:pb-24"
-    h2 class="z-20 px-10 pt-6 pb-10 text-2xl font-bold text-center text-white xs:px-20 sm:p-6"
+    h2 class="z-20 px-12 pt-6 pb-10 text-2xl font-bold text-center text-white xs:px-20 sm:p-6"
       | What are you looking for today?
     div class="hidden px-6 pb-6 text-center text-white sm:block"
       | Search for listings of nonprofit organizations based on your needs.
@@ -58,8 +58,10 @@ main
         = image_tag 'group-friends-mob.png', class:'w-full'
   section class="relative bg-seafoam"
     div class="relative z-20 max-w-sm pb-20 mx-auto text-center"
-      h2 class="pt-20 text-2xl font-bold text-center md:pt-28 text-blue-dark pb-11"
-        | Are you an organization interested in joining our listings?
+      h2 class="px-5 pt-20 text-2xl font-bold text-center sm:px-0 md:pt-28 text-blue-dark pb-11"
+        | Are you an organization
+        br
+        | interested in joining our listings?
       = link_to "Contact us", "#", class:'c-button inline-block text-white bg-blue-dark'
     div class="top-0 left-0 z-10 hidden sm:block sm:absolute"
       = inline_svg_tag 'lc-desk-blur-left.svg'
