@@ -11,5 +11,5 @@ html
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
     = stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
   body
-    = render NavbarComponent.new(signed_in: user_signed_in?)
+    = render Navbar::NavbarComponent.new(signed_in: user_signed_in?)
     = yield

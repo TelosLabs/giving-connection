@@ -7,6 +7,7 @@ import '../stylesheets/application'
 import Rails from "@rails/ujs"
 import "@hotwired/turbo-rails"
 import * as ActiveStorage from "@rails/activestorage"
+import "../components"
 import "channels"
 
 Rails.start()
