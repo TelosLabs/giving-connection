@@ -9,7 +9,7 @@ class SearchesController < ApplicationController
     search = Search.new(create_params)
     if search.search && search.results.any?
       @results = search.results
-      redirect_to locations_path(ids: @results.ids, alert_params: create_params )
+      redirect_to locations_path(ids: @results.ids, alert_params: create_params)
     else
       puts 'didnt work'
     end
