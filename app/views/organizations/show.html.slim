@@ -1,5 +1,154 @@
-= image_tag @organization.cover_photo, style: 'width:375px;height:102px;margin-top:229px'
-= image_tag @organization.logo, style: 'width:96px;height:96px;margin-left:141px'
+= form_with model: @search, url: searches_path, class: '', method: :post do |f|
+  = render SearchBar::Component.new(form: f, search: @search)
+div class="mt-28"
+  div class="flex flex-row justify-between w-full p-4 bg-grey-9 md:hidden"  data-controller="modal"
+    a href="javascript:history.back()" class="flex inline-flex items-center px-3 py-2 text-sm leading-4" type="button"
+      = inline_svg_tag "back_icon.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative mr-2'
+      | Back to Search Results
+  div class="flex flex-col flex-wrap justify-center w-full md:gap-4 md:flex-row sm:p-7"
+    div class="w-full bg-white rounded max-w-656px"
+      = image_tag @organization.cover_photo, class:'w-full h-24 object-fit-cover rounded-t'
+      div class='flex justify-center w-full mx-0 -mt-14 h-75 md:justify-start md:mx-11'
+        = image_tag @organization.logo, class: 'shadow rounded'
 
-h2 
-  = @organization.name
+      div class=" md:px-11 md:text-left"
+        h2 class="text-lg font-bold mb-2.5 text-center"
+          = @organization.name
+        p class="text-xs text-center font-base text-grey-4"
+          | 511 8th Street
+        p class="text-xs text-center font-base text-grey-4"
+          | Clarksville, TN 37040
+        div class="flex justify-center items-center mt-4 gap-2.5"
+          a href="#" class="flex items-center text-sm grey-2"
+            = inline_svg_tag 'share_icon.svg', class: " fill-current mr-2"
+            | Share
+          a href="#" class="flex items-center text-sm grey-2"
+            = inline_svg_tag 'save_icon.svg', class: " fill-current mr-2"
+            | Save
+        div class="flex my-8 gap-2.5 flex-wrap px-6"
+          span class="text-sm text-center px-2.5 py-1.5 rounded-lg border border-grey-6 text-grey-3"
+            | Mental Health
+          span class="text-sm text-center px-2.5 py-1.5 rounded-lg border border-grey-6 text-grey-3"
+            | Crisis Support
+          span class="text-sm text-center px-2.5 py-1.5 rounded-lg border border-grey-6 text-grey-3"
+            | Crisis
+          span class="text-sm text-center px-2.5 py-1.5 rounded-lg border border-grey-6 text-grey-3"
+            | Crisis
+        div class="mx-6 text-left"
+          h4 class="text-sm font-bold uppercase text-grey-2"
+            | details
+          p class="text-sm leading-6 font-base text-grey-2"
+            span class="font-bold" 
+              ' Phone:
+            span
+              | (615) 511-3748
+          p class="text-sm leading-6 font-base text-grey-2"
+            span class="font-bold"
+              ' Hours:
+            span class="text-green-fountain"
+              | Open
+          p class="ml-12 text-sm leading-6 font-base text-grey-2"
+            span class="font-bold"
+              ' Mon - Fri
+            span
+              | 8:30AM – 5PM
+          p class="ml-12 text-sm leading-6 font-base text-grey-2"
+            span class="font-bold"
+              ' Sat
+            span
+              | Closed
+          p class="ml-12 text-sm leading-6 font-base text-grey-2"
+            span class="font-bold"
+              ' Sun
+            span
+              | Closed
+          p class="text-sm leading-6 font-base text-grey-2"
+            span class="font-bold"
+              ' Website:
+            a href="#" class=""
+              | www.centerstone.org
+          p class="text-sm leading-6 font-base text-grey-2"
+            span class="font-bold"
+              ' Email:
+            a href="mailto:clarksville@centerstone.org" class=""
+              | clarksville@centerstone.org
+        div class="my-6 border-t border-grey-8"
+        div class="flex flex-col px-6 text-left"
+          h4 class="text-sm font-bold text-black uppercase"
+            | WHAT WE DO
+          p class="text-sm text-black"
+            ' Centerstone is a non-for-profit health care organization dedicated to
+            ' delivering care that changes people’s lives. We provide mental health
+            ' care, addiction treatment and community education in Florida, Illinois,
+            ' Indiana, Kentucky and Tennessee.
+        div class="my-6 border-t border-grey-8 sm:hidden"
+        div class="mx-5 sm:hidden"
+          h3 class="text-sm font-bold uppercase"
+            | Our Services
+          ul class="flex flex-col gap-8"
+            li 
+              a href="#" class="text-sm font-base text-grey-2"
+                | Counseling
+            li 
+              a href="#" class="text-sm font-base text-grey-2"
+                | Children and Family
+            li 
+              a href="#" class="text-sm font-base text-grey-2"
+                | Psychiatric Care
+            li 
+              a href="#" class="text-sm font-base text-grey-2"
+                | Crisis Services
+            li 
+              a href="#" class="text-sm font-base text-grey-2"
+                | Primary Care
+          div class="border-t border-grey-8 my-7"
+
+          h3 class="text-sm font-bold uppercase"
+            | Social Media
+          div class="flex flex-row gap-5 my-6"
+            a href="#" class="text-sm font-base text-grey-2 "
+              = inline_svg_tag 'facebook_box.svg', class: "text-salmon fill-current"
+            a href="#" class="text-sm font-base text-grey-2"
+              = inline_svg_tag 'linkedin_box.svg', class: "text-salmon fill-current"
+            a href="#" class="text-sm font-base text-grey-2"
+              = inline_svg_tag 'twitter_circle.svg', class: "text-salmon fill-current"
+            a href="#" class="text-sm font-base text-grey-2"
+              = inline_svg_tag 'instagram_box.svg', class: "text-salmon fill-current"
+        div class="border-t border-grey-8 my-7"
+        h4 class="px-6 text-sm font-bold text-black uppercase"
+          | Map
+        div class="w-full mt-4 h-400px md:px-6" data-tabs-target="panel" data-controlle="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
+          div# class="w-full h-full" data-places-target="map"
+
+    div class="flex-col flex-grow-0 hidden w-full bg-white rounded h-min-content sm:flex md:max-w-402px px-11 md:p-7"
+      h3 class="text-sm font-bold uppercase"
+        | Our Services
+      ul class="flex flex-col gap-8"
+        li 
+          a href="#" class="text-sm font-base text-grey-2"
+            | Counseling
+        li 
+          a href="#" class="text-sm font-base text-grey-2"
+            | Children and Family
+        li 
+          a href="#" class="text-sm font-base text-grey-2"
+            | Psychiatric Care
+        li 
+          a href="#" class="text-sm font-base text-grey-2"
+            | Crisis Services
+        li 
+          a href="#" class="text-sm font-base text-grey-2"
+            | Primary Care
+      div class="border-t border-grey-8 my-7"
+
+      h3 class="text-sm font-bold uppercase"
+        | Social Media
+      div class="flex flex-row gap-5 my-6"
+        a href="#" class="text-sm font-base text-grey-2 "
+          = inline_svg_tag 'facebook_box.svg', class: "text-salmon fill-current"
+        a href="#" class="text-sm font-base text-grey-2"
+          = inline_svg_tag 'linkedin_box.svg', class: "text-salmon fill-current"
+        a href="#" class="text-sm font-base text-grey-2"
+          = inline_svg_tag 'twitter_circle.svg', class: "text-salmon fill-current"
+        a href="#" class="text-sm font-base text-grey-2"
+          = inline_svg_tag 'instagram_box.svg', class: "text-salmon fill-current"
