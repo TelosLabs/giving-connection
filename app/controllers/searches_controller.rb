@@ -3,6 +3,14 @@
 class SearchesController < ApplicationController
   def new
     @search = Search.new
+    @causes_and_services = {}
+    Cause.all.each do |cause|
+      @causes_and_services[cause.name] = cause.services.map { |s| s.name }
+    end
+    @beneficiary_groups = {}
+    BeneficiaryGroup.all.each do |group|
+      @beneficiary_groups[group.name] = group.beneficiary_subcategories.map { |category| category.name }
+    end
   end
 
   def create

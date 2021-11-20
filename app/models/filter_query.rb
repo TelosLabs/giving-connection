@@ -5,9 +5,9 @@ class FilterQuery
 
   def initialize(params = {})
     @locations = Location.all
-    @service_name = params[:services]
+    @service_name = params[:services] || []
     @closed = params[:open_now] == 'true'
-    @beneficiary_group = params[:beneficiary_groups]
+    @beneficiary_group = params[:beneficiary_groups] || []
     @city = params[:city]
     @state = params[:state]
   end

@@ -12,7 +12,7 @@
     <%= javascript_include_tag 'https://maps.googleapis.com/maps/api/js?key='+Rails.application.credentials.dig(:google_api_key)+'&libraries=places&callback=initMap', 'data-turbolinks-eval': 'false' %>
   </head>
 
-  <body>
+  <body class="bg-grey-9">
     <%= yield %>
   </body>
 </html>

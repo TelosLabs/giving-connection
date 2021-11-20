@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
 
-  static targets = ["input", "container", "badgesContainer", 'checkbox', 'badgeTemplate', 'hiddenInput']
+  static targets = ["input", "container", "badgesContainer", 'checkbox', 'badgeTemplate', 'hiddenInput', 'group']
   static values = { selected: Array }
 
   connect() {
@@ -11,20 +11,27 @@ export default class extends Controller {
     this.updateCheckboxes()
     this.updateBadges()
     this.updateHiddenInput()
+    this.search()
   }
 
   select(event) {
     this.addCheckboxToStore(event)
     this.updateBadges()
     this.updateHiddenInput()
-    console.log(this.store)
   }
 
   remove(event) {
     const value = event.currentTarget.parentElement.getAttribute('data-value')
     this.store.delete(value)
-    console.log(value)
-    // debugger
+
+    this.updateCheckboxes()
+    this.updateBadges()
+    this.updateHiddenInput()
+  }
+
+  clearAll() {
+    this.store.clear()
+    console.log(this.store)
     this.updateCheckboxes()
     this.updateBadges()
     this.updateHiddenInput()
@@ -40,7 +47,7 @@ export default class extends Controller {
     this.inputTarget.classList.add('hidden')
     this.containerTarget.classList.remove('border-blue-medium')
   }
-  
+
   addCheckboxToStore(event) {
     const value = event.currentTarget.name
     if (event.currentTarget.checked) {
@@ -76,4 +83,27 @@ export default class extends Controller {
     this.hiddenInputTarget.value = Array.from(this.store)
   }
 
+  search(event) {
+    const query = this.inputTarget.value
+    const regex = new RegExp('.*' + query.toLowerCase() + '.*', 'gmi')
+    this.checkboxTargets.forEach(checkbox => {
+      if (checkbox.name.search(regex) >= 0) {
+        checkbox.parentElement.classList.remove('hidden')
+      } else {
+        checkbox.parentElement.classList.add('hidden')
+      }
+    })
+    this.updateGroups()
+  }
+
+  updateGroups() {
+    this.groupTargets.forEach(group => {
+      const groupChecked = group.querySelectorAll('div:not(.hidden) > input[type="checkbox"]')
+      if (groupChecked.length > 0) {
+        group.classList.remove('hidden')
+      } else {
+        group.classList.add('hidden')
+      }
+    })
+  }
 }
