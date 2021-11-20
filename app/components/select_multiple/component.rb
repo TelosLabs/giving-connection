@@ -1,8 +1,8 @@
 class SelectMultiple::Component < ViewComponent::Base
-  def initialize(name: ,items: {}, selected: [])
+  def initialize(name: ,items: {}, value: '')
     @name = name
     @items = items
-    @selected = selected
+    @value = value
   end
 
   def options

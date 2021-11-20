@@ -2,17 +2,21 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
 
-  static targets = ["input", "container", "badgesContainer", 'checkbox', 'badgeTemplate']
+  static targets = ["input", "container", "badgesContainer", 'checkbox', 'badgeTemplate', 'hiddenInput']
   static values = { selected: Array }
 
   connect() {
     console.log('connected')
     this.store = new Set(this.selectedValue || [])
+    this.updateCheckboxes()
+    this.updateBadges()
+    this.updateHiddenInput()
   }
 
   select(event) {
     this.addCheckboxToStore(event)
     this.updateBadges()
+    this.updateHiddenInput()
     console.log(this.store)
   }
 
@@ -23,10 +27,10 @@ export default class extends Controller {
     // debugger
     this.updateCheckboxes()
     this.updateBadges()
+    this.updateHiddenInput()
   }
 
   focus() {
-    console.log(this.inputTarget)
     this.inputTarget.classList.remove('hidden')
     this.inputTarget.focus()
     this.containerTarget.classList.add('border-blue-medium')
@@ -66,6 +70,10 @@ export default class extends Controller {
       badge.setAttribute('data-value', value)
       this.badgesContainerTarget.appendChild(badge)
     })
+  }
+
+  updateHiddenInput() {
+    this.hiddenInputTarget.value = Array.from(this.store)
   }
 
 }
