@@ -13,3 +13,4 @@ html
   body
     = render Navbar::Component.new(signed_in: user_signed_in?)
     = yield
+    = render Footer::Component.new()
