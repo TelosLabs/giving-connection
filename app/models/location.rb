@@ -28,7 +28,6 @@ class Location < ActiveRecord::Base
   has_many :tags, through: :organization
   has_one  :social_media, through: :organization
 
-  # TODO: add validations
   validates :address, presence: true
   validates :latitude, presence: true
   validates :longitude, presence: true
