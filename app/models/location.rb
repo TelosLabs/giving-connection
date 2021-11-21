@@ -10,7 +10,6 @@
 #  longitude       :decimal(10, 6)
 #  lonlat          :geography        not null, point, 4326
 #  website         :string
-#  string          :string
 #  main            :boolean          default(FALSE), not null
 #  physical        :boolean
 #  offer_services  :boolean
@@ -19,14 +18,15 @@
 #  updated_at      :datetime         not null
 #
 class Location < ActiveRecord::Base
-  include Locations::Searchable
 
   belongs_to :organization, optional: true
   has_many :office_hours
+  has_many :favorite_locations
   has_many :location_services, dependent: :destroy
   has_many :services, through: :location_services
-  has_many :tags, through: :organization
-  has_one  :social_media, through: :organization
+  has_many :tags, through: :organization # TODO check
+  has_one  :social_media, through: :organization # TODO check
+  belongs_to :organization, optional: true
 
   validates :address, presence: true
   validates :latitude, presence: true

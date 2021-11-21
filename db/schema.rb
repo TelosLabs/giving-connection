@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_08_202634) do
+ActiveRecord::Schema.define(version: 2021_11_12_203518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,6 +88,15 @@ ActiveRecord::Schema.define(version: 2021_11_08_202634) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "favorite_locations", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "location_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["location_id"], name: "index_favorite_locations_on_location_id"
+    t.index ["user_id"], name: "index_favorite_locations_on_user_id"
   end
 
   create_table "location_services", force: :cascade do |t|
@@ -208,6 +217,7 @@ ActiveRecord::Schema.define(version: 2021_11_08_202634) do
     t.bigint "organization_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_tags_on_name"
     t.index ["organization_id"], name: "index_tags_on_organization_id"
   end
 
@@ -240,6 +250,8 @@ ActiveRecord::Schema.define(version: 2021_11_08_202634) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "beneficiary_subcategories", "beneficiary_groups"
+  add_foreign_key "favorite_locations", "locations"
+  add_foreign_key "favorite_locations", "users"
   add_foreign_key "location_services", "locations"
   add_foreign_key "location_services", "services"
   add_foreign_key "locations", "organizations"

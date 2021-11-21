@@ -14,5 +14,7 @@
 #  location_id :bigint
 #
 class OfficeHour < ActiveRecord::Base
+  include OfficeHours::Searchable
+  
   belongs_to :location
 end
