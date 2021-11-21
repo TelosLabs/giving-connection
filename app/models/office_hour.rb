@@ -5,7 +5,7 @@
 # Table name: office_hours
 #
 #  id          :bigint           not null, primary key
-#  day         :string           not null
+#  day         :integer          not null
 #  open_time   :time
 #  close_time  :time
 #  closed      :boolean          default(FALSE)
@@ -15,6 +15,10 @@
 #
 class OfficeHour < ActiveRecord::Base
   include OfficeHours::Searchable
-  
+
   belongs_to :location
+
+  def day_name
+    Date::DAYNAMES[day]
+  end
 end

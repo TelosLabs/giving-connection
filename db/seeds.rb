@@ -30,9 +30,9 @@ org.locations.build(
   physical: true,
 )
 
-Date::DAYNAMES.each do |day|
+Date::DAYNAMES.each_with_index do |day, index|
   org.locations.first.office_hours.build(
-    day: day,
+    day: index,
     open_time: Time.now.change({ hour: "9:00" }),
     close_time: Time.now.change({ hour: "16:00" }),
     closed: ["Saturday", "Sunday"].include?(day)
@@ -64,12 +64,12 @@ org.locations.build(
   physical: true,
 )
 
-Date::DAYNAMES.each do |day|
+Date::DAYNAMES.each_with_index do |day, index|
   org.locations.first.office_hours.build(
-    day: day,
+    day: index,
     open_time: Time.now.change({ hour: "9:00" }),
     close_time: Time.now.change({ hour: "16:00" }),
-    closed: ["Saturday", "Sunday"].include?(day)
+    closed: false
   )
 end
 
@@ -98,9 +98,9 @@ org.locations.build(
   physical: true,
 )
 
-Date::DAYNAMES.each do |day|
+Date::DAYNAMES.each_with_index do |day, index|
   org.locations.first.office_hours.build(
-    day: day,
+    day: index,
     open_time: Time.now.change({ hour: "9:00" }),
     close_time: Time.now.change({ hour: "16:00" }),
     closed: false
@@ -132,9 +132,9 @@ org.locations.build(
   physical: true,
 )
 
-Date::DAYNAMES.each do |day|
+Date::DAYNAMES.each_with_index do |day, index|
   org.locations.first.office_hours.build(
-    day: day,
+    day: index,
     open_time: Time.now.change({ hour: "9:00" }),
     close_time: Time.now.change({ hour: "16:00" }),
     closed: ["Saturday", "Sunday"].include?(day)
@@ -164,7 +164,7 @@ Organizations::Constants::BENEFICIARIES.each do |beneficiary, subbeneficiaries|
 end
 
 
-# Causes and Services 
+# Causes and Services
 OrganizationConstants::CAUSES_AND_SERVICES.each do |cause, services|
   new_cause = Cause.new(name: cause)
 

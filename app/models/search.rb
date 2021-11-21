@@ -39,7 +39,8 @@ class Search
   def execute_filter_search
     filters = {
                 address: { city: city, state: state, zip_code: zip_code },
-                open_now: open_now, open_weekends: open_weekends,
+                open_now: ActiveModel::Type::Boolean.new.cast(open_now),
+                open_weekends: ActiveModel::Type::Boolean.new.cast(open_weekends),
                 beneficiary_groups: beneficiary_groups, services: services,
                 distance: distance.to_i
                }

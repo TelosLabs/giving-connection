@@ -15,12 +15,12 @@ class Locations::FilterQuery
       scope = by_address(scope, params[:address])
       # scope = by_service(scope, params[:services])
       # scope = by_beneficiary_groups_served(scope, params[:beneficiary_groups])
-      # scope = open_now
-      # scope = open_weekends
+      scope = opened_now(scope, params[:open_now])
+      scope = opened_on_weekends(scope, params[:open_weekends])
     end
 
     def geo_near(scope, coords, distance)
-      return if distance.blank? || distance.zero?
+      return scope if distance.blank? || distance.zero?
 
       scope.where(
         'ST_DWithin(lonlat, :point, :distance)',
@@ -29,7 +29,7 @@ class Locations::FilterQuery
     end
 
     def by_address(scope, address_params)
-      return if address_params.values.all?(&:blank?)
+      return scope if address_params.values.all?(&:blank?)
 
       scope.where(
         'address ILIKE any ( array[?] )',
@@ -38,7 +38,7 @@ class Locations::FilterQuery
     end
 
     def by_service(scope, services)
-      return if services.empty?
+      return scope if services.empty?
 
       query = <<-SQL
         SELECT * FROM locations
@@ -50,7 +50,7 @@ class Locations::FilterQuery
     end
 
     def by_beneficiary_groups_served(scope, beneficiary_groups_filters)
-      return if beneficiary_groups_filters.empty?
+      return scope if beneficiary_groups_filters.empty?
 
       query = <<-SQL
         SELECT * FROM locations
@@ -70,8 +70,34 @@ class Locations::FilterQuery
       address_params.values.reject!(&:blank?).compact.map { |v| "%#{v}%" }
     end
 
-    # def by_open_now
-    #   @locations.joins(:office_hours).where(office_hours: {closed: @closed })
-    # end
+    def opened_now(scope, open_now)
+      return scope unless !!open_now
+
+      scope.joins(:office_hours).where(office_hours: {
+        day: Time.now.wday,
+        closed: false
+      })
+    end
+
+    def opened_on_weekends(scope, open_on_weekends)
+      return scope unless !!open_on_weekends
+
+      query = <<-SQL
+        SELECT *
+        FROM locations
+        WHERE id IN (
+          SELECT location_id
+          FROM office_hours oh
+          WHERE oh."day" IN (
+            #{Time::DAYS_INTO_WEEK[:saturday]},
+            #{Time::DAYS_INTO_WEEK[:sunday]}
+          )
+          GROUP BY location_id, closed
+          HAVING count(*) = 2 and closed = false
+        )
+      SQL
+      scope_as_array = scope.find_by_sql(query)
+      scope.where(id: scope_as_array.map(&:id))
+    end
   end
 end

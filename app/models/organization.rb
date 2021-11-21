@@ -25,7 +25,6 @@
 #
 class Organization < ApplicationRecord
   include Organizations::Constants
-  include Organizations::Searchable
 
   has_many :tags, dependent: :destroy
   has_many :organization_categories, dependent: :destroy
