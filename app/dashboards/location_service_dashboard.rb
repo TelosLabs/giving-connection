@@ -2,7 +2,7 @@
 
 require 'administrate/base_dashboard'
 
-class LocationDashboard < Administrate::BaseDashboard
+class LocationServiceDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -10,21 +10,12 @@ class LocationDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    organization: Field::BelongsTo,
+    location: Field::BelongsTo,
+    service: Field::BelongsTo,
+    description: Field::Text,
     id: Field::Number,
-    latitude: HiddenField,
-    longitude: HiddenField,
-    lonlat: Field::String.with_options(searchable: false),
-    website: Field::String,
-    string: Field::String,
-    main: Field::Boolean,
-    physical: Field::Boolean,
-    offer_services: Field::Boolean,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
-    address: AddressField,
-    office_hours: Field::NestedHasMany,
-    location_services: Field::NestedHasMany
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -33,41 +24,27 @@ class LocationDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-    id
-    address
-    main
-    organization
+    service
+    description
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-    organization
+    location
+    service
+    description
     id
-    latitude
-    longitude
-    website
-    main
-    physical
-    offer_services
-    address
-    office_hours
-    location_services
+    created_at
+    updated_at
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    address
-    latitude
-    longitude
-    website
-    main
-    physical
-    offer_services
-    location_services
-    office_hours
+    service
+    description
   ].freeze
 
   # COLLECTION_FILTERS
@@ -82,14 +59,10 @@ class LocationDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how locations are displayed
+  # Overwrite this method to customize how location services are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(location)
-  #   "Location ##{location.id}"
+  # def display_resource(location_service)
+  #   "LocationService ##{location_service.id}"
   # end
-
-  def display_resource(location)
-    "#{location.address[0..20]}..."
-  end
 end

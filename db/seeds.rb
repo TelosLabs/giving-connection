@@ -162,3 +162,17 @@ Organizations::Constants::BENEFICIARIES.each do |beneficiary, subbeneficiaries|
     puts "#{new_subbeneficiary.name} sucessfully created" if new_subbeneficiary.save!
   end
 end
+
+
+# Causes and Services 
+OrganizationConstants::CAUSES_AND_SERVICES.each do |cause, services|
+  new_cause = Cause.new(name: cause)
+
+  puts "#{new_cause.name} sucessfully created" if new_cause.save!
+
+  services.each do |service|
+    new_service = Service.new(name: service, cause: new_cause)
+
+    puts "#{new_service.name} sucessfully created" if new_service.save!
+  end
+end

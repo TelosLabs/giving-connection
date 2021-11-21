@@ -20,11 +20,15 @@
 class Location < ActiveRecord::Base
   validates_with MainLocationValidator
 
+  belongs_to :organization, optional: true
   has_many :office_hours
-  has_many :services
+  has_many :favorite_locations
+  has_many :location_services, dependent: :destroy
+  has_many :services, through: :location_services
+  has_many :tags, through: :organization # TODO check
+  has_one  :social_media, through: :organization # TODO check
   belongs_to :organization, optional: true
 
-  # TODO: add validations
   validates :address, presence: true
   validates :latitude, presence: true
   validates :longitude, presence: true
@@ -42,12 +46,13 @@ class Location < ActiveRecord::Base
   before_validation :lonlat_geo_point
 
   accepts_nested_attributes_for(
-    :services,
+    :office_hours,
     reject_if: :all_blank,
     allow_destroy: true
   )
+
   accepts_nested_attributes_for(
-    :office_hours,
+    :location_services,
     reject_if: :all_blank,
     allow_destroy: true
   )
