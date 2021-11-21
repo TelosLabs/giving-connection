@@ -19,13 +19,15 @@
 #
 class Location < ActiveRecord::Base
 
+  belongs_to :organization, optional: true
   has_many :office_hours
   has_many :favorite_locations
   has_many :location_services, dependent: :destroy
   has_many :services, through: :location_services
+  has_many :tags, through: :organization # TODO check
+  has_one  :social_media, through: :organization # TODO check
   belongs_to :organization, optional: true
 
-  # TODO: add validations
   validates :address, presence: true
   validates :latitude, presence: true
   validates :longitude, presence: true
