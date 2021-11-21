@@ -18,6 +18,7 @@
 #  updated_at      :datetime         not null
 #
 class Location < ActiveRecord::Base
+  validates_with MainLocationValidator
 
   has_many :office_hours
   has_many :services
@@ -28,11 +29,12 @@ class Location < ActiveRecord::Base
   validates :latitude, presence: true
   validates :longitude, presence: true
   validates :lonlat, presence: true
-  validates :main, presence: true
-  validates :physical, presence: true
-  validates :offer_services, presence: true
+  validates :main, inclusion: { in: [ true, false ] }
+  validates :physical, inclusion: { in: [ true, false ] }
+  validates :offer_services, inclusion: { in: [ true, false ] }
   # validates :office_hours, length: { minimum: 7, maximum: 7 }
   validate :single_main_location
+  validate :at_least_one_main_location
 
   scope :additional, -> { where(main: false) }
   scope :main, -> { where(main: true) }
@@ -51,10 +53,6 @@ class Location < ActiveRecord::Base
   )
 
   private
-
-  def single_main_location
-    errors.add(:base, 'only one main location is allowed') if organization.locations.where(main: true).size > 1
-  end
 
   def lonlat_geo_point
     self.lonlat = Geo.point(longitude, latitude)

@@ -30,6 +30,15 @@ org.locations.build(
   physical: true,
 )
 
+Date::DAYNAMES.each do |day|
+  org.locations.first.office_hours.build(
+    day: day,
+    open_time: Time.now.change({ hour: "9:00" }),
+    close_time: Time.now.change({ hour: "16:00" }),
+    closed: ["Saturday", "Sunday"].include?(day)
+  )
+end
+
 puts "Org with id #{org.id} sucessfully created" if org.save!
 
 org = Organization.new(
@@ -54,6 +63,15 @@ org.locations.build(
   offer_services: true,
   physical: true,
 )
+
+Date::DAYNAMES.each do |day|
+  org.locations.first.office_hours.build(
+    day: day,
+    open_time: Time.now.change({ hour: "9:00" }),
+    close_time: Time.now.change({ hour: "16:00" }),
+    closed: ["Saturday", "Sunday"].include?(day)
+  )
+end
 
 puts "Org with id #{org.id} sucessfully created" if org.save!
 
@@ -80,6 +98,15 @@ org.locations.build(
   physical: true,
 )
 
+Date::DAYNAMES.each do |day|
+  org.locations.first.office_hours.build(
+    day: day,
+    open_time: Time.now.change({ hour: "9:00" }),
+    close_time: Time.now.change({ hour: "16:00" }),
+    closed: false
+  )
+end
+
 puts "Org with id #{org.id} sucessfully created" if org.save!
 
 org = Organization.new(
@@ -104,6 +131,16 @@ org.locations.build(
   offer_services: true,
   physical: true,
 )
+
+Date::DAYNAMES.each do |day|
+  org.locations.first.office_hours.build(
+    day: day,
+    open_time: Time.now.change({ hour: "9:00" }),
+    close_time: Time.now.change({ hour: "16:00" }),
+    closed: ["Saturday", "Sunday"].include?(day)
+  )
+end
+
 puts "Org with id #{org.id} sucessfully created" if org.save!
 
 # Categories

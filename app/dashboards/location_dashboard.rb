@@ -35,6 +35,7 @@ class LocationDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
     id
     address
+    main
     organization
   ].freeze
 

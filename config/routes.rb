@@ -8,7 +8,8 @@ Rails.application.routes.draw do
     resources :social_medias, only: %i[new create edit update]
     resources :services
     resources :categories, only: %i[new create edit update]
-    resources :locations, only: %i[new create edit update]
+    resources :locations
+    resources :office_hours
 
     root to: 'admin_users#index'
   end
