@@ -28,8 +28,7 @@ class SearchesController < ApplicationController
   end
 
   def create_params
-    params.permit(:distance, :city, :state, :beneficiary_groups,
-                  :services, :open_now, :open_weekends, :keyword,
-                  :search_type)
+    params.require(:search).permit(:distance, :city, :state, :beneficiary_groups,
+                  :services, :open_now, :open_weekends, :keyword, :zipcode)
   end
 end
