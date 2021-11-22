@@ -25,7 +25,6 @@
 #
 class Organization < ApplicationRecord
   include Organizations::Constants
-  include Organizations::Searchable
 
   has_many :tags, dependent: :destroy
   has_many :organization_categories, dependent: :destroy
@@ -55,7 +54,7 @@ class Organization < ApplicationRecord
 
   accepts_nested_attributes_for :organization_beneficiaries, allow_destroy: true
   accepts_nested_attributes_for :social_media, allow_destroy: true
-  accepts_nested_attributes_for :additional_locations, reject_if: :all_blank, allow_destroy: true
+  # accepts_nested_attributes_for :additional_locations, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :locations
 
   private

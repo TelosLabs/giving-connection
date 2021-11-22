@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 class SearchesController < ApplicationController
+  skip_before_action :authenticate_user!
+
   def new
-    @search = Search.new
+    @saerch = Search.new
   end
 
   def create

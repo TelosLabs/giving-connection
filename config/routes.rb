@@ -8,9 +8,9 @@ Rails.application.routes.draw do
     resources :social_medias, only: %i[new create edit update]
     resources :services
     resources :categories, only: %i[new create edit update]
-    resources :locations, only: %i[show new create edit update]
+    resources :locations, except: %i[index]
     resources :location_services, only: %i[show create]
-    resources :office_hours
+    resources :office_hours, except: %i[index]
     root to: 'admin_users#index'
   end
 

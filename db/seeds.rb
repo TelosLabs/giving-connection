@@ -30,6 +30,15 @@ org.locations.build(
   physical: true,
 )
 
+Date::DAYNAMES.each_with_index do |day, index|
+  org.locations.first.office_hours.build(
+    day: index,
+    open_time: Time.now.change({ hour: "9:00" }),
+    close_time: Time.now.change({ hour: "16:00" }),
+    closed: ["Saturday", "Sunday"].include?(day)
+  )
+end
+
 puts "Org with id #{org.id} sucessfully created" if org.save!
 
 org = Organization.new(
@@ -54,6 +63,15 @@ org.locations.build(
   offer_services: true,
   physical: true,
 )
+
+Date::DAYNAMES.each_with_index do |day, index|
+  org.locations.first.office_hours.build(
+    day: index,
+    open_time: Time.now.change({ hour: "9:00" }),
+    close_time: Time.now.change({ hour: "16:00" }),
+    closed: false
+  )
+end
 
 puts "Org with id #{org.id} sucessfully created" if org.save!
 
@@ -80,6 +98,15 @@ org.locations.build(
   physical: true,
 )
 
+Date::DAYNAMES.each_with_index do |day, index|
+  org.locations.first.office_hours.build(
+    day: index,
+    open_time: Time.now.change({ hour: "9:00" }),
+    close_time: Time.now.change({ hour: "16:00" }),
+    closed: false
+  )
+end
+
 puts "Org with id #{org.id} sucessfully created" if org.save!
 
 org = Organization.new(
@@ -104,6 +131,16 @@ org.locations.build(
   offer_services: true,
   physical: true,
 )
+
+Date::DAYNAMES.each_with_index do |day, index|
+  org.locations.first.office_hours.build(
+    day: index,
+    open_time: Time.now.change({ hour: "9:00" }),
+    close_time: Time.now.change({ hour: "16:00" }),
+    closed: ["Saturday", "Sunday"].include?(day)
+  )
+end
+
 puts "Org with id #{org.id} sucessfully created" if org.save!
 
 # Categories
@@ -127,7 +164,7 @@ Organizations::Constants::BENEFICIARIES.each do |beneficiary, subbeneficiaries|
 end
 
 
-# Causes and Services 
+# Causes and Services
 OrganizationConstants::CAUSES_AND_SERVICES.each do |cause, services|
   new_cause = Cause.new(name: cause)
 

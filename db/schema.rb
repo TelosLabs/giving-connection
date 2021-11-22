@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_12_203518) do
+ActiveRecord::Schema.define(version: 2021_11_21_214953) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -121,12 +121,13 @@ ActiveRecord::Schema.define(version: 2021_11_12_203518) do
     t.bigint "organization_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "appointment_only", default: false
     t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
     t.index ["organization_id"], name: "index_locations_on_organization_id"
   end
 
   create_table "office_hours", force: :cascade do |t|
-    t.string "day", null: false
+    t.integer "day", null: false
     t.time "open_time"
     t.time "close_time"
     t.boolean "closed", default: false

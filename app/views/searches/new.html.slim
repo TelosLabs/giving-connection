@@ -1,12 +1,10 @@
-= form_with model: @search, method: :post, class: 'flex flex-col overflow-hidden items-center' do |f|
+= form_with url: searches_path, class: 'flex flex-col overflow-hidden items-center' do |f|
   = f.label :keyword
   = f.text_field :keyword, class: 'form-control'
   = f.hidden_field :search_type, value: "keyword"
-
   = f.submit "Search"
 
-= form_with url: searches_path, method: :post, class: 'flex flex-col overflow-hidden items-center' do |f|
-
+= form_with url: searches_path, class: 'flex flex-col overflow-hidden items-center' do |f|
   = f.label "Distance"
   = f.text_field :distance, class: 'form-control'
   = f.label "City"
@@ -17,12 +15,10 @@
   = f.text_field :beneficiary_groups, class: 'form-control'
   = f.label "Cause & Services"
   = f.text_field :services, class: 'form-control'
-  / = f.label "Distance"
-  / = f.check_box "Distance", {"1mi"s}
   = f.label "Open Now?"
-  = f.check_box :open_now, {}, true, false
+  = f.check_box :open_now
   = f.label "Open on Weekends?"
-  = f.check_box :open_weekends, {}, true, false
+  = f.check_box :open_weekends
   = f.hidden_field :search_type, value: "filter"
 
   = f.submit "Search"
