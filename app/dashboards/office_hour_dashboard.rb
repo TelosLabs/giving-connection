@@ -16,8 +16,8 @@ class OfficeHourDashboard < Administrate::BaseDashboard
       collection: Time:: DAYS_INTO_WEEK
     ),
     day_name: Field::String,
-    open_time: Field::DateTime,
-    close_time: Field::DateTime,
+    open_time: TimeSelectField,
+    close_time: TimeSelectField,
     closed: Field::Boolean
   }.freeze
 

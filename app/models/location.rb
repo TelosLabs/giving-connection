@@ -20,7 +20,7 @@
 #
 class Location < ActiveRecord::Base
   include Locations::Searchable
-  validates_with MainLocationValidator
+  validates_with LocationsValidator
 
   belongs_to :organization, optional: true
   has_many :office_hours
@@ -28,6 +28,9 @@ class Location < ActiveRecord::Base
   has_many :location_services, dependent: :destroy
   has_many :services, through: :location_services
   belongs_to :organization, optional: true
+
+  has_many :tags, through: :organization
+  has_one :social_media, through: :organization
 
   validates :address, presence: true
   validates :latitude, presence: true
@@ -38,11 +41,9 @@ class Location < ActiveRecord::Base
   validates :offer_services, inclusion: { in: [ true, false ] }
   validates :appointment_only, inclusion: { in: [ true, false ] }
   # validates :office_hours, length: { minimum: 7, maximum: 7 }
-  # validate :single_main_location
-  # validate :at_least_one_main_location
 
-  delegate :tags, :to => :organization, :prefix => true
-  delegate :social_media, :to => :organization, :prefix => true
+  # delegate :tags, :to => :organization, :prefix => true
+  # delegate :social_media, :to => :organization, :prefix => true
 
   scope :additional, -> { where(main: false) }
   scope :main, -> { where(main: true) }

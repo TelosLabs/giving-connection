@@ -3,15 +3,14 @@ class OfficeHoursValidator < ActiveModel::Validator
 
   def validate(record)
     @record = record
-    exactly_seven_records
+    close_hour_after_open_hour
   end
 
   private
 
-  def exactly_seven_records
-    record.office_hours.length == 7 &&
-    Date::DAYNAMES.all? do |day|
-      record.office_hours.pluck(:day).include?(day)
+  def close_hour_after_open_hour
+    if record.open_time >= record.close_time
+      record.errors.add(:base, 'Closing time must be after openinig time')
     end
   end
 

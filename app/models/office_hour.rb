@@ -15,6 +15,7 @@
 #
 class OfficeHour < ActiveRecord::Base
   include OfficeHours::Searchable
+  validates_with OfficeHoursValidator
 
   belongs_to :location
 
