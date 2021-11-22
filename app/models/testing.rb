@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Testing < ApplicationRecord
   attr_accessor :name
 
