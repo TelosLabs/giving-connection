@@ -24,7 +24,8 @@ class LocationDashboard < Administrate::BaseDashboard
     updated_at: Field::DateTime,
     address: AddressField,
     office_hours: Field::NestedHasMany,
-    location_services: Field::NestedHasMany
+    location_services: Field::NestedHasMany,
+    appointment_only: Field::Boolean,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -35,6 +36,8 @@ class LocationDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
     id
     address
+    main
+    appointment_only
     organization
   ].freeze
 
@@ -50,6 +53,7 @@ class LocationDashboard < Administrate::BaseDashboard
     physical
     offer_services
     address
+    appointment_only
     office_hours
     location_services
   ].freeze
@@ -58,13 +62,13 @@ class LocationDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    organization
     address
     latitude
     longitude
     website
     main
     physical
+    appointment_only
     offer_services
     location_services
     office_hours

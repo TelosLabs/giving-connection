@@ -48,6 +48,7 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
     end
 
     it 'should redirect to the organization show page after creating new organization' do
+      sleep(3)
       expect(page).to have_content('Organization was successfully created.')
     end
 
@@ -62,6 +63,7 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
     end
 
     it 'attaches a default cover photo' do
+      sleep(3)
       expect(Organization.last.cover_photo.attached?).to eq(true)
     end
 
@@ -89,10 +91,12 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
     end
 
     it 'should flash error message requiring name' do
+      sleep(3)
       expect(page).to have_content('Name can\'t be blank')
     end
 
     it 'should flash error message regarding image size' do
+      sleep(3)
       expect(page).to have_content('Must be less than 5MB in size')
     end
   end
@@ -107,11 +111,13 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
     end
 
     it 'should redirect to the organizations index page after deleting organization' do
+      sleep(3)
       expect(page).to have_content('Organization was successfully destroyed.')
     end
 
     it 'deletes organization' do
-      expect(Organization.count).to eq 1
+      sleep(3)
+      expect(Organization.count).to eq 0
     end
   end
 
@@ -128,6 +134,7 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
     end
 
     it 'should redirect to the organization show page after updating organization' do
+      sleep(3)
       expect(page).to have_content('Organization was successfully updated.')
     end
 

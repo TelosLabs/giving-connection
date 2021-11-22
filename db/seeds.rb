@@ -1,13 +1,5 @@
 # frozen_string_literal: true
 
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
-
 # Admin Users
 AdminUser.create!(email: 'admin@example.com', password: 'testing', password_confirmation: 'testing')
 
@@ -38,6 +30,15 @@ org.locations.build(
   physical: true,
 )
 
+Date::DAYNAMES.each_with_index do |day, index|
+  org.locations.first.office_hours.build(
+    day: index,
+    open_time: Time.now.change({ hour: "9:00" }),
+    close_time: Time.now.change({ hour: "16:00" }),
+    closed: ["Saturday", "Sunday"].include?(day)
+  )
+end
+
 puts "Org with id #{org.id} sucessfully created" if org.save!
 
 org = Organization.new(
@@ -62,6 +63,15 @@ org.locations.build(
   offer_services: true,
   physical: true,
 )
+
+Date::DAYNAMES.each_with_index do |day, index|
+  org.locations.first.office_hours.build(
+    day: index,
+    open_time: Time.now.change({ hour: "9:00" }),
+    close_time: Time.now.change({ hour: "16:00" }),
+    closed: false
+  )
+end
 
 puts "Org with id #{org.id} sucessfully created" if org.save!
 
@@ -88,6 +98,15 @@ org.locations.build(
   physical: true,
 )
 
+Date::DAYNAMES.each_with_index do |day, index|
+  org.locations.first.office_hours.build(
+    day: index,
+    open_time: Time.now.change({ hour: "9:00" }),
+    close_time: Time.now.change({ hour: "16:00" }),
+    closed: false
+  )
+end
+
 puts "Org with id #{org.id} sucessfully created" if org.save!
 
 org = Organization.new(
@@ -112,17 +131,21 @@ org.locations.build(
   offer_services: true,
   physical: true,
 )
-puts "Org with id #{org.id} sucessfully created" if org.save!
 
-# Categories
-OrganizationConstants::CATEGORIES.each do |category|
-  new_category = Category.new(name: category)
-
-  puts "#{new_category.name} sucessfully created" if new_category.save!
+Date::DAYNAMES.each_with_index do |day, index|
+  org.locations.first.office_hours.build(
+    day: index,
+    open_time: Time.now.change({ hour: "9:00" }),
+    close_time: Time.now.change({ hour: "16:00" }),
+    closed: ["Saturday", "Sunday"].include?(day)
+  )
 end
 
+puts "Org with id #{org.id} sucessfully created" if org.save!
+
+
 # Beneficiaries
-OrganizationConstants::BENEFICIARIES.each do |beneficiary, subbeneficiaries|
+Organizations::Constants::BENEFICIARIES.each do |beneficiary, subbeneficiaries|
   new_beneficiary = BeneficiaryGroup.new(name: beneficiary)
 
   puts "#{new_beneficiary.name} sucessfully created" if new_beneficiary.save!
@@ -135,8 +158,8 @@ OrganizationConstants::BENEFICIARIES.each do |beneficiary, subbeneficiaries|
 end
 
 
-# Causes and Services 
-OrganizationConstants::CAUSES_AND_SERVICES.each do |cause, services|
+# Causes and Services
+Organizations::Constants::CAUSES_AND_SERVICES.each do |cause, services|
   new_cause = Cause.new(name: cause)
 
   puts "#{new_cause.name} sucessfully created" if new_cause.save!

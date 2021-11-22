@@ -4,14 +4,21 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        blue:{
+        seafoam: {
+          DEFAULT: '#9ae2e0'
+        },
+        red: {
+          DEFAULT: '#f48284'
+        },
+        blue: {
           'gradient-1': '#2C3E6B',
           'gradient-2': '#0068AF',
-          'dark': '#113C7B',
-          'medium': '#0782D0',
+          dark: '#113C7B',
+          medium: '#0782D0',
+          light: '#9abee3',
+          pale: '#e2ecf7'
         },
-        'seafoam': '#9AE2E0',
-        grey:{
+        grey: {
           4: '#8492A6',
           5: '#C2CEDB',
           6: '#D3DCE6',

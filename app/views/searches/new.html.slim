@@ -61,7 +61,7 @@
 
 = form_with model: @search, url: searches_path, class: 'relative min-h-screen', method: :post do |f|
   = render SearchBar::Component.new(form: f, search: @search)
-  div class="flex flex-row justify-center w-full md:h-screen pt-28" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3" 
+  div class="flex flex-row justify-center w-full md:h-screen pt-28" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
     div class="flex flex-row justify-center w-full min-h-full"
       div class="flex flex-col w-full h-full min-h-full max-w-470px md:border-r border-grey-7"
         div class="flex flex-row justify-between w-full p-4 bg-grey-9"  data-controller="modal"
@@ -72,7 +72,7 @@
               span class="relative inline-flex w-2 h-2 rounded-full bg-salmon"
             | Filters
           /! Modal Container
-          div class="fixed inset-0 flex items-center justify-center hidden min-h-screen overflow-y-auto animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;") 
+          div class="fixed inset-0 flex items-center justify-center hidden min-h-screen overflow-y-auto animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;")
             /! Modal Inner Container
             .max-h-full.w-full.max-w-375px.relative.py-20
               /! Modal Card
@@ -95,7 +95,7 @@
             | Create Search Alert
 
         div class="hidden w-full h-full md:overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
-          ul class="flex flex-col divide-y divide-gray-8" 
+          ul class="flex flex-col divide-y divide-gray-8"
             - results.each do |result|
               li
                 = render ResultCard::Component.new(title: result[:title],\
@@ -107,7 +107,7 @@
           div class="h-40 mt-24"
             | Pagination
         div class="hidden w-full h-screen md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
-          div# class="w-full h-full" data-places-target="map" 
+          div# class="w-full h-full" data-places-target="map"
 
       div  class="relative hidden w-full md:flex " data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
         div# class="absolute inset-0 w-full h-full" data-places-target="map"
