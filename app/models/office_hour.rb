@@ -17,9 +17,22 @@ class OfficeHour < ActiveRecord::Base
   include OfficeHours::Searchable
   validates_with OfficeHoursValidator
 
-  belongs_to :location
+  belongs_to :location, touch: true
+
+  validates :day, presence: true, inclusion: 0..6
+  validates :open_time, presence: true, unless: :closed?
+  validates :close_time, presence: true, unless: :closed?
+
+  before_validation :clean_time
 
   def day_name
     Date::DAYNAMES[day]
+  end
+
+  private
+
+  def clean_time
+    self.open_time = nil
+    self.close_time = nil
   end
 end

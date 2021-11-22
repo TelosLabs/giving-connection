@@ -1,1 +1,5 @@
-<%= field.to_s %>
+<% if !field.data.present? %>
+  <%= "--:--" %>
+<% else %>
+  <%= field.data.strftime("%H:%M") %>
+<% end %>

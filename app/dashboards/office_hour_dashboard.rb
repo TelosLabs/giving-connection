@@ -13,7 +13,7 @@ class OfficeHourDashboard < Administrate::BaseDashboard
     location: Field::BelongsTo,
     id: Field::Number,
     day: Field::Select.with_options(
-      collection: Time:: DAYS_INTO_WEEK
+      collection: Time::DAYS_INTO_WEEK
     ),
     day_name: Field::String,
     open_time: TimeSelectField,
@@ -29,6 +29,8 @@ class OfficeHourDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
     day_name
     open_time
+    close_time
+    closed
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES

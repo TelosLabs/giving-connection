@@ -143,12 +143,6 @@ end
 
 puts "Org with id #{org.id} sucessfully created" if org.save!
 
-# Categories
-Organizations::Constants::CATEGORIES.each do |category|
-  new_category = Category.new(name: category)
-
-  puts "#{new_category.name} sucessfully created" if new_category.save!
-end
 
 # Beneficiaries
 Organizations::Constants::BENEFICIARIES.each do |beneficiary, subbeneficiaries|
@@ -165,7 +159,7 @@ end
 
 
 # Causes and Services
-OrganizationConstants::CAUSES_AND_SERVICES.each do |cause, services|
+Organizations::Constants::CAUSES_AND_SERVICES.each do |cause, services|
   new_cause = Cause.new(name: cause)
 
   puts "#{new_cause.name} sucessfully created" if new_cause.save!

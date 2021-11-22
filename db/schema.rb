@@ -78,12 +78,6 @@ ActiveRecord::Schema.define(version: 2021_11_21_214953) do
     t.index ["beneficiary_group_id"], name: "index_beneficiary_subcategories_on_beneficiary_group_id"
   end
 
-  create_table "categories", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "causes", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -144,15 +138,6 @@ ActiveRecord::Schema.define(version: 2021_11_21_214953) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["beneficiary_subcategory_id"], name: "index_organization_beneficiaries_on_beneficiary_subcategory_id"
     t.index ["organization_id"], name: "index_organization_beneficiaries_on_organization_id"
-  end
-
-  create_table "organization_categories", force: :cascade do |t|
-    t.bigint "organization_id", null: false
-    t.bigint "category_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["category_id"], name: "index_organization_categories_on_category_id"
-    t.index ["organization_id"], name: "index_organization_categories_on_organization_id"
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -258,8 +243,6 @@ ActiveRecord::Schema.define(version: 2021_11_21_214953) do
   add_foreign_key "locations", "organizations"
   add_foreign_key "organization_beneficiaries", "beneficiary_subcategories"
   add_foreign_key "organization_beneficiaries", "organizations"
-  add_foreign_key "organization_categories", "categories"
-  add_foreign_key "organization_categories", "organizations"
   add_foreign_key "services", "causes"
   add_foreign_key "social_medias", "organizations"
   add_foreign_key "tags", "organizations"

@@ -5,13 +5,14 @@ class LocationsValidator < ActiveModel::Validator
     @record = record
     single_main_location
     at_least_one_main_location
-    exactly_seven_records
+    complete_office_hours
   end
 
   private
 
   def single_main_location
     main_org = record.organization.locations.where(main: true)
+    return true if main_org.first == record
     if main_org.size >= 1 && record.main
       record.organization.errors.add(:base, 'Only one main location is required')
     end
@@ -19,14 +20,17 @@ class LocationsValidator < ActiveModel::Validator
 
   def at_least_one_main_location
     main_org = record.organization.locations.where(main: true)
+    return true if main_org.first == record
     if main_org.empty? && !record.main
-      record.organization.errors.add(:base, 'at least one main location is required')
+      record.organization.errors.add(:base, 'At least one main location is required')
     end
   end
 
-  def exactly_seven_records
-    unless Time::DAYS_INTO_WEEK.sort == record.office_hours.pluck(:day).sort
-      record.errors.add(:base, 'office hours data is required for the 7 days of the week')
+  def complete_office_hours
+    return true if record.appointment_only?
+
+    unless Time::DAYS_INTO_WEEK.values.sort == record.office_hours.map(&:day).sort
+      record.organization.errors.add(:base, 'Office hours data is required for the 7 days of the week')
     end
   end
 end
