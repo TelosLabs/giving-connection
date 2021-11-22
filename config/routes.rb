@@ -8,10 +8,9 @@ Rails.application.routes.draw do
     resources :social_medias, only: %i[new create edit update]
     resources :services
     resources :categories, only: %i[new create edit update]
-    resources :locations
-    resources :location_services
-    resources :office_hours
-
+    resources :locations, except: %i[index]
+    resources :location_services, only: %i[show create]
+    resources :office_hours, except: %i[index]
     root to: 'admin_users#index'
   end
 
@@ -20,11 +19,13 @@ Rails.application.routes.draw do
 
   resources :locations, only: %i[index new]
 
-  resources :organizations, only: %i[show edit update] do
+  resources :organizations, only: [:show] do
     resources :locations, only: %i[index new create]
   end
-  resource :searches, only: %i[new create]
 
+  resources :organizations, only: %i[edit update] do
+  resources :favorite_locations, only: %i[ create destroy ]
+  resource :searches, only: %i[new create]
   resources :alerts, only: %i[new create delete]
 
   root to: 'searches#new'

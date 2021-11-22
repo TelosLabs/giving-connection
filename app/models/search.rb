@@ -3,29 +3,48 @@
 class Search
   include ActiveModel::Model
 
-  DEFAULT_LOCATION = {
-    latitude: 36.16404968727089,
-    longitude: -86.78125827725053
-  }.freeze
+  KEYWORD_SEARCH_TYPE = 'keyword'
+  FILTER_SEARCH_TYPE = 'filter'
 
-  attr_accessor :keyword, :kilometers, :results, :distance, :city, :state,
-                :beneficiary_groups, :services, :open_now, :open_weekends
+  attr_accessor :keyword, :results, :distance, :city, :state, :zip_code,
+                :beneficiary_groups, :services, :open_now, :open_weekends,
+                :search_type
 
-  validates :keyword, presence: true
+  validates :keyword, presence: true, if: Proc.new { search_type == KEYWORD_SEARCH_TYPE }
+  validates :search_type, presence: true
 
-  def search
-    keyword.nil? ? filter_search : keyword_search
+  def save
+    begin
+      raise ActiveRecord::RecordInvalid unless valid?
+      execute_keyword_search if keyword_search?
+      execute_filter_search if filter_search?
+      true
+    rescue ActiveRecord::RecordInvalid => invalid
+      false
+    end
   end
 
-  def keyword_search
-    # @results = Location.geo_near(Geo.to_wkt(Geo.point(DEFAULT_LOCATION[:longitude], DEFAULT_LOCATION[:latitude])), kilometers.to_i).search_by_keyword(keyword) if valid?
-    @results = Location.search_by_keyword(keyword) if valid?
+  def keyword_search?
+    search_type == KEYWORD_SEARCH_TYPE
   end
 
-  def filter_search
-    filters = { distance: distance, city: city, state: state,
-                open_now: open_now, open_weekends: open_weekends,
-                beneficiary_groups: beneficiary_groups, services: services }
-    @results = FilterQuery.new(filters).search_by_filter
+  def filter_search?
+    search_type == FILTER_SEARCH_TYPE
+  end
+
+  def execute_keyword_search
+    @results = Locations::KeywordQuery.call({keyword: keyword})
+  end
+
+  def execute_filter_search
+    filters = {
+                address: { city: city, state: state, zip_code: zip_code },
+                open_now: ActiveModel::Type::Boolean.new.cast(open_now),
+                open_weekends: ActiveModel::Type::Boolean.new.cast(open_weekends),
+                beneficiary_groups: beneficiary_groups, services: services,
+                distance: distance.to_i
+               }
+
+    @results = Locations::FilterQuery.call(filters)
   end
 end

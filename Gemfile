@@ -10,7 +10,7 @@ gem 'rails', '~> 6.1.4'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.1'
 # Use Puma as the app server
-gem 'puma', '~> 5.0'
+gem 'puma', '~> 5.5'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
@@ -30,10 +30,13 @@ gem 'redis', '~> 4.0'
 gem 'devise'
 
 gem 'active_storage_validations'
+gem "aws-sdk-s3", require: false
 gem 'clockwork'
 gem 'cocoon'
+gem 'draper'
 gem 'faker'
 gem 'mobility', '~> 1.1.3'
+gem 'inline_svg'
 gem 'name_of_person'
 gem 'pg_search'
 gem 'rack-attack'
@@ -41,7 +44,7 @@ gem 'sidekiq'
 gem 'slim-rails'
 gem 'view_component', require: 'view_component/engine'
 # Use Turbo for rails
-gem 'turbo-rails'
+gem 'turbo-rails', '~> 0.8.1'
 
 # Use administrate admin framework
 gem 'administrate'
@@ -49,6 +52,7 @@ gem 'administrate-field-active_storage'
 gem 'administrate-field-nested_has_many', git: 'https://github.com/TelosLabs/administrate-field-nested_has_many.git', branch: 'feature/stimulus-controller'
 gem 'administrate-field-select', '~> 2.0', require: 'administrate/field/select_basic'
 gem 'image_processing'
+
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
