@@ -16,10 +16,8 @@
   <body>
     <%= render Navbar::Component.new(signed_in: user_signed_in?) %>
     <%= yield %>
-    <% if flash[:notice] %>
-      <% flash.each do |key, message| %>
-        <%= render Alert::Component.new(key: key, message: message) %>
-      <% end %>
+    <% flash.each do |key, message| %>
+      <%= render Alert::Component.new(key: key, message: message) %>
     <% end %>
     <%= render Footer::Component.new() %>
 
