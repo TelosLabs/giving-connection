@@ -1,7 +1,8 @@
 nav data-controller="navbar--component"
   .navbar.navbar--mobile class="h-20"
-    .navbar--mobile__menu
-      = inline_svg_tag 'menu.svg', size:'24*24', data: { action: "click->navbar--component#openSideNavBar" }
+    .navbar--mobile__menu class="flex items-center"
+      button data-ction="click->navbar--component#openSideNavBar"
+        = inline_svg_tag 'menu.svg', size:'24*24'
     = link_to root_path
       = inline_svg_tag 'logo.svg', size:'130*32'
   .navbar.navbar--desktop
