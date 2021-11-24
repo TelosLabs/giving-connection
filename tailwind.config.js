@@ -53,6 +53,9 @@ module.exports = {
       screens: {
         'xs': '375px',
       },
+      maxWidth: {
+        ms: '343px'
+      }
     },
   },
   variants: {

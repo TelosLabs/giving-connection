@@ -16,8 +16,8 @@
   <body>
     <%= render Navbar::Component.new(signed_in: user_signed_in?) %>
     <main class="relative">
-      <% flash.each do |key, message| %>
-        <%= render Alert::Component.new(key: key, message: message) %>
+      <% flash.each do |type, message| %>
+        <%= render Alert::Component.new(type: type, message: message) %>
       <% end %>
       <%= yield %>
     </main>
