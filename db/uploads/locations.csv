@@ -1,0 +1,4 @@
+"id","organization_id","address","website","main","physical","appointment_only","offer_services"
+1,1,"1900 Belmont Blvd","http://belmont.edu/","yes","yes","no","yes"
+2,2,"2525 Perimeter Pl Dr Suite 121, Nashville, TN 37214, United States","http://handson.com/main","yes","yes","no","yes"
+3,2,"565 Royal Pkwy, Nashville, TN 37214, United States","http://handson.com/secondary","no","yes","yes","yes"

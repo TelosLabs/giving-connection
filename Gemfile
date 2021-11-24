@@ -40,6 +40,7 @@ gem 'inline_svg'
 gem 'name_of_person'
 gem 'pg_search'
 gem 'rack-attack'
+gem "roo", "~> 2.8.0"
 gem 'sidekiq'
 gem 'slim-rails'
 gem 'view_component', require: 'view_component/engine'
