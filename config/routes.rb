@@ -17,7 +17,6 @@ Rails.application.routes.draw do
   devise_for :admin_users
   devise_for :users
 
-
   resources :contact, only: [:index]
 
   resources :locations, only: %i[index new]
