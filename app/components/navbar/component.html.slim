@@ -1,7 +1,8 @@
 nav data-controller="navbar--component"
   .navbar.navbar--mobile class="h-20"
-    .navbar--mobile__menu
-      = inline_svg_tag 'menu.svg', size:'24*24', data: { action: "click->navbar--component#openSideNavBar" }
+    .navbar--mobile__menu class="flex items-center"
+      button data-action="click->navbar--component#openSideNavBar"
+        = inline_svg_tag 'menu.svg', size:'24*24'
     = link_to root_path
       = inline_svg_tag 'logo.svg', size:'130*32'
   .navbar.navbar--desktop
@@ -28,7 +29,7 @@ nav data-controller="navbar--component"
         li = link_to "Log in", '/users/sign_in', class:'text-base font-bold mr-2 mid:mr-4 lg:mr-6'
         li = link_to "Create Account", '/users/sign_up', class:'c-button py-2.5 px-5 text-white bg-blue-medium'
 
-  .sidebar class='fixed top-0 bottom-0 left-0 right-0 z-10 hidden h-screen bg-gray-gray-9 ' data-navbar--component-target="sideNavBar"
+  .sidebar class='fixed top-0 bottom-0 left-0 right-0 z-10 hidden h-screen overflow-y-hidden bg-gray-gray-9' data-navbar--component-target="sideNavBar"
     section class="pt-16 pb-4 px-7 #{ @signed_in ? 'h-4/5' : 'h-3/4' }" 
       div class='flex justify-end pb-16'
         button class='p-2.5' data-action="navbar--component#collapseSideNavBar"

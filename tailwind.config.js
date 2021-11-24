@@ -20,6 +20,12 @@ module.exports = {
         seafoam: {
           DEFAULT: '#9ae2e0'
         },
+        salmon: {
+          DEFAULT: '#fc8383'
+        },
+        red: {
+          DEFAULT: '#F48284',
+        },
         gray: {
           'gray-1': '#050504',
           'gray-3': '#3c4858',
@@ -30,9 +36,22 @@ module.exports = {
           'gray-8': '#eff2f7',
           'gray-9': '#f9fafc'
         },
-        red: {
-          DEFAULT: '#F48284',
+        states: {
+          success: '#37ccb2',
+          error: '#f95b6e',
+          warning: '#febb5a',
+          disabled: '#eff2f7'
+        },
+        copy: {
+          white: '#ffffff',
+          'gray-2': '#1f2d3d'
         }
+      },
+      zIndex: {
+        '-1' : '-1',
+      },
+      screens: {
+        'xs': '375px',
       },
     },
   },

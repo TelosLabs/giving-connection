@@ -1,0 +1,13 @@
+@import "/settings/variables";
+
+.c-form {
+	display: flex;
+	flex-direction: column;
+	max-width: 375px;
+	margin: auto;
+	align-items: center;
+	padding: 16px 24px;
+	border-radius: 2px;
+	font-size: 14px;
+	color: $copy-gray-7;
+}
