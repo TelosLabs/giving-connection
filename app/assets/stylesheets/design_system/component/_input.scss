@@ -1,0 +1,23 @@
+@import "/settings/variables";
+
+.c-input {
+  display: flex;
+  height: 46px;
+  width: 100%;
+  margin-top: 6px;
+  padding: 13px 35px 14px 16px;
+  border-radius: 6px;
+  border: 1px solid $var-gray-5;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.01);
+  color: $copy-gray-7;
+
+  &:focus {
+    outline-style: none;
+    border: 2px solid $primary-medium-blue;
+  }
+
+  &::placeholder {
+    color: $var-gray-6;
+    font-size: 16px;
+  }
+}
