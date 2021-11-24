@@ -16,6 +16,9 @@ module.exports = {
         salmon: {
           DEFAULT: '#fc8383'
         },
+        red: {
+          DEFAULT: '#f48284'
+        },
         gray: {
           'gray-1': '#f9fafc',
           'gray-2': '#eff2f7',
@@ -33,7 +36,7 @@ module.exports = {
         },
         copy: {
           white: '#ffffff'
-        }
+        },
       },
       zIndex: {
         '-1' : '-1',

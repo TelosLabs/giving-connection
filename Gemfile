@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -27,20 +29,30 @@ gem 'redis', '~> 4.0'
 # Use Devise for authentication
 gem 'devise'
 
+gem 'active_storage_validations'
+gem "aws-sdk-s3", require: false
 gem 'clockwork'
+gem 'cocoon'
+gem 'draper'
 gem 'faker'
+gem 'mobility', '~> 1.1.3'
 gem 'inline_svg'
 gem 'name_of_person'
+gem 'pg_search'
 gem 'rack-attack'
 gem 'sidekiq'
 gem 'slim-rails'
 gem 'view_component', require: 'view_component/engine'
-
 # Use Turbo for rails
-gem 'turbo-rails'
+gem 'turbo-rails', '~> 0.8.1'
 
 # Use administrate admin framework
 gem 'administrate'
+gem 'administrate-field-active_storage'
+gem 'administrate-field-nested_has_many', git: 'https://github.com/TelosLabs/administrate-field-nested_has_many.git', branch: 'feature/stimulus-controller'
+gem 'administrate-field-select', '~> 2.0', require: 'administrate/field/select_basic'
+gem 'image_processing'
+
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
@@ -48,9 +60,14 @@ gem 'pronto'
 gem 'pronto-flay', require: false
 gem 'pronto-rubocop', require: false
 
+# Geolocation
+gem 'activerecord-postgis-adapter'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'database_cleaner-active_record'
+  gem 'factory_bot_rails'
   gem 'pry-rails'
   gem 'rspec-rails', '~> 5.0.0'
   gem 'rubocop', require: false
@@ -66,12 +83,12 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'annotate'
   gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'brakeman'
+  gem 'database_consistency', require: false
   gem 'guard-rspec', require: false
   gem 'letter_opener'
   gem 'spring'
-  # gem "binding_of_caller"
-  gem 'brakeman'
-  gem 'database_consistency', require: false
 end
 
 group :test do
@@ -82,6 +99,7 @@ group :test do
   gem 'rails-controller-testing'
   gem 'rspec-sidekiq'
   gem 'shoulda-matchers', '~> 4.0'
+  gem 'simplecov', require: false
   gem 'timecop'
   gem 'webdrivers'
 end

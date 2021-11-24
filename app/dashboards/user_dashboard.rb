@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'administrate/base_dashboard'
 
 class UserDashboard < Administrate::BaseDashboard
@@ -38,8 +40,6 @@ class UserDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
     id
     email
-    encrypted_password
-    reset_password_token
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES

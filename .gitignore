@@ -25,6 +25,10 @@
 /public/assets
 .byebug_history
 
+# Ignore test-related files
+/coverage/
+/spec/examples.txt
+
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
@@ -34,3 +38,5 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+database_consistency*
