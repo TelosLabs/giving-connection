@@ -30,6 +30,7 @@ class Organization < ApplicationRecord
   has_many :organization_categories, dependent: :destroy
   has_many :categories, through: :organization_categories
   has_many :organization_beneficiaries, dependent: :destroy
+  has_one :organization_admin, dependent: :destroy
   has_many :beneficiary_subcategories, through: :organization_beneficiaries
   has_many :locations, dependent: :destroy
   has_many :additional_locations, -> { where(main: false) }, class_name: 'Location', foreign_key: :organization_id

@@ -3,16 +3,18 @@
 class SearchesController < ApplicationController
   def new
     @search = Search.new
+    authorize @search
   end
 
   def create
-    search = Search.new(create_params)
-    if search.search && search.results.any?
-      @results = search.results
+    @search = Search.new(create_params)
+    if @search.search && @search.results.any?
+      @results = @search.results
       redirect_to locations_path(ids: @results.ids)
     else
       puts 'didnt work'
     end
+    authorize @search
   end
 
   def keyword_params

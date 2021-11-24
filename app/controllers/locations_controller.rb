@@ -6,6 +6,7 @@ class LocationsController < ApplicationController
   def index
     @locations = Location.find(params[:ids]) if params[:ids].present?
     @locations ||= Location.all
+    @locations = policy_scope(Location)
   end
 
   def new
