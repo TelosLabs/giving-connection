@@ -41,7 +41,7 @@ module.exports = {
       },
       screens: {
         'xs': '375px',
-      }
+      },
     },
   },
   variants: {
