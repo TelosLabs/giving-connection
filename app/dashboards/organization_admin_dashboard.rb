@@ -1,4 +1,6 @@
-require "administrate/base_dashboard"
+# frozen_string_literal: true
+
+require 'administrate/base_dashboard'
 
 class OrganizationAdminDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -12,9 +14,10 @@ class OrganizationAdminDashboard < Administrate::BaseDashboard
     user: Field::BelongsTo,
     id: Field::Number,
     role: Field::SelectBasic.with_options({
-    choices: ['admin']}),
+                                            choices: ['admin']
+                                          }),
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

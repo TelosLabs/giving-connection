@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :organization_admin do
     organization { nil }
     user { nil }
-    role { "MyString" }
+    role { 'MyString' }
   end
 end
