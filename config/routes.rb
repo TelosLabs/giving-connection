@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   devise_for :admin_users
   devise_for :users
 
+  resources :contact, only: [:index]
+
   resources :locations, only: %i[index new]
 
   resources :favorite_locations, only: %i[ create destroy ]
@@ -26,5 +28,6 @@ Rails.application.routes.draw do
   end
   resource :searches, only: %i[new create]
 
-  root to: 'searches#new'
+  resource :searches, only: [:new], path: 'searches/new'
+  root to: 'home#index'
 end
