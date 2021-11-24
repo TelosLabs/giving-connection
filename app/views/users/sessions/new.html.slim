@@ -1,0 +1,31 @@
+.main class="mb-12 md:mb-36 mt-14 md:mt-32"
+  h2 class="pb-6 text-2xl font-bold text-center md:pb-9 text-gray-gray-7"
+    | Welcome back!
+
+  div class="md:hidden"
+    div class="absolute top-0 left-0 -z-1 w-72 sm:w-80 sm:h-80"
+      = inline_svg_tag 'mob-purple-blur-login.svg'
+    div class="absolute top-0 right-0 -z-1"
+      = inline_svg_tag 'mob-green-blur-login.svg'
+
+  div class="hidden md:flex"
+    div class="absolute top-0 left-0 pl-16 -z-1 lg:pl-32 xl:pl-80"
+      = inline_svg_tag 'desk-purple-blur-login.svg'
+    div class="absolute top-0 right-0 pt-20 pr-20 -z-1 lg:pr-52 xl:pr-96"
+      = inline_svg_tag 'desk-green-blur-login.svg'
+
+  = render "users/shared/links"
+
+  = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+    .c-form
+      .c-form--group 
+        = f.label :email, "Email Address"
+        = f.email_field :email, autofocus: true, autocomplete: "email", class:"c-input"
+      .c-form--group class="mb-3"
+        = f.label :password
+        = f.password_field :password, autocomplete: "current-password", class:"c-input"
+      - if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations'
+        = link_to "Forgot your password?", new_password_path(resource_name), class:'font-bold flex self-end md:self-center'
+      .c-form--action class="mt-12"
+        = f.submit "Sign in", class:"c-button"
+  
