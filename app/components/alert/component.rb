@@ -18,7 +18,7 @@ class Alert::Component < ViewComponent::Base
         icon: 'notice-icon.svg',
         icon_classes: 'text-green-400',
         text_classes: 'text-green-800',
-        button_classes: 'bg-green-50 text-green-500 hover:bg-green-100 focus:ring-offset-green-50 focus:ring-green-600',
+        button_classes: 'bg-green-50 text-green-500 hover:bg-green-100 focus:ring-offset-green-50 focus:ring-green-600'
       }
     when 'alert'
       {
@@ -26,7 +26,7 @@ class Alert::Component < ViewComponent::Base
         icon: 'alert-icon.svg',
         icon_classes: 'text-red-400',
         text_classes: 'text-red-800',
-        button_classes: 'bg-red-50 text-red-500 hover:bg-red-100 focus:ring-offset-red-50 focus:ring-red-600',
+        button_classes: 'bg-red-50 text-red-500 hover:bg-red-100 focus:ring-offset-red-50 focus:ring-red-600'
       }
     end
   end
