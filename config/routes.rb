@@ -12,4 +12,5 @@ Rails.application.routes.draw do
 
   resource :home, only: [:index]
   root to: 'home#index'
+  resources :contact, only: [:index]
 end
