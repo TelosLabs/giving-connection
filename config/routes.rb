@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   devise_for :admin_users
   devise_for :users
 
-  resource :home, only: [:index]
+  
   resources :contact, only: [:index]
 
   resources :locations, only: %i[index new]
@@ -29,5 +29,6 @@ Rails.application.routes.draw do
   end
   resource :searches, only: %i[new create]
 
-  root to: 'searches#new'
+  resource :searches, only: [:new], path: 'searches/new'
+  root to: 'home#index'
 end
