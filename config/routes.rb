@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :locations
     resources :location_services
     resources :office_hours
+    resources :organization_admins
 
     root to: 'admin_users#index'
   end
