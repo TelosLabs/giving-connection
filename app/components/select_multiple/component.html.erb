@@ -2,7 +2,7 @@
   class="relative flex flex-wrap w-full mt-1 text-base border cursor-text min-h-46px rounded-6px text-gray-3" data-select-multiple-target="container" data-dropdown-target="button">
   <div class="flex flex-wrap flex-shrink-0 max-w-full gap-2 py-2 pl-2" data-select-multiple-target="badgesContainer" >
   </div>
-  <input type="text" data-select-multiple-target="input" class="h-full border-0 border-transparent focus:outline-none focus:border-transparent focus:ring-0 rounded-6px" data-action="input->select-multiple#search">
+  <input type="text" data-select-multiple-target="input" class="h-full border-0 border-transparent focus:outline-none focus:border-transparent focus:ring-0 rounded-6px" data-action="select-multiple#search">
   <div data-dropdown-target="menu" class="absolute left-0 z-10 hidden w-full mt-2 top-full max-h-52" >
     <div class="p-5 overflow-y-auto bg-white border rounded border-gray-5 max-h-52">
       <div class="flex flex-col gap-y-2">
@@ -24,7 +24,7 @@
     </div>
   </div>
   <input type="hidden" name='<%= "#{@name}" %>' value='<%= "#{@value}" %>' data-select-multiple-target="hiddenInput">
-  <%# Badege Template %>
+  <%# Badge Template %>
   <span class="hidden bg-blue-medium py-1.5 pl-2 pr-1 min-h-7 inline-flex items-center text-xs text-white flex-shrink-0 rounded-6px" data-select-multiple-target="badgeTemplate">
     <span>
     </span>
