@@ -1,11 +1,21 @@
+const { screens } = require('tailwindcss/defaultTheme')
+
 module.exports = {
   purge: [],
   darkMode: false, // or 'media' or 'class'
   theme: {
+    screens: {
+      'xs': '375px',
+      'mid': '870px',
+      ...screens,
+    },
     extend: {
       colors: {
         seafoam: {
           DEFAULT: '#9ae2e0'
+        },
+        salmon: {
+          DEFAULT: '#fc8383'
         },
         red: {
           DEFAULT: '#f48284'
@@ -19,6 +29,9 @@ module.exports = {
           pale: '#e2ecf7'
         },
         gray: {
+          1: '#050504',
+          2: '#1F2D3D',
+          3: '#3C4858',
           4: '#8492A6',
           5: '#C2CEDB',
           6: '#D3DCE6',
@@ -26,7 +39,19 @@ module.exports = {
           8: '#EFF2F7',
           9: '#F9FAFC',
         },
-        salmon: '#FC8383',
+        green: {
+          fountain: '#3DC5B5',
+        },
+        states: {
+          success: '#37ccb2',
+          error: '#f95b6e',
+          warning: '#febb5a',
+          disabled: '#eff2f7'
+        },
+        copy: {
+          white: '#ffffff',
+          'gray-2': '#1f2d3d'
+        }
       },
       textColor: {
         gray: {
@@ -36,9 +61,7 @@ module.exports = {
         blue: {
           medium: '#0782D0',
         },
-        green: {
-          fountain: '#3DC5B5',
-        },
+        
       },
       maxWidth: {
         '327px': '327px',
@@ -63,6 +86,9 @@ module.exports = {
       },
       boxShadow: {
         'input': '0px 4px 4px rgba(0, 0, 0, 0.01)',
+      },
+      zIndex: {
+        '-1' : '-1',
       },
     },
   },
