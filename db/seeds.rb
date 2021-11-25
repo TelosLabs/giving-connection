@@ -16,7 +16,6 @@ org = Organization.new(
   mission_statement_en: Faker::Company.catch_phrase,
   vision_statement_en: Faker::Company.catch_phrase,
   tagline_en: Faker::Company.catch_phrase,
-  description_en: Faker::Company.catch_phrase
 )
 org.creator = AdminUser.last
 
@@ -50,7 +49,6 @@ org = Organization.new(
   mission_statement_en: Faker::Company.catch_phrase,
   vision_statement_en: Faker::Company.catch_phrase,
   tagline_en: Faker::Company.catch_phrase,
-  description_en: Faker::Company.catch_phrase
 )
 org.creator = AdminUser.last
 
@@ -84,7 +82,6 @@ org = Organization.new(
   mission_statement_en: Faker::Company.catch_phrase,
   vision_statement_en: Faker::Company.catch_phrase,
   tagline_en: Faker::Company.catch_phrase,
-  description_en: Faker::Company.catch_phrase
 )
 org.creator = AdminUser.last
 
@@ -119,7 +116,6 @@ org = Organization.new(
   mission_statement_en: Faker::Company.catch_phrase,
   vision_statement_en: Faker::Company.catch_phrase,
   tagline_en: Faker::Company.catch_phrase,
-  description_en: Faker::Company.catch_phrase
 )
 org.creator = AdminUser.last
 
@@ -153,7 +149,6 @@ org = Organization.new(
   mission_statement_en: Faker::Company.catch_phrase,
   vision_statement_en: Faker::Company.catch_phrase,
   tagline_en: Faker::Company.catch_phrase,
-  description_en: Faker::Company.catch_phrase
 )
 org.creator = AdminUser.last
 

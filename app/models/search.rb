@@ -23,12 +23,13 @@ class Search
 
   def execute_search
     filters = {
-                address: { city: city, state: state, zipcode: zipcode },
+                address: { city: city, state: nil, zipcode: zipcode },
                 open_now: ActiveModel::Type::Boolean.new.cast(open_now),
                 open_weekends: ActiveModel::Type::Boolean.new.cast(open_weekends),
                 beneficiary_groups: beneficiary_groups, services: services,
-                distance: distance.to_i
+                distance: 100
                }
+               binding.pry
     @results = Locations::KeywordQuery.call({keyword: keyword})
     @results = Locations::FilterQuery.call(filters, @results)
   end

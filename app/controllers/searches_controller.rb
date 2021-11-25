@@ -22,9 +22,10 @@ class SearchesController < ApplicationController
       @results = search.results
       redirect_to locations_path(ids: @results.ids)
     else
-      render :new
+      redirect_to locations_path
       puts search.errors.full_messages
     end
+
   end
 
   def create_params

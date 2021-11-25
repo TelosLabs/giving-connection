@@ -28,8 +28,6 @@ class OrganizationDashboard < Administrate::BaseDashboard
     vision_statement_es: Field::Text,
     tagline_en: Field::Text,
     tagline_es: Field::Text,
-    description_en: Field::Text,
-    description_es: Field::Text,
     social_media: Field::HasOne,
     organization_beneficiaries: CheckboxField,
     logo: Field::ActiveStorage,
@@ -62,11 +60,9 @@ class OrganizationDashboard < Administrate::BaseDashboard
     mission_statement_en
     vision_statement_en
     tagline_en
-    description_en
     mission_statement_es
     vision_statement_es
     tagline_es
-    description_es
     organization_beneficiaries
     tags
     social_media
@@ -86,11 +82,9 @@ class OrganizationDashboard < Administrate::BaseDashboard
     mission_statement_en
     vision_statement_en
     tagline_en
-    description_en
     mission_statement_es
     vision_statement_es
     tagline_es
-    description_es
     organization_beneficiaries
     tags
     social_media
