@@ -63,33 +63,33 @@
   = render SearchBar::Component.new(form: f, search: @search)
   div class="flex flex-row justify-center w-full md:h-screen pt-28" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
     div class="flex flex-row justify-center w-full min-h-full"
-      div class="flex flex-col w-full h-full min-h-full max-w-470px md:border-r border-grey-7"
-        div class="flex flex-row justify-between w-full p-4 bg-grey-9"  data-controller="modal"
-          button.inline-flex.items-center.px-3.py-2.text-sm.leading-4 type="button" data-action="click->modal#open"
+      div class="flex flex-col w-full h-full min-h-full max-w-470px md:border-r border-gray-7"
+        div class="flex flex-row justify-between w-full p-4 bg-gray-9"  data-controller="modal"
+          button class="inline-flex items-center px-3 py-2 text-sm leading-4" type="button" data-action="click->modal#open"
             /! Heroicon name: solid/mail
             = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative'
-            span class="flex w-3 h-3 mr-2 text-grey-2"
+            span class="flex w-3 h-3 mr-2 text-gray-2"
               span class="relative inline-flex w-2 h-2 rounded-full bg-salmon"
             | Filters
           /! Modal Container
           div class="fixed inset-0 flex items-center justify-center hidden min-h-screen overflow-y-auto animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;")
             /! Modal Inner Container
-            .max-h-full.w-full.max-w-375px.relative.py-20
+            div class="relative w-full max-h-full py-20 max-w-375px"
               /! Modal Card
               = render partial: 'filter', locals: { form: f, search: @search, causes_and_services: @causes_and_services, beneficiary_groups: @beneficiary_groups }
           span class="relative z-0 inline-flex shadow-sm md:hidden rounded-6px"
             / active bg-blue-dark.focus:text-white
             / inactive bg-white text-gray-3
-            button.relative.inline-flex.items-center.px-5.py-1.rounded-l-6px.border.text-sm type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="0"
+            button class="relative inline-flex items-center px-5 py-1 text-sm border rounded-l-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="0"
               | List
-            button.-ml-px.relative.inline-flex.items-center.px-5.py-1.rounded-r-6px.border.text-sm type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="1"
+            button class="relative inline-flex items-center px-5 py-1 -ml-px text-sm border rounded-r-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="1"
               | Map
 
         div class="flex flex-row items-center justify-between w-full p-4"
-          span class="text-xs text-grey-3"
+          span class="text-xs text-gray-3"
             | 20 results found
 
-          button class="inline-flex items-center px-3 py-2 text-xs text-grey-3" type="button"
+          button class="inline-flex items-center px-3 py-2 text-xs text-gray-3" type="button"
             /! Heroicon name: solid/mail
             = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
             | Create Search Alert

@@ -8,11 +8,11 @@
         <h5 class="text-lg font-bold text-black">
           <%= @title%>
         </h5>
-        <button class="inline-flex items-center p-2 text-xs text-grey-3" type="button">
+        <button class="inline-flex items-center p-2 text-xs text-gray-3" type="button">
           <%= inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'%>
         </button>
       </div>
-      <div class="flex flex-col text-xs text-grey-4">
+      <div class="flex flex-col text-xs text-gray-4">
         <p><%= @address %></p>
         <%= link_to @webpage, "https://#{@webpage}", target: '_blank', class: 'text-blue-medium'%>
       </div>

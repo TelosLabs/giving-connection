@@ -59,8 +59,6 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'pronto'
 gem 'pronto-flay', require: false
 gem 'pronto-rubocop', require: false
-gem 'inline_svg'
-gem "view_component"
 gem 'city-state'
 
 # Geolocation

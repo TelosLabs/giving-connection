@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class SearchBar::Component < ViewComponent::Base
   def initialize(form:, search:)
     @form = form
@@ -6,8 +7,8 @@ class SearchBar::Component < ViewComponent::Base
 
   def options
     {
-      class:'',
-      type: '',
+      class: '',
+      type: ''
     }
   end
 end

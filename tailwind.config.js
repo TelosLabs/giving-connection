@@ -18,7 +18,7 @@ module.exports = {
           light: '#9abee3',
           pale: '#e2ecf7'
         },
-        grey: {
+        gray: {
           4: '#8492A6',
           5: '#C2CEDB',
           6: '#D3DCE6',
@@ -29,7 +29,7 @@ module.exports = {
         salmon: '#FC8383',
       },
       textColor: {
-        grey: {
+        gray: {
           2: '#1F2D3D',
           3: '#3C4858',
         },

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class ResultCard::Component < ViewComponent::Base
   def initialize(title:, address:, image_url:, webpage:, description:, id:)
     @title = title
