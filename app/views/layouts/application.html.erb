@@ -13,7 +13,7 @@
 
   </head>
 
-  <body>
+  <body class="bg-gray-9">
     <%= render Navbar::Component.new(signed_in: user_signed_in?) %>
     <%= yield %>
     <%= render Footer::Component.new() %>

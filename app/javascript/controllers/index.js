@@ -5,7 +5,7 @@ import { Application } from "@hotwired/stimulus"
 import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"
 
 const application = Application.start()
-const context = require.context("controllers", true, /\.js$/)
+const context = require.context("controllers", true, /_controller\.js$/)
 const contextComponents = require.context("../../components", true, /_controller\.js$/)
 application.load(
   definitionsFromContext(context).concat(
@@ -13,7 +13,6 @@ application.load(
   )
 )
 
-// Import and register TailwindCSS Components
 import { Tabs, Modal, Toggle } from "tailwindcss-stimulus-components"
 application.register('tabs', Tabs)
 application.register('modal', Modal)

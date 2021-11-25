@@ -16,7 +16,7 @@
 #  organization_id  :bigint
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  appointment_only :boolean
+#  appointment_only :boolean          default(FALSE)
 #
 class Location < ActiveRecord::Base
   include Locations::Searchable
