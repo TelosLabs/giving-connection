@@ -9,8 +9,8 @@ RSpec.describe Admin::OrganizationsController, type: :controller do
     @params       = { name: 'organization', ein_number: 'testing', irs_ntee_code: 'A90',
                       mission_statement_en: 'testing', mission_statement_es: 'pruebas',
                       vision_statement_en: 'testing', vision_statement_es: 'pruebas',
-                      tagline_en: 'testing', tagline_es: 'pruebas', description_en: 'testing',
-                      description_es: 'pruebas', website: 'testing', scope_of_work: 'International' }
+                      tagline_en: 'testing', tagline_es: 'pruebas',
+                      website: 'testing', scope_of_work: 'International' }
   end
 
   describe 'GET #index' do
