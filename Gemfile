@@ -35,6 +35,7 @@ gem 'clockwork'
 gem 'cocoon'
 gem 'draper'
 gem 'faker'
+gem "letter_opener", group: :development
 gem 'mobility', '~> 1.1.3'
 gem 'inline_svg'
 gem 'name_of_person'
