@@ -14,5 +14,7 @@ application.load(
 )
 
 // Import and register TailwindCSS Components
-import { Modal } from "tailwindcss-stimulus-components"
+import { Tabs, Modal, Toggle } from "tailwindcss-stimulus-components"
+application.register('tabs', Tabs)
 application.register('modal', Modal)
+application.register('toggle', Toggle)
