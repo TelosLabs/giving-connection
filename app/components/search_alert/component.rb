@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# navbar view component
+# Search alert modal view component
 # rubocop:disable Style/ClassAndModuleChildren
 # rubocop:disable Lint/MissingSuper
 class SearchAlert::Component < ViewComponent::Base
