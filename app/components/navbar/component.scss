@@ -1,0 +1,88 @@
+@import "../../assets/stylesheets/settings/variables";
+
+.navbar {
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  color: $copy-white;
+  background-color: $primary-dark-blue;
+
+  @media (min-width: 768px) {
+    height: 91px;
+  }
+
+  &--mobile {
+    &::after {
+      content: "";
+      flex: 1;
+    }
+
+    &__menu {
+      flex: 1;
+    }
+
+    @media (min-width: 768px) {
+      display: none;
+      flex: none;
+    }
+  }
+
+  &--desktop {
+    display: none;
+
+    @media (min-width: 768px) {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 500px;
+      font-size: 14px;
+    }
+
+    @media (min-width: 1024px) {
+      padding: 0 49px 0 39px ;
+    }
+
+    @media (min-width: 1280px) {
+      padding: 0 149px 0 139px;
+    }
+  }
+}
+
+.sidebar-slide-in {
+  animation: slide-in 0.6s ease-in;
+}
+
+@keyframes slide-in {
+	0% {
+		transform: translateX(-300%);
+		visibility: hidden;
+    opacity: 0;
+	}
+  30% {
+    transform: translateX(-150%);
+    opacity: 0.5;
+  }
+	100% {
+		transform: translateX(0);
+		visibility: visible;
+    opacity: 1;
+	}
+}
+
+.sidebar-slide-out {
+  animation: slide-out 1s ease-out;
+}
+
+@keyframes slide-out {
+  0% {
+    transform: translateX(0);
+    visibility: visible;
+  }
+  70% {
+    transform: translateX(-150%);
+  }
+  100% {
+    transform: translateX(-300%);
+    visibility: hidden;
+    opacity: 0.85;
+  }
+}

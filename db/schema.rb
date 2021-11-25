@@ -10,9 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_21_214953) do
+ActiveRecord::Schema.define(version: 2021_11_25_171346) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "fuzzystrmatch"
+  enable_extension "pg_trgm"
   enable_extension "plpgsql"
   enable_extension "postgis"
 
@@ -118,6 +120,17 @@ ActiveRecord::Schema.define(version: 2021_11_21_214953) do
     t.boolean "appointment_only", default: false
     t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
     t.index ["organization_id"], name: "index_locations_on_organization_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "email", null: false
+    t.string "phone"
+    t.string "subject"
+    t.string "organization_name", null: false
+    t.string "organization_website"
+    t.string "organization_ein"
+    t.text "content"
   end
 
   create_table "office_hours", force: :cascade do |t|
