@@ -191,11 +191,11 @@ data_spreadsheet.default_sheet = data_spreadsheet.sheets[3]
 data_spreadsheet.to_csv("#{file_path.path}/locations.csv")
 locations_csv_file = "#{file_path.path}/locations.csv"
 
-data_spreadsheet.default_sheet = data_spreadsheet.sheets[3]
+data_spreadsheet.default_sheet = data_spreadsheet.sheets[4]
 data_spreadsheet.to_csv("#{file_path.path}/location_services.csv")
 location_services_csv_file = "#{file_path.path}/location_services.csv"
 
-data_spreadsheet.default_sheet = data_spreadsheet.sheets[3]
+data_spreadsheet.default_sheet = data_spreadsheet.sheets[5]
 data_spreadsheet.to_csv("#{file_path.path}/location_office_hours.csv")
 location_office_hours_csv_file = "#{file_path.path}/location_office_hours.csv"
 
@@ -210,15 +210,18 @@ CSV.foreach(orgs_csv_file, headers: :first_row) do |org_row|
       scope_of_work: org_row['scope_of_work'], creator: AdminUser.first }
 
   new_organization = Organization.create!(new_organization_data)
+  p new_organization
 
   social_media_data = { facebook: org_row['facebook'], instagram: org_row['instagram'], twitter: org_row['twitter'],
       linkedin: org_row['linkedin'], youtube: org_row['youtube'], blog: org_row['blog'], organization: new_organization }
 
   new_social_media = SocialMedia.create!(social_media_data)
+  p new_social_media
 
   CSV.foreach(tags_csv_file, headers: :first_row) do |tag_row|
     if tag_row['organization_id'] == org_row['id']
       new_tag = Tag.create!(name: tag_row['name'], organization: new_organization)
+      p new_tag
     end
   end
   
@@ -227,6 +230,7 @@ CSV.foreach(orgs_csv_file, headers: :first_row) do |org_row|
       beneficiary_subcategory = BeneficiarySubcategory.find_by_name(beneficiary_row['name'])
       new_organization_beneficiaries = 
         OrganizationBeneficiary.create!(beneficiary_subcategory: beneficiary_subcategory, organization: new_organization)
+      p new_organization_beneficiaries
     end
   end
 
@@ -236,19 +240,15 @@ CSV.foreach(orgs_csv_file, headers: :first_row) do |org_row|
                                   main: location_row['main'] == 'yes', physical: location_row['physical'] == 'yes',
                                   appointment_only: location_row['appointment_only'] == 'yes',
                                   offer_services: location_row['offer_services'] == 'yes', organization: new_organization, 
-                                  latitude: location_row['latitude'].to_i, longitude: location_row['longitude'].to_i)
-    end
-
-
-    CSV.foreach(location_services_csv_file, headers: :first_row) do |location_service_row|
-      if location_row['id'] == location_service_row['location_id']
-        service = Service.find_by_name(location_service_row['name'])
-        new_location_service = LocationService.create!(service: service, location: new_location)
+                                  latitude: location_row['latitude'].to_f, longitude: location_row['longitude'].to_f)
+      
+      CSV.foreach(location_services_csv_file, headers: :first_row) do |location_service_row|
+        if location_row['id'] == location_service_row['location_id']
+          service = Service.find_by_name(location_service_row['name'])
+          new_location_service = LocationService.create!(service: service, location: new_location)
+          p new_location_service
+        end
       end
     end
-
   end
 end
-
-
-
