@@ -42,7 +42,7 @@
                 = render ResultCard::Component.new(title: result&.organization&.name,\
                                                   address: result&.address,\
                                                   image_url: result&.organization&.logo,\
-                                                  id: result&.organization&.id,\
+                                                  id: result&.id,\
                                                   webpage: result&.organization&.website,\
                                                   description: result&.organization&.mission_statement_en)
           div class="h-40 mt-24"
@@ -65,7 +65,7 @@
                     ' Closed
                   | Opens at 9 am
 
-      div  class="relative hidden w-full md:flex " data-controller="places" data-places-zoom-value="10"  data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
+      div class="relative hidden w-full md:flex " data-controller="places" data-places-zoom-value="10"  data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
         div# class="absolute inset-0 w-full h-full" data-places-target="map"
         div class="hidden"
           - @results&.each do |result|
