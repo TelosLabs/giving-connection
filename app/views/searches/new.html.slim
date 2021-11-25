@@ -61,7 +61,7 @@
 
 = form_with model: @search, url: searches_path, class: 'relative min-h-screen', method: :post do |f|
   = render SearchBar::Component.new(form: f, search: @search)
-  div class="flex flex-row justify-center w-full md:h-screen pt-28" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
+  div class="flex flex-row justify-center w-full md:h-screen" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
     div class="flex flex-row justify-center w-full min-h-full"
       div class="flex flex-col w-full h-full min-h-full max-w-470px md:border-r border-gray-7"
         div class="flex flex-row justify-between w-full p-4 bg-gray-9"  data-controller="modal"
@@ -111,7 +111,3 @@
 
       div  class="relative hidden w-full md:flex " data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
         div# class="absolute inset-0 w-full h-full" data-places-target="map"
-
-div class="h-40"
-
-  | footer
