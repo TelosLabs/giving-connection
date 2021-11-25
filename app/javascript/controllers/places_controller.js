@@ -23,11 +23,28 @@ export default class extends Controller {
 
     const image = this.imageurlValue
 
-    this.marker = new google.maps.Marker({
-      map: this.map,
-      anchorPoint: new google.maps.Point(0, -29),
-      icon: image
-    })
+    this.setMarkers(this.map, image);
+  }
+
+  setMarkers(map, image) {
+    // Adds markers to the map.
+    var pages = [
+      [0.3653588e2, -0.87349923e2],
+      [0.3612309e2, -0.8670337e2],
+      [0.3612309e2, -0.8670337e2],
+      [0.36089846e2, -0.86698857e2],
+      [0.36165602e2, -0.8678218e2]
+    ]
+
+    for (let i = 0; i < pages.length; i++) {
+      const page = pages[i];
+
+      new google.maps.Marker({
+        position: { lat: page[0], lng: page[1] },
+        map: map,
+        icon: image
+      });
+    }
   }
 
   placeChanged() {
@@ -47,7 +64,7 @@ export default class extends Controller {
 
     this.marker.setPosition(place.geometry.location)
     this.marker.setVisible(true)
-    // debugger;
+
     this.latitudeTarget.value = place.geometry.location.lat()
     this.longitudeTarget.value = place.geometry.location.lng()
   }
