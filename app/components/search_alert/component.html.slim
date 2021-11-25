@@ -1,9 +1,9 @@
-div class='hidden main' data-search-alert--component-target="searchAlert"
+div class='hidden' data-search-alert--component-target="searchAlert"
   div class='fixed inset-0 z-10 overflow-y-auto' aria-labelledby="modal-title" aria-modal="true" role="dialog"
-    div class='flex items-end justify-center min-h-screen px-2 pt-4 pb-20 text-center sm:block.sm:p-0'
+    div class="flex items-end justify-center min-h-screen px-2 pt-4 pb-20 text-center sm:block sm:p-0"
       div class='fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75' aria-hidden="true"
-      span class='hidden sm:inline-block sm:align-middle sm:h-screen' aria-hidden="true"
-      div class='inline-block px-3 pt-4 pb-12 overflow-hidden text-sm text-left align-bottom transition-all transform bg-white rounded-lg max-w-356px sm:align-middle' data-search-alert--component-target="searchContent"
+      span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true"
+      div class="inline-block px-3 pt-4 pb-12 overflow-hidden text-sm text-left align-bottom transition-all transform bg-white rounded-lg max-w-356px sm:align-middle" data-search-alert--component-target="searchContent"
         div class='px-1 text-center'
           div class='pt-5 pb-4 pl-5 pr-2'
             div class='flex justify-between'
@@ -30,11 +30,11 @@ div class='hidden main' data-search-alert--component-target="searchAlert"
                   input id='daily' class='w-4 h-4' name="alert-frequency" type="radio"
                   label.ml-3 for='daily'
                     | Daily
-                .flex.items-center
+                div class='flex items-center'
                   input id='weekly' class='w-4 h-4' checked="checked" name="alert-frequency" type="radio"
                   label.ml-3 for='weekly'
                     | Weekly
-                .flex.items-center
+                div class='flex items-center'
                   input id='montly' class='h-4w-4' name="alert-frequency" type="radio"
                   label.ml-3 for='montly'
                     | Montly
