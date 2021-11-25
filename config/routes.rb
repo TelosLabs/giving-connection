@@ -27,7 +27,6 @@ Rails.application.routes.draw do
     resources :locations, only: %i[index new create]
   end
   resource :searches, only: %i[new create]
-
-  resource :searches, only: [:new], path: 'searches/new'
+  resource :my_account, only: %i[show]
   root to: 'home#index'
 end
