@@ -1,64 +1,4 @@
-
-=  @results
-- results = [\
-  { \
-    title: 'Centerstone Clarksville',\
-    address: '511 8th Street Clarksville, TN 37040',\
-    image_url: 'https://www.florisumc.org/wp-content/uploads/2019/05/nami.jpeg',\
-    id: 1,\
-    webpage: 'www.centerstone.org',\
-    description: 'Centerstone is a non-for-profit health care organization dedicated to delivering care that changes people’s lives. We provide mental health care, addiction treatment and community education in Florida, Illinois, Indiana, Kentucky and Tennessee.'\
-  },\
-  { \
-    title: 'NAMI Tennessee',\
-    address: '1101 Kermit Dr # 605, Nashville, TN 37217',\
-    image_url: 'logo-default1.png',\
-    id: 2,\
-    webpage: 'www.namitennessee.org',\
-    description: 'NAMI is a non-for-profit health care organization dedicated to delivering care that changes people’s lives. We provide mental health care, addiction treatment and community education in Kentucky and Tennessee.'\
-  },\
-  { \
-    title: 'Mental Health America of the MidSouth',\
-    address: '446 Metroplex Drive, Suite A-224, Nashville, TN 37211',\
-    image_url: 'logo-default2.png',\
-    id: 3,\
-    webpage: 'www.mentalhealth.org',\
-    description: 'Mental Health America is a non-for-profit health care organization dedicated to delivering care that changes people’s lives. We provide mental health care, addiction treatment and community education in Florida, Illinois, Indiana, Kentucky and Tennessee.'\
-  },\
-  { \
-    title: 'NAMI Florida',\
-    address: '1101 Kermit Dr # 605, Nashville, TN 37217',\
-    image_url: 'logo-default3.png',\
-    id: 4,\
-    webpage: 'www.namiflorida.org',\
-    description: 'NAMI is a non-for-profit health care organization dedicated to delivering care that changes people’s lives. We provide mental health care, addiction treatment and community education in Kentucky and Tennessee.'\
-  },\
-  { \
-    title: 'NAMI Kentucky',\
-    address: '1101 Kermit Dr # 605, Nashville, TN 37217',\
-    image_url: 'logo-default4.png',\
-    id: 5,\
-    webpage: 'www.namikentucky.org',\
-    description: 'NAMI is a non-for-profit health care organization dedicated to delivering care that changes people’s lives. We provide mental health care, addiction treatment and community education in Kentucky and Tennessee.'\
-  },\
-  { \
-    title: 'NAMI Tennessee',\
-    address: '1101 Kermit Dr # 605, Nashville, TN 37217',\
-    image_url: 'logo-default5.png',\
-    id: 6,\
-    webpage: 'www.namitennessee.org',\
-    description: 'NAMI is a non-for-profit health care organization dedicated to delivering care that changes people’s lives. We provide mental health care, addiction treatment and community education in Kentucky and Tennessee.'\
-  },\
-  { \
-    title: 'NAMI Tennessee',\
-    address: '1101 Kermit Dr # 605, Nashville, TN 37217',\
-    image_url: 'logo-default4.png',\
-    id: 7,\
-    webpage: 'www.namitennessee.org',\
-  },\
-]
-
-
+- markers = @results&.map { |l| [l.latitude, l.longitude] }  || []
 = form_with model: @search, url: searches_path, class: 'relative min-h-screen', method: :post do |f|
   = render SearchBar::Component.new(form: f, search: @search)
   div class="flex flex-row justify-center w-full md:h-screen" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
@@ -87,7 +27,7 @@
 
         div class="flex flex-row items-center justify-between w-full p-4"
           span class="text-xs text-gray-3"
-            | 20 results found
+            | #{pluralize(@results.size, 'result')} found
 
           button class="inline-flex items-center px-3 py-2 text-xs text-gray-3" type="button"
             /! Heroicon name: solid/mail
@@ -96,18 +36,50 @@
 
         div class="hidden w-full h-full md:overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
           ul class="flex flex-col divide-y divide-gray-8"
-            - results.each do |result|
+            - @results&.each do |result|
               li
-                = render ResultCard::Component.new(title: result[:title],\
-                                                  address: result[:address],\
-                                                  image_url: result[:image_url],\
-                                                  id: result[:id],\
-                                                  webpage: result[:webpage],\
-                                                  description: result[:description])
+                / = result&.organization&.mission_statement_en
+                = render ResultCard::Component.new(title: result&.organization&.name,\
+                                                  address: result&.address,\
+                                                  image_url: result&.organization&.logo,\
+                                                  id: result&.organization&.id,\
+                                                  webpage: result&.organization&.website,\
+                                                  description: result&.organization&.mission_statement_en)
           div class="h-40 mt-24"
             | Pagination
         div class="hidden w-full h-screen md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
           div# class="w-full h-full" data-places-target="map"
+          div class="hidden"
+            - @results&.each do |result|
+              div class="flex flex-col items-center gap-2 p-5 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}" 
+                h5 class="text-lg font-bold text-gray-2"
+                  | #{result.organization.name}
+                p class="text-xs text-gray-4"
+                  | #{result.address}
+                p class="text-xs text-gray-4"
+                  | #{result.organization.website}
+                p class="text-xs text-gray-4"
+                  | +1 888 478 0036
+                p class="text-xs font-medium text-gray-2"
+                  span class=" text-states-error"
+                    ' Closed
+                  | Opens at 9 am
 
-      div  class="relative hidden w-full md:flex " data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
+      div  class="relative hidden w-full md:flex " data-controller="places" data-places-zoom-value="10"  data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
         div# class="absolute inset-0 w-full h-full" data-places-target="map"
+        div class="hidden"
+          - @results&.each do |result|
+            div class="flex flex-col items-center gap-2 p-5 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}" 
+              h5 class="text-lg font-bold text-gray-2"
+                | #{result.organization.name}
+              p class="text-xs text-gray-4"
+                | #{result.address}
+              p class="text-xs text-gray-4"
+                | #{result.organization.website}
+              p class="text-xs text-gray-4"
+                | +1 888 478 0036
+              p class="text-xs font-medium text-gray-2"
+                span class=" text-states-error"
+                  ' Closed
+                | Opens at 9 am
+
