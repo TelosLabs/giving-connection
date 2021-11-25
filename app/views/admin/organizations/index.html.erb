@@ -40,9 +40,10 @@ It renders the `_table` partial to display details about the resources.
     ) %>
   <% end %>
 
-  <div>
-    <%= link_to "Upload Organizations", root_url, class: "button" %>
-  </div>
+  <%= form_tag import_admin_organizations_path, multipart: true do %>
+    <%= file_field_tag :file %>
+    <%= submit_tag "Import Organizations" %>
+  <% end %>
 
   <div>
     <%= link_to(

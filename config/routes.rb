@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :admin_users
     resources :users
-    resources :organizations
+    resources :organizations do
+      collection { post :import }
+    end
     resources :social_medias, only: %i[new create edit update]
     resources :services
     resources :categories, only: %i[new create edit update]
