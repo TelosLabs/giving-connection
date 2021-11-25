@@ -6,7 +6,7 @@
 class SearchAlert::Component < ViewComponent::Base
   def initialize(keywords: nil, filters: nil)
     @keywords = keywords
-    @filters = filters.join(", ")
+    @filters = filters.join(', ')
   end
 end
 
