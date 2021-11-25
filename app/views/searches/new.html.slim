@@ -94,7 +94,7 @@
             = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
             | Create Search Alert
 
-          = render SearchAlert::Component.new(keywords: "'Mental Health Nonprofits'", filters: ['Crisis Support', 'Mental Health', 'Adults', 'Families', 'Addiction Recovery'])
+          = render SearchAlert::Component.new(keywords: 'Mental Health Nonprofits', filters: ['Crisis Support', 'Mental Health', 'Adults', 'Families', 'Addiction Recovery'])
         div class="hidden w-full h-full md:overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
           ul class="flex flex-col divide-y divide-gray-8"
             - results.each do |result|
