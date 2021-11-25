@@ -61,7 +61,6 @@ module.exports = {
         blue: {
           medium: '#0782D0',
         },
-        
       },
       maxWidth: {
         '327px': '327px',
