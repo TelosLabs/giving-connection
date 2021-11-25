@@ -48,10 +48,6 @@ module.exports = {
           warning: '#febb5a',
           disabled: '#eff2f7'
         },
-        copy: {
-          white: '#ffffff',
-          'gray-2': '#1f2d3d'
-        }
       },
       textColor: {
         gray: {

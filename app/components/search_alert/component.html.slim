@@ -9,7 +9,7 @@ div class='hidden' data-search-alert--component-target="searchAlert"
             div class='flex justify-between'
               h5 id='modal-title' class='text-lg font-bold text-black'
                 | Manage Search Alert
-              button class='inline-flex rounded-md text-gray-gray-1 hover:bg-gray-100 p-1.5' type="button" data-action="click->search-alert--component#collapseSearchAlertModal"
+              button class='inline-flex rounded-md text-gray-1 hover:bg-gray-100 p-1.5' type="button" data-action="click->search-alert--component#collapseSearchAlertModal"
                 span.sr-only Dismiss
                 = inline_svg_tag 'x-icon.svg', class:'h-3 w-3'
             div class='mt-3 text-left text-black'
@@ -25,7 +25,7 @@ div class='hidden' data-search-alert--component-target="searchAlert"
               | Alert Frequency
             fieldset class='mt-4'
               legend.sr-only Alert frequency
-              div class='space-y-3 text-sm text-copy-gray-2'
+              div class='space-y-3 text-sm text-gray-2'
                 div class="flex items-center"
                   input id='daily' class='w-4 h-4' name="alert-frequency" type="radio"
                   label.ml-3 for='daily'
@@ -38,7 +38,7 @@ div class='hidden' data-search-alert--component-target="searchAlert"
                   input id='montly' class='h-4w-4' name="alert-frequency" type="radio"
                   label.ml-3 for='montly'
                     | Montly
-        div class='px-4 py-5 font-normal rounded-md text-gray-gray-2 bg-gray-gray-9'
+        div class='px-4 py-5 font-normal rounded-md text-gray-2 bg-gray-9'
           | You’ll receive an email when a newly published organization matches your search.
         div class='mt-5'
           button class='c-button' type="submit" data-action="click->search-alert--component#closeSearchAlertModal"
