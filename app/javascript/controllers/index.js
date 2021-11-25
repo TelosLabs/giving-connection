@@ -12,3 +12,7 @@ application.load(
     definitionsFromContext(contextComponents)
   )
 )
+
+// Import and register TailwindCSS Components
+import { Modal } from "tailwindcss-stimulus-components"
+application.register('modal', Modal)
