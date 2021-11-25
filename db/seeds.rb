@@ -76,6 +76,41 @@ end
 puts "Org with id #{org.id} sucessfully created" if org.save!
 
 org = Organization.new(
+  name: 'NAMI kentucky',
+  ein_number: rand(0..1000),
+  irs_ntee_code: %w[A00 A90 A26 A91 A02 Q21].sample,
+  website: 'nami@example.com',
+  scope_of_work: %w[International National Regional].sample,
+  mission_statement_en: Faker::Company.catch_phrase,
+  vision_statement_en: Faker::Company.catch_phrase,
+  tagline_en: Faker::Company.catch_phrase,
+  description_en: Faker::Company.catch_phrase
+)
+org.creator = AdminUser.last
+
+org.locations.build(
+  lonlat: Geo.point(-86.70336982081703, 36.12308987261626),
+  longitude: '-86.70336982081703',
+  latitude: '36.12308987261626',
+  address: 'NAMI kentucky, Kermit Drive, kentucky, kentucky, USA',
+  main: true,
+  offer_services: true,
+  physical: true,
+)
+
+Date::DAYNAMES.each_with_index do |day, index|
+  org.locations.first.office_hours.build(
+    day: index,
+    open_time: Time.now.change({ hour: "9:00" }),
+    close_time: Time.now.change({ hour: "16:00" }),
+    closed: false
+  )
+end
+
+puts "Org with id #{org.id} sucessfully created" if org.save!
+
+
+org = Organization.new(
   name: 'Mental Health America of the MidSouth',
   ein_number: rand(0..1000),
   irs_ntee_code: %w[A00 A90 A26 A91 A02 Q21].sample,
