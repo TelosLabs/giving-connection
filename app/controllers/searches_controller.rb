@@ -24,7 +24,7 @@ class SearchesController < ApplicationController
       render :new
     else
       render :new
-      puts search.errors.full_messages
+      puts @search.errors.full_messages
     end
   end
 

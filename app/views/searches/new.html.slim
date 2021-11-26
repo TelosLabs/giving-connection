@@ -27,7 +27,7 @@
 
         div class="flex flex-row items-center justify-between w-full p-4"
           span class="text-xs text-gray-3"
-            | #{pluralize(@results.size, 'result')} found
+            | #{pluralize(@results&.size, 'result')} found
 
           button class="inline-flex items-center px-3 py-2 text-xs text-gray-3" type="button"
             /! Heroicon name: solid/mail
