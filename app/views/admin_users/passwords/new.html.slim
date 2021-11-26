@@ -10,6 +10,6 @@
       = render "users/shared/error_messages", resource: resource
       .c-form--group class="mb-6"
         = f.label :email, "Email Address"
-        = f.email_field :email, autofocus: true, autocomplete: "email", class:"c-input"
+        = f.email_field :email, autofocus: true, autocomplete: "email", class:"c-input rounded-md"
       .c-form--action class="mt-12 mb-44"
         = f.submit "Send reset instructions", class:"c-button"

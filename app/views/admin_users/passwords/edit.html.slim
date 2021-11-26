@@ -11,10 +11,10 @@
       = f.hidden_field :reset_password_token
       .c-form--group
         = f.label :password, "New password"
-        = f.password_field :password, autofocus: true, autocomplete: "new-password", class:"c-input", placeholder: "(6+ characters)"
+        = f.password_field :password, autofocus: true, autocomplete: "new-password", class:"c-input rounded-md", placeholder: "(6+ characters)"
       .c-form--group
         = f.label :password_confirmation
-        = f.password_field :password_confirmation, autocomplete: "new-password", class: "c-input", placeholder: "Confirm your password"
+        = f.password_field :password_confirmation, autocomplete: "new-password", class: "c-input rounded-md", placeholder: "Confirm your password"
       .c-form--action
         = f.submit "Reset password", class:"c-button"
 
