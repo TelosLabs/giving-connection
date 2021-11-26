@@ -5,8 +5,11 @@ Rails.application.routes.draw do
     resources :admin_users
     resources :users
     resources :organizations do
-      collection { post :import }
-    end
+      collection do 
+        get :upload
+        post :import
+      end
+    end 
     resources :social_medias, only: %i[new create edit update]
     resources :services
     resources :categories, only: %i[new create edit update]

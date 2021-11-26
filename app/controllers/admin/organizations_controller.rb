@@ -10,6 +10,10 @@ module Admin
     #   send_foo_updated_email(requested_resource)
     # end
 
+    def upload
+
+    end
+
     def import
       Upload.new.import(params[:file])
       redirect_to admin_organizations_path, notice: "Organizations imported."
