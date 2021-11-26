@@ -10,13 +10,11 @@ module Admin
     #   send_foo_updated_email(requested_resource)
     # end
 
-    def upload
-
-    end
+    def upload; end
 
     def import
       Upload.new.import(params[:file])
-      redirect_to admin_organizations_path, notice: "Organizations imported."
+      redirect_to admin_organizations_path, notice: 'Organizations imported.'
     end
 
     def new
@@ -109,8 +107,7 @@ module Admin
                                                    services_id: [],
                                                    location_attributes: %i[address latitude longitude website main physical offer_services appointment_only],
                                                    tags_attributes: [],
-                                                   office_hours_attributes: %i[day open_time close_time closed]
-                                                 }
+                                                   office_hours_attributes: %i[day open_time close_time closed] }
       params.require(resource_class.model_name.param_key)
             .permit(permit)
             .transform_values { |value| value == '' ? nil : value }

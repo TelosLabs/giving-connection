@@ -36,10 +36,10 @@ class Location < ActiveRecord::Base
   validates :latitude, presence: true
   validates :longitude, presence: true
   validates :lonlat, presence: true
-  validates :main, inclusion: { in: [ true, false ] }
-  validates :physical, inclusion: { in: [ true, false ] }
-  validates :offer_services, inclusion: { in: [ true, false ] }
-  validates :appointment_only, inclusion: { in: [ true, false ] }
+  validates :main, inclusion: { in: [true, false] }
+  validates :physical, inclusion: { in: [true, false] }
+  validates :offer_services, inclusion: { in: [true, false] }
+  validates :appointment_only, inclusion: { in: [true, false] }
   # validates :office_hours, length: { minimum: 7, maximum: 7 }
 
   # delegate :tags, :to => :organization, :prefix => true

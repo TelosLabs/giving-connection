@@ -5,11 +5,11 @@ Rails.application.routes.draw do
     resources :admin_users
     resources :users
     resources :organizations do
-      collection do 
+      collection do
         get :upload
         post :import
       end
-    end 
+    end
     resources :social_medias, only: %i[new create edit update]
     resources :services
     resources :categories, only: %i[new create edit update]
@@ -24,7 +24,7 @@ Rails.application.routes.draw do
 
   resources :locations, only: %i[index new]
 
-  resources :favorite_locations, only: %i[ create destroy ]
+  resources :favorite_locations, only: %i[create destroy]
 
   resources :organizations, only: [:show] do
     resources :locations, only: %i[index new create]
