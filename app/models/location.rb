@@ -17,6 +17,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  appointment_only :boolean          default(FALSE)
+#  name             :string           not null
 #
 class Location < ActiveRecord::Base
   include Locations::Searchable
@@ -32,6 +33,7 @@ class Location < ActiveRecord::Base
   has_many :tags, through: :organization
   has_one :social_media, through: :organization
 
+  validates :name, presence: true
   validates :address, presence: true
   validates :latitude, presence: true
   validates :longitude, presence: true
@@ -40,10 +42,6 @@ class Location < ActiveRecord::Base
   validates :physical, inclusion: { in: [ true, false ] }
   validates :offer_services, inclusion: { in: [ true, false ] }
   validates :appointment_only, inclusion: { in: [ true, false ] }
-  # validates :office_hours, length: { minimum: 7, maximum: 7 }
-
-  # delegate :tags, :to => :organization, :prefix => true
-  # delegate :social_media, :to => :organization, :prefix => true
 
   scope :additional, -> { where(main: false) }
   scope :main, -> { where(main: true) }

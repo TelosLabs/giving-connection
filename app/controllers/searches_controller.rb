@@ -23,9 +23,10 @@ class SearchesController < ApplicationController
       @results = @search.results
       render :new
     else
-      render :new
-      puts @search.errors.full_messages
+      redirect_to locations_path
+      puts search.errors.full_messages
     end
+
   end
 
   def create_params

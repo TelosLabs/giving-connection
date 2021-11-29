@@ -20,8 +20,6 @@
 #  vision_statement_es  :text
 #  tagline_en           :text             not null
 #  tagline_es           :text
-#  description_en       :text             not null
-#  description_es       :text
 #
 require 'rails_helper'
 
