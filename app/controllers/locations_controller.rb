@@ -4,8 +4,9 @@ class LocationsController < ApplicationController
   skip_before_action :authenticate_user!
 
   def index
-    @locations = Location.find(params[:ids]) if params[:ids].present?
-    @locations ||= Location.all
+    # @locations = Location.find(params[:ids]) if params[:ids].present?
+    # @locations ||= Location.all
+    @pagy, @locations = pagy(Location.all)
   end
 
   def new
