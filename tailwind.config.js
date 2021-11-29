@@ -48,10 +48,6 @@ module.exports = {
           warning: '#febb5a',
           disabled: '#eff2f7'
         },
-        copy: {
-          white: '#ffffff',
-          'gray-2': '#1f2d3d'
-        }
       },
       textColor: {
         gray: {
@@ -65,6 +61,7 @@ module.exports = {
       },
       maxWidth: {
         '327px': '327px',
+        '356px': '356px',
         '375px': '375px',
         '402px': '402px',
         '470px': '470px',

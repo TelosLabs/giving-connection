@@ -17,4 +17,3 @@ import { Tabs, Modal, Toggle } from "tailwindcss-stimulus-components"
 application.register('tabs', Tabs)
 application.register('modal', Modal)
 application.register('toggle', Toggle)
-
