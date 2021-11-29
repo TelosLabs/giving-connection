@@ -19,7 +19,7 @@ class SearchesController < ApplicationController
     search = Search.new(create_params)
 
     if search.save && search.results.any?
-      @results = search.results
+      @pagy, @results = pagy(search.results)
       redirect_to locations_path(ids: @results.ids, alert_params: create_params)
     else
       redirect_to locations_path
