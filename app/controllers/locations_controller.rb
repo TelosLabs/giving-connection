@@ -9,6 +9,10 @@ class LocationsController < ApplicationController
     @alert_params = params[:alert_params]
   end
 
+  def show
+    @location = Location.find(params[:id])
+  end
+
   def new
     @location = Location.new
   end

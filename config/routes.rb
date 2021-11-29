@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   get '/contact', to: "messages#new", as: :contact
   resources :messages, only: [:create]
 
-  resources :locations, only: %i[index new]
+  resources :locations, only: %i[index new show]
 
   resources :organizations, only: [:show] do
     resources :locations, only: %i[index new create]
@@ -31,7 +31,6 @@ Rails.application.routes.draw do
   resources :favorite_locations, only: %i[ create destroy ]
   resource :searches, only: %i[new create]
   resources :alerts, only: %i[new create delete]
-
-  resource :searches, only: [:new], path: 'searches/new'
+  resource :my_account, only: %i[show]
   root to: 'home#index'
 end
