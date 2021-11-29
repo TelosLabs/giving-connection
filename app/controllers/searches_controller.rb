@@ -13,14 +13,15 @@ class SearchesController < ApplicationController
     BeneficiaryGroup.all.each do |group|
       @beneficiary_groups[group.name] = group.beneficiary_subcategories.map(&:name)
     end
+    @results = Location.all
   end
 
   def create
-    search = Search.new(create_params)
+    @search = Search.new(create_params)
 
-    if search.save && search.results.any?
-      @results = search.results
-      redirect_to locations_path(ids: @results.ids)
+    if @search.save && @search.results.any?
+      @results = @search.results
+      render :new
     else
       redirect_to locations_path
       puts search.errors.full_messages
