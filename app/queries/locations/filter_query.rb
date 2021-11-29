@@ -31,6 +31,8 @@ class Locations::FilterQuery
     def by_address(scope, address_params)
       return scope if address_params.values.all?(&:blank?)
 
+      address_params[:state_name] = CS.states(:us)[address_params[:state].to_sym]
+
       scope.where(
         'address ILIKE any ( array[?] )',
         parameterize_address_filters(address_params)

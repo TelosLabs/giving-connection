@@ -35,6 +35,7 @@ gem 'clockwork'
 gem 'cocoon'
 gem 'draper'
 gem 'faker'
+gem "letter_opener", group: :development
 gem 'mobility', '~> 1.1.3'
 gem 'inline_svg'
 gem 'name_of_person'
@@ -59,6 +60,7 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'pronto'
 gem 'pronto-flay', require: false
 gem 'pronto-rubocop', require: false
+gem 'city-state'
 
 # Geolocation
 gem 'activerecord-postgis-adapter'

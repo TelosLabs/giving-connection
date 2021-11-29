@@ -8,19 +8,19 @@ User.create!(email: 'user@example.com', password: 'testing', password_confirmati
 
 # Orgs
 org = Organization.new(
-  name: 'Centerstone Clarksville',
+  name: 'Centerstone',
   ein_number: rand(0..1000),
   irs_ntee_code: %w[A00 A90 A26 A91 A02 Q21].sample,
-  website: 'centerstone@example.com',
+  website: 'www.centerstoneexample.com',
   scope_of_work: %w[International National Regional].sample,
   mission_statement_en: Faker::Company.catch_phrase,
   vision_statement_en: Faker::Company.catch_phrase,
   tagline_en: Faker::Company.catch_phrase,
-  description_en: Faker::Company.catch_phrase
 )
 org.creator = AdminUser.last
 
 org.locations.build(
+  name: "Centerstone Clarksville",
   lonlat: Geo.point(-87.3499228477923, 36.53588038686436),
   longitude: '-87.3499228477923',
   latitude: '36.53588038686436',
@@ -31,7 +31,7 @@ org.locations.build(
 )
 
 Date::DAYNAMES.each_with_index do |day, index|
-  org.locations.first.office_hours.build(
+  org.locations.last.office_hours.build(
     day: index,
     open_time: Time.now.change({ hour: "9:00" }),
     close_time: Time.now.change({ hour: "16:00" }),
@@ -41,20 +41,21 @@ end
 
 puts "Org with id #{org.id} sucessfully created" if org.save!
 
+# ORGANIZATION 2
 org = Organization.new(
-  name: 'NAMI Tennessee',
+  name: 'NAMI',
   ein_number: rand(0..1000),
   irs_ntee_code: %w[A00 A90 A26 A91 A02 Q21].sample,
-  website: 'nami@example.com',
+  website: 'www.namiexample.com',
   scope_of_work: %w[International National Regional].sample,
   mission_statement_en: Faker::Company.catch_phrase,
   vision_statement_en: Faker::Company.catch_phrase,
   tagline_en: Faker::Company.catch_phrase,
-  description_en: Faker::Company.catch_phrase
 )
 org.creator = AdminUser.last
 
 org.locations.build(
+  name: "NAMI Tennessee",
   lonlat: Geo.point(-86.70336982081703, 36.12308987261626),
   longitude: '-86.70336982081703',
   latitude: '36.12308987261626',
@@ -65,7 +66,7 @@ org.locations.build(
 )
 
 Date::DAYNAMES.each_with_index do |day, index|
-  org.locations.first.office_hours.build(
+  org.locations.last.office_hours.build(
     day: index,
     open_time: Time.now.change({ hour: "9:00" }),
     close_time: Time.now.change({ hour: "16:00" }),
@@ -73,56 +74,43 @@ Date::DAYNAMES.each_with_index do |day, index|
   )
 end
 
-puts "Org with id #{org.id} sucessfully created" if org.save!
-
-org = Organization.new(
-  name: 'Mental Health America of the MidSouth',
-  ein_number: rand(0..1000),
-  irs_ntee_code: %w[A00 A90 A26 A91 A02 Q21].sample,
-  website: 'mental@example.com',
-  scope_of_work: %w[International National Regional].sample,
-  mission_statement_en: Faker::Company.catch_phrase,
-  vision_statement_en: Faker::Company.catch_phrase,
-  tagline_en: Faker::Company.catch_phrase,
-  description_en: Faker::Company.catch_phrase
-)
-org.creator = AdminUser.last
-
 org.locations.build(
-  lonlat: Geo.point(-86.69885745944305, 36.08984574780193),
-  longitude: '-86.69885745944305',
-  latitude: '36.08984574780193',
-  address: 'Mental Health America of the MidSouth, Nashville, TN, USA',
+  name: "NAMI Kentucky",
+  lonlat: Geo.point(-86.78218038642588, 36.16560224965609),
+  longitude: '-86.78218038642588',
+  latitude: '36.16560224965609',
+  address: 'NAMI Kentucky, invented, Kentucky, Kentucky, USA',
   main: true,
   offer_services: true,
   physical: true,
 )
 
 Date::DAYNAMES.each_with_index do |day, index|
-  org.locations.first.office_hours.build(
+  org.locations.last.office_hours.build(
     day: index,
     open_time: Time.now.change({ hour: "9:00" }),
     close_time: Time.now.change({ hour: "16:00" }),
-    closed: false
+    closed: ["Saturday", "Sunday"].include?(day)
   )
 end
 
 puts "Org with id #{org.id} sucessfully created" if org.save!
 
+# ORGANIZATION 4
 org = Organization.new(
   name: 'System of Care Across Tennessee',
   ein_number: rand(0..1000),
   irs_ntee_code: %w[A00 A90 A26 A91 A02 Q21].sample,
-  website: 'systemofcare@example.com',
+  website: 'www.systemofcare.com',
   scope_of_work: %w[International National Regional].sample,
   mission_statement_en: Faker::Company.catch_phrase,
   vision_statement_en: Faker::Company.catch_phrase,
   tagline_en: Faker::Company.catch_phrase,
-  description_en: Faker::Company.catch_phrase
 )
 org.creator = AdminUser.last
 
 org.locations.build(
+  name: "System of Care Across Tennessee",
   lonlat: Geo.point(-86.78218038642588, 36.16560224965609),
   longitude: '-86.78218038642588',
   latitude: '36.16560224965609',
@@ -133,7 +121,7 @@ org.locations.build(
 )
 
 Date::DAYNAMES.each_with_index do |day, index|
-  org.locations.first.office_hours.build(
+  org.locations.last.office_hours.build(
     day: index,
     open_time: Time.now.change({ hour: "9:00" }),
     close_time: Time.now.change({ hour: "16:00" }),
@@ -143,6 +131,41 @@ end
 
 puts "Org with id #{org.id} sucessfully created" if org.save!
 
+
+# ORGANIZATION 3
+org = Organization.new(
+  name: 'Mental Health America of the MidSouth',
+  ein_number: rand(0..1000),
+  irs_ntee_code: %w[A00 A90 A26 A91 A02 Q21].sample,
+  website: 'www.mentalexample.com',
+  scope_of_work: %w[International National Regional].sample,
+  mission_statement_en: Faker::Company.catch_phrase,
+  vision_statement_en: Faker::Company.catch_phrase,
+  tagline_en: Faker::Company.catch_phrase,
+)
+org.creator = AdminUser.last
+
+org.locations.build(
+  name: "Mental Health America of the MidSouth",
+  lonlat: Geo.point(-86.69885745944305, 36.08984574780193),
+  longitude: '-86.69885745944305',
+  latitude: '36.08984574780193',
+  address: 'Mental Health America of the MidSouth, Nashville, TN, USA',
+  main: true,
+  offer_services: true,
+  physical: true,
+)
+
+Date::DAYNAMES.each_with_index do |day, index|
+  org.locations.last.office_hours.build(
+    day: index,
+    open_time: Time.now.change({ hour: "9:00" }),
+    close_time: Time.now.change({ hour: "16:00" }),
+    closed: false
+  )
+end
+
+puts "Org with id #{org.id} sucessfully created" if org.save!
 
 # Beneficiaries
 Organizations::Constants::BENEFICIARIES.each do |beneficiary, subbeneficiaries|
