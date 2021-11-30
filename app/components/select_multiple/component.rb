@@ -4,7 +4,7 @@ class SelectMultiple::Component < ViewComponent::Base
     @name = name
     @items = items
     @selected = selected
-    # TODO allow options to be passed in
+    # TODO: allow options to be passed in
   end
 
   def options
@@ -12,10 +12,10 @@ class SelectMultiple::Component < ViewComponent::Base
       class: 'relative flex flex-wrap w-full mt-1 text-base border cursor-text min-h-46px rounded-6px text-gray-3',
       data: {
         controller: 'select-multiple dropdown',
-        action: "click->select-multiple#focus click->dropdown#show click@window->dropdown#hide selectmultiple:clear->select-multiple#clearAll",
-        'search--filter-target': "customInput",
-        'select-multiple-target': "container",
-        'dropdown-target': "button",
+        action: 'click->select-multiple#focus click->dropdown#show click@window->dropdown#hide selectmultiple:clear->select-multiple#clearAll',
+        'search--filter-target': 'customInput',
+        'select-multiple-target': 'container',
+        'dropdown-target': 'button',
         'select-multiple-selected-value': @selected
       }
     }
