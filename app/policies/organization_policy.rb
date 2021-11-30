@@ -12,6 +12,7 @@ class OrganizationPolicy < ApplicationPolicy
   end
 
   def edit?
-    update?
+    # update?
+    true
   end
 end

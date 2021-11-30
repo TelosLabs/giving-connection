@@ -1,0 +1,44 @@
+<h1>Edit <%= @organization.name  %> </h1>
+
+<%= form_for @organization do |f| %>
+	
+	<%= f.label :name %>
+	<%= f.text_field :name %>
+
+	<%= f.label :second_name %>
+	<%= f.text_field :second_name %>
+
+	<%= f.label :ein_number %>
+	<%= f.text_field :ein_number %>
+
+	<%= f.label :irs_ntee_code %>
+	<%= f.select :irs_ntee_code, Organization::NTEE_CODE %>
+
+	<%= f.file_field :logo, accept: 'image/png,image/jpeg'%>
+
+	<%= f.label :website %>
+	<%= f.text_field :website %>
+
+	<%= f.label :email %>
+	<%= f.text_field :email %>
+
+	<%= f.label :phone_number %>
+	<%= f.text_field :phone_number %>
+
+	<h2>Organization Information</h2>
+
+	<%= f.label :mission_statement_en %>
+	<%= f.text_area :mission_statement_en %>
+
+	<%= f.label :vision_statement_en %>
+	<%= f.text_area :vision_statement_en %>
+
+	<%= f.label :mission_statement_es %>
+	<%= f.text_area :mission_statement_es %>
+
+	<%= f.label :vision_statement_es %>
+	<%= f.text_area :vision_statement_es %>
+
+	<h2>Causes & Services</h2>
+
+<% end %>

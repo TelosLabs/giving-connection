@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_30_220215) do
+ActiveRecord::Schema.define(version: 2021_11_30_222523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -135,7 +135,6 @@ ActiveRecord::Schema.define(version: 2021_11_30_220215) do
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "appointment_only", default: false
     t.string "name", null: false
-    t.string "email"
     t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
     t.index ["organization_id"], name: "index_locations_on_organization_id"
   end
@@ -198,6 +197,8 @@ ActiveRecord::Schema.define(version: 2021_11_30_220215) do
     t.text "tagline_en", null: false
     t.text "tagline_es"
     t.string "second_name"
+    t.string "phone_number"
+    t.string "emai"
     t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
     t.index ["ein_number"], name: "index_organizations_on_ein_number", unique: true
     t.index ["mission_statement_en"], name: "index_organizations_on_mission_statement_en"
@@ -214,15 +215,6 @@ ActiveRecord::Schema.define(version: 2021_11_30_220215) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
-  end
-
-  create_table "phone_numbers", force: :cascade do |t|
-    t.string "number"
-    t.boolean "main"
-    t.bigint "location_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["location_id"], name: "index_phone_numbers_on_location_id"
   end
 
   create_table "services", force: :cascade do |t|
@@ -294,7 +286,6 @@ ActiveRecord::Schema.define(version: 2021_11_30_220215) do
   add_foreign_key "organization_admins", "users"
   add_foreign_key "organization_beneficiaries", "beneficiary_subcategories"
   add_foreign_key "organization_beneficiaries", "organizations"
-  add_foreign_key "phone_numbers", "locations"
   add_foreign_key "services", "causes"
   add_foreign_key "social_medias", "organizations"
   add_foreign_key "tags", "organizations"
