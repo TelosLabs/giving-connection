@@ -14,7 +14,10 @@ module Admin
       resource = new_resource
       authorize_resource(resource)
       resource.build_social_media
-      resource.build_main_location
+      # loc = resource.build_main_location
+      # Time::DAYS_INTO_WEEK.each do |k,v|
+      #   loc.office_hours.build(day: v, open_time: "10:00", close_time: "16:00")
+      # end
       render locals: {
         page: Administrate::Page::Form.new(dashboard, resource)
       }
@@ -37,8 +40,8 @@ module Admin
     def update
       organization_resource_params = resource_params.except('beneficiary_subcategories_id')
       requested_resource.creator = current_admin_user
-      requested_resource.update(organization_resource_params)
-      if requested_resource
+
+      if requested_resource.update(organization_resource_params)
         update_organization_beneficiaries(requested_resource, resource_params['beneficiary_subcategories_id']) unless resource_params['beneficiary_subcategories_id'].nil?
         update_tags(requested_resource, JSON.parse(params['tags_attributes'])) unless params['tags_attributes'].strip.empty?
         redirect_to([namespace, requested_resource], notice: translate_with_resource('update.success'))
@@ -95,8 +98,10 @@ module Admin
                                                    service_attributes: %i[name description id],
                                                    beneficiary_subcategories_id: [],
                                                    services_id: [],
-                                                   main_location_attributes: %i[address latitude longitude website main physical offer_services],
-                                                   tags_attributes: [] }
+                                                   location_attributes: %i[address latitude longitude website main physical offer_services appointment_only],
+                                                   tags_attributes: [],
+                                                   office_hours_attributes: %i[day open_time close_time closed]
+                                                 }
       params.require(resource_class.model_name.param_key)
             .permit(permit)
             .transform_values { |value| value == '' ? nil : value }

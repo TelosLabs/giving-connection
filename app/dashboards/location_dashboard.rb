@@ -11,6 +11,7 @@ class LocationDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     organization: Field::BelongsTo,
+    name: Field::String,
     id: Field::Number,
     latitude: HiddenField,
     longitude: HiddenField,
@@ -24,7 +25,8 @@ class LocationDashboard < Administrate::BaseDashboard
     updated_at: Field::DateTime,
     address: AddressField,
     office_hours: Field::NestedHasMany,
-    location_services: Field::NestedHasMany
+    location_services: Field::NestedHasMany,
+    appointment_only: Field::Boolean,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -34,15 +36,19 @@ class LocationDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
     id
+    name
     address
+    main
+    appointment_only
     organization
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-    organization
     id
+    organization
+    name
     latitude
     longitude
     website
@@ -50,6 +56,7 @@ class LocationDashboard < Administrate::BaseDashboard
     physical
     offer_services
     address
+    appointment_only
     office_hours
     location_services
   ].freeze
@@ -58,13 +65,14 @@ class LocationDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    organization
+    name
     address
     latitude
     longitude
     website
     main
     physical
+    appointment_only
     offer_services
     location_services
     office_hours

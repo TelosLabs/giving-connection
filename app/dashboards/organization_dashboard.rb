@@ -28,14 +28,10 @@ class OrganizationDashboard < Administrate::BaseDashboard
     vision_statement_es: Field::Text,
     tagline_en: Field::Text,
     tagline_es: Field::Text,
-    description_en: Field::Text,
-    description_es: Field::Text,
     social_media: Field::HasOne,
-    categories: Field::HasMany,
     organization_beneficiaries: CheckboxField,
     logo: Field::ActiveStorage,
     tags: TagInputField,
-    # main_location: Field::HasOne,
     locations: Field::NestedHasMany
   }.freeze
 
@@ -64,12 +60,9 @@ class OrganizationDashboard < Administrate::BaseDashboard
     mission_statement_en
     vision_statement_en
     tagline_en
-    description_en
     mission_statement_es
     vision_statement_es
     tagline_es
-    description_es
-    categories
     organization_beneficiaries
     tags
     social_media
@@ -89,12 +82,9 @@ class OrganizationDashboard < Administrate::BaseDashboard
     mission_statement_en
     vision_statement_en
     tagline_en
-    description_en
     mission_statement_es
     vision_statement_es
     tagline_es
-    description_es
-    categories
     organization_beneficiaries
     tags
     social_media

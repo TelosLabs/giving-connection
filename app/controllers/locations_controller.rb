@@ -3,10 +3,8 @@
 class LocationsController < ApplicationController
   skip_before_action :authenticate_user!
 
-  def index
-    @locations = Location.find(params[:ids]) if params[:ids].present?
-    @locations ||= Location.all
-    @locations = policy_scope(Location)
+  def show
+    @location = Location.find(params[:id])
   end
 
   def new

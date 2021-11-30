@@ -3,29 +3,31 @@
 class Search
   include ActiveModel::Model
 
-  DEFAULT_LOCATION = {
-    latitude: 36.16404968727089,
-    longitude: -86.78125827725053
-  }.freeze
+  KEYWORD_SEARCH_TYPE = 'keyword'
+  FILTER_SEARCH_TYPE = 'filter'
 
-  attr_accessor :keyword, :kilometers, :results, :distance, :city, :state,
+  attr_accessor :keyword, :results, :distance, :city, :state, :zipcode,
                 :beneficiary_groups, :services, :open_now, :open_weekends
 
-  validates :keyword, presence: true
-
-  def search
-    keyword.nil? ? filter_search : keyword_search
+  def save
+    begin
+      raise ActiveRecord::RecordInvalid unless valid?
+      execute_search
+      true
+    rescue ActiveRecord::RecordInvalid => invalid
+      false
+    end
   end
 
-  def keyword_search
-    # @results = Location.geo_near(Geo.to_wkt(Geo.point(DEFAULT_LOCATION[:longitude], DEFAULT_LOCATION[:latitude])), kilometers.to_i).search_by_keyword(keyword) if valid?
-    @results = Location.search_by_keyword(keyword) if valid?
-  end
-
-  def filter_search
-    filters = { distance: distance, city: city, state: state,
-                open_now: open_now, open_weekends: open_weekends,
-                beneficiary_groups: beneficiary_groups, services: services }
-    @results = FilterQuery.new(filters).search_by_filter
+  def execute_search
+    filters = {
+      address: { city: city.presence, state: state.presence, zipcode: zipcode.presence },
+                open_now: ActiveModel::Type::Boolean.new.cast(open_now),
+                open_weekends: ActiveModel::Type::Boolean.new.cast(open_weekends),
+                beneficiary_groups: beneficiary_groups, services: services,
+                distance: distance.presence&.to_i
+               }
+    @results = keyword.present? ? Locations::KeywordQuery.call({keyword: keyword}) : Location.all
+    @results = Locations::FilterQuery.call(filters, @results)
   end
 end

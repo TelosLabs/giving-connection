@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
 class HomeController < ApplicationController
-  def index; end
+  skip_before_action :authenticate_user!
+
+  def index
+    @search = Search.new
+  end
 end

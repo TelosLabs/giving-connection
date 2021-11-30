@@ -1,0 +1,50 @@
+nav data-controller="navbar--component"
+  .navbar.navbar--mobile class="h-20"
+    .navbar--mobile__menu class="flex items-center"
+      button data-action="click->navbar--component#openSideNavBar"
+        = inline_svg_tag 'menu.svg', size:'24*24'
+    = link_to root_path
+      = inline_svg_tag 'logo.svg', size:'130*32'
+  .navbar.navbar--desktop
+    ul class="flex items-center"
+      = link_to root_path
+        = inline_svg_tag 'logo.svg', size:'130*32', class:'mr-2 mid:mr-7 lg:mr-11'
+      div class="flex w-full"
+        li class='mr-2 mid:mr-7 lg:mr-11'
+          = link_to 'Search', '#'
+        li class='mr-2 mid:mr-7 lg:mr-11'
+          = link_to 'Add a Nonprofit', '#'
+        li class='mr-2 mid:mr-7 lg:mr-11'
+          = link_to 'About Us', '#'
+        li class='mr-2 mid:mr-7 lg:mr-11'
+          = link_to '#', class:"flex" do
+            div class='mr-2'
+              | Donate
+            div class='flex items-center'
+              = inline_svg_tag 'heart.svg', size:'9*9', class:'mt-1 fill-current text-red'
+    ul class='flex items-center'
+      - if @signed_in
+        li = link_to "My Account", '#', class:'text-base font-bold mr-1 lg:mr-6'
+      - else
+        li = link_to "Log in", '/users/sign_in', class:'text-base font-bold mr-2 mid:mr-4 lg:mr-6'
+        li = link_to "Create Account", '/users/sign_up', class:'c-button py-2.5 px-5 text-white bg-blue-medium'
+
+  .sidebar class='fixed top-0 bottom-0 left-0 right-0 z-10 hidden h-screen overflow-y-hidden bg-gray-9' data-navbar--component-target="sideNavBar"
+    section class="pt-16 pb-4 px-7 #{ @signed_in ? 'h-4/5' : 'h-3/4' }" 
+      div class='flex justify-end pb-16'
+        button class='p-2.5' data-action="navbar--component#collapseSideNavBar"
+          = inline_svg_tag 'x-icon.svg', size:'12*12', class:"fill-current text-gray-1"
+      ul class='flex flex-col text-2xl font-bold text-center gap-9 text-gray-3'
+        - if @signed_in
+          li = link_to "My Account", '#'
+        li = link_to "Search", '#'
+        li = link_to "Add a Nonprofit", '#'
+        li = link_to "About Us", '#'
+        li = link_to "Donate", '#'
+        li = link_to "Help", '#'
+    section class="flex flex-col pt-10 text-center border-t border-gray-5 #{ @signed_in ? 'h-1/5' : 'h-1/4' }"
+      - if @signed_in
+        = link_to "Log out", destroy_user_session_path, method: :delete, class:'pb-8 text-2xl font-bold text-gray-3'
+      - else
+        = link_to "Log in", '/users/sign_in', class:'text-2xl font-bold text-gray-3 mb-6'
+        = link_to "Create Account", '/users/sign_up', class:'c-button py-2.5 px-5 text-white bg-blue-medium'

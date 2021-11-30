@@ -1,0 +1,13 @@
+
+- link = pagy_link_proc(pagy)
+
+nav class="flex justify-center gap-4 my-5" role="navigation" aria-label="pager"
+  - pagy.series.each do |item|        # series example: [1, :gap, 7, 8, "9", 10, 11, :gap, 36]
+    - if item.is_a?(Integer)          # page link
+      span class="px-3 py-1 text-sm font-extrabold leading-6 rounded-6px text-gray-3 bg-gray-7" ==> link.call(item)
+
+    - elsif item.is_a?(String)        # current page
+      span class="px-3 py-1 text-sm font-extrabold leading-6 text-white rounded-6px bg-blue-dark" ==> item
+
+    - elsif item == :gap              # page gap
+      span class="px-3 py-1 text-sm font-extrabold leading-6 rounded-6px text-gray-3 bg-gray-7" ==> pagy_t('pagy.nav.gap')

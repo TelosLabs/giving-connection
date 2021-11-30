@@ -1,0 +1,36 @@
+<div class="p-4">
+  <div class="flex flex-row gap-3">
+    <div class="flex-shrink-0 w-24 my-2">
+    <%= image_tag @image_url, class: 'object-contain w-full h-24' %>
+    </div>
+    <div class="w-full">
+      <div class="flex flex-row items-start justify-between">
+        <h5 class="text-lg font-bold text-black">
+          <%= @title %>
+        </h5>
+        <button class="inline-flex items-center p-2 text-xs text-gray-3" type="button">
+          <%= inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'%>
+        </button>
+      </div>
+      <div class="flex flex-col text-xs text-gray-4">
+        <p><%= @address %></p>
+        <%= link_to @webpage, "https://#{@webpage}", target: '_blank', class: 'text-blue-medium'%>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-col px-2">
+    <h6 class="text-sm font-bold text-black uppercase">
+      WHAT WE DO
+    </h6>
+    <p class="text-sm text-black">
+      <%= @description %>
+    </p>
+  </div>
+  <div class="flex flex-row justify-end">
+    <a href="<%= location_path(@id)%>" class="inline-flex items-center p-2 text-sm font-bold text-blue-medium" type="button">
+      Go to Page
+      <%= inline_svg_tag 'solid_arrow_right.svg', class: 'w-4 h-4 ml-2 text-blue-medium fill-current'%>
+    </a>
+    
+  </div>
+</div>
