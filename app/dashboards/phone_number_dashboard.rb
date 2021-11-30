@@ -1,8 +1,6 @@
-# frozen_string_literal: true
+require "administrate/base_dashboard"
 
-require 'administrate/base_dashboard'
-
-class LocationDashboard < Administrate::BaseDashboard
+class PhoneNumberDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -10,24 +8,12 @@ class LocationDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    organization: Field::BelongsTo,
-    name: Field::String,
+    location: Field::BelongsTo,
     id: Field::Number,
-    latitude: HiddenField,
-    longitude: HiddenField,
-    lonlat: Field::String.with_options(searchable: false),
-    website: Field::String,
-    email: Field::String,
+    number: Field::String,
     main: Field::Boolean,
-    physical: Field::Boolean,
-    offer_services: Field::Boolean,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    address: AddressField,
-    phone_number: Field::HasOne,
-    office_hours: Field::NestedHasMany,
-    location_services: Field::NestedHasMany,
-    appointment_only: Field::Boolean,
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -36,51 +22,23 @@ class LocationDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
+    location
     id
-    name
-    address
+    number
     main
-    appointment_only
-    organization
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-    id
-    organization
-    name
-    latitude
-    longitude
-    website
-    email
-    main
-    physical
-    offer_services
-    address
-    phone_number
-    appointment_only
-    office_hours
-    location_services
+    number
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    name
-    address
-    latitude
-    longitude
-    website
-    email
-    phone_number
-    main
-    physical
-    appointment_only
-    offer_services
-    location_services
-    office_hours
+    number
   ].freeze
 
   # COLLECTION_FILTERS
@@ -95,14 +53,10 @@ class LocationDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how locations are displayed
+  # Overwrite this method to customize how phone numbers are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(location)
-  #   "Location ##{location.id}"
+  # def display_resource(phone_number)
+  #   "PhoneNumber ##{phone_number.id}"
   # end
-
-  def display_resource(location)
-    "#{location.address[0..20]}..."
-  end
 end
