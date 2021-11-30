@@ -40,7 +40,7 @@ module Admin
     def update
       organization_resource_params = resource_params.except('beneficiary_subcategories_id')
       requested_resource.creator = current_admin_user
-
+      raise
       if requested_resource.update(organization_resource_params)
         update_organization_beneficiaries(requested_resource, resource_params['beneficiary_subcategories_id']) unless resource_params['beneficiary_subcategories_id'].nil?
         update_tags(requested_resource, JSON.parse(params['tags_attributes'])) unless params['tags_attributes'].strip.empty?
