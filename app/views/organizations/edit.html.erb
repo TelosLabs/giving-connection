@@ -43,7 +43,11 @@
 	<p>What target populations (beneficiaries) best describe who you serve?</p>
 
 	<p>Additional Keywords to describe my organization’s work</p>
-
+	<div data-controller="tags">
+	  <% values = @organization.tags.map { |tag| tag.name }.join(', ') %>
+	  <input placeholder='write some tags' data-tags-target="output" 
+	    value="<%= values %>"  name='tags_attributes' id='tags_attributes' >
+	</div>
 
 	<h2>Social Media</h2>
 	<p>Social Media of your organization, this will be displayed globally on all locations.</p>
