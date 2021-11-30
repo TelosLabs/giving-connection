@@ -6,7 +6,6 @@ export default class extends Controller {
   static values = { selected: Array }
 
   connect() {
-    console.log('connected')
     this.store = new Set(this.selectedValue || [])
     this.updateCheckboxes()
     this.updateBadges()

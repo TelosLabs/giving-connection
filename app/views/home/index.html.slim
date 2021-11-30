@@ -4,7 +4,7 @@ main
       | What are you looking for today?
     div class="hidden px-6 pb-6 text-center text-white sm:block"
       | Search for listings of nonprofit organizations based on your needs.
-    = form_with model: @search, url: searches_path, method: :post do |f|
+    = form_with model: @search, url: searches_path, method: :get do |f|
       .c-form class="py-0 mx-auto sm:px-3 sm:flex-row sm:max-w-lg"
         div class="relative w-full mb-7 sm:mb-0"
           = f.text_field :keyword, autocomplete: "search", class:"c-input pl-10 m-0 sm:max-w-xs", placeholder: "Try \"Mental Health Nonprofits\""
