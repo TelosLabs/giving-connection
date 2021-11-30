@@ -24,19 +24,19 @@ div class='fixed inset-0 flex items-center justify-center hidden min-h-screen an
           legend.sr-only Alert frequency
           div class='space-y-3 text-sm text-gray-2'
             div class="flex items-center"
-              input id='daily' class='w-4 h-4' name="alert-frequency" type="radio"
+              = radio_button_tag 'alert[frecuency]', 'daily'
               label.ml-3 for='daily'
                 | Daily
             div class='flex items-center'
-              input id='weekly' class='w-4 h-4' checked="checked" name="alert-frequency" type="radio"
+              = radio_button_tag 'alert[frecuency]', 'weekly', checked: true
               label.ml-3 for='weekly'
                 | Weekly
             div class='flex items-center'
-              input id='montly' class='h-4w-4' name="alert-frequency" type="radio"
+              = radio_button_tag 'alert[frecuency]', 'monthly'
               label.ml-3 for='montly'
                 | Montly
     div class='px-4 py-5 font-normal rounded-md text-gray-2 bg-gray-9'
       | You’ll receive an email when a newly published organization matches your search.
     div class='mt-5'
-      button class='c-button' type="submit"
+      button class='c-button' type="button" data-action="click->modal#close click->search--alerts#submitForm"
         | Create Alert

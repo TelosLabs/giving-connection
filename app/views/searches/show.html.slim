@@ -1,5 +1,5 @@
 - markers = @results&.map { |l| [l.latitude, l.longitude] }  || []
-= form_with model: @search, url: searches_path, class: 'relative min-h-screen', data: { controller: 'search--filter' }, method: :get do |f|
+= form_with model: @search, url: searches_path, class: 'relative min-h-screen', data: { controller: 'search search--alerts', 'search--alerts-target': 'form', 'search-target': 'form' }, method: :get do |f|
   = render SearchBar::Component.new(form: f, search: @search)
   div class="flex flex-row justify-center w-full md:h-screen" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
     div class="flex flex-row justify-center w-full min-h-full"
@@ -31,12 +31,16 @@
           span class="text-xs text-gray-3"
             | #{pluralize(@results&.size, 'result')} found
 
-          button class="inline-flex items-center px-3 py-2 text-xs text-gray-3" type="button" data-action="click->modal#open"
-            /! Heroicon name: solid/mail
-            = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
-            | Create Search Alert
-
-          = render SearchAlert::Component.new(keywords: 'Mental Health Nonprofits', filters: ['Crisis Support', 'Mental Health', 'Adults', 'Families', 'Addiction Recovery'])
+          - if user_signed_in?
+            button class="inline-flex items-center px-3 py-2 text-xs text-gray-3" type="button" data-action="click->modal#open search:openSearchAlertModal@window->modal#open"
+              /! Heroicon name: solid/mail
+              = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
+              | Create Search Alert
+          - else
+            = link_to user_session_path, class: 'inline-flex items-center px-3 py-2 text-xs text-gray-3' do
+              = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
+              | Create Search Alert
+          = render SearchAlert::Component.new(keywords: params.dig('search', 'keyword'), filters: (params.dig('search', 'services') || []) + (params.dig('search', 'beneficiary_groups') || []))
         div class="hidden w-full h-full md:overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
           - if @results.present?
             ul class="flex flex-col divide-y divide-gray-8"
@@ -58,9 +62,10 @@
                 | We couldn't find any nonprofits that matched your search. 
               p class="max-w-xs px-4 text-base text-center"
                 | Try searching for another keyword or editing your filters.
-              button class="text-sm font-bold text-blue-medium", type="button", data-action="click->search--filter#clearAll"
+              button class="text-sm font-bold text-blue-medium" type="button" data-action="click->search#clearAll"
                 | Clear Filters
-              button class="mt-10 text-sm font-bold text-black"
+              / TODO: Open modal with this button
+              button class="mt-10 text-sm font-bold text-black" type="button" data-action="click->search#openSearchAlertModal"
                 | Create an Alert for this Search
 
         div class="hidden w-full h-screen md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"

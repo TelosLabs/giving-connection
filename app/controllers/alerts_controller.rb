@@ -10,14 +10,19 @@ class AlertsController < ApplicationController
     new_alert = Alert.new(alert_params)
     new_alert.user = current_user
     if new_alert.save
-      redirect_to root_path
+      @type = 'notice'
+      @message = "Alert created successfully"
     else
-      puts 'Alert not created'
+      @type = 'alert'
+      @message = "Could not create alert. Try later"
+    end
+    respond_to do |format|
+      format.js { render :index }
     end
   end
 
   def alert_params
-    params.require(:alert).permit(:frequency, :keyword, :city, :state, :services,
-                                  :beneficiary_groups, :distance, :open_now, :open_weekends)
+    params.require(:search).permit(:distance, :city, :state, :beneficiary_groups,
+                                  :services, :open_now, :open_weekends, :keyword, :frequency)
   end
 end
