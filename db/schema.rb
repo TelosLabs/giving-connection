@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_25_221813) do
+ActiveRecord::Schema.define(version: 2021_11_24_170156) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -161,6 +161,16 @@ ActiveRecord::Schema.define(version: 2021_11_25_221813) do
     t.index ["location_id"], name: "index_office_hours_on_location_id"
   end
 
+  create_table "organization_admins", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.bigint "user_id", null: false
+    t.string "role"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["organization_id"], name: "index_organization_admins_on_organization_id"
+    t.index ["user_id"], name: "index_organization_admins_on_user_id"
+  end
+
   create_table "organization_beneficiaries", force: :cascade do |t|
     t.bigint "organization_id", null: false
     t.bigint "beneficiary_subcategory_id", null: false
@@ -269,6 +279,8 @@ ActiveRecord::Schema.define(version: 2021_11_25_221813) do
   add_foreign_key "location_services", "locations"
   add_foreign_key "location_services", "services"
   add_foreign_key "locations", "organizations"
+  add_foreign_key "organization_admins", "organizations"
+  add_foreign_key "organization_admins", "users"
   add_foreign_key "organization_beneficiaries", "beneficiary_subcategories"
   add_foreign_key "organization_beneficiaries", "organizations"
   add_foreign_key "services", "causes"

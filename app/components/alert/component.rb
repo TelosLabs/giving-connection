@@ -28,6 +28,14 @@ class Alert::Component < ViewComponent::Base
         text_classes: 'text-red-800',
         button_classes: 'bg-red-50 text-red-500 hover:bg-red-100 focus:ring-offset-red-50 focus:ring-red-600'
       }
+    else
+      {
+        background: 'bg-blue-50',
+        icon: 'notice-icon.svg',
+        icon_classes: 'text-blue-400',
+        text_classes: 'text-blue-800',
+        button_classes: 'bg-blue-50 text-blue-500 hover:bg-blue-100 focus:ring-offset-blue-50 focus:ring-blue-600'
+      }
     end
   end
 end

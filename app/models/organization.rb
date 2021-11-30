@@ -26,6 +26,7 @@ class Organization < ApplicationRecord
 
   has_many :tags, dependent: :destroy
   has_many :organization_beneficiaries, dependent: :destroy
+  has_many :organization_admins, dependent: :destroy
   has_many :beneficiary_subcategories, through: :organization_beneficiaries
   has_many :locations, dependent: :destroy
   has_many :additional_locations, -> { where(main: false) }, class_name: 'Location', foreign_key: :organization_id
