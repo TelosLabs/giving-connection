@@ -28,7 +28,7 @@ Rails.application.routes.draw do
   resources :organizations, only: [:show] do
     resources :locations, only: %i[index new create]
   end
-  resource :searches, only: %i[new create]
+  resource :searches, only: %i[show]
   resource :my_account, only: %i[show]
   root to: 'home#index'
 end
