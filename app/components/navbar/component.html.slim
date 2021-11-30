@@ -29,7 +29,7 @@ nav data-controller="navbar--component"
         li = link_to "Log in", '/users/sign_in', class:'text-base font-bold mr-2 mid:mr-4 lg:mr-6'
         li = link_to "Create Account", '/users/sign_up', class:'c-button py-2.5 px-5 text-white bg-blue-medium'
 
-  .sidebar class='fixed top-0 bottom-0 left-0 right-0 z-10 hidden h-screen overflow-y-hidden bg-gray-gray-9' data-navbar--component-target="sideNavBar"
+  .sidebar class='fixed top-0 bottom-0 left-0 right-0 z-20 hidden h-screen overflow-y-hidden bg-gray-gray-9' data-navbar--component-target="sideNavBar"
     section class="pt-16 pb-4 px-7 #{ @signed_in ? 'h-4/5' : 'h-3/4' }" 
       div class='flex justify-end pb-16'
         button class='p-2.5' data-action="navbar--component#collapseSideNavBar"
