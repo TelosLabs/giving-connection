@@ -14,6 +14,7 @@ class SearchesController < ApplicationController
     if @search.results.any?
       puts @search.errors.full_messages
     end
+    authorize @search
   end
 
   def create_params
