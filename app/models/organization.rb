@@ -20,8 +20,6 @@
 #  vision_statement_es  :text
 #  tagline_en           :text             not null
 #  tagline_es           :text
-#  description_en       :text             not null
-#  description_es       :text
 #
 class Organization < ApplicationRecord
   include Organizations::Constants
@@ -43,7 +41,6 @@ class Organization < ApplicationRecord
   validates :mission_statement_en, presence: true
   validates :vision_statement_en, presence: true
   validates :tagline_en, presence: true
-  validates :description_en, presence: true
   validates :scope_of_work, presence: true, inclusion: { in: Organizations::Constants::SCOPE }
   validates :logo, content_type: ['image/png', 'image/jpg', 'image/jpeg'],
                    size: { less_than: 5.megabytes, message: 'File too large. Must be less than 5MB in size' }
