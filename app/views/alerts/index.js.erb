@@ -1,0 +1,4 @@
+
+<% if flash %>
+  $("body>main").append("<%= escape_javascript render Alert::Component.new(type: @type, message: @message) %>")
+<% end %>

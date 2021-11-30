@@ -66,6 +66,22 @@ ActiveRecord::Schema.define(version: 2021_11_25_221813) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
+  create_table "alerts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "distance"
+    t.string "city"
+    t.string "state"
+    t.string "services"
+    t.string "open_now"
+    t.string "open_weekends"
+    t.string "keyword"
+    t.string "beneficiary_groups"
+    t.string "frequency", default: "weekly"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_alerts_on_user_id"
+  end
+
   create_table "beneficiary_groups", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -246,6 +262,7 @@ ActiveRecord::Schema.define(version: 2021_11_25_221813) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "alerts", "users"
   add_foreign_key "beneficiary_subcategories", "beneficiary_groups"
   add_foreign_key "favorite_locations", "locations"
   add_foreign_key "favorite_locations", "users"

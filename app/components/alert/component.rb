@@ -20,7 +20,7 @@ class Alert::Component < ViewComponent::Base
         text_classes: 'text-green-800',
         button_classes: 'bg-green-50 text-green-500 hover:bg-green-100 focus:ring-offset-green-50 focus:ring-green-600'
       }
-    when 'alert'
+    when 'alert', 'error'
       {
         background: 'bg-red-50',
         icon: 'alert-icon.svg',

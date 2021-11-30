@@ -1,5 +1,7 @@
 h1 Locations
 
+= link_to "Create Search Alert", new_alert_path(alert_params: @alert_params.to_unsafe_hash)
+
 - @locations.each do |location|
   div
     p = location.name

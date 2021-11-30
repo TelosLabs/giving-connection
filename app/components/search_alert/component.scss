@@ -1,0 +1,39 @@
+.search-modal-slide-in {
+  animation: slide-in 0.4s ease-in;
+}
+
+@keyframes slide-in {
+	0% {
+		transform: translateY(-300%);
+		visibility: hidden;
+    opacity: 0;
+	}
+  30% {
+    transform: translateY(-150%);
+    opacity: 0.5;
+  }
+	100% {
+		transform: translateY(0);
+		visibility: visible;
+    opacity: 1;
+	}
+}
+
+.search-modal-slide-out {
+  animation: slide-out 0.6s ease-out;
+}
+
+@keyframes slide-out {
+  0% {
+    transform: translateY(0);
+    visibility: visible;
+  }
+  70% {
+    transform: translateY(-150%);
+  }
+  100% {
+    transform: translateY(-300%);
+    visibility: hidden;
+    opacity: 0.7;
+  }
+}
