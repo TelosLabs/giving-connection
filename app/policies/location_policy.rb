@@ -7,7 +7,4 @@ class LocationPolicy < ApplicationPolicy
     end
   end
 
-  def index?
-    true
-  end
 end

@@ -7,12 +7,8 @@ class OrganizationPolicy < ApplicationPolicy
     end
   end
 
-  def show?
-    true
-  end
-
   def update?
-    record.organization_admin.id == user.id
+    record.organization_admins.exists?(user_id: user.id)
   end
 
   def edit?
