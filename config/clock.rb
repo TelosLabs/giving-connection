@@ -16,7 +16,7 @@ module Clockwork
   end
 
   every(1.day, 'Send Alert for Saved Searches', at: "08:00") do
-    Profiles::SendUpdateReminderEmailsJob.perform_later
+    Alerts::SendSavedSearchesAlertEmailsJob.perform_later
   end
 
 end
