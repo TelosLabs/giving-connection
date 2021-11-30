@@ -6,11 +6,11 @@ export default class extends Controller {
   }
 
   clearAll() {
+    const event = new CustomEvent('selectmultiple:clear', {  })
+
     this.inputTargets.forEach(input => {
       this.clearInput(input)
     })
-    const event = new CustomEvent('selectmultiple:clear', {  })
-
     this.customInputTargets.forEach(input => {
       input.dispatchEvent(event)
     })
