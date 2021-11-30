@@ -33,8 +33,14 @@ class Locations::FilterQuery
 
       address_params[:state_name] = CS.states(:us)[address_params[:state].to_sym]
 
+      scope = scope.where(
+        'address ILIKE ANY ( array[?] )',
+        ["%#{address_params[:state_name]}%", "%#{address_params[:state]}%"]
+      )
+      address_params[:state]=nil
+      address_params[:state_name]=nil
       scope.where(
-        'address ILIKE any ( array[?] )',
+        'address ILIKE ALL ( array[?] )',
         parameterize_address_filters(address_params)
       )
     end
