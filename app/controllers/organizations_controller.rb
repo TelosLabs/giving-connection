@@ -23,8 +23,8 @@ class OrganizationsController < ApplicationController
     params.require(:organization)
           .permit(:name, :ein_number, :irs_ntee_code, :website, :scope_of_work,
                   :mission_statement_en, :mission_statement_es, :vision_statement_en,
-                  :vision_statement_es, :tagline_en, :tagline_es, :email, :phone_number)
-    # ,social_media_attributes: %i[facebook instagram twitter linkedin youtube blog id],
+                  :vision_statement_es, :tagline_en, :tagline_es, :email, :phone_number,
+                  social_media_attributes: %i[facebook instagram twitter linkedin youtube blog id])
     # service_attributes: %i[name description id],
     # beneficiary_subcategories_id: [],
     # services_id: [],

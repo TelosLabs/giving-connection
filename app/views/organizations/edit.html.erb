@@ -39,6 +39,32 @@
 	<%= f.label :vision_statement_es %>
 	<%= f.text_area :vision_statement_es %>
 
-	<h2>Causes & Services</h2>
+	<h2>Populations Served</h2>
+
+	<h2>Social Media</h2>
+	<p>Social Media of your organization, this will be displayed globally on all locations.</p>
+
+	<%= f.fields_for :social_media do |f| %>
+		<%= f.label :facebook %>
+		<%= f.text_field :facebook %>
+  
+		<%= f.label :instagram %>
+		<%= f.text_field :instagram %>
+
+		<%= f.label :twitter %>
+		<%= f.text_field :twitter %>
+
+		<%= f.label :linkedin %>
+		<%= f.text_field :linkedin %>
+
+		<%= f.label :youtube %>
+		<%= f.text_field :youtube %>
+
+		<%= f.label :blog %>
+		<%= f.text_field :blog %>
+
+  <% end %>
+
+  <%= f.submit  %>
 
 <% end %>
