@@ -77,9 +77,9 @@ Rails.application.configure do
     port: Rails.application.credentials.dig(:mailchimp, :port),
     enable_starttls_auto: true,
     user_name: Rails.application.credentials.dig(:mailchimp, :username),
-    password:  Rails.application.credentials.dig(:mailchimp, :api_key),
-    domain:    Rails.application.credentials.dig(:mailchimp, :domain),
-    authentication: "login"
+    password: Rails.application.credentials.dig(:mailchimp, :api_key),
+    domain: Rails.application.credentials.dig(:mailchimp, :domain),
+    authentication: 'login'
   }
 
   # Ignore bad email addresses and do not raise email delivery errors.

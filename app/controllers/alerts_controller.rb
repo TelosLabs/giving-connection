@@ -24,11 +24,11 @@ class AlertsController < ApplicationController
 
   def schedule_next_alert(alert)
     case alert.frequency
-    when "daily"
+    when 'daily'
       alert.update!(next_alert: Date.today + 1)
-    when "weekly"
+    when 'weekly'
       alert.update!(next_alert: Date.today + 7)
-    when "monthly"
+    when 'monthly'
       alert.update!(next_alert: Date.today + 30)
     end
   end

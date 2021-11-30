@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   devise_for :admin_users
   devise_for :users
 
-  get '/contact', to: "messages#new", as: :contact
+  get '/contact', to: 'messages#new', as: :contact
   resources :messages, only: [:create]
 
   resources :locations, only: %i[index new]
@@ -28,7 +28,7 @@ Rails.application.routes.draw do
   end
 
   resources :organizations, only: %i[edit update]
-  resources :favorite_locations, only: %i[ create destroy ]
+  resources :favorite_locations, only: %i[create destroy]
   resource :searches, only: %i[new create]
   resources :alerts, only: %i[new create delete]
 

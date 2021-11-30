@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'clockwork'
 require './config/boot'
 require './config/environment'
@@ -8,15 +10,14 @@ module Clockwork
   end
 
   configure do |config|
-    config[:tz] = "US/Pacific"
+    config[:tz] = 'US/Pacific'
   end
 
   error_handler do |error|
     Rollbar.error(error)
   end
 
-  every(1.day, 'Send Alert for Saved Searches', at: "08:00") do
+  every(1.day, 'Send Alert for Saved Searches', at: '08:00') do
     Alerts::SendSavedSearchesAlertEmailsJob.perform_later
   end
-
 end

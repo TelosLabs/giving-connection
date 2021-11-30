@@ -30,14 +30,14 @@ gem 'redis', '~> 4.0'
 gem 'devise'
 
 gem 'active_storage_validations'
-gem "aws-sdk-s3", require: false
+gem 'aws-sdk-s3', require: false
 gem 'clockwork'
 gem 'cocoon'
 gem 'draper'
 gem 'faker'
-gem "letter_opener", group: :development
-gem 'mobility', '~> 1.1.3'
 gem 'inline_svg'
+gem 'letter_opener', group: :development
+gem 'mobility', '~> 1.1.3'
 gem 'name_of_person'
 gem 'pg_search'
 gem 'rack-attack'
@@ -54,13 +54,12 @@ gem 'administrate-field-nested_has_many', git: 'https://github.com/TelosLabs/adm
 gem 'administrate-field-select', '~> 2.0', require: 'administrate/field/select_basic'
 gem 'image_processing'
 
-
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
+gem 'city-state'
 gem 'pronto'
 gem 'pronto-flay', require: false
 gem 'pronto-rubocop', require: false
-gem 'city-state'
 
 # Geolocation
 gem 'activerecord-postgis-adapter'

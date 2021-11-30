@@ -25,7 +25,6 @@ class SearchesController < ApplicationController
       redirect_to locations_path
       puts search.errors.full_messages
     end
-
   end
 
   def create_params
