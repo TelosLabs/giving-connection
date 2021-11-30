@@ -29,7 +29,7 @@
 
         div class="flex flex-row items-center justify-between w-full p-4 border-b border-gray-8" data-controller="modal"
           span class="text-xs text-gray-3"
-            | #{pluralize(@results&.size, 'result')} found
+            | #{pluralize(@pagy.count, 'result')} found
 
           - if user_signed_in?
             button class="inline-flex items-center px-3 py-2 text-xs text-gray-3" type="button" data-action="click->modal#open search:openSearchAlertModal@window->modal#open"
@@ -52,8 +52,10 @@
                                                   id: result&.id,\
                                                   webpage: result&.organization&.website,\
                                                   description: result&.organization&.mission_statement_en)
-            div class="h-40 mt-24"
-              | Pagination
+            div class="h-40 px-4 mt-7"
+              p class="text-sm text-gray-3"
+                = "Showing results #{@pagy&.from} - #{@pagy&.to}"
+              == render partial: 'pagy/nav', locals: {pagy: @pagy} 
           - else
             div class="flex justify-center w-full"
               = inline_svg_tag 'empty_state_4.svg', size:'278*279'
