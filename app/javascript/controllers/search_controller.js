@@ -1,8 +1,14 @@
 import { Controller } from "@hotwired/stimulus"
+import { useDispatch } from 'stimulus-use'
+import Rails from '@rails/ujs'
 
 export default class extends Controller {
   static get targets() {
-    return ['input', 'customInput']
+    return ['input', 'customInput', 'form']
+  }
+
+  connect() {
+    useDispatch(this)
   }
 
   clearAll() {
@@ -14,9 +20,11 @@ export default class extends Controller {
     this.customInputTargets.forEach(input => {
       input.dispatchEvent(event)
     })
+    Rails.fire(this.formTarget, 'submit')
   }
 
   clearInput(inputElement) {
+    console.log(inputElement)
     const inputType = inputElement.type.toLowerCase()
     switch (inputType) {
       case 'text':
@@ -34,8 +42,17 @@ export default class extends Controller {
         inputElement.checked = false
         inputElement.removeAttribute('checked')
         break
+      case 'select-one':
+      case 'select-multi':
+        inputElement.selectedIndex = -1
+        break
       default:
         break
     }
+  }
+
+  openSearchAlertModal() {
+    console.log('openSearchAlertModal')
+    this.dispatch("openSearchAlertModal")
   }
 }

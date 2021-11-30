@@ -13,7 +13,7 @@ class SelectMultiple::Component < ViewComponent::Base
       data: {
         controller: 'select-multiple dropdown',
         action: 'click->select-multiple#focus click->dropdown#show click@window->dropdown#hide selectmultiple:clear->select-multiple#clearAll',
-        'search--filter-target': 'customInput',
+        'search-target': 'customInput',
         'select-multiple-target': 'container',
         'dropdown-target': 'button',
         'select-multiple-selected-value': @selected
