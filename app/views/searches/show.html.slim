@@ -40,7 +40,7 @@
             = link_to user_session_path, class: 'inline-flex items-center px-3 py-2 text-xs text-gray-3' do
               = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
               | Create Search Alert
-          = render SearchAlert::Component.new(keywords: params.dig('search', 'keyword'), filters: (params.dig('search', 'services') || []) + (params.dig('search', 'beneficiary_groups') || []))
+          = render SearchAlert::Component.new(keywords: params.dig('search', 'keyword'), filters: [])
         div class="hidden w-full h-full md:overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
           - if @results.present?
             ul class="flex flex-col divide-y divide-gray-8"
@@ -70,7 +70,7 @@
               button class="mt-10 text-sm font-bold text-black" type="button" data-action="click->search#openSearchAlertModal"
                 | Create an Alert for this Search
 
-        div class="hidden w-full h-screen md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
+        div class="hidden w-full md:h-0 h-map-height" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
           div# class="w-full h-full" data-places-target="map"
           div class="hidden"
             - @results&.each do |result|
@@ -88,7 +88,7 @@
                     ' Closed
                   | Opens at 9 am
 
-      div class="relative hidden w-full md:flex " data-controller="places" data-places-zoom-value="10"  data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
+      div class="relative hidden w-full md:flex h-map-height" data-controller="places" data-places-zoom-value="10"  data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
         div# class="absolute inset-0 w-full h-full" data-places-target="map"
         div class="hidden"
           - @results&.each do |result|
