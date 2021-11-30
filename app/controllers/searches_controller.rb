@@ -22,12 +22,12 @@ class SearchesController < ApplicationController
 
   def verify_search_params
     @params_applied = params.dig('search', 'services').present? ||
-                       params.dig('search', 'beneficiary_groups').present? ||
-                       params.dig('search', 'city').present? ||
-                       params.dig('search', 'zipcode').present? ||
-                       params.dig('search', 'distance').present? ||
-                       params.dig('search', 'open_now').present? ||
-                       params.dig('search', 'open_weekends').present?
+                      params.dig('search', 'beneficiary_groups').present? ||
+                      params.dig('search', 'city').present? ||
+                      params.dig('search', 'zipcode').present? ||
+                      params.dig('search', 'distance').present? ||
+                      params.dig('search', 'open_now').present? ||
+                      params.dig('search', 'open_weekends').present?
   end
 
   private
