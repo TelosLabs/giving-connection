@@ -5,9 +5,6 @@ export default class extends Controller {
     return ['input', 'customInput']
   }
 
-  connect(){
-  }
-
   clearAll() {
     this.inputTargets.forEach(input => {
       this.clearInput(input)
