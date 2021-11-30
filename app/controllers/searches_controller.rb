@@ -2,7 +2,8 @@
 
 class SearchesController < ApplicationController
   skip_before_action :authenticate_user!
-  before_action :set_causes_and_beneficiary_groups, only: [:show]
+  before_action :set_causes_and_services, only: [:show]
+  before_action :set_beneficiary_groups, only: [:show]
   before_action :verify_search_params, only: [:show]
 
   def show
@@ -31,11 +32,15 @@ class SearchesController < ApplicationController
   end
 
   private
-  def set_causes_and_beneficiary_groups
+
+  def set_causes_and_services
     @causes_and_services = {}
     Cause.all.each do |cause|
       @causes_and_services[cause.name] = cause.services.map(&:name)
     end
+  end
+
+  def set_beneficiary_groups
     @beneficiary_groups = {}
     BeneficiaryGroup.all.each do |group|
       @beneficiary_groups[group.name] = group.beneficiary_subcategories.map(&:name)
