@@ -7,10 +7,10 @@ class SearchesController < ApplicationController
 
   def show
     @search = params['search'].present? ? Search.new(create_params) : Search.new
-    if @search.save && @search.results.any?
-      @results = @search.results
-    else
-      @results = @search.results
+    @search.save
+    @results = @search.results
+
+    if @search.results.any?
       puts @search.errors.full_messages
     end
   end
