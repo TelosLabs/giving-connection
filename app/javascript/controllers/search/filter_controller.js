@@ -16,8 +16,8 @@ export default class extends Controller {
     })
   }
 
-  clearInput(inputElem) {
-    const inputType = inputElem.type.toLowerCase()
+  clearInput(inputElement) {
+    const inputType = inputElement.type.toLowerCase()
     switch (inputType) {
       case 'text':
       case 'password':
@@ -25,14 +25,14 @@ export default class extends Controller {
       case 'search':
       case 'hidden':
       case 'date':
-        inputElem.value = ''
+        inputElement.value = ''
         break
       case 'radio':
-        inputElem.checked = inputElem.hasAttribute('checked')
+        inputElement.checked = inputElement.hasAttribute('checked')
         break
       case 'checkbox':
-        inputElem.checked = false
-        inputElem.removeAttribute('checked')
+        inputElement.checked = false
+        inputElement.removeAttribute('checked')
         break
       default:
         break
