@@ -1,100 +1,25 @@
-- results = [\
-  { \
-    title: 'Centerstone Clarksville',\
-    address: '511 8th Street Clarksville, TN 37040',\
-    image_url: 'https://www.florisumc.org/wp-content/uploads/2019/05/nami.jpeg',\
-    id: 1,\
-    webpage: 'www.centerstone.org',\
-    description: 'Centerstone is a non-for-profit health care organization dedicated to delivering care that changes people’s lives. We provide mental health care, addiction treatment and community education in Florida, Illinois, Indiana, Kentucky and Tennessee.'\
-  },\
-  { \
-    title: 'NAMI Tennessee',\
-    address: '1101 Kermit Dr # 605, Nashville, TN 37217',\
-    image_url: 'logo-default1.png',\
-    id: 2,\
-    webpage: 'www.namitennessee.org',\
-    description: 'NAMI is a non-for-profit health care organization dedicated to delivering care that changes people’s lives. We provide mental health care, addiction treatment and community education in Kentucky and Tennessee.'\
-  },\
-  { \
-    title: 'Mental Health America of the MidSouth',\
-    address: '446 Metroplex Drive, Suite A-224, Nashville, TN 37211',\
-    image_url: 'logo-default2.png',\
-    id: 3,\
-    webpage: 'www.mentalhealth.org',\
-    description: 'Mental Health America is a non-for-profit health care organization dedicated to delivering care that changes people’s lives. We provide mental health care, addiction treatment and community education in Florida, Illinois, Indiana, Kentucky and Tennessee.'\
-  },\
-  { \
-    title: 'NAMI Florida',\
-    address: '1101 Kermit Dr # 605, Nashville, TN 37217',\
-    image_url: 'logo-default3.png',\
-    id: 4,\
-    webpage: 'www.namiflorida.org',\
-    description: 'NAMI is a non-for-profit health care organization dedicated to delivering care that changes people’s lives. We provide mental health care, addiction treatment and community education in Kentucky and Tennessee.'\
-  },\
-  { \
-    title: 'NAMI Kentucky',\
-    address: '1101 Kermit Dr # 605, Nashville, TN 37217',\
-    image_url: 'logo-default4.png',\
-    id: 5,\
-    webpage: 'www.namikentucky.org',\
-    description: 'NAMI is a non-for-profit health care organization dedicated to delivering care that changes people’s lives. We provide mental health care, addiction treatment and community education in Kentucky and Tennessee.'\
-  },\
-  { \
-    title: 'NAMI Tennessee',\
-    address: '1101 Kermit Dr # 605, Nashville, TN 37217',\
-    image_url: 'logo-default5.png',\
-    id: 6,\
-    webpage: 'www.namitennessee.org',\
-    description: 'NAMI is a non-for-profit health care organization dedicated to delivering care that changes people’s lives. We provide mental health care, addiction treatment and community education in Kentucky and Tennessee.'\
-  },\
-  { \
-    title: 'NAMI Tennessee',\
-    address: '1101 Kermit Dr # 605, Nashville, TN 37217',\
-    image_url: 'logo-default4.png',\
-    id: 7,\
-    webpage: 'www.namitennessee.org',\
-  },\
-]
-- alerts = [\
-    { \
-      title: 'mental health nonprofits',\
-      tags: 'mental health, addiction, community, healthcare',\
-    },\
-    { \
-      title: 'family counseling',\
-      tags: 'mental health, addiction, community, healthcare',\
-    },\
-  ]
-- pages = [\
-    { \
-      title: 'mental health nonprofits',\
-    },\
-    { \
-      title: 'family counseling',\
-    },\
-  ]
 div class="w-full h-full bg-grey-9"
   div class="max-w-6xl py-12 mx-auto bg-white md:px-28 md:my-7"
     h2 class="mb-6 text-2xl font-bold text-center text-grey-2 md:text-left"
       | My Account
     div
       div data-controller="tabs" data-tabs-active-tab="border-blue-medium text-blue-medium"
-        nav class="flex px-6 -mb-px space-x-6 overflow-x-auto text-grey-5" aria-label="Tabs" 
+        nav class="flex px-6 -mb-px space-x-6 overflow-x-auto text-grey-5" aria-label="Tabs"
           /! Current: "border-indigo-500 text-indigo-600", Default: "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-          a class="px-1 py-4 mb-4 text-sm font-medium border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium whitespace-nowrap" href="#" data-action="click->tabs#change" data-tabs-target="tab" 
+          a class="px-1 py-4 mb-4 text-sm font-medium border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium whitespace-nowrap" href="#" data-action="click->tabs#change" data-tabs-target="tab"
             | My Profile
-          a class="px-1 py-4 mb-4 text-sm font-medium border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium whitespace-nowrap" href="#" data-action="click->tabs#change" data-tabs-target="tab" 
+          a class="px-1 py-4 mb-4 text-sm font-medium border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium whitespace-nowrap" href="#" data-action="click->tabs#change" data-tabs-target="tab"
             | Saved Pages
-          a class="px-1 py-4 mb-4 text-sm font-medium border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium whitespace-nowrap" aria-current="page" href="#" data-action="click->tabs#change" data-tabs-target="tab" 
+          a class="px-1 py-4 mb-4 text-sm font-medium border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium whitespace-nowrap" aria-current="page" href="#" data-action="click->tabs#change" data-tabs-target="tab"
             | Alerts
-          a class="px-1 py-4 mb-4 text-sm font-medium border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium whitespace-nowrap" href="#" data-action="click->tabs#change" data-tabs-target="tab" 
+          a class="px-1 py-4 mb-4 text-sm font-medium border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium whitespace-nowrap" href="#" data-action="click->tabs#change" data-tabs-target="tab"
             | My Pages
 
-        div class="hidden px-6" data-tabs-target="panel" 
+        div class="hidden px-6" data-tabs-target="panel"
           h4 class="text-xl text-grey-2 my-7"
             | My Profile Information
           = form_with url: '#' do |form|
-            div class="grid grid-cols-12 gap-6" data-controller="toggle" 
+            div class="grid grid-cols-12 gap-6" data-controller="toggle"
               div class="col-span-12 lg:col-span-5 md:col-span-7"
                 = form.label :name, "Name", class: "block text-sm text-grey-3 font-medium"
                 = form.text_field :name, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-grey-5 text-base text-grey-3 focus:ring-blue-medium focus:border-blue-medium" }
@@ -107,7 +32,7 @@ div class="w-full h-full bg-grey-9"
               div class="flex flex-row justify-between col-span-12"
                 span class="text-sm font-medium text-grey-4"
                   | Password
-                button class=" text-blue-medium" type="button" data-action=("click->toggle#toggle touch->toggle#toggle") 
+                button class=" text-blue-medium" type="button" data-action=("click->toggle#toggle touch->toggle#toggle")
                   | Change
               div class="grid hidden grid-cols-12 col-span-12 gap-6" data-toggle-target="toggleable"
                 div class="col-span-12 lg:col-span-5 md:col-span-7"
@@ -130,22 +55,23 @@ div class="w-full h-full bg-grey-9"
               div class="flex flex-row justify-center col-span-12"
                 = form.submit "Update", class: "mx-auto py-2.5 px-5 text-sm font-bold text-white bg-blue-medium uppercase rounded-6px"
               div class="col-span-12 py-4 border-t border-gray-8"
-                button class="text-xl font-bold text-blue-dark" type="button" 
+                button class="text-xl font-bold text-blue-dark" type="button"
                   | Log out
-        div class="hidden" data-tabs-target="panel" 
+        div class="hidden" data-tabs-target="panel"
           h4 class="px-6 text-xl text-grey-2 my-7"
             | My Saved Nonprofit Pages
           div class="flex flex-col w-full h-full px-2 md:overflow-y-auto"
             - if results.present?
-              ul class="flex flex-col divide-y divide-gray-8" 
-                - results.each do |result|
+              ul class="flex flex-col divide-y divide-gray-8"
+                - @saved_pages.each do |result|
                   li
-                    = render ResultCard::Component.new(title: result[:title],\
-                                                      address: result[:address],\
-                                                      image_url: result[:image_url],\
-                                                      id: result[:id],\
-                                                      webpage: result[:webpage],\
-                                                      description: result[:description])
+                    = render ResultCard::Component.new(title: result.name,\
+                                                      address: result.address,\
+                                                      image_url: result.organization.logo.service_url,\
+                                                      id: result.id,\
+                                                      webpage: result.website,\
+                                                      description: result.organization.mission_statement_en,
+                                                      current_user: current_user)
             - else
               div class="flex justify-center w-full my-16"
                 = inline_svg_tag 'empty_state_1.svg', size:'298*153'
@@ -155,21 +81,21 @@ div class="w-full h-full bg-grey-9"
                 p class="max-w-xs px-4 text-base text-center"
                   | Click on the top right ribbon to save pages when you are browsing through nonprofit listings.
 
-        div class="hidden px-6" data-tabs-target="panel" 
+        div class="hidden px-6" data-tabs-target="panel"
           h4 class="text-xl text-grey-2 my-7"
             | Manage Alerts
           div class="flex flex-col w-full h-full md:overflow-y-auto"
-            - if alerts.present?
-              ul class="flex flex-col divide-y divide-gray-8 gap-11" 
+            - if @alerts.present?
+              ul class="flex flex-col divide-y divide-gray-8 gap-11"
                 - alerts.each do |alert|
                   li class="flex flex-col w-full "
                     div class="flex flex-row justify-between w-full"
                       span class="text-lg font-medium font-bold text-black "
-                        | #{alert[:title]}
-                      button class="text-blue-medium" type="button" 
+                        | #{alert.keyword}
+                      button class="text-blue-medium" type="button"
                         | Edit
                     div class="flex flex-row text-sm font-normal text-gray-2"
-                      | #{alert[:tags]}
+                      | #{alert.services}
             - else
               div class="flex justify-center w-full my-16"
                 = inline_svg_tag 'empty_state_2.svg', size:'294*145'
@@ -179,7 +105,7 @@ div class="w-full h-full bg-grey-9"
                 p class="max-w-xs px-4 text-base text-center"
                   | Create an email alert by clicking on “Create Alert” after making a search.
 
-        div class="hidden px-6" data-tabs-target="panel" 
+        div class="hidden px-6" data-tabs-target="panel"
           h4 class="text-xl text-grey-2 my-7"
             | My Nonprofit Pages
           div class="flex flex-col w-full h-full md:overflow-y-auto"
