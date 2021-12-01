@@ -35,7 +35,7 @@
             = form.select :distance, options_for_select({"2 mi": 3.21, "5 mi": 8.04, "15 mi": 24.1402}, "#{ params.dig('search', 'distance') }"), { include_blank: '' }, { selected: nil, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px text-base text-gray-3 border-gray-5 focus:ring-blue-medium focus:border-blue-medium", data: { 'search-target': 'input'}, autocomplete:"off" }
 
       div class="px-6 py-8"
-        p class="text-base font-bold text-gray-2"
+        p class="pb-3 text-base font-bold text-gray-2"
           | Hours
         div class="flex flex-row justify-between"
           div class="flex flex-row"
