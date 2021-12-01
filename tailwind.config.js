@@ -77,6 +77,7 @@ module.exports = {
         'min-content': 'min-content',
         '46px': '46px',
         '400px': '400px',
+        '85vh': '85vh'
       },
       borderRadius: {
         '6px': '6px',

@@ -1,9 +1,9 @@
 - markers = @results&.map { |l| [l.latitude, l.longitude] }  || []
-= form_with model: @search, url: searches_path, class: 'relative min-h-screen', data: { controller: 'search search--alerts', 'search--alerts-target': 'form', 'search-target': 'form' }, method: :get do |f|
+= form_with model: @search, url: searches_path, class: 'relative', data: { controller: 'search search--alerts', 'search--alerts-target': 'form', 'search-target': 'form' }, method: :get do |f|
   = render SearchBar::Component.new(form: f, search: @search)
-  div class="flex flex-row justify-center w-full md:h-screen" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
+  div class="flex flex-row justify-center w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
     div class="flex flex-row justify-center w-full min-h-full"
-      div class="flex flex-col w-full h-full min-h-full max-w-470px md:border-r border-gray-7"
+      div class="flex flex-col w-full max-w-470px md:border-r border-gray-7"
         div class="flex flex-row justify-between w-full p-4 bg-gray-9"  data-controller="modal"
           button class="inline-flex items-center px-3 py-2 text-sm leading-4" type="button" data-action="click->modal#open"
             /! Heroicon name: solid/mail
@@ -89,7 +89,7 @@
                     ' Closed
                   | Opens at 9 am
 
-      div class="relative hidden w-full md:flex h-map-height" data-controller="places" data-places-zoom-value="10"  data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
+      div class="relative hidden w-full md:flex" data-controller="places" data-places-zoom-value="10"  data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
         div# class="absolute inset-0 w-full h-full" data-places-target="map"
         div class="hidden"
           - @results&.each do |result|
