@@ -14,7 +14,7 @@
           <% end %>
         <% else %>
           <%= link_to favorite_location_path(FavoriteLocation.find_by(user_id: @current_user.id, location_id: @id)), method: :delete, class: "inline-flex items-center p-2 text-xs text-gray-3", remote: true do %>
-            <%= inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4' %>
+            <%= inline_svg_tag 'bookmark_colored.svg', class: 'w-4 h-4' %>
           <% end %>
         <% end %>
       </div>
