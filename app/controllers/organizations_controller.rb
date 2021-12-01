@@ -6,6 +6,11 @@ class OrganizationsController < ApplicationController
     authorize @organization
   end
 
+  def new
+    @organization = Organization.new
+    @organization.locations.new
+  end
+
   def edit
     @organization = Organization.find(params[:id])
     @location = @organization.locations.first
