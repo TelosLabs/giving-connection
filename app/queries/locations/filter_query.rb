@@ -13,14 +13,14 @@ class Locations::FilterQuery
       scope = locations
       scope = geo_near(scope, default_coordinates, params[:distance])
       scope = by_address(scope, params[:address])
-      # scope = by_service(scope, params[:services])
-      # scope = by_beneficiary_groups_served(scope, params[:beneficiary_groups])
+      scope = by_service(scope, params[:services])
+      scope = by_beneficiary_groups_served(scope, params[:beneficiary_groups])
       scope = opened_now(scope, params[:open_now])
       scope = opened_on_weekends(scope, params[:open_weekends])
     end
 
     def geo_near(scope, coords, distance)
-      return scope if distance.blank? || distance.zero?
+      return scope if distance.blank? || distance.zero? || scope.empty?
 
       scope.where(
         'ST_DWithin(lonlat, :point, :distance)',
@@ -29,7 +29,7 @@ class Locations::FilterQuery
     end
 
     def by_address(scope, address_params)
-      return scope if address_params.values.all?(&:blank?)
+      return scope if address_params.values.all?(&:blank?) || scope.empty?
 
       address_params[:state_name] = CS.states(:us)[address_params[:state].to_sym]
 
@@ -39,6 +39,9 @@ class Locations::FilterQuery
       )
       address_params[:state]=nil
       address_params[:state_name]=nil
+
+      return scope if address_params.values.all?(&:blank?)
+
       scope.where(
         'address ILIKE ALL ( array[?] )',
         parameterize_address_filters(address_params)
@@ -46,28 +49,35 @@ class Locations::FilterQuery
     end
 
     def by_service(scope, services)
-      return scope if services.empty?
+      return scope if services.blank? || scope.empty?
 
-      query = <<-SQL
-        SELECT * FROM locations
-        JOIN location_services ON locations.id = location_services.location_id
-        JOIN services ON location_services.service_id = services.id
-        WHERE services.name IN '#{services}'
-      SQL
-      scope.find_by_sql(query)
+      services.each do |cause, services|
+        query = Location.joins(
+          location_services: { service: :cause }
+        ).where(
+          'service.name' => services,
+          'cause.name' => cause
+        ).to_sql
+        as_array = scope.find_by_sql(query)
+        scope = Location.where(id: as_array.map(&:id))
+      end
+      scope
     end
 
     def by_beneficiary_groups_served(scope, beneficiary_groups_filters)
-      return scope if beneficiary_groups_filters.empty?
+      return scope if beneficiary_groups_filters.blank? || scope.empty?
 
-      query = <<-SQL
-        SELECT * FROM locations
-        JOIN organizations ON organizations.id = locations.organization_id
-        JOIN organization_beneficiaries ON organization_beneficiaries.organization_id = organizations.id
-        JOIN beneficiary_subcategories ON beneficiary_subcategories.id = organization_beneficiaries.beneficiary_subcategory_id
-        WHERE beneficiary_subcategories.name IN '#{beneficiary_groups_filters}'
-      SQL
-      scope.find_by_sql(query)
+      beneficiary_groups_filters.each do |group, subcategory|
+        query = Location.joins(
+          organization: { organization_beneficiaries: { beneficiary_subcategory: :beneficiary_group } }
+        ).where(
+          'beneficiary_subcategories.name' => subcategory,
+          'beneficiary_group.name' => group
+        ).to_sql
+        as_array = scope.find_by_sql(query)
+        scope = Location.where(id: as_array.map(&:id))
+      end
+      scope
     end
 
     def default_coordinates
