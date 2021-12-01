@@ -6,8 +6,11 @@ export default class extends Controller {
 
   connect() {
     console.log('connected')
-    console.log(this.listTarget)
+
+  }
+
+  listTargetConnected(target) {
     new Tagify(
-      this.listTarget);
+      target);
   }
 }
