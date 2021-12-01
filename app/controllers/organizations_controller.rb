@@ -15,24 +15,25 @@ class OrganizationsController < ApplicationController
   def update
     @organization = Organization.find(params[:id])
     authorize @organization
-    raise
     if @organization.update(organization_params)
+      # raise
       # update_organization_beneficiaries(requested_resource, resource_params['beneficiary_subcategories_id']) unless resource_params['beneficiary_subcategories_id'].nil?
-      update_tags(@organization, JSON.parse(params['tags_attributes'])) unless params['tags_attributes'].strip.empty?
+      update_tags(@organization, JSON.parse(params['organization']['tags_attributes'])) unless params['organization']['tags_attributes'].strip.empty?
       redirect_to organization_path(@organization)
     else
+      # raise
       render :edit
     end
   end
 
   def organization_params
     params.require(:organization)
-          .permit(:name, :ein_number, :irs_ntee_code, :website, :scope_of_work,
+          .permit(:name, :second_name, :ein_number, :irs_ntee_code, :website, :scope_of_work,
                   :mission_statement_en, :mission_statement_es, :vision_statement_en,
                   :vision_statement_es, :tagline_en, :tagline_es, :email, :phone_number,
                   social_media_attributes: %i[facebook instagram twitter linkedin youtube blog id],            
                   tags_attributes: [],
-                  locations_attributes: %i[address latitude longitude website main physical offer_services appointment_only])
+                  locations_attributes: %i[id address latitude longitude website main physical offer_services appointment_only])
     # service_attributes: %i[name description id],
     # beneficiary_subcategories_id: [],
     # services_id: [],

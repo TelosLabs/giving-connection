@@ -52,7 +52,7 @@ div class="w-full h-full bg-grey-9"
 
           div class="col-span-12 lg:col-span-5 md:col-span-7"
             = f.label :website, class: "block text-sm text-gray-3 font-medium"
-            = f.url_field :website, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+            = f.text_field :website, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
           div class="hidden col-span-3 md:flex"
 
@@ -106,24 +106,24 @@ div class="w-full h-full bg-grey-9"
 
           div class="grid grid-cols-12 gap-6 mt-8"
             div class="col-span-12 lg:col-span-5 md:col-span-7"
-              = f.label :phone_number, "What causes (categories) best describe your organization? ", class: "block text-sm text-gray-3 font-medium"
-              = f.text_field :phone_number, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+              
 
         section class="mt-12 text-gray-2"
           h5 class="text-lg font-medium leading-7"
             | Population Served
 
-          div class="grid grid-cols-12 gap-6 mt-8"
-            div class="col-span-12 lg:col-span-5 md:col-span-7"
-              = f.label :phone_number, "What target populations (beneficiaries) best describe who you serve?", class: "block text-sm text-gray-3 font-medium"
-              = f.text_field :phone_number, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+          div class="grid grid-cols-12 gap-6 mt-8" 
+            div class="col-span-12 lg:col-span-5 md:col-span-7" data-controller="options"
+            - values = @organization.beneficiary_subcategories.map { |beneficiary_subcategory| beneficiary_subcategory.name }.join(', ')
+            = f.label :beneficiary_subcategories, "What target populations (beneficiaries) best describe who you serve?", class: "block text-sm text-gray-3 font-medium"
+            = f.text_field :beneficiary_subcategories, { data: { 'options-target': 'list' }, placeholder:'Write some', value: values, class: "block h-46px bg-white mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }  
 
             div class="hidden col-span-3 md:flex"
 
             div class="col-span-12 lg:col-span-5 md:col-span-7" data-controller="tags"
-              - values = @organization.tags.map { |tag| tag.name }.join(', ')
+              - tags = @organization.tags.map { |tag| tag.name }.join(', ')
               = f.label :tags_attributes, "Additional Keywords to describe my organization’s work", class: "block text-sm text-gray-3 font-medium"
-              = f.text_field :tags_attributes, { data: { 'tags-target': 'output' }, placeholder:'Write some tags', value: values, class: "block h-46px bg-white mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+              = f.text_field :tags_attributes, { data: { 'tags-target': 'output' }, placeholder:'Write some tags', value: tags, class: "block h-46px bg-white mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
         div class="my-4 border-t border-t-blue-pale"
         section class="mt-12 text-gray-2"
@@ -133,12 +133,12 @@ div class="w-full h-full bg-grey-9"
             | This is the mailing address and main location for your organization.
 
           = f.fields_for :locations do |location_form| %
-            div class="grid grid-cols-12 gap-6 mt-8"
+            div class="grid grid-cols-12 gap-6 mt-8" data-action="google-maps-callback@window->places#initMap" data-controller="places" data-places-imageurl-value=("\#{asset_path 'markergc.png'}")
               div class="col-span-12 lg:col-span-5 md:col-span-7"
-                = location_form.label :address, "What target populations (beneficiaries) best describe who you serve?", class: "block text-sm text-gray-3 font-medium", data: { target: "places.field", action: "keydown->places#keydown" }
-                = location_form.search_field :address, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+                = location_form.label :address, "What target populations (beneficiaries) best describe who you serve?", class: "block text-sm text-gray-3 font-medium"
+                = location_form.search_field :address, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", data: { target: "places.field", action: "keydown->places#keydown" }
 
-                div class="mt-6" data-action="google-maps-callback@window->places#initMap" data-controller="places" data-places-imageurl-value=("\#{asset_path 'markergc.png'}")
+                div class="mt-6" 
                   div data-target="places.map" style="height:400px;"class="w-full h-full"
                     = location_form.hidden_field :latitude, data: { target: "places.latitude" }, id: "places-latitude"
                     = location_form.hidden_field :longitude, data: { target: "places.longitude" }, id: "places-longitude"
@@ -186,44 +186,44 @@ div class="w-full h-full bg-grey-9"
           p class="text-sm leading-5 text-gray-4"
             | Social Media of your organization, this will be displayed globally on all locations.
 
-        = f.fields_for :social_media do |f|
+        = f.fields_for :social_media do |social_media_form|
           div class="grid grid-cols-12 gap-6 mt-8"
             div class="col-span-12 lg:col-span-5 md:col-span-7"
-              = f.label :facebook, class: "block text-sm text-gray-3 font-medium"
-              = f.text_field :facebook, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+              = social_media_form.label :facebook, class: "block text-sm text-gray-3 font-medium"
+              = social_media_form.text_field :facebook, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
           div class="hidden col-span-3 md:flex"
 
           div class="grid grid-cols-12 gap-6 mt-8"
             div class="col-span-12 lg:col-span-5 md:col-span-7"
-              = f.label :instagram, class: "block text-sm text-gray-3 font-medium"
-              = f.text_field :instagram, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+              = social_media_form.label :instagram, class: "block text-sm text-gray-3 font-medium"
+              = social_media_form.text_field :instagram, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
           div class="hidden col-span-3 md:flex"
 
           div class="grid grid-cols-12 gap-6 mt-8"
             div class="col-span-12 lg:col-span-5 md:col-span-7"
-              = f.label :twitter, class: "block text-sm text-gray-3 font-medium"
-              = f.text_field :twitter, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
-
-          div class="hidden col-span-3 md:flex"
-
-          div class="grid grid-cols-12 gap-6 mt-8"
-            div class="col-span-12 lg:col-span-5 md:col-span-7"
-              = f.label :linkedin, class: "block text-sm text-gray-3 font-medium"
-              = f.text_field :linkedin, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+              = social_media_form.label :twitter, class: "block text-sm text-gray-3 font-medium"
+              = social_media_form.text_field :twitter, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
           div class="hidden col-span-3 md:flex"
 
           div class="grid grid-cols-12 gap-6 mt-8"
             div class="col-span-12 lg:col-span-5 md:col-span-7"
-              = f.label :youtube, class: "block text-sm text-gray-3 font-medium"
-              = f.text_field :youtube, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+              = social_media_form.label :linkedin, class: "block text-sm text-gray-3 font-medium"
+              = social_media_form.text_field :linkedin, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
           div class="hidden col-span-3 md:flex"
 
           div class="grid grid-cols-12 gap-6 mt-8"
             div class="col-span-12 lg:col-span-5 md:col-span-7"
-              = f.label :blog, class: "block text-sm text-gray-3 font-medium"
-              = f.text_field :blog, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+              = social_media_form.label :youtube, class: "block text-sm text-gray-3 font-medium"
+              = social_media_form.text_field :youtube, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+
+          div class="hidden col-span-3 md:flex"
+
+          div class="grid grid-cols-12 gap-6 mt-8"
+            div class="col-span-12 lg:col-span-5 md:col-span-7"
+              = social_media_form.label :blog, class: "block text-sm text-gray-3 font-medium"
+              = social_media_form.text_field :blog, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
       = f.submit 'SAVE', class: 'mx-auto mt-12 flex cursor-pointer uppercase flex-row justify-center items-center bg-seafoam py-4 px-10 rounded-6px text-blue-dark text-base font-bold focus:outline-none'
