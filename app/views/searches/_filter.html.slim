@@ -11,7 +11,7 @@
         = render SelectMultiple::Component.new(name: 'search[services]', items: causes_and_services, selected: params.dig('search', 'services'))
 
       div class="px-6 py-8"
-        = form.label :beneficiary_groups, 'Beneficiary Groups Served', class: 'w-full text-base font-bold text-gray-2'
+        = form.label :beneficiary_groups, 'Populations Served', class: 'w-full text-base font-bold text-gray-2'
         = render SelectMultiple::Component.new(name: 'search[beneficiary_groups]',items: beneficiary_groups, selected: params.dig('search', 'beneficiary_groups'))
 
       div class="px-6 py-8"
