@@ -16,7 +16,7 @@
           /! Modal Container
           div class="fixed inset-0 flex items-center justify-center hidden min-h-screen overflow-y-auto animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;")
             /! Modal Inner Container
-            div class="relative w-full max-h-full py-20 max-w-375px"
+            div class="relative w-full max-h-full max-w-375px"
               /! Modal Card
               = render partial: 'filter', locals: { form: f, search: @search, causes_and_services: @causes_and_services, beneficiary_groups: @beneficiary_groups }
           span class="relative z-0 inline-flex shadow-sm md:hidden rounded-6px"
