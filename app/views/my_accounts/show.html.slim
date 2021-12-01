@@ -22,7 +22,7 @@ div class="w-full h-full bg-grey-9"
             div class="grid grid-cols-12 gap-6" data-controller="toggle"
               div class="col-span-12 lg:col-span-5 md:col-span-7"
                 = form.label :name, "Name", class: "block text-sm text-grey-3 font-medium"
-                = form.text_field :name, { value: current_user.name, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-grey-5 text-base text-grey-3 focus:ring-blue-medium focus:border-blue-medium" }
+                = form.text_field :name, { value: current_user.name, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-grey-5 text-base text-grey-3 focus:ring-blue-medium focus:border-blue-medium capitalize" }
               div class="hidden col-span-3 md:flex"
               div class="col-span-12 lg:col-span-5 md:col-span-7"
                 = form.label :email, "Email", class: "block text-sm text-grey-3 font-medium"
@@ -33,7 +33,7 @@ div class="w-full h-full bg-grey-9"
                 span class="text-sm font-medium text-grey-4"
                   | Password
                 button class=" text-blue-medium" type="button" data-action=("click->toggle#toggle touch->toggle#toggle")
-                  | Change
+                  | Edit
               div class="grid hidden grid-cols-12 col-span-12 gap-6" data-toggle-target="toggleable"
                 div class="col-span-12 lg:col-span-5 md:col-span-7"
                   = form.label :old_password, "Old Password", class: "block text-sm text-grey-3 font-medium"
