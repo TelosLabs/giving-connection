@@ -72,6 +72,26 @@
 		<%= f.text_field :blog %>
   <% end %>
 
-  <%= f.submit  %>
+  <h2>Main Location</h2>
+  <div data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}">
+  	<%= f.fields_for :locations do |f| %>
+  		<%= f.label :address %>
+  		<%= f.search_field :address, class: 'form-control', data: { target: "places.field", action: "keydown->places#keydown" } %>
+  			<div style="height:400px;width:400px" data-target="places.map">
+	  			<%= f.hidden_field :latitude, data: { target: "places.latitude" }, id: "places-latitude" %>	
+	  			<%= f.hidden_field :longitude, data: { target: "places.longitude" }, id: "places-longitude" %>
+  			</div>
+
+  		<%= f.label :physical %>
+  		<%= f.check_box :physical %>
+
+  		<%= f.label :offer_services %>
+  		<%= f.check_box :offer_services %>
+
+  	 <% end %>
+  </div>
+
+
+  <%= f.submit %>
 
 <% end %>

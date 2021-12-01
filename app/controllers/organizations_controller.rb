@@ -8,12 +8,14 @@ class OrganizationsController < ApplicationController
 
   def edit
     @organization = Organization.find(params[:id])
+    @location = @organization.locations.first
     authorize @organization
   end
 
   def update
     @organization = Organization.find(params[:id])
     authorize @organization
+    raise
     if @organization.update(organization_params)
       # update_organization_beneficiaries(requested_resource, resource_params['beneficiary_subcategories_id']) unless resource_params['beneficiary_subcategories_id'].nil?
       update_tags(@organization, JSON.parse(params['tags_attributes'])) unless params['tags_attributes'].strip.empty?
@@ -30,7 +32,7 @@ class OrganizationsController < ApplicationController
                   :vision_statement_es, :tagline_en, :tagline_es, :email, :phone_number,
                   social_media_attributes: %i[facebook instagram twitter linkedin youtube blog id],            
                   tags_attributes: [],
-                  location_attributes: %i[address latitude longitude website main physical offer_services appointment_only])
+                  locations_attributes: %i[address latitude longitude website main physical offer_services appointment_only])
     # service_attributes: %i[name description id],
     # beneficiary_subcategories_id: [],
     # services_id: [],
