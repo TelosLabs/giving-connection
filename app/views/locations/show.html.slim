@@ -1,4 +1,4 @@
-= form_with model: @search, scope: :search, url: searches_path, class: '', method: :post do |f|
+= form_with model: @search, scope: :search, url: searches_path, class: '', method: :get do |f|
   = render SearchBar::Component.new(form: f, search: @search)
 div class=""
   div class="flex flex-row justify-between w-full p-4 bg-gray-9 md:hidden"  data-controller="modal"
@@ -8,11 +8,11 @@ div class=""
   div class="flex flex-col flex-wrap justify-center w-full md:gap-4 md:flex-row sm:p-7"
     div class="w-full bg-white rounded max-w-656px"
       = image_tag @location.organization.cover_photo, class:'w-full h-24 object-fit-cover rounded-t'
-      div class='flex justify-center w-full mx-0 -mt-14 h-75 md:justify-start md:mx-11'
+      div class='flex justify-center w-full mx-0 -mt-14 h-75'
         = image_tag @location.organization.logo, class: 'shadow rounded'
 
-      div class=" md:px-11 md:text-left"
-        h2 class="text-lg font-bold mb-2.5 text-center"
+      div class="pt-5 md:px-11 md:text-left"
+        h5 class="text-lg font-bold mb-2.5 text-center"
           = @location.organization.name
         p class="text-xs text-center font-base text-gray-4"
           = @location.address
