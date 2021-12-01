@@ -16,12 +16,12 @@ class OrganizationsController < ApplicationController
     @organization = Organization.find(params[:id])
     authorize @organization
     if @organization.update(organization_params)
-      # raise
+      raise
       # update_organization_beneficiaries(requested_resource, resource_params['beneficiary_subcategories_id']) unless resource_params['beneficiary_subcategories_id'].nil?
       update_tags(@organization, JSON.parse(params['organization']['tags_attributes'])) unless params['organization']['tags_attributes'].strip.empty?
       redirect_to organization_path(@organization)
     else
-      # raise
+      raise
       render :edit
     end
   end
