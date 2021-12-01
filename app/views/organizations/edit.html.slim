@@ -114,9 +114,9 @@ div class="w-full h-full bg-grey-9"
 
           div class="grid grid-cols-12 gap-6 mt-8" 
             div class="col-span-12 lg:col-span-5 md:col-span-7" data-controller="options"
-            - values = @organization.beneficiary_subcategories.map { |beneficiary_subcategory| beneficiary_subcategory.name }.join(', ')
-            = f.label :beneficiary_subcategories, "What target populations (beneficiaries) best describe who you serve?", class: "block text-sm text-gray-3 font-medium"
-            = f.text_field :beneficiary_subcategories, { data: { 'options-target': 'list' }, placeholder:'Write some', value: values, class: "block h-46px bg-white mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }  
+              - values = @organization.beneficiary_subcategories.map { |beneficiary_subcategory| beneficiary_subcategory.name }.join(', ')
+              = f.label :beneficiary_subcategories, "What target populations (beneficiaries) best describe who you serve?", class: "block text-sm text-gray-3 font-medium"
+              = f.text_field :beneficiary_subcategories, { data: { 'options-target': 'list' }, placeholder:'Write some', value: values, class: "block h-46px bg-white mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }  
 
             div class="hidden col-span-3 md:flex"
 

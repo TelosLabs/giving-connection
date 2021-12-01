@@ -4,10 +4,9 @@ import Tagify from '@yaireo/tagify';
 export default class extends Controller {
   static target = [ "list" ]
 
-  connect() {
-    console.log('connected')
-    console.log(this.listTarget)
+
+  listTargetConnected(target) {
     new Tagify(
-      this.listTarget);
+      target);
   }
 }
