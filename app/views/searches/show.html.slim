@@ -46,7 +46,7 @@
             ul class="flex flex-col divide-y divide-gray-8"
               - @results.each do |result|
                 li
-                  = render ResultCard::Component.new(title: result&.organization&.name,\
+                  = render ResultCard::Component.new(title: result&.name,\
                                                   address: result&.address,\
                                                   image_url: result&.organization&.logo,\
                                                   id: result&.id,\
