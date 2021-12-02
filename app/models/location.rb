@@ -33,14 +33,14 @@ class Location < ActiveRecord::Base
   has_many :tags, through: :organization
   has_one :social_media, through: :organization
 
-  validates :name, presence: true
+  # validates :name, presence: true
   validates :address, presence: true
   validates :latitude, presence: true
   validates :longitude, presence: true
   validates :lonlat, presence: true
   validates :main, inclusion: { in: [ true, false ] }
   validates :physical, inclusion: { in: [ true, false ] }
-  validates :offer_services, inclusion: { in: [ true, false ] }
+  # validates :offer_services, inclusion: { in: [ true, false ] }
   validates :appointment_only, inclusion: { in: [ true, false ] }
 
   scope :additional, -> { where(main: false) }
