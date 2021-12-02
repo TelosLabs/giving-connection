@@ -48,6 +48,8 @@ class Location < ActiveRecord::Base
 
   before_validation :lonlat_geo_point
 
+  delegate :social_media, to: :organization
+
   accepts_nested_attributes_for(
     :office_hours,
     reject_if: :all_blank,

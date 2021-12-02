@@ -111,7 +111,7 @@ div class=""
         div class="w-full mt-4 h-400px md:px-6" data-tabs-target="panel"  data-controller="places" data-places-zoom-value="10"  data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
           div# class="w-full h-full" data-places-target="map"
           div class="hidden"
-              div class="flex flex-col items-center gap-2 p-5 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{@location.latitude}" data-longitude="#{@location.longitude}" 
+              div class="flex flex-col items-center gap-2 p-5 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{@location.latitude}" data-longitude="#{@location.longitude}"
                 h5 class="text-lg font-bold text-gray-2"
                   | #{@location.organization.name}
                 p class="text-xs text-gray-4"
@@ -148,11 +148,15 @@ div class=""
       h3 class="text-sm font-bold uppercase"
         | Social Media
       div class="flex flex-row gap-5 my-6"
-        a href="#" class="text-sm font-base text-gray-2 "
-          = inline_svg_tag 'facebook_box.svg', class: "text-salmon fill-current"
-        a href="#" class="text-sm font-base text-gray-2"
-          = inline_svg_tag 'linkedin_box.svg', class: "text-salmon fill-current"
-        a href="#" class="text-sm font-base text-gray-2"
-          = inline_svg_tag 'twitter_circle.svg', class: "text-salmon fill-current"
-        a href="#" class="text-sm font-base text-gray-2"
-          = inline_svg_tag 'instagram_box.svg', class: "text-salmon fill-current"
+        - if @location.social_media&.facebook.present?
+          a href=@location.social_media&.facebook class="text-sm font-base text-gray-2" target="_blank"
+            = inline_svg_tag 'facebook_box.svg', class: "text-salmon fill-current"
+        - if @location.social_media&.linkedin.present?
+          a href=@location.social_media&.linkedin class="text-sm font-base text-gray-2" target="_blank"
+            = inline_svg_tag 'linkedin_box.svg', class: "text-salmon fill-current"
+        - if @location.social_media&.twitter.present?
+          a href=@location.social_media&.twitter class="text-sm font-base text-gray-2" target="_blank"
+            = inline_svg_tag 'twitter_circle.svg', class: "text-salmon fill-current"
+        - if @location.social_media&.instagram.present?
+          a href=@location.social_media&.instagram class="text-sm font-base text-gray-2" target="_blank"
+            = inline_svg_tag 'instagram_box.svg', class: "text-salmon fill-current"

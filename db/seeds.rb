@@ -80,7 +80,7 @@ org.locations.build(
   longitude: '-86.78218038642588',
   latitude: '36.16560224965609',
   address: 'NAMI Kentucky, invented, Kentucky, Kentucky, USA',
-  main: true,
+  main: false,
   offer_services: true,
   physical: true,
 )
