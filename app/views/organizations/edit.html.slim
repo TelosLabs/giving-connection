@@ -159,6 +159,11 @@ div class="w-full h-full bg-grey-9"
                     strong 
                       ' yes
                     ', this location will be displayed on the search listings as a pin on the map.
+                div data-controller="offer-services"
+                  = link_to "add services", "#", id: 'unchecked', data: { target: "offer-services.button", action: "click->offer-services#toogle" }
+                  template[data-target="offer-services.form"]
+                    = render "service_fields", location_form: location_form
+
 
           section class="mt-12 text-gray-2" data-target="nested-form.links"
             h5 class="text-lg font-medium leading-7"

@@ -14,7 +14,6 @@ class OrganizationsController < ApplicationController
   def edit
     @organization = Organization.find(params[:id])
     @location = @organization.locations.first
-    @organization.locations.new
     authorize @organization
   end
 

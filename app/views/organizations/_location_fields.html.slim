@@ -33,6 +33,11 @@ div class="grid grid-cols-12 gap-6 mt-8 nested-fields" data-action="google-maps-
                   strong 
                     ' yes
                   ', this location will be displayed on the search listings as a pin on the map.
+              div data-controller="offer-services"
+                = link_to "add services", "#", id: 'unchecked', data: { target: "offer-services.button", action: "click->offer-services#toogle" }
+                template[data-target="offer-services.form"]
+                  = render "service_fields", location_form: location_form
+
               div class="col-span-12 px-3.5"
                 p class="text-sm leading-5 text-gray-3"
                   = link_to "remove location", '#', data: { action: "click->nested-form#remove_association" }
