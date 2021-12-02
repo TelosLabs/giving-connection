@@ -55,8 +55,7 @@ div class="w-full h-full bg-grey-9"
               div class="flex flex-row justify-center col-span-12"
                 = form.submit "Update", class: "mx-auto py-2.5 px-5 text-sm font-bold text-white bg-blue-medium uppercase rounded-6px"
               div class="col-span-12 py-4 border-t border-gray-8"
-                button class="text-xl font-bold text-blue-dark" type="button"
-                  | Log out
+                = link_to "Log out", destroy_user_session_path, method: :delete, class:'text-xl font-bold text-blue-dark'
         div class="hidden" data-tabs-target="panel"
           h4 class="px-6 text-xl text-grey-2 my-7"
             | My Saved Nonprofit Pages
