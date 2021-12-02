@@ -21,14 +21,15 @@ export default class extends Controller {
     event.preventDefault()
 
     let wrapper = event.target.closest("." + this.wrapperClass)
-
+    console.log(wrapper)
+    console.log(wrapper.querySelector("#remove_location"))
     // New records are simply removed from the page
     if (wrapper.dataset.newRecord == "true") {
       wrapper.remove()
 
     // Existing records are hidden and flagged for deletion
     } else {
-      wrapper.querySelector("input[name*='_destroy']").value = 1
+      wrapper.querySelector("#remove_location").value = 1
       wrapper.style.display = 'none'
     }
   }
