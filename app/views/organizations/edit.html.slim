@@ -131,8 +131,8 @@ div class="w-full h-full bg-grey-9"
 
                   div class="mt-6" 
                     div data-target="places.map" style="height:400px;"class="w-full h-full"
-                      = location_form.hidden_field :latitude, data: { target: "places.latitude" }, id: "places-latitude"
-                      = location_form.hidden_field :longitude, data: { target: "places.longitude" }, id: "places-longitude"
+                      = location_form.text_field :latitude, data: { target: "places.latitude" }, id: "places-latitude"
+                      = location_form.text_field :longitude, data: { target: "places.longitude" }, id: "places-longitude"
 
                 div class="hidden col-span-3 md:flex"
                 div class="col-span-12 lg:col-span-5 md:col-span-7"
