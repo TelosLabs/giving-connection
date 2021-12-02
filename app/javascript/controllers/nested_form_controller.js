@@ -6,7 +6,6 @@ export default class extends Controller {
   connect() {
     this.wrapperClass = this.data.get("wrapperClass") || "nested-fields"
     console.log(this.wrapperClass)
-    // console.log(this.templateTarget)
   }
 
   add_association(event) {
