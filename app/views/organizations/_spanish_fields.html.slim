@@ -1,0 +1,12 @@
+div data-target="spanish.form2"
+  div class="hidden col-span-3 md:flex"
+
+  div class="col-span-12 lg:col-span-5 md:col-span-7"
+    = f.label :mission_statement_es, "Mission Statement - What We Do (ES)", class: "block text-sm text-gray-3 font-medium"
+    = f.text_area :mission_statement_es, rows: 5, class: "block mt-1 w-full p-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
+
+  div class="hidden col-span-3 md:flex"
+
+  div class="col-span-12 lg:col-span-5 md:col-span-7"
+    = f.label :vision_statement_es, "*Vision - Goals and Aspirations (ES)", class: "block text-sm text-gray-3 font-medium"
+    = f.text_area :vision_statement_es, rows: 5, class: "block mt-1 w-full p-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"  

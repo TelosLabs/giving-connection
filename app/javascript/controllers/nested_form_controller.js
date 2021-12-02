@@ -5,13 +5,11 @@ export default class extends Controller {
 
   connect() {
     this.wrapperClass = this.data.get("wrapperClass") || "nested-fields"
-    console.log(this.wrapperClass)
+    // console.log(this.wrapperClass)
   }
 
   add_association(event) {
     event.preventDefault()
-    // console.log(this.templateTarget)
-    console.log(this.linksTarget)
 
     var content = this.templateTarget.innerHTML.replace(/NEW_RECORD/g, new Date().getTime())
     this.linksTarget.insertAdjacentHTML('beforebegin', content)
@@ -21,8 +19,7 @@ export default class extends Controller {
     event.preventDefault()
 
     let wrapper = event.target.closest("." + this.wrapperClass)
-    console.log(wrapper)
-    console.log(wrapper.querySelector("#remove_location"))
+    // console.log(wrapper.querySelector("#remove_location"))
     // New records are simply removed from the page
     if (wrapper.dataset.newRecord == "true") {
       wrapper.remove()

@@ -8,12 +8,13 @@ class OrganizationsController < ApplicationController
 
   def new
     @organization = Organization.new
-    @organization.locations.new
+    # @organization.locations.new
   end
 
   def edit
     @organization = Organization.find(params[:id])
     @location = @organization.locations.first
+    @organization.locations.new
     authorize @organization
   end
 
@@ -21,10 +22,12 @@ class OrganizationsController < ApplicationController
     @organization = Organization.find(params[:id])
     authorize @organization
     if @organization.update(organization_params)
+      raise
       update_organization_beneficiaries(@organization, JSON.parse(params['organization']['beneficiary_subcategories'])) unless params['organization']['beneficiary_subcategories'].nil?
       update_tags(@organization, JSON.parse(params['organization']['tags_attributes'])) unless params['organization']['tags_attributes'].strip.empty?
       redirect_to organization_path(@organization)
     else
+      raise
       render :edit
     end
   end

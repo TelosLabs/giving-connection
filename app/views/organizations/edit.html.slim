@@ -66,7 +66,7 @@ div class="w-full h-full bg-grey-9"
             = f.label :phone_number, "Main Phone Number", class: "block text-sm text-gray-3 font-medium"
             = f.text_field :phone_number, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
-        section class="mt-12 text-gray-2"
+        section class="mt-12 text-gray-2" data-controller="spanish"
           h5 class="text-lg font-medium leading-7"
             | Organization Information
 
@@ -78,27 +78,21 @@ div class="w-full h-full bg-grey-9"
             div class="hidden col-span-3 md:flex"
 
             div class="col-span-12 lg:col-span-5 md:col-span-7"
-              = f.label :vision_statement_en, "*Mission Statement - What We Do", class: "block text-sm text-gray-3 font-medium"
+              = f.label :vision_statement_en, "*Vision - Goals and Aspirations", class: "block text-sm text-gray-3 font-medium"
               = f.text_area :vision_statement_en, rows: 5, class: "block mt-1 w-full p-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
 
             div class="hidden col-span-3 md:flex"
 
             div class="col-span-12 lg:col-span-5 md:col-span-7"
               div class="flex items-center mt-3"
-                = check_box_tag :other_name_check, true, false, class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent "
+                = link_to "spanish", '#', id: 'unchecked', data: { target: "spanish.button", action: "click->spanish#toogle" }
+              div class="flex items-center mt-3"
+                = check_box_tag :other_name_check, 1, true, class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent"
                 = label_tag :other_name_check, "Add Spanish Version", class: "text-sm text-black "
 
-            div class="hidden col-span-3 md:flex"
 
-            div class="col-span-12 lg:col-span-5 md:col-span-7"
-              = f.label :mission_statement_es, "*Mission Statement - What We Do (ES)", class: "block text-sm text-gray-3 font-medium"
-              = f.text_area :mission_statement_es, rows: 5, class: "block mt-1 w-full p-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
-
-            div class="hidden col-span-3 md:flex"
-
-            div class="col-span-12 lg:col-span-5 md:col-span-7"
-              = f.label :vision_statement_es, "*Mission Statement - What We Do (ES)", class: "block text-sm text-gray-3 font-medium"
-              = f.text_area :vision_statement_es, rows: 5, class: "block mt-1 w-full p-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"              
+            template[data-target="spanish.form"]
+              = render "spanish_fields", f: f          
 
         section class="mt-12 text-gray-2"
           h5 class="text-lg font-medium leading-7"
@@ -154,10 +148,10 @@ div class="w-full h-full bg-grey-9"
                     legend.sr-only Alert frequency
                     div class='flex items-center gap-12 mt-3'
                       div class="flex items-center gap-2"
-                        = location_form.radio_button :offer_services, class: "focus:ring-0 focus:ring-transparent"
+                        = location_form.radio_button :offer_services, 1, class: "focus:ring-0 focus:ring-transparent"
                         = location_form.label :offer_services_yes, "Yes", class: "text-sm text-black "
                       div class="flex items-center gap-2"
-                        = location_form.radio_button :offer_services, class: "focus:ring-0 focus:ring-transparent"
+                        = location_form.radio_button :offer_services, 0, class: "focus:ring-0 focus:ring-transparent"
                         = location_form.label :offer_services_no, "No", class: "text-sm text-black "
                 div class="col-span-12 px-3.5 py-5 bg-gray-9" 
                   p class="text-sm leading-5 text-gray-3"
@@ -165,7 +159,6 @@ div class="w-full h-full bg-grey-9"
                     strong 
                       ' yes
                     ', this location will be displayed on the search listings as a pin on the map.
-                    
 
           section class="mt-12 text-gray-2" data-target="nested-form.links"
             h5 class="text-lg font-medium leading-7"
