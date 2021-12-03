@@ -85,9 +85,13 @@
                 p class="text-xs text-gray-4"
                   | +1 888 478 0036
                 p class="text-xs font-medium text-gray-2"
-                  span class=" text-states-error"
-                    ' Closed
-                  | Opens at 9 am
+                  - unless result.open_now?
+                    span class="text-states-error"
+                      ' Closed
+                    = result.decorate.closed_office_hours_display
+                  - else
+                    span class="text-green-fountain"
+                      ' Open
 
       div class="relative hidden w-full md:flex h-map-height" data-controller="places" data-places-zoom-value="10"  data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
         div# class="absolute inset-0 w-full h-full" data-places-target="map"
@@ -103,6 +107,10 @@
               p class="text-xs text-gray-4"
                 | +1 888 478 0036
               p class="text-xs font-medium text-gray-2"
-                span class=" text-states-error"
-                  ' Closed
-                | Opens at 9 am
+                - unless result.open_now?
+                  span class="text-states-error"
+                    ' Closed
+                  = result.decorate.closed_office_hours_display
+                - else
+                  span class="text-green-fountain"
+                    ' Open

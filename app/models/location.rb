@@ -21,7 +21,7 @@
 #
 class Location < ActiveRecord::Base
   include Locations::Searchable
-  validates_with LocationsValidator
+  include Locations::Officeable
 
   belongs_to :organization, optional: true
   has_many :office_hours

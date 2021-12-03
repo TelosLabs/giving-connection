@@ -88,7 +88,7 @@ org.locations.build(
 Date::DAYNAMES.each_with_index do |day, index|
   org.locations.last.office_hours.build(
     day: index,
-    open_time: Time.now.change({ hour: "9:00" }),
+    open_time: Time.now.change({ hour: "10:00" }),
     close_time: Time.now.change({ hour: "16:00" }),
     closed: ["Saturday", "Sunday"].include?(day)
   )
@@ -123,8 +123,8 @@ org.locations.build(
 Date::DAYNAMES.each_with_index do |day, index|
   org.locations.last.office_hours.build(
     day: index,
-    open_time: Time.now.change({ hour: "9:00" }),
-    close_time: Time.now.change({ hour: "16:00" }),
+    open_time: Time.now.change({ hour: "8:00" }),
+    close_time: Time.now.change({ hour: "20:00" }),
     closed: ["Saturday", "Sunday"].include?(day)
   )
 end

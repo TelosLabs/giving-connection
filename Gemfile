@@ -28,6 +28,7 @@ gem 'redis', '~> 4.0'
 
 # Use Devise for authentication
 gem 'devise'
+gem 'draper'
 
 gem 'active_storage_validations'
 gem "aws-sdk-s3", require: false
