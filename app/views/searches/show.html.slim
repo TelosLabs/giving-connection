@@ -40,28 +40,29 @@
             = link_to user_session_path, class: 'inline-flex items-center px-3 py-2 text-xs text-gray-3' do
               = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
               | Create Search Alert
-          = render SearchAlert::Component.new(keywords: params.dig('search', 'keyword'), filters: (params.dig('search', 'services') || []) + (params.dig('search', 'beneficiary_groups') || []))
+          = render SearchAlert::Component.new(keywords: params.dig('search', 'keyword'), filters: list_of_filters(@search))
         div class="hidden w-full h-full md:overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
           - if @results.present?
             ul class="flex flex-col divide-y divide-gray-8"
               - @results.each do |result|
                 li
-                  = render ResultCard::Component.new(title: result&.organization&.name,\
+                  = render ResultCard::Component.new(title: result&.name,\
                                                   address: result&.address,\
                                                   image_url: result&.organization&.logo,\
                                                   id: result&.id,\
-                                                  webpage: result&.organization&.website,\
-                                                  description: result&.organization&.mission_statement_en)
+                                                  webpage: result&.website || result&.organization&.website,\
+                                                  description: result&.organization&.mission_statement_en,
+                                                  current_user: current_user)
             div class="h-40 px-4 mt-7"
               p class="text-sm text-gray-3"
                 = "Showing results #{@pagy&.from} - #{@pagy&.to}"
-              == render partial: 'pagy/nav', locals: {pagy: @pagy} 
+              == render partial: 'pagy/nav', locals: {pagy: @pagy}
           - else
             div class="flex justify-center w-full"
               = inline_svg_tag 'empty_state_4.svg', size:'278*279'
             div class="flex flex-col items-center justify-center w-full gap-4 px-12 mb-4 mb-16 text-grey-2"
               p class="text-xl font-bold text-center "
-                | We couldn't find any nonprofits that matched your search. 
+                | We couldn't find any nonprofits that matched your search.
               p class="max-w-xs px-4 text-base text-center"
                 | Try searching for another keyword or editing your filters.
               button class="text-sm font-bold text-blue-medium" type="button" data-action="click->search#clearAll"
@@ -70,11 +71,11 @@
               button class="mt-10 text-sm font-bold text-black" type="button" data-action="click->search#openSearchAlertModal"
                 | Create an Alert for this Search
 
-        div class="hidden w-full h-screen md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
+        div class="hidden w-full md:h-0 h-map-height" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
           div# class="w-full h-full" data-places-target="map"
           div class="hidden"
             - @results&.each do |result|
-              div class="flex flex-col items-center gap-2 p-5 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}" 
+              div class="flex flex-col items-center gap-2 p-5 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}"
                 h5 class="text-lg font-bold text-gray-2"
                   | #{result.organization.name}
                 p class="text-xs text-gray-4"
@@ -84,15 +85,19 @@
                 p class="text-xs text-gray-4"
                   | +1 888 478 0036
                 p class="text-xs font-medium text-gray-2"
-                  span class=" text-states-error"
-                    ' Closed
-                  | Opens at 9 am
+                  - unless result.open_now?
+                    span class="text-states-error"
+                      ' Closed
+                    = result.decorate.closed_office_hours_display
+                  - else
+                    span class="text-green-fountain"
+                      ' Open
 
-      div class="relative hidden w-full md:flex " data-controller="places" data-places-zoom-value="10"  data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
+      div class="relative hidden w-full md:flex h-map-height" data-controller="places" data-places-zoom-value="10"  data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
         div# class="absolute inset-0 w-full h-full" data-places-target="map"
         div class="hidden"
           - @results&.each do |result|
-            div class="flex flex-col items-center gap-2 p-5 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}" 
+            div class="flex flex-col items-center gap-2 p-5 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}"
               h5 class="text-lg font-bold text-gray-2"
                 | #{result.organization.name}
               p class="text-xs text-gray-4"
@@ -102,7 +107,10 @@
               p class="text-xs text-gray-4"
                 | +1 888 478 0036
               p class="text-xs font-medium text-gray-2"
-                span class=" text-states-error"
-                  ' Closed
-                | Opens at 9 am
-
+                - unless result.open_now?
+                  span class="text-states-error"
+                    ' Closed
+                  = result.decorate.closed_office_hours_display
+                - else
+                  span class="text-green-fountain"
+                    ' Open

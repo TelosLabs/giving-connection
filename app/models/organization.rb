@@ -23,6 +23,7 @@
 #
 class Organization < ApplicationRecord
   include Organizations::Constants
+  validates_with OrganizationValidator
 
   has_many :tags, dependent: :destroy
   has_many :organization_beneficiaries, dependent: :destroy

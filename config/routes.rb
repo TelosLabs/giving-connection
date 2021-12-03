@@ -13,11 +13,14 @@ Rails.application.routes.draw do
     resources :office_hours, except: %i[index]
     resources :messages, only: %i[index show]
     resources :organization_admins
+    resources :phone_numbers, except: %i[index]
     root to: 'admin_users#index'
   end
 
   devise_for :admin_users
   devise_for :users
+
+  resources :users, only: [:update]
 
   get '/contact', to: "messages#new", as: :contact
   resources :messages, only: [:create]

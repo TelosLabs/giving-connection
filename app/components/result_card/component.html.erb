@@ -1,20 +1,32 @@
 <div class="p-4">
   <div class="flex flex-row gap-3">
     <div class="flex-shrink-0 w-24 my-2">
-    <%= image_tag @image_url, class: 'object-contain w-full h-24' %>
+    <a href="<%= location_path(@id)%>" class="inline-flex items-center p-2 text-sm font-bold text-blue-medium" type="button">
+      <%= image_tag @image_url, class: 'object-contain w-full h-24' %>
+    </a>
     </div>
     <div class="w-full">
       <div class="flex flex-row items-start justify-between">
+        <a href="<%= location_path(@id)%>" class="inline-flex items-center p-2 text-sm font-bold text-blue-medium" type="button">
         <h5 class="text-lg font-bold text-black">
           <%= @title %>
         </h5>
-        <button class="inline-flex items-center p-2 text-xs text-gray-3" type="button">
-          <%= inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'%>
-        </button>
+        </a>
+        <% if !FavoriteLocation.exists?(user_id: @current_user&.id, location_id: @id) %>
+          <%= link_to favorite_locations_path(location_id: @id), class: "inline-flex items-center p-2 text-xs text-gray-3", type: "button", method: :post, remote: true do %>
+            <%= inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4' %>
+          <% end %>
+        <% else %>
+          <%= link_to favorite_location_path(FavoriteLocation.find_by(user_id: @current_user.id, location_id: @id)), method: :delete, class: "inline-flex items-center p-2 text-xs text-gray-3", remote: true do %>
+            <%= inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4' %>
+          <% end %>
+        <% end %>
       </div>
       <div class="flex flex-col text-xs text-gray-4">
         <p><%= @address %></p>
-        <%= link_to @webpage, "https://#{@webpage}", target: '_blank', class: 'text-blue-medium'%>
+        <% if @webpage.present? %>
+          <%= link_to @webpage, "https://#{@webpage}", target: '_blank', class: 'text-blue-medium'%>
+        <% end %>
       </div>
     </div>
   </div>
@@ -31,6 +43,6 @@
       Go to Page
       <%= inline_svg_tag 'solid_arrow_right.svg', class: 'w-4 h-4 ml-2 text-blue-medium fill-current'%>
     </a>
-    
+
   </div>
 </div>

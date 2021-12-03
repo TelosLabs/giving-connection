@@ -21,16 +21,17 @@
 #
 class Location < ActiveRecord::Base
   include Locations::Searchable
-  validates_with LocationsValidator
+  include Locations::Officeable
 
   belongs_to :organization, optional: true
+  
   has_many :office_hours
   has_many :favorite_locations
+  has_many :tags, through: :organization
   has_many :location_services, dependent: :destroy
   has_many :services, through: :location_services
-  belongs_to :organization, optional: true
-
-  has_many :tags, through: :organization
+  
+  has_one :phone_number
   has_one :social_media, through: :organization
 
   # validates :name, presence: true
@@ -48,6 +49,8 @@ class Location < ActiveRecord::Base
 
   before_validation :lonlat_geo_point
 
+  delegate :social_media, to: :organization
+
   accepts_nested_attributes_for(
     :office_hours,
     reject_if: :all_blank,
@@ -56,6 +59,12 @@ class Location < ActiveRecord::Base
 
   accepts_nested_attributes_for(
     :location_services,
+    reject_if: :all_blank,
+    allow_destroy: true
+  )
+
+  accepts_nested_attributes_for(
+    :phone_number,
     reject_if: :all_blank,
     allow_destroy: true
   )
