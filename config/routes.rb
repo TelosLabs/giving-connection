@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     resources :office_hours, except: %i[index]
     resources :messages, only: %i[index show]
     resources :organization_admins
+    resources :phone_numbers, except: %i[index]
     root to: 'admin_users#index'
   end
 
