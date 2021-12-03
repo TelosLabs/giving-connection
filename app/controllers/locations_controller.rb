@@ -16,6 +16,6 @@ class LocationsController < ApplicationController
   private
 
   def create_params
-    params.require(:location).permit(:address, :longitude, :latitude)
+    params.require(:location).permit(:address, :longitude, :latitude, phone_number_attributes: [])
   end
 end

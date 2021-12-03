@@ -38,8 +38,9 @@ class OrganizationsController < ApplicationController
                   :vision_statement_es, :tagline_en, :tagline_es, :email, :phone_number,
                   social_media_attributes: %i[facebook instagram twitter linkedin youtube blog id],            
                   tags_attributes: [],
-                  locations_attributes: %i[id address latitude longitude website main physical offer_services appointment_only],
-                  beneficiary_subcategories: [])
+                  locations_attributes: %i[id address latitude longitude website main physical offer_services appointment_only phone_number],
+                  beneficiary_subcategories: [],
+                  phone_number_attributes: [])
     # service_attributes: %i[name description id],
     # services_id: [],
   end
