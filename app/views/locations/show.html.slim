@@ -1,4 +1,4 @@
-= form_with model: @search, scope: :search, url: searches_path, class: '', method: :post do |f|
+= form_with model: @search, scope: :search, url: searches_path, class: '', method: :get do |f|
   = render SearchBar::Component.new(form: f, search: @search)
 div class=""
   div class="flex flex-row justify-between w-full p-4 bg-gray-9 md:hidden"  data-controller="modal"
@@ -16,8 +16,8 @@ div class=""
           = @location.organization.name
         p class="text-xs text-center font-base text-gray-4"
           = @location.address
-        div class="flex justify-center items-center mt-4 gap-2.5"
-          a href="#" class="flex items-center text-sm gray-2"
+        div class="flex justify-center items-center mt-4 gap-2.5" data-controller="copy-to-clipboard"
+          button type="button" class="flex items-center text-sm gray-2" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="#{request.url}"
             = inline_svg_tag 'share_icon.svg', class: " fill-current mr-2"
             | Share
           a href="#" class="flex items-center text-sm gray-2"
@@ -77,21 +77,16 @@ div class=""
           h3 class="text-sm font-bold uppercase mb-3.5"
             | Our Services
           ul class="flex flex-col gap-8"
-            li
-              a href="#" class="text-sm font-base text-gray-2"
-                | Counseling
-            li
-              a href="#" class="text-sm font-base text-gray-2"
-                | Children and Family
-            li
-              a href="#" class="text-sm font-base text-gray-2"
-                | Psychiatric Care
-            li
-              a href="#" class="text-sm font-base text-gray-2"
-                | Crisis Services
-            li
-              a href="#" class="text-sm font-base text-gray-2"
-                | Primary Care
+            li class="text-sm font-base text-gray-2"
+              | Counseling
+            li class="text-sm font-base text-gray-2"
+              | Children and Family
+            li class="text-sm font-base text-gray-2"
+              | Psychiatric Care
+            li class="text-sm font-base text-gray-2"
+              | Crisis Services
+            li class="text-sm font-base text-gray-2"
+              | Primary Care
           div class="border-t border-gray-8 my-7"
 
           h3 class="text-sm font-bold uppercase"
