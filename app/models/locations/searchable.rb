@@ -11,7 +11,7 @@ module Locations
                       associated_against: {
                         tags: [:name],
                         services: [:name],
-                        organization: %i[name scope_of_work website ein_number irs_ntee_code
+                        organization: %i[name second_name scope_of_work website ein_number irs_ntee_code
                                          mission_statement_en vision_statement_en tagline_en
                                          mission_statement_es vision_statement_es tagline_es],
                         social_media: %i[facebook instagram twitter linkedin youtube blog]
