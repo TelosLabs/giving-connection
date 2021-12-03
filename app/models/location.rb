@@ -21,7 +21,7 @@
 #
 class Location < ActiveRecord::Base
   include Locations::Searchable
-  validates_with LocationsValidator
+  include Locations::Officeable
 
   belongs_to :organization, optional: true
   
@@ -48,6 +48,8 @@ class Location < ActiveRecord::Base
   scope :main, -> { where(main: true) }
 
   before_validation :lonlat_geo_point
+
+  delegate :social_media, to: :organization
 
   accepts_nested_attributes_for(
     :office_hours,

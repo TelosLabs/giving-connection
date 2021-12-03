@@ -8,11 +8,11 @@
     div class="flex flex-col w-full py-5 overflow-y-auto divide-y divide-gray-8 max-h-500px"
       div class="px-6 py-8"
         = form.label :services, 'Causes & Services', class: 'w-full text-base font-bold text-gray-2'
-        = render SelectMultiple::Component.new(name: 'search[services][]', items: causes_and_services, selected: params.dig('search', 'services'))
+        = render SelectMultiple::Component.new(name: 'search[services]', items: causes_and_services, selected: params.dig('search', 'services'))
 
       div class="px-6 py-8"
         = form.label :beneficiary_groups, 'Beneficiary Groups Served', class: 'w-full text-base font-bold text-gray-2'
-        = render SelectMultiple::Component.new(name: 'search[beneficiary_groups][]',items: beneficiary_groups, selected: params.dig('search', 'beneficiary_groups'))
+        = render SelectMultiple::Component.new(name: 'search[beneficiary_groups]',items: beneficiary_groups, selected: params.dig('search', 'beneficiary_groups'))
 
       div class="px-6 py-8"
         p class="text-base font-bold text-gray-2"

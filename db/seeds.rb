@@ -4,7 +4,7 @@
 AdminUser.create!(email: 'admin@example.com', password: 'testing', password_confirmation: 'testing')
 
 # Users
-User.create!(email: 'user@example.com', password: 'testing', password_confirmation: 'testing')
+User.create!(name: "test user", email: 'user@example.com', password: 'testing', password_confirmation: 'testing')
 
 # Orgs
 org = Organization.new(
@@ -80,7 +80,7 @@ org.locations.build(
   longitude: '-86.78218038642588',
   latitude: '36.16560224965609',
   address: 'NAMI Kentucky, invented, Kentucky, Kentucky, USA',
-  main: true,
+  main: false,
   offer_services: true,
   physical: true,
 )
@@ -88,7 +88,7 @@ org.locations.build(
 Date::DAYNAMES.each_with_index do |day, index|
   org.locations.last.office_hours.build(
     day: index,
-    open_time: Time.now.change({ hour: "9:00" }),
+    open_time: Time.now.change({ hour: "10:00" }),
     close_time: Time.now.change({ hour: "16:00" }),
     closed: ["Saturday", "Sunday"].include?(day)
   )
@@ -123,8 +123,8 @@ org.locations.build(
 Date::DAYNAMES.each_with_index do |day, index|
   org.locations.last.office_hours.build(
     day: index,
-    open_time: Time.now.change({ hour: "9:00" }),
-    close_time: Time.now.change({ hour: "16:00" }),
+    open_time: Time.now.change({ hour: "8:00" }),
+    close_time: Time.now.change({ hour: "20:00" }),
     closed: ["Saturday", "Sunday"].include?(day)
   )
 end

@@ -20,6 +20,8 @@ Rails.application.routes.draw do
   devise_for :admin_users
   devise_for :users
 
+  resources :users, only: [:update]
+
   get '/contact', to: "messages#new", as: :contact
   resources :messages, only: [:create]
 
