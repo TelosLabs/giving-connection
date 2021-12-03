@@ -174,14 +174,15 @@ div class="w-full h-full bg-grey-9"
                     p class="text-sm font-medium leading-4 text-gray-2"
                       | Services offered on this location
                     div class='flex items-center gap-12 mt-3' data-controller="services"
-                      = location_form.fields_for :location_services do |service_form|
-                        = service_form.label "Location Services"
-                        = service_form.text_field :service, { data: { 'services-target': 'options' }, placeholder:'Write some tags', value: ['whitelist', 'hello'], class: "block h-46px bg-white mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+                      = location_form.fields_for :location_services do |location_service_form|
+                        = location_service_form.fields_for :services do |service_form|
+                          = service_form.label "Location Services"
+                          = service_form.text_field :service, { data: { 'services-target': 'options' }, placeholder:'Write services offered', value: [Service.All], class: "block h-46px bg-white mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
                   div class="hidden col-span-3 md:flex"
 
                   div class="col-span-12 lg:col-span-5 md:col-span-7 hidden" data-toggle-target="toggleable"
-                    = location_form.fields_for :phone_number, PhoneNumber.new do |phone_form|
+                    = location_form.fields_for :phone_number do |phone_form|
                       = phone_form.label :number, "Main Phone Number", class: "block text-sm text-gray-3 font-medium"
                       = phone_form.text_field :number, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 

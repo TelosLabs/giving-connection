@@ -66,7 +66,7 @@ class Location < ActiveRecord::Base
   accepts_nested_attributes_for(
     :phone_number,
     reject_if: :all_blank,
-    allow_destroy: true
+    update_only: true
   )
 
   private
