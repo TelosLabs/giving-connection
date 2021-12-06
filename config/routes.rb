@@ -36,5 +36,6 @@ Rails.application.routes.draw do
   resources :alerts, only: %i[new create delete]
   resource :searches, only: %i[show]
   resource :my_account, only: %i[show]
+  resource :about_us, only: %i[show]
   root to: 'home#index'
 end
