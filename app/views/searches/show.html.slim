@@ -94,12 +94,16 @@
         div class="hidden"
           - @results&.each do |result|
             div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}"
-              - if !FavoriteLocation.exists?(user_id: current_user.id, location_id: result.id)
-                = link_to favorite_locations_path(location_id: result.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", method: :post, remote: true do
-                  = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
+              - if user_signed_in?
+                - if !FavoriteLocation.exists?(user_id: current_user.id, location_id: result.id)
+                  = link_to favorite_locations_path(location_id: result.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", method: :post, remote: true do
+                    = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
+                - else
+                  = link_to favorite_location_path(FavoriteLocation.find_by(user_id: current_user.id, location_id: result.id)), method: :delete, class: "inline-flex self-end text-xs text-gray-3", remote: true do
+                    = inline_svg_tag 'bookmark_colored.svg', class: 'w-4 h-4'
               - else
-                = link_to favorite_location_path(FavoriteLocation.find_by(user_id: current_user.id, location_id: result.id)), method: :delete, class: "inline-flex self-end text-xs text-gray-3", remote: true do
-                  = inline_svg_tag 'bookmark_colored.svg', class: 'w-4 h-4'
+                = link_to user_session_path, class: "inline-flex self-end text-xs text-gray-3" do
+                  = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
               h5 class="text-lg font-bold text-gray-2"
                 | #{result.organization.name}
               p class="text-xs text-gray-4"
