@@ -22,7 +22,8 @@ Rails.application.routes.draw do
 
   resources :users, only: [:update]
 
-  resources :messages, only: %i[create new]
+  get '/contact', to: "messages#new", as: :contact
+  resources :messages, only: %i[create]
 
   resources :locations, only: %i[index new show]
 
