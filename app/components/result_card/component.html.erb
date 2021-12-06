@@ -1,13 +1,17 @@
 <div class="p-4">
   <div class="flex flex-row gap-3">
     <div class="flex-shrink-0 w-24 mt-2 mb-4">
+    <a href="<%= location_path(@id)%>" class="inline-flex items-center p-2 text-sm font-bold text-blue-medium" type="button">
       <%= image_tag @image_url, class: 'object-contain w-full h-24' %>
+    </a>
     </div>
     <div class="w-full">
       <div class="flex flex-row items-start justify-between">
+        <a href="<%= location_path(@id)%>" class="inline-flex items-center p-2 text-sm font-bold text-blue-medium" type="button">
         <h5 class="text-lg font-bold text-black">
           <%= @title %>
         </h5>
+        </a>
         <% if !FavoriteLocation.exists?(user_id: @current_user&.id, location_id: @id) %>
           <%= link_to favorite_locations_path(location_id: @id), class: "inline-flex items-center p-2 text-xs text-gray-3", type: "button", method: :post, remote: true do %>
             <%= inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4' %>

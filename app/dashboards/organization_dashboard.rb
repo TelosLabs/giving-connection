@@ -12,6 +12,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     id: Field::Number,
     name: Field::String,
+    second_name: Field::String,
     ein_number: Field::String,
     irs_ntee_code: Field::SelectBasic.with_options({
                                                      choices: Organization::NTEE_CODE
@@ -51,6 +52,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = %i[
     logo
     name
+    second_name
     ein_number
     irs_ntee_code
     website
@@ -75,6 +77,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
     logo
     name
+    second_name
     ein_number
     irs_ntee_code
     website

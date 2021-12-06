@@ -44,7 +44,6 @@ class LocationServiceDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
     service
-    description
   ].freeze
 
   # COLLECTION_FILTERS
