@@ -53,10 +53,11 @@
                                                   webpage: result&.website || result&.organization&.website,\
                                                   description: result&.organization&.mission_statement_en,
                                                   current_user: current_user)
-            div class="h-40 px-4 mt-7"
-              p class="text-sm text-gray-3"
-                = "Showing results #{@pagy&.from} - #{@pagy&.to}"
-              == render partial: 'pagy/nav', locals: {pagy: @pagy}
+            - if @pagy.pages > SearchesHelper::MIN_REQUIRED_PAGES
+              div class="h-40 px-4 mt-7"
+                p class="mb-5 text-sm text-gray-3"
+                  = "Showing results #{@pagy&.from} - #{@pagy&.to}"
+                == render partial: 'pagy/nav', locals: {pagy: @pagy}
           - else
             div class="flex justify-center w-full"
               = inline_svg_tag 'empty_state_4.svg', size:'278*279'
