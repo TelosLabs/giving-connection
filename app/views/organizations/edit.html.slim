@@ -209,7 +209,7 @@ div class="w-full h-full bg-grey-9"
                                       | Closes at
                                 tbody
                                   - weekdays.each do |day|
-                                    = location_form.fields_for :office_hours, location_form.object.office_hours.find_or_initialize_by(day: day[:value]) do |sched|
+                                    = location_form.fields_for :office_hours, OfficeHour.new do |sched|
                                       tr
                                         td
                                           = sched.label :_destroy, day[:label]
