@@ -31,10 +31,10 @@ class Location < ActiveRecord::Base
   has_many :location_services, dependent: :destroy
   has_many :services, through: :location_services
   
-  has_one :phone_number
+  has_one :phone_number, dependent: :destroy
   has_one :social_media, through: :organization
 
-  # validates :name, presence: true
+  validates :name, presence: true
   validates :address, presence: true
   validates :latitude, presence: true
   validates :longitude, presence: true

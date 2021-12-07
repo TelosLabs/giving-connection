@@ -13,7 +13,7 @@ class OrganizationsController < ApplicationController
 
   def edit
     @organization = Organization.find(params[:id])
-    @location = @organization.locations.first
+    # @location = @organization.locations.first
     authorize @organization
   end
 
@@ -21,9 +21,10 @@ class OrganizationsController < ApplicationController
     @organization = Organization.find(params[:id])
     authorize @organization
     if @organization.update(organization_params)
-      raise
+      update_location_services(params['organization']['locations_attributes'])
       update_organization_beneficiaries(@organization, JSON.parse(params['organization']['beneficiary_subcategories'])) unless params['organization']['beneficiary_subcategories'].nil?
       update_tags(@organization, JSON.parse(params['organization']['tags_attributes'])) unless params['organization']['tags_attributes'].strip.empty?
+      raise
       redirect_to organization_path(@organization)
     else
       raise
@@ -38,8 +39,9 @@ class OrganizationsController < ApplicationController
                   :vision_statement_es, :tagline_en, :tagline_es, :email, :phone_number,
                   social_media_attributes: %i[facebook instagram twitter linkedin youtube blog id],            
                   tags_attributes: [],
-                  locations_attributes: [:id, :address, :latitude, :longitude, :website, 
-                    :main, :physical, :offer_services, :appointment_only, phone_number_attributes: [:number] ],
+                  locations_attributes: [:id, :name, :address, :latitude, :longitude, :website, 
+                  :main, :physical, :offer_services, :appointment_only, phone_number_attributes: [:number],
+                  office_hours_attributes: [:id, :day, :open_time, :close_time, :closed]],
                   beneficiary_subcategories: [],
                  )
     # service_attributes: %i[name description id],
@@ -69,8 +71,20 @@ class OrganizationsController < ApplicationController
   def update_organization_beneficiaries(organization, beneficiary_subcategories)
     organization.beneficiary_subcategories.destroy_all
     beneficiary_subcategories.each do |beneficiary_subcategory_hash|
-      beneficiary_subcategory = BeneficiarySubcategory.find_by_name(beneficiary_subcategory_hash["value"])
+      beneficiary_subcategory = BeneficiarySubcategory.find_by_name(beneficiary_subcategory_hash['value'])
       OrganizationBeneficiary.create!(organization: organization, beneficiary_subcategory: beneficiary_subcategory)
+    end
+  end
+
+  def update_location_services(locations_attributes)
+    locations_attributes.each do |location|
+      @location = Location.find_by_name(location.last['name'])
+      @location.location_services.destroy_all
+      unless location.last['location_services_attributes'].nil?
+        JSON.parse(location.last['location_services_attributes']['0']['services']['service']).each do |service_hash|
+          LocationService.create(location: @location, service: Service.find_by_name(service_hash['value']))
+        end
+      end
     end
   end
 
