@@ -37,5 +37,6 @@ Rails.application.routes.draw do
   resource :searches, only: %i[show]
   resource :my_account, only: %i[show]
   resource :about_us, only: %i[show]
+  resource :faqs, only: %i[show]
   root to: 'home#index'
 end
