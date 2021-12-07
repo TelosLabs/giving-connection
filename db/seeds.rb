@@ -193,3 +193,10 @@ Organizations::Constants::CAUSES_AND_SERVICES.each do |cause, services|
     puts "#{new_service.name} sucessfully created" if new_service.save!
   end
 end
+
+
+# Locations Services to Organization 4
+LocationService.create(location: Location.last, service: Service.last)
+LocationService.create(location: Location.last, service: Service.first)
+LocationService.create(location: Location.last, service: Service.find(3))
+LocationService.create(location: Location.last, service: Service.find(4))
