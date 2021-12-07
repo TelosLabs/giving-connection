@@ -35,18 +35,17 @@ div class="grid grid-cols-12 gap-6 mt-8 nested-fields" data-action="google-maps-
                   strong 
                     ' yes
                   ', this location will be displayed on the search listings as a pin on the map.
-
+ 
               div class="hidden col-span-3 md:flex" 
               div class="col-span-12 lg:col-span-5 md:col-span-7 hidden" data-toggle-target="toggleable"
                 fieldset class='mt-4'
                   p class="text-sm font-medium leading-4 text-gray-2"
-                    | Services offered on this location
+                    | Services offered on this location                   
                   div class='flex items-center gap-12 mt-3' data-controller="services"
                     = location_form.fields_for :location_services, LocationService.new do |location_service_form|
                       = location_service_form.fields_for :services, Service.new do |service_form|
                         = service_form.label "Location Services"
-                        = service_form.text_field :service, { data: { 'services-target': 'options' }, placeholder:'Write services offered', value: [], class: "block h-46px bg-white mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
-                     
+                        = service_form.text_field :service, { data: { 'services-target': 'options' }, placeholder:'Write services offered', value: [], class: "block h-46px bg-white mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }       
   
                 div class="hidden col-span-3 md:flex"
 
@@ -55,6 +54,7 @@ div class="grid grid-cols-12 gap-6 mt-8 nested-fields" data-action="google-maps-
                     = phone_form.label :number, "Main Phone Number", class: "block text-sm text-gray-3 font-medium"
                     = phone_form.text_field :number, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
+                
                 div[data-controller="modal" data-modal-allow-background-close="false"]
                   a.bg-blue-500.hover:bg-blue-700.text-white.font-bold.py-3.px-6.rounded[href="#" data-action="click->modal#open"]
                     span
@@ -93,4 +93,5 @@ div class="grid grid-cols-12 gap-6 mt-8 nested-fields" data-action="google-maps-
                           .flex.justify-end.items-center.flex-wrap.mt-6
                             button.bg-blue-500.hover:bg-blue-700.text-white.font-bold.py-2.px-4.rounded[data-action="click->modal#close"]
                               | Close
+
                  

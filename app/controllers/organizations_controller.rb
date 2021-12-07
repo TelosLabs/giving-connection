@@ -8,12 +8,10 @@ class OrganizationsController < ApplicationController
 
   def new
     @organization = Organization.new
-    # @organization.locations.new
   end
 
   def edit
     @organization = Organization.find(params[:id])
-    # @location = @organization.locations.first
     authorize @organization
   end
 
@@ -21,10 +19,9 @@ class OrganizationsController < ApplicationController
     @organization = Organization.find(params[:id])
     authorize @organization
     if @organization.update(organization_params)
-      update_location_services(params['organization']['locations_attributes'])
+      update_location_services(params['organization']['locations_attributes']) unless params['organization']['locations_attributes'].empty? || params['organization']['locations_attributes'].nil?
       update_organization_beneficiaries(@organization, JSON.parse(params['organization']['beneficiary_subcategories'])) unless params['organization']['beneficiary_subcategories'].empty?
       update_tags(@organization, JSON.parse(params['organization']['tags_attributes'])) unless params['organization']['tags_attributes'].strip.empty?
-      # raise
       redirect_to organization_path(@organization)
     else
       raise
@@ -61,16 +58,15 @@ class OrganizationsController < ApplicationController
   end
 
   def update_location_services(locations_attributes)
-    # locations_attributes.each do |location|
-    #   @location = Location.find_by_name(location.last['name'])
-    #   @location.location_services.destroy_all
-    #   # unless location.last['location_services_attributes'].nil?
-    #   unless location.last['location_services_attributes']['0']['services']['service'].empty?
-    #     JSON.parse(location.last['location_services_attributes']['0']['services']['service']).each do |service_hash|
-    #       LocationService.create(location: @location, service: Service.find_by_name(service_hash['value']))
-    #     end
-    #   end
-    # end
+    locations_attributes.each do |location|
+      @location = Location.find_by_name(location.last['name'])
+      @location.location_services.destroy_all
+      unless location.last['location_services_attributes']['0']['services']['service'].empty? || location.last['location_services_attributes'].nil?
+        JSON.parse(location.last['location_services_attributes']['0']['services']['service']).each do |service_hash|
+          LocationService.create(location: @location, service: Service.find_by_name(service_hash['value']))
+        end
+      end
+    end
   end
 
   def organization_params
