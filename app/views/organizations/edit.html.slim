@@ -213,6 +213,7 @@ div class="w-full h-full bg-grey-9"
                                       tr
                                         td
                                           = sched.label :_destroy, day[:label]
+                                          = sched.hidden_field :day, value: day[:value]
                                         td
                                           = sched.label :open_time
                                           = sched.time_field :open_time

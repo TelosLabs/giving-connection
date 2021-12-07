@@ -32,22 +32,6 @@ class OrganizationsController < ApplicationController
     end
   end
 
-  def organization_params
-    params.require(:organization)
-          .permit(:name, :second_name, :ein_number, :irs_ntee_code, :website, :scope_of_work,
-                  :mission_statement_en, :mission_statement_es, :vision_statement_en,
-                  :vision_statement_es, :tagline_en, :tagline_es, :email, :phone_number,
-                  social_media_attributes: %i[facebook instagram twitter linkedin youtube blog id],            
-                  tags_attributes: [],
-                  locations_attributes: [:id, :name, :address, :latitude, :longitude, :website, 
-                  :main, :physical, :offer_services, :appointment_only, phone_number_attributes: [:number],
-                  office_hours_attributes: [:id, :day, :open_time, :close_time, :closed]],
-                  beneficiary_subcategories: [],
-                 )
-    # service_attributes: %i[name description id],
-    # services_id: [],
-  end
-
   def create_tags(organization, tags)
     tags.each do |tag_hash|
       Tag.create!(organization: organization, name: tag_hash['value'])
@@ -86,6 +70,19 @@ class OrganizationsController < ApplicationController
         end
       end
     end
+  end
+
+  def organization_params
+    params.require(:organization)
+          .permit(:name, :second_name, :ein_number, :irs_ntee_code, :website, :scope_of_work,
+                  :mission_statement_en, :mission_statement_es, :vision_statement_en,
+                  :vision_statement_es, :tagline_en, :tagline_es, :email, :phone_number,
+                  social_media_attributes: %i[facebook instagram twitter linkedin youtube blog id],            
+                  tags_attributes: [],
+                  locations_attributes: [:id, :name, :address, :latitude, :longitude, :website, 
+                  :main, :physical, :offer_services, :appointment_only, phone_number_attributes: [:number],
+                  office_hours_attributes: [:id, :day, :open_time, :close_time, :closed]],
+                  beneficiary_subcategories: [])
   end
 
 end
