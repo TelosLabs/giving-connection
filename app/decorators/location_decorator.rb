@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LocationDecorator < ApplicationDecorator
   delegate_all
 
@@ -12,12 +14,12 @@ class LocationDecorator < ApplicationDecorator
 
   def closed_office_hours_display
     next_opened_day = object.next_open_office_hours
-    return "" unless next_opened_day
+    return '' unless next_opened_day
 
     if object.open_same_day?(next_opened_day)
-      "Opens at #{next_opened_day.open_time.strftime("%l %p")}"
+      "Opens at #{next_opened_day.open_time.strftime('%l %p')}"
     else
-      "Opens on #{object.next_open_day} at #{next_opened_day.open_time.strftime("%l %p")}"
+      "Opens on #{object.next_open_day} at #{next_opened_day.open_time.strftime('%l %p')}"
     end
   end
 
@@ -26,8 +28,7 @@ class LocationDecorator < ApplicationDecorator
       object.today_office_hours.open_time
       object.today_office_hours.close_time
     else
-      # TODO separate times
+      # TODO: separate times
     end
   end
-
 end

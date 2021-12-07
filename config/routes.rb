@@ -22,7 +22,7 @@ Rails.application.routes.draw do
 
   resources :users, only: [:update]
 
-  get '/contact', to: "messages#new", as: :contact
+  get '/contact', to: 'messages#new', as: :contact
   resources :messages, only: [:create]
 
   resources :locations, only: %i[index new show]
@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   end
 
   resources :organizations, only: %i[edit update]
-  resources :favorite_locations, only: %i[ create destroy ]
+  resources :favorite_locations, only: %i[create destroy]
   resources :alerts, only: %i[new create delete]
   resource :searches, only: %i[show]
   resource :my_account, only: %i[show]

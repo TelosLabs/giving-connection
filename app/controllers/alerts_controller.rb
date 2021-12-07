@@ -11,10 +11,10 @@ class AlertsController < ApplicationController
     new_alert.user = current_user
     if new_alert.save
       @type = 'notice'
-      @message = "Alert created successfully"
+      @message = 'Alert created successfully'
     else
       @type = 'alert'
-      @message = "Could not create alert. Try later"
+      @message = 'Could not create alert. Try later'
     end
     respond_to do |format|
       format.js { render :index }
@@ -23,6 +23,6 @@ class AlertsController < ApplicationController
 
   def alert_params
     params.require(:search).permit(:distance, :city, :state, :beneficiary_groups,
-                                  :services, :open_now, :open_weekends, :keyword, :frequency)
+                                   :services, :open_now, :open_weekends, :keyword, :frequency)
   end
 end

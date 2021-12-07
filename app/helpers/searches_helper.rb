@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SearchesHelper
   def list_of_filters(object)
     list = []

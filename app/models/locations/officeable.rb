@@ -5,7 +5,7 @@ module Locations
     extend ActiveSupport::Concern
 
     included do
-      WEEKDAYS = [1,2,3,4,5]
+      WEEKDAYS = [1, 2, 3, 4, 5].freeze
     end
 
     def today_office_hours
@@ -13,14 +13,16 @@ module Locations
     end
 
     def next_open_office_hours
-      return nil if office_hours.all? { |oh| oh.closed? }
+      return nil if office_hours.all?(&:closed?)
       return today_office_hours if Time.now < today_office_hours.formatted_open_time
+
       @next = today_office_hours.next_office_hours
       loop do
         break unless @next.closed?
+
         @next = @next.next_office_hours
       end
-      return @next
+      @next
     end
 
     def open_now?
@@ -37,13 +39,13 @@ module Locations
 
     def consistent_weekdays_hours?
       week_office_hours = office_hours.where(day: WEEKDAYS)
-      base = week_office_hours.first.open_time.strftime("%H:%M:%S")
+      base = week_office_hours.first.open_time.strftime('%H:%M:%S')
       open_time_consistency = week_office_hours.all? do |oh|
-        oh.open_time.strftime("%H:%M:%S") == base
+        oh.open_time.strftime('%H:%M:%S') == base
       end
-      base = week_office_hours.first.close_time.strftime("%H:%M:%S")
+      base = week_office_hours.first.close_time.strftime('%H:%M:%S')
       close_time_consistency = week_office_hours.all? do |oh|
-        oh.close_time.strftime("%H:%M:%S") == base
+        oh.close_time.strftime('%H:%M:%S') == base
       end
 
       open_time_consistency && close_time_consistency

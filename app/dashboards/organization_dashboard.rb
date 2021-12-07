@@ -35,7 +35,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     tags: TagInputField,
     locations: Field::NestedHasMany,
     phone_number: Field::Text,
-    email: Field::Text 
+    email: Field::Text
   }.freeze
 
   # COLLECTION_ATTRIBUTES
