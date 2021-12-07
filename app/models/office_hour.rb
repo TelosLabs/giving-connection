@@ -19,9 +19,9 @@ class OfficeHour < ActiveRecord::Base
 
   belongs_to :location, touch: true
 
-  validates :day, presence: true, inclusion: 0..6
-  validates :open_time, presence: true, unless: :closed?
-  validates :close_time, presence: true, unless: :closed?
+  # validates :day, presence: true, inclusion: 0..6
+  # validates :open_time, presence: true, unless: :closed?
+  # validates :close_time, presence: true, unless: :closed?
 
   before_validation :clean_time, if: :closed?
 

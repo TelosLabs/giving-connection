@@ -75,11 +75,12 @@ div class="grid grid-cols-12 gap-6 mt-8 nested-fields" data-action="google-maps-
                                   th
                                     | Closes at
                               tbody
-                                - weekdays.each do |day|
-                                  = location_form.fields_for :office_hours, location_form.object.office_hours.find_or_initialize_by(day: day[:value]) do |sched|
+                                - Date::DAYNAMES.each_with_index do |day, index|
+                                  = location_form.fields_for :office_hours, location_form.object.office_hours.find_or_initialize_by(day: index) do |sched|
                                     tr
                                       td
-                                        = sched.label :_destroy, day[:label]
+                                        = day
+                                        = sched.hidden_field :day, value: index
                                       td
                                         = sched.label :open_time
                                         = sched.time_field :open_time
