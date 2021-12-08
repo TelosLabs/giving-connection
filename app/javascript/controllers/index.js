@@ -13,7 +13,8 @@ application.load(
   )
 )
 
-import { Tabs, Modal, Toggle } from "tailwindcss-stimulus-components"
+import { Tabs, Modal, Toggle, Dropdown } from "tailwindcss-stimulus-components"
 application.register('tabs', Tabs)
 application.register('modal', Modal)
 application.register('toggle', Toggle)
+application.register('toggle', Dropdown)
