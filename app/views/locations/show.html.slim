@@ -1,18 +1,18 @@
-= form_with model: @search, scope: :search, url: searches_path, class: '', method: :post do |f|
+= form_with model: @search, scope: :search, url: searches_path, class: '', method: :get do |f|
   = render SearchBar::Component.new(form: f, search: @search)
 div class=""
   div class="flex flex-row justify-between w-full p-4 bg-gray-9 md:hidden"  data-controller="modal"
     a href="javascript:history.back()" class="flex inline-flex items-center px-3 py-2 text-sm leading-4" type="button"
       = inline_svg_tag "back_icon.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative mr-2'
       | Back to Search Results
-  div class="flex flex-col flex-wrap justify-center w-full md:gap-4 md:flex-row sm:p-7"
+  div class="flex flex-col flex-wrap justify-center w-full sm:pb-14 md:gap-4 md:flex-row sm:p-7"
     div class="w-full bg-white rounded max-w-656px"
       = image_tag @location.organization.cover_photo, class:'w-full h-24 object-fit-cover rounded-t'
-      div class='flex justify-center w-full mx-0 -mt-14 h-75 md:justify-start md:mx-11'
+      div class='flex justify-center w-full mx-0 -mt-14 h-75'
         = image_tag @location.organization.logo, class: 'shadow rounded logo-size'
 
-      div class=" md:px-11 md:text-left"
-        h2 class="text-lg font-bold mb-2.5 text-center"
+      div class="pt-5 md:px-11 md:text-left"
+        h5 class="text-lg font-bold mb-2.5 text-center"
           = @location.organization.name
         p class="text-xs text-center font-base text-gray-4"
           = @location.address
@@ -30,7 +30,7 @@ div class=""
                 = tag.name
         div class="mx-6 text-left"
           h4 class="text-sm font-bold uppercase text-gray-2"
-            | details
+            | contact information
           p class="text-sm leading-6 font-base text-gray-2"
             span class="font-bold"
               ' Phone:
@@ -80,21 +80,16 @@ div class=""
         div class="mx-5 sm:hidden"
           h3 class="text-sm font-bold uppercase mb-3.5"
             | Our Services
-          ul class="flex flex-col gap-8"
-            li
-              a href="#" class="text-sm font-base text-gray-2"
+          ul class="flex flex-col gap-7"
+            li class="text-sm font-base text-gray-2"
                 | Counseling
-            li
-              a href="#" class="text-sm font-base text-gray-2"
+            li class="text-sm font-base text-gray-2"
                 | Children and Family
-            li
-              a href="#" class="text-sm font-base text-gray-2"
+            li class="text-sm font-base text-gray-2"
                 | Psychiatric Care
-            li
-              a href="#" class="text-sm font-base text-gray-2"
+            li class="text-sm font-base text-gray-2"
                 | Crisis Services
-            li
-              a href="#" class="text-sm font-base text-gray-2"
+            li class="text-sm font-base text-gray-2"
                 | Primary Care
           div class="border-t border-gray-8 my-7"
 
@@ -112,7 +107,7 @@ div class=""
         div class="border-t border-gray-8 my-7"
         h4 class="px-6 text-sm font-bold text-black uppercase"
           | Map
-        div class="w-full mt-4 h-400px md:px-6" data-tabs-target="panel"  data-controller="places" data-places-zoom-value="10"  data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
+        div class="w-full mt-4 mb-16 h-400px md:px-6" data-tabs-target="panel"  data-controller="places" data-places-zoom-value="10"  data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
           div# class="w-full h-full" data-places-target="map"
           div class="hidden"
               div class="flex flex-col items-center gap-2 p-5 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{@location.latitude}" data-longitude="#{@location.longitude}"
@@ -131,21 +126,16 @@ div class=""
     div class="flex-col flex-grow-0 hidden w-full bg-white rounded h-min-content sm:flex md:max-w-402px px-11 md:p-7"
       h3 class="text-sm font-bold uppercase mb-3.5"
         | Our Services
-      ul class="flex flex-col gap-8"
-        li
-          a href="#" class="text-sm font-base text-gray-2"
+      ul class="flex flex-col gap-7"
+        li class="text-sm font-base text-gray-2"
             | Counseling
-        li
-          a href="#" class="text-sm font-base text-gray-2"
+        li class="text-sm font-base text-gray-2"
             | Children and Family
-        li
-          a href="#" class="text-sm font-base text-gray-2"
+        li class="text-sm font-base text-gray-2"
             | Psychiatric Care
-        li
-          a href="#" class="text-sm font-base text-gray-2"
+        li class="text-sm font-base text-gray-2"
             | Crisis Services
-        li
-          a href="#" class="text-sm font-base text-gray-2"
+        li class="text-sm font-base text-gray-2"
             | Primary Care
       div class="border-t border-gray-8 my-7"
 

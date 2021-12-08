@@ -38,5 +38,12 @@ div class='fixed inset-0 flex items-center justify-center hidden min-h-screen an
     div class='px-4 py-5 font-normal rounded-md text-gray-2 bg-gray-9'
       | You’ll receive an email when a newly published organization matches your search.
     div class='mt-5'
-      button class='c-button' type="button" data-action="click->modal#close click->search--alerts#submitForm"
-        | Create Alert
+      - if @edit
+        button class='c-button' type="button" data-action="click->modal#close click->search--alerts#submitForm"
+          | Save
+      - else
+        button class='c-button' type="button" data-action="click->modal#close click->search--alerts#submitForm"
+          | Create Alert
+    - if @edit
+      div class="my-4 text-center"
+        = link_to 'Delete alert', alert_path(@alert_id), class:"text-sm font-bold text-blue-medium", method: :delete
