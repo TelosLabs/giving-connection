@@ -35,7 +35,7 @@ div class=""
             span class="font-bold"
               ' Phone:
             span
-              | (615) 511-3748
+              = @location.phone_number
           p class="text-sm leading-6 font-base text-gray-2"
             span class="font-bold"
               ' Hours:
@@ -64,12 +64,12 @@ div class=""
             span class="font-bold"
               ' Website:
             a href="#" class=""
-              | www.centerstone.org
+              = @location.website
           p class="text-sm leading-6 font-base text-gray-2"
             span class="font-bold"
               ' Email:
             a href="mailto:clarksville@centerstone.org" class=""
-              | clarksville@centerstone.org
+              = @location.email
         div class="my-6 border-t border-gray-8"
         div class="flex flex-col px-6 text-left"
           h4 class="text-sm font-bold text-black uppercase"
@@ -80,17 +80,11 @@ div class=""
         div class="mx-5 sm:hidden"
           h3 class="text-sm font-bold uppercase mb-3.5"
             | Our Services
-          ul class="flex flex-col gap-7"
-            li class="text-sm font-base text-gray-2"
-                | Counseling
-            li class="text-sm font-base text-gray-2"
-                | Children and Family
-            li class="text-sm font-base text-gray-2"
-                | Psychiatric Care
-            li class="text-sm font-base text-gray-2"
-                | Crisis Services
-            li class="text-sm font-base text-gray-2"
-                | Primary Care
+          ul class="flex flex-col gap-8"
+            - @location.location_services.each do |location_service|
+              li class="text-sm font-base text-gray-2"
+                = location_service.service.name
+
           div class="border-t border-gray-8 my-7"
 
           h3 class="text-sm font-bold uppercase"
@@ -126,17 +120,10 @@ div class=""
     div class="flex-col flex-grow-0 hidden w-full bg-white rounded h-min-content sm:flex md:max-w-402px px-11 md:p-7"
       h3 class="text-sm font-bold uppercase mb-3.5"
         | Our Services
-      ul class="flex flex-col gap-7"
-        li class="text-sm font-base text-gray-2"
-            | Counseling
-        li class="text-sm font-base text-gray-2"
-            | Children and Family
-        li class="text-sm font-base text-gray-2"
-            | Psychiatric Care
-        li class="text-sm font-base text-gray-2"
-            | Crisis Services
-        li class="text-sm font-base text-gray-2"
-            | Primary Care
+      ul class="flex flex-col gap-8"
+        - @location.location_services.each do |location_service|
+          li class="text-sm font-base text-gray-2"
+            = location_service.service.name
       div class="border-t border-gray-8 my-7"
 
       h3 class="text-sm font-bold uppercase"
