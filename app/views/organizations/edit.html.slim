@@ -158,11 +158,11 @@ div class="w-full h-full bg-grey-9"
                     legend.sr-only Alert frequency
                     div class='flex items-center gap-12 mt-3'
                       div class="flex items-center gap-2"
-                        = location_form.radio_button :offer_services, 1, class: "focus:ring-0 focus:ring-transparent", data: { action: "toggle#toggle" }
-                        = location_form.label :offer_services_yes, "Yes", class: "text-sm text-black "
+                        = location_form.radio_button :offer_services, 1, class: "focus:ring-0 focus:ring-transparent", data: { action: "toggle#show" }
+                        = location_form.label :offer_services_yes, "Yes", class: "text-sm text-black"
                       div class="flex items-center gap-2"
-                        = location_form.radio_button :offer_services, 0, class: "focus:ring-0 focus:ring-transparent", data: { action: "toggle#toggle" }
-                        = location_form.label :offer_services_no, "No", class: "text-sm text-black "
+                        = location_form.radio_button :offer_services, 0, class: "focus:ring-0 focus:ring-transparent", data: { action: "toggle#hide" }
+                        = location_form.label :offer_services_no, "No", class: "text-sm text-black"
                 div class="col-span-12 px-3.5 py-5 bg-gray-9" 
                   p class="text-sm leading-5 text-gray-3"
                     ' If you choose
