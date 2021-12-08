@@ -13,11 +13,11 @@ nav data-controller="navbar--component"
         li class='mr-2 mid:mr-7 lg:mr-11'
           = link_to 'Search', searches_path
         li class='mr-2 mid:mr-7 lg:mr-11'
-          = link_to 'Add a Nonprofit', '#'
+          = link_to 'Add a Nonprofit', contact_path
         li class='mr-2 mid:mr-7 lg:mr-11'
-          = link_to 'About Us', '#'
+          = link_to 'About Us', 'https://givingconnection.org/about-us', target:"_blank"
         li class='mr-2 mid:mr-7 lg:mr-11'
-          = link_to '#', class:"flex" do
+          = link_to 'https://www.facebook.com/donate/428599898811003/', target:"_blank", class:"flex" do
             div class='mr-2'
               | Donate
             div class='flex items-center'
@@ -36,12 +36,12 @@ nav data-controller="navbar--component"
           = inline_svg_tag 'x-icon.svg', size:'12*12', class:"fill-current text-gray-1"
       ul class='flex flex-col text-2xl font-bold text-center gap-9 text-gray-3'
         - if @signed_in
-          li = link_to "My Account", '#'
-        li = link_to "Search", '#'
-        li = link_to "Add a Nonprofit", '#'
-        li = link_to "About Us", '#'
-        li = link_to "Donate", '#'
-        li = link_to "Help", '#'
+          li = link_to "My Account", my_account_path
+        li = link_to "Search", searches_path
+        li = link_to "Add a Nonprofit", contact_path
+        li = link_to "About Us", 'https://givingconnection.org/about-us', target:"_blank"
+        li = link_to "Donate", 'https://www.facebook.com/donate/428599898811003/', target:"_blank"
+        li = link_to "Help", 'https://givingconnection.org/faq', target:"_blank"
     section class="flex flex-col pt-10 text-center border-t border-gray-5 #{ @signed_in ? 'h-1/5' : 'h-1/4' }"
       - if @signed_in
         = link_to "Log out", destroy_user_session_path, method: :delete, class:'pb-8 text-2xl font-bold text-gray-3'

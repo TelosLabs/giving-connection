@@ -1,5 +1,6 @@
 class MyAccountsController < ApplicationController
   skip_after_action :verify_authorized
+  include SearchesHelper
 
   def show
     # @user
