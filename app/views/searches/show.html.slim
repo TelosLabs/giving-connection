@@ -91,11 +91,12 @@
                       ' Appointment only
                   - elsif result.open_now?
                     span class="text-green-error"
-                      ' Open
-                    = result.decorate.closed_office_hours_display
+                      ' Open Now
                   - else
-                    span class="text-states-fountain"
+                    span class="text-states-error"
                       ' Closed
+                    | -
+                    = result.decorate.closed_office_hours_display
 
       div class="relative hidden w-full md:flex" data-controller="places" data-places-zoom-value="10"  data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
         div# class="absolute inset-0 w-full h-full" data-places-target="map"
@@ -126,8 +127,9 @@
                     ' Appointment only
                 - elsif result.open_now?
                   span class="text-green-error"
-                    ' Open
-                  = result.decorate.closed_office_hours_display
+                    ' Open Now
                 - else
                   span class="text-states-error"
                     ' Closed
+                  | -
+                  = result.decorate.closed_office_hours_display
