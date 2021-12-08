@@ -22,6 +22,7 @@
 class Location < ActiveRecord::Base
   include Locations::Searchable
   include Locations::Officeable
+  validates_with LocationValidator
 
   belongs_to :organization, optional: true
   
@@ -31,7 +32,7 @@ class Location < ActiveRecord::Base
   has_many :location_services, dependent: :destroy
   has_many :services, through: :location_services
   
-  has_one :phone_number
+  has_one :phone_number, dependent: :destroy
   has_one :social_media, through: :organization
 
   validates :name, presence: true
