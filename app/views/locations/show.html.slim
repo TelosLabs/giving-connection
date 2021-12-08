@@ -39,7 +39,10 @@ div class=""
           p class="text-sm leading-6 font-base text-gray-2"
             span class="font-bold"
               ' Hours:
-            - if @location.open_now?
+            - if @location.appointment_only?
+              span class="text-green-fountain"
+                | Appointment only
+            - elsif @location.open_now?
               span class="text-green-fountain"
                 | Open
             - else
