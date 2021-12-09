@@ -14,7 +14,7 @@ main
   section class="pt-12 text-gray-2 sm:pt-24"
     h2 class="pb-8 text-2xl font-bold text-center uppercase sm:pb-5"
       | How it works
-    div class="flex flex-col lg:flex-row justify-evenly xl:px-24 pb-44 lg:pb-40"
+    div class="flex flex-col mx-auto max-w-7xl lg:flex-row justify-evenly xl:px-16 pb-44 lg:pb-40"
       div class="max-w-xs mx-auto text-center mb-9 lg:mb-0"
         div class="flex items-end mb-2 h-36"
           = inline_svg_tag 'search-needs.svg', class:'mx-auto'
@@ -36,7 +36,7 @@ main
           | 3. Receive help
         p class="px-5"
           | Found a nonprofit that meets your needs criteria? Reach out through the contact information provided on their individual profiles.
-    div class="flex flex-col md:flex-row justify-evenly sm:mb-1 sm:pb-20 md:px-8"
+    div class="flex flex-col mx-auto md:flex-row max-w-7xl justify-evenly sm:mb-1 sm:pb-20 md:px-8"
       div class="relative flex flex-col justify-center mb-16 text-center md:mx-0 md:mb-0"
         div class="max-w-sm py-4 mx-auto"
           h2 class="px-10 pb-4 text-2xl font-bold text-center"
@@ -57,11 +57,9 @@ main
       div class="flex justify-center sm:hidden"
         = image_tag 'group-friends-mob.png', class:'w-full'
   section class="relative bg-seafoam"
-    div class="relative z-20 max-w-sm pb-20 mx-auto text-center"
+    div class="relative z-20 max-w-md pb-20 mx-auto text-center"
       h2 class="px-5 pt-20 text-2xl font-bold text-center sm:px-0 md:pt-28 text-blue-dark pb-11"
-        | Are you an organization
-        br
-        | interested in joining our listings?
+        | Are you a nonprofit organization interested in joining our listings?
       = link_to "Contact us", contact_path, class:'c-button inline-block my-1 text-white bg-blue-dark'
     div class="top-0 left-0 z-10 hidden sm:block sm:absolute"
       = inline_svg_tag 'lc-desk-blur-left.svg'

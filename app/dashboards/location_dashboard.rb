@@ -17,13 +17,14 @@ class LocationDashboard < Administrate::BaseDashboard
     longitude: HiddenField,
     lonlat: Field::String.with_options(searchable: false),
     website: Field::String,
-    string: Field::String,
+    email: Field::String,
     main: Field::Boolean,
     physical: Field::Boolean,
     offer_services: Field::Boolean,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     address: AddressField,
+    phone_number: Field::HasOne,
     office_hours: Field::NestedHasMany,
     location_services: Field::NestedHasMany,
     appointment_only: Field::Boolean,
@@ -52,10 +53,12 @@ class LocationDashboard < Administrate::BaseDashboard
     latitude
     longitude
     website
+    email
     main
     physical
     offer_services
     address
+    phone_number
     appointment_only
     office_hours
     location_services
@@ -70,6 +73,8 @@ class LocationDashboard < Administrate::BaseDashboard
     latitude
     longitude
     website
+    email
+    phone_number
     main
     physical
     appointment_only
