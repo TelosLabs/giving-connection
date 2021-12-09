@@ -95,7 +95,7 @@ div class="w-full h-full bg-grey-9"
                         | #{alert.keyword}
                       button class="text-blue-medium" type="button" data-action="click->modal#open"
                         | Edit
-                      = render SearchAlert::Component.new(keywords: alert.keyword, filters: [alert.services, alert.beneficiary_groups], edit: true, alert_id: alert.id)
+                      = render SearchAlert::Component.new(keywords: alert.keyword, filters: list_of_filters(alert), edit: true, alert_id: alert.id)
                     div class="flex flex-row text-sm font-normal text-gray-2"
                       | #{alert.services}
             - else
