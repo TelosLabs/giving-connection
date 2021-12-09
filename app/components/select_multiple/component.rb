@@ -8,6 +8,7 @@ class SelectMultiple::Component < ViewComponent::Base
   end
 
   def options
+    # filters = @selected.values.flatten unless @selected.nil?
     {
       class: 'relative flex flex-wrap w-full mt-1 text-base border cursor-text min-h-46px rounded-6px text-gray-3',
       data: {
@@ -18,6 +19,6 @@ class SelectMultiple::Component < ViewComponent::Base
         'extend-dropdown-target': 'button',
         'select-multiple-selected-value': @selected
       }
-    }
+    } 
   end
 end

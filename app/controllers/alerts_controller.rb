@@ -40,8 +40,9 @@ class AlertsController < ApplicationController
 	end
 
   def alert_params
-    params.require(:search).permit(:distance, :city, :state, :beneficiary_groups,
-                                  :services, :open_now, :open_weekends, :keyword, :frequency)
+    params.require(:search).permit(:distance, :city, :state,
+                                   :open_now, :open_weekends, :keyword, :frequency,
+                                   :beneficiary_groups, :services)
   end
 
   def schedule_next_alert(alert)
@@ -55,3 +56,4 @@ class AlertsController < ApplicationController
     end
   end
 end
+
