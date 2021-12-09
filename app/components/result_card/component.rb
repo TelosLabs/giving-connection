@@ -18,7 +18,7 @@ class ResultCard::Component < ViewComponent::Base
       if split.size > 1
         uri = URI::HTTP.build({host: split.shift, path: '/'+split.join('/')})
       else
-        uri = URI::HTTP.build({host: uri.to_s})
+        uri = URI::HTTP.build({host: split.shift.to_s})
       end
     end
     uri.to_s
