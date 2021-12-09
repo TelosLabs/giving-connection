@@ -62,8 +62,8 @@ module Admin
       to_create = beneficiaries_sub_ids - organization.beneficiary_subcategories.ids
       to_delete = organization.beneficiary_subcategories.ids - beneficiaries_sub_ids
 
-      create_organization_beneficiaries(organization, to_create)
       delete_organization_beneficiaries(organization, to_delete)
+      create_organization_beneficiaries(organization, to_create)
     end
 
     def delete_organization_beneficiaries(organization, beneficiaries_sub_ids)
