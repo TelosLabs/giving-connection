@@ -16,8 +16,8 @@ div class=""
           = @location.name
         p class="text-xs text-center font-base text-gray-4"
           = @location.address
-        div class="flex justify-center items-center mt-4 gap-2.5"
-          a href="#" class="flex items-center text-sm gray-2"
+        div class="flex justify-center items-center mt-4 gap-2.5" data-controller="copy-to-clipboard"
+          button type="button" class="flex items-center text-sm gray-2" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="#{request.url}"
             = inline_svg_tag 'share_icon.svg', class: " fill-current mr-2"
             | Share
           a href="#" class="flex items-center text-sm gray-2"
