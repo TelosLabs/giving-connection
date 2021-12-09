@@ -8,6 +8,7 @@ class Locations::FilterQuery
   }.freeze
 
   attr_reader :locations
+
   class << self
     def call(params = {}, locations = Location.all)
       scope = locations
@@ -80,16 +81,16 @@ class Locations::FilterQuery
       scope
     end
 
-      def default_coordinates
-        Geo.to_wkt(Geo.point(DEFAULT_LOCATION[:longitude], DEFAULT_LOCATION[:latitude]))
-      end
+    def default_coordinates
+      Geo.to_wkt(Geo.point(DEFAULT_LOCATION[:longitude], DEFAULT_LOCATION[:latitude]))
+    end
 
-      def parameterize_address_filters(address_params)
-        address_params.values.reject!(&:blank?).compact.map { |v| "%#{v}%" }
-      end
+    def parameterize_address_filters(address_params)
+      address_params.values.reject!(&:blank?).compact.map { |v| "%#{v}%" }
+    end
 
-      def opened_now(scope, open_now)
-        return scope if open_now.nil?
+    def opened_now(scope, open_now)
+      return scope if open_now.nil?
 
       scope.joins(:office_hours).where(office_hours: {
         day: Time.now.wday,
@@ -99,26 +100,25 @@ class Locations::FilterQuery
       )
     end
 
-      def opened_on_weekends(scope, open_on_weekends)
-        return scope if open_on_weekends.nil?
+    def opened_on_weekends(scope, open_on_weekends)
+      return scope if open_on_weekends.nil?
 
-        query = <<-SQL
-        SELECT *
-        FROM locations
-        WHERE id IN (
-          SELECT location_id
-          FROM office_hours oh
-          WHERE oh."day" IN (
-            #{Time::DAYS_INTO_WEEK[:saturday]},
-            #{Time::DAYS_INTO_WEEK[:sunday]}
-          )
-          GROUP BY location_id, closed
-          HAVING count(*) = 2 and closed = false
+      query = <<-SQL
+      SELECT *
+      FROM locations
+      WHERE id IN (
+        SELECT location_id
+        FROM office_hours oh
+        WHERE oh."day" IN (
+          #{Time::DAYS_INTO_WEEK[:saturday]},
+          #{Time::DAYS_INTO_WEEK[:sunday]}
         )
-        SQL
-        scope_as_array = scope.find_by_sql(query)
-        scope.where(id: scope_as_array.map(&:id))
-      end
+        GROUP BY location_id, closed
+        HAVING count(*) = 2 and closed = false
+      )
+      SQL
+      scope_as_array = scope.find_by_sql(query)
+      scope.where(id: scope_as_array.map(&:id))
     end
   end
 end

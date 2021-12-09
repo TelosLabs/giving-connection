@@ -17,9 +17,12 @@
 #  frequency          :string           default("weekly")
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  next_alert         :date
 #
 class Alert < ApplicationRecord
   belongs_to :user
 
   validates :frequency, presence: true, inclusion: { in: %w[daily weekly monthly] }
+
+  scope :due_for_today, -> { where(next_alert: Date.today) }
 end

@@ -18,5 +18,6 @@ class SelectMultiple::Component < ViewComponent::Base
         'extend-dropdown-target': 'button',
         'select-multiple-selected-value': @selected
       }
+    }
   end
 end

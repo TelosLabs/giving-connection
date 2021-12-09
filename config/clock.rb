@@ -18,6 +18,8 @@ module Clockwork
   end
 
   every(1.day, 'Send Alert for Saved Searches', at: '08:00') do
-    Alerts::SendSavedSearchesAlertEmailsJob.perform_later
+    Alert.due_for_today.each do |alert|
+      Alerts::SendSavedSearchesAlertEmailsJob.perform_later(alert.id)
+    end
   end
 end
