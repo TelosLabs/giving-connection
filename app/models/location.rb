@@ -22,6 +22,7 @@
 class Location < ActiveRecord::Base
   include Locations::Searchable
   include Locations::Officeable
+  validates_with LocationValidator
 
   belongs_to :organization, optional: true
 
@@ -41,7 +42,7 @@ class Location < ActiveRecord::Base
   validates :lonlat, presence: true
   validates :main, inclusion: { in: [true, false] }
   validates :physical, inclusion: { in: [true, false] }
-  # validates :offer_services, inclusion: { in: [ true, false ] }
+  validates :offer_services, inclusion: { in: [ true, false ] }
   validates :appointment_only, inclusion: { in: [true, false] }
 
   scope :additional, -> { where(main: false) }
