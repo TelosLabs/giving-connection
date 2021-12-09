@@ -51,8 +51,7 @@ div class="w-full h-full bg-grey-9"
                 div class="col-span-12"
                   p class="text-xs text-grey-3"
                     ' Can't remember your current password?
-                    a href="#" class="text-blue-medium"
-                      | Reset via email
+                    = link_to "Reset via email", new_reset_password_path, class:'text-blue-medium'
               div class="col-span-12 py-0 border-b border-gray-8"
               div class="flex flex-row justify-center col-span-12"
                 = form.submit "Update", class: "mx-auto py-2.5 px-5 text-sm font-bold text-white bg-blue-medium uppercase rounded-6px"
