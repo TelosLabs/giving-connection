@@ -85,8 +85,8 @@ div class=""
           p class="text-sm leading-6 font-base text-gray-2"
             span class="font-bold"
               ' Website:
-            a href="#{@location.website}" target="_blank"
-              = @location.website
+            a href="#{@location.decorate.website || @location.organization.decorate.website}" target="_blank"
+              = @location.decorate.website || @location.organization.decorate.website
           p class="text-sm leading-6 font-base text-gray-2"
             span class="font-bold"
               ' Email:
@@ -132,7 +132,7 @@ div class=""
                 p class="text-xs text-gray-4"
                   | #{@location.address}
                 p class="text-xs text-gray-4"
-                  | #{@location.organization.website}
+                  | #{@location.organization.decorate.website}
                 p class="text-xs text-gray-4"
                   | +1 888 478 0036
                 p class="text-xs font-medium text-gray-2"

@@ -5,4 +5,13 @@ class ApplicationDecorator < Draper::Decorator
   #   def percent_amount
   #     h.number_to_percentage object.amount, precision: 2
   #   end
+
+  def website
+    return nil if object.website.blank?
+    uri = URI(object.website)
+    if uri.instance_of?(URI::Generic)
+      uri = URI::HTTP.build({:host => uri.to_s})
+    end
+    uri.to_s
+  end
 end

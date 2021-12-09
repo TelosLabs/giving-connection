@@ -24,8 +24,8 @@
       </div>
       <div class="flex flex-col text-xs text-gray-4">
         <p><%= @address %></p>
-        <% if @webpage.present? %>
-          <%= link_to @webpage, "https://#{@webpage}", target: '_blank', class: 'text-blue-medium'%>
+        <% if @website.present? %>
+          <%= link_to website_url, website_url, target: '_blank', class: 'text-blue-medium'%>
         <% end %>
       </div>
     </div>

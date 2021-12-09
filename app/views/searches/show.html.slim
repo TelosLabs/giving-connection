@@ -50,7 +50,7 @@
                                                   address: result&.address,\
                                                   image_url: result&.organization&.logo,\
                                                   id: result&.id,\
-                                                  webpage: result&.website || result&.organization&.website,\
+                                                  website: result&.decorate&.website || result&.organization&.decorate&.website,\
                                                   description: result&.organization&.mission_statement_en,
                                                   current_user: current_user)
             - if @pagy.pages > SearchesHelper::MIN_REQUIRED_PAGES
