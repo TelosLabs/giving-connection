@@ -7,7 +7,7 @@ export default class extends Controller {
   }
 
   connect() {
-    console.log('connect')
+    // console.log('connect')
   }
 
   submitForm() {
@@ -21,7 +21,7 @@ export default class extends Controller {
       dataType: 'script',
       success: function(data) {
         console.log(data)
-      }
+      },
     })
   }
 

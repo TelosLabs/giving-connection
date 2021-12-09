@@ -33,7 +33,7 @@ Rails.application.routes.draw do
 
   resources :organizations, only: %i[edit update]
   resources :favorite_locations, only: %i[ create destroy ]
-  resources :alerts, only: %i[new create edit destroy]
+  resources :alerts, only: %i[new create edit update destroy]
   resource :searches, only: %i[show]
   resource :my_account, only: %i[show]
   root to: 'home#index'

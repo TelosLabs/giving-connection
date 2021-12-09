@@ -13,6 +13,7 @@ class AlertsController < ApplicationController
   def create
     new_alert = Alert.new(alert_params)
     new_alert.user = current_user
+    # binding.pry
     if new_alert.save
       schedule_next_alert(new_alert)
       redirect_to root_path
