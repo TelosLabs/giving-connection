@@ -3,3 +3,9 @@
 .gradient-blue {
   background: $secondary-gradient-blue;
 }
+
+.bold-link-hover {
+  &:hover {
+    font-weight: 700;
+  }
+}
