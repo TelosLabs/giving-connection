@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_30_135525) do
+ActiveRecord::Schema.define(version: 2021_11_30_220215) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -136,6 +136,7 @@ ActiveRecord::Schema.define(version: 2021_11_30_135525) do
     t.datetime "updated_at", precision: 6, null: false
     t.boolean "appointment_only", default: false
     t.string "name", null: false
+    t.string "email"
     t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
     t.index ["organization_id"], name: "index_locations_on_organization_id"
   end
@@ -160,6 +161,16 @@ ActiveRecord::Schema.define(version: 2021_11_30_135525) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "location_id"
     t.index ["location_id"], name: "index_office_hours_on_location_id"
+  end
+
+  create_table "organization_admins", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.bigint "user_id", null: false
+    t.string "role"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["organization_id"], name: "index_organization_admins_on_organization_id"
+    t.index ["user_id"], name: "index_organization_admins_on_user_id"
   end
 
   create_table "organization_beneficiaries", force: :cascade do |t|
@@ -187,6 +198,7 @@ ActiveRecord::Schema.define(version: 2021_11_30_135525) do
     t.text "vision_statement_es"
     t.text "tagline_en", null: false
     t.text "tagline_es"
+    t.string "second_name"
     t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
     t.index ["ein_number"], name: "index_organizations_on_ein_number", unique: true
     t.index ["mission_statement_en"], name: "index_organizations_on_mission_statement_en"
@@ -203,6 +215,15 @@ ActiveRecord::Schema.define(version: 2021_11_30_135525) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
+  end
+
+  create_table "phone_numbers", force: :cascade do |t|
+    t.string "number"
+    t.boolean "main"
+    t.bigint "location_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["location_id"], name: "index_phone_numbers_on_location_id"
   end
 
   create_table "services", force: :cascade do |t|
@@ -255,6 +276,7 @@ ActiveRecord::Schema.define(version: 2021_11_30_135525) do
     t.datetime "locked_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "name"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -270,8 +292,11 @@ ActiveRecord::Schema.define(version: 2021_11_30_135525) do
   add_foreign_key "location_services", "locations"
   add_foreign_key "location_services", "services"
   add_foreign_key "locations", "organizations"
+  add_foreign_key "organization_admins", "organizations"
+  add_foreign_key "organization_admins", "users"
   add_foreign_key "organization_beneficiaries", "beneficiary_subcategories"
   add_foreign_key "organization_beneficiaries", "organizations"
+  add_foreign_key "phone_numbers", "locations"
   add_foreign_key "services", "causes"
   add_foreign_key "social_medias", "organizations"
   add_foreign_key "tags", "organizations"

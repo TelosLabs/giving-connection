@@ -12,26 +12,29 @@ Rails.application.routes.draw do
     resources :location_services, only: %i[show create]
     resources :office_hours, except: %i[index]
     resources :messages, only: %i[index show]
+    resources :organization_admins
+    resources :phone_numbers, except: %i[index]
     root to: 'admin_users#index'
   end
 
   devise_for :admin_users
   devise_for :users
 
+  resources :users, only: [:update]
+
   get '/contact', to: 'messages#new', as: :contact
-  resources :messages, only: [:create]
+  resources :messages, only: %i[create]
 
-  resources :locations, only: %i[index new]
+  resources :locations, only: %i[index new show]
 
-  resources :organizations, only: [:show] do
+  resources :organizations, only: %i[show edit update] do
     resources :locations, only: %i[index new create]
   end
 
   resources :organizations, only: %i[edit update]
-  resources :favorite_locations, only: %i[create destroy]
-  resource :searches, only: %i[new create]
-  resources :alerts, only: %i[new create delete]
-
-  resource :searches, only: [:new], path: 'searches/new'
+  resources :favorite_locations, only: %i[ create destroy ]
+  resources :alerts, only: %i[new create edit destroy]
+  resource :searches, only: %i[show]
+  resource :my_account, only: %i[show]
   root to: 'home#index'
 end

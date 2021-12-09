@@ -2,13 +2,14 @@
 
 module ResultCard
   class Component < ViewComponent::Base
-    def initialize(title:, address:, image_url:, webpage:, description:, id:)
+    def initialize(title:, address:, image_url:, webpage:, description:, id:, current_user:)
       @title = title
       @address = address
       @image_url = image_url
       @webpage = webpage
       @id = id
       @description = description
+      @current_user = current_user
     end
   end
 end

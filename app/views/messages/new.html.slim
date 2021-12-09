@@ -1,8 +1,8 @@
 .main
-  h2 class="pb-4 text-2xl font-bold text-center pt-14 md:pt-32 md:mt-2 md:pb-9 text-gray-gray-3"
+  h2 class="pb-4 text-2xl font-bold text-center pt-14 md:pt-32 md:mt-2 md:pb-9 text-gray-3"
     | Get in Touch
 
-  div class="max-w-md px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-gray-3"
+  div class="max-w-md px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
     | Send us a message and we’ll get back to you as soon as we can.
 
   div class="md:hidden -z-1"
@@ -32,7 +32,7 @@
         = f.label :subject
         = f.select :subject,\
         [['I want to publish a non profit on Giving Connection', '1'],['I want to claim ownership of a non profit page', '2'], ['Other', '3']],\
-        {}, {class: "c-input bg-white", required: true, data: { action: "change->contact-form#subjectSelected",'contact-form-target': 'subject'}}
+        {}, {class: "c-input pr-7 bg-white", required: true, data: { action: "change->contact-form#subjectSelected",'contact-form-target': 'subject'}}
       div class="w-full"
         = f.label :organization_name, "*Organization Name"
         = f.text_field :organization_name, class:"c-input", required: true

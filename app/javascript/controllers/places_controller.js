@@ -1,8 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "field", "map", "latitude", "longitude" ]
-  static values = { imageurl: String }
+  static targets = [ "field", "map", "latitude", "longitude", "marker" ]
+  static values = { imageurl: String, zoom: { type: Number, default: 10 }, }
 
   connect() {
     if (typeof(google) != "undefined") {
@@ -13,21 +13,57 @@ export default class extends Controller {
   initMap() {
     this.map = new google.maps.Map(this.mapTarget, {
       center: new google.maps.LatLng(this.data.get("latitude") || 36.16404968727089, this.data.get("longitude") || -86.78125827725053),
-      zoom: (10)
+      zoom: (this.zoomValue || 10)
     })
 
-    this.autocomplete = new google.maps.places.Autocomplete(this.fieldTarget)
-    this.autocomplete.bindTo('bounds', this.map)
-    this.autocomplete.setFields(['address_components', 'geometry', 'icon', 'name'])
-    this.autocomplete.addListener('place_changed', this.placeChanged.bind(this))
+    if (this.hasFieldTarget) {
+      this.autocomplete = new google.maps.places.Autocomplete(this.fieldTarget)
+      this.autocomplete.bindTo('bounds', this.map)
+      this.autocomplete.setFields(['address_components', 'geometry', 'icon', 'name'])
+      this.autocomplete.addListener('place_changed', this.placeChanged.bind(this))
+    }
 
     const image = this.imageurlValue
 
-    this.marker = new google.maps.Marker({
-      map: this.map,
-      anchorPoint: new google.maps.Point(0, -29),
-      icon: image
-    })
+    if (this.hasMarkerTarget) {
+      this.setMarkers(this.map, image);
+    }else{
+      this.marker = new google.maps.Marker({
+        map: this.map,
+        anchorPoint: new google.maps.Point(0, -29),
+        icon: image
+      })
+    }
+
+  }
+
+  setMarkers(map, image) {
+
+    // Adds markers to the map.
+    for (let i = 0; i < this.markerTargets.length; i++) {
+      const element = this.markerTargets[i];
+      const latitudeTarget = Number(element.dataset.latitude)
+      const longitudeTarget = Number(element.dataset.longitude)
+
+      const marker = new google.maps.Marker({
+        position: { lat: latitudeTarget, lng: longitudeTarget },
+        map: map,
+        icon: image
+      });
+
+      const infowindow = new google.maps.InfoWindow({
+        content: this.markerTargets[i],
+        maxWidth: 210,
+      });
+
+      marker.addListener("click", () => {
+        infowindow.open({
+          anchor: marker,
+          map,
+          shouldFocus: false,
+        });
+      });
+    }
   }
 
   placeChanged() {

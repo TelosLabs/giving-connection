@@ -48,10 +48,6 @@ module.exports = {
           warning: '#febb5a',
           disabled: '#eff2f7'
         },
-        copy: {
-          white: '#ffffff',
-          'gray-2': '#1f2d3d'
-        }
       },
       textColor: {
         gray: {
@@ -61,25 +57,28 @@ module.exports = {
         blue: {
           medium: '#0782D0',
         },
-        
       },
       maxWidth: {
         '327px': '327px',
+        '356px': '356px',
         '375px': '375px',
         '402px': '402px',
         '470px': '470px',
         '656px': '656px',
+        ms: '343px'
       },
       minHeight: {
         '46px': '46px',
       },
       maxHeight: {
         '500px': '500px',
+        '600px': '600px',
       },
       height: {
         'min-content': 'min-content',
         '46px': '46px',
         '400px': '400px',
+        '85vh': '85vh',
       },
       borderRadius: {
         '6px': '6px',

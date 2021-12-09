@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class AlertsController < ApplicationController
+  include Pundit
+
+  after_action :verify_authorized, except: :destroy
+
   def new
     @alert = Alert.new
     @alert_params = params['alert_params']
@@ -12,14 +16,31 @@ class AlertsController < ApplicationController
     if new_alert.save
       schedule_next_alert(new_alert)
       redirect_to root_path
+      @type = 'notice'
+      @message = "Alert created successfully"
     else
-      puts 'Alert not created'
+      @type = 'alert'
+      @message = "Could not create alert. Try later"
+    end
+    respond_to do |format|
+      format.js { render :index }
     end
   end
 
+  def edit
+		@alert = Alert.find(params[:id])
+  end
+
+	def destroy
+		@alert = Alert.find(params[:id])
+		@alert.destroy
+    flash[:success] = "The alert was successfully deleted."
+    redirect_to my_account_path
+	end
+
   def alert_params
-    params.require(:alert).permit(:frequency, :keyword, :city, :state, :services,
-                                  :beneficiary_groups, :distance, :open_now, :open_weekends)
+    params.require(:search).permit(:distance, :city, :state, :beneficiary_groups,
+                                  :services, :open_now, :open_weekends, :keyword, :frequency)
   end
 
   def schedule_next_alert(alert)

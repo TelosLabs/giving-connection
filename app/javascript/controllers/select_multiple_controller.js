@@ -2,22 +2,19 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
 
-  static targets = ["input", "container", "badgesContainer", 'checkbox', 'badgeTemplate', 'hiddenInput', 'group']
+  static targets = ["input", "container", "badgesContainer", 'checkbox', 'badgeTemplate', 'group']
   static values = { selected: Array }
 
   connect() {
-    console.log('connected')
     this.store = new Set(this.selectedValue || [])
     this.updateCheckboxes()
     this.updateBadges()
-    this.updateHiddenInput()
     this.search()
   }
 
   select(event) {
     this.addCheckboxToStore(event)
     this.updateBadges()
-    this.updateHiddenInput()
   }
 
   remove(event) {
@@ -26,7 +23,6 @@ export default class extends Controller {
 
     this.updateCheckboxes()
     this.updateBadges()
-    this.updateHiddenInput()
   }
 
   clearAll() {
@@ -34,7 +30,6 @@ export default class extends Controller {
     console.log(this.store)
     this.updateCheckboxes()
     this.updateBadges()
-    this.updateHiddenInput()
   }
 
   focus() {
@@ -49,7 +44,7 @@ export default class extends Controller {
   }
 
   addCheckboxToStore(event) {
-    const value = event.currentTarget.name
+    const value = event.currentTarget.dataset.value
     if (event.currentTarget.checked) {
       this.store.add(value)
     } else {
@@ -59,7 +54,7 @@ export default class extends Controller {
 
   updateCheckboxes() {
     this.checkboxTargets.forEach(checkbox => {
-      if (this.store.has(checkbox.name)) {
+      if (this.store.has(checkbox.dataset.value)) {
         checkbox.checked = true
       } else {
         checkbox.checked = false
@@ -79,15 +74,11 @@ export default class extends Controller {
     })
   }
 
-  updateHiddenInput() {
-    this.hiddenInputTarget.value = Array.from(this.store)
-  }
-
   search(event) {
     const query = this.inputTarget.value
     const regex = new RegExp('.*' + query.toLowerCase() + '.*', 'gmi')
     this.checkboxTargets.forEach(checkbox => {
-      if (checkbox.name.search(regex) >= 0) {
+      if (checkbox.value.search(regex) >= 0) {
         checkbox.parentElement.classList.remove('hidden')
       } else {
         checkbox.parentElement.classList.add('hidden')
