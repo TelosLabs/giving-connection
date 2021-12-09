@@ -48,5 +48,10 @@ module Locations
 
       open_time_consistency && close_time_consistency
     end
+
+    def day_hours(day)
+      office_hours.find_by(day: day)
+    end
+
   end
 end

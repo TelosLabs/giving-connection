@@ -21,13 +21,15 @@ class LocationDecorator < ApplicationDecorator
     end
   end
 
-  def weekdays_similarity
-    if object.consistent_weekdays_hours?
-      object.today_office_hours.open_time
-      object.today_office_hours.close_time
-    else
-      # TODO separate times
-    end
+  def working_hours
+    "#{open_time_for_display} - #{close_time_for_display}"
   end
 
+  def open_time_for_display
+    object.office_hours.find_by(day: Time::DAYS_INTO_WEEK[:monday]).formatted_open_time.strftime("%l %p")
+  end
+
+  def close_time_for_display
+    object.office_hours.find_by(day: Time::DAYS_INTO_WEEK[:monday]).formatted_close_time.strftime("%l %p")
+  end
 end
