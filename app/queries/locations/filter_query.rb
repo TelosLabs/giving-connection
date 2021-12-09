@@ -93,8 +93,10 @@ class Locations::FilterQuery
 
       scope.joins(:office_hours).where(office_hours: {
         day: Time.now.wday,
-        closed: false
-      })
+        closed: false,
+      }).where(
+        '? BETWEEN open_time AND close_time', Time.now
+      )
     end
 
     def opened_on_weekends(scope, open_on_weekends)

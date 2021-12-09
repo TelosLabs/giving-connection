@@ -20,6 +20,9 @@
 #  vision_statement_es  :text
 #  tagline_en           :text             not null
 #  tagline_es           :text
+#  second_name          :string
+#  phone_number         :string
+#  email                :string
 #
 require 'rails_helper'
 

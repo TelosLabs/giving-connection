@@ -17,6 +17,7 @@
 #  frequency          :string           default("weekly")
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  next_alert         :date
 #
 class Alert < ApplicationRecord
   belongs_to :user
