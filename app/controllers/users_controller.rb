@@ -19,8 +19,10 @@ class UsersController < ApplicationController
 
     unless user.update(save_params)
       flash[:alert] = user.errors.full_messages.to_sentence
-      redirect_to my_account_path
     end
+    sign_in(current_user, :bypass => true)
+    flash[:success] = "Your information has been updated"
+    redirect_to my_account_path
   end
 
   private
