@@ -22,7 +22,8 @@ class OrganizationsController < ApplicationController
       update_location_services(params['organization']['locations_attributes']) unless params['organization']['locations_attributes'].empty? || params['organization']['locations_attributes'].nil?
       update_organization_beneficiaries(@organization, JSON.parse(params['organization']['beneficiary_subcategories'])) unless params['organization']['beneficiary_subcategories'].empty?
       update_tags(@organization, JSON.parse(params['organization']['tags_attributes'])) unless params['organization']['tags_attributes'].strip.empty?
-      redirect_to organization_path(@organization)
+      redirect_to my_account_path
+      flash[:notice] = 'The Organization was successfully updated'
     else
       render :edit
     end
