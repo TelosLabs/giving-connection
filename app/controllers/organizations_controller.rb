@@ -26,6 +26,7 @@ class OrganizationsController < ApplicationController
       flash[:notice] = 'The Organization was successfully updated'
     else
       render :edit
+      flash[:alert] = 'The Organization was not updated'
     end
   end
 
