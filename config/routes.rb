@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   resources :messages, only: %i[create]
   resources :reset_password, only: %i[new]
 
-  resources :locations, only: %i[index new show]
+  resources :locations, only: %i[index new show delete]
 
   resources :organizations, only: %i[show edit update] do
     resources :locations, only: %i[index new create]

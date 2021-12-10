@@ -24,7 +24,6 @@ class OrganizationsController < ApplicationController
       update_tags(@organization, JSON.parse(params['organization']['tags_attributes'])) unless params['organization']['tags_attributes'].strip.empty?
       redirect_to organization_path(@organization)
     else
-      raise
       render :edit
     end
   end
