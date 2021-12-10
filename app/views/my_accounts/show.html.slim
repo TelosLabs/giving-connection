@@ -18,7 +18,7 @@ div class="w-full h-full bg-grey-9"
         div class="hidden px-6" data-tabs-target="panel"
           h4 class="text-xl text-grey-2 my-7"
             | My Profile Information
-          = form_with model: current_user, url: user_path(current_user), method: :put do |form|
+          = form_with model: current_user, url: user_path(current_user), html: { method: :put } do |form|
             div class="grid grid-cols-12 gap-6" data-controller="toggle"
               div class="col-span-12 lg:col-span-5 md:col-span-7"
                 = form.label :name, "Name", class: "block text-sm text-grey-3 font-medium"
@@ -51,8 +51,7 @@ div class="w-full h-full bg-grey-9"
                 div class="col-span-12"
                   p class="text-xs text-grey-3"
                     ' Can't remember your current password?
-                    a href="#" class="text-blue-medium"
-                      | Reset via email
+                    = link_to "Reset via email", new_reset_password_path, class:'text-blue-medium'
               div class="col-span-12 py-0 border-b border-gray-8"
               div class="flex flex-row justify-center col-span-12"
                 = form.submit "Update", class: "mx-auto py-2.5 px-5 text-sm font-bold text-white bg-blue-medium uppercase rounded-6px"
@@ -70,7 +69,7 @@ div class="w-full h-full bg-grey-9"
                                                       address: page.address,\
                                                       image_url: page.organization.logo.service_url,\
                                                       id: page.id,\
-                                                      webpage: page.website,\
+                                                      website: page.decorate.website || page.organization.decorate.website,\
                                                       description: page.organization.mission_statement_en,
                                                       current_user: current_user)
             - else
@@ -82,7 +81,7 @@ div class="w-full h-full bg-grey-9"
                 p class="max-w-xs px-4 text-base text-center"
                   | Click on the top right ribbon to save pages when you are browsing through nonprofit listings.
 
-        div class="hidden px-6" data-tabs-target="panel" 
+        div class="hidden px-6" data-tabs-target="panel"
           h4 class="text-xl text-grey-2 mt-7"
             | Manage Alerts
           div class="flex flex-col w-full h-full md:overflow-y-auto"
@@ -95,7 +94,7 @@ div class="w-full h-full bg-grey-9"
                         | #{alert.keyword}
                       button class="text-blue-medium" type="button" data-action="click->modal#open"
                         | Edit
-                      = render SearchAlert::Component.new(keywords: alert.keyword, filters: [alert.services, alert.beneficiary_groups], edit: true, alert_id: alert.id)
+                      = render SearchAlert::Component.new(keywords: alert.keyword, filters: list_of_filters(alert), edit: true, alert_id: alert.id)
                     div class="flex flex-row text-sm font-normal text-gray-2"
                       | #{alert.services}
             - else

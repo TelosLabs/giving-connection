@@ -40,11 +40,11 @@ module Locations
       week_office_hours = office_hours.where(day: WEEKDAYS)
       base = week_office_hours.first.open_time.strftime('%H:%M:%S')
       open_time_consistency = week_office_hours.all? do |oh|
-        oh.open_time.strftime('%H:%M:%S') == base
+        oh.open_time&.strftime("%H:%M:%S") == base
       end
       base = week_office_hours.first.close_time.strftime('%H:%M:%S')
       close_time_consistency = week_office_hours.all? do |oh|
-        oh.close_time.strftime('%H:%M:%S') == base
+        oh.close_time&.strftime("%H:%M:%S") == base
       end
 
       open_time_consistency && close_time_consistency

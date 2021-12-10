@@ -50,7 +50,7 @@
                                                   address: result&.address,\
                                                   image_url: result&.organization&.logo,\
                                                   id: result&.id,\
-                                                  webpage: result&.website || result&.organization&.website,\
+                                                  website: result&.decorate&.website || result&.organization&.decorate&.website,\
                                                   description: result&.organization&.mission_statement_en,
                                                   current_user: current_user)
             - if @pagy.pages > SearchesHelper::MIN_REQUIRED_PAGES
@@ -72,25 +72,35 @@
               button class="mt-10 text-sm font-bold text-black" type="button" data-action="click->search#openSearchAlertModal"
                 | Create an Alert for this Search
 
-        div class="hidden w-full md:h-0 h-map-height" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
+        div class="hidden w-full h-85vh md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
           div# class="w-full h-full" data-places-target="map"
           div class="hidden"
             - @results&.each do |result|
-              div class="flex flex-col items-center gap-2 p-5 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}"
+              div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}"
+                - if user_signed_in?
+                  - if !FavoriteLocation.exists?(user_id: current_user.id, location_id: result.id)
+                    = link_to favorite_locations_path(location_id: result.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", method: :post, remote: true do
+                      = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
+                  - else
+                    = link_to favorite_location_path(FavoriteLocation.find_by(user_id: current_user.id, location_id: result.id)), method: :delete, class: "inline-flex self-end text-xs text-gray-3", remote: true do
+                      = inline_svg_tag 'bookmark_colored.svg', class: 'w-4 h-4'
+                - else
+                  = link_to user_session_path, class: "inline-flex self-end text-xs text-gray-3" do
+                    = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
                 h5 class="text-lg font-bold leading-6 text-gray-2"
                   | #{result.organization.name}
                 p class="text-xs text-gray-4"
                   | #{result.address}
+                p class="text-xs text-blue-medium"
+                  = link_to "#{result.organization.website}", "http://#{result.organization.website}", target:"_blank"
                 p class="text-xs text-gray-4"
-                  | #{result.organization.website}
-                p class="text-xs text-gray-4"
-                  | +1 888 478 0036
+                  | #{result.phone_number&.number}
                 p class="text-xs font-medium text-gray-2"
                   - if result.appointment_only?
                     span class="text-states-error"
                       ' Appointment only
                   - elsif result.open_now?
-                    span class="text-green-error"
+                    span class="text-green-fountain"
                       ' Open Now
                   - else
                     span class="text-states-error"
@@ -117,16 +127,16 @@
                 | #{result.organization.name}
               p class="text-xs text-gray-4"
                 | #{result.address}
-              p class="text-xs text-gray-4 hover:text-blue-medium bold-link-hover"
+              p class="text-xs text-blue-medium"
                 = link_to "#{result.organization.website}", "http://#{result.organization.website}", target:"_blank"
               p class="text-xs text-gray-4"
-                | +1 888 478 0036
+                | #{result.phone_number&.number}
               p class="text-xs font-medium text-gray-2"
                 - if result.appointment_only?
                   span class="text-states-error"
                     ' Appointment only
                 - elsif result.open_now?
-                  span class="text-green-error"
+                  span class="text-green-fountain"
                     ' Open Now
                 - else
                   span class="text-states-error"
