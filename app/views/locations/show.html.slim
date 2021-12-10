@@ -123,7 +123,7 @@ div class=""
         div class="border-t border-gray-8 my-7"
         h4 class="px-6 text-sm font-bold text-black uppercase"
           | Map
-        div class="w-full mt-4 mb-16 h-400px md:px-6" data-tabs-target="panel"  data-controller="places" data-places-zoom-value="10"  data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
+        div class="w-full mt-4 mb-16 h-400px md:px-6" data-tabs-target="panel" data-controller="places" data-places-latitude-value="#{@location.latitude}" data-places-longitude-value="#{@location.longitude}" data-places-zoom-value="10" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
           div# class="w-full h-full" data-places-target="map"
           div class="hidden"
               div class="flex flex-col items-center gap-2 p-5 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{@location.latitude}" data-longitude="#{@location.longitude}"
