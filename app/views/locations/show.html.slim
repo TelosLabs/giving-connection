@@ -69,6 +69,7 @@ div class=""
               p class="ml-12 text-sm leading-6 font-base text-gray-2"
                 span class="font-bold"
                   = Date::DAYNAMES[day_number].first(3)
+                  | &nbsp;
                 span
                   = display_day_working_hours(@location.day_hours(day_number))
             p class="ml-12 text-sm leading-6 font-base text-gray-2"
@@ -134,11 +135,20 @@ div class=""
                 p class="text-xs text-gray-4"
                   | #{@location.organization.decorate.website}
                 p class="text-xs text-gray-4"
-                  | +1 888 478 0036
-                p class="text-xs font-medium text-gray-2"
-                  span class=" text-states-error"
-                    ' Closed
-                  | Opens at 9 am
+                  | #{@location.phone_number&.number}
+                  p class="text-xs font-medium text-gray-2"
+                    - if @location.appointment_only?
+                      span class="text-states-error"
+                        ' Appointment only
+                    - elsif @location.open_now?
+                      span class="text-green-fountain"
+                        ' Open Now
+                    - else
+                      span class="text-states-error"
+                        ' Closed
+                      | -&nbsp;
+                      | #{@location.decorate.closed_office_hours_display}
+
     div class="flex-col flex-grow-0 hidden w-full bg-white rounded h-min-content sm:flex md:max-w-402px px-11 md:p-7"
       h3 class="text-sm font-bold uppercase mb-3.5"
         | Our Services
