@@ -2,7 +2,7 @@
   <div class="flex flex-wrap flex-shrink-0 max-w-full gap-2 py-2 pl-2" data-select-multiple-target="badgesContainer" >
   </div>
   <input type="text" data-select-multiple-target="input" class="h-full border-0 border-transparent focus:outline-none focus:border-transparent focus:ring-0 rounded-6px" data-action="select-multiple#search">
-  <div data-dropdown-target="menu" class="absolute left-0 z-10 hidden w-full mt-2 top-full max-h-52" >
+  <div data-extend-dropdown-target="menu" class="absolute left-0 z-10 hidden w-full mt-2 top-full max-h-52" >
     <div class="p-5 overflow-y-auto bg-white border rounded border-gray-5 max-h-52">
       <div class="flex flex-col gap-y-2">
         <% @items&.each do |group, list|%>

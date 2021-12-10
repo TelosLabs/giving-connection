@@ -20,7 +20,7 @@
 
   <body class="bg-gray-9">
     <%= render Navbar::Component.new(signed_in: user_signed_in?) %>
-    <main class="">
+    <main class="main">
       <% flash.each do |type, message| %>
         <%= render Alert::Component.new(type: type, message: message) %>
       <% end %>

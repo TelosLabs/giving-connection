@@ -9,7 +9,7 @@
       <h3 style="font-weight: bold;font-size: 16px;"><%= beneficiary.name %></h3>
       <% beneficiary.beneficiary_subcategories.each do |subcategory| %>
 
-        <% if Organization.find(params['id']).organization_beneficiaries.exists?(subcategory.id)  %>
+        <% if Organization.find(params['id']).beneficiary_subcategories.exists?(subcategory.id)  %>
 
           <%= check_box_tag "organization[beneficiary_subcategories_id][]", subcategory.id, checked: true %>
           <%= subcategory.name  %>

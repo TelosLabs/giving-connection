@@ -18,10 +18,12 @@
 #  updated_at       :datetime         not null
 #  appointment_only :boolean          default(FALSE)
 #  name             :string           not null
+#  email            :string
 #
 class Location < ActiveRecord::Base
   include Locations::Searchable
   include Locations::Officeable
+  validates_with LocationValidator
 
   belongs_to :organization, optional: true
 

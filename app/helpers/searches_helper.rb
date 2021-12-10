@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module SearchesHelper
+  MIN_REQUIRED_PAGES = 1
+
   def list_of_filters(object)
     list = []
     list << object.beneficiary_groups&.map(&:last)&.flatten

@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class AlertsController < ApplicationController
+  include Pundit
+
+  after_action :verify_authorized, except: :destroy
+
   def new
     @alert = Alert.new
     @alert_params = params['alert_params']
@@ -20,6 +24,17 @@ class AlertsController < ApplicationController
       format.js { render :index }
     end
   end
+
+  def edit
+		@alert = Alert.find(params[:id])
+  end
+
+	def destroy
+		@alert = Alert.find(params[:id])
+		@alert.destroy
+    flash[:success] = "The alert was successfully deleted."
+    redirect_to my_account_path
+	end
 
   def alert_params
     params.require(:search).permit(:distance, :city, :state, :beneficiary_groups,

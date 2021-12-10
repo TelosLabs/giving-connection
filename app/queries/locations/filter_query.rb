@@ -92,11 +92,13 @@ module Locations
       def opened_now(scope, open_now)
         return scope if open_now.nil?
 
-        scope.joins(:office_hours).where(office_hours: {
-                                           day: Time.now.wday,
-                                           closed: false
-                                         })
-      end
+      scope.joins(:office_hours).where(office_hours: {
+        day: Time.now.wday,
+        closed: false,
+      }).where(
+        '? BETWEEN open_time AND close_time', Time.now
+      )
+    end
 
       def opened_on_weekends(scope, open_on_weekends)
         return scope if open_on_weekends.nil?
