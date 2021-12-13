@@ -10,6 +10,9 @@ module.exports = {
       ...screens,
     },
     extend: {
+      fontSize: {
+        '22px': '22px'
+      },
       colors: {
         seafoam: {
           DEFAULT: '#9ae2e0'

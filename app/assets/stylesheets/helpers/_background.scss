@@ -3,3 +3,7 @@
 .gradient-blue {
   background: $secondary-gradient-blue;
 }
+
+.rotate-svg {
+  transform: rotate(180deg);
+}
