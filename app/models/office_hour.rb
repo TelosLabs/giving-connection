@@ -30,8 +30,15 @@ class OfficeHour < ActiveRecord::Base
   end
 
   def formatted_open_time
+    return nil unless open_time
     now = Date.current
     open_time.change({ year: now.year, month: now.month, day: now.day })
+  end
+
+  def formatted_close_time
+    return nil unless close_time
+    now = Date.current
+    close_time.change({ year: now.year, month: now.month, day: now.day })
   end
 
   private

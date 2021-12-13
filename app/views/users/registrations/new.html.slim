@@ -1,6 +1,6 @@
 .main
   h2 class="px-12 pb-6 text-2xl font-bold text-center pt-14 md:pt-32 md:mt-2 md:pb-9 text-gray-gray-7"
-    ' Create an account 
+    ' Create an account
     | on Giving Connection
 
   div class="md:hidden"
@@ -39,7 +39,7 @@
       = render "users/shared/error_messages", resource: resource
       .c-form--group
         = f.label :name
-        = f.text_field :email, autofocus: true, autocomplete: "name", class:"c-input"
+        = f.text_field :name, autofocus: true, autocomplete: "name", class:"c-input"
       .c-form--group
         = f.label :email, "Email Address"
         = f.email_field :email, autofocus: true, autocomplete: "email", class:"c-input"
@@ -56,4 +56,4 @@
     ' By continuing, you agree to Giving Connection’s
     = link_to 'Terms & Conditions ', '#', class:'font-bold'
     ' and
-    = link_to 'Privacy Policy', '#', class:'font-bold'
+    = link_to 'Privacy Policy', 'https://givingconnection.org/privacy-policy', class:'font-bold'
