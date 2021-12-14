@@ -2,7 +2,7 @@
 
 # Accordion Component for faqs page
 class Accordion::Component < ViewComponent::Base
-  def initialize(title:, description)
+  def initialize(title:, description:)
     @title = title
     @description = description
   end
