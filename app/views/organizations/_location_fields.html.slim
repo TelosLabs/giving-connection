@@ -1,8 +1,8 @@
 div class="grid grid-cols-12 gap-6 mt-8 nested-fields" data-action="google-maps-callback@window->places#initMap" data-controller="places toggle" data-places-imageurl-value=("\#{asset_path 'markergc.png'}")
   div class="col-span-12 lg:col-span-5 md:col-span-7"
-    = location_form.label :name, "Location Name"
+    = location_form.label :name, "What is the locations name?"
     = location_form.text_field :name, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
-    = location_form.label :address, "Address", class: "block mt-4 text-sm text-gray-3 font-medium"
+    = location_form.label :address, "What target populations (beneficiaries) best describe who you serve?", class: "block mt-4 text-sm text-gray-3 font-medium"
     = location_form.search_field :address, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", data: { 'places-target': "field", action: "keydown->places#keydown" }
     = location_form.hidden_field :latitude, data: { 'places-target': "latitude" }, id: "places-latitude"
     = location_form.hidden_field :longitude, data: { 'places-target': "longitude" }, id: "places-longitude"
