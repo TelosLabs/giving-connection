@@ -17,7 +17,7 @@ nav data-controller="navbar--component"
         li class='mr-2 mid:mr-7 lg:mr-11'
           = link_to 'About Us', 'https://givingconnection.org/about-us', target:"_blank"
         li class='mr-2 mid:mr-7 lg:mr-11'
-          = link_to 'https://www.facebook.com/donate/428599898811003/', target:"_blank", class:"flex" do
+          = link_to 'https://givingconnection.org/donate', target:"_blank", class:"flex" do
             div class='mr-2'
               | Donate
             div class='flex items-center'
@@ -40,7 +40,7 @@ nav data-controller="navbar--component"
         li = link_to "Search", searches_path
         li = link_to "Add a Nonprofit", contact_path
         li = link_to "About Us", 'https://givingconnection.org/about-us', target:"_blank"
-        li = link_to "Donate", 'https://www.facebook.com/donate/428599898811003/', target:"_blank"
+        li = link_to "Donate", 'https://givingconnection.org/donate', target:"_blank"
         li = link_to "Help", 'https://givingconnection.org/faq', target:"_blank"
     section class="flex flex-col justify-center text-center border-t border-gray-5 #{ @signed_in ? 'h-1/5' : 'h-1/4' }"
       - if @signed_in

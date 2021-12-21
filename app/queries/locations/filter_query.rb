@@ -51,33 +51,39 @@ class Locations::FilterQuery
     def by_service(scope, services)
       return scope if services.blank? || scope.empty?
 
-      services.each do |cause, services|
-        query = Location.joins(
-          location_services: { service: :cause }
-        ).where(
-          'service.name' => services,
-          'cause.name' => cause
-        ).to_sql
-        as_array = scope.find_by_sql(query)
-        scope = Location.where(id: as_array.map(&:id))
+      complex_query = []
+      services.each do |cause, services_list|
+        services_list.each do |ser|
+          complex_query << Location.sanitize_sql("('#{cause}', '#{ser}')")
+        end
       end
-      scope
+
+      Location.joins(
+        location_services: { service: :cause }
+      ).where(
+        "locations.id IN (?)", scope.ids
+      ).where(
+        "(causes.name, services.name) IN (#{complex_query.join(",")})"
+      ).distinct
     end
 
     def by_beneficiary_groups_served(scope, beneficiary_groups_filters)
       return scope if beneficiary_groups_filters.blank? || scope.empty?
 
+      complex_query = []
       beneficiary_groups_filters.each do |group, subcategory|
-        query = Location.joins(
-          organization: { organization_beneficiaries: { beneficiary_subcategory: :beneficiary_group } }
-        ).where(
-          'beneficiary_subcategories.name' => subcategory,
-          'beneficiary_group.name' => group
-        ).to_sql
-        as_array = scope.find_by_sql(query)
-        scope = Location.where(id: as_array.map(&:id))
+        subcategory.each do |sub|
+          complex_query << Location.sanitize_sql("('#{group}', '#{sub}')")
+        end
       end
-      scope
+
+      Location.joins(
+        organization: { organization_beneficiaries: { beneficiary_subcategory: :beneficiary_group } }
+      ).where(
+        "locations.id IN (?)", scope.ids
+      ).where(
+        "(beneficiary_groups.name, beneficiary_subcategories.name) IN (#{complex_query.join(",")})"
+      ).distinct
     end
 
     def default_coordinates
