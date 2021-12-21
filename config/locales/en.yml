@@ -31,3 +31,8 @@
 
 en:
   hello: "Hello world"
+  helpers:
+    label:
+      organization:
+        mission_statement_en: What we do
+        vision_statement_en: How we do it
