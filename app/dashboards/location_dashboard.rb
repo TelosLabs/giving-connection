@@ -16,7 +16,6 @@ class LocationDashboard < Administrate::BaseDashboard
     latitude: HiddenField,
     longitude: HiddenField,
     lonlat: Field::String.with_options(searchable: false),
-    website: Field::String,
     email: Field::String,
     main: Field::Boolean,
     physical: Field::Boolean,
@@ -52,7 +51,6 @@ class LocationDashboard < Administrate::BaseDashboard
     name
     latitude
     longitude
-    website
     email
     main
     physical
@@ -72,7 +70,6 @@ class LocationDashboard < Administrate::BaseDashboard
     address
     latitude
     longitude
-    website
     email
     phone_number
     main

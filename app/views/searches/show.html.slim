@@ -27,7 +27,7 @@
             button class="relative inline-flex items-center px-5 py-1 -ml-px text-sm border rounded-r-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="1"
               | Map
 
-        div class="flex flex-row items-center justify-between w-full p-4 border-b border-gray-8" data-controller="modal"
+        div class="flex flex-row items-center justify-between w-full p-4 bg-white border-b border-gray-8" data-controller="modal"
           span class="text-xs text-gray-3"
             | #{pluralize(@pagy.count, 'result')} found
 
@@ -41,7 +41,7 @@
               = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
               | Create Search Alert
           = render SearchAlert::Component.new(keywords: params.dig('search', 'keyword'), filters: list_of_filters(@search))
-        div class="hidden w-full h-full md:overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
+        div class="hidden w-full h-full bg-white md:overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
           - if @results.present?
             ul class="flex flex-col divide-y divide-gray-8"
               - @results.each do |result|

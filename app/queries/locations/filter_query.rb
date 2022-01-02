@@ -49,37 +49,43 @@ module Locations
         )
       end
 
-      def by_service(scope, services)
-        return scope if services.blank? || scope.empty?
+    def by_service(scope, services)
+      return scope if services.blank? || scope.empty?
 
-        services.each do |cause, services|
-          query = Location.joins(
-            location_services: { service: :cause }
-          ).where(
-            'service.name' => services,
-            'cause.name' => cause
-          ).to_sql
-          as_array = scope.find_by_sql(query)
-          scope = Location.where(id: as_array.map(&:id))
+      complex_query = []
+      services.each do |cause, services_list|
+        services_list.each do |ser|
+          complex_query << Location.sanitize_sql("('#{cause}', '#{ser}')")
         end
-        scope
       end
 
-      def by_beneficiary_groups_served(scope, beneficiary_groups_filters)
-        return scope if beneficiary_groups_filters.blank? || scope.empty?
+      Location.joins(
+        location_services: { service: :cause }
+      ).where(
+        "locations.id IN (?)", scope.ids
+      ).where(
+        "(causes.name, services.name) IN (#{complex_query.join(",")})"
+      ).distinct
+    end
 
-        beneficiary_groups_filters.each do |group, subcategory|
-          query = Location.joins(
-            organization: { organization_beneficiaries: { beneficiary_subcategory: :beneficiary_group } }
-          ).where(
-            'beneficiary_subcategories.name' => subcategory,
-            'beneficiary_group.name' => group
-          ).to_sql
-          as_array = scope.find_by_sql(query)
-          scope = Location.where(id: as_array.map(&:id))
+    def by_beneficiary_groups_served(scope, beneficiary_groups_filters)
+      return scope if beneficiary_groups_filters.blank? || scope.empty?
+
+      complex_query = []
+      beneficiary_groups_filters.each do |group, subcategory|
+        subcategory.each do |sub|
+          complex_query << Location.sanitize_sql("('#{group}', '#{sub}')")
         end
-        scope
       end
+
+      Location.joins(
+        organization: { organization_beneficiaries: { beneficiary_subcategory: :beneficiary_group } }
+      ).where(
+        "locations.id IN (?)", scope.ids
+      ).where(
+        "(beneficiary_groups.name, beneficiary_subcategories.name) IN (#{complex_query.join(",")})"
+      ).distinct
+    end
 
       def default_coordinates
         Geo.to_wkt(Geo.point(DEFAULT_LOCATION[:longitude], DEFAULT_LOCATION[:latitude]))
