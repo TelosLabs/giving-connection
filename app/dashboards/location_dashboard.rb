@@ -26,7 +26,7 @@ class LocationDashboard < Administrate::BaseDashboard
     phone_number: Field::HasOne,
     office_hours: Field::NestedHasMany,
     location_services: Field::NestedHasMany,
-    appointment_only: Field::Boolean,
+    appointment_only: Field::Boolean
   }.freeze
 
   # COLLECTION_ATTRIBUTES

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LocationValidator < ActiveModel::Validator
   attr_reader :record
 
@@ -12,9 +14,7 @@ class LocationValidator < ActiveModel::Validator
   def complete_office_hours
     return true if record.appointment_only?
 
-    unless Time::DAYS_INTO_WEEK.values.sort == record.office_hours.map(&:day).sort
-      record.organization.errors.add(:base, 'Office hours data is required for the 7 days of the week')
-    end
+    record.organization.errors.add(:base, 'Office hours data is required for the 7 days of the week') unless Time::DAYS_INTO_WEEK.values.sort == record.office_hours.map(&:day).sort
   end
 
   def valid_website_url

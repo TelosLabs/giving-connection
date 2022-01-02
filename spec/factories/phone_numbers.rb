@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: phone_numbers
@@ -11,7 +13,7 @@
 #
 FactoryBot.define do
   factory :phone_number do
-    number { "MyString" }
+    number { 'MyString' }
     main { false }
     location { nil }
   end

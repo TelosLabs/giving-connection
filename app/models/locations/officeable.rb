@@ -5,7 +5,7 @@ module Locations
     extend ActiveSupport::Concern
 
     included do
-      WEEKDAYS = [1,2,3,4,5]
+      WEEKDAYS = [1, 2, 3, 4, 5].freeze
     end
 
     def today_office_hours
@@ -18,9 +18,10 @@ module Locations
       @next = today_office_hours.next_office_hours
       loop do
         break unless @next.closed?
+
         @next = @next.next_office_hours
       end
-      return @next
+      @next
     end
 
     def open_now?

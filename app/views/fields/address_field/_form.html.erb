@@ -3,7 +3,7 @@
     <%= f.label field.attribute %>
   </div>
   <div class="field-unit__field">
-    <%= f.search_field field.attribute, class: 'form-control', data: { target: "places.field", action: "keydown->places#keydown" } %>
+    <%= f.search_field field.attribute, class: 'form-control', data: { 'places-target': "field", action: "keydown->places#keydown" } %>
   </div>
-  <div class="field-unit__field" data-target="places.map" style="height:400px;width:400px"></div>
+  <div class="field-unit__field" data-places-target="map" style="height:400px;width:400px"></div>
 </div>

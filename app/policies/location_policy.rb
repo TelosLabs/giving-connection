@@ -6,5 +6,4 @@ class LocationPolicy < ApplicationPolicy
       scope.all
     end
   end
-
 end

@@ -33,7 +33,9 @@ class OrganizationDashboard < Administrate::BaseDashboard
     organization_beneficiaries: CheckboxField,
     logo: Field::ActiveStorage,
     tags: TagInputField,
-    locations: Field::NestedHasMany
+    locations: Field::NestedHasMany,
+    phone_number: Field::Text,
+    email: Field::Text
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -56,6 +58,8 @@ class OrganizationDashboard < Administrate::BaseDashboard
     ein_number
     irs_ntee_code
     website
+    email
+    phone_number
     scope_of_work
     created_at
     updated_at
@@ -81,6 +85,8 @@ class OrganizationDashboard < Administrate::BaseDashboard
     ein_number
     irs_ntee_code
     website
+    email
+    phone_number
     scope_of_work
     mission_statement_en
     vision_statement_en

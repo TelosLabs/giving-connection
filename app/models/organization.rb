@@ -52,7 +52,7 @@ class Organization < ApplicationRecord
 
   accepts_nested_attributes_for :organization_beneficiaries, allow_destroy: true
   accepts_nested_attributes_for :social_media, allow_destroy: true
-  accepts_nested_attributes_for :locations
+  accepts_nested_attributes_for :locations, allow_destroy: true
 
   private
 

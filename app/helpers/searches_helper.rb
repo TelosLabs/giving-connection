@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SearchesHelper
   MIN_REQUIRED_PAGES = 1
 
