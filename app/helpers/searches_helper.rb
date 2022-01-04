@@ -13,6 +13,18 @@ module SearchesHelper
     list.flatten.compact
   end
 
+  def list_of_services(object)
+    list = []
+    list << object.services&.map(&:last)&.flatten
+    list.flatten.compact
+  end
+
+  def list_of_beneficiary_groups(object)
+    list = []
+    list << object.beneficiary_groups&.map(&:last)&.flatten 
+    list.flatten.compact
+  end
+
   def kilometers_to_miles(kms)
     kilometers = kms.to_f
     miles = kilometers / 1.6
