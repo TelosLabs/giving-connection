@@ -193,9 +193,9 @@ ActiveRecord::Schema.define(version: 2021_11_30_222523) do
     t.datetime "updated_at", precision: 6, null: false
     t.text "mission_statement_en", null: false
     t.text "mission_statement_es"
-    t.text "vision_statement_en", null: false
+    t.text "vision_statement_en"
     t.text "vision_statement_es"
-    t.text "tagline_en", null: false
+    t.text "tagline_en"
     t.text "tagline_es"
     t.string "second_name"
     t.string "phone_number"
