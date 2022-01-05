@@ -10,14 +10,15 @@ class ApplicationDecorator < Draper::Decorator
 
   def website
     return nil if object.website.blank?
+
     uri = URI(object.website)
     if uri.instance_of?(URI::Generic)
       split = uri.to_s.split('/')
-      if split.size > 1
-        uri = URI::HTTP.build({host: split.shift, path: '/'+split.join('/')})
-      else
-        uri = URI::HTTP.build({host: split.shift.to_s})
-      end
+      uri = if split.size > 1
+              URI::HTTP.build({ host: split.shift, path: "/#{split.join('/')}" })
+            else
+              URI::HTTP.build({ host: split.shift.to_s })
+            end
     end
     uri.to_s
   end

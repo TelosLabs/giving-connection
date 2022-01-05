@@ -13,8 +13,9 @@ module Locations
     end
 
     def next_open_office_hours
-      return nil if office_hours.all? { |oh| oh.closed? }
+      return nil if office_hours.all?(&:closed?)
       return today_office_hours if !today_office_hours.closed? && (Time.now < today_office_hours.formatted_open_time)
+
       @next = today_office_hours.next_office_hours
       loop do
         break unless @next.closed?
@@ -39,13 +40,14 @@ module Locations
     def consistent_weekdays_hours?
       week_office_hours = office_hours.where(day: WEEKDAYS)
       return false if week_office_hours.empty?
+
       base = week_office_hours.first.open_time&.strftime('%H:%M:%S')
       open_time_consistency = week_office_hours.all? do |oh|
-        oh.open_time&.strftime("%H:%M:%S") == base
+        oh.open_time&.strftime('%H:%M:%S') == base
       end
-      base = week_office_hours.first.close_time&.strftime("%H:%M:%S")
+      base = week_office_hours.first.close_time&.strftime('%H:%M:%S')
       close_time_consistency = week_office_hours.all? do |oh|
-        oh.close_time&.strftime("%H:%M:%S") == base
+        oh.close_time&.strftime('%H:%M:%S') == base
       end
 
       open_time_consistency && close_time_consistency
@@ -54,6 +56,5 @@ module Locations
     def day_hours(day)
       office_hours.find_by(day: day)
     end
-
   end
 end

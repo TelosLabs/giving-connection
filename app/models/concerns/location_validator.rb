@@ -19,8 +19,14 @@ class LocationValidator < ActiveModel::Validator
 
   def valid_website_url
     return true if record.website.blank?
-    url = URI.parse(record.website) rescue false
-    return true if url.kind_of?(URI::HTTP) || url.kind_of?(URI::HTTPS) || url.kind_of?(URI::Generic)
+
+    url = begin
+      URI.parse(record.website)
+    rescue StandardError
+      false
+    end
+    return true if url.is_a?(URI::HTTP) || url.is_a?(URI::HTTPS) || url.is_a?(URI::Generic)
+
     record.organization.errors.add(:base, 'Website url incorrect format')
   end
 end

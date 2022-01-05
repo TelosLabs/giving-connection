@@ -61,7 +61,7 @@ class OrganizationsController < ApplicationController
   def update_location_services(locations_attributes)
     locations_attributes.each do |location|
       @location = Location.find_by_name(location.last['name'])
-      @location.location_services.destroy_all unless @location.nil?
+      @location&.location_services&.destroy_all
       next if location.last['location_services_attributes']['0']['services']['service'].empty? || location.last['location_services_attributes'].nil?
 
       JSON.parse(location.last['location_services_attributes']['0']['services']['service']).each do |service_hash|
@@ -78,7 +78,7 @@ class OrganizationsController < ApplicationController
                   social_media_attributes: %i[facebook instagram twitter linkedin youtube blog id],
                   tags_attributes: [],
                   locations_attributes: [:id, :name, :address, :latitude, :longitude, :website,
-                                         :main, :physical, :offer_services, :appointment_only, :_destroy, 
+                                         :main, :physical, :offer_services, :appointment_only, :_destroy,
                                          { phone_number_attributes: [:number],
                                            office_hours_attributes: %i[id day open_time close_time closed] }],
                   beneficiary_subcategories: [])

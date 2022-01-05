@@ -35,7 +35,8 @@ class OrganizationDashboard < Administrate::BaseDashboard
     tags: TagInputField,
     locations: Field::NestedHasMany,
     phone_number: Field::Text,
-    email: Field::Text
+    email: Field::Text,
+    active: Field::Boolean
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -46,12 +47,13 @@ class OrganizationDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
     id
     name
-    ein_number
+    active
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
+    active
     logo
     name
     second_name
@@ -79,6 +81,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
+    active
     logo
     name
     second_name

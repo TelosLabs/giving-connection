@@ -26,15 +26,15 @@ class AlertsController < ApplicationController
   end
 
   def edit
-		@alert = Alert.find(params[:id])
+    @alert = Alert.find(params[:id])
   end
 
-	def destroy
-		@alert = Alert.find(params[:id])
-		@alert.destroy
-    flash[:success] = "The alert was successfully deleted."
+  def destroy
+    @alert = Alert.find(params[:id])
+    @alert.destroy
+    flash[:success] = 'The alert was successfully deleted.'
     redirect_to my_account_path
-	end
+  end
 
   def alert_params
     params.require(:search).permit(:distance, :city, :state, :beneficiary_groups,

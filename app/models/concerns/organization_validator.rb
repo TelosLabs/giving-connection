@@ -22,9 +22,12 @@ class OrganizationValidator < ActiveModel::Validator
 
   def valid_website_url
     return true if record.website.blank?
-    url = URI.parse(record.website) rescue false
-    unless url.kind_of?(URI::HTTP) || url.kind_of?(URI::HTTPS) || url.kind_of?(URI::Generic) 
-      record.errors.add(:website, 'URL incorrect format')
+
+    url = begin
+      URI.parse(record.website)
+    rescue StandardError
+      false
     end
+    record.errors.add(:website, 'URL incorrect format') unless url.is_a?(URI::HTTP) || url.is_a?(URI::HTTPS) || url.is_a?(URI::Generic)
   end
 end

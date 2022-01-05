@@ -6,6 +6,7 @@ module OfficeHours
 
     def open_now?
       return false if closed?
+
       Time.now.between?(formatted_open_time.to_time, formatted_close_time.to_time)
     end
 
