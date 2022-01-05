@@ -46,4 +46,4 @@ div class='fixed inset-0 flex items-center justify-center hidden min-h-screen an
           | Create Alert
     - if @edit
       div class="my-4 text-center"
-        = link_to 'Delete alert', alerts_path(@alert_id), class:"text-sm font-bold text-blue-medium", method: :delete
+        = link_to 'Delete alert', alert_path(@alert_id), class:"text-sm font-bold text-blue-medium", method: :delete
