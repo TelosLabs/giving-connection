@@ -12,7 +12,7 @@ class SearchAlert::Component < ViewComponent::Base
   end
 
   def check_frequency(frequency)
-    Alert.find(@alert_id).frequency == frequency
+    @edit ? Alert.find(@alert_id).frequency == frequency : 'weekly' == frequency
   end
 end
 
