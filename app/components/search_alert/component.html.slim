@@ -19,23 +19,22 @@ div class='fixed inset-0 flex items-center justify-center hidden min-h-screen an
       hr
       div class='pt-4 pb-4 pl-5 pr-2 font-normal text-left'
         label class='text-base'
-          / = raise
           | Alert Frequency
         fieldset class='mt-4'
           legend.sr-only Alert frequency
           div class='space-y-3 text-sm text-gray-2'
             div class="flex items-center"
-              = radio_button_tag 'alert[frequency]', 'daily'
+              = radio_button_tag 'search[frequency]', 'daily'
               label.ml-3 for='daily'
                 | Daily
             div class='flex items-center'
-              = radio_button_tag 'alert[frequency]', 'weekly', checked: true
+              = radio_button_tag 'search[frequency]', 'weekly', checked: true
               label.ml-3 for='weekly'
                 | Weekly
             div class='flex items-center'
-              = radio_button_tag 'alert[frequency]', 'monthly'
+              = radio_button_tag 'search[frequency]', 'monthly'
               label.ml-3 for='monthly'
-                | Montly
+                | Monthly
     div class='px-4 py-5 font-normal rounded-md text-gray-2 bg-gray-9'
       | You’ll receive an email when a newly published organization matches your search.
     div class='mt-5'

@@ -51,7 +51,6 @@ module Locations
 
     def by_service(scope, services)
       return scope if services.blank? || scope.empty?
-
       complex_query = []
       services.each do |cause, services_list|
         services_list.each do |ser|

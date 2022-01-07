@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_04_160700) do
+ActiveRecord::Schema.define(version: 2022_01_07_144927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -66,14 +66,32 @@ ActiveRecord::Schema.define(version: 2022_01_04_160700) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
+  create_table "alert_beneficiaries", force: :cascade do |t|
+    t.bigint "alert_id", null: false
+    t.bigint "beneficiary_subcategory_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["alert_id"], name: "index_alert_beneficiaries_on_alert_id"
+    t.index ["beneficiary_subcategory_id"], name: "index_alert_beneficiaries_on_beneficiary_subcategory_id"
+  end
+
+  create_table "alert_services", force: :cascade do |t|
+    t.bigint "alert_id", null: false
+    t.bigint "service_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["alert_id"], name: "index_alert_services_on_alert_id"
+    t.index ["service_id"], name: "index_alert_services_on_service_id"
+  end
+
   create_table "alerts", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "distance"
     t.string "city"
     t.string "state"
     t.string "services"
-    t.string "open_now"
-    t.string "open_weekends"
+    t.boolean "open_now"
+    t.boolean "open_weekends"
     t.string "keyword"
     t.string "beneficiary_groups"
     t.string "frequency", default: "weekly"
@@ -200,6 +218,7 @@ ActiveRecord::Schema.define(version: 2022_01_04_160700) do
     t.string "second_name"
     t.string "phone_number"
     t.string "email"
+    t.boolean "active", default: true
     t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
     t.index ["ein_number"], name: "index_organizations_on_ein_number", unique: true
     t.index ["mission_statement_en"], name: "index_organizations_on_mission_statement_en"
@@ -286,6 +305,10 @@ ActiveRecord::Schema.define(version: 2022_01_04_160700) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "alert_beneficiaries", "alerts"
+  add_foreign_key "alert_beneficiaries", "beneficiary_subcategories"
+  add_foreign_key "alert_services", "alerts"
+  add_foreign_key "alert_services", "services"
   add_foreign_key "alerts", "users"
   add_foreign_key "beneficiary_subcategories", "beneficiary_groups"
   add_foreign_key "favorite_locations", "locations"
