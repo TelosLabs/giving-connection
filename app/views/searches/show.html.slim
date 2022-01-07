@@ -26,52 +26,51 @@
               | List
             button class="relative inline-flex items-center px-5 py-1 -ml-px text-sm border rounded-r-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="1"
               | Map
+        div class="flex flex-col w-full bg-white h-85vh md:overflow-y-auto" data-controller="modal"
+          div class="flex flex-row items-center justify-between w-full p-4 bg-white border-b border-gray-8"
+            span class="text-xs text-gray-3"
+              | #{pluralize(@pagy.count, 'result')} found
 
-        div class="flex flex-row items-center justify-between w-full p-4 bg-white border-b border-gray-8" data-controller="modal"
-          span class="text-xs text-gray-3"
-            | #{pluralize(@pagy.count, 'result')} found
-
-          - if user_signed_in?
-            button class="inline-flex items-center px-3 py-2 text-xs text-gray-3" type="button" data-action="click->modal#open search:openSearchAlertModal@window->modal#open"
-              /! Heroicon name: solid/mail
-              = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
-              | Create Search Alert
-          - else
-            = link_to user_session_path, class: 'inline-flex items-center px-3 py-2 text-xs text-gray-3' do
-              = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
-              | Create Search Alert
+            - if user_signed_in?
+              button class="inline-flex items-center px-3 py-2 text-xs text-gray-3" type="button" data-action="click->modal#open"
+                /! Heroicon name: solid/mail
+                = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
+                | Create Search Alert
+            - else
+              = link_to user_session_path, class: 'inline-flex items-center px-3 py-2 text-xs text-gray-3' do
+                = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
+                | Create Search Alert
+          div class="hidden w-full h-full md:overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
+            - if @results.present?
+              ul class="flex flex-col divide-y divide-gray-8"
+                - @results.each do |result|
+                  li
+                    = render ResultCard::Component.new(title: result&.name,\
+                                                    address: result&.address,\
+                                                    image_url: result&.organization&.logo,\
+                                                    id: result&.id,\
+                                                    website: result&.decorate&.website || result&.organization&.decorate&.website,\
+                                                    description: result&.organization&.mission_statement_en,
+                                                    current_user: current_user)
+              - if @pagy.pages > SearchesHelper::MIN_REQUIRED_PAGES
+                div class="h-40 px-4 mt-7"
+                  p class="mb-5 text-sm text-gray-3"
+                    = "Showing results #{@pagy&.from} - #{@pagy&.to}"
+                  == render partial: 'pagy/nav', locals: {pagy: @pagy}
+            - else
+              div class="flex justify-center w-full"
+                = inline_svg_tag 'empty_state_4.svg', size:'278*279'
+              div class="flex flex-col items-center justify-center w-full gap-4 px-12 mb-4 mb-16 text-grey-2"
+                p class="text-xl font-bold text-center "
+                  | We couldn't find any nonprofits that matched your search.
+                p class="max-w-xs px-4 text-base text-center"
+                  | Try searching for another keyword or editing your filters.
+                button class="text-sm font-bold text-blue-medium" type="submit" data-action="click->search#clearAll"
+                  | Clear Filters
+                / TODO: Open modal with this button
+                button class="mt-10 text-sm font-bold text-black" type="button" data-action="click->modal#open"
+                  | Create an Alert for this Search
           = render SearchAlert::Component.new(keywords: params.dig('search', 'keyword'), filters: list_of_filters(@search))
-        div class="hidden w-full h-full bg-white md:overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
-          - if @results.present?
-            ul class="flex flex-col divide-y divide-gray-8"
-              - @results.each do |result|
-                li
-                  = render ResultCard::Component.new(title: result&.name,\
-                                                  address: result&.address,\
-                                                  image_url: result&.organization&.logo,\
-                                                  id: result&.id,\
-                                                  website: result&.decorate&.website || result&.organization&.decorate&.website,\
-                                                  description: result&.organization&.mission_statement_en,
-                                                  current_user: current_user)
-            - if @pagy.pages > SearchesHelper::MIN_REQUIRED_PAGES
-              div class="h-40 px-4 mt-7"
-                p class="mb-5 text-sm text-gray-3"
-                  = "Showing results #{@pagy&.from} - #{@pagy&.to}"
-                == render partial: 'pagy/nav', locals: {pagy: @pagy}
-          - else
-            div class="flex justify-center w-full"
-              = inline_svg_tag 'empty_state_4.svg', size:'278*279'
-            div data-controller="modal" class="flex flex-col items-center justify-center w-full gap-4 px-12 mb-4 mb-16 text-grey-2"
-              p class="text-xl font-bold text-center "
-                | We couldn't find any nonprofits that matched your search.
-              p class="max-w-xs px-4 text-base text-center"
-                | Try searching for another keyword or editing your filters.
-              button class="text-sm font-bold text-blue-medium" type="button" data-action="click->search#clearAll"
-                | Clear Filters
-              / TODO: Open modal with this button
-              button class="mt-10 text-sm font-bold text-black" type="button" data-action="click->modal#open search:openSearchAlertModal@window->modal#open"
-                | Create an Alert for this Search
-              = render SearchAlert::Component.new(keywords: params.dig('search', 'keyword'), filters: list_of_filters(@search))
         div class="hidden w-full h-85vh md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
           div# class="w-full h-full" data-places-target="map"
           div class="hidden"
