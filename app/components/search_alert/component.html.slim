@@ -12,7 +12,7 @@ div class='fixed inset-0 flex items-center justify-center hidden min-h-screen an
         div class='mt-3 text-left text-black'
           div class='pb-4'
             p class='font-bold' Keywords
-            p "#{@keywords}"
+            p class="capitalize" #{@keywords}
           div
             p class='font-bold' Filters
             p #{@filters}
@@ -46,4 +46,4 @@ div class='fixed inset-0 flex items-center justify-center hidden min-h-screen an
           | Create Alert
     - if @edit
       div class="my-4 text-center"
-        = link_to 'Delete alert', alerts_path(@alert_id), class:"text-sm font-bold text-blue-medium", method: :delete
+        = link_to 'Delete alert', alert_path(@alert_id), class:"text-sm font-bold text-blue-medium", method: :delete

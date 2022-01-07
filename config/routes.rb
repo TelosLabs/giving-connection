@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   resources :messages, only: %i[create]
   resources :reset_password, only: %i[new]
 
-  resources :locations, only: %i[index new show delete]
+  resources :locations, only: %i[index new show destroy]
 
   resources :organizations, only: %i[show edit update] do
     resources :locations, only: %i[index new create]
@@ -34,7 +34,7 @@ Rails.application.routes.draw do
 
   resources :organizations, only: %i[edit update]
   resources :favorite_locations, only: %i[create destroy]
-  resources :alerts, only: %i[new create delete]
+  resources :alerts, only: %i[new create destroy]
   resource :searches, only: %i[show]
   resource :my_account, only: %i[show]
   root to: 'home#index'
