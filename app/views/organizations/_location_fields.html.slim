@@ -23,7 +23,7 @@ div class="grid grid-cols-12 gap-6 mt-8 nested-fields" data-action="google-maps-
   div class="col-span-12 lg:col-span-5 md:col-span-7"
     fieldset class='mt-4'
       p class="text-sm font-medium leading-4 text-gray-2"
-        | Do you offer any services on this address?
+        | Do you offer any services at this address?
       legend.sr-only Alert frequency
       div class='flex items-center gap-12 mt-3'
         div class="flex items-center gap-2"
@@ -61,7 +61,7 @@ div class="grid grid-cols-12 gap-6 mt-8 nested-fields" data-action="google-maps-
         span class="flex items-center mr-2"
           = inline_svg_tag 'clock-icon.svg', size:"16*16"
         span class="capitalize"
-          | edit openning hours
+          | edit opening hours
       div class="fixed inset-0 flex items-center justify-center hidden max-w-md mx-auto overflow-y-auto animated fadeIn" data-modal-target="container" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" style="z-index: 9999;"
         div class="relative w-full max-h-screen"
           .m-1.bg-white.rounded.shadow
