@@ -6,7 +6,8 @@ Rails.application.routes.draw do
     resources :users
     resources :organizations
     resources :social_medias, only: %i[new create edit update]
-    resources :services
+    resources :services, only: %i[new create edit update]
+    resources :causes, only: %i[new create edit update]
     resources :categories, only: %i[new create edit update]
     resources :locations, except: %i[index]
     resources :location_services, only: %i[show create]
