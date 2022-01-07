@@ -61,7 +61,7 @@
           - else
             div class="flex justify-center w-full"
               = inline_svg_tag 'empty_state_4.svg', size:'278*279'
-            div class="flex flex-col items-center justify-center w-full gap-4 px-12 mb-4 mb-16 text-grey-2"
+            div data-controller="modal search" class="flex flex-col items-center justify-center w-full gap-4 px-12 mb-4 mb-16 text-grey-2"
               p class="text-xl font-bold text-center "
                 | We couldn't find any nonprofits that matched your search.
               p class="max-w-xs px-4 text-base text-center"
@@ -69,9 +69,9 @@
               button class="text-sm font-bold text-blue-medium" type="button" data-action="click->search#clearAll"
                 | Clear Filters
               / TODO: Open modal with this button
-              button class="mt-10 text-sm font-bold text-black" type="button" data-action="click->search#openSearchAlertModal"
+              button class="mt-10 text-sm font-bold text-black" type="button" data-action="click->modal#open search:openSearchAlertModal@window->modal#open"
                 | Create an Alert for this Search
-
+              = render SearchAlert::Component.new(keywords: params.dig('search', 'keyword'), filters: list_of_filters(@search))
         div class="hidden w-full h-85vh md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
           div# class="w-full h-full" data-places-target="map"
           div class="hidden"
