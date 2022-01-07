@@ -23,11 +23,11 @@ div class=""
           a href="#" class="flex items-center text-sm gray-2"
             = inline_svg_tag 'save_icon.svg', class: " fill-current mr-2"
             | Save
-        - if @location.organization.tags.present?
+        - if @location.causes.present?
           div class="flex my-8 gap-2.5 flex-wrap px-6"
-            - @location.organization.tags.each do |tag|
+            - @location.causes.uniq.each do |cause|
               span class="text-sm text-center px-2.5 py-1.5 rounded-lg border border-gray-6 text-gray-3"
-                = tag.name
+                = cause.name
         div class="mx-6 text-left"
           h4 class="text-sm font-bold uppercase text-gray-2"
             | contact information
