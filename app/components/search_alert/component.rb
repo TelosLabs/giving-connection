@@ -9,6 +9,7 @@ class SearchAlert::Component < ViewComponent::Base
     @filters = filters.join(', ')
     @edit = edit
     @alert_id = alert_id
+    @alert = Alert.new
   end
 end
 
