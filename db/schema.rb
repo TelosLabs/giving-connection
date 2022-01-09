@@ -218,7 +218,6 @@ ActiveRecord::Schema.define(version: 2022_01_07_144927) do
     t.string "second_name"
     t.string "phone_number"
     t.string "email"
-    t.boolean "active", default: true
     t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
     t.index ["ein_number"], name: "index_organizations_on_ein_number", unique: true
     t.index ["mission_statement_en"], name: "index_organizations_on_mission_statement_en"

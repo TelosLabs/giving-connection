@@ -22,7 +22,7 @@
 class Alert < ApplicationRecord
   belongs_to :user
   has_many :alert_services
-  has_many :alert_beneficiary
+  has_many :alert_beneficiaries
 
   validates :frequency, presence: true, inclusion: { in: %w[daily weekly monthly] }
 end
