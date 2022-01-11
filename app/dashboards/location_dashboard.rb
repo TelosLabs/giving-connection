@@ -26,7 +26,8 @@ class LocationDashboard < Administrate::BaseDashboard
     phone_number: Field::HasOne,
     office_hours: Field::NestedHasMany,
     location_services: Field::NestedHasMany,
-    appointment_only: Field::Boolean
+    appointment_only: Field::Boolean,
+    services: Field::HasMany
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -49,6 +50,7 @@ class LocationDashboard < Administrate::BaseDashboard
     id
     organization
     name
+    services
     latitude
     longitude
     email
@@ -59,7 +61,6 @@ class LocationDashboard < Administrate::BaseDashboard
     phone_number
     appointment_only
     office_hours
-    location_services
   ].freeze
 
   # FORM_ATTRIBUTES

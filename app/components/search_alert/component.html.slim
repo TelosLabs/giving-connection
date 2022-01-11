@@ -12,7 +12,7 @@ div class='fixed inset-0 flex items-center justify-center hidden min-h-screen an
         div class='mt-3 text-left text-black'
           div class='pb-4'
             p class='font-bold' Keywords
-            p "#{@keywords}"
+            p class="capitalize" #{@keywords}
           div
             p class='font-bold' Filters
             p #{@filters}
@@ -24,17 +24,17 @@ div class='fixed inset-0 flex items-center justify-center hidden min-h-screen an
           legend.sr-only Alert frequency
           div class='space-y-3 text-sm text-gray-2'
             div class="flex items-center"
-              = radio_button_tag 'alert[frecuency]', 'daily'
+              = radio_button_tag 'search[frequency]', 'daily', check_frequency('daily')
               label.ml-3 for='daily'
                 | Daily
             div class='flex items-center'
-              = radio_button_tag 'alert[frecuency]', 'weekly', checked: true
+              = radio_button_tag 'search[frequency]', 'weekly', check_frequency('weekly') 
               label.ml-3 for='weekly'
                 | Weekly
             div class='flex items-center'
-              = radio_button_tag 'alert[frecuency]', 'monthly'
-              label.ml-3 for='montly'
-                | Montly
+              = radio_button_tag 'search[frequency]', 'monthly', check_frequency('monthly') 
+              label.ml-3 for='monthly'
+                | Monthly
     div class='px-4 py-5 font-normal rounded-md text-gray-2 bg-gray-9'
       | You’ll receive an email when a newly published organization matches your search.
     div class='mt-5'
@@ -46,4 +46,4 @@ div class='fixed inset-0 flex items-center justify-center hidden min-h-screen an
           | Create Alert
     - if @edit
       div class="my-4 text-center"
-        = link_to 'Delete alert', alerts_path(@alert_id), class:"text-sm font-bold text-blue-medium", method: :delete
+        = link_to 'Delete alert', alert_path(@alert_id), class:"text-sm font-bold text-blue-medium", method: :delete

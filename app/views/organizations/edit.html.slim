@@ -39,8 +39,14 @@ div class="w-full h-full bg-grey-9"
           div class="hidden col-span-3 md:flex"
 
           div class="col-span-12 lg:col-span-5 md:col-span-7"
-              = f.label :irs_ntee_code, "*IRS NTEE Code", class: "block text-sm text-gray-3 font-medium"
+              = f.label :irs_ntee_code, "* IRS NTEE Code", class: "block text-sm text-gray-3 font-medium"
               = f.select :irs_ntee_code, options_for_select(Organization::NTEE_CODE, @organization.irs_ntee_code), { include_blank: '' }, { selected: nil, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px text-base text-gray-3 border-gray-5 focus:ring-blue-medium focus:border-blue-medium", autocomplete:"off" }
+
+          div class="hidden col-span-3 md:flex"
+
+          div class="col-span-12 lg:col-span-5 md:col-span-7"
+              = f.label :scope_of_work, "Scope of Work", class: "block text-sm text-gray-3 font-medium"
+              = f.select :scope_of_work, options_for_select(Organization::SCOPE, @organization.scope_of_work), { include_blank: '' }, { selected: nil, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px text-base text-gray-3 border-gray-5 focus:ring-blue-medium focus:border-blue-medium", autocomplete:"off" }
 
           div class="hidden col-span-3 md:flex"
 
@@ -72,7 +78,7 @@ div class="w-full h-full bg-grey-9"
 
           div class="grid grid-cols-12 gap-6 mt-8"
             div class="col-span-12 lg:col-span-5 md:col-span-7"
-              = f.label :mission_statement_en, "*Mission Statement - What We Do", class: "block text-sm text-gray-3 font-medium"
+              = f.label :mission_statement_en, "* Mission Statement - What We Do", class: "block text-sm text-gray-3 font-medium"
               = f.text_area :mission_statement_en, rows: 5, class: "block mt-1 w-full p-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
 
             div class="hidden col-span-3 md:flex"
@@ -160,7 +166,7 @@ div class="w-full h-full bg-grey-9"
                 div class="col-span-12 lg:col-span-5 md:col-span-7"
                   fieldset class='mt-4'
                     p class="text-sm font-medium leading-4 text-gray-2"
-                      | Do you offer any services on this address?
+                      | Do you offer any services at this address?
                     legend.sr-only Alert frequency
                     div class='flex items-center gap-12 mt-3'
                       div class="flex items-center gap-2"

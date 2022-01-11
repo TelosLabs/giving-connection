@@ -10,6 +10,10 @@ class SearchAlert::Component < ViewComponent::Base
     @edit = edit
     @alert_id = alert_id
   end
+
+  def check_frequency(frequency)
+    @edit ? Alert.find(@alert_id).frequency == frequency : 'weekly' == frequency
+  end
 end
 
 # rubocop:enable Style/ClassAndModuleChildren

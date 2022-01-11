@@ -23,11 +23,11 @@ div class=""
           a href="#" class="flex items-center text-sm gray-2"
             = inline_svg_tag 'save_icon.svg', class: " fill-current mr-2"
             | Save
-        - if @location.organization.tags.present?
+        - if @location.causes.present?
           div class="flex my-8 gap-2.5 flex-wrap px-6"
-            - @location.organization.tags.each do |tag|
+            - @location.causes.uniq.each do |cause|
               span class="text-sm text-center px-2.5 py-1.5 rounded-lg border border-gray-6 text-gray-3"
-                = tag.name
+                = cause.name
         div class="mx-6 text-left"
           h4 class="text-sm font-bold uppercase text-gray-2"
             | contact information
@@ -96,9 +96,15 @@ div class=""
         div class="my-6 border-t border-gray-8"
         div class="flex flex-col px-6 text-left"
           h4 class="text-sm font-bold text-black uppercase"
-            | WHAT WE DO
+            | MISSION - WHAT WE DO
           p class="text-sm text-black"
             = @location.organization&.mission_statement_en
+        div class="my-6 border-t border-gray-8"
+        div class="flex flex-col px-6 text-left"
+          h4 class="text-sm font-bold text-black uppercase"
+            | VISION - GOALS AND ASPIRATIONS
+          p class="text-sm text-black"
+            = @location.organization&.vision_statement_en
         div class="my-6 border-t border-gray-8 sm:hidden"
         div class="mx-5 sm:hidden"
           h3 class="text-sm font-bold uppercase mb-3.5"
@@ -108,19 +114,23 @@ div class=""
               li class="text-sm font-base text-gray-2"
                 = location_service.service.name
 
-          div class="border-t border-gray-8 my-7"
-
-          h3 class="text-sm font-bold uppercase"
-            | Social Media
-          div class="flex flex-row gap-5 my-6"
-            a href="#"
-              = inline_svg_tag 'facebook_box.svg', class: "text-salmon fill-current"
-            a href="#"
-              = inline_svg_tag 'linkedin_box.svg', class: "text-salmon fill-current"
-            a href="#"
-              = inline_svg_tag 'twitter_circle.svg', class: "text-salmon fill-current"
-            a href="#"
-              = inline_svg_tag 'instagram_box.svg', class: "text-salmon fill-current"
+          - if @location.social_media.present?
+            div class="border-t border-gray-8 my-7"
+            h3 class="text-sm font-bold uppercase"
+              | Social Media
+            div class="flex flex-row gap-5 my-6"
+              - if @location.social_media&.facebook.present?
+                a href=@location.social_media&.facebook class="text-sm font-base text-gray-2" target="_blank"
+                  = inline_svg_tag 'facebook_box.svg', class: "text-salmon fill-current"
+              - if @location.social_media&.linkedin.present?
+                a href=@location.social_media&.linkedin class="text-sm font-base text-gray-2" target="_blank"
+                  = inline_svg_tag 'linkedin_box.svg', class: "text-salmon fill-current"
+              - if @location.social_media&.twitter.present?
+                a href=@location.social_media&.twitter class="text-sm font-base text-gray-2" target="_blank"
+                  = inline_svg_tag 'twitter_box.svg', class: "text-salmon fill-current"
+              - if @location.social_media&.instagram.present?
+                a href=@location.social_media&.instagram class="text-sm font-base text-gray-2" target="_blank"
+                  = inline_svg_tag 'instagram_box.svg', class: "text-salmon fill-current"
         div class="border-t border-gray-8 my-7"
         h4 class="px-6 text-sm font-bold text-black uppercase"
           | Map
@@ -170,7 +180,7 @@ div class=""
               = inline_svg_tag 'linkedin_box.svg', class: "text-salmon fill-current"
           - if @location.social_media&.twitter.present?
             a href=@location.social_media&.twitter class="text-sm font-base text-gray-2" target="_blank"
-              = inline_svg_tag 'twitter_circle.svg', class: "text-salmon fill-current"
+              = inline_svg_tag 'twitter-box.svg', class: "text-salmon fill-current"
           - if @location.social_media&.instagram.present?
             a href=@location.social_media&.instagram class="text-sm font-base text-gray-2" target="_blank"
               = inline_svg_tag 'instagram_box.svg', class: "text-salmon fill-current"
