@@ -1,8 +1,28 @@
-div class="main"
-  div class="flex flex-col"
-    div
+div class="bg-white main"
+  div class="flex flex-col md:flex-row"
+    div class="p-10 md:w-1/2"
       = image_tag "give-heart.jpeg"
-    div
-      | Starting November 30th at 8 am EST, Facebook will match $8 million USD in qualifying donations made through the 
-      | Facebook platform during Giving Tuesday. Facebook pays all the processing fees for you, so 100% of your 
-      | donation goes directly to Giving Connection. Click below to join our Facebook fundraiser!
+    div class="flex flex-col justify-center gap-5 p-8 text-center md:w-1/2"
+      h2 class="text-3xl font-bold uppercase text-gray-3" Donate Now!
+      div class="text-lg"
+        | Your donation allows us to continue developing our nonprofit search platform. We truly 
+        | could not do this without your help. The overwhelming support we received from our 
+        | community has given us the foundational grounding and energized motivation to continue
+        | our momentum towards meaningful change.
+      button class="c-button" Donate
+  div class="py-10 text-center bg-blue-dark"
+    h2 class="pb-10 text-2xl font-bold text-white uppercase" Donate Online
+    div class="flex px-6 mx-auto max-w-656px min-h-1150px md:min-h-800px"
+      iframe src="https://givebutter.com/embed/c/givingconnectiondonatenow" class="w-full" seamless=true
+  div class="flex flex-col md:flex-row"
+    div class="md:w-1/2"
+      = image_tag "donate-paypal-section.png", class:"object-cover w-full h-300px md:h-full"
+    div class="flex flex-col justify-center gap-5 p-8 text-center md:w-1/2"
+      h2 class="text-3xl font-bold uppercase text-gray-3" Donate Using Paypal
+      div class="text-lg"
+        | Your support and contributions will enable us to meet our goals and improve conditions.
+        | Your generous donation will fund our mission.
+      button class="uppercase c-button"
+        = inline_svg_tag 'paypal-icon.svg', class:"h-6 w-6"
+        | Donate Now
+      = image_tag

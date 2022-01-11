@@ -72,13 +72,18 @@ module.exports = {
       },
       minHeight: {
         '46px': '46px',
+        '800px': '800px',
+        '1150px': '1150px'
+
       },
       maxHeight: {
         '500px': '500px',
+        '756px': '756px',
       },
       height: {
         'min-content': 'min-content',
         '46px': '46px',
+        '300px': '300px',
         '400px': '400px',
       },
       borderRadius: {

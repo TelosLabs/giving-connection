@@ -17,7 +17,7 @@ nav data-controller="navbar--component"
         li class='mr-2 mid:mr-7 lg:mr-11'
           = link_to 'About Us', about_us_path
         li class='mr-2 mid:mr-7 lg:mr-11'
-          = link_to '#', class:"flex" do
+          = link_to donate_path, class:"flex" do
             div class='mr-2'
               | Donate
             div class='flex items-center'
@@ -40,7 +40,7 @@ nav data-controller="navbar--component"
         li = link_to "Search", searches_path
         li = link_to "Add a Nonprofit", contact_path
         li = link_to "About Us", about_us_path
-        li = link_to "Donate", '#'
+        li = link_to "Donate", donate_path
         li = link_to "Help", faqs_path
     section class="flex flex-col pt-10 text-center border-t border-gray-5 #{ @signed_in ? 'h-1/5' : 'h-1/4' }"
       - if @signed_in
