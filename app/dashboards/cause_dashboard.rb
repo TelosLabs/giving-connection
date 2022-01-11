@@ -1,8 +1,6 @@
-# frozen_string_literal: true
+require "administrate/base_dashboard"
 
-require 'administrate/base_dashboard'
-
-class ServiceDashboard < Administrate::BaseDashboard
+class CauseDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -10,11 +8,11 @@ class ServiceDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
+    services: Field::HasMany,
     id: Field::Number,
     name: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    cause: Field::BelongsTo
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -24,19 +22,23 @@ class ServiceDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
     name
-    cause
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
+    services
+    id
     name
+    created_at
+    updated_at
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
+    services
     name
   ].freeze
 
@@ -52,14 +54,10 @@ class ServiceDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how services are displayed
+  # Overwrite this method to customize how causes are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(service)
-  #   "Service ##{service.id}"
-  # end
-
-  def display_resource(service)
-    service.name
+  def display_resource(cause)
+    cause.name
   end
 end
