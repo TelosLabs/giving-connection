@@ -11,7 +11,9 @@ module.exports = {
     },
     extend: {
       fontSize: {
-        '22px': '22px'
+        '22px': '22px',
+        '28px': '28px',
+        '34px': '34px',
       },
       colors: {
         seafoam: {
@@ -67,6 +69,7 @@ module.exports = {
         '375px': '375px',
         '402px': '402px',
         '470px': '470px',
+        '565px': '565px',
         '656px': '656px',
         ms: '343px'
       },

@@ -3,26 +3,44 @@ div class="bg-white main"
     div class="p-10 md:w-1/2"
       = image_tag "give-heart.jpeg"
     div class="flex flex-col justify-center gap-5 p-8 text-center md:w-1/2"
-      h2 class="text-3xl font-bold uppercase text-gray-3" Donate Now!
+      h2 class="font-bold uppercase text-28px md:text-34px text-gray-3" Donate Now!
       div class="text-lg"
         | Your donation allows us to continue developing our nonprofit search platform. We truly 
         | could not do this without your help. The overwhelming support we received from our 
         | community has given us the foundational grounding and energized motivation to continue
         | our momentum towards meaningful change.
       button class="c-button" Donate
-  div class="py-10 text-center bg-blue-dark"
-    h2 class="pb-10 text-2xl font-bold text-white uppercase" Donate Online
+  div class="py-10 text-center md:py-20 bg-blue-dark"
+    h2 class="pb-10 font-bold text-white uppercase md:pb-20 text-28px md:text-34px" Donate Online
     div class="flex px-6 mx-auto max-w-656px min-h-1150px md:min-h-800px"
       iframe src="https://givebutter.com/embed/c/givingconnectiondonatenow" class="w-full" seamless=true
   div class="flex flex-col md:flex-row"
     div class="md:w-1/2"
       = image_tag "donate-paypal-section.png", class:"object-cover w-full h-300px md:h-full"
-    div class="flex flex-col justify-center gap-5 p-8 text-center md:w-1/2"
-      h2 class="text-3xl font-bold uppercase text-gray-3" Donate Using Paypal
+    div class="flex flex-col items-center justify-center gap-8 px-6 py-10 text-center md:px-16 md:w-1/2"
+      h2 class="font-bold uppercase text-28px md:text-34px text-gray-3" Donate Using Paypal
       div class="text-lg"
         | Your support and contributions will enable us to meet our goals and improve conditions.
         | Your generous donation will fund our mission.
       button class="uppercase c-button"
-        = inline_svg_tag 'paypal-icon.svg', class:"h-6 w-6"
+        = inline_svg_tag 'paypal-icon.svg', class:"h-6 w-6 mr-1"
         | Donate Now
-      = image_tag
+      = image_tag 'paypal-cards.png', class:"h-5 w-36"
+  div class="px-6 py-10 text-center md:py-20"
+    h2 class="pb-10 font-bold uppercase md:pb-20 text-28px md:text-34px text-gray-3" Donate by Mail
+    div class="mx-auto max-w-565px"
+      = image_tag 'donate-mail.jpeg'
+    div class="pt-6 leading-8"
+      p We greatly appreciate your support! Please make checks payable to 
+      p "Giving Connection Inc" and mail to the address below: 
+      p 304 Nantucket Drive
+      p Cape May, NJ 08204
+      p Remember to include your name, email address, and phone number. 
+      p Once received, we will email you confirmation of receipt.
+  div class="px-6 py-10 text-center md:py-20"
+    h2 class="pb-10 font-bold tracking-tight uppercase sm:tracking-normal md:pb-20 text-28px md:text-34px text-gray-3" Corporate Matching
+    div class="mx-auto max-w-565px"
+      = image_tag 'coins-corporate.jpeg'
+    div class="pt-6 mx-auto leading-8 max-w-565px"
+      | Don't forget to see if your employer participates in corporate matching! When you search, 
+      | make sure you look for "Giving Connection Inc" in New Jersey (EIN: 86-3459449).
