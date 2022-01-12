@@ -37,7 +37,7 @@
                 = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
                 | Create Search Alert
             - else
-              = link_to user_session_path, class: 'inline-flex items-center px-3 py-2 text-xs text-gray-3' do
+              = link_to new_user_registration_path, class: 'inline-flex items-center px-3 py-2 text-xs text-gray-3' do
                 = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
                 | Create Search Alert
           div class="hidden w-full h-full md:overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
@@ -68,8 +68,12 @@
                 button class="text-sm font-bold text-blue-medium" type="submit" data-action="click->search#clearAll"
                   | Clear Filters
                 / TODO: Open modal with this button
-                button class="mt-10 text-sm font-bold text-black" type="button" data-action="click->modal#open"
-                  | Create an Alert for this Search
+                - if user_signed_in?
+                  button class="mt-10 text-sm font-bold text-black" type="button" data-action="click->modal#open"
+                    | Create an Alert for this Search
+                - else
+                  = link_to new_user_registration_path, class: 'mt-10 text-sm font-bold text-black'
+                    | Create an Alert for this Search
           = render SearchAlert::Component.new(keywords: params.dig('search', 'keyword'), filters: list_of_filters(@search))
         div class="hidden w-full h-85vh md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
           div# class="w-full h-full" data-places-target="map"
