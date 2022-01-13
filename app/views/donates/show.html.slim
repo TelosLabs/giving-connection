@@ -13,7 +13,7 @@ div class="bg-white main"
   div class="py-10 text-center md:py-20 bg-blue-dark"
     h2 class="pb-10 font-bold text-white uppercase md:pb-20 text-28px md:text-34px" Donate Online
     div class="flex px-6 mx-auto max-w-656px min-h-1150px md:min-h-800px"
-      iframe src="https://givebutter.com/embed/c/givingconnectiondonatenow" class="w-full" seamless=true
+      iframe src="https://givebutter.com/embed/c/givingconnectiondonatenow" class="w-full"
   div class="flex flex-col md:flex-row"
     div class="md:w-1/2"
       = image_tag "donate-paypal-section.png", class:"object-cover w-full h-300px md:h-full"
@@ -38,9 +38,33 @@ div class="bg-white main"
       p Remember to include your name, email address, and phone number. 
       p Once received, we will email you confirmation of receipt.
   div class="px-6 py-10 text-center md:py-20"
-    h2 class="pb-10 font-bold tracking-tight uppercase sm:tracking-normal md:pb-20 text-28px md:text-34px text-gray-3" Corporate Matching
+    h2 class="pb-10 font-bold tracking-tight uppercase sm:tracking-normal md:pb-20 text-28px md:text-34px text-gray-3"
+      | Corporate Matching
     div class="mx-auto max-w-565px"
       = image_tag 'coins-corporate.jpeg'
     div class="pt-6 mx-auto leading-8 max-w-565px"
       | Don't forget to see if your employer participates in corporate matching! When you search, 
       | make sure you look for "Giving Connection Inc" in New Jersey (EIN: 86-3459449).
+  div class="max-w-4xl px-6 py-10 mx-auto text-center md:py-20"
+    h2 class="pb-10 font-bold uppercase md:pb-20 text-28px md:text-34px text-gray-3"
+      | Support Giving Connection by Shopping on Amazon
+    div class="flex flex-col md:flex-row-reverse"
+      div class="md:px-6"
+        = image_tag 'amazon-smile.jpeg'
+      div class="flex flex-col gap-6 md:px-6"
+        h5 class="tracking-widest text-22px" Want to support Giving Connection Inc just by shopping at Amazon?
+
+        p Here's all you need to do.
+        p
+          | 1) Go to the link below 
+          = link_to 'https://smile.amazon.com/ch/86-3459449', 'https://smile.amazon.com/ch/86-3459449', class:"text-blue-medium break-words underline", target:'_blank'
+        p 2) Log in to your Amazon account.
+        p 3) When you shop at smile.amazon.com, Amazon donates 0.5% of your eligible purchases - at no cost to you to Giving Connection Inc!
+        p 
+          | 4) Enable AmazonSmile on your mobile app to automatically enroll each eligible purchase. Open the app and
+          | find ’Settings’ in the main menu (☰). Tap on ‘AmazonSmile’ and follow the on-screen instructions to turn
+          | on AmazonSmile on your phone.
+  div class="px-6 py-10 text-center md:py-20"
+    h2 class="pb-10 font-bold uppercase md:pb-20 text-22px text-gray-3" Click Below to sign into AmazonSmile
+    = link_to 'https://smile.amazon.com/ch/86-3459449', target:'_blank' do
+      = image_tag 'amazon-smile.jpeg', class:"h-64 w-80 mx-auto"
