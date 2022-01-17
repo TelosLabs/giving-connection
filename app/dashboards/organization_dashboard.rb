@@ -58,8 +58,6 @@ class OrganizationDashboard < Administrate::BaseDashboard
     ein_number
     irs_ntee_code
     website
-    email
-    phone_number
     scope_of_work
     created_at
     updated_at
@@ -85,8 +83,6 @@ class OrganizationDashboard < Administrate::BaseDashboard
     ein_number
     irs_ntee_code
     website
-    email
-    phone_number
     scope_of_work
     mission_statement_en
     vision_statement_en
