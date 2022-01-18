@@ -13,7 +13,7 @@ module Admin
     def upload; end
 
     def import
-      Upload.new.import(params[:file])
+      SpreadsheetParse.new.import(params[:file])
       redirect_to admin_organizations_path, notice: 'Organizations imported.'
     end
 

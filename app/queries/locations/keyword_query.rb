@@ -5,7 +5,7 @@ module Locations
     attr_reader :locations
 
     class << self
-      def call(params = {}, locations =  Location.joins(:organization).where(organization: { active: true }).load)
+      def call(params = {}, locations =  Location.all)
         scope = locations
         scope = by_keyword(scope, params[:keyword])
       end

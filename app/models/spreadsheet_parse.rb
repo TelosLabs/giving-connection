@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Upload
+class SpreadsheetParse
   FILES_NAME = ['orgs.csv', 'tags.csv', 'beneficiaries.csv', 'locations.csv',
                 'location_services.csv'].freeze
 
@@ -46,7 +46,7 @@ class Upload
   end
 
   def organzation_already_exists?(org_name)
-    Organization.exists?(name: org_name)
+    Organization.unscoped.exists?(name: org_name)
   end
 
   def create_tags(tags_csv_file_path, new_organization, org_id)
