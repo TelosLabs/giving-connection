@@ -20,6 +20,9 @@
 #  vision_statement_es  :text
 #  tagline_en           :text             not null
 #  tagline_es           :text
+#  second_name          :string
+#  phone_number         :string
+#  email                :string
 #
 class Organization < ApplicationRecord
   include Organizations::Constants
@@ -41,8 +44,6 @@ class Organization < ApplicationRecord
   validates :ein_number, presence: true, uniqueness: true
   validates :irs_ntee_code, presence: true, inclusion: { in: Organizations::Constants::NTEE_CODE }
   validates :mission_statement_en, presence: true
-  validates :vision_statement_en, presence: true
-  validates :tagline_en, presence: true
   validates :scope_of_work, presence: true, inclusion: { in: Organizations::Constants::SCOPE }
   validates :logo, content_type: ['image/png', 'image/jpg', 'image/jpeg'],
                    size: { less_than: 5.megabytes, message: 'File too large. Must be less than 5MB in size' }
@@ -51,7 +52,7 @@ class Organization < ApplicationRecord
 
   accepts_nested_attributes_for :organization_beneficiaries, allow_destroy: true
   accepts_nested_attributes_for :social_media, allow_destroy: true
-  accepts_nested_attributes_for :locations
+  accepts_nested_attributes_for :locations, allow_destroy: true
 
   private
 

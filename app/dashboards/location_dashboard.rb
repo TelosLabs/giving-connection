@@ -16,7 +16,6 @@ class LocationDashboard < Administrate::BaseDashboard
     latitude: HiddenField,
     longitude: HiddenField,
     lonlat: Field::String.with_options(searchable: false),
-    website: Field::String,
     email: Field::String,
     main: Field::Boolean,
     physical: Field::Boolean,
@@ -28,6 +27,7 @@ class LocationDashboard < Administrate::BaseDashboard
     office_hours: Field::NestedHasMany,
     location_services: Field::NestedHasMany,
     appointment_only: Field::Boolean,
+    services: Field::HasMany
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -50,9 +50,9 @@ class LocationDashboard < Administrate::BaseDashboard
     id
     organization
     name
+    services
     latitude
     longitude
-    website
     email
     main
     physical
@@ -61,7 +61,6 @@ class LocationDashboard < Administrate::BaseDashboard
     phone_number
     appointment_only
     office_hours
-    location_services
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -72,7 +71,6 @@ class LocationDashboard < Administrate::BaseDashboard
     address
     latitude
     longitude
-    website
     email
     phone_number
     main

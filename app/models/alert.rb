@@ -17,9 +17,12 @@
 #  frequency          :string           default("weekly")
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  next_alert         :date
 #
 class Alert < ApplicationRecord
   belongs_to :user
+  has_many :alert_services
+  has_many :alert_beneficiaries
 
   validates :frequency, presence: true, inclusion: { in: %w[daily weekly monthly] }
 end

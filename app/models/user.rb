@@ -24,6 +24,7 @@
 #  locked_at              :datetime
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  name                   :string
 #
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
@@ -33,7 +34,7 @@ class User < ApplicationRecord
 
   has_many :organizations, as: :creator
   has_many :alerts
-  has_many :fav_locs, class_name: "FavoriteLocation"
+  has_many :fav_locs, class_name: 'FavoriteLocation'
   has_many :favorited_locations, through: :fav_locs, source: :location
   has_many :organization_admin
   has_many :administrated_organizations, through: :organization_admin, source: :organization

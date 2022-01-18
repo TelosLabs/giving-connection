@@ -1,17 +1,17 @@
 footer class="bg-blue-dark"
-  .c-footer class="max-w-6xl px-5 pt-6 pb-3 mx-auto text-white md:pt-9 md:pb-6 xl:px-0"
+  .c-footer class="px-4 pt-6 pb-3 mx-auto text-white xl:mx-36 2xl:mx-48 md:pt-9 md:pb-6 xl:px-0"
     section class="flex flex-col py-5 px-2.5 md:flex-row md:justify-around md:py-12"
       div class="items-center hidden md:flex"
         = inline_svg_tag 'logo.svg', size:'180*44', class:'mb-10'
       ul class="flex flex-col pb-9 md:pb-0"
-        li = link_to 'About Us', about_us_path, class:"leading-8"
-        li = link_to 'Contact Us', contact_path, class:"leading-8"
-        li = link_to 'Donate to Giving Connection' , donate_path, class:"leading-8"
-        li = link_to 'Help', faqs_path, class:"leading-8"
-        li = link_to 'Privacy Policy', '#', class:"leading-8"
-        li = link_to 'Terms and Conditions', '#', class:"leading-8"
+        li = link_to 'About Us', about_us_path, class:"leading-8", target:'_blank'
+        li = link_to 'Contact Us', contact_path, class:"leading-8", target:'_blank'
+        li = link_to 'Donate to Giving Connection' , donate_path, class:"leading-8", target:'_blank'
+        li = link_to 'Help', faqs_path, class:"leading-8", target:'_blank'
+        li = link_to 'Privacy Policy', 'https://givingconnection.org/privacy-policy', class:"leading-8", target:'_blank'
+        li = link_to 'Terms and Conditions', '#', class:"leading-8", target:'_blank'
       div class="flex flex-col"
-        ul class="flex justify-between w-40 pl-1 leading-8 pb-7 md:pb-9 md:pl-0 text-seafoam"
+        ul class="flex justify-between pl-1 leading-8 w-52 md:w-48 pb-7 md:pb-9 md:pl-0 text-seafoam"
           li
             a href="https://www.facebook.com/givingconnection.org" target='_blank'
               = inline_svg_tag 'footer-facebook.svg', size:'16*16'
@@ -22,8 +22,11 @@ footer class="bg-blue-dark"
             a href="https://www.twitter.com/giveconnection" target='_blank'
               = inline_svg_tag 'footer-twitter.svg', size:'16*16'
           li
-            a href="https://www.instagram.com/givingconnection" target='_blank'
+            a href="https://www.instagram.com/givingconnection/" target='_blank'
               = inline_svg_tag 'footer-instagram.svg', size:'16*16'
+          li
+            a href="https://www.youtube.com/channel/UCZXvN1tltX192vFpKIfH8fA" target='_blank'
+              = inline_svg_tag 'footer-youtube.svg', size:'16*16'
         div class="flex items-center md:pb-7"
           | Made with
           = inline_svg_tag 'heart.svg', size:'12*12', class:"mt-1 ml-2 text-red"

@@ -18,40 +18,41 @@ div class="w-full h-full bg-grey-9"
         div class="hidden px-6" data-tabs-target="panel"
           h4 class="text-xl text-grey-2 my-7"
             | My Profile Information
-          = form_with model: current_user, url: user_path(current_user), method: :put do |form|
+          = form_with model: current_user, url: user_path(current_user), html: { method: :put } do |form|
             div class="grid grid-cols-12 gap-6" data-controller="toggle"
               div class="col-span-12 lg:col-span-5 md:col-span-7"
                 = form.label :name, "Name", class: "block text-sm text-grey-3 font-medium"
-                = form.text_field :name, { value: current_user.name, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-grey-5 text-base text-grey-3 focus:ring-blue-medium focus:border-blue-medium" }
+                = form.text_field :name, { value: current_user.name, class: "c-input capitalize" }
               div class="hidden col-span-3 md:flex"
               div class="col-span-12 lg:col-span-5 md:col-span-7"
                 = form.label :email, "Email", class: "block text-sm text-grey-3 font-medium"
-                = form.email_field :email, { value: current_user.email, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-grey-5 text-base text-grey-3 focus:ring-blue-medium focus:border-blue-medium" }
+                = form.email_field :email, { value: current_user.email, class: "c-input" }
               div class="hidden col-span-3 md:flex"
-              div class="col-span-12 py-4 border-t border-gray-8"
+              div class="col-span-12 py-0 border-t border-gray-8"
               div class="flex flex-row justify-between col-span-12"
                 span class="text-sm font-medium text-grey-4"
                   | Password
                 button class=" text-blue-medium" type="button" data-action=("click->toggle#toggle touch->toggle#toggle")
-                  | Change
-              div class="grid hidden grid-cols-12 col-span-12 gap-6" data-toggle-target="toggleable"
+                  | Edit
+
+              div class="grid hidden grid-cols-12 col-span-12 gap-6" data-toggle-target="toggleable menu"
                 div class="col-span-12 lg:col-span-5 md:col-span-7"
                   = form.label :old_password, "Old Password", class: "block text-sm text-grey-3 font-medium"
-                  = form.password_field :old_password, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-grey-5 text-base text-grey-3 focus:ring-blue-medium focus:border-blue-medium" }
+                  = form.password_field :old_password, { class: "c-input" }
                 div class="hidden col-span-3 md:flex"
                 div class="col-span-12 lg:col-span-5 md:col-span-7"
                   = form.label :password, "New Password", class: "block text-sm text-grey-3 font-medium"
-                  = form.password_field :password, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-grey-5 text-base text-grey-3 focus:ring-blue-medium focus:border-blue-medium" }
+                  = form.password_field :password, { class: "c-input" }
                 div class="hidden col-span-3 md:flex"
                 div class="col-span-12 lg:col-span-5 md:col-span-7"
                   = form.label :password_confirmation, "Confirm New Password", class: "block text-sm text-grey-3 font-medium"
-                  = form.password_field :password_confirmation, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-grey-5 text-base text-grey-3 focus:ring-blue-medium focus:border-blue-medium" }
+                  = form.password_field :password_confirmation, { class: "c-input" }
                 div class="hidden col-span-3 md:flex"
                 div class="col-span-12"
                   p class="text-xs text-grey-3"
                     ' Can't remember your current password?
-                    a href="#" class="text-blue-medium"
-                      | Reset via email
+                    = link_to "Reset via email", new_reset_password_path, class:'text-blue-medium'
+              div class="col-span-12 py-0 border-b border-gray-8"
               div class="flex flex-row justify-center col-span-12"
                 = form.submit "Update", class: "mx-auto py-2.5 px-5 text-sm font-bold text-white bg-blue-medium uppercase rounded-6px"
               div class="col-span-12 py-4 border-t border-gray-8"
@@ -68,7 +69,7 @@ div class="w-full h-full bg-grey-9"
                                                       address: page.address,\
                                                       image_url: page.organization.logo.service_url,\
                                                       id: page.id,\
-                                                      webpage: page.website,\
+                                                      website: page.decorate.website || page.organization.decorate.website,\
                                                       description: page.organization.mission_statement_en,
                                                       current_user: current_user)
             - else
@@ -81,20 +82,21 @@ div class="w-full h-full bg-grey-9"
                   | Click on the top right ribbon to save pages when you are browsing through nonprofit listings.
 
         div class="hidden px-6" data-tabs-target="panel"
-          h4 class="text-xl text-grey-2 my-7"
+          h4 class="text-xl text-grey-2 mt-7"
             | Manage Alerts
           div class="flex flex-col w-full h-full md:overflow-y-auto"
             - if @alerts.present?
-              ul class="flex flex-col divide-y divide-gray-8 gap-11"
+              ul class="flex flex-col divide-y divide-gray-8"
                 - @alerts.each do |alert|
-                  li class="flex flex-col w-full "
-                    div class="flex flex-row justify-between w-full"
-                      span class="text-lg font-medium font-bold text-black "
+                  li class="flex flex-col w-full py-10"
+                    div class="flex flex-row justify-between w-full" data-controller="modal"
+                      span class="text-lg font-bold text-black capitalize"
                         | #{alert.keyword}
-                      button class="text-blue-medium" type="button"
+                      button class="text-blue-medium" type="button" data-action="click->modal#open"
                         | Edit
+                      = render SearchAlert::Component.new(keywords: alert.keyword, filters: list_all_filters(alert), edit: true, alert_id: alert.id)
                     div class="flex flex-row text-sm font-normal text-gray-2"
-                      | #{alert.services}
+                      | #{list_services_and_beneficiary_filters(alert).join(', ')}
             - else
               div class="flex justify-center w-full my-16"
                 = inline_svg_tag 'empty_state_2.svg', size:'294*145'

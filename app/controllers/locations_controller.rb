@@ -13,6 +13,11 @@ class LocationsController < ApplicationController
     authorize @location
   end
 
+  def delete
+    @location = Location.find(params[:id])
+    @ocation.destroy
+  end
+
   private
 
   def create_params

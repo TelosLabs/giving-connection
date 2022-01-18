@@ -68,8 +68,6 @@ Rails.application.configure do
 
   config.action_mailer.default charset: 'utf-8'
 
-  config.action_mailer.asset_host = 'https://givingconnection-staging.herokuapp.com/'
-
   config.action_mailer.perform_deliveries = true
 
   config.action_mailer.smtp_settings = {
@@ -77,9 +75,9 @@ Rails.application.configure do
     port: Rails.application.credentials.dig(:mailchimp, :port),
     enable_starttls_auto: true,
     user_name: Rails.application.credentials.dig(:mailchimp, :username),
-    password:  Rails.application.credentials.dig(:mailchimp, :api_key),
-    domain:    Rails.application.credentials.dig(:mailchimp, :domain),
-    authentication: "login"
+    password: Rails.application.credentials.dig(:mailchimp, :api_key),
+    domain: Rails.application.credentials.dig(:mailchimp, :domain),
+    authentication: 'login'
   }
 
   # Ignore bad email addresses and do not raise email delivery errors.

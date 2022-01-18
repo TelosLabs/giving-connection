@@ -12,9 +12,7 @@ class SearchesController < ApplicationController
     @search.save
     @pagy, @results = pagy(@search.results)
 
-    if @search.results.any?
-      puts @search.errors.full_messages
-    end
+    puts @search.errors.full_messages if @search.results.any?
     authorize @search
   end
 
@@ -22,10 +20,10 @@ class SearchesController < ApplicationController
     input_services = params.require(:search)[:services].try(:permit!)
     input_groups = params.require(:search)[:beneficiary_groups].try(:permit!)
     params.require(:search).permit(:distance, :city, :state,
-      :open_now, :open_weekends, :keyword, :zipcode).merge(
-        :services => input_services,
-        :beneficiary_groups => input_groups
-      )
+                                   :open_now, :open_weekends, :keyword, :zipcode).merge(
+                                     services: input_services,
+                                     beneficiary_groups: input_groups
+                                   )
   end
 
   def verify_search_params

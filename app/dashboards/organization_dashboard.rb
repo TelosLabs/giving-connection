@@ -33,7 +33,9 @@ class OrganizationDashboard < Administrate::BaseDashboard
     organization_beneficiaries: CheckboxField,
     logo: Field::ActiveStorage,
     tags: TagInputField,
-    locations: Field::NestedHasMany
+    locations: Field::NestedHasMany,
+    phone_number: Field::Text,
+    email: Field::Text
   }.freeze
 
   # COLLECTION_ATTRIBUTES

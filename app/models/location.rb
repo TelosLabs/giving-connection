@@ -18,20 +18,23 @@
 #  updated_at       :datetime         not null
 #  appointment_only :boolean          default(FALSE)
 #  name             :string           not null
+#  email            :string
 #
 class Location < ActiveRecord::Base
   include Locations::Searchable
   include Locations::Officeable
+  validates_with LocationValidator
 
   belongs_to :organization, optional: true
-  
+
   has_many :office_hours
   has_many :favorite_locations
   has_many :tags, through: :organization
   has_many :location_services, dependent: :destroy
   has_many :services, through: :location_services
-  
-  has_one :phone_number
+  has_many :causes, through: :services
+
+  has_one :phone_number, dependent: :destroy
   has_one :social_media, through: :organization
 
   validates :name, presence: true
@@ -39,10 +42,10 @@ class Location < ActiveRecord::Base
   validates :latitude, presence: true
   validates :longitude, presence: true
   validates :lonlat, presence: true
-  validates :main, inclusion: { in: [ true, false ] }
-  validates :physical, inclusion: { in: [ true, false ] }
+  validates :main, inclusion: { in: [true, false] }
+  validates :physical, inclusion: { in: [true, false] }
   validates :offer_services, inclusion: { in: [ true, false ] }
-  validates :appointment_only, inclusion: { in: [ true, false ] }
+  validates :appointment_only, inclusion: { in: [true, false] }
 
   scope :additional, -> { where(main: false) }
   scope :main, -> { where(main: true) }
@@ -66,7 +69,7 @@ class Location < ActiveRecord::Base
   accepts_nested_attributes_for(
     :phone_number,
     reject_if: :all_blank,
-    allow_destroy: true
+    update_only: true
   )
 
   private

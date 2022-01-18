@@ -2,7 +2,12 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = [ "field", "map", "latitude", "longitude", "marker" ]
-  static values = { imageurl: String, zoom: { type: Number, default: 10 }, }
+  static values = {
+    imageurl: String,
+    zoom: { type: Number, default: 10 },
+    latitude: Number,
+    longitude: Number
+  }
 
   connect() {
     if (typeof(google) != "undefined") {
@@ -12,7 +17,7 @@ export default class extends Controller {
 
   initMap() {
     this.map = new google.maps.Map(this.mapTarget, {
-      center: new google.maps.LatLng(this.data.get("latitude") || 36.16404968727089, this.data.get("longitude") || -86.78125827725053),
+      center: new google.maps.LatLng(this.latitudeValue || 36.16404968727089, this.longitudeValue || -86.78125827725053),
       zoom: (this.zoomValue || 10)
     })
 
@@ -38,7 +43,6 @@ export default class extends Controller {
   }
 
   setMarkers(map, image) {
-
     // Adds markers to the map.
     for (let i = 0; i < this.markerTargets.length; i++) {
       const element = this.markerTargets[i];
@@ -83,7 +87,7 @@ export default class extends Controller {
 
     this.marker.setPosition(place.geometry.location)
     this.marker.setVisible(true)
-    // debugger;
+
     this.latitudeTarget.value = place.geometry.location.lat()
     this.longitudeTarget.value = place.geometry.location.lng()
   }

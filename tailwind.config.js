@@ -84,12 +84,14 @@ module.exports = {
       maxHeight: {
         '500px': '500px',
         '756px': '756px',
+        '600px': '600px',
       },
       height: {
         'min-content': 'min-content',
         '46px': '46px',
         '300px': '300px',
         '400px': '400px',
+        '85vh': '85vh',
       },
       borderRadius: {
         '6px': '6px',

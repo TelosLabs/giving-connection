@@ -1,4 +1,6 @@
-require "administrate/base_dashboard"
+# frozen_string_literal: true
+
+require 'administrate/base_dashboard'
 
 class MessageDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -16,7 +18,7 @@ class MessageDashboard < Administrate::BaseDashboard
     organization_name: Field::String,
     organization_website: Field::String,
     organization_ein: Field::String,
-    content: Field::Text,
+    content: Field::Text
   }.freeze
 
   # COLLECTION_ATTRIBUTES
