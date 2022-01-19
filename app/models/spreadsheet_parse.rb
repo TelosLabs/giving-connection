@@ -90,12 +90,11 @@ class SpreadsheetParse
   def create_location_office_hours(office_hours_file_path, new_location, location_id)
     CSV.foreach(office_hours_file_path, headers: :first_row) do |office_hour_row|
       if office_hour_row['location_id'] == location_id
-       # raise 
         OfficeHour.create!(location: new_location,
                            day: Date::DAYNAMES.index(office_hour_row['day']), 
-                           open_time: Time.now.change({ hour: office_hour_row['open_time'] }), 
-                           close_time: Time.now.change({ hour: office_hour_row['close_time'] }),
-                           closed: office_hour_row['closed'] == 'yes' )
+                           open_time: Time.now.change({ hour: office_hour_row['open_time'] }).in_time_zone('Eastern Time (US & Canada)'), 
+                           close_time: Time.now.change({ hour: office_hour_row['close_time'] }).in_time_zone('Eastern Time (US & Canada)'),
+                           closed: office_hour_row['closed'] == 'yes' )  
       end 
     end
   end

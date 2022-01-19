@@ -26,7 +26,7 @@ class Search
       beneficiary_groups: beneficiary_groups, services: services,
       distance: distance.presence&.to_i
     }
-    @results = keyword.present? ? Locations::KeywordQuery.call({ keyword: keyword }) : Location.all
+    @results = keyword.present? ? Locations::KeywordQuery.call({ keyword: keyword }) : Location.is_active
     @results = Locations::FilterQuery.call(filters, @results)
   end
 end

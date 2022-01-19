@@ -5,7 +5,7 @@ module Locations
     attr_reader :locations
 
     class << self
-      def call(params = {}, locations =  Location.all)
+      def call(params = {}, locations =  Location.is_active)
         scope = locations
         scope = by_keyword(scope, params[:keyword])
       end

@@ -2,7 +2,7 @@
 
 class OrganizationsController < ApplicationController
   def show
-    @organization = Organization.find(params[:id])
+    @organization = Organization.is_active.find(params[:id])
     authorize @organization
   end
 
@@ -11,12 +11,12 @@ class OrganizationsController < ApplicationController
   end
 
   def edit
-    @organization = Organization.find(params[:id])
+    @organization = Organization.is_active.find(params[:id])
     authorize @organization
   end
 
   def update
-    @organization = Organization.find(params[:id])
+    @organization = Organization.is_active.find(params[:id])
     authorize @organization
     if @organization.update(organization_params)
       update_location_services(params['organization']['locations_attributes']) unless params['organization']['locations_attributes'].empty? || params['organization']['locations_attributes'].nil?
