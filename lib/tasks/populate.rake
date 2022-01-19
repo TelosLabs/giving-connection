@@ -13,6 +13,7 @@ namespace :populate do
         puts "#{new_service.name} sucessfully created" if new_service.save!
       end
     end
+    puts "done."
   end
 
   desc "Seed beneficiaries groups and subcategories to DB"
@@ -28,6 +29,6 @@ namespace :populate do
         puts "#{new_subbeneficiary.name} sucessfully created" if new_subbeneficiary.save!
       end
     end
+    puts "done."
   end
-
 end

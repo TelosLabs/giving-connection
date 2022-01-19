@@ -708,7 +708,7 @@ module Organizations
       "Sports & Recreation" => ["Adaptive Sports", "Camps", "Community Recreation", "Parks & Campgrounds", "Recreational Clubs", "Sports Training & Fitness"], 
       "Transportation" => ["Adult Rides & Services", "Car Donation", "Public Transportation Assistance"], 
       "Veteran & Military" => ["Veteran & Military Associations/Organizations", "Veteran & Military Support Services", "Veteran Careers & Employment", "Veteran Counseling", "Veteran Disability Services", "Veteran Education & Training Programs", "Veteran Family Member Benefits", "Veteran Health Care", "Veteran Housing", "Veteran Life Insurance & Benefits", "Veteran Loan Programs", "Veteran Trauma Support Services"], 
-      "Youth Development" => ["After School Programs", "Scouting (Boy Scouts", "Girl Scouts", "Camp Fire)", "Youth Centers & Clubs", "Youth Development Programs", "Youth Mentoring Programs", "Youth Specific Services"]      
+      "Youth Development" => ["After School Programs", "Scouting (Boy Scouts, Girl Scouts, Camp Fire)", "Youth Centers & Clubs", "Youth Development Programs", "Youth Mentoring Programs", "Youth Specific Services"]      
     }.freeze
 
   end
