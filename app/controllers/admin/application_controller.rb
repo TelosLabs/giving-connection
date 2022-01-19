@@ -20,5 +20,10 @@ module Admin
     # def records_per_page
     #   params[:per_page] || 20
     # end
+
+    def scoped_resource
+      resource_class.unscoped
+    end
+
   end
 end

@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :admin_users
     resources :users
-    resources :organizations
     resources :social_medias, only: %i[new create edit update]
     resources :services, only: %i[new create edit update]
     resources :causes, only: %i[new create edit update]
@@ -16,6 +15,12 @@ Rails.application.routes.draw do
     resources :organization_admins
     resources :phone_numbers, except: %i[index]
     root to: 'admin_users#index'
+    resources :organizations do
+      collection do
+        get :upload
+        post :import
+      end
+    end
   end
 
   devise_for :admin_users

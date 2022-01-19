@@ -1,0 +1,6 @@
+"id","organization_id","name","address","latitude","longitude","website","main","physical","appointment_only","offer_services"
+1,1,"Belmont Univeristy","1900 Belmont Blvd, Nashville, TN 37212, United States",36.1335939098051,-86.7942003089171,"http://belmont.edu/","yes","yes","no","yes"
+2,2,"Hands On Nashville HQ","2525 Perimeter Pl Dr Suite 121, Nashville, TN 37214, United States",36.1530885762301,-86.681015699005,"http://handson.com/main","yes","yes","no","yes"
+3,2,"Hands On Nashville Second Location","565 Royal Pkwy, Nashville, TN 37214, United States",36.1476138237731,-86.6708665038354,"http://handson.com/secondary","no","yes","yes","yes"
+4,3,"Nashville Rescue Mission HQ","639 Lafayette St, Nashville, TN 37203, United States",36.152792902512,-86.777443024241,"http://rescue.com/mission","yes","yes","no","yes"
+5,3,"Nashville Rescue Mission Second Location","679 Lafayette St, Nashville, TN 37203, United States",36.1536692344471,-86.7776630016308,"http://rescue.com/mission","no","yes","no","yes"
