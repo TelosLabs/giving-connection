@@ -32,7 +32,6 @@ class SpreadsheetParse
       unless organzation_already_exists?(org_row['name'])
         new_organization = Organization.new(build_organization_hash(org_row))
         new_organization.active = false
-
         if new_organization.save!(validate: false)
           new_social_media = SocialMedia.create(build_social_media_hash(org_row, new_organization))
 
