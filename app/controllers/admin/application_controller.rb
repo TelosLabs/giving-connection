@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # All Administrate controllers inherit from this
 # `Administrate::ApplicationController`, making it the ideal place to put
 # authentication logic or other before_actions.
@@ -18,5 +20,10 @@ module Admin
     # def records_per_page
     #   params[:per_page] || 20
     # end
+
+    def scoped_resource
+      resource_class.unscoped
+    end
+
   end
 end

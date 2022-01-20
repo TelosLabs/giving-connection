@@ -31,3 +31,12 @@
 
 en:
   hello: "Hello world"
+  helpers:
+    label:
+      organization:
+        mission_statement_en: Mission Statement - What We Do
+        vision_statement_en: Vision - Goals and Aspirations
+        tagline_en: Services - How We Do It
+        mission_statement_es: Declaración de Misión - Lo Que Hacemos
+        vision_statement_es: Visión - Metas y Aspiraciones
+        tagline_es: Servicios - Como Lo Hacemos

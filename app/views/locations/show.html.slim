@@ -1,0 +1,193 @@
+= form_with model: @search, scope: :search, url: searches_path, class: '', method: :get do |f|
+  = render SearchBar::Component.new(form: f, search: @search)
+div class=""
+  div class="flex flex-row justify-between w-full p-4 bg-gray-9 md:hidden"  data-controller="modal"
+    a href="javascript:history.back()" class="flex inline-flex items-center px-3 py-2 text-sm leading-4" type="button"
+      = inline_svg_tag "back_icon.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative mr-2'
+      | Back to Search Results
+  div class="flex flex-col flex-wrap justify-center w-full sm:pb-14 md:gap-4 md:flex-row sm:p-7"
+    div class="w-full bg-white rounded max-w-656px"
+      = image_tag @location.organization.cover_photo, class:'w-full h-24 object-fit-cover rounded-t'
+      div class='flex justify-center w-full mx-0 -mt-14 h-75'
+        = image_tag @location.organization.logo, class: 'shadow rounded logo-size'
+
+      div class="pt-5 md:px-11 md:text-left"
+        h5 class="text-lg font-bold mb-2.5 text-center"
+          = @location.name
+        p class="text-xs text-center font-base text-gray-4"
+          = @location.address
+        div class="flex justify-center items-center mt-4 gap-2.5" data-controller="copy-to-clipboard"
+          button type="button" class="flex items-center text-sm gray-2" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="#{request.url}"
+            = inline_svg_tag 'share_icon.svg', class: " fill-current mr-2"
+            | Share
+          a href="#" class="flex items-center text-sm gray-2"
+            = inline_svg_tag 'save_icon.svg', class: " fill-current mr-2"
+            | Save
+        - if @location.causes.present?
+          div class="flex my-8 gap-2.5 flex-wrap px-6"
+            - @location.causes.uniq.each do |cause|
+              span class="text-sm text-center px-2.5 py-1.5 rounded-lg border border-gray-6 text-gray-3"
+                = cause.name
+        div class="mx-6 text-left"
+          h4 class="text-sm font-bold uppercase text-gray-2"
+            | contact information
+          p class="text-sm leading-6 font-base text-gray-2"
+            span class="font-bold"
+              ' Phone:
+            span
+              = @location.phone_number&.number
+          p class="text-sm leading-6 font-base text-gray-2"
+            span class="font-bold"
+              ' Hours:
+            - if @location.appointment_only?
+              span class="text-green-fountain"
+                | Appointment only
+            - elsif @location.open_now?
+              span class="text-green-fountain"
+                | Open
+            - else
+              span class="text-states-error"
+                | Closed
+          - if @location.consistent_weekdays_hours?
+            p class="ml-12 text-sm leading-6 font-base text-gray-2"
+              span class="font-bold"
+                ' Mon - Fri
+              span
+                = @location.decorate.working_hours
+            p class="ml-12 text-sm leading-6 font-base text-gray-2"
+              span class="font-bold"
+                ' Sat
+              span
+                = display_day_working_hours(@location.day_hours(Time::DAYS_INTO_WEEK[:saturday]))
+            p class="ml-12 text-sm leading-6 font-base text-gray-2"
+              span class="font-bold"
+                ' Sun
+              span
+                = display_day_working_hours(@location.day_hours(Time::DAYS_INTO_WEEK[:sunday]))
+          - else
+            - Location::WEEKDAYS.each do |day_number|
+              p class="ml-12 text-sm leading-6 font-base text-gray-2"
+                span class="font-bold"
+                  = Date::DAYNAMES[day_number].first(3)
+                  | &nbsp;
+                span
+                  = display_day_working_hours(@location.day_hours(day_number))
+            p class="ml-12 text-sm leading-6 font-base text-gray-2"
+              span class="font-bold"
+                ' Sat
+              span
+                = display_day_working_hours(@location.day_hours(Time::DAYS_INTO_WEEK[:saturday]))
+            p class="ml-12 text-sm leading-6 font-base text-gray-2"
+              span class="font-bold"
+                ' Sun
+              span
+                = display_day_working_hours(@location.day_hours(Time::DAYS_INTO_WEEK[:sunday]))
+
+          p class="text-sm leading-6 font-base text-gray-2"
+            span class="font-bold"
+              ' Website:
+            a href="#{@location.decorate.website || @location.organization.decorate.website}" target="_blank"
+              = @location.decorate.website || @location.organization.decorate.website
+          p class="text-sm leading-6 font-base text-gray-2"
+            span class="font-bold"
+              ' Email:
+            a href="mailto:#{@location.email}" target="_blank"
+              = @location.email
+        div class="my-6 border-t border-gray-8"
+        div class="flex flex-col px-6 text-left"
+          h4 class="text-sm font-bold text-black uppercase"
+            | MISSION - WHAT WE DO
+          p class="text-sm text-black"
+            = @location.organization&.mission_statement_en
+        div class="my-6 border-t border-gray-8"
+        div class="flex flex-col px-6 text-left"
+          h4 class="text-sm font-bold text-black uppercase"
+            | VISION - GOALS AND ASPIRATIONS
+          p class="text-sm text-black"
+            = @location.organization&.vision_statement_en
+        - if @location.organization&.tagline_en.present?
+          div class="my-6 border-t border-gray-8"
+          div class="flex flex-col px-6 text-left"
+            h4 class="text-sm font-bold text-black uppercase"
+              | SERVICES - HOW WE DO IT
+            p class="text-sm text-black"
+              = @location.organization&.tagline_en
+        div class="my-6 border-t border-gray-8 sm:hidden"
+        div class="mx-5 sm:hidden"
+          h3 class="text-sm font-bold uppercase mb-3.5"
+            | Our Services
+          ul class="flex flex-col gap-8"
+            - @location.location_services.each do |location_service|
+              li class="text-sm font-base text-gray-2"
+                = location_service.service.name
+
+          - if @location.social_media.present?
+            div class="border-t border-gray-8 my-7"
+            h3 class="text-sm font-bold uppercase"
+              | Social Media
+            div class="flex flex-row gap-5 my-6"
+              - if @location.social_media&.facebook.present?
+                a href=@location.social_media&.facebook class="text-sm font-base text-gray-2" target="_blank"
+                  = inline_svg_tag 'facebook_box.svg', class: "text-salmon fill-current"
+              - if @location.social_media&.linkedin.present?
+                a href=@location.social_media&.linkedin class="text-sm font-base text-gray-2" target="_blank"
+                  = inline_svg_tag 'linkedin_box.svg', class: "text-salmon fill-current"
+              - if @location.social_media&.twitter.present?
+                a href=@location.social_media&.twitter class="text-sm font-base text-gray-2" target="_blank"
+                  = inline_svg_tag 'twitter_box.svg', class: "text-salmon fill-current"
+              - if @location.social_media&.instagram.present?
+                a href=@location.social_media&.instagram class="text-sm font-base text-gray-2" target="_blank"
+                  = inline_svg_tag 'instagram_box.svg', class: "text-salmon fill-current"
+        div class="border-t border-gray-8 my-7"
+        h4 class="px-6 text-sm font-bold text-black uppercase"
+          | Map
+        div class="w-full mt-4 mb-16 h-400px md:px-6" data-tabs-target="panel" data-controller="places" data-places-latitude-value="#{@location.latitude}" data-places-longitude-value="#{@location.longitude}" data-places-zoom-value="10" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
+          div# class="w-full h-full" data-places-target="map"
+          div class="hidden"
+              div class="flex flex-col items-center gap-2 p-5 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{@location.latitude}" data-longitude="#{@location.longitude}"
+                h5 class="text-lg font-bold text-gray-2"
+                  | #{@location.organization.name}
+                p class="text-xs text-gray-4"
+                  | #{@location.address}
+                p class="text-xs text-gray-4"
+                  | #{@location.organization.decorate.website}
+                p class="text-xs text-gray-4"
+                  | #{@location.phone_number&.number}
+                  p class="text-xs font-medium text-gray-2"
+                    - if @location.appointment_only?
+                      span class="text-states-error"
+                        ' Appointment only
+                    - elsif @location.open_now?
+                      span class="text-green-fountain"
+                        ' Open Now
+                    - else
+                      span class="text-states-error"
+                        ' Closed
+                      | -&nbsp;
+                      | #{@location.decorate.closed_office_hours_display}
+
+    div class="flex-col flex-grow-0 hidden w-full bg-white rounded h-min-content sm:flex md:max-w-402px px-11 md:p-7"
+      h3 class="text-sm font-bold uppercase mb-3.5"
+        | Our Services
+      ul class="flex flex-col gap-8"
+        - @location.location_services.each do |location_service|
+          li class="text-sm font-base text-gray-2"
+            = location_service.service.name
+
+      - if @location.social_media.present?
+        div class="border-t border-gray-8 my-7"
+        h3 class="text-sm font-bold uppercase"
+          | Social Media
+        div class="flex flex-row gap-5 my-6"
+          - if @location.social_media&.facebook.present?
+            a href=@location.social_media&.facebook class="text-sm font-base text-gray-2" target="_blank"
+              = inline_svg_tag 'facebook_box.svg', class: "text-salmon fill-current"
+          - if @location.social_media&.linkedin.present?
+            a href=@location.social_media&.linkedin class="text-sm font-base text-gray-2" target="_blank"
+              = inline_svg_tag 'linkedin_box.svg', class: "text-salmon fill-current"
+          - if @location.social_media&.twitter.present?
+            a href=@location.social_media&.twitter class="text-sm font-base text-gray-2" target="_blank"
+              = inline_svg_tag 'twitter-box.svg', class: "text-salmon fill-current"
+          - if @location.social_media&.instagram.present?
+            a href=@location.social_media&.instagram class="text-sm font-base text-gray-2" target="_blank"
+              = inline_svg_tag 'instagram_box.svg', class: "text-salmon fill-current"

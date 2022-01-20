@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'administrate/base_dashboard'
 
 class AdminUserDashboard < Administrate::BaseDashboard
@@ -10,18 +12,8 @@ class AdminUserDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {
     id: Field::Number,
     email: Field::String,
-    encrypted_password: Field::String,
-    reset_password_token: Field::String,
-    reset_password_sent_at: Field::DateTime,
-    remember_created_at: Field::DateTime,
-    sign_in_count: Field::Number,
-    current_sign_in_at: Field::DateTime,
-    last_sign_in_at: Field::DateTime,
-    current_sign_in_ip: Field::String,
-    last_sign_in_ip: Field::String,
-    failed_attempts: Field::Number,
-    unlock_token: Field::String,
-    locked_at: Field::DateTime,
+    password: Field::Password,
+    password_confirmation: Field::Password,
     created_at: Field::DateTime,
     updated_at: Field::DateTime
   }.freeze
@@ -34,8 +26,6 @@ class AdminUserDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
     id
     email
-    encrypted_password
-    reset_password_token
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -43,18 +33,6 @@ class AdminUserDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = %i[
     id
     email
-    encrypted_password
-    reset_password_token
-    reset_password_sent_at
-    remember_created_at
-    sign_in_count
-    current_sign_in_at
-    last_sign_in_at
-    current_sign_in_ip
-    last_sign_in_ip
-    failed_attempts
-    unlock_token
-    locked_at
     created_at
     updated_at
   ].freeze
@@ -64,18 +42,8 @@ class AdminUserDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
     email
-    encrypted_password
-    reset_password_token
-    reset_password_sent_at
-    remember_created_at
-    sign_in_count
-    current_sign_in_at
-    last_sign_in_at
-    current_sign_in_ip
-    last_sign_in_ip
-    failed_attempts
-    unlock_token
-    locked_at
+    password
+    password_confirmation
   ].freeze
 
   # COLLECTION_FILTERS

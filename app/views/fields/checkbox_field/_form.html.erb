@@ -1,0 +1,40 @@
+<div class="field-unit__label">
+  <%= f.label field.attribute %>
+</div>
+
+<% if params['action'] == 'edit' %>
+
+  <div class="field-unit__field">
+    <% field.beneficiary_types.each do |beneficiary| %>
+      <h3 style="font-weight: bold;font-size: 16px;"><%= beneficiary.name %></h3>
+      <% beneficiary.beneficiary_subcategories.each do |subcategory| %>
+
+        <% if Organization.unscoped.find(params['id']).beneficiary_subcategories.exists?(subcategory.id)  %>
+
+          <%= check_box_tag "organization[beneficiary_subcategories_id][]", subcategory.id, checked: true %>
+          <%= subcategory.name  %>
+
+        <% else %>
+
+          <%= check_box_tag "organization[beneficiary_subcategories_id][]", subcategory.id %>
+          <%= subcategory.name  %>
+
+        <% end %>
+
+       <% end %>
+    <% end %>
+  </div>
+
+<% else %>
+
+  <div class="field-unit__field">
+    <% field.beneficiary_types.each do |beneficiary| %>
+      <h3 style="font-weight: bold;font-size: 16px;" ><%= beneficiary.name %></h3>
+      <% beneficiary.beneficiary_subcategories.each do |subcategory| %>
+        <%= check_box_tag "organization[beneficiary_subcategories_id][]", subcategory.id %>
+        <%= subcategory.name  %>
+       <% end %>
+    <% end %>
+  </div>
+
+<% end %>

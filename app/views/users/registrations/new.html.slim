@@ -1,6 +1,6 @@
 .main
   h2 class="px-12 pb-6 text-2xl font-bold text-center pt-14 md:pt-32 md:mt-2 md:pb-9 text-gray-gray-7"
-    ' Create an account 
+    ' Create an account
     | on Giving Connection
 
   div class="md:hidden"
@@ -26,7 +26,7 @@
     div class="flex pb-2"
       div class="flex items-center mr-4"
         = inline_svg_tag 'green-check.svg', size: '16*16'
-      div Receive search alerts via email when new profits are added
+      div Receive search alerts via email when new nonprofits are added
     div class="flex pr-1"
       div class="pt-1 mr-4"
         = inline_svg_tag 'green-check.svg', size: '16*16'
@@ -51,4 +51,4 @@
     ' By continuing, you agree to Giving Connection’s
     = link_to 'Terms & Conditions ', '#', class:'font-bold'
     ' and
-    = link_to 'Privacy Policy', '#', class:'font-bold'
+    = link_to 'Privacy Policy', 'https://givingconnection.org/privacy-policy', class:'font-bold'

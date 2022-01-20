@@ -1,0 +1,26 @@
+<h1>Create Search Alert for:</h1>
+
+<p>
+	keyword: <%= @alert_params['keyword'] %>
+	distance: <%= @alert_params['distance'] %>
+	city: <%= @alert_params['city'] %>
+	state: <%= @alert_params['state'] %>
+	beneficary groups: <%= @alert_params['beneficiary_groups'] %>
+	services: <%= @alert_params['services'] %>
+	open now: <%= @alert_params['open_now'] %>
+	open weekends: <%= @alert_params['open_weekends'] %>
+</p>
+
+<h1>Choose the frequency</h1>
+<%= form_for @alert do |f|  %>
+	<%= f.select :frequency, ['daily', 'weekly', 'monthly'] %>
+	<%= f.hidden_field :keyword, value: @alert_params['keyword'] %>
+	<%= f.hidden_field :distance, value: @alert_params['distance'] %>
+	<%= f.hidden_field :city, value: @alert_params['city'] %>
+	<%= f.hidden_field :state, value: @alert_params['state'] %>
+	<%= f.hidden_field :beneficiary_groups, value: @alert_params['beneficiary_groups'] %>
+	<%= f.hidden_field :services, value: @alert_params['services'] %>
+	<%= f.hidden_field :open_now, value: @alert_params['open_now'] %>
+	<%= f.hidden_field :open_weekends, value: @alert_params['open_weekends'] %>
+	<%= f.submit %>
+<% end %>

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
@@ -38,7 +40,25 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  config.action_mailer.default_url_options = { host: 'localhost', port: 5000 }
+
+  config.action_mailer.delivery_method     = :smtp
+
+  config.action_mailer.default charset: 'utf-8'
+
+  config.action_mailer.asset_host = 'http://localhost:5000/'
+
+  config.action_mailer.perform_deliveries = true
+
+  config.action_mailer.smtp_settings = {
+    address: Rails.application.credentials.dig(:mailchimp, :host),
+    port: Rails.application.credentials.dig(:mailchimp, :port),
+    enable_starttls_auto: true,
+    user_name: Rails.application.credentials.dig(:mailchimp, :username),
+    password: Rails.application.credentials.dig(:mailchimp, :api_key),
+    domain: Rails.application.credentials.dig(:mailchimp, :domain),
+    authentication: 'login'
+  }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

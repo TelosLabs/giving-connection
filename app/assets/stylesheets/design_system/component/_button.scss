@@ -2,7 +2,7 @@
 
 .c-button {
   display: flex;
-  margin: auto;
+  margin: 0 auto;
   align-items: center;
   justify-content: center;
   padding: 18px 40px;
@@ -16,12 +16,4 @@
   background-color: $secondary-seafoam;
   line-height: 19px;
   letter-spacing: 0.8px;
-
-  &--secondary {
-    width: 200px;
-    height: 39px;
-    color: $copy-white;
-    padding: 10px 20px;
-    background-color: $primary-medium-blue;
-  }
 }
