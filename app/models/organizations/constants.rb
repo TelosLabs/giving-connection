@@ -662,7 +662,7 @@ module Organizations
                 "Z99: Unknown"].freeze
 
     BENEFICIARIES = {
-      "Age" => ["Adults", "Children & Youth", "Individuals Under 21"],
+      "Age" => ["Adults", "Children & Youth", "Individuals Under 21", "Seniors"],
       "Ethnic & Racial Groups" => ["Indigenous Peoples", "Multiracial People", "People of African Descent", "People of Asian Descent", "People of European Descent", "People of Latin American Descent", "People of Middle Eastern Descent", "People of all Racial Minority Groups"],
       "Family Relationships " => ["Caregivers", "Families", "Non-Adults", "Parents", "Widows & Widowers"],
       "Gender & Sexual Identity" => ["Heterosexuals", "Intersex People", "LGBTQ+ People", "Men & Boys", "Women & Girls"],
@@ -674,7 +674,7 @@ module Organizations
 
 
     CAUSES_AND_SERVICES = {
-      "Advocacy" => ["Children's Rights", "Disabled Persons' Rights", "Employee & Workers' Rights", "Ethnic & Racial Minority Rights", "Immigrant Rights", "Individual & Civil Liberties", "International Human Rights", "LGBTQ+ Rights", "Patients' Rights", "Reproductive Rights", "Seniors' Rights", "Social Justice Rights", "Voter Education & Registration", "Women's Rights"], 
+      "Advocacy" => ["Children's Rights", "Disabled Persons' Rights", "Employee & Workers' Rights", "Ethnic & Racial Minority Rights", "Immigrant Rights", "Individual & Civil Liberties", "International Human Rights", "LGBTQ+ Rights", "Patients' Rights", "Prisoners' Rights", "Reproductive Rights", "Seniors' Rights", "Social Justice Rights", "Voter Education & Registration", "Women's Rights"], 
       "Animals" => ["Animal Protection & Welfare", "Animal Services", "Animal Shelters", "Service & Emotional Support Animals", "Veterinary Services"], 
       "Arts & Culture" => ["Art Education", "Art Therapy Services", "Cultural Awareness", "Music & Performing Arts Programs", "Visual Arts Programs", "Writing Workshops"], 
       "Clothing & Living Essentials" => ["Clothing Collection", "Furniture Collection/Distribution", "Living Essentials (Toiletries", "Baby Supplies", "Electronics", "etc.) Collection/Distribution", "Professional Clothing Collection/Distribution", "Prom Dress Collection/Distribution", "School Supply Collection/Distribution", "Thrift Shops", "Toy Collection/Distribution"], 
@@ -689,21 +689,21 @@ module Organizations
       "Environment" => ["Beautification", "Climate Change Crisis", "Conservation", "Environmental Education", "Recycling"], 
       "Faith-Based" => [], 
       "Inmate & Formerly Incarcerated" => ["Formerly Incarcerated Employment & Job Training", "Inmate Support & Programs", "Prison Alternatives", "Rehabilitation & Reentry Services", "Transitional Living/Halfway Houses"], 
-      "Housing & Homelessness" => ["Home Improvement & Repairs", "Homeless Shelters", "Housing Development", "Construction & Management", "Housing Search Assistance", "Housing Support Services", "Low-Income & Subsidized Rental", "Low-Income Long Term Residential Housing", "Temporary Housing"], 
+      "Housing & Homelessness" => ["Home Improvement & Repairs", "Homeless Shelters", "Housing Development, Construction & Management", "Housing Search Assistance", "Housing Support Services", "Low-Income & Subsidized Rental", "Low-Income Long Term Residential Housing", "Temporary Housing"], 
       "Hunger & Food Security" => ["Agriculture Programs", "Child Nutrition & School Lunch Programs", "Community Food Systems", "Farmland Preservation", "Food & Nutrition Education", "Food Banks/Pantries", "Food Served Daily/Soup Kitchens", "Food Vouchers/Subsidies", "Mobile Food Delivery Services"], 
       "Immigrant & Refugee" => ["Citizenship Education", "Ethnic & Immigrant Community Centers", "Human Trafficking Victim Assistance", "Immigrant Employment & Career Development", "Immigrant Grant & Loan Programs", "Immigrant Services", "Language Learning Assistance", "Multicultural Outreach", "Refugee & Entrant Assistance"], 
       "International" => ["Foreign Policy & Globalization", "International Affairs", "International Development", "International Migration & Refugee Services", "International Relief Services", "National Security", "United Nations"], 
-      "Justice & Legal Services" => ["Civil Rights Legal Services", "Criminal Defense Services", "Disability Rights Legal Services", "Disaster Legal Services", "Dispute Resolution & Mediation", "Employment Law Services", "Environmental Law Services", "Family Legal Services", "Health Legal Services", "Immigration Legal Services", "LGBTQ+ Legal Services", "Pro Bono Services", "Public Interest Law/Nonprofit Legal Services"], 
+      "Justice & Legal Services" => ["Civil Rights Legal Services", "Criminal Defense Services", "Disability Rights Legal Services", "Disaster Legal Services", "Dispute Resolution & Mediation", "Employment Law Services", "Environmental Law Services", "Family Legal Services", "Health Legal Services", "Immigration Legal Services", "LGBTQ+ Legal Services", "Pro Bono Services", "Public Interest Law/Nonprofit Legal Services", "Innocence/Justice Legal Services"], 
       "LGBTQ+" => ["LGBTQ+ Advocacy", "LGBTQ+ Community Centers", "LGBTQ+ Education & Awareness", "LGBTQ+ Employment & Training", "LGBTQ+ Health Care Services", "LGBTQ+ Housing", "LGBTQ+ Support Meetings"], 
       "Health" => ["Blood/Organ/Tissue Banks", "Community Clinics", "Emergency Medical Services & Transportation", "Family Planning", "Health Care Access", "Health Care Facilities", "Health Support Services", "Home Health Care", "Medical Research", "Nursing Services", "Patient & Family Support", "Pharmacy & Drug Assistance", "Primary Health Care", "Reproductive Health Care", "Women's Centers"], 
       "Media & Broadcasting" => ["Information & Communications", "Media Education"], 
       "Mental Health" => ["Addictive Disorders", "Case Management Services", "Community Mental Health Centers", "Eating Disorder Services", "Forensic Evaluation", "Hot Lines & Crisis Intervention", "Medication Cost Assistance", "Mental Health Associations", "Mental Health Counseling", "Mental Health Disorders Services", "Mental Health Education & Awareness", "Psychiatric Care", "Residential Mental Health Treatment", "Suicide Prevention Services", "Therapy Services", "Trauma Services"], 
       "Philanthropy" => ["Community Foundations", "Corporate Foundations", "Grantmaking Foundations", "Nonprofit Assistance", "Nonprofit Community Building", "Nonprofit Education & Training", "Private Foundations", "Private Operating Foundations", "Public Charities/Foundations", "Voluntarism Promotion"], 
       "Race & Ethnicity" => ["Anti-Discrimination Programs & Promotion", "Diversity & Inclusion Education", "Diversity Leadership Development", "Racial Equity & Equality Advocacy", "Racial Justice Advocacy & Policy"], 
-      "Research & Public Policy" => [], 
+      "Research & Public Policy" => ["Public Policy"], 
       "Science & Technology" => ["Science Education", "Science & Technology Development", "STEM Programs"], 
       "Social Sciences" => ["Social Sciences Education & Programs"], 
-      "Human & Social Services" => ["Classes", "Community Outreach", "Counseling", "Crisis Services", "Emergency Assistance", "Financial Counseling", "Government Benefits Assistance", "Human Service Organizations", "Information/Referrals", "Social Services", "Travelers' Aid", "Victims' Services", "Volunteer Associations"], 
+      "Human & Social Services" => ["Advocacy", "Classes", "Community Outreach", "Counseling", "Crisis Services", "Emergency Assistance", "Financial Counseling", "Government Benefits Assistance", "Human Service Organizations", "Information/Referrals", "Social Services", "Travelers' Aid", "Victims' Services", "Volunteer Associations"], 
       "Seniors" => ["Adult Day Care for Seniors", "Hospices", "Independent & Supportive Senior Housing", "Residential Care Programs", "Senior Centers", "Senior Employment Opportunities", "Senior Services & Programs", "Senior Support Education & Training", "Senior Support/Caregivers", "Senior Transportation Services"], 
       "Sports & Recreation" => ["Adaptive Sports", "Camps", "Community Recreation", "Parks & Campgrounds", "Recreational Clubs", "Sports Training & Fitness"], 
       "Transportation" => ["Adult Rides & Services", "Car Donation", "Public Transportation Assistance"], 
