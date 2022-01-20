@@ -27,7 +27,7 @@ class Location < ActiveRecord::Base
 
   belongs_to :organization, optional: true
 
-  scope :is_active, -> { joins(:organization).where(organizations: { active: true }) } 
+  scope :is_active, -> { joins(:organization).where(organization: { active: true }) } 
 
   has_many :office_hours
   has_many :favorite_locations
