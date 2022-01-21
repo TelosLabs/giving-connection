@@ -4,6 +4,6 @@ div data-controller='toggle accordion--component' class="flex flex-col w-full"
       | #{@title}
     div
       = inline_svg_tag 'expand-arrow.svg', size:'16*16', class:"ml-4 mt-2", data: { 'accordion--component-target': 'arrow'}
-  div data-toggle-target='toggleable' class="hidden pt-2"
+  div data-toggle-target='toggleable menu' class="hidden pt-2"
     div
       | #{@description.html_safe}
