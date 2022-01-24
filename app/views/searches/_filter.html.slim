@@ -24,7 +24,7 @@ div class="bg-white rounded-3xl"
 
           div class="col-span-6"
             = form.label :city, "City", class: "block text-sm text-gray-3 font-medium"
-            = form.select :city, options_for_select(CS.cities(:tn, :us), "#{ params.dig('search', 'city')}"), {include_blank: 'Choose a City'}, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", data: { 'search-target': 'input'}, autocomplete:"off" }
+            = form.select :city, { Nashville: "Nashville" }, {}, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", data: { 'search-target': 'input'}, autocomplete:"off" }
 
           div class="col-span-3"
             = form.label :zipcode, "Zip Code", class: "block text-sm text-gray-3 font-medium"
