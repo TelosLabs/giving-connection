@@ -28,7 +28,7 @@ class Organization < ApplicationRecord
   include Organizations::Constants
   validates_with OrganizationValidator
 
-  default_scope { where(active: true) } 
+  scope :active, -> { where(active: true) } 
 
   has_many :tags, dependent: :destroy
   has_many :organization_beneficiaries, dependent: :destroy
