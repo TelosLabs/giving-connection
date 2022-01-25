@@ -17,6 +17,13 @@ div class="w-full h-full bg-grey-9"
         
         div class="grid grid-cols-12 gap-6 mt-8" data-controller="toggle"
           div class="col-span-12 lg:col-span-5 md:col-span-7"
+            div class="flex items-center"
+              = f.check_box :active, class: "h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent", checked: @organization.active
+              = f.label :active, "My organization is active", class: "text-sm text-black"
+
+          div class="hidden col-span-3 md:flex"
+
+          div class="col-span-12 lg:col-span-5 md:col-span-7"
             = f.label :name, "* Organization Name", class: "block text-sm text-gray-3 font-medium"
             = f.text_field :name, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
@@ -152,6 +159,9 @@ div class="w-full h-full bg-grey-9"
                   = location_form.search_field :address, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", data: { 'places-target': "field", action: "keydown->places#keydown" }
                   = location_form.hidden_field :latitude, data: { 'places-target': "latitude" }, id: "places-latitude"
                   = location_form.hidden_field :longitude, data: { 'places-target': "longitude" }, id: "places-longitude"
+                  div class="flex items-center"
+                    = location_form.check_box :po_box, class: "h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent", checked: location_form.object.po_box
+                    = location_form.label :po_box, "This address is a PO Box", class: "text-sm text-black"
 
                   div class="mt-6"
                     div data-places-target="map" style="height:400px;"class="w-full h-full"
@@ -170,10 +180,10 @@ div class="w-full h-full bg-grey-9"
                     legend.sr-only Alert frequency
                     div class='flex items-center gap-12 mt-3'
                       div class="flex items-center gap-2"
-                        = location_form.radio_button :offer_services, 1, class: "focus:ring-0 focus:ring-transparent", data: { action: "extend-toggle#show" }, checked: location_form.object.location_services.present?
+                        = location_form.radio_button :offer_services, 1, class: "focus:ring-0 focus:ring-transparent", data: { action: "extend-toggle#show" }, checked: location_form.object.offer_services
                         = location_form.label :offer_services_yes, "Yes", class: "text-sm text-black"
                       div class="flex items-center gap-2"
-                        = location_form.radio_button :offer_services, 0, class: "focus:ring-0 focus:ring-transparent", data: { action: "extend-toggle#hide" }, checked: location_form.object.location_services.empty?
+                        = location_form.radio_button :offer_services, 0, class: "focus:ring-0 focus:ring-transparent", data: { action: "extend-toggle#hide" }, checked: !location_form.object.offer_services
                         = location_form.label :offer_services_no, "No", class: "text-sm text-black "
                 div class="col-span-12 px-3.5 py-5 bg-gray-9" 
                   p class="text-sm leading-5 text-gray-3"

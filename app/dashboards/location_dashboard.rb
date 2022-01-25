@@ -27,7 +27,8 @@ class LocationDashboard < Administrate::BaseDashboard
     office_hours: Field::NestedHasMany,
     location_services: Field::NestedHasMany,
     appointment_only: Field::Boolean,
-    services: Field::HasMany
+    services: Field::HasMany,
+    po_box: Field::Boolean
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -51,6 +52,7 @@ class LocationDashboard < Administrate::BaseDashboard
     organization
     name
     services
+    po_box
     latitude
     longitude
     email
@@ -68,14 +70,15 @@ class LocationDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
     name
-    address
-    latitude
-    longitude
-    email
-    phone_number
     main
     physical
     appointment_only
+    email
+    phone_number
+    po_box
+    address
+    latitude
+    longitude
     offer_services
     location_services
     office_hours
