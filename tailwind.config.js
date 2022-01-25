@@ -10,6 +10,11 @@ module.exports = {
       ...screens,
     },
     extend: {
+      fontSize: {
+        '22px': '22px',
+        '28px': '28px',
+        '34px': '34px',
+      },
       colors: {
         seafoam: {
           DEFAULT: '#9ae2e0'
@@ -59,24 +64,32 @@ module.exports = {
         },
       },
       maxWidth: {
+        '30%': "30%",
+        '45%': "45%",
         '327px': '327px',
         '356px': '356px',
         '375px': '375px',
         '402px': '402px',
         '470px': '470px',
+        '565px': '565px',
         '656px': '656px',
         ms: '343px'
       },
       minHeight: {
         '46px': '46px',
+        '800px': '800px',
+        '1150px': '1150px'
+
       },
       maxHeight: {
         '500px': '500px',
+        '756px': '756px',
         '600px': '600px',
       },
       height: {
         'min-content': 'min-content',
         '46px': '46px',
+        '300px': '300px',
         '400px': '400px',
         '85vh': '85vh',
       },

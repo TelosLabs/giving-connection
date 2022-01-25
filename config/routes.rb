@@ -43,5 +43,8 @@ Rails.application.routes.draw do
   resources :alerts, only: %i[new create destroy]
   resource :searches, only: %i[show]
   resource :my_account, only: %i[show]
+  resource :about_us, only: %i[show]
+  resource :faqs, only: %i[show]
+  resource :donate, only: %i[show]
   root to: 'home#index'
 end
