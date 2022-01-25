@@ -40,7 +40,7 @@
               = link_to new_user_registration_path, class: 'inline-flex items-center px-3 py-2 text-xs text-gray-3' do
                 = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
                 | Create Search Alert
-          div class="hidden w-full h-full md:overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
+          div class="hidden w-full h-full overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
             - if @results.present?
               ul class="flex flex-col divide-y divide-gray-8"
                 - @results.each do |result|
