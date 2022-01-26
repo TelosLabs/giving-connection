@@ -21,14 +21,11 @@ export default class extends Controller {
       zoom: (this.zoomValue || 10)
     })
 
-    console.log("connected")
-    navigator.geolocation.getCurrentPosition(success)
+    // navigator.geolocation.getCurrentPosition(success);
 
     function success (position) {
-       const latitude  = position.coords.latitude;
-       const longitude = position.coords.longitude;
-       console.log(latitude)
-       console.log(longitude)
+       document.getElementById('search_lat').value = position.coords.latitude;
+       document.getElementById('search_lon').value = position.coords.longitude;
      }
 
     if(!navigator.geolocation) {

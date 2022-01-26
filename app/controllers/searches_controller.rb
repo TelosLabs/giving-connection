@@ -19,7 +19,7 @@ class SearchesController < ApplicationController
   def create_params
     input_services = params.require(:search)[:services].try(:permit!)
     input_groups = params.require(:search)[:beneficiary_groups].try(:permit!)
-    params.require(:search).permit(:distance, :city, :state,
+    params.require(:search).permit(:distance, :city, :state, :lat, :lon,
                                    :open_now, :open_weekends, :keyword, :zipcode).merge(
                                      services: input_services,
                                      beneficiary_groups: input_groups
@@ -32,8 +32,7 @@ class SearchesController < ApplicationController
                       params.dig('search', 'city').present? ||
                       params.dig('search', 'zipcode').present? ||
                       params.dig('search', 'distance').present? ||
-                      params.dig('search', 'open_now').present? ||
-                      params.dig('search', 'open_weekends').present?
+                      params.dig('search', 'open_now').present?
   end
 
   private
