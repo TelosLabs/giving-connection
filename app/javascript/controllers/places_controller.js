@@ -21,6 +21,23 @@ export default class extends Controller {
       zoom: (this.zoomValue || 10)
     })
 
+    console.log("connected")
+    navigator.geolocation.getCurrentPosition(success)
+
+    function success (position) {
+       const latitude  = position.coords.latitude;
+       const longitude = position.coords.longitude;
+       console.log(latitude)
+       console.log(longitude)
+     }
+
+    if(!navigator.geolocation) {
+       console.log('Geolocation is not supported by your browser');
+     } else {
+       navigator.geolocation.getCurrentPosition(success);
+     }
+
+
     if (this.hasFieldTarget) {
       this.autocomplete = new google.maps.places.Autocomplete(this.fieldTarget)
       this.autocomplete.bindTo('bounds', this.map)

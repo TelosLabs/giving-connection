@@ -7,11 +7,10 @@ export default class extends Controller {
   }
 
   connect() {
-    console.log('connect')
   }
 
   submitForm() {
-    console.log('submitform')
+    // console.log('submitform')
     let formData = $(this.formTarget).serialize()
     console.log(formData)
     Rails.ajax({
