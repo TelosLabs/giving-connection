@@ -13,7 +13,7 @@ class AlertsController < ApplicationController
   def create
     new_alert = Alert.new(alert_params)
     new_alert.user = current_user
-    new_alert = clean_open_now_and_open_weekends(new_alert)
+    new_alert = clean_open_weekends(new_alert)
     if new_alert.save
       create_alert_services(new_alert, params['search']['services'])
       create_alert_beneficiaries(new_alert, params['search']['beneficiary_groups'])
@@ -41,11 +41,10 @@ class AlertsController < ApplicationController
 
   def alert_params
     params.require(:search).permit(:distance, :city, :state, :beneficiary_groups,
-                                   :services, :open_now, :open_weekends, :keyword, :frequency)
+                                   :services, :open_weekends, :keyword, :frequency)
   end
 
-  def clean_open_now_and_open_weekends(new_alert)
-    new_alert.update!(open_now: false) unless new_alert.open_now == true
+  def clean_open_weekends(new_alert)
     new_alert.update!(open_weekends: false) unless new_alert.open_weekends == true
     new_alert
   end
