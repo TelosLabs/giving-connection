@@ -32,7 +32,9 @@ class SearchesController < ApplicationController
                       params.dig('search', 'city').present? ||
                       params.dig('search', 'zipcode').present? ||
                       params.dig('search', 'distance').present? ||
-                      params.dig('search', 'open_now').present?
+                      params.dig('search', 'open_now').present? ||
+                      params.dig('search', 'open_weekends').present?
+
   end
 
   private

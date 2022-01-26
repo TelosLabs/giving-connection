@@ -34,7 +34,6 @@ export default class extends Controller {
        navigator.geolocation.getCurrentPosition(success);
      }
 
-
     if (this.hasFieldTarget) {
       this.autocomplete = new google.maps.places.Autocomplete(this.fieldTarget)
       this.autocomplete.bindTo('bounds', this.map)
