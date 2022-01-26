@@ -31,7 +31,6 @@ class SpreadsheetParse
     CSV.foreach(csv_file_paths[:orgs_csv_file], headers: :first_row) do |org_row|
       unless organzation_already_exists?(org_row['name'])
         new_organization = Organization.new(build_organization_hash(org_row))
-        new_organization.active = false
         if new_organization.save!(validate: false)
           new_social_media = SocialMedia.create(build_social_media_hash(org_row, new_organization))
 
@@ -105,7 +104,7 @@ class SpreadsheetParse
       mission_statement_en: org_row['mission_statement_en'], vision_statement_en: org_row['vision_statement_en'],
       tagline_en: org_row['tagline_en'], mission_statement_es: org_row['mission_statement_es'],
       vision_statement_es: org_row['vision_statement_es'], tagline_es: org_row['tagline_es'],
-      website: org_row['website'], scope_of_work: org_row['scope_of_work'], creator: AdminUser.first }
+      website: org_row['website'], scope_of_work: org_row['scope_of_work'], creator: AdminUser.first, active: false }
   end
 
   def build_social_media_hash(org_row, new_organization)
