@@ -2,7 +2,7 @@
 
 class SpreadsheetParse
   FILES_NAME = ['orgs.csv', 'tags.csv', 'beneficiaries.csv', 'locations.csv',
-                'location_services.csv'].freeze
+                'location_services.csv', 'location_office_hours.csv'].freeze
 
   def import(spreadsheet)
     file_path = File.open(File.join(Rails.root, 'db', 'uploads'))
@@ -31,15 +31,15 @@ class SpreadsheetParse
     CSV.foreach(csv_file_paths[:orgs_csv_file], headers: :first_row) do |org_row|
       unless organzation_already_exists?(org_row['name'])
         new_organization = Organization.new(build_organization_hash(org_row))
-        new_organization.active = false
-
         if new_organization.save!(validate: false)
           new_social_media = SocialMedia.create(build_social_media_hash(org_row, new_organization))
 
           create_tags(csv_file_paths[:tags_csv_file], new_organization, org_row['id'])
           create_organization_beneficiaries(csv_file_paths[:beneficiaries_csv_file], new_organization, org_row['id'])
-          create_locations_and_location_services(csv_file_paths[:locations_csv_file],
-                                                 csv_file_paths[:location_services_csv_file], new_organization, org_row['id'])
+          create_locations_location_services_and_office_hours(csv_file_paths[:locations_csv_file],
+                                                              csv_file_paths[:location_services_csv_file],
+                                                              csv_file_paths[:location_office_hours_csv_file], 
+                                                              new_organization, org_row['id'])
         end
       end
     end
@@ -65,12 +65,14 @@ class SpreadsheetParse
     end
   end
 
-  def create_locations_and_location_services(locations_csv_file_path, location_services_csv_file_path, new_organization, org_id)
+  def create_locations_location_services_and_office_hours(locations_csv_file_path, location_services_csv_file_path, location_office_hours_csv_file, new_organization, org_id)
     CSV.foreach(locations_csv_file_path, headers: :first_row) do |location_row|
       if location_row['organization_id'] == org_id
         new_location = Location.create!(build_location_hash(location_row, new_organization))
 
         create_location_services(location_services_csv_file_path, new_location, location_row['id'])
+        create_location_office_hours(location_office_hours_csv_file, new_location, location_row['id']) unless CSV.read(location_office_hours_csv_file).length < 1
+
       end
     end
   end
@@ -84,12 +86,25 @@ class SpreadsheetParse
     end
   end
 
+  def create_location_office_hours(office_hours_file_path, new_location, location_id)
+    CSV.foreach(office_hours_file_path, headers: :first_row) do |office_hour_row|
+      if office_hour_row['location_id'] == location_id
+        OfficeHour.create!(location: new_location,
+                           day: Date::DAYNAMES.index(office_hour_row['day']), 
+                           open_time: Time.now.change({ hour: office_hour_row['open_time'] }).in_time_zone('Eastern Time (US & Canada)'), 
+                           close_time: Time.now.change({ hour: office_hour_row['close_time'] }).in_time_zone('Eastern Time (US & Canada)'),
+                           closed: office_hour_row['closed'] == 'yes' )  
+      end 
+    end
+  end
+
+
   def build_organization_hash(org_row)
     { name: org_row['name'], ein_number: org_row['ein_number'], irs_ntee_code: org_row['irs_ntee_code'],
       mission_statement_en: org_row['mission_statement_en'], vision_statement_en: org_row['vision_statement_en'],
       tagline_en: org_row['tagline_en'], mission_statement_es: org_row['mission_statement_es'],
       vision_statement_es: org_row['vision_statement_es'], tagline_es: org_row['tagline_es'],
-      website: org_row['website'], scope_of_work: org_row['scope_of_work'], creator: AdminUser.first }
+      website: org_row['website'], scope_of_work: org_row['scope_of_work'], creator: AdminUser.first, active: false }
   end
 
   def build_social_media_hash(org_row, new_organization)

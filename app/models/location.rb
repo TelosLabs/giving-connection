@@ -27,6 +27,8 @@ class Location < ActiveRecord::Base
 
   belongs_to :organization, optional: true
 
+  scope :active, -> { joins(:organization).where(organization: { active: true }) } 
+
   has_many :office_hours
   has_many :favorite_locations, dependent: :destroy
   has_many :tags, through: :organization
