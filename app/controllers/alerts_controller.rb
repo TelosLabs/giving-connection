@@ -17,6 +17,7 @@ class AlertsController < ApplicationController
     if new_alert.save
       create_alert_services(new_alert, params['search']['services'])
       create_alert_beneficiaries(new_alert, params['search']['beneficiary_groups'])
+      schedule_next_alert(new_alert)
       @type = 'notice'
       @message = 'Alert created successfully'
     else
@@ -64,4 +65,15 @@ class AlertsController < ApplicationController
     end
   end
 
+  def schedule_next_alert(alert)
+    case alert.frequency
+    when 'daily'
+      alert.update!(next_alert: Date.today + 1)
+    when 'weekly'
+      alert.update!(next_alert: Date.today + 7)
+    when 'monthly'
+      alert.update!(next_alert: Date.today + 30)
+    end
+  end
+  
 end
