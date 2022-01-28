@@ -14,10 +14,9 @@ class AlertsController < ApplicationController
     new_alert = Alert.new(alert_params)
     new_alert.user = current_user
     new_alert = clean_open_now_and_open_weekends(new_alert)
-    if new_alert.save
+    if new_alert.save!
       create_alert_services(new_alert, params['search']['services'])
       create_alert_beneficiaries(new_alert, params['search']['beneficiary_groups'])
-      schedule_next_alert(new_alert)
       @type = 'notice'
       @message = 'Alert created successfully'
     else
@@ -63,17 +62,5 @@ class AlertsController < ApplicationController
       find_beneficiary = BeneficiarySubcategory.find_by_name(beneficiary)
       AlertBeneficiary.create!(beneficiary_subcategory: find_beneficiary, alert: alert)
     end
-  end
-
-  def schedule_next_alert(alert)
-    case alert.frequency
-    when 'daily'
-      alert.update!(next_alert: Date.today + 1)
-    when 'weekly'
-      alert.update!(next_alert: Date.today + 7)
-    when 'monthly'
-      alert.update!(next_alert: Date.today + 30)
-    end
-  end
-  
+  end  
 end

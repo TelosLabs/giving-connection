@@ -11,7 +11,7 @@ module Alerts
     end
 
     def send_alert_email
-      SavedSearchAlertMailer.send_saved_search_alert(@alert).deliver_later
+      SavedSearchAlertMailer.send_alert(@alert).deliver_later
     end
 
     def update_next_alert
