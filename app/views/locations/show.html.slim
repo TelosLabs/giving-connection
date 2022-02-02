@@ -1,10 +1,7 @@
 = form_with model: @search, scope: :search, url: searches_path, class: '', method: :get do |f|
   = render SearchBar::Component.new(form: f, search: @search)
 div class=""
-  div class="flex flex-row justify-between w-full p-4 bg-gray-9 md:hidden"  data-controller="modal"
-    a href="javascript:history.back()" class="flex inline-flex items-center px-3 py-2 text-sm leading-4" type="button"
-      = inline_svg_tag "back_icon.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative mr-2'
-      | Back to Search Results
+  div class="flex flex-row justify-between w-full bg-gray-9 md:hidden"  data-controller="modal"
   div class="flex flex-col flex-wrap justify-center w-full sm:pb-14 md:gap-4 md:flex-row sm:p-7"
     div class="w-full bg-white rounded max-w-656px"
       = image_tag @location.organization.cover_photo, class:'w-full h-24 object-fit-cover rounded-t'
