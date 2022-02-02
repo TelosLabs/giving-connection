@@ -79,6 +79,8 @@
           div# class="w-full h-full" data-places-target="map"
           div class="hidden"
             - @results&.each do |result|
+              div class="hidden" data-places-target="latitude"
+              div class="hidden" data-places-target="longitude"
               div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}"
                 - if user_signed_in?
                   - if !FavoriteLocation.exists?(user_id: current_user.id, location_id: result.id)
@@ -115,6 +117,8 @@
         div# class="absolute inset-0 w-full h-full" data-places-target="map"
         div class="hidden"
           - @results&.each do |result|
+            div class="hidden" data-places-target="latitude"
+            div class="hidden" data-places-target="longitude"
             div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}"
               - if user_signed_in?
                 - if !FavoriteLocation.exists?(user_id: current_user.id, location_id: result.id)
