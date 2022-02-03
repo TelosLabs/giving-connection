@@ -30,7 +30,6 @@ class Alert < ApplicationRecord
 
   after_commit :schedule_next_alert
 
-
   private
 
   def schedule_next_alert

@@ -8,7 +8,7 @@ class SearchesController < ApplicationController
 
   def show
     @search = params['search'].present? ? Search.new(create_params) : Search.new
-
+  
     @search.save
     @pagy, @results = pagy(@search.results)
 
