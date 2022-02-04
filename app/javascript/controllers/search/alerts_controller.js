@@ -3,17 +3,11 @@ import Rails from '@rails/ujs'
 
 export default class extends Controller {
   static get targets() {
-    return ['form']
-  }
-
-  connect() {
-    console.log('connect')
+    return ['form', 'editForm', 'editButton']
   }
 
   submitForm() {
-    console.log('submitform')
     let formData = $(this.formTarget).serialize()
-    console.log(formData)
     Rails.ajax({
       url: '/alerts',
       type: 'POST',
@@ -25,4 +19,16 @@ export default class extends Controller {
     })
   }
 
+  editForm() {
+    let formData = $(this.editFormTarget).serialize()
+    Rails.ajax({
+      url: `/alerts/${this.editButtonTarget.dataset.alertId}`,
+      type: 'PUT',
+      data: formData,
+      dataType: 'script',
+      success: function(data) {
+        location.reload()
+      }
+    })
+  }
 }
