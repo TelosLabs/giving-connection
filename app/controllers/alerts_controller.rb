@@ -32,11 +32,7 @@ class AlertsController < ApplicationController
 
   def update
     @alert = Alert.find(params[:id])
-    if @alert.update(alert_params)
-      flash[:success] = "Alert updated!"
-    else
-      flash[:error] = "Alert not updated"
-    end
+    @alert.update(alert_params)
   end
 
 	def destroy
