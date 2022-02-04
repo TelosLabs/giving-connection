@@ -24,15 +24,15 @@ div class='fixed inset-0 flex items-center justify-center hidden min-h-screen an
           legend.sr-only Alert frequency
           div class='space-y-3 text-sm text-gray-2'
             div class="flex items-center"
-              = radio_button_tag "search[frequency]", 'daily', check_frequency('daily'), id: "frequency#{@alert_id}"
+              = radio_button_tag "search[frequency]", 'daily', check_frequency('daily'), id: "frequency#{@alert_id}daily"
               label.ml-3 for='daily'
                 | Daily
             div class='flex items-center'
-              = radio_button_tag "search[frequency]", 'weekly', check_frequency('weekly'), id: "frequency#{@alert_id}"
+              = radio_button_tag "search[frequency]", 'weekly', check_frequency('weekly'), id: "frequency#{@alert_id}weekly"
               label.ml-3 for='weekly'
                 | Weekly
             div class='flex items-center'
-              = radio_button_tag "search[frequency]", 'monthly', check_frequency('monthly'), id: "frequency#{@alert_id}"
+              = radio_button_tag "search[frequency]", 'monthly', check_frequency('monthly'), id: "frequency#{@alert_id}montly"
               label.ml-3 for='monthly'
                 | Monthly
     div class='px-4 py-5 font-normal rounded-md text-gray-2 bg-gray-9'
