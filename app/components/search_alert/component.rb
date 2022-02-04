@@ -26,8 +26,8 @@ class SearchAlert::Component < ViewComponent::Base
       type: 'button',
       data: { action: @edit ? 'click->modal#close click->search--alerts#editForm'
                             : 'click->modal#close click->search--alerts#submitForm',
-              'search--alerts-targets': @edit ? 'editButton' : '',
-              'alert-id': @edit ? @alert_id : '' 
+              'search--alerts-target': @edit ? 'editButton' : '',
+              'alert-id': @alert_id
             }
     }
   end
