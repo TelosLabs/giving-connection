@@ -6,7 +6,7 @@ class MyAccountsController < ApplicationController
 
   def show
     @saved_pages = current_user.favorited_locations
-    @alerts = current_user.alerts
+    @alerts = current_user.alerts.order(:id)
     @my_organizations = current_user.administrated_organizations
   end
 end

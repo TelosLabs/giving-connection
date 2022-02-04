@@ -3,7 +3,7 @@
 class AlertsController < ApplicationController
   include Pundit
 
-  after_action :verify_authorized, except: :destroy
+  after_action :verify_authorized, except: [:destroy, :update]
 
   def new
     @alert = Alert.new
@@ -17,11 +17,9 @@ class AlertsController < ApplicationController
     if new_alert.save
       create_alert_services(new_alert, params['search']['services'])
       create_alert_beneficiaries(new_alert, params['search']['beneficiary_groups'])
-      @type = 'notice'
-      @message = 'Alert created successfully'
+      flash[:notice] = 'Alert created successfully'
     else
-      @type = 'alert'
-      @message = 'Could not create alert. Try later'
+      flash[:error] = 'Could not create alert. Try later'
     end
     respond_to do |format|
       format.js { render :index }
@@ -30,6 +28,11 @@ class AlertsController < ApplicationController
 
   def edit
 		@alert = Alert.find(params[:id])
+  end
+
+  def update
+    @alert = Alert.find(params[:id])
+    @alert.update(alert_params)
   end
 
 	def destroy
