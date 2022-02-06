@@ -41,7 +41,8 @@ jobs:
         options: --entrypoint redis-server
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -49,34 +50,35 @@ jobs:
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
 
-      - name: Create DB
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.17.4
+      - name: Find yarn cache location
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: JS package cache
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install packages
         run: |
-          bin/rails db:prepare
+          yarn install --pure-lockfile
+
+      - name: Setup test database
+        env:
+          RAILS_ENV: test
+          PGHOST: localhost
+          PGUSER: myapp
+        run: |
+          bin/rails db:setup
 
       - name: Run tests
-        run: |
-          bundle exec rspec --exclude-pattern "spec/system/*_spec.rb"
-
-  # linters:
-  #   jobs:
-  # pronto:
-  #   runs-on: ubuntu-latest
-  #
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
-  #     - run: |
-  #         git fetch --no-tags --prune origin +refs/heads/*:refs/remotes/origin/*
-  #     - name: Setup Ruby
-  #       uses: ruby/setup-ruby@v1
-  #     - name: Setup pronto
-  #       run: gem install pronto pronto-rubocop
-  #     - name: Run Pronto
-  #       run: pronto run -f github_status github_pr -c origin/main
-  #       env:
-  #         PRONTO_PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
-  #         PRONTO_GITHUB_ACCESS_TOKEN: "${{ github.token }}"
-
+        run: bin/rspec
+        
   security:
     name: Security
     runs-on: ubuntu-latest
