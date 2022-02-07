@@ -11,12 +11,12 @@ class OrganizationsController < ApplicationController
   end
 
   def edit
-    @organization = Organization.active.find(params[:id])
+    @organization = Organization.find(params[:id])
     authorize @organization
   end
 
   def update
-    @organization = Organization.active.find(params[:id])
+    @organization = Organization.find(params[:id])
     authorize @organization
     if @organization.update(organization_params)
       update_location_services(params['organization']['locations_attributes']) unless params['organization']['locations_attributes'].empty? || params['organization']['locations_attributes'].nil?
@@ -62,10 +62,12 @@ class OrganizationsController < ApplicationController
     locations_attributes.each do |location|
       @location = Location.find_by_name(location.last['name'])
       @location.location_services.destroy_all unless @location.nil?
-      next if location.last['location_services_attributes']['0']['services']['service'].empty? || location.last['location_services_attributes'].nil?
+      if @location.offer_services
+        next if location.last['location_services_attributes']['0']['services']['service'].empty? || location.last['location_services_attributes'].nil?
 
-      JSON.parse(location.last['location_services_attributes']['0']['services']['service']).each do |service_hash|
-        LocationService.create(location: @location, service: Service.find_by_name(service_hash['value']))
+        JSON.parse(location.last['location_services_attributes']['0']['services']['service']).each do |service_hash|
+          LocationService.create(location: @location, service: Service.find_by_name(service_hash['value']))
+        end
       end
     end
   end
@@ -74,10 +76,10 @@ class OrganizationsController < ApplicationController
     params.require(:organization)
           .permit(:name, :second_name, :ein_number, :irs_ntee_code, :website, :scope_of_work,
                   :mission_statement_en, :mission_statement_es, :vision_statement_en,
-                  :vision_statement_es, :tagline_en, :tagline_es, :email, :phone_number,
+                  :vision_statement_es, :tagline_en, :tagline_es, :email, :phone_number, :active,
                   social_media_attributes: %i[facebook instagram twitter linkedin youtube blog id],
                   tags_attributes: [],
-                  locations_attributes: [:id, :name, :address, :latitude, :longitude, :website,
+                  locations_attributes: [:id, :name, :address, :latitude, :longitude, :website, :po_box,
                                          :main, :physical, :offer_services, :appointment_only, :_destroy, 
                                          { phone_number_attributes: [:number],
                                            office_hours_attributes: %i[id day open_time close_time closed] }],

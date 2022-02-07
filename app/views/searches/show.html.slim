@@ -47,7 +47,7 @@
                   li
                     = render ResultCard::Component.new(title: result&.name,\
                                                     address: result&.address,\
-                                                    image_url: result&.organization&.logo,\
+                                                    image_url: result&.organization&.logo.service_url,\
                                                     id: result&.id,\
                                                     website: result&.decorate&.website || result&.organization&.decorate&.website,\
                                                     description: result&.organization&.mission_statement_en,
@@ -79,9 +79,9 @@
           div# class="w-full h-full" data-places-target="map"
           div class="hidden"
             - @results&.each do |result|
+              div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}" data-po_box="#{result.po_box}"
               div class="hidden" data-places-target="latitude"
               div class="hidden" data-places-target="longitude"
-              div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}"
                 - if user_signed_in?
                   - if !FavoriteLocation.exists?(user_id: current_user.id, location_id: result.id)
                     = link_to favorite_locations_path(location_id: result.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", method: :post, remote: true do
@@ -116,7 +116,7 @@
       div class="relative hidden w-full md:flex" data-controller="places result-card--component" data-places-zoom-value="10"  data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
         div# class="absolute inset-0 w-full h-full" data-places-target="map"
         div class="hidden"
-          - @results&.each do |result|
+          - @results.besides_po_boxes&.each do |result|
             div class="hidden" data-places-target="latitude"
             div class="hidden" data-places-target="longitude"
             div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}"
