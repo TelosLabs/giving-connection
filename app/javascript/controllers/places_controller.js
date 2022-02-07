@@ -15,13 +15,15 @@ export default class extends Controller {
     }
   }
 
+  initialize() {
+    this.markersArray = []
+  }
+
   initMap() {
     this.map = new google.maps.Map(this.mapTarget, {
-      center: new google.maps.LatLng(this.latitudeValue || 36.16404968727089, this.longitudeValue || -86.78125827725053),
+      center: new google.maps.LatLng(this.latitudeValue || Number(this.latitudeTarget.value) || 36.16404968727089, this.longitudeValue || Number(this.longitudeTarget.value) || -86.78125827725053),
       zoom: (this.zoomValue || 10)
     })
-
-    // navigator.geolocation.getCurrentPosition(success);
 
     function success (position) {
        document.getElementById('search_lat').value = position.coords.latitude;
@@ -33,15 +35,22 @@ export default class extends Controller {
      } else {
        navigator.geolocation.getCurrentPosition(success);
      }
+    
+    const image = this.imageurlValue
 
     if (this.hasFieldTarget) {
       this.autocomplete = new google.maps.places.Autocomplete(this.fieldTarget)
       this.autocomplete.bindTo('bounds', this.map)
       this.autocomplete.setFields(['address_components', 'geometry', 'icon', 'name'])
       this.autocomplete.addListener('place_changed', this.placeChanged.bind(this))
+      
+      this.marker = new google.maps.Marker({
+        position: { lat: Number(this.latitudeTarget.value) , lng: Number(this.longitudeTarget.value) },
+        map: this.map,
+        icon: image
+      });
+      this.markersArray.push(this.marker)
     }
-
-    const image = this.imageurlValue
 
     if (this.hasMarkerTarget) {
       this.setMarkers(this.map, image);
@@ -52,7 +61,6 @@ export default class extends Controller {
         icon: image
       })
     }
-
   }
 
   setMarkers(map, image) {
@@ -84,6 +92,7 @@ export default class extends Controller {
   }
 
   placeChanged() {
+    this.clearMarkers()
     let place = this.autocomplete.getPlace()
 
     if (!place.geometry) {
@@ -109,5 +118,12 @@ export default class extends Controller {
     if (event.key == "Enter") {
       event.preventDefault()
     }
+  }
+
+  clearMarkers() {
+    for (var i = 0; i < this.markersArray.length; i++ ) {
+      this.markersArray[i].setMap(null);
+    }
+    this.markersArray.length = 0;
   }
 }

@@ -26,7 +26,7 @@
               | List
             button class="relative inline-flex items-center px-5 py-1 -ml-px text-sm border rounded-r-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="1"
               | Map
-        div class="flex flex-col w-full bg-white h-85vh md:overflow-y-auto" data-controller="modal"
+        div class="flex flex-col w-full bg-white md:h-85vh md:overflow-y-auto" data-controller="modal"
           div class="flex flex-row items-center justify-between w-full p-4 bg-white border-b border-gray-8"
             span class="text-xs text-gray-3"
               | #{pluralize(@pagy.count, 'result')} found
@@ -40,14 +40,14 @@
               = link_to new_user_registration_path, class: 'inline-flex items-center px-3 py-2 text-xs text-gray-3' do
                 = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
                 | Create Search Alert
-          div class="hidden w-full h-full md:overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
+          div class="hidden w-full h-full overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
             - if @results.present?
               ul class="flex flex-col divide-y divide-gray-8"
                 - @results.each do |result|
                   li
                     = render ResultCard::Component.new(title: result&.name,\
                                                     address: result&.address,\
-                                                    image_url: result&.organization&.logo,\
+                                                    image_url: result&.organization&.logo.service_url,\
                                                     id: result&.id,\
                                                     website: result&.decorate&.website || result&.organization&.decorate&.website,\
                                                     description: result&.organization&.mission_statement_en,
@@ -79,7 +79,9 @@
           div# class="w-full h-full" data-places-target="map"
           div class="hidden"
             - @results&.each do |result|
-              div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}"
+              div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}" data-po_box="#{result.po_box}"
+              div class="hidden" data-places-target="latitude"
+              div class="hidden" data-places-target="longitude"
                 - if user_signed_in?
                   - if !FavoriteLocation.exists?(user_id: current_user.id, location_id: result.id)
                     = link_to favorite_locations_path(location_id: result.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", method: :post, remote: true do
@@ -114,7 +116,9 @@
       div class="relative hidden w-full md:flex" data-controller="places result-card--component" data-places-zoom-value="10"  data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
         div# class="absolute inset-0 w-full h-full" data-places-target="map"
         div class="hidden"
-          - @results&.each do |result|
+          - @results.besides_po_boxes&.each do |result|
+            div class="hidden" data-places-target="latitude"
+            div class="hidden" data-places-target="longitude"
             div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}"
               - if user_signed_in?
                 - if !FavoriteLocation.exists?(user_id: current_user.id, location_id: result.id)
