@@ -67,7 +67,7 @@ div class="w-full h-full bg-white"
                   li
                     = render ResultCard::Component.new(title: page.name,\
                                                       address: page.address,\
-                                                      image_url: page.organization.logo.service_url,\
+                                                      image_url: page.organization.logo,\
                                                       id: page.id,\
                                                       website: page.decorate.website || page.organization.decorate.website,\
                                                       description: page.organization.mission_statement_en,

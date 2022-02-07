@@ -7,20 +7,17 @@
     </div>
     <div class="w-full">
       <div class="flex flex-row items-start justify-between">
-        <a href="<%= location_path(@id)%>" class="inline-flex items-center py-2 text-sm font-bold text-blue-medium">
-        <h5 class="text-lg font-bold text-black">
-          <%= @title %>
-        </h5>
+        <a href="<%= location_path(@id)%>" class="inline-flex items-center py-2 text-sm font-bold text-blue-medium" 
+           id="new_favorite_location_<%= @id %>">
+          <h5 class="text-lg font-bold text-black">
+            <%= @title %>
+          </h5>
         </a>
         <% if @current_user.present? %>
-          <% if !FavoriteLocation.exists?(user_id: @current_user&.id, location_id: @id) %>
-            <%= link_to favorite_locations_path(location_id: @id), class: "inline-flex items-center p-2 text-xs text-gray-3", method: :post, remote: true, data: { action:"click->result-card--component#reloadPage" } do %>
-              <%= inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4' %>
-            <% end %>
+          <% if FavoriteLocation.exists?(user_id: @current_user&.id, location_id: @id) %>
+            <%= render 'shared/marked', id: @id, user_id: @current_user&.id %>
           <% else %>
-            <%= link_to favorite_location_path(FavoriteLocation.find_by(user_id: @current_user.id, location_id: @id)), method: :delete, class: "inline-flex items-center p-2 text-xs text-gray-3", remote: true, data: { action:"click->result-card--component#reloadPage" } do %>
-              <%= inline_svg_tag 'bookmark_colored.svg', class: 'w-4 h-4' %>
-            <% end %>
+            <%= render 'shared/unmarked', id: @id %>
           <% end %>
         <% else %>
           <%= link_to new_user_registration_path, class: "inline-flex items-center p-2 text-xs text-gray-3" do %>
