@@ -12,7 +12,7 @@ module Locations
     class << self
       def call(params = {}, locations =  Location.active)
         scope = locations
-        scope = geo_near(scope, default_coordinates, params[:distance])
+        scope = geo_near(scope, starting_coordinates(params[:lat], params[:lon]), params[:distance])
         scope = by_address(scope, params[:address])
         scope = by_service(scope, params[:services])
         scope = by_beneficiary_groups_served(scope, params[:beneficiary_groups])
@@ -86,8 +86,12 @@ module Locations
       ).distinct
     end
 
-      def default_coordinates
-        Geo.to_wkt(Geo.point(DEFAULT_LOCATION[:longitude], DEFAULT_LOCATION[:latitude]))
+      def starting_coordinates(lat, lon)
+        if lat.nil? || lon.nil?  
+          Geo.to_wkt(Geo.point(DEFAULT_LOCATION[:longitude], DEFAULT_LOCATION[:latitude]))
+        else
+          Geo.to_wkt(Geo.point(lon, lat))
+        end
       end
 
       def parameterize_address_filters(address_params)

@@ -6,6 +6,9 @@ export default class extends Controller {
     return ['form', 'editForm', 'editButton']
   }
 
+  connect() {
+  }
+
   submitForm() {
     let formData = $(this.formTarget).serialize()
     Rails.ajax({

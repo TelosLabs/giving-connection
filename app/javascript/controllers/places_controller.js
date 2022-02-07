@@ -25,6 +25,17 @@ export default class extends Controller {
       zoom: (this.zoomValue || 10)
     })
 
+    function success (position) {
+       document.getElementById('search_lat').value = position.coords.latitude;
+       document.getElementById('search_lon').value = position.coords.longitude;
+     }
+
+    if(!navigator.geolocation) {
+       console.log('Geolocation is not supported by your browser');
+     } else {
+       navigator.geolocation.getCurrentPosition(success);
+     }
+    
     const image = this.imageurlValue
 
     if (this.hasFieldTarget) {
