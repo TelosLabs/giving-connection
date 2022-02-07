@@ -1,10 +1,7 @@
 = form_with model: @search, scope: :search, url: searches_path, class: '', method: :get do |f|
   = render SearchBar::Component.new(form: f, search: @search)
 div class=""
-  div class="flex flex-row justify-between w-full p-4 bg-gray-9 md:hidden"  data-controller="modal"
-    a href="javascript:history.back()" class="flex inline-flex items-center px-3 py-2 text-sm leading-4" type="button"
-      = inline_svg_tag "back_icon.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative mr-2'
-      | Back to Search Results
+  div class="flex flex-row justify-between w-full bg-gray-9 md:hidden"  data-controller="modal"
   div class="flex flex-col flex-wrap justify-center w-full sm:pb-14 md:gap-4 md:flex-row sm:p-7"
     div class="w-full bg-white rounded max-w-656px"
       = image_tag @location.organization.cover_photo, class:'w-full h-24 object-fit-cover rounded-t'
@@ -86,7 +83,7 @@ div class=""
           p class="text-sm leading-6 font-base text-gray-2"
             span class="font-bold"
               ' Website:
-            a href="#{@location.decorate.website || @location.organization.decorate.website}" target="_blank"
+            a href="#{@location.decorate.website || @location.organization.decorate.website}" target="_blank" class="text-blue-medium"
               = @location.decorate.website || @location.organization.decorate.website
           p class="text-sm leading-6 font-base text-gray-2"
             span class="font-bold"
@@ -187,7 +184,7 @@ div class=""
               = inline_svg_tag 'linkedin_box.svg', class: "text-salmon fill-current"
           - if @location.social_media&.twitter.present?
             a href=@location.social_media&.twitter class="text-sm font-base text-gray-2" target="_blank"
-              = inline_svg_tag 'twitter-box.svg', class: "text-salmon fill-current"
+              = inline_svg_tag 'twitter_box.svg', class: "text-salmon fill-current"
           - if @location.social_media&.instagram.present?
             a href=@location.social_media&.instagram class="text-sm font-base text-gray-2" target="_blank"
               = inline_svg_tag 'instagram_box.svg', class: "text-salmon fill-current"

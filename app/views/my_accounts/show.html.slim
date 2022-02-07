@@ -1,5 +1,5 @@
-div class="w-full h-full bg-grey-9"
-  div class="max-w-6xl py-12 mx-auto bg-white md:px-28 md:my-7"
+div class="w-full h-full bg-white"
+  div class="max-w-6xl py-12 mx-auto md:px-28 md:py-20"
     h2 class="mb-6 text-2xl font-bold text-center text-grey-2 md:text-left"
       | My Account
     div
@@ -67,7 +67,7 @@ div class="w-full h-full bg-grey-9"
                   li
                     = render ResultCard::Component.new(title: page.name,\
                                                       address: page.address,\
-                                                      image_url: page.organization.logo.service_url,\
+                                                      image_url: page.organization.logo,\
                                                       id: page.id,\
                                                       website: page.decorate.website || page.organization.decorate.website,\
                                                       description: page.organization.mission_statement_en,
@@ -88,15 +88,16 @@ div class="w-full h-full bg-grey-9"
             - if @alerts.present?
               ul class="flex flex-col divide-y divide-gray-8"
                 - @alerts.each do |alert|
-                  li class="flex flex-col w-full py-10"
-                    div class="flex flex-row justify-between w-full" data-controller="modal"
-                      span class="text-lg font-bold text-black capitalize"
-                        | #{alert.keyword}
-                      button class="text-blue-medium" type="button" data-action="click->modal#open"
-                        | Edit
-                      = render SearchAlert::Component.new(keywords: alert.keyword, filters: list_all_filters(alert), edit: true, alert_id: alert.id)
-                    div class="flex flex-row text-sm font-normal text-gray-2"
-                      | #{list_services_and_beneficiary_filters(alert).join(', ')}
+                  = form_with model: @alert, url: alert_path(alert.id), data: { controller: 'search--alerts', 'search--alerts-target': 'editForm'}, method: :put do |f|
+                    li class="flex flex-col w-full py-10"
+                      div class="flex flex-row justify-between w-full" data-controller="modal search--alert"
+                        span class="text-lg font-bold text-black capitalize"
+                          | #{alert.keyword}
+                        button class="text-blue-medium" type="button" data-action="click->modal#open"
+                          | Edit
+                        = render SearchAlert::Component.new(keywords: alert.keyword, filters: list_all_filters(alert), edit: true, alert_id: alert.id)
+                      div class="flex flex-row text-sm font-normal text-gray-2"
+                        | #{list_services_and_beneficiary_filters(alert).join(', ')}
             - else
               div class="flex justify-center w-full my-16"
                 = inline_svg_tag 'empty_state_2.svg', size:'294*145'

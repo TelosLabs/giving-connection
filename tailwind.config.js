@@ -6,6 +6,7 @@ module.exports = {
   theme: {
     screens: {
       'xs': '375px',
+      '525px' : '525px',
       'mid': '870px',
       ...screens,
     },
@@ -90,6 +91,7 @@ module.exports = {
         'min-content': 'min-content',
         '46px': '46px',
         '300px': '300px',
+        '350px': '350px',
         '400px': '400px',
         '85vh': '85vh',
       },
