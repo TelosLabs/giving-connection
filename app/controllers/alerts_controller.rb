@@ -3,7 +3,7 @@
 class AlertsController < ApplicationController
   include Pundit
 
-  after_action :verify_authorized, except: :destroy
+  after_action :verify_authorized, except: [:destroy, :update]
 
   def new
     @alert = Alert.new
@@ -13,15 +13,13 @@ class AlertsController < ApplicationController
   def create
     new_alert = Alert.new(alert_params)
     new_alert.user = current_user
-    new_alert = clean_open_now_and_open_weekends(new_alert)
+    new_alert = clean_open_weekends(new_alert)
     if new_alert.save
       create_alert_services(new_alert, params['search']['services'])
       create_alert_beneficiaries(new_alert, params['search']['beneficiary_groups'])
-      @type = 'notice'
-      @message = 'Alert created successfully'
+      flash[:notice] = 'Alert created successfully'
     else
-      @type = 'alert'
-      @message = 'Could not create alert. Try later'
+      flash[:error] = 'Could not create alert. Try later'
     end
     respond_to do |format|
       format.js { render :index }
@@ -30,6 +28,11 @@ class AlertsController < ApplicationController
 
   def edit
 		@alert = Alert.find(params[:id])
+  end
+
+  def update
+    @alert = Alert.find(params[:id])
+    @alert.update(alert_params)
   end
 
 	def destroy
@@ -41,11 +44,10 @@ class AlertsController < ApplicationController
 
   def alert_params
     params.require(:search).permit(:distance, :city, :state, :beneficiary_groups,
-                                   :services, :open_now, :open_weekends, :keyword, :frequency)
+                                   :services, :open_weekends, :keyword, :frequency)
   end
 
-  def clean_open_now_and_open_weekends(new_alert)
-    new_alert.update!(open_now: false) unless new_alert.open_now == true
+  def clean_open_weekends(new_alert)
     new_alert.update!(open_weekends: false) unless new_alert.open_weekends == true
     new_alert
   end

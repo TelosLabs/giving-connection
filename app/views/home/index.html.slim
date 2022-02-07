@@ -36,7 +36,7 @@ main
           | 3. Receive help
         p class="px-5"
           | Found a nonprofit that meets your needs criteria? Reach out through the contact information provided on their individual profiles.
-    div class="flex flex-col mx-auto md:flex-row max-w-7xl justify-evenly sm:mb-1 sm:pb-20 md:px-8"
+    div class="flex flex-col mx-auto md:flex-row max-w-7xl justify-evenly sm:mb-1 525px:pb-20 md:px-8"
       div class="relative flex flex-col justify-center mb-16 text-center md:mx-0 md:mb-0"
         div class="max-w-sm py-4 mx-auto"
           h2 class="px-10 pb-4 text-2xl font-bold text-center"
@@ -52,10 +52,8 @@ main
           = inline_svg_tag 'lw-mob-blur-left.svg', size:'320*428'
         div class="absolute right-0 overflow-visible -top-40 -z-1 sm:hidden"
           = inline_svg_tag 'lw-mob-blur-right.svg'
-      div class="justify-center hidden px-0 sm:flex"
-        = image_tag 'group-friends.png'
-      div class="flex justify-center sm:hidden"
-        = image_tag 'group-friends-mob.png', class:'w-full'
+      div class="flex justify-center px-0"
+        = image_tag 'board-members.png', class:"525px:rounded-xl object-cover h-350px sm:h-full"
   section class="relative bg-seafoam"
     div class="relative z-20 max-w-md pb-20 mx-auto text-center"
       h2 class="px-5 pt-20 text-2xl font-bold text-center sm:px-0 md:pt-28 text-blue-dark pb-11"

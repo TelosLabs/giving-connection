@@ -144,7 +144,7 @@ div class="w-full h-full bg-grey-9"
                 = render "location_fields", location_form: location
  
             = f.fields_for :locations do |location_form| %
-              div class="grid grid-cols-12 gap-6 mt-8 nested-fields" data-action="google-maps-callback@window->places#initMap" data-controller="places extend-toggle" data-places-imageurl-value=("\#{asset_path 'markergc.png'}")
+              div class="grid grid-cols-12 gap-6 mt-8 nested-fields" data-action="google-maps-callback@window->places#initMap" data-controller="places extend-toggle" data-places-imageurl-value="#{asset_path 'markergc.png'}"
                 - if location_form.index == 1
                   div class="col-span-12 mt-12 text-gray-2"
                     h5 class="pb-2 text-lg font-medium leading-7"
