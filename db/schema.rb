@@ -129,6 +129,15 @@ ActiveRecord::Schema.define(version: 2022_02_07_161434) do
     t.index ["user_id"], name: "index_favorite_locations_on_user_id"
   end
 
+  create_table "location_causes", force: :cascade do |t|
+    t.bigint "location_id", null: false
+    t.bigint "cause_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cause_id"], name: "index_location_causes_on_cause_id"
+    t.index ["location_id"], name: "index_location_causes_on_location_id"
+  end
+
   create_table "location_services", force: :cascade do |t|
     t.string "description"
     t.bigint "location_id", null: false
@@ -314,6 +323,8 @@ ActiveRecord::Schema.define(version: 2022_02_07_161434) do
   add_foreign_key "beneficiary_subcategories", "beneficiary_groups"
   add_foreign_key "favorite_locations", "locations"
   add_foreign_key "favorite_locations", "users"
+  add_foreign_key "location_causes", "causes"
+  add_foreign_key "location_causes", "locations"
   add_foreign_key "location_services", "locations"
   add_foreign_key "location_services", "services"
   add_foreign_key "locations", "organizations"
