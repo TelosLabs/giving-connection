@@ -71,6 +71,12 @@ class Location < ActiveRecord::Base
   )
 
   accepts_nested_attributes_for(
+    :location_causes,
+    reject_if: :all_blank,
+    allow_destroy: true
+  )
+
+  accepts_nested_attributes_for(
     :phone_number,
     reject_if: :all_blank,
     update_only: true
