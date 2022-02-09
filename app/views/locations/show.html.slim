@@ -17,9 +17,18 @@ div class=""
           button type="button" class="flex items-center text-sm gray-2" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="#{request.url}"
             = inline_svg_tag 'share_icon.svg', class: " fill-current mr-2"
             | Share
-          a href="#" class="flex items-center text-sm gray-2"
-            = inline_svg_tag 'save_icon.svg', class: " fill-current mr-2"
-            | Save
+          - if current_user.present?
+            - if FavoriteLocation.exists?(user_id: current_user&.id, location_id: @location.id)
+              = link_to favorite_location_path(id: FavoriteLocation.find_by(user_id: current_user&.id, location_id: @location.id), origin: "location_show"), method: :delete, class: "flex items-center text-sm gray-2" do
+                = inline_svg_tag "bookmark_colored.svg", class: "w-4 h-4 mr-2"
+                | Save
+            - else
+              = link_to favorite_locations_path(location_id: @location.id,origin: "location_show"), method: :post, class: "flex items-center text-sm gray-2" do
+                = inline_svg_tag "bookmark_empty.svg", class: "w-4 h-4 mr-2"
+                | Save
+          - else
+            = link_to new_user_registration_path, class: "inline-flex items-center p-2 text-xs text-gray-3" do
+              = inline_svg_tag 'bookmark_empty.svg', class: "w-4 h-4 mr-2"          
         - if @location.causes.present?
           div class="flex my-8 gap-2.5 flex-wrap px-6"
             - @location.causes.uniq.each do |cause|
