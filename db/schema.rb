@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_25_114120) do
+ActiveRecord::Schema.define(version: 2022_02_09_181946) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -127,6 +127,15 @@ ActiveRecord::Schema.define(version: 2022_01_25_114120) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["location_id"], name: "index_favorite_locations_on_location_id"
     t.index ["user_id"], name: "index_favorite_locations_on_user_id"
+  end
+
+  create_table "location_causes", force: :cascade do |t|
+    t.bigint "location_id", null: false
+    t.bigint "cause_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cause_id"], name: "index_location_causes_on_cause_id"
+    t.index ["location_id"], name: "index_location_causes_on_location_id"
   end
 
   create_table "location_services", force: :cascade do |t|
@@ -314,6 +323,8 @@ ActiveRecord::Schema.define(version: 2022_01_25_114120) do
   add_foreign_key "beneficiary_subcategories", "beneficiary_groups"
   add_foreign_key "favorite_locations", "locations"
   add_foreign_key "favorite_locations", "users"
+  add_foreign_key "location_causes", "causes"
+  add_foreign_key "location_causes", "locations"
   add_foreign_key "location_services", "locations"
   add_foreign_key "location_services", "services"
   add_foreign_key "locations", "organizations"

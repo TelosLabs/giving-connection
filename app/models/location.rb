@@ -33,6 +33,7 @@ class Location < ActiveRecord::Base
   has_many :office_hours
   has_many :favorite_locations, dependent: :destroy
   has_many :tags, through: :organization
+  has_many :location_causes, dependent: :destroy
   has_many :location_services, dependent: :destroy
   has_many :services, through: :location_services
   has_many :causes, through: :services
