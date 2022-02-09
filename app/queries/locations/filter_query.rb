@@ -54,9 +54,11 @@ module Locations
       complex_query = []
       services.each do |cause, services_list|
         services_list.each do |ser|
-          complex_query << Location.sanitize_sql("('#{cause}', '#{ser}')")
+          cause = cause.gsub("'","''")
+          ser = ser.gsub("'","''")
+          complex_query << "('#{cause}', '#{ser}')"
         end
-      end
+      end  
 
       Location.joins(
         location_services: { service: :cause }
@@ -73,7 +75,9 @@ module Locations
       complex_query = []
       beneficiary_groups_filters.each do |group, subcategory|
         subcategory.each do |sub|
-          complex_query << Location.sanitize_sql("('#{group}', '#{sub}')")
+          cause = cause.gsub("'","''")
+          group = group.gsub("'","''")
+          complex_query << "('#{group}', '#{sub}')"
         end
       end
 
