@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_15_134809) do
+ActiveRecord::Schema.define(version: 2022_02_15_135904) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -200,6 +200,15 @@ ActiveRecord::Schema.define(version: 2022_02_15_134809) do
     t.index ["organization_id"], name: "index_organization_beneficiaries_on_organization_id"
   end
 
+  create_table "organization_causes", force: :cascade do |t|
+    t.bigint "cause_id", null: false
+    t.bigint "organization_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cause_id"], name: "index_organization_causes_on_cause_id"
+    t.index ["organization_id"], name: "index_organization_causes_on_organization_id"
+  end
+
   create_table "organizations", force: :cascade do |t|
     t.string "name", null: false
     t.string "ein_number", null: false
@@ -321,6 +330,8 @@ ActiveRecord::Schema.define(version: 2022_02_15_134809) do
   add_foreign_key "organization_admins", "users"
   add_foreign_key "organization_beneficiaries", "beneficiary_subcategories"
   add_foreign_key "organization_beneficiaries", "organizations"
+  add_foreign_key "organization_causes", "causes"
+  add_foreign_key "organization_causes", "organizations"
   add_foreign_key "phone_numbers", "locations"
   add_foreign_key "services", "causes"
   add_foreign_key "social_medias", "organizations"
