@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_07_161434) do
+ActiveRecord::Schema.define(version: 2022_02_16_165005) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(version: 2022_02_07_161434) do
     t.string "name", null: false
     t.string "email"
     t.boolean "po_box", default: false
+    t.string "suite"
     t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
     t.index ["organization_id"], name: "index_locations_on_organization_id"
   end
