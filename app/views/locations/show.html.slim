@@ -38,10 +38,11 @@ div class=""
           h4 class="text-sm font-bold uppercase text-gray-2"
             | contact information
           p class="text-sm leading-6 font-base text-gray-2"
-            span class="font-bold"
-              ' Phone:
-            span
-              = @location.phone_number&.number
+            - if @location.phone_number.present?
+              span class="font-bold"
+                ' Phone:
+              span
+                = @location.phone_number&.number
           p class="text-sm leading-6 font-base text-gray-2"
             span class="font-bold"
               ' Hours:
@@ -90,15 +91,17 @@ div class=""
                 = display_day_working_hours(@location.day_hours(Time::DAYS_INTO_WEEK[:sunday]))
 
           p class="text-sm leading-6 font-base text-gray-2"
-            span class="font-bold"
-              ' Website:
-            a href="#{@location.decorate.website || @location.organization.decorate.website}" target="_blank" class="text-blue-medium"
-              = @location.decorate.website || @location.organization.decorate.website
+            - if @location.website.present? || @location.organization.website.present?
+              span class="font-bold"
+                ' Website:
+              a href="#{@location.decorate.website || @location.organization.decorate.website}" target="_blank" class="text-blue-medium"
+                = @location.decorate.website || @location.organization.decorate.website
           p class="text-sm leading-6 font-base text-gray-2"
-            span class="font-bold"
-              ' Email:
-            a href="mailto:#{@location.email}" target="_blank"
-              = @location.email
+            - if @location.email.present?
+              span class="font-bold"
+                ' Email:
+              a href="mailto:#{@location.email}" target="_blank"
+                = @location.email
         div class="my-6 border-t border-gray-8"
         div class="flex flex-col px-6 text-left"
           h4 class="text-sm font-bold text-black uppercase"
