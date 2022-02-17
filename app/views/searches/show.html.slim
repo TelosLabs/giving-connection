@@ -47,7 +47,7 @@
                   li
                     = render ResultCard::Component.new(title: result&.name,\
                                                     address: result&.address,\
-                                                    image_url: result&.organization&.logo,\
+                                                    image_url: result&.organization&.logo.service_url,\
                                                     id: result&.id,\
                                                     website: result&.decorate&.website || result&.organization&.decorate&.website,\
                                                     description: result&.organization&.mission_statement_en,
