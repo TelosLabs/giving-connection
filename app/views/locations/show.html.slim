@@ -31,7 +31,7 @@ div class=""
               = inline_svg_tag 'bookmark_empty.svg', class: "w-4 h-4 mr-2"          
         - if @location.causes.present?
           div class="flex my-8 gap-2.5 flex-wrap px-6"
-            - @location.causes.uniq.each do |cause|
+            - @location.organization.causes.uniq.each do |cause|
               span class="text-sm text-center px-2.5 py-1.5 rounded-lg border border-gray-6 text-gray-3"
                 = cause.name
         div class="mx-6 text-left"

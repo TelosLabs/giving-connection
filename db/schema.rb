@@ -129,15 +129,6 @@ ActiveRecord::Schema.define(version: 2022_02_16_165005) do
     t.index ["user_id"], name: "index_favorite_locations_on_user_id"
   end
 
-  create_table "location_causes", force: :cascade do |t|
-    t.bigint "location_id", null: false
-    t.bigint "cause_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["cause_id"], name: "index_location_causes_on_cause_id"
-    t.index ["location_id"], name: "index_location_causes_on_location_id"
-  end
-
   create_table "location_services", force: :cascade do |t|
     t.string "description"
     t.bigint "location_id", null: false
@@ -208,6 +199,15 @@ ActiveRecord::Schema.define(version: 2022_02_16_165005) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["beneficiary_subcategory_id"], name: "index_organization_beneficiaries_on_beneficiary_subcategory_id"
     t.index ["organization_id"], name: "index_organization_beneficiaries_on_organization_id"
+  end
+
+  create_table "organization_causes", force: :cascade do |t|
+    t.bigint "cause_id", null: false
+    t.bigint "organization_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cause_id"], name: "index_organization_causes_on_cause_id"
+    t.index ["organization_id"], name: "index_organization_causes_on_organization_id"
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -324,8 +324,6 @@ ActiveRecord::Schema.define(version: 2022_02_16_165005) do
   add_foreign_key "beneficiary_subcategories", "beneficiary_groups"
   add_foreign_key "favorite_locations", "locations"
   add_foreign_key "favorite_locations", "users"
-  add_foreign_key "location_causes", "causes"
-  add_foreign_key "location_causes", "locations"
   add_foreign_key "location_services", "locations"
   add_foreign_key "location_services", "services"
   add_foreign_key "locations", "organizations"
@@ -333,6 +331,8 @@ ActiveRecord::Schema.define(version: 2022_02_16_165005) do
   add_foreign_key "organization_admins", "users"
   add_foreign_key "organization_beneficiaries", "beneficiary_subcategories"
   add_foreign_key "organization_beneficiaries", "organizations"
+  add_foreign_key "organization_causes", "causes"
+  add_foreign_key "organization_causes", "organizations"
   add_foreign_key "phone_numbers", "locations"
   add_foreign_key "services", "causes"
   add_foreign_key "social_medias", "organizations"

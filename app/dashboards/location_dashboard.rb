@@ -25,7 +25,6 @@ class LocationDashboard < Administrate::BaseDashboard
     address: AddressField,
     phone_number: Field::HasOne,
     office_hours: Field::NestedHasMany,
-    location_causes: Field::NestedHasMany,
     location_services: Field::NestedHasMany,
     appointment_only: Field::Boolean,
     services: Field::HasMany,
@@ -84,7 +83,6 @@ class LocationDashboard < Administrate::BaseDashboard
     latitude
     longitude
     offer_services
-    location_causes
     location_services
     office_hours
   ].freeze

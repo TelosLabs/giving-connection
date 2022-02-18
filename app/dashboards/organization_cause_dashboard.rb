@@ -1,6 +1,6 @@
 require "administrate/base_dashboard"
 
-class LocationCauseDashboard < Administrate::BaseDashboard
+class OrganizationCauseDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -8,8 +8,8 @@ class LocationCauseDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    location: Field::BelongsTo,
     cause: Field::BelongsTo,
+    organization: Field::BelongsTo,
     id: Field::Number,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -21,8 +21,8 @@ class LocationCauseDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-    location
     cause
+    organization
     id
     created_at
   ].freeze
@@ -30,8 +30,8 @@ class LocationCauseDashboard < Administrate::BaseDashboard
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-    location
     cause
+    organization
     id
     created_at
     updated_at
@@ -56,10 +56,10 @@ class LocationCauseDashboard < Administrate::BaseDashboard
   #   }.freeze
   COLLECTION_FILTERS = {}.freeze
 
-  # Overwrite this method to customize how location causes are displayed
+  # Overwrite this method to customize how organization causes are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(location_cause)
-  #   "LocationCause ##{location_cause.id}"
+  # def display_resource(organization_cause)
+  #   "OrganizationCause ##{organization_cause.id}"
   # end
 end
