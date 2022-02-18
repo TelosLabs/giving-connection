@@ -28,7 +28,7 @@ class Alert < ApplicationRecord
 
   scope :due_for_today, -> { where(next_alert: Date.today) }
 
-  after_commit :schedule_next_alert
+  after_create_commit :schedule_next_alert
 
   private
 

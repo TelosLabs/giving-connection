@@ -6,8 +6,8 @@ class SavedSearchAlertMailer < ApplicationMailer
     search = Search.new(search_params(alert))
     search.save
     @new_locations = search.results.select { |result| result.create_at > alert.next_alert }
-    if @new_locations.count > 0 
-      mail to: alert.user.email, subject: "Giving Connection - #{@new_locations.count} New Locations Added !" 
+    unless @new_locations.empty?
+      mail to: alert.user.email, subject: "Giving Connection - #{@new_locations.count} New Locations Added !"
     end
   end
 
@@ -17,7 +17,7 @@ class SavedSearchAlertMailer < ApplicationMailer
       city: alert.city.presence, state: alert.state.presence,
       open_weekends: ActiveModel::Type::Boolean.new.cast(alert.open_weekends),
       services: build_services(alert),
-      beneficiary_groups: build_beneficiary_groups(alert), 
+      beneficiary_groups: build_beneficiary_groups(alert),
       distance: alert.distance.presence&.to_i
     }
     filters
