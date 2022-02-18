@@ -11,6 +11,4 @@
 #
 class Cause < ApplicationRecord
   has_many :services
-  has_many :location_causes, dependent: :destroy
-  has_many :locations, through: :location_causes
 end

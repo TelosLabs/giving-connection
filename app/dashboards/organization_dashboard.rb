@@ -36,7 +36,8 @@ class OrganizationDashboard < Administrate::BaseDashboard
     locations: Field::NestedHasMany,
     phone_number: Field::Text,
     email: Field::Text,
-    active: Field::Boolean
+    active: Field::Boolean,
+    organization_causes: Field::NestedHasMany
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -95,6 +96,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     tagline_es
     organization_beneficiaries
     tags
+    organization_causes
     social_media
     locations
   ].freeze

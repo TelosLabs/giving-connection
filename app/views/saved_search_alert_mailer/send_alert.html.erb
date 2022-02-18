@@ -1,0 +1,13 @@
+<h1>Hello, <%= @alert.user.name %></h1>
+
+<p>Based on your <%= @alert.frequency %> alert filters, we are reaching out to inform you that 
+	<%= @new_locations.count %> locations were added since our last contact. The locations are the following: 
+</p>
+
+<% @new_locations.each_with_index do |location, index| %>
+	<p><%= index + 1 %>. <strong><%= location.name %></strong></p>
+	<p><%= location.address %></p>
+<% end  %>
+
+Best Wishes,
+Giving Connection

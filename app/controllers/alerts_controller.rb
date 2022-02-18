@@ -62,6 +62,5 @@ class AlertsController < ApplicationController
       find_beneficiary = BeneficiarySubcategory.find_by_name(beneficiary)
       AlertBeneficiary.create!(beneficiary_subcategory: find_beneficiary, alert: alert)
     end
-  end
-
+  end  
 end

@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
+
   namespace :admin do
     resources :admin_users
     resources :users
@@ -40,7 +43,7 @@ Rails.application.routes.draw do
 
   resources :organizations, only: %i[edit update]
   resources :favorite_locations, only: %i[create destroy]
-  resources :alerts, only: %i[new update create destroy]
+  resources :alerts, only: %i[new create update destroy]
   resource :searches, only: %i[show]
   resource :my_account, only: %i[show]
   resource :about_us, only: %i[show]
