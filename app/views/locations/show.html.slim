@@ -17,9 +17,18 @@ div class=""
           button type="button" class="flex items-center text-sm gray-2" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="#{request.url}"
             = inline_svg_tag 'share_icon.svg', class: " fill-current mr-2"
             | Share
-          a href="#" class="flex items-center text-sm gray-2"
-            = inline_svg_tag 'save_icon.svg', class: " fill-current mr-2"
-            | Save
+          - if current_user.present?
+            - if FavoriteLocation.exists?(user_id: current_user&.id, location_id: @location.id)
+              = link_to favorite_location_path(id: FavoriteLocation.find_by(user_id: current_user&.id, location_id: @location.id), origin: "location_show"), method: :delete, class: "flex items-center text-sm gray-2" do
+                = inline_svg_tag "bookmark_colored.svg", class: "w-4 h-4 mr-2"
+                | Save
+            - else
+              = link_to favorite_locations_path(location_id: @location.id,origin: "location_show"), method: :post, class: "flex items-center text-sm gray-2" do
+                = inline_svg_tag "bookmark_empty.svg", class: "w-4 h-4 mr-2"
+                | Save
+          - else
+            = link_to new_user_registration_path, class: "inline-flex items-center p-2 text-xs text-gray-3" do
+              = inline_svg_tag 'bookmark_empty.svg', class: "w-4 h-4 mr-2"          
         - if @location.causes.present?
           div class="flex my-8 gap-2.5 flex-wrap px-6"
             - @location.causes.uniq.each do |cause|
@@ -29,10 +38,11 @@ div class=""
           h4 class="text-sm font-bold uppercase text-gray-2"
             | contact information
           p class="text-sm leading-6 font-base text-gray-2"
-            span class="font-bold"
-              ' Phone:
-            span
-              = @location.phone_number&.number
+            - if @location.phone_number.present?
+              span class="font-bold"
+                ' Phone:
+              span
+                = @location.phone_number&.number
           p class="text-sm leading-6 font-base text-gray-2"
             span class="font-bold"
               ' Hours:
@@ -81,15 +91,17 @@ div class=""
                 = display_day_working_hours(@location.day_hours(Time::DAYS_INTO_WEEK[:sunday]))
 
           p class="text-sm leading-6 font-base text-gray-2"
-            span class="font-bold"
-              ' Website:
-            a href="#{@location.decorate.website || @location.organization.decorate.website}" target="_blank" class="text-blue-medium"
-              = @location.decorate.website || @location.organization.decorate.website
+            - if @location.website.present? || @location.organization.website.present?
+              span class="font-bold"
+                ' Website:
+              a href="#{@location.decorate.website || @location.organization.decorate.website}" target="_blank" class="text-blue-medium"
+                = @location.decorate.website || @location.organization.decorate.website
           p class="text-sm leading-6 font-base text-gray-2"
-            span class="font-bold"
-              ' Email:
-            a href="mailto:#{@location.email}" target="_blank"
-              = @location.email
+            - if @location.email.present?
+              span class="font-bold"
+                ' Email:
+              a href="mailto:#{@location.email}" target="_blank"
+                = @location.email
         div class="my-6 border-t border-gray-8"
         div class="flex flex-col px-6 text-left"
           h4 class="text-sm font-bold text-black uppercase"

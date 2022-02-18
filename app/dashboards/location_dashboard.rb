@@ -25,10 +25,12 @@ class LocationDashboard < Administrate::BaseDashboard
     address: AddressField,
     phone_number: Field::HasOne,
     office_hours: Field::NestedHasMany,
+    location_causes: Field::NestedHasMany,
     location_services: Field::NestedHasMany,
     appointment_only: Field::Boolean,
     services: Field::HasMany,
-    po_box: Field::Boolean
+    po_box: Field::Boolean,
+    suite: Field::String
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -60,6 +62,7 @@ class LocationDashboard < Administrate::BaseDashboard
     physical
     offer_services
     address
+    suite
     phone_number
     appointment_only
     office_hours
@@ -77,9 +80,11 @@ class LocationDashboard < Administrate::BaseDashboard
     phone_number
     po_box
     address
+    suite
     latitude
     longitude
     offer_services
+    location_causes
     location_services
     office_hours
   ].freeze

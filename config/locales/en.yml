@@ -42,3 +42,4 @@ en:
         tagline_es: Servicios - Como Lo Hacemos
       location:
         po_box: Is the address a PO BOX?
+        suite: Suite Number

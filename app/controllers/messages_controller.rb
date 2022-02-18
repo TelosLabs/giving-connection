@@ -12,6 +12,7 @@ class MessagesController < ApplicationController
     @message = build_message
 
     if @message.save
+      flash[:notice] = 'Your message was successfully sent!'
       redirect_to root_path
     else
       render :new

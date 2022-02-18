@@ -3,41 +3,39 @@
 class AlertsController < ApplicationController
   include Pundit
 
-  after_action :verify_authorized, except: [:destroy, :update]
-
   def new
     @alert = Alert.new
     @alert_params = params['alert_params']
+    authorize @alert
   end
 
   def create
     new_alert = Alert.new(alert_params)
     new_alert.user = current_user
     new_alert = clean_open_weekends(new_alert)
+    authorize new_alert
     if new_alert.save
-      create_alert_services(new_alert, params['search']['services'])
-      create_alert_beneficiaries(new_alert, params['search']['beneficiary_groups'])
-      flash[:notice] = 'Alert created successfully'
-    else
-      flash[:error] = 'Could not create alert. Try later'
+      create_alert_services(new_alert, params['search']['services']) unless params['search']['services'].nil?
+      create_alert_beneficiaries(new_alert, params['search']['beneficiary_groups']) unless params['search']['beneficiary_groups'].nil?
     end
-    respond_to do |format|
-      format.js { render :index }
-    end
+    authorize new_alert
   end
 
   def edit
 		@alert = Alert.find(params[:id])
+    authorize @alert
   end
 
   def update
     @alert = Alert.find(params[:id])
     @alert.update(alert_params)
+    authorize @alert
   end
 
 	def destroy
 		@alert = Alert.find(params[:id])
 		@alert.destroy
+    authorize @alert
     flash[:success] = "The alert was successfully deleted."
     redirect_to my_account_path
 	end

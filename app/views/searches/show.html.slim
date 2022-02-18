@@ -47,7 +47,7 @@
                   li
                     = render ResultCard::Component.new(title: result&.name,\
                                                     address: result&.address,\
-                                                    image_url: result&.organization&.logo.service_url,\
+                                                    image_url: result&.organization&.logo,\
                                                     id: result&.id,\
                                                     website: result&.decorate&.website || result&.organization&.decorate&.website,\
                                                     description: result&.organization&.mission_statement_en,
@@ -93,7 +93,7 @@
                   = link_to user_session_path, class: "inline-flex self-end text-xs text-gray-3" do
                     = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
                 h5 class="text-lg font-bold leading-6 text-gray-2"
-                  | #{result.organization.name}
+                  = link_to result.name, location_path(result)
                 p class="text-xs text-gray-4"
                   | #{result.address}
                 p class="text-xs text-blue-medium"
@@ -130,8 +130,8 @@
               - else
                 = link_to user_session_path, class: "inline-flex self-end text-xs text-gray-3" do
                   = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
-              h5 class="text-lg font-bold leading-6 text-gray-2"
-                | #{result.organization.name}
+              h5 class="text-lg font-bold leading-6 text-gray-2" id="pointer"
+                = link_to result.name, location_path(result)
               p class="text-xs text-gray-4"
                 | #{result.address}
               p class="text-xs text-blue-medium"
