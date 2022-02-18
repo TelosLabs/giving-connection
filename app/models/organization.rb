@@ -32,7 +32,7 @@ class Organization < ApplicationRecord
 
   has_many :tags, dependent: :destroy
   has_many :organization_causes
-  has_many :causes, through: :organization_cause
+  has_many :causes, through: :organization_causes
   has_many :organization_beneficiaries, dependent: :destroy
   has_many :organization_admins, dependent: :destroy
   has_many :beneficiary_subcategories, through: :organization_beneficiaries
