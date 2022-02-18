@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(version: 2022_02_16_165005) do
     t.string "frequency", default: "weekly"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.date "next_alert"
     t.index ["user_id"], name: "index_alerts_on_user_id"
   end
 

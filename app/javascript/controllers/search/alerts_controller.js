@@ -41,7 +41,7 @@ export default class extends Controller {
       }
     })
   }
-
+  
   editForm() {
     let formData = $(this.editFormTarget).serialize()
     Rails.ajax({

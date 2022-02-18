@@ -25,4 +25,21 @@ class Alert < ApplicationRecord
   has_many :alert_beneficiaries, dependent: :destroy
 
   validates :frequency, presence: true, inclusion: { in: %w[daily weekly monthly] }
+
+  scope :due_for_today, -> { where(next_alert: Date.today) }
+
+  after_create_commit :schedule_next_alert
+
+  private
+
+  def schedule_next_alert
+   case frequency
+   when 'daily'
+     self.update_column(:next_alert, Date.today + 1)
+   when 'weekly'
+     self.update_column(:next_alert, Date.today + 7)
+   when 'monthly'
+     self.update_column(:next_alert, Date.today + 30)
+   end
+  end
 end
