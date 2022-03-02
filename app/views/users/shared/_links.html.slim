@@ -1,7 +1,7 @@
 - if controller_name != 'sessions'
   div class="flex justify-center text-sm text-center"
     | Already have an Account?&nbsp
-    = link_to "Log in", new_session_path(resource_name), class: 'font-bold'
+    = link_to "Sign in", new_session_path(resource_name), class: 'font-bold'
 - if devise_mapping.registerable? && controller_name != 'registrations'
   div class="flex justify-center pt-5 text-sm text-center"
     ' New to Giving Connection?&nbsp
