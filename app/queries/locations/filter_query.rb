@@ -54,8 +54,8 @@ module Locations
       complex_query = []
       services.each do |cause, services_list|
         services_list.each do |ser|
-          cause = cause.gsub("'","''") unless cause.nil?
-          ser = ser.gsub("'","''") unless ser.nil?
+          cause = cause&.gsub("'","''") 
+          ser = ser&.gsub("'","''") 
           complex_query << "('#{cause}', '#{ser}')"
         end
       end  
@@ -75,8 +75,8 @@ module Locations
       complex_query = []
       beneficiary_groups_filters.each do |group, subcategory|
         subcategory.each do |sub|
-          cause = cause.gsub("'","''") unless cause.nil?
-          group = group.gsub("'","''") unless group.nil?
+          cause = cause&.gsub("'","''") 
+          group = group&.gsub("'","''")
           complex_query << "('#{group}', '#{sub}')"
         end
       end
