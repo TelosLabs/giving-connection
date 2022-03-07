@@ -23,4 +23,8 @@ class ResultCard::Component < ViewComponent::Base
     end
     uri.to_s
   end
+
+  def formated_description
+    @description.length <= 280 ? @description : "#{@description[0..280]} (...)"
+  end
 end
