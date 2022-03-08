@@ -75,6 +75,14 @@ class Location < ActiveRecord::Base
     update_only: true
   )
 
+  def formated_address
+    suite.nil? ? address : address_with_suite_number 
+  end
+
+  def address_with_suite_number
+    address.split(",").insert(1, suite).join(", ")
+  end
+
   private
 
   def lonlat_geo_point
