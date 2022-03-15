@@ -40,6 +40,8 @@ en:
         mission_statement_es: Declaración de Misión - Lo Que Hacemos
         vision_statement_es: Visión - Metas y Aspiraciones
         tagline_es: Servicios - Como Lo Hacemos
+        tags: Keywords / Tags
+        organization_beneficiaries: Populations Served
       location:
         po_box: Is the address a PO BOX?
         suite: Suite Number
