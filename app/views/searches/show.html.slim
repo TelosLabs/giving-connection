@@ -50,7 +50,8 @@
                                                     image_url: result&.organization&.logo.service_url,\
                                                     id: result&.id,\
                                                     website: result&.decorate&.website || result&.organization&.decorate&.website,\
-                                                    description: result&.organization&.mission_statement_en,
+                                                    description: result&.organization&.mission_statement_en,\
+                                                    phone_number: result.phone_number&.number,\
                                                     current_user: current_user)
               - if @pagy.pages > SearchesHelper::MIN_REQUIRED_PAGES
                 div class="h-40 px-4 mt-7"
@@ -97,9 +98,13 @@
                 p class="text-xs text-gray-4"
                   | #{result.address}
                 p class="text-xs text-blue-medium"
-                  = link_to "#{result.organization.website}", "http://#{result.organization.website}", target:"_blank"
-                p class="text-xs text-gray-4"
-                  | #{result.phone_number&.number}
+                  = link_to result.organization.website, "http://#{result.organization.website}", target:"_blank"
+                - if device == "mobile"
+                  a.text-xs.text-blue-medium[href="tel:#{result.phone_number&.number}"]
+                    = "call: #{result.phone_number&.number}"
+                - else
+                  p class="text-xs text-blue-medium"
+                    = result.phone_number&.number
                 p class="text-xs font-medium text-gray-2"
                   - if result.appointment_only?
                     span class="text-states-error"
