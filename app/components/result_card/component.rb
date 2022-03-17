@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 class ResultCard::Component < ViewComponent::Base
+  include ApplicationHelper
+
   def initialize(title:, address:, image_url:, website:, description:, id:, current_user:, phone_number: )
     @title = title
     @address = address
@@ -27,12 +29,5 @@ class ResultCard::Component < ViewComponent::Base
 
   def formated_description
     @description.length <= 280 ? @description : "#{@description[0..280]} (...)"
-  end
-
-  def device
-    agent = request.user_agent
-    return "tablet" if agent =~ /(tablet|ipad)|(android(?!.*mobile))/i
-    return "mobile" if agent =~ /Mobile/
-    return "desktop"
   end
 end
