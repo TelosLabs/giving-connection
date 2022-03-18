@@ -46,7 +46,7 @@
                 - @results.each do |result|
                   li
                     = render ResultCard::Component.new(title: result&.name,\
-                                                    address: result&.address,\
+                                                    address: result&.formatted_address,\
                                                     image_url: result&.organization&.logo.service_url,\
                                                     id: result&.id,\
                                                     website: result&.decorate&.website || result&.organization&.decorate&.website,\
@@ -138,7 +138,7 @@
               h5 class="text-lg font-bold leading-6 text-gray-2" id="pointer"
                 = link_to result.name, location_path(result)
               p class="text-xs text-gray-4"
-                = link_to result.address, "https://www.google.com/maps/search/#{result.address}", target: "blank" 
+                = link_to result.formatted_address, "https://www.google.com/maps/search/#{result.address}", target: "blank" 
               p class="text-xs text-blue-medium"
                 = link_to "#{result.organization.website}", "http://#{result.organization.website}", target:"_blank"
               p class="text-xs text-gray-4"
