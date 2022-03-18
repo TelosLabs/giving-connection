@@ -54,6 +54,7 @@ module.exports = {
           warning: '#febb5a',
           disabled: '#eff2f7'
         },
+        'electric-teal': '#d8fffe',
       },
       textColor: {
         gray: {
