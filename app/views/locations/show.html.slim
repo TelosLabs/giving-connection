@@ -93,20 +93,20 @@ div class=""
               span
                 = display_day_working_hours(@location.day_hours(Time::DAYS_INTO_WEEK[:sunday]))
 
-          p class="text-sm leading-6 font-base text-gray-2"
-            - if @location.website.present? || @location.organization.website.present?
+          - if @location.website.present? || @location.organization.website.present?
+            p class="text-sm leading-6 font-base text-gray-2"
               span class="font-bold"
                 ' Website:
               a href="#{@location.decorate.website || @location.organization.decorate.website}" target="_blank" class="text-blue-medium"
                 = @location.decorate.website || @location.organization.decorate.website
-          p class="text-sm leading-6 font-base text-gray-2"
-            - if @location.email.present?
+          - if @location.email.present?
+            p class="text-sm leading-6 font-base text-gray-2"
               span class="font-bold"
                 ' Email:
               a href="mailto:#{@location.email}" target="_blank"
                 = @location.email
-          p class="text-sm leading-6 font-base text-gray-2"
-            - if @location.organization.irs_ntee_code.present?
+          - if @location.organization.irs_ntee_code.present?
+            p class="text-sm leading-6 font-base text-gray-2"
               span class="font-bold"
                 ' NTEE Code:
               a href="mailto:#{@location.email}" target="_blank"
