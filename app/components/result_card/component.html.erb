@@ -30,6 +30,12 @@
         <% if @website.present? %>
           <%= link_to website_url, website_url, target: '_blank', class: 'text-blue-medium'%>
         <% end %>
+        <% if device == "mobile" && @phone_number.present? %>
+        <a class="text-xs text-blue-medium" href="tel:<%= @phone_number %>">
+          <%= "call: #{@phone_number}" %></a>
+          <% else %>
+        <p class="text-xs text-blue-medium"><%= @phone_number %></p>
+        <% end %>
       </div>
     </div>
   </div>
