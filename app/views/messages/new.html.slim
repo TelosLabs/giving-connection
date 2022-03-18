@@ -42,7 +42,7 @@
       div class="w-full"
         = f.label :subject
         = f.select :subject,\
-        [['I want to publish a non profit on Giving Connection', '1'],['I want to claim ownership of a non profit page', '2'], ['Other', '3']],\
+        [['I want to publish a nonprofit on Giving Connection', '1'],['I want to claim ownership of a nonprofit page', '2'], ['Other', '3']],\
         {}, {class: "c-input pr-7 bg-white", required: true, data: { action: "change->contact-form#subjectSelected",'contact-form-target': 'subject'}}
       div class="w-full"
         = f.label :organization_name, "*Organization Name"

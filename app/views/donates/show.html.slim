@@ -9,7 +9,7 @@ div class="bg-white main"
         | could not do this without your help. The overwhelming support we received from our
         | community has given us the foundational grounding and energized motivation to continue
         | our momentum towards meaningful change.
-      button class="c-button" Donate
+      = link_to "Donate", "#donate-online", class:"c-button"  
   div class="py-10 text-center md:py-20 "
     div id="instagram-feed-container" data-controller="instagram" class="max-w-4xl mx-auto" class="flex flex-wrap justify-center gap-2 pb-6"
     a href="https://www.instagram.com/givingconnection" class='flex justify-center text-blue-medium' target='_blank'
@@ -17,7 +17,7 @@ div class="bg-white main"
       div class="flex items-center"
         = inline_svg_tag 'expand-arrow.svg', class:'h-3 w-3 -rotate-svg-90 fill-current text-blue-medium'
   div class="py-10 text-center md:py-20 bg-blue-dark"
-    h2 class="pb-10 font-bold text-white uppercase md:pb-20 text-28px md:text-34px" Donate Online
+    h2 class="pb-10 font-bold text-white uppercase md:pb-20 text-28px md:text-34px" id="donate-online" Donate Online
     div class="flex px-6 mx-auto max-w-656px min-h-1150px md:min-h-800px"
       iframe src="https://givebutter.com/embed/c/givingconnectiondonatenow" class="w-full"
   div class="flex flex-col md:flex-row"
@@ -28,7 +28,7 @@ div class="bg-white main"
       div class="text-lg"
         | Your support and contributions will enable us to meet our goals and improve conditions.
         | Your generous donation will fund our mission.
-      button class="uppercase c-button"
+      =link_to "https://www.paypal.com/us/fundraiser/charity/4363348", target: "_blank", class:"uppercase c-button" do
         = inline_svg_tag 'paypal-icon.svg', class:"h-6 w-6 mr-1"
         | Donate Now
       = image_tag 'paypal-cards.png', class:"h-5 w-36"

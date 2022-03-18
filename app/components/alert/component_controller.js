@@ -5,6 +5,11 @@ export default class extends Controller {
     return [ "notification" ]
   } 
 
+  connect() {
+    setTimeout(() =>
+      this.notificationTarget.remove(), 10000)
+  }
+
   closeAlert() {
     this.notificationTarget.remove()
   }
