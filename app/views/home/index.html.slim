@@ -1,4 +1,19 @@
 main
+  section class="relative bg-electric-teal" data-controller="banner" data-banner-target="banner"
+    div class="flex max-w-3xl mx-auto py-7 md:py-8"
+      div class="hidden md:block md:pl-4 lg:pl-0"
+        = inline_svg_tag 'megaphone.svg', size: '65*70'
+      div class="pl-8 pr-10 md:px-0 md:ml-8 text-gray-1 "
+        div class="text-sm md:text-base mb-1.5 font-bold"
+          | We are currently in our testing phase
+        div class="text-xs leading-5 md:leading-6 md:text-sm md:pr-2"
+          | The information listed is for testing purposes only. We currently only have nonprofit listings in Nashville, TN. 
+          | We will enable searching by City, State, and Zip Code once we expand to other cities.
+      div class="absolute inset-y-0 right-0 flex items-start pt-1 pr-1 sm:pt-1.5 sm:pr-5 sm:items-start"
+        button class="flex p-2 rounded-md hover:bg-gray" type="button" data-action="banner#closeBanner"
+          span.sr-only Dismiss
+          = inline_svg_tag 'x-icon.svg', size: '14*14'
+
   section id="search" class="pt-6 pb-12 gradient-blue sm:pt-10 sm:pb-24"
     h2 class="z-20 px-12 pt-6 pb-10 text-2xl font-bold text-center text-white xs:px-20 sm:p-6"
       | What are you looking for today?
