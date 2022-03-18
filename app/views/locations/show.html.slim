@@ -12,7 +12,7 @@ div class=""
         h5 class="text-lg font-bold mb-2.5 text-center"
           = @location.name
         p class="text-xs text-center font-base text-gray-4"
-          = @location.formatted_address
+          = link_to @location.formatted_address, "https://www.google.com/maps/search/#{@location.address}", target: "blank"
         p class="text-xs text-center font-base text-gray-4"
           = @location.organization.irs_ntee_code
         p class="text-xs text-center font-base text-gray-4"
@@ -109,16 +109,18 @@ div class=""
                 = @location.email
         div class="my-6 border-t border-gray-8"
         div class="flex flex-col px-6 text-left"
-          h4 class="text-sm font-bold text-black uppercase"
-            | MISSION - WHAT WE DO
-          p class="text-sm text-black"
-            = @location.organization&.mission_statement_en
+          - if @location.organization.mission_statement_en.present?
+            h4 class="text-sm font-bold text-black uppercase"
+              | MISSION - WHAT WE DO
+            p class="text-sm text-black"
+              = @location.organization&.mission_statement_en
         div class="my-6 border-t border-gray-8"
         div class="flex flex-col px-6 text-left"
-          h4 class="text-sm font-bold text-black uppercase"
-            | VISION - GOALS AND ASPIRATIONS
-          p class="text-sm text-black"
-            = @location.organization&.vision_statement_en
+          - if @location.organization.vision_statement_en.present?
+            h4 class="text-sm font-bold text-black uppercase"
+              | VISION - GOALS AND ASPIRATIONS
+            p class="text-sm text-black"
+              = @location.organization&.vision_statement_en
         - if @location.organization&.tagline_en.present?
           div class="my-6 border-t border-gray-8"
           div class="flex flex-col px-6 text-left"

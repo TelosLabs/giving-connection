@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 class ResultCard::Component < ViewComponent::Base
-  def initialize(title:, address:, image_url:, website:, description:, id:, current_user: )
+  include ApplicationHelper
+
+  def initialize(title:, address:, image_url:, website:, description:, id:, current_user:, phone_number: )
     @title = title
     @address = address
     @image_url = image_url
@@ -8,6 +10,7 @@ class ResultCard::Component < ViewComponent::Base
     @id = id
     @description = description
     @current_user = current_user
+    @phone_number = phone_number
   end
 
   def website_url

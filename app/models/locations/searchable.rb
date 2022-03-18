@@ -20,7 +20,8 @@ module Locations
                         tsearch: { prefix: true, any_word: true },
                         dmetaphone: {},
                         trigram: {}
-                      }
+                      },
+                      ranked_by: ":trigram"
     end
   end
 end
