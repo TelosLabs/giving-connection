@@ -13,6 +13,10 @@ div class=""
           = @location.name
         p class="text-xs text-center font-base text-gray-4"
           = @location.address
+        p class="text-xs text-center font-base text-gray-4"
+          = @location.organization.irs_ntee_code
+        p class="text-xs text-center font-base text-gray-4"
+          = "EIN Number: #{@location.organization.ein_number}"
         div class="flex justify-center items-center mt-4 gap-2.5" data-controller="copy-to-clipboard"
           button type="button" class="flex items-center text-sm gray-2" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="#{request.url}"
             = inline_svg_tag 'share_icon.svg', class: " fill-current mr-2"
