@@ -76,7 +76,7 @@ class Location < ActiveRecord::Base
   )
 
   def formatted_address
-    suite.nil? ? address : address_with_suite_number 
+    suite.nil? || suite.empty? ? address : address_with_suite_number 
   end
 
   def address_with_suite_number
