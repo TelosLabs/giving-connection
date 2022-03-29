@@ -15,18 +15,12 @@ export default class extends Dropdown {
     this.activeClass = this.data.get('activeClass') || null
     this.enteringClass = this.data.get('enteringClass') || null
     this.leavingClass = this.data.get('leavingClass') || null
-    if (this.hasButtonTarget) {
-      this.buttonTarget.addEventListener("keydown", this._onMenuButtonKeydown)
-    }
 
     this.element.setAttribute("aria-haspopup", "true")
     document.addEventListener('keydown', this.keyboardListener)
   }
 
   disconnect() {
-    if (this.hasButtonTarget) {
-      this.buttonTarget.removeEventListener("keydown", this._onMenuButtonKeydown)
-    }
 
     document?.removeEventListener('keydown', this.keyboardListener);
     this.activeIndex = 0;
