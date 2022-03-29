@@ -1,77 +1,157 @@
 div class="bg-white main"
-  div class="flex flex-col md:flex-row"
-    div class="p-10 md:w-1/2"
-      = image_tag "give-heart.jpg"
-    div class="flex flex-col justify-center gap-5 p-8 text-center md:w-1/2"
-      h2 class="font-bold uppercase text-28px md:text-34px text-gray-3" Donate Now!
-      div class="text-lg"
-        | Your donation allows us to continue developing our nonprofit search platform. We truly
-        | could not do this without your help. The overwhelming support we received from our
-        | community has given us the foundational grounding and energized motivation to continue
-        | our momentum towards meaningful change.
-      = link_to "Donate", "#donate-online", class:"c-button"  
-  div class="py-10 text-center md:py-20 "
-    div id="instagram-feed-container" data-controller="instagram" class="max-w-4xl mx-auto" class="flex flex-wrap justify-center gap-2 pb-6"
-    a href="https://www.instagram.com/givingconnection" class='flex justify-center text-blue-medium' target='_blank'
-      div class="mr-2" Follow me on Instagram
-      div class="flex items-center"
-        = inline_svg_tag 'expand-arrow.svg', class:'h-3 w-3 -rotate-svg-90 fill-current text-blue-medium'
-  div class="py-10 text-center md:py-20 bg-blue-dark"
-    h2 class="pb-10 font-bold text-white uppercase md:pb-20 text-28px md:text-34px" id="donate-online" Donate Online
+
+  /* Banner */
+  div class="relative bg-blue-gradient-3 h-72"
+    div class="flex flew-row justify-around h-72 overflow-hidden"
+      div
+        = inline_svg_tag 'new-blur-left.svg', size:'723*288'
+      div
+        = inline_svg_tag 'new-blur-right.svg', size:'723*288'
+    div class="max-w-md mx-auto text-center absolute top-0 left-0 right-0"
+      h2 class="px-5 pt-20 text-3xl font-bold text-center leading-10 sm:px-0 md:pt-28 text-blue-dark pb-11"
+        | We believe giving is the most important verb in life
+    div
+      = inline_svg_tag 'simple-star.svg', size: '22*22', class:"absolute top-20 left-80 fill-current text-blue-dark"
+    div
+      = inline_svg_tag 'simple-star.svg', size: '22*22', class:"absolute top-12 right-96 fill-current text-blue-dark"
+    div
+      = inline_svg_tag 'simple-heart.svg', size: '22*22', class:"absolute bottom-12 right-64 fill-current text-blue-dark"
+
+  /* Donate Now */
+  div class="flex justify-center gap-20 pt-20"
+    div
+      = inline_svg_tag 'lady-sitting.svg', size: '410*218'
+    div class="flex flex-col relative text-center"
+      div
+        = inline_svg_tag 'blur-background-1.svg', size: '511*369', class: "transform scale-150"
+      div class="absolute top-0 left-0 right-0"
+        h2 class="text-2xl font-bold text-gray-2 mb-6"
+          | Donate Now
+        p class="w-400px text-gray-2 mx-auto mb-8"
+          ' Your donation allows us to continue developing our nonprofit search platform.
+          ' We truly could not do this without your help. The overwhelming support we received
+          ' from our community has given us the foundational grounding and energized motivation
+          ' to continue our momentum towards meaningful change.
+        = link_to "Donate", "https://www.paypal.com/us/fundraiser/charity/4363348", target: "_blank", class:'c-button inline-block my-1 text-primary-dark-blue bg-secondary-seafoam'
+
+  /* Donate Online */
+  div class="relative py-10 text-center md:pt-20 bg-gradient-to-l from-blue-gradient-1 to-blue-gradient-2"
+    h2 class="pb-10 font-bold text-white uppercase text-2xl md:pb-20" id="donate-online" Donate Online
     div class="flex px-6 mx-auto max-w-656px min-h-1150px md:min-h-800px"
       iframe src="https://givebutter.com/embed/c/givingconnectiondonatenow" class="w-full"
-  div class="flex flex-col md:flex-row"
-    div class="md:w-1/2"
-      = image_tag "donate-paypal-section.png", class:"object-cover w-full h-300px md:h-full"
-    div class="flex flex-col items-center justify-center gap-8 px-6 py-10 text-center md:px-16 md:w-1/2"
-      h2 class="font-bold uppercase text-28px md:text-34px text-gray-3" Donate Using Paypal
-      div class="text-lg"
-        | Your support and contributions will enable us to meet our goals and improve conditions.
-        | Your generous donation will fund our mission.
-      =link_to "https://www.paypal.com/us/fundraiser/charity/4363348", target: "_blank", class:"uppercase c-button" do
-        = inline_svg_tag 'paypal-icon.svg', class:"h-6 w-6 mr-1"
-        | Donate Now
-      = image_tag 'paypal-cards.png', class:"h-5 w-36"
-  div class="px-6 py-10 text-center md:py-20"
-    h2 class="pb-10 font-bold uppercase md:pb-20 text-28px md:text-34px text-gray-3" Donate by Mail
-    div class="mx-auto max-w-565px"
-      = image_tag 'donate-mail.jpg'
-    div class="pt-6 leading-8"
-      p We greatly appreciate your support! Please make checks payable to
-      p "Giving Connection Inc" and mail to the address below:
-      p 304 Nantucket Drive
-      p Cape May, NJ 08204
-      p Remember to include your name, email address, and phone number.
-      p Once received, we will email you confirmation of receipt.
-  div class="px-6 py-10 text-center md:py-20"
-    h2 class="pb-10 font-bold tracking-tight uppercase sm:tracking-normal md:pb-20 text-28px md:text-34px text-gray-3"
-      | Corporate Matching
-    div class="mx-auto max-w-565px"
-      = image_tag 'coins-corporate.jpg'
-    div class="pt-6 mx-auto leading-8 max-w-565px"
-      | Don't forget to see if your employer participates in corporate matching! When you search,
-      | make sure you look for "Giving Connection Inc" in New Jersey (EIN: 86-3459449).
-  div class="max-w-4xl px-6 py-10 mx-auto text-center md:py-20"
-    h2 class="pb-10 font-bold uppercase md:pb-20 text-28px md:text-34px text-gray-3"
-      | Support Giving Connection by Shopping on Amazon
-    div class="flex flex-col md:flex-row-reverse"
-      div class="md:px-6"
-        = image_tag 'amazon-smile.jpg'
-      div class="flex flex-col gap-6 md:px-6"
-        h5 class="tracking-widest text-22px" Want to support Giving Connection Inc just by shopping at Amazon?
 
-        p Here's all you need to do.
-        p
-          | 1) Go to the link below
-          = link_to 'https://smile.amazon.com/ch/86-3459449', 'https://smile.amazon.com/ch/86-3459449', class:"text-blue-medium break-words underline", target:'_blank'
-        p 2) Sgn in to your Amazon account.
-        p 3) When you shop at smile.amazon.com, Amazon donates 0.5% of your eligible purchases - at no cost to you to Giving Connection Inc!
-        p
-          | 4) Enable AmazonSmile on your mobile app to automatically enroll each eligible purchase. Open the app and
-          | find ’Settings’ in the main menu (☰). Tap on ‘AmazonSmile’ and follow the on-screen instructions to turn
-          | on AmazonSmile on your phone.
-  div class="px-6 py-10 text-center md:py-20"
-    h2 class="pb-10 font-bold uppercase md:pb-20 text-22px text-gray-3" Click Below to sign into AmazonSmile
-    = link_to 'https://smile.amazon.com/ch/86-3459449', target:'_blank' do
-      = image_tag 'amazon-smile.jpg', class:"h-64 w-80 mx-auto"
+    div class="absolute top-20 left-80 fill-current text-white"
+      = inline_svg_tag 'simple-heart.svg', size: '22*22'
 
+    div class="absolute bottom-60 left-60 fill-current text-white"
+      = inline_svg_tag 'simple-star.svg', size: '22*22'
+
+    div class="absolute bottom-1/2 left-3/4 fill-current text-white"
+      = inline_svg_tag 'simple-star.svg', size: '22*22'
+
+  /* Other ways to give */
+  div class="flex flex-col items-center justify-center"
+    div class="relative"
+      div
+        = inline_svg_tag 'blur-background-2.svg', size: '511*369', class: "transform scale-150"
+      div class="absolute left-0 right-0 top-1/2 text-center"
+        h2 class="text-2xl font-bold text-gray-2"
+          | OTHER WAYS TO GIVE
+
+    div class="flex gap-40 justify-center mb-28"
+      div
+        = inline_svg_tag 'pablita.svg', size: '444*250'
+      div class="flex flex-col items-start text-left"
+        h2 class="text-2xl font-bold text-blue-dark mb-6"
+          | Donate using Paypal
+        p class="w-353px text-gray-2 mb-9"
+          ' Your support and contributions will enable us to meet our goals
+          ' and improve conditions. Your generous donation will fund our mission.
+        = link_to "Donate now", "https://www.paypal.com/us/fundraiser/charity/4363348", target: "_blank", class:'c-button c-button--no-center inline-block my-1 text-primary-dark-blue bg-secondary-seafoam mb-9'
+        = image_tag  "paypal-cards.png", size:"169x21"
+
+    div class="flex gap-14 justify-center mb-28"
+      div class="flex flex-col items-start text-left"
+        h2 class="text-2xl font-bold text-blue-dark mb-6"
+          | Donate by mail
+        p class="w-454px text-gray-2 mb-6"
+          ' We greatly appreciate your support!
+        p class="w-454px text-gray-2"
+          ' Please make checks payable to:
+        p class="w-454px text-gray-2 mb-6"
+          ' "Giving Connection Inc" and mail to the address below:
+
+        p class="w-454px text-gray-2 font-bold"
+          | 304 Nantucket Drive
+        p class="w-454px text-gray-2 font-bold mb-6"
+          | Cape May, NJ 08204
+
+        p class="w-353px text-gray-2 mb-6"
+          ' Remember to include your name, email address,
+          ' and phone number. Once received, we will email
+          ' you confirmation of receipt.
+      div
+        = inline_svg_tag 'pablita-2.svg', size: '434*245'
+
+    div class="flex gap-32 justify-center mb-28"
+      div
+        = inline_svg_tag 'corp-matching-illo.svg', size: '427*324'
+      div class="flex flex-col items-start text-left"
+        h2 class="text-2xl font-bold text-blue-dark mb-6"
+          | Corporate Matching
+        p class="w-353px text-gray-2 mb-6"
+          ' Don't forget to see if your employer participates
+          ' in corporate matching!
+        p class="w-353px text-gray-2"
+          ' When you search, make sure you look for "Giving Connection Inc"
+          ' in New Jersey
+        p class="w-454px text-gray-2 font-bold"
+          ' EIN: 86-3459449
+
+    div class="flex justify-center mb-28"
+      div class="flex flex-col items-start text-left"
+        h2 class="text-2xl font-bold text-blue-dark"
+          | Support Giving Connection
+        h2 class="text-2xl font-bold text-blue-dark mb-6"
+          | by shopping on Amazon
+
+        p class="w-415px font-bold text-gray-2"
+          ' Want to support Giving Connection Inc
+        p class="w-415px font-bold text-gray-2 mb-6"
+          ' just by shopping at Amazon?
+
+        p class="w-415px text-gray-2 mb-6"
+          ' Here's all you need to do
+
+        p class="w-415px text-gray-2 mb-6"
+          ' 1) Go to the link below: https://smile.amazon.com/ch/86-3459449'
+
+        p class="w-415px text-gray-2 mb-6"
+          ' 2) Sign in to your Amazon account.
+
+        p class="w-415px text-gray-2 mb-6"
+          ' 3) When you shop at smile.amazon.com, Amazon donates 0.5% of your eligible purchases - at no cost to you to Giving Connection Inc!
+
+        p class="w-415px text-gray-2 mb-6"
+          ' 4) Enable AmazonSmile on your mobile app to automatically enroll each eligible purchase.
+          ' Open the app and find ’Settings’ in the main menu (☰). Tap on ‘AmazonSmile’ and follow the on-screen instructions to turnon AmazonSmile on your phone.
+
+        = link_to "SIGN INTO AMAZONSMILE", "https://smile.amazon.com/ch/86-3459449'", target: "_blank", class:'c-button c-button--no-center inline-block my-1 text-primary-dark-blue bg-secondary-seafoam mb-9'
+      div
+        = inline_svg_tag 'pablita-3.svg', size: '503*283'
+
+  /* Follow Instagram */
+  div class="flex flex-col items-center justify-center relative bg-blue-pale py-28"
+    div
+      = inline_svg_tag 'sticker-heart.svg', size: '39*39', class:"absolute top-20 left-80"
+    div
+      = inline_svg_tag 'sticker-sparkle.svg', size: '39*39', class:"absolute top-30 right-96"
+    div
+      = inline_svg_tag 'sticker-sparkle.svg', size: '39*39', class:"absolute top-12 right-64"
+
+    h2 class="text-2xl font-bold text-blue-dark"
+      ' Follow our updates on Instagram
+    h2 class="text-2xl font-bold text-blue-dark mb-14"
+      ' @givingconnection
+
+    = image_tag  "instagram-capture.png"

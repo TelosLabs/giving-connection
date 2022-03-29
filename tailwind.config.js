@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     screens: {
       'xs': '375px',
-      '525px' : '525px',
+      '525px': '525px',
       'mid': '870px',
       ...screens,
     },
@@ -29,6 +29,7 @@ module.exports = {
         blue: {
           'gradient-1': '#2C3E6B',
           'gradient-2': '#0068AF',
+          'gradient-3': "#E6F3FA",
           dark: '#113C7B',
           medium: '#0782D0',
           light: '#9abee3',
@@ -96,6 +97,12 @@ module.exports = {
         '400px': '400px',
         '85vh': '85vh',
       },
+      width: {
+        '353px': '353px',
+        '400px': '400px',
+        '415px': '415px',
+        '454px': '454px',
+      },
       borderRadius: {
         '6px': '6px',
       },
@@ -103,7 +110,7 @@ module.exports = {
         'input': '0px 4px 4px rgba(0, 0, 0, 0.01)',
       },
       zIndex: {
-        '-1' : '-1',
+        '-1': '-1',
       },
     },
   },
