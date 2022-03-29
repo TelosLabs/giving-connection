@@ -7,16 +7,17 @@ nav data-controller="navbar--component"
       = inline_svg_tag 'logo.svg', size:'130*32'
   .navbar.navbar--desktop
     ul class="flex items-center"
+      / - raise
       = link_to root_path
         = inline_svg_tag 'logo.svg', size:'130*32', class:'mr-2 mid:mr-7 lg:mr-11'
       div class="flex w-full"
-        li class='mr-2 mid:mr-7 lg:mr-11'
+        li class="mr-2 mid:mr-7 lg:mr-11 text-sm-underlined-color font-medium border-b-2 border-transparent #{request.env['PATH_INFO'] == "/searches" ? "text-seafoam border-seafoam" : ""}"
           = link_to 'Search', searches_path
-        li class='mr-2 mid:mr-7 lg:mr-11'
+        li class="mr-2 mid:mr-7 lg:mr-11 text-sm-underlined-color font-medium border-b-2 border-transparent #{params["data"] == "claim-or-add-ngo" ? "text-seafoam border-seafoam" : ""}"
           = link_to 'Add a Nonprofit', contact_path({data: "claim-or-add-ngo"})
-        li class='mr-2 mid:mr-7 lg:mr-11'
+        li class="mr-2 mid:mr-7 lg:mr-11 text-sm-underlined-color font-medium border-b-2 border-transparent #{request.env['PATH_INFO'] == "/about_us" ? "text-seafoam border-seafoam" : ""}"
           = link_to 'About Us', about_us_path
-        li class='mr-2 mid:mr-7 lg:mr-11'
+        li class="mr-2 mid:mr-7 lg:mr-11 text-sm-underlined-color font-medium border-b-2 border-transparent #{request.env['PATH_INFO']  == "/donate" ? "text-seafoam border-seafoam" : ""}"
           = link_to donate_path, class:"flex" do
             div class='mr-2'
               | Donate
@@ -24,7 +25,7 @@ nav data-controller="navbar--component"
               = inline_svg_tag 'heart.svg', size:'9*9', class:'mt-1 fill-current text-red'
     ul class='flex items-center'
       - if @signed_in
-        li = link_to "My Account", my_account_path, class:'text-base font-bold mr-1 lg:mr-6'
+        li = link_to "My Account", my_account_path, class:"text-base font-bold mr-1 lg:mr-6 border-b-2 border-transparent #{request.env['PATH_INFO'] == "/my_account" ? "text-seafoam border-seafoam" : ""}"
       - else
         li = link_to "Sign in", user_session_path, class:'text-base font-bold mr-2 mid:mr-4 lg:mr-6'
         li = link_to "Create Account", new_user_registration_path, class:'c-button py-2.5 px-5 text-white bg-blue-medium'
