@@ -1,0 +1,11 @@
+div data-controller="read-more"
+  div class="w-full mb-8 text-left lg:mb-14"
+    h2 class="mb-3 text-2xl font-bold text-gray-2" data-read-more-target="anchor"
+      | #{@name}
+    p class="text-lg font-medium text-blue-medium"
+      | #{@job_title}
+  div class="flex flex-col items-center justify-center w-full max-w-5xl lg:flex-row lg:items-start lg:justify-between"
+    div class="mb-12"
+      = image_tag @img_url, size:'320x400', class: 'rounded-md'
+    div class="max-w-454px"
+      = biography if biography.present?
