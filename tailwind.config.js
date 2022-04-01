@@ -69,6 +69,7 @@ module.exports = {
       maxWidth: {
         '30%': "30%",
         '45%': "45%",
+        '270px': '270px',
         '327px': '327px',
         '353px': '353px',
         '356px': '356px',
@@ -113,7 +114,9 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      borderWidth: ['last']
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),
