@@ -7,6 +7,10 @@ class Navbar::Component < ViewComponent::Base
   def initialize(signed_in:)
     @signed_in = signed_in
   end
+
+  def non_sticky_paths
+    request.env['PATH_INFO'] == "/searches" || request.env['PATH_INFO'] == "/my_account"
+  end
 end
 
 # rubocop:enable Style/ClassAndModuleChildren
