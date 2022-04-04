@@ -31,7 +31,7 @@ class Organization < ApplicationRecord
   scope :active, -> { where(active: true) } 
 
   has_many :tags, dependent: :destroy
-  has_many :organization_causes
+  has_many :organization_causes, dependent: :destroy
   has_many :causes, through: :organization_causes
   has_many :organization_beneficiaries, dependent: :destroy
   has_many :organization_admins, dependent: :destroy
