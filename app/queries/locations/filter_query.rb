@@ -71,7 +71,6 @@ module Locations
 
     def by_beneficiary_groups_served(scope, beneficiary_groups_filters)
       return scope if beneficiary_groups_filters.blank? || scope.empty?
-
       complex_query = []
       beneficiary_groups_filters.each do |group, subcategory|
         subcategory.each do |sub|
@@ -114,8 +113,7 @@ module Locations
     end
 
       def opened_on_weekends(scope, open_on_weekends)
-        return scope if open_on_weekends.nil?
-
+        return scope if !open_on_weekends
         query = <<-SQL
         SELECT *
         FROM locations

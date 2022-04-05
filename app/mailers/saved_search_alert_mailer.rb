@@ -5,9 +5,9 @@ class SavedSearchAlertMailer < ApplicationMailer
     @alert = alert
     search = Search.new(search_params(alert))
     search.save
-    @new_locations = search.results.select { |result| result.create_at > alert.next_alert }
+    @new_locations = search.results.select {|result| result.created_at > alert.next_alert}
     unless @new_locations.empty?
-      mail to: alert.user.email, subject: "Giving Connection - #{@new_locations.count} New Locations Added !"
+      mail from: 'Giving Connection <notification@teloslabs.co>', to: alert.user.email, subject: "Giving Connection - #{@new_locations.count} New Locations Added !"
     end
   end
 
@@ -41,7 +41,7 @@ class SavedSearchAlertMailer < ApplicationMailer
       if alert_beneficiaries_hash.keys.include?(alert_beneficiariy.beneficiary_subcategory.beneficiary_group.name)
         alert_beneficiaries_hash[alert_beneficiariy.beneficiary_subcategory.beneficiary_group.name] << alert_beneficiariy.beneficiary_subcategory.name
       else
-        alert_beneficiaries_hash[alert_beneficiariy.beneficiary_subcategory.beneficiary_group.name] = alert_beneficiariy.beneficiary_subcategory.name
+        alert_beneficiaries_hash[alert_beneficiariy.beneficiary_subcategory.beneficiary_group.name] = [alert_beneficiariy.beneficiary_subcategory.name]
       end
     end
     alert_beneficiaries_hash
