@@ -83,6 +83,10 @@ class Location < ActiveRecord::Base
     address.split(",").insert(1, suite).join(", ")
   end
 
+  def link_to_google_maps
+    "https://www.google.com/maps/search/#{address}"
+  end
+
   private
 
   def lonlat_geo_point
