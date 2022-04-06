@@ -35,7 +35,7 @@ class Organization < ApplicationRecord
   has_many :causes, through: :organization_causes
   has_many :organization_beneficiaries, dependent: :destroy
   has_many :organization_admins, dependent: :destroy
-  has_many :beneficiary_subcategories, through: :organization_beneficiaries
+  has_many :beneficiary_subcategories, through: :organization_beneficiaries, after_add: :update_model
   has_many :locations, dependent: :destroy
   has_many :additional_locations, -> { where(main: false) }, class_name: 'Location', foreign_key: :organization_id
   has_one :main_location, -> { where(main: true) }, class_name: 'Location', foreign_key: :organization_id
@@ -67,5 +67,9 @@ class Organization < ApplicationRecord
     file_logo = "logo-default#{rand(1..6)}"
     filepath = File.open("app/assets/images/#{file_logo}.png")
     logo.attach(io: filepath, filename: "#{file_logo}.png") unless logo.attached?
+  end
+
+  def update_model(*)
+    touch
   end
 end

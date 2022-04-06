@@ -60,7 +60,7 @@ module Admin
     def create_organization_beneficiaries(organization, beneficiaries_sub_ids)
       beneficiaries_sub_ids.each do |beneficiary_sub_id|
         beneficiary_subcategory = BeneficiarySubcategory.find(beneficiary_sub_id)
-        OrganizationBeneficiary.create!(organization: organization, beneficiary_subcategory: beneficiary_subcategory)
+        organization.beneficiary_subcategories << beneficiary_subcategory
       end
     end
 
