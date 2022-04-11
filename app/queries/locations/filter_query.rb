@@ -49,45 +49,45 @@ module Locations
         )
       end
 
-    def by_service(scope, services)
-      return scope if services.blank? || scope.empty?
-      complex_query = []
-      services.each do |cause, services_list|
-        services_list.each do |ser|
-          cause = cause&.gsub("'","''") 
-          ser = ser&.gsub("'","''") 
-          complex_query << "('#{cause}', '#{ser}')"
-        end
-      end  
+      def by_service(scope, services)
+        return scope if services.blank? || scope.empty?
+        complex_query = []
+        services.each do |cause, services_list|
+          services_list.each do |ser|
+            cause = cause&.gsub("'","''") 
+            ser = ser&.gsub("'","''") 
+            complex_query << "('#{cause}', '#{ser}')"
+          end
+        end  
 
-      Location.joins(
-        location_services: { service: :cause }
-      ).where(
-        "locations.id IN (?)", scope.ids
-      ).where(
-        "(causes.name, services.name) IN (#{complex_query.join(",")})"
-      ).distinct
-    end
-
-    def by_beneficiary_groups_served(scope, beneficiary_groups_filters)
-      return scope if beneficiary_groups_filters.blank? || scope.empty?
-      complex_query = []
-      beneficiary_groups_filters.each do |group, subcategory|
-        subcategory.each do |sub|
-          cause = cause&.gsub("'","''") 
-          group = group&.gsub("'","''")
-          complex_query << "('#{group}', '#{sub}')"
-        end
+        Location.joins(
+          location_services: { service: :cause }
+        ).where(
+          "locations.id IN (?)", scope.ids
+        ).where(
+          "(causes.name, services.name) IN (#{complex_query.join(",")})"
+        ).distinct
       end
 
-      Location.joins(
-        organization: { organization_beneficiaries: { beneficiary_subcategory: :beneficiary_group } }
-      ).where(
-        "locations.id IN (?)", scope.ids
-      ).where(
-        "(beneficiary_groups.name, beneficiary_subcategories.name) IN (#{complex_query.join(",")})"
-      ).distinct
-    end
+      def by_beneficiary_groups_served(scope, beneficiary_groups_filters)
+        return scope if beneficiary_groups_filters.blank? || scope.empty?
+
+        complex_query = []
+        beneficiary_groups_filters.each do |group, subcategory|
+          subcategory.each do |sub|
+            group = group&.gsub("'","''")
+            complex_query << "('#{group}', '#{sub}')"
+          end
+        end
+
+        Location.joins(
+          organization: { organization_beneficiaries: { beneficiary_subcategory: :beneficiary_group } }
+        ).where(
+          "locations.id IN (?)", scope.ids
+        ).where(
+          "(beneficiary_groups.name, beneficiary_subcategories.name) IN (#{complex_query.join(",")})"
+        ).distinct
+      end
 
       def starting_coordinates(lat, lon)
         if lat.nil? || lon.nil?  
@@ -104,13 +104,13 @@ module Locations
       def opened_now(scope, open_now)
         return scope if open_now.nil?
 
-      scope.joins(:office_hours).where(office_hours: {
-        day: Time.now.wday,
-        closed: false,
-      }).where(
-        '? BETWEEN open_time AND close_time', Time.now
-      )
-    end
+        scope.joins(:office_hours).where(office_hours: {
+          day: Time.now.wday,
+          closed: false,
+        }).where(
+          '? BETWEEN open_time AND close_time', Time.now
+        )
+      end
 
       def opened_on_weekends(scope, open_on_weekends)
         return scope if !open_on_weekends

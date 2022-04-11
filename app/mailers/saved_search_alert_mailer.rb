@@ -13,12 +13,15 @@ class SavedSearchAlertMailer < ApplicationMailer
 
   def search_params(alert)
     filters = {
-      keyword: alert.keyword.presence,
-      city: alert.city.presence, state: alert.state.presence,
-      open_weekends: ActiveModel::Type::Boolean.new.cast(alert.open_weekends),
+      lat: nil,
+      lon: nil,
+      open_now: nil,
       services: build_services(alert),
+      keyword: alert.keyword.presence,
+      distance: alert.distance.presence&.to_i,
       beneficiary_groups: build_beneficiary_groups(alert),
-      distance: alert.distance.presence&.to_i
+      city: alert.city.presence, state: alert.state.presence,
+      open_weekends: ActiveModel::Type::Boolean.new.cast(alert.open_weekends) ? true : nil,
     }
     filters
   end

@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     screens: {
       'xs': '375px',
-      '525px' : '525px',
+      '525px': '525px',
       'mid': '870px',
       ...screens,
     },
@@ -29,6 +29,7 @@ module.exports = {
         blue: {
           'gradient-1': '#2C3E6B',
           'gradient-2': '#0068AF',
+          'gradient-3': "#E6F3FA",
           dark: '#113C7B',
           medium: '#0782D0',
           light: '#9abee3',
@@ -68,10 +69,15 @@ module.exports = {
       maxWidth: {
         '30%': "30%",
         '45%': "45%",
+        '270px': '270px',
         '327px': '327px',
+        '353px': '353px',
         '356px': '356px',
         '375px': '375px',
+        '400px': '400px',
         '402px': '402px',
+        '415px': '415px',
+        '454px': '454px',
         '470px': '470px',
         '565px': '565px',
         '656px': '656px',
@@ -103,12 +109,14 @@ module.exports = {
         'input': '0px 4px 4px rgba(0, 0, 0, 0.01)',
       },
       zIndex: {
-        '-1' : '-1',
+        '-1': '-1',
       },
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      borderWidth: ['last']
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),
