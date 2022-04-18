@@ -28,6 +28,11 @@ div class="grid grid-cols-12 gap-6 mt-8 nested-fields" data-action="google-maps-
       = phone_form.label :number, "Phone", class: "block text-sm text-gray-3 font-medium"
       = phone_form.text_field :number, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
+    div class="hidden col-span-3 md:flex"
+
+    = location_form.label :email, "Email", class:"block text-sm text-gray-3 font-medium pt-4"
+    = location_form.text_field :email, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
+
   div class="hidden col-span-3 md:flex"
   div class="col-span-12 lg:col-span-5 md:col-span-7"
     fieldset class='mt-4'
