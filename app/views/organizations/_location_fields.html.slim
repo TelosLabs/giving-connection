@@ -22,6 +22,13 @@ div class="grid grid-cols-12 gap-6 mt-8 nested-fields" data-action="google-maps-
       = location_form.label :physical, "This is also my physical address", class: "text-sm text-black "
 
   div class="hidden col-span-3 md:flex"
+
+  div class="col-span-12 mt-6 mb-4 lg:col-span-5 md:col-span-7"
+    = location_form.fields_for :phone_number, PhoneNumber.new do |phone_form|
+      = phone_form.label :number, "Phone", class: "block text-sm text-gray-3 font-medium"
+      = phone_form.text_field :number, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+
+  div class="hidden col-span-3 md:flex"
   div class="col-span-12 lg:col-span-5 md:col-span-7"
     fieldset class='mt-4'
       p class="text-sm font-medium leading-4 text-gray-2"
@@ -47,14 +54,7 @@ div class="grid grid-cols-12 gap-6 mt-8 nested-fields" data-action="google-maps-
         = location_service_form.fields_for :services, Service.new do |service_form|
           div class="col-span-12 lg:col-span-5 md:col-span-7"
             = service_form.label "Services offered on this location", class:"text-sm font-medium leading-4 text-gray-2"
-            = service_form.text_field :service, { data: { 'services-target': 'options' }, placeholder:'Write services offered', value: [], class: "flex flex-wrap min-h-46px bg-white mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }       
-
-    div class="hidden col-span-3 md:flex"
-
-    div class="col-span-12 mt-6 mb-4 lg:col-span-5 md:col-span-7"
-      = location_form.fields_for :phone_number, PhoneNumber.new do |phone_form|
-        = phone_form.label :number, "Phone", class: "block text-sm text-gray-3 font-medium"
-        = phone_form.text_field :number, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+            = service_form.text_field :service, { data: { 'services-target': 'options' }, placeholder:'Write services offered', value: [], class: "flex flex-wrap min-h-46px bg-white mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" } 
   
     div class="hidden col-span-3 md:flex"
 
