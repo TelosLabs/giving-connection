@@ -6,6 +6,7 @@ class SavedSearchAlertMailer < ApplicationMailer
     search = Search.new(search_params(alert))
     search.save
     @new_locations = search.results.select { |result| result.create_at > alert.next_alert }
+    attachments.inline["send_alert_logo.png"] = File.read("#{Rails.root}/app/assets/images/send_alert_logo.png")
     unless @new_locations.empty?
       mail to: alert.user.email, subject: "Giving Connection - #{@new_locations.count} New Locations Added !"
     end
