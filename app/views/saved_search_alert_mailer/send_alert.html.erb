@@ -1,13 +1,73 @@
-<h1>Hello, <%= @alert.user.name %></h1>
-
-<p>Based on your <%= @alert.frequency %> alert filters, we are reaching out to inform you that 
-	<%= @new_locations.count %> locations were added since our last contact. The locations are the following: 
-</p>
-
-<% @new_locations.each_with_index do |location, index| %>
-	<p><%= index + 1 %>. <strong><%= location.name %></strong></p>
-	<p><%= location.address %></p>
-<% end  %>
-
-Best Wishes,
-Giving Connection
+<!DOCTYPE html>
+<html>
+<head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <style>
+@media (min-width: 640px) {
+	body {
+		width: 100%;
+		padding: 0;
+		word-break: break-word;
+		-webkit-font-smoothing: antialiased;
+		background-color: #e5e7eb;
+	}
+  .sm-ml-44 {
+    margin-left: 44px !important;
+  }
+  .sm-px-0 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .sm-px-64 {
+    padding-left: 64px !important;
+    padding-right: 64px !important;
+  }
+}
+</style>
+</head>
+<body>
+  <div style="text-align: center;">
+    <div style="display: inline-block; margin-top: 64px; max-width: 600px; background-color: #ffffff; padding-top: 44px; padding-bottom: 40px;">
+      <div style="text-align: center;">
+				<%= image_tag(attachments['send_alert_logo.png'].url, style: "height: 52px; max-width: 224px") %>
+      </div>
+      <div class="sm-px-64" style="text-align: left; margin-top: 56px; padding-left: 24px; padding-right: 24px;">
+        <div style="margin: 0px;">
+          <p style="margin: 0px; font-size: 24px;">Your search alert for <strong style="margin: 0px;">mental health nonprofits</strong></p>
+          <p style="margin: 0px; margin-top: 7px; font-size: 14px;">Filters: Crisis Support, Mental Health, Adults, Families, Addiction Recovery.</p>
+					<!--Add filters -->
+        </div>
+        <div style="margin: 0px; margin-top: 48px;">
+          <p style="margin: 0px; font-size: 16px;"><%= "We found #{@new_locations.count} new organizations that match your search" %></p>
+          <div class="sm-ml-44" style="margin: 0px; margin-top: 60px; display: flex; max-width: 512px; flex-direction: column; gap: 20px;">
+						<% @new_locations.each do |location| %>
+							<div style="margin: 0px; display: flex; align-content: flex-start;">
+								<div style="margin: 0px; width: 96px; flex-shrink: 0;">
+									<a href=<%= location.organization.website %> target="_blank" style="margin: 0px; text-decoration: none; color: inherit;"><img src="../images/org_logo.png" alt="" style="margin: 0px; max-width: 100%; vertical-align: middle; line-height: 100%; border: 0; height: 96px; object-fit: contain;"></a>
+								</div>
+								<div style="margin: 0px; margin-left: 16px;">
+									<a href=<%= location.organization.website %> target="_blank" style="margin: 0px; text-decoration: none; color: inherit;"><h5 style="margin: 0px; font-size: 18px; font-weight: 700; color: #000000;"><%= location.name %></h5></a>
+									<div style="margin: 0px; margin-top: 5px; font-size: 12px; color: #9ca3af;">
+										<p style="margin: 0px;">1101 Kermit Dr # 605,</p>
+										<p style="margin: 0px;">Nashville, TN 37217</p>
+										<!--Add address -->
+										<a href=<%= location.organization.website %> target="_blank" style="margin: 0px; text-decoration: none; color: inherit;"><%= location.organization.website %></a>
+										<p style="margin: 0px; margin-top: 16px;"><%= location.organization.phone_number %></p>
+									</div>
+								</div>
+							</div>
+						<% end %>
+          </div>
+        </div>
+      </div>
+      <div class="sm-px-0" style="margin: 0px; margin-top: 60px; padding-left: 24px; padding-right: 24px; text-align: center;">
+        <p style="margin: 0px; font-size: 16px;">The Giving Connection Team</p>
+        <p style="margin: 0px; margin-top: 24px; font-size: 12px;">This email was intended to you@email.com. You are receiving search alerts.</p>
+				<!--Add email -->
+        <p style="margin: 0px; margin-top: 20px; font-size: 12px; font-weight: 500;">Manage my alerts | Help</p>
+				<%= image_tag(attachments['send_alert_logo.png'].url, style: "margin-top: 36px; height: 24px; width: 96px") %>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
