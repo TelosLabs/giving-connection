@@ -62,9 +62,12 @@
       <div class="sm-px-0" style="margin: 0px; margin-top: 60px; padding-left: 24px; padding-right: 24px; text-align: center;">
         <p style="margin: 0px; font-size: 16px;">The Giving Connection Team</p>
         <p style="margin: 0px; margin-top: 24px; font-size: 12px;"><%= "This email was intended for #{@alert.user.email}. You are receiving search alerts." %></p>
-        <p style="margin: 0px; margin-top: 20px; font-size: 12px; font-weight: 500;">Manage my alerts | Help</p>
-        <!-- Add links -->
-				<%= image_tag(attachments['send_alert_logo.png'].url, style: "margin-top: 36px; height: 24px; width: 96px") %>
+        <div style="margin: 0px; margin-top: 20px; font-size: 12px; font-weight: 500;">
+          <a href="https://www.givingconnection.org/my_account" target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">Manage my alerts</a>
+          <span>|</span>
+          <a href="https://www.givingconnection.org/faqs" target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">Help</a>
+        </div>
+        <%= image_tag(attachments['send_alert_logo.png'].url, style: "margin-top: 36px; height: 24px; width: 96px") %>
       </div>
     </div>
   </div>
