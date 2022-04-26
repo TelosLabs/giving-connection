@@ -34,8 +34,7 @@
       <div class="sm-px-64" style="text-align: left; margin-top: 56px; padding-left: 24px; padding-right: 24px;">
         <div style="margin: 0px;">
           <p style="margin: 0px; font-size: 24px;">Your search alert for <strong style="margin: 0px;">mental health nonprofits</strong></p>
-          <p style="margin: 0px; margin-top: 7px; font-size: 14px;">Filters: Crisis Support, Mental Health, Adults, Families, Addiction Recovery.</p>
-					<!--Add filters -->
+          <p style="margin: 0px; margin-top: 7px; font-size: 14px;"><%= "Filters: #{@alert_filters}" %></p>
         </div>
         <div style="margin: 0px; margin-top: 48px;">
           <p style="margin: 0px; font-size: 16px;"><%= "We found #{@new_locations.count} new organizations that match your search" %></p>
@@ -62,9 +61,9 @@
       </div>
       <div class="sm-px-0" style="margin: 0px; margin-top: 60px; padding-left: 24px; padding-right: 24px; text-align: center;">
         <p style="margin: 0px; font-size: 16px;">The Giving Connection Team</p>
-        <p style="margin: 0px; margin-top: 24px; font-size: 12px;">This email was intended to you@email.com. You are receiving search alerts.</p>
-				<!--Add email -->
+        <p style="margin: 0px; margin-top: 24px; font-size: 12px;"><%= "This email was intended for #{@alert.user.email}. You are receiving search alerts." %></p>
         <p style="margin: 0px; margin-top: 20px; font-size: 12px; font-weight: 500;">Manage my alerts | Help</p>
+        <!-- Add links -->
 				<%= image_tag(attachments['send_alert_logo.png'].url, style: "margin-top: 36px; height: 24px; width: 96px") %>
       </div>
     </div>

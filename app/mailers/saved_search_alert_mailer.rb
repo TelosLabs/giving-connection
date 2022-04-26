@@ -7,8 +7,9 @@ class SavedSearchAlertMailer < ApplicationMailer
     search.save
     @new_locations = search.results.select {|result| result.created_at > alert.next_alert || result.updated_at > alert.next_alert}
     attachments.inline["send_alert_logo.png"] = File.read("#{Rails.root}/app/assets/images/send_alert_logo.png")
+    @alert_filters = build_alert_filters
     unless @new_locations.empty?
-      mail from: 'Giving Connection <notification@teloslabs.co>', to: alert.user.email, subject: "Giving Connection - #{@new_locations.count} New Locations Added !"
+       mail from: 'Giving Connection <notification@teloslabs.co>', to: alert.user.email, subject: "Giving Connection - #{@new_locations.count} New Locations Added !"
     end
   end
 
@@ -49,5 +50,12 @@ class SavedSearchAlertMailer < ApplicationMailer
       end
     end
     alert_beneficiaries_hash
+  end
+
+  def build_alert_filters
+    filters = search_params(@alert)
+    beneficiary_groups = filters[:beneficiary_groups].values.flatten
+    services = filters[:services].values.flatten
+    beneficiary_groups.concat(services).join(", ")
   end
 end
