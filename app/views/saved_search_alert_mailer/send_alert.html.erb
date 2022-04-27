@@ -33,14 +33,14 @@
       </div>
       <div class="sm-px-64" style="text-align: left; margin-top: 56px; padding-left: 24px; padding-right: 24px;">
         <div style="margin: 0px;">
-          <p style="margin: 0px; font-size: 24px;">Your search alert for <strong style="margin: 0px;">mental health nonprofits</strong></p>
+          <p style="margin: 0px; font-size: 24px;">Your search alert for <strong style="margin: 0px;"><%= @alert.keyword %></strong></p>
           <p style="margin: 0px; margin-top: 7px; font-size: 14px;"><%= "Filters: #{@alert_filters}" %></p>
         </div>
         <div style="margin: 0px; margin-top: 48px;">
           <p style="margin: 0px; font-size: 16px;"><%= "We found #{@new_locations.count} new organizations that match your search" %></p>
           <div class="sm-ml-44" style="margin: 0px; margin-top: 60px; max-width: 512px;">
 						<% @new_locations.each do |location| %>
-							<div style="margin: 0px; display: flex; align-content: flex-start;">
+							<div style="margin: 0px; margin-top: 20px; display: flex; align-content: flex-start;">
 								<div style="margin: 0px; width: 96px; flex-shrink: 0;">
 									<a href=<%= location.organization.decorate.website %> target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">
                     <%= image_tag(attachments[location.organization.logo.blob.filename.to_s].url, style: "max-width: 100%; height: 96px; object-fit: contain;") %>
