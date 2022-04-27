@@ -113,8 +113,7 @@ module Locations
       end
 
       def opened_on_weekends(scope, open_on_weekends)
-        return scope if open_on_weekends.nil?
-
+        return scope if !open_on_weekends
         query = <<-SQL
         SELECT *
         FROM locations

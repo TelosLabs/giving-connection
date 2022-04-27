@@ -37,11 +37,10 @@ Rails.application.routes.draw do
 
   resources :locations, only: %i[index new show destroy]
 
-  resources :organizations, only: %i[show edit update] do
+  resources :organizations, only: %i[edit update] do
     resources :locations, only: %i[index new create]
   end
-
-  resources :organizations, only: %i[edit update]
+  
   resources :favorite_locations, only: %i[create destroy]
   resources :alerts, only: %i[new create update destroy]
   resource :searches, only: %i[show]
