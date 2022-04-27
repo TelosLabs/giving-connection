@@ -6,7 +6,8 @@ class SavedSearchAlertMailer < ApplicationMailer
     search = Search.new(search_params(alert))
     search.save
     @new_locations = search.results.select { |result| result.create_at > alert.next_alert }
-    attachments.inline["send_alert_logo.png"] = File.read("#{Rails.root}/app/assets/images/send_alert_logo.png")
+    attach_gc_logo
+    attach_organizations_logos
     @alert_filters = build_alert_filters
     unless @new_locations.empty?
       mail to: alert.user.email, subject: "Giving Connection - #{@new_locations.count} New Locations Added !"
@@ -57,5 +58,16 @@ class SavedSearchAlertMailer < ApplicationMailer
     beneficiary_groups = filters[:beneficiary_groups].values.flatten
     services = filters[:services].values.flatten
     beneficiary_groups.concat(services).join(", ")
+  end
+
+  def attach_gc_logo
+    attachments.inline["send_alert_logo.png"] = File.read("#{Rails.root}/app/assets/images/send_alert_logo.png")
+  end
+
+  def attach_organizations_logos
+    @new_locations.each do |location|
+      logo = location.organization.logo
+      attachments.inline[logo.blob.filename.to_s] = { mime_type: logo.blob.content_type, content: logo.blob.download }
+    end
   end
 end
