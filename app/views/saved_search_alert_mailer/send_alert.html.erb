@@ -38,20 +38,22 @@
         </div>
         <div style="margin: 0px; margin-top: 48px;">
           <p style="margin: 0px; font-size: 16px;"><%= "We found #{@new_locations.count} new organizations that match your search" %></p>
-          <div class="sm-ml-44" style="margin: 0px; margin-top: 60px; display: flex; max-width: 512px; flex-direction: column; gap: 20px;">
+          <div class="sm-ml-44" style="margin: 0px; margin-top: 60px; display: flex; flex-direction: column; gap: 20px; max-width: 512px;">
 						<% @new_locations.each do |location| %>
 							<div style="margin: 0px; display: flex; align-content: flex-start;">
 								<div style="margin: 0px; width: 96px; flex-shrink: 0;">
-									<a href=<%= location.organization.website %> target="_blank" style="margin: 0px; text-decoration: none; color: inherit;"><img src="../images/org_logo.png" alt="" style="margin: 0px; max-width: 100%; vertical-align: middle; line-height: 100%; border: 0; height: 96px; object-fit: contain;"></a>
+									<a href=<%= location.organization.decorate.website %> target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">
+                    <%= image_tag(attachments[location.organization.logo.blob.filename.to_s].url, style: "max-width: 100%; height: 96px; object-fit: contain;") %>
+                  </a>
 								</div>
 								<div style="margin: 0px; margin-left: 16px;">
-									<a href=<%= location.organization.website %> target="_blank" style="margin: 0px; text-decoration: none; color: inherit;"><h5 style="margin: 0px; font-size: 18px; font-weight: 700; color: #000000;"><%= location.name %></h5></a>
+									<a href=<%= location.organization.decorate.website %> target="_blank" style="margin: 0px; text-decoration: none; color: inherit;"><h5 style="margin: 0px; font-size: 18px; font-weight: 700; color: #000000;"><%= location.name %></h5></a>
 									<div style="margin: 0px; margin-top: 5px; font-size: 12px; color: #9ca3af;">
 										<p style="margin: 0px;">1101 Kermit Dr # 605,</p>
 										<p style="margin: 0px;">Nashville, TN 37217</p>
 										<!--Add address -->
-										<a href=<%= location.organization.website %> target="_blank" style="margin: 0px; text-decoration: none; color: inherit;"><%= location.organization.website %></a>
-										<p style="margin: 0px; margin-top: 16px;"><%= location.organization.phone_number %></p>
+										<a href=<%= location.organization.decorate.website %> target="_blank" style="margin: 0px; text-decoration: none; color: inherit;"><%= location.organization.website %></a>
+										<p style="margin: 0px; margin-top: 16px;"><%= location.phone_number&.number %></p>
 									</div>
 								</div>
 							</div>
@@ -65,7 +67,7 @@
         <div style="margin: 0px; margin-top: 20px; font-size: 12px; font-weight: 500;">
           <a href="https://www.givingconnection.org/my_account" target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">Manage my alerts</a>
           <span>|</span>
-          <a href="https://www.givingconnection.org/my_account" target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">Help</a>
+          <a href="https://www.givingconnection.org/faqs" target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">Help</a>
         </div>
         <%= image_tag(attachments['send_alert_logo.png'].url, style: "margin-top: 36px; height: 24px; width: 96px") %>
       </div>
