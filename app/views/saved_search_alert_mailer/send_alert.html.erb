@@ -38,19 +38,19 @@
         </div>
         <div style="margin: 0px; margin-top: 48px;">
           <p style="margin: 0px; font-size: 16px;"><%= "We found #{@new_locations.count} new organizations that match your search" %></p>
-          <div class="sm-ml-44" style="margin: 0px; margin-top: 60px; display: flex; flex-direction: column; gap: 20px; max-width: 512px;">						<% @new_locations.each do |location| %>
+          <div class="sm-ml-44" style="margin: 0px; margin-top: 60px; max-width: 512px;">
 						<% @new_locations.each do |location| %>
-              <div style="margin: 0px; display: flex; align-content: flex-start;">
+							<div style="margin: 0px; display: flex; align-content: flex-start;">
 								<div style="margin: 0px; width: 96px; flex-shrink: 0;">
 									<a href=<%= location.organization.decorate.website %> target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">
                     <%= image_tag(attachments[location.organization.logo.blob.filename.to_s].url, style: "max-width: 100%; height: 96px; object-fit: contain;") %>
                   </a>
-                </div>
+								</div>
 								<div style="margin: 0px; margin-left: 16px;">
-                    <a href=<%= location.organization.decorate.website %> target="_blank" style="margin: 0px; text-decoration: none; color: inherit;"><h5 style="margin: 0px; font-size: 18px; font-weight: 700; color: #000000;"><%= location.name %></h5></a>									<div style="margin: 0px; margin-top: 5px; font-size: 12px; color: #9ca3af;">
-										<p style="margin: 0px;">1101 Kermit Dr # 605,</p>
-										<p style="margin: 0px;">Nashville, TN 37217</p>
-										<!--Add address -->
+									<a href=<%= location.organization.decorate.website %> target="_blank" style="margin: 0px; text-decoration: none; color: inherit;"><h5 style="margin: 0px; font-size: 18px; font-weight: 700; color: #000000;"><%= location.name %></h5></a>
+									<div style="margin: 0px; margin-top: 5px; font-size: 12px; color: #9ca3af;">
+										<p style="margin: 0px;"><%= location.decorate.street %></p>
+                    <p style="margin: 0px;"><%= location.decorate.city_state_zipcode %></p>
 										<a href=<%= location.organization.decorate.website %> target="_blank" style="margin: 0px; text-decoration: none; color: inherit;"><%= location.organization.website %></a>
 										<p style="margin: 0px; margin-top: 16px;"><%= location.phone_number&.number %></p>
 									</div>
