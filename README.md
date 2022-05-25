@@ -49,10 +49,14 @@ Migrate database
 If your migration fails due to 'type "geography" does not exist' do the following:
 
 Associate postgres database with postgis:
+
+Run postgres:
 > psql postgres
->>> \c giving_connection_development;
->>> CREATE EXTENSION Postgis;
->>> exit
+
+Inside of postgres command line:
+> \c giving_connection_development;
+> CREATE EXTENSION Postgis;
+> exit
 
 ### Populate database
 
