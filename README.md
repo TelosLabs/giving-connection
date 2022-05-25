@@ -55,12 +55,15 @@ Run postgres:
 
 Inside of postgres command line:
 > \c giving_connection_development;
+
 > CREATE EXTENSION Postgis;
+
 > exit
 
 ### Populate database
 
 > rake populate:seed_causes_and_services
+
 > rake populate:seed_beneficiaries_and_beneficiaries_subcategories
 
 ### Run server
