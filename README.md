@@ -25,6 +25,7 @@ Install gem bundle
 
 Install webpack
 > npm install webpack-dev-server -g
+
 > yarn install
 
 ### Credentials
@@ -69,4 +70,5 @@ Inside of postgres command line:
 ### Run server
 
 > redis-server
+
 > rails s or hivemind
