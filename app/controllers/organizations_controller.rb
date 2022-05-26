@@ -62,7 +62,7 @@ class OrganizationsController < ApplicationController
     locations_attributes.each do |location|
       @location = Location.find_by_name(location.last['name'])
       @location.location_services.destroy_all unless @location.nil?
-      if @location.offer_services
+      if @location&.offer_services
         next if location.last['location_services_attributes']['0']['services']['service'].empty? || location.last['location_services_attributes'].nil?
 
         JSON.parse(location.last['location_services_attributes']['0']['services']['service']).each do |service_hash|
