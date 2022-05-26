@@ -1,12 +1,12 @@
 div class="main"
-  div class="flex mx-auto flex-row max-w-7xl justify-evenly sm:mb-1 md:px-8"
-    div class="relative flex flex-col justify-center mb-16 text-center md:mx-0 md:mb-0"
+  div class="flex mx-auto flex-row max-w-7xl justify-evenly"
+    div class="relative flex flex-col justify-center text-center md:mx-0"
       div class="max-w-sm mx-auto"
-        h2 class="pt-32 text-2xl font-bold text-center uppercase text-gray-gray-7"
+        h2 class="pt-14 sm:pt-32 text-2xl font-bold text-center uppercase text-gray-gray-7"
           | Frequently Asked Question
-        div class="flex justify-center pt-12"
-          = image_tag 'searching-info.png', class:"525px:rounded-xl object-cover h-350px sm:h-full"
-        p class="max-w-xl pt-10 mx-auto text-center text-gray-3"
+        div class="flex justify-center pt-12 px-3 sm:px-0"
+          = image_tag 'searching-info.png', class:"object-cover h-full"
+        p class="max-w-xl pt-10 px-3 sm:px-0 mx-auto text-center text-gray-3"
           ' Can't find what you are looking for below? Please reach us at
           span
             = link_to 'info@givingconnection.org', 'mailto:info@givingconnection.org', class:'text-blue-medium underline'
@@ -14,14 +14,14 @@ div class="main"
           ' to you within 3 - 5 business days.
       div class="hidden sm:block sm:absolute -top-20 -left-32 -z-1"
         = inline_svg_tag 'vector-8.svg'
-      div class="right-0 hidden overflow-hidden sm:block sm:absolute -top-40 xl:-right-28 -z-1"
+      div class="hidden overflow-hidden sm:block sm:absolute -top-40 -right-28 -z-1"
         = inline_svg_tag 'lw-desk-blur-left.svg'
-      div class="absolute -left-6 -z-1 sm:hidden"
-        = inline_svg_tag 'lw-mob-blur-left.svg', size:'320*428'
-      div class="absolute right-0 overflow-visible -top-40 -z-1 sm:hidden"
-        = inline_svg_tag 'lw-mob-blur-right.svg'
+      div class="absolute -left-6 -z-1 sm:hidden -top-20"
+        = inline_svg_tag 'vector-8-mob-blur-left.svg', size:'320*428'
+      div class="absolute right-0 overflow-visible -top-28 -z-1 sm:hidden"
+        = inline_svg_tag 'vector-8-mob-blur-right.svg'
 
-  section class='flex flex-col max-w-xl gap-6  mt-6 px-5 pt-6 pb-24 mx-auto divide-y divide-gray-7 text-gray-2'
+  section class='flex flex-col max-w-xl gap-6 sm:mt-6 px-5 pt-6 pb-24 mx-auto divide-y divide-gray-7 text-gray-2'
     = render Accordion::Component.new(title: "How can I get help right away?",
                                       description: "If you are having a medical or life threatening emergency, call 911. If you are in need of immediate crisis services, \
                                       please visit or call the resources listed below.<br/> <br/> \
