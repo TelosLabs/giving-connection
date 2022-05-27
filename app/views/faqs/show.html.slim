@@ -1,22 +1,23 @@
 div class="main"
   div class="flex mx-auto flex-row max-w-7xl justify-evenly"
     div class="relative flex flex-col justify-center text-center md:mx-0"
-      div class="max-w-sm mx-auto"
+      div class="max-w-xl mx-auto"
         h2 class="pt-14 sm:pt-32 text-2xl font-bold text-center uppercase text-gray-gray-7"
-          | Frequently Asked Question
+          | Frequently Asked Questions
         div class="flex justify-center pt-12 px-3 sm:px-0"
           = image_tag 'searching-info.png', class:"object-cover h-full"
         p class="max-w-xl pt-10 px-3 sm:px-0 mx-auto text-center text-gray-3 text-base"
           ' Can't find what you are looking for below? Please reach us at
           span
             = link_to 'info@givingconnection.org', 'mailto:info@givingconnection.org', class:'text-blue-medium underline'
-          '  if you cannot find an answer to your question. We will get back
-          ' to you within 3 - 5 business days.
-      div class="hidden sm:block sm:absolute -top-24 -left-32 -z-1"
+          '  if you cannot find an answer to your question.
+        p class="max-w-xl px-3 sm:px-0 mx-auto text-center text-gray-3 text-base"
+          ' We will get back to you within 3 - 5 business days.
+      div class="hidden sm:block sm:absolute -top-24 -left-20 -z-1"
         = inline_svg_tag 'faq-desk-blur-left.svg'
-      div class="hidden overflow-hidden sm:block sm:absolute -top-20 -right-28 -z-1"
+      div class="hidden overflow-hidden sm:block sm:absolute -top-20 -right-2 -z-1"
         = inline_svg_tag 'faq-desk-blur-right.svg'
-      div class="absolute -left-6 -z-1 sm:hidden -top-20"
+      div class="absolute -left-3 -z-1 sm:hidden -top-20"
         = inline_svg_tag 'faq-mob-blur-left.svg', size:'320*428'
       div class="absolute right-0 overflow-visible -top-28 -z-1 sm:hidden"
         = inline_svg_tag 'faq-mob-blur-right.svg'
