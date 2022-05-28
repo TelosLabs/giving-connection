@@ -114,6 +114,15 @@ div class="w-full h-full bg-grey-9"
                 = f.label :tagline_es, "Services - How We Do It (ES)", class: "block text-sm text-gray-3 font-medium"
                 = f.text_area :tagline_es, rows: 5, class: "block mt-1 w-full p-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
 
+        section class="mt-12 text-gray-2"
+          h5 class="text-lg font-medium leading-7"
+            | Causes
+
+          div class="grid grid-cols-12 gap-6 mt-8"
+            div class="col-span-12 lg:col-span-5 md:col-span-7" data-controller="causes"
+              - values = @organization.causes.pluck(:name).join(', ')
+              = f.label :causes, "What causes best describe your nonprofit?", class: "block text-sm text-gray-3 font-medium"
+              = f.text_field :causes, { data: { 'causes-target': 'list' }, placeholder:'Write some', value: values, class: "flex flex-wrap min-h-46px bg-white mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
         section class="mt-12 text-gray-2"
           h5 class="text-lg font-medium leading-7"
