@@ -1,8 +1,19 @@
 div class="max-w-5xl px-6 pb-12 mx-auto text-justify main text-gray-3 sm:pb-6"
-  h2 class="px-12 pt-10 pb-6 text-2xl font-bold text-center uppercase md:pt-24 md:pb-9 text-gray-gray-7"
-    | Giving Connection Privacy Policy
-  p class="pb-4 text-center"
-    ' Last Updated: February 15, 2022
+  div class="flex mx-auto flex-row max-w-7xl justify-evenly"
+    div class="relative flex flex-col justify-center text-center md:mx-0"
+      div class="max-w-lg mx-auto"
+        h2 class="pt-14 sm:pt-32 text-2xl font-bold text-center uppercase text-gray-gray-7"
+          | Giving Connection Privacy Policy
+        p class="max-w-xl pt-10 pb-9 px-3 sm:px-0 mx-auto text-center text-gray-3 text-base"
+          ' Last Updated: February 15, 2022
+      div class="hidden sm:block sm:absolute -top-20 -left-32 -z-1"
+        = inline_svg_tag 'privacy-desk-blur-left.svg'
+      div class="hidden overflow-hidden sm:block sm:absolute -top-28 -right-36 -z-1"
+        = inline_svg_tag 'privacy-desk-blur-right.svg'
+      div class="absolute -left-6 -z-1 sm:hidden -top-20"
+        = inline_svg_tag 'privacy-mob-blur-left.svg', size:'320*428'
+      div class="absolute -right-6 overflow-visible -top-28 -z-1 sm:hidden"
+        = inline_svg_tag 'privacy-mob-blur-right.svg'
   p class="pb-4"
     ' Giving Connection Inc ("Giving Connection," "we," "us," or "our") welcomes you to our website. We are a tax exempt,
     ' IRS Section 501(c)(3) nonprofit organization that seeks to connect people with nonprofits in their communities using
@@ -60,9 +71,9 @@ div class="max-w-5xl px-6 pb-12 mx-auto text-justify main text-gray-3 sm:pb-6"
             ' https://www.paypal.com/uk/webapps/mpp/ua/privacy-full.
         li class="pb-2"
           ' We also collect (but
-            span class="font-bold"
-              ' do not
-            ' retain) credit card numbers which are processed by a third-party payment vendor subject to the Payment Card Industry Data Security Standards. 
+          span class="font-bold"
+            ' do not
+          ' retain) credit card numbers which are processed by a third-party payment vendor subject to the Payment Card Industry Data Security Standards. 
         li class="pb-2"
           ' By using a third-party vendor, your information is subject to use based on the applicable vendor’s terms of service and policies. Giving Connection encourages you to review these policies carefully;
         li class="pb-2"
