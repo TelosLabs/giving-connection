@@ -1,24 +1,74 @@
-# README
+# GIVING CONNECTION
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### Installation
 
-Things you may want to cover:
+To run this project firstly you will need to install the following,
+considering you already have Ruby 3.0.2 and Homebrew installed:
 
-* Ruby version
+Install postgres
+> brew install postgres
 
-* System dependencies
+Install postgis
+> brew install postgis
 
-* Configuration
+Install cmake
+> brew install cmake
 
-* Database creation
+Install hivemind
+> brew install hivemind
 
-* Database initialization
+Install redis
+> brew install redis
 
-* How to run the test suite
+Install gem bundle
+> bundle install
 
-* Services (job queues, cache servers, search engines, etc.)
+Install webpack
+> npm install webpack-dev-server -g
 
-* Deployment instructions
+> yarn install
 
-* ...
+### Credentials
+
+To have access to the credentials you must:
+- Add master.key file inside config folder
+- Add secret key to the file
+
+### Set-up
+
+To set the project you will need the following commands:
+
+Bundle required gems
+> bundle install
+
+Create database
+> rails db:create
+
+Migrate database
+> rails db:migrate
+
+If your migration fails due to 'type "geography" does not exist' do the following:
+
+Associate postgres database with postgis:
+
+Run postgres:
+> psql postgres
+
+Inside of postgres command line:
+> \c giving_connection_development;
+
+> CREATE EXTENSION Postgis;
+
+> exit
+
+### Populate database
+
+> rake populate:seed_causes_and_services
+
+> rake populate:seed_beneficiaries_and_beneficiaries_subcategories
+
+### Run server
+
+> redis-server
+
+> rails s or hivemind
