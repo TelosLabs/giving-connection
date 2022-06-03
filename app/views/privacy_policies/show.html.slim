@@ -274,10 +274,26 @@ div class="max-w-5xl px-6 pb-12 mx-auto text-justify main text-gray-3 sm:pb-6"
   p class="pb-4"
     ' Our intent is to promptly reply to every message we receive. This information is used to respond directly to your questions or comments. We also may file your comments to improve our services in the future.
 
+  div class="flex mx-auto flex-row max-w-7xl justify-evenly"
+    div class="relative flex flex-col justify-center text-center md:mx-0"
+      div class="max-w-lg mx-auto"
+        h2 class="pt-10 pb-6 mdpx:pt-24 525px:pb-9 text-2xl font-bold text-center uppercase text-gray-gray-7"
+          | Donor Privacy Policy
 
+      div class="absolute -left-6 -top-16 xs:-left-10 -z-1 425px:hidden "
+        = inline_svg_tag 'donor-mob-blur-left.svg', size:'300*325'
+      div class="absolute -right-7 -top-32 xs:-right-11 overflow-visible -z-1 425px:hidden"
+        = inline_svg_tag 'donor-mob-blur-right.svg'
 
-  h2 class="px-12 pt-10 pb-6 text-2xl font-bold text-center uppercase md:pt-24 md:pb-9 text-gray-gray-7"
-    | Donor Privacy Policy
+      div class="hidden 425px:block 425px:absolute -top-20 -left-10 -z-1"
+        = inline_svg_tag 'donor-desk-blur-left.svg', size:'250*250'
+      div class="hidden overflow-hidden 425px:block 425px:absolute -top-12 -right-10 -z-1"
+        = inline_svg_tag 'donor-desk-blur-right.svg', size:'250*250'
+
+      div class="hidden md:block md:absolute -top-18 -left-52 -z-1"
+        = inline_svg_tag 'donor-desk-blur-left.svg'
+      div class="hidden overflow-hidden md:block md:absolute -top-36 -right-38 -z-1"
+        = inline_svg_tag 'donor-desk-blur-right.svg'
 
   p class="pb-4"
     '   Giving Connection is committed to respecting the privacy of our donors.
