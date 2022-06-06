@@ -140,7 +140,13 @@ div class=""
             - @location.location_services.each do |location_service|
               li class="text-sm font-base text-gray-2"
                 = location_service.service.name
-
+          div class="border-t border-gray-8 my-7"
+          h3 class="text-sm font-bold uppercase mb-3.5"
+            | Populations Served
+          ul class="flex flex-col gap-8"
+            - @location.organization.beneficiary_subcategories.each do |pop_served|
+              li class="text-sm font-base text-gray-2"
+                = pop_served.name
           - if @location.social_media.present?
             div class="border-t border-gray-8 my-7"
             h3 class="text-sm font-bold uppercase"
@@ -199,7 +205,13 @@ div class=""
         - @location.location_services.each do |location_service|
           li class="text-sm font-base text-gray-2"
             = location_service.service.name
-
+      div class="border-t border-gray-8 my-7"
+      h3 class="text-sm font-bold uppercase mb-3.5"
+        | Populations Served
+      ul class="flex flex-col gap-8"
+        - @location.organization.beneficiary_subcategories.each do |pop_served|
+          li class="text-sm font-base text-gray-2"
+            = pop_served.name
       - if @location.social_media.present?
         div class="border-t border-gray-8 my-7"
         h3 class="text-sm font-bold uppercase"
