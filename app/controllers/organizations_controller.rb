@@ -13,6 +13,7 @@ class OrganizationsController < ApplicationController
   def edit
     @organization = Organization.find(params[:id])
     authorize @organization
+    @causes = Cause.all.pluck(:name)
   end
 
   def update
