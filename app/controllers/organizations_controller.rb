@@ -14,7 +14,8 @@ class OrganizationsController < ApplicationController
     @organization = Organization.find(params[:id])
     authorize @organization
     @causes = Cause.all.pluck(:name)
-    @options = BeneficiarySubcategory.all.pluck(:name)
+    @beneficiaries = BeneficiarySubcategory.all.pluck(:name)
+    @services = Service.all.pluck(:name)
   end
 
   def update
