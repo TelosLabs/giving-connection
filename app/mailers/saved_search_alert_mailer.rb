@@ -4,8 +4,10 @@ class SavedSearchAlertMailer < ApplicationMailer
   def send_alert(alert)
     @alert = alert
     set_results
-    mail from: 'Giving Connection <info@givingconnection.org>', to: alert.user.email, subject: "Giving Connection - #{@new_locations.count} New Locations Added !" unless @new_locations.empty?
-    update_alert_search_results
+    unless @new_locations.empty?
+      mail from: 'Giving Connection <info@givingconnection.org>', to: alert.user.email, subject: "Giving Connection - #{@new_locations.count} New Locations Added !"
+      update_alert_search_results
+    end
   end
 
   def set_results
