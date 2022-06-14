@@ -37,7 +37,7 @@
                 = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
                 | Create Search Alert
             - else
-              = link_to new_user_registration_path, class: 'inline-flex items-center px-3 py-2 text-xs text-gray-3' do
+              = link_to user_session_path, class: 'inline-flex items-center px-3 py-2 text-xs text-gray-3' do
                 = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
                 | Create Search Alert
           div class="hidden w-full h-full overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
@@ -73,7 +73,7 @@
                   button class="mt-10 text-sm font-bold text-black" type="button" data-action="click->modal#open"
                     | Create an Alert for this Search
                 - else
-                  = link_to new_user_registration_path, class: 'mt-10 text-sm font-bold text-black'
+                  = link_to user_session_path, class: 'mt-10 text-sm font-bold text-black'
                     | Create an Alert for this Search
           = render SearchAlert::Component.new(keywords: params.dig('search', 'keyword'), filters: list_of_filters(@search))
         div class="hidden w-full h-85vh md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
@@ -84,19 +84,19 @@
               div class="hidden" data-places-target="longitude"
               div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}" data-po_box="#{result.po_box}"
                 - if user_signed_in?
-                  - if !FavoriteLocation.exists?(user_id: current_user.id, location_id: result.id)
+                  - if !current_user.favorited_locations.include?(result)
                     = link_to favorite_locations_path(location_id: result.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", method: :post, remote: true do
                       = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
                   - else
-                    = link_to favorite_location_path(FavoriteLocation.find_by(user_id: current_user.id, location_id: result.id)), method: :delete, class: "inline-flex self-end text-xs text-gray-3", remote: true do
+                    = link_to favorite_location_path(current_user.fav_locs.find_by(location_id: result.id)), method: :delete, class: "inline-flex self-end text-xs text-gray-3", remote: true do
                       = inline_svg_tag 'bookmark_colored.svg', class: 'w-4 h-4'
                 - else
-                  = link_to user_session_path, class: "inline-flex self-end text-xs text-gray-3" do
+                  = link_to favorite_locations_path(location_id: result.id), method: :post, class: "inline-flex self-end text-xs text-gray-3" do
                     = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
                 h5 class="text-lg font-bold leading-6 text-gray-2"
                   = link_to result.name, location_path(result)
                 p class="text-xs text-gray-4"
-                  = link_to result.address, result.link_to_google_maps, target: "blank" 
+                  = link_to result.address, result.link_to_google_maps, target: "blank"
                 p class="text-xs text-blue-medium"
                   = link_to result.organization.website, "http://#{result.organization.website}", target:"_blank"
                 - if device == "mobile"
@@ -126,15 +126,15 @@
             div class="hidden" data-places-target="longitude"
             div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}"
               - if user_signed_in?
-                - if !FavoriteLocation.exists?(user_id: current_user.id, location_id: result.id)
+                - if !current_user.favorited_locations.include?(result)
                   = link_to favorite_locations_path(location_id: result.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", method: :post, remote: true, data: { action:"click->result-card--component#reloadPage" }do
                     = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
                 - else
-                  = link_to favorite_location_path(FavoriteLocation.find_by(user_id: current_user.id, location_id: result.id)), method: :delete, class: "inline-flex self-end text-xs text-gray-3", remote: true, data: { action:"click->result-card--component#reloadPage" } do
+                  = link_to favorite_location_path(current_user.fav_locs.find_by(location_id: result.id)), method: :delete, class: "inline-flex self-end text-xs text-gray-3", remote: true, data: { action:"click->result-card--component#reloadPage" } do
                     = inline_svg_tag 'bookmark_colored.svg', class: 'w-4 h-4'
               - else
-                = link_to user_session_path, class: "inline-flex self-end text-xs text-gray-3" do
-                  = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
+                = link_to favorite_locations_path(location_id: result.id), method: :post, class: "inline-flex self-end text-xs text-gray-3" do
+                    = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
               h5 class="text-lg font-bold leading-6 text-gray-2" id="pointer"
                 = link_to result.name, location_path(result)
               p class="text-xs text-gray-4"
