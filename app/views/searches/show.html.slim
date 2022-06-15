@@ -95,7 +95,7 @@
                     = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
                 h5 class="text-lg font-bold leading-6 text-gray-2"
                   = link_to result.name, location_path(result)
-                p class="text-xs text-gray-4"
+                p class="text-xs text-gray-4" id="pointer"
                   = link_to result.address, result.link_to_google_maps, target: "blank"
                 p class="text-xs text-blue-medium"
                   = link_to result.organization.website, "http://#{result.organization.website}", target:"_blank"
@@ -137,8 +137,8 @@
                     = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
               h5 class="text-lg font-bold leading-6 text-gray-2" id="pointer"
                 = link_to result.name, location_path(result)
-              p class="text-xs text-gray-4"
-                = link_to result.formatted_address, result.link_to_google_maps, target: "blank" 
+              p class="text-xs text-gray-4" id="pointer"
+                = link_to result.formatted_address, result.link_to_google_maps, target: "blank"
               p class="text-xs text-blue-medium"
                 = link_to "#{result.organization.website}", "http://#{result.organization.website}", target:"_blank"
               p class="text-xs text-gray-4"
