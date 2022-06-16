@@ -13,16 +13,16 @@ class AlertsController < ApplicationController
     new_alert = Alert.new(alert_params)
     new_alert.user = current_user
     new_alert = clean_open_weekends(new_alert)
-    authorize new_alert
     if new_alert.save
       create_alert_services(new_alert, params['search']['services']) unless params['search']['services'].nil?
       create_alert_beneficiaries(new_alert, params['search']['beneficiary_groups']) unless params['search']['beneficiary_groups'].nil?
     end
+    update_alert_search_results(new_alert)
     authorize new_alert
   end
 
   def edit
-		@alert = Alert.find(params[:id])
+    @alert = Alert.find(params[:id])
     authorize @alert
   end
 
@@ -32,13 +32,15 @@ class AlertsController < ApplicationController
     authorize @alert
   end
 
-	def destroy
-		@alert = Alert.find(params[:id])
-		@alert.destroy
+  def destroy
+    @alert = Alert.find(params[:id])
+    @alert.destroy
     authorize @alert
     flash[:success] = "The alert was successfully deleted."
     redirect_to my_account_path
-	end
+  end
+
+  private
 
   def alert_params
     params.require(:search).permit(:distance, :city, :state, :beneficiary_groups,
@@ -62,5 +64,11 @@ class AlertsController < ApplicationController
       find_beneficiary = BeneficiarySubcategory.find_by_name(beneficiary)
       AlertBeneficiary.create!(beneficiary_subcategory: find_beneficiary, alert: alert)
     end
-  end  
+  end
+
+  def update_alert_search_results(alert)
+    search_results = AlertSearchResults.new(alert).call
+    search_results_ids = search_results.pluck(:id)
+    alert.update(search_results: search_results_ids)
+  end
 end
