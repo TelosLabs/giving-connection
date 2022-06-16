@@ -22,4 +22,8 @@ module Clockwork
       Alerts::SendSavedSearchesAlertEmailsJob.perform_later(alert.id)
     end
   end
+
+  every(1.day, 'Fetch Instagram Media Posts', at: '22:00') do
+    Instagram::FetchMediaPostsJob.perform_later
+  end
 end
