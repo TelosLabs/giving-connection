@@ -35,11 +35,11 @@ class Alert < ApplicationRecord
   def schedule_next_alert
    case frequency
    when 'daily'
-     self.update_column(:next_alert, Date.today + 1)
+     self.update_column(:next_alert, Date.today + 1.day)
    when 'weekly'
-     self.update_column(:next_alert, Date.today + 7)
+     self.update_column(:next_alert, Date.today + 1.week)
    when 'monthly'
-     self.update_column(:next_alert, Date.today + 30)
+     self.update_column(:next_alert, Date.today + 1.month)
    end
   end
 end

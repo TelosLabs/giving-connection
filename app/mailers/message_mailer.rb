@@ -2,7 +2,7 @@
 
 class MessageMailer < ApplicationMailer
   default to: -> { AdminUser.pluck(:email) },
-          from: 'Giving Connection <notification@teloslabs.co>'
+          from: 'Giving Connection <info@givingconnection.org>'
 
   def default_response(message)
     @message = message
