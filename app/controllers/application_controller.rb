@@ -30,7 +30,15 @@ class ApplicationController < ActionController::Base
      store_location_for(:user, request.fullpath)
    end
 
-   def after_sign_in_path_for(resource_or_scope)
-     stored_location_for(resource_or_scope) || super
-   end
+  def after_sign_in_path_for(resource_or_scope)
+    create_instances_from_session
+    stored_location_for(resource_or_scope) || super
+  end
+
+  def create_instances_from_session
+    if session[:fav_loc_id].present?
+      FavoriteLocation.create(location_id: session[:fav_loc_id], user: current_user)
+      session.delete(:fav_loc_id)
+    end
+  end
 end

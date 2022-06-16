@@ -1,14 +1,31 @@
 div class="main"
-  h2 class="px-12 pt-10 pb-6 text-2xl font-bold text-center uppercase md:pt-24 md:pb-9 text-gray-gray-7"
-    | Frequently Asked Questions
-  p class="max-w-xl px-6 pb-4 mx-auto text-center sm:pb-6 text-gray-3"
-    ' Can't find what you are looking for below? Please reach us at
-    span
-      = link_to 'info@givingconnection.org', 'mailto:info@givingconnection.org', class:'text-blue-medium underline'
-    '  if you cannot find an answer to your question. We will get back
-    ' to you within 3 - 5 business days.
 
-  section class='flex flex-col max-w-xl gap-6 px-5 pt-6 pb-24 mx-auto divide-y divide-gray-7 text-gray-2'
+  div class="flex flex-col mt-14 md:mt-28 mx-auto px-6 md:flex-row max-w-7xl justify-evenly md:items-end lg:px-16"
+    div class="relative flex flex-col justify-center mb-8 text-center md:mx-0 md:mb-8"
+      div class="max-w-sm mx-auto"
+        h2 class="pb-8 text-2xl font-bold text-center"
+          | FREQUENTLY ASKED QUESTIONS
+        p class=""
+          ' Can't find what you are looking for below? Please reach us at
+          span
+            = link_to 'info@givingconnection.org', 'mailto:info@givingconnection.org', class:'text-blue-medium underline'
+          '  if you cannot find an answer to your question. We will get back
+          ' to you within 3 - 5 business days.
+      div class="hidden md:block md:absolute -top-56 -left-36 -z-1"
+        = inline_svg_tag 'faq-desk-blur-left.svg'
+      div class="right-0 hidden overflow-hidden md:block md:absolute -top-56 md:-right-20 -z-1"
+        = inline_svg_tag 'faq-desk-blur-right.svg'
+
+      div class="absolute -left-6 -z-1 md:hidden"
+        = inline_svg_tag 'faq-mob-blur-left.svg', size:'320*428'
+      div class="absolute -right-6 overflow-visible -top-40 -z-1 md:hidden"
+        = inline_svg_tag 'faq-mob-blur-right.svg'
+
+    div class="flex justify-center px-0"
+      = image_tag 'pablita-looking-for.svg', class:"object-cover h-full"
+
+
+  section class='flex flex-col max-w-xl gap-6 md:mt-6 px-5 pt-6 pb-24 mx-auto divide-y divide-gray-7 text-gray-2'
     = render Accordion::Component.new(title: "How can I get help right away?",
                                       description: "If you are having a medical or life threatening emergency, call 911. If you are in need of immediate crisis services, \
                                       please visit or call the resources listed below.<br/> <br/> \

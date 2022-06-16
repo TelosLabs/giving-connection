@@ -1,8 +1,19 @@
 div class="max-w-5xl px-6 pb-12 mx-auto text-justify main text-gray-3 sm:pb-6"
-  h2 class="px-12 pt-10 pb-6 text-2xl font-bold text-center uppercase md:pt-24 md:pb-9 text-gray-gray-7"
-    | Giving Connection Privacy Policy
-  p class="pb-4 text-center"
-    ' Last Updated: February 15, 2022
+  div class="flex mx-auto flex-row max-w-7xl justify-evenly"
+    div class="relative flex flex-col justify-center text-center md:mx-0"
+      div class="max-w-lg mx-auto"
+        h2 class="pt-14 sm:pt-32 text-2xl font-bold text-center uppercase text-gray-gray-7"
+          | Giving Connection Privacy Policy
+        p class="max-w-xl pt-10 pb-9 px-3 sm:px-0 mx-auto text-center text-gray-3 text-base"
+          ' Last Updated: February 15, 2022
+      div class="hidden sm:block sm:absolute -top-20 -left-32 -z-1"
+        = inline_svg_tag 'privacy-desk-blur-left.svg'
+      div class="hidden overflow-hidden sm:block sm:absolute -top-28 -right-36 -z-1"
+        = inline_svg_tag 'privacy-desk-blur-right.svg'
+      div class="absolute -left-6 -z-1 sm:hidden -top-20"
+        = inline_svg_tag 'privacy-mob-blur-left.svg', size:'320*428'
+      div class="absolute -right-6 overflow-visible -top-28 -z-1 sm:hidden"
+        = inline_svg_tag 'privacy-mob-blur-right.svg'
   p class="pb-4"
     ' Giving Connection Inc ("Giving Connection," "we," "us," or "our") welcomes you to our website. We are a tax exempt,
     ' IRS Section 501(c)(3) nonprofit organization that seeks to connect people with nonprofits in their communities using
@@ -51,18 +62,18 @@ div class="max-w-5xl px-6 pb-12 mx-auto text-justify main text-gray-3 sm:pb-6"
         li class="pb-2"
           ' Donations. Donations made directly to Giving Connection or to Giving Connection through third parties (including Givebutter and PayPal) from which we collect Personal Information such as your name, phone number, billing address, and email address, if you have not already provided these details. We collect information about your donation, including the amount of your donation and type of payment used. 
         li class="pb-2"
-          ' The Givebutter privacy policy can be reviewed here:
-          a class="text-blue-medium" href="https://givebutter.com/privacy"
-            ' https://givebutter.com/privacy.
+          ' The Givebutter privacy policy can be reviewed
+          a class="text-blue-medium" target="_blank" href="https://givebutter.com/privacy"
+            ' here.
         li class="pb-2"
-          ' The PayPal privacy policy can be reviewed here:
-          a class="text-blue-medium" href="https://www.paypal.com/uk/webapps/mpp/ua/privacy-full"
-            ' https://www.paypal.com/uk/webapps/mpp/ua/privacy-full.
+          ' The PayPal privacy policy can be reviewed
+          a class="text-blue-medium" target="_blank" href="https://www.paypal.com/uk/webapps/mpp/ua/privacy-full"
+            ' here.
         li class="pb-2"
           ' We also collect (but
-            span class="font-bold"
-              ' do not
-            ' retain) credit card numbers which are processed by a third-party payment vendor subject to the Payment Card Industry Data Security Standards. 
+          span class="font-bold"
+            'do not
+          ' retain) credit card numbers which are processed by a third-party payment vendor subject to the Payment Card Industry Data Security Standards. 
         li class="pb-2"
           ' By using a third-party vendor, your information is subject to use based on the applicable vendor’s terms of service and policies. Giving Connection encourages you to review these policies carefully;
         li class="pb-2"
@@ -84,7 +95,7 @@ div class="max-w-5xl px-6 pb-12 mx-auto text-justify main text-gray-3 sm:pb-6"
     li class="pb-2"
       ' Non-Personal/Other Information
       p class="pb-4"
-        ' In addition to the Personal Information, we and our Partners may collect additional information that does not personally identify you (“Other Information”). Other Information may include information collected: p class="pb-4"
+        ' In addition to the Personal Information, we and our Partners may collect additional information that does not personally identify you (“Other Information”). Other Information may include information collected:
       p class="pb-4"
         ' a.
         span class="pb-2 underline"
@@ -116,13 +127,13 @@ div class="max-w-5xl px-6 pb-12 mx-auto text-justify main text-gray-3 sm:pb-6"
         ' Google Analytics collects information anonymously. It reports website trends without identifying individual visitors.
         span class="font-bold"
           ' You can opt out of Google Analytics without affecting how you visit our Website. For more information on opting out of being tracked by Google Analytics across all websites you use, visit 
-        a class="text-blue-medium" href="http://tools.google.com/dlpage/gaoptout"
+        a class="text-blue-medium" target="_blank" href="http://tools.google.com/dlpage/gaoptout"
           ' Google Ad Settings.
         ' Google’s ability to use and share information collected by Google Analytics about your visits to this site is restricted by the
-        a class="text-blue-medium" href="http://www.google.com/analytics/terms/us.html"
+        a class="text-blue-medium" target="_blank" href="http://www.google.com/analytics/terms/us.html"
           ' Google Analytics Terms of Use
           ' and the
-        a class="text-blue-medium" href="http://www.google.com/policies/privacy/"
+        a class="text-blue-medium" target="_blank" href="http://www.google.com/policies/privacy/"
           ' Google Privacy Policy.
       p class="pb-4"
         ' If you choose, you can opt out by turning off cookies in the preferences settings in your browser.
@@ -130,9 +141,12 @@ div class="max-w-5xl px-6 pb-12 mx-auto text-justify main text-gray-3 sm:pb-6"
       ' b.
       span class="underline"
         ' Google Maps.
-      a class="text-blue-medium" href="https://cloud.google.com/maps-platform/terms"
-        ' https://cloud.google.com/maps-platform/terms
-      ' and Google Privacy Policy.
+      ' The Google Maps terms of service can be reviewed
+      a class="text-blue-medium" target="_blank" href="https://cloud.google.com/maps-platform/terms"
+        ' here
+      ' and the Google privacy policy can be reviewed
+      a class="text-blue-medium" target="_blank" href="http://www.google.com/policies/privacy/"
+        ' here.
 
     li class="pb-2"
       ' c.
@@ -140,14 +154,15 @@ div class="max-w-5xl px-6 pb-12 mx-auto text-justify main text-gray-3 sm:pb-6"
         ' Heroku.
       ' Heroku is a well renowned container-based cloud platform as a service built on top of AWS. It implements a robust secure infrastructure.Heroku also provides the database for this application.
     p class="pb-4"
-      ' Heroku Postgres: Customer data is stored in separate access-controlled databases per application. Each database requires a unique username and password that is only valid for that specific database and is unique to a single application. Passwords are encrypted. Customers with multiple applications and databases are assigned separate databases and accounts per application to mitigate the risk of unauthorized access between applications. Customer connections to postgres databases require SSL encryption to ensure a high level of security and privacy. When deploying applications, we encourage customers to take advantage of encrypted database connections. Stored data can be encrypted by customer applications in order to meet data security requirements. Customers can implement data storage, key management, and data retention requirements when developing their application. To learn more about Heroku’s privacy and security policy, visit Heroku Security.   p class="pb-4"
+      ' Heroku Postgres: Customer data is stored in separate access-controlled databases per application. Each database requires a unique username and password that is only valid for that specific database and is unique to a single application. Passwords are encrypted. Customers with multiple applications and databases are assigned separate databases and accounts per application to mitigate the risk of unauthorized access between applications. Customer connections to postgres databases require SSL encryption to ensure a high level of security and privacy. When deploying applications, we encourage customers to take advantage of encrypted database connections. Stored data can be encrypted by customer applications in order to meet data security requirements. Customers can implement data storage, key management, and data retention requirements when developing their application. To learn more about Heroku’s privacy and security policy, visit Heroku Security."
 
     li class="pb-2"
       ' d.
       span class="underline"
         ' Givebutter.
-      a class="text-blue-medium" href="https://givebutter.com/privacy"
-        ' https://givebutter.com/privacy
+      ' The Givebutter privacy policy can be reviewed
+      a class="text-blue-medium" target="_blank" href="https://givebutter.com/privacy"
+        ' here.
     li class="pb-2"
       ' e.
       span class="underline"
@@ -157,22 +172,25 @@ div class="max-w-5xl px-6 pb-12 mx-auto text-justify main text-gray-3 sm:pb-6"
       ' f.
       span class="underline"
         ' Mailchimp.
-        a class="text-blue-medium" href="https://mailchimp.com/legal/privacy/"
-          ' https://mailchimp.com/legal/privacy/
+      ' The Mailchimp privacy policy can be reviewed
+      a class="text-blue-medium" target="_blank" href="https://mailchimp.com/legal/privacy/"
+        ' here.
 
     li class="pb-2"
       ' g.
       span class="underline"
         ' PayPal.
-        a class="text-blue-medium" href="https://www.paypal.com/us/webapps/mpp/ua/privacy-full"
-          ' https://www.paypal.com/us/webapps/mpp/ua/privacy-full
+      ' The Paypal privacy policy can be reviewed
+      a class="text-blue-medium" target="_blank" href="https://www.paypal.com/us/webapps/mpp/ua/privacy-full"
+        ' here.
 
     li class="pb-2"
       ' h.
       span class="underline"
         ' Instagram.
-        a class="text-blue-medium" href="https://help.instagram.com/519522125107875"
-          ' https://help.instagram.com/519522125107875
+      ' The Instagram privacy policy can be reviewed
+      a class="text-blue-medium" target="_blank" href="https://help.instagram.com/519522125107875"
+        ' here.
     li class="pb-2"
       ' i.
       span class="underline"
@@ -255,7 +273,7 @@ div class="max-w-5xl px-6 pb-12 mx-auto text-justify main text-gray-3 sm:pb-6"
 
     li class="pb-2"
       ' By email:
-      a class="text-blue-medium" href="emailto:info@givingconnection.org"
+      a class="text-blue-medium" href="mailto:info@givingconnection.org"
         ' info@givingconnection.org
       ' with “Privacy Policy” in the subject line; or
     li class="pb-2"
@@ -263,10 +281,26 @@ div class="max-w-5xl px-6 pb-12 mx-auto text-justify main text-gray-3 sm:pb-6"
   p class="pb-4"
     ' Our intent is to promptly reply to every message we receive. This information is used to respond directly to your questions or comments. We also may file your comments to improve our services in the future.
 
+  div class="flex mx-auto flex-row max-w-7xl justify-evenly"
+    div class="relative flex flex-col justify-center text-center md:mx-0"
+      div class="max-w-lg mx-auto"
+        h2 class="pt-10 pb-6 mdpx:pt-24 525px:pb-9 text-2xl font-bold text-center uppercase text-gray-gray-7"
+          | Donor Privacy Policy
 
+      div class="absolute -left-6 -top-16 xs:-left-10 -z-1 425px:hidden "
+        = inline_svg_tag 'donor-mob-blur-left.svg', size:'300*325'
+      div class="absolute -right-7 -top-32 xs:-right-11 overflow-visible -z-1 425px:hidden"
+        = inline_svg_tag 'donor-mob-blur-right.svg'
 
-  h2 class="px-12 pt-10 pb-6 text-2xl font-bold text-center uppercase md:pt-24 md:pb-9 text-gray-gray-7"
-    | Donor Privacy Policy
+      div class="hidden 425px:block 425px:absolute -top-20 -left-10 -z-1"
+        = inline_svg_tag 'donor-desk-blur-left.svg', size:'250*250'
+      div class="hidden overflow-hidden 425px:block 425px:absolute -top-12 -right-10 -z-1"
+        = inline_svg_tag 'donor-desk-blur-right.svg', size:'250*250'
+
+      div class="hidden md:block md:absolute -top-18 -left-52 -z-1"
+        = inline_svg_tag 'donor-desk-blur-left.svg'
+      div class="hidden overflow-hidden md:block md:absolute -top-36 -right-38 -z-1"
+        = inline_svg_tag 'donor-desk-blur-right.svg'
 
   p class="pb-4"
     '   Giving Connection is committed to respecting the privacy of our donors.
@@ -301,4 +335,9 @@ div class="max-w-5xl px-6 pb-12 mx-auto text-justify main text-gray-3 sm:pb-6"
   h4 class="pb-2 text-lg font-bold text-left underline"
     ' Removing Your Name From Our Mailing List
   p class="pb-4"
-    ' Please contact us if you wish to be removed from our mailing list. Email info@givingconnection.org or call us at (609) 602-4959.
+    ' Please contact us if you wish to be removed from our mailing list. Email
+    a class="text-blue-medium" href="mailto:info@givingconnection.org"
+      ' info@givingconnection.org
+    ' call us at
+    a class="text-blue-medium" href="tel:+1-609-602-4959"
+      '(609) 602-4959.

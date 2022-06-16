@@ -13,6 +13,9 @@ class OrganizationsController < ApplicationController
   def edit
     @organization = Organization.find(params[:id])
     authorize @organization
+    @causes = Cause.all.pluck(:name)
+    @beneficiaries = BeneficiarySubcategory.all.pluck(:name)
+    @services = Service.all.pluck(:name)
   end
 
   def update
@@ -21,6 +24,7 @@ class OrganizationsController < ApplicationController
     if @organization.update(organization_params)
       update_location_services(params['organization']['locations_attributes']) unless params['organization']['locations_attributes'].empty? || params['organization']['locations_attributes'].nil?
       update_organization_beneficiaries(@organization, JSON.parse(params['organization']['beneficiary_subcategories'])) unless params['organization']['beneficiary_subcategories'].empty?
+      update_organization_causes(@organization, JSON.parse(params['organization']['causes'])) unless params['organization']['causes'].empty?
       update_tags(@organization, JSON.parse(params['organization']['tags_attributes'])) unless params['organization']['tags_attributes'].strip.empty?
       redirect_to my_account_path
       flash[:notice] = 'The Organization was successfully updated'
@@ -54,17 +58,25 @@ class OrganizationsController < ApplicationController
     organization.beneficiary_subcategories.destroy_all
     beneficiary_subcategories.each do |beneficiary_subcategory_hash|
       beneficiary_subcategory = BeneficiarySubcategory.find_by_name(beneficiary_subcategory_hash['value'])
-      OrganizationBeneficiary.create!(organization: organization, beneficiary_subcategory: beneficiary_subcategory)
+      OrganizationBeneficiary.create!(organization: organization, beneficiary_subcategory: beneficiary_subcategory) if beneficiary_subcategory
+    end
+  end
+
+  def update_organization_causes(organization, causes)
+    organization.organization_causes.destroy_all
+    causes.each do |cause_hash|
+      cause = Cause.find_by_name(cause_hash['value'])
+      OrganizationCause.create!(organization: organization, cause: cause) if cause
     end
   end
 
   def update_location_services(locations_attributes)
     locations_attributes.each do |location|
       @location = Location.find_by_name(location.last['name'])
-      @location.location_services.destroy_all unless @location.nil?
-      if @location.offer_services
-        next if location.last['location_services_attributes']['0']['services']['service'].empty? || location.last['location_services_attributes'].nil?
 
+      if @location&.offer_services
+        next if location.last['location_services_attributes']['0']['services']['service'].empty? || location.last['location_services_attributes'].nil?
+        @location.location_services.destroy_all
         JSON.parse(location.last['location_services_attributes']['0']['services']['service']).each do |service_hash|
           LocationService.create(location: @location, service: Service.find_by_name(service_hash['value']))
         end
@@ -83,6 +95,7 @@ class OrganizationsController < ApplicationController
                                          :main, :physical, :offer_services, :appointment_only, :email, :_destroy, 
                                          { phone_number_attributes: [:number],
                                            office_hours_attributes: %i[id day open_time close_time closed] }],
-                  beneficiary_subcategories: [])
+                  beneficiary_subcategories: [],
+                  causes: [])
   end
 end

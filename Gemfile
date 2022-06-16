@@ -45,7 +45,7 @@ gem 'rack-attack'
 gem 'roo', '~> 2.8.0'
 gem 'sidekiq'
 gem 'slim-rails'
-gem 'view_component', require: 'view_component/engine'
+gem 'view_component'
 # Use Turbo for rails
 gem 'turbo-rails', '~> 0.8.1'
 
