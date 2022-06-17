@@ -162,8 +162,8 @@ div class="bg-white main"
       div class="grid grid-cols-3 gap-1 max-w-max m-auto mt-10"
         - posts&.each do |post|
           div class="col overflow-hidden" style='max-height:180px; max-width:180px;'
-            = link_to "#{post.post_url}", target:"_blank", class:"" do
-              = image_tag "#{post.media_url}", class: "overflow-hidden", size: '39*39'
+            = link_to "#{post.post_url}", target:"_blank" do
+              = image_tag "#{post.media_url}", class: "overflow-hidden"
 
     div
       = inline_svg_tag 'sticker-heart.svg', size: '39*39', class:"absolute top-20 left-80 hidden lg:block"
