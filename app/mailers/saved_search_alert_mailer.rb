@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
 class SavedSearchAlertMailer < ApplicationMailer
-  before_action :attach_gc_logo, only: :send_alert
 
   def send_alert(alert)
     @alert = alert
     set_results
-    @alert_filters = build_alert_filters
+    set_assets_for_template
     unless @new_locations.empty?
       mail from: 'Giving Connection <info@givingconnection.org>', to: alert.user.email, subject: "Giving Connection - #{@new_locations.count} New Locations Added !"
       update_alert_search_results
@@ -23,11 +22,19 @@ class SavedSearchAlertMailer < ApplicationMailer
     @alert.update(search_results: search_results)
   end
 
+  def set_assets_for_template
+    @alert_filters = build_alert_filters
+    attach_gc_logo
+    attach_organizations_logos
+  end
+
   def build_alert_filters
     filters = AlertSearchResults.new(@alert).search_params
     beneficiary_groups = filters[:beneficiary_groups].values.flatten
     services = filters[:services].values.flatten
-    beneficiary_groups.concat(services).join(", ")
+    alert_filters = beneficiary_groups.concat(services)
+    alert_filters.push("Open on Weekends") if filters[:open_weekends]
+    alert_filters.join(", ")
   end
 
   def attach_gc_logo

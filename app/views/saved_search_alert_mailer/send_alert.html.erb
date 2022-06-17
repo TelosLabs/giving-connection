@@ -32,7 +32,14 @@
       </div>
       <div class="sm-px-64" style="text-align: left; margin-top: 56px; padding-left: 24px; padding-right: 24px;">
         <div style="margin: 0px;">
-          <p style="margin: 0px; font-size: 24px;">Your search alert for <strong style="margin: 0px;"><%= @alert.keyword %></strong></p>
+          <p style="margin: 0px; font-size: 24px;">
+            Your search alert for
+            <% if @alert.keyword.present? %>
+              <strong style="margin: 0px;"><%= @alert.keyword %> </strong>
+            <% else %>
+              the following filters
+            <% end %>
+          </p>
           <p style="margin: 0px; margin-top: 7px; font-size: 14px;"><%= "Filters: #{@alert_filters}" %></p>
         </div>
         <div style="margin: 0px; margin-top: 48px;">
