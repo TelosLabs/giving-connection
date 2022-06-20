@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class SavedSearchAlertMailer < ApplicationMailer
-
   def send_alert(alert)
     @alert = alert
     set_results
@@ -23,7 +22,7 @@ class SavedSearchAlertMailer < ApplicationMailer
   end
 
   def set_assets_for_template
-    @alert_filters = build_alert_filters
+    build_alert_filters
     attach_gc_logo
     attach_organizations_logos
   end
@@ -32,9 +31,9 @@ class SavedSearchAlertMailer < ApplicationMailer
     filters = AlertSearchResults.new(@alert).search_params
     beneficiary_groups = filters[:beneficiary_groups].values.flatten
     services = filters[:services].values.flatten
-    alert_filters = beneficiary_groups.concat(services)
-    alert_filters.push("Open on Weekends") if filters[:open_weekends]
-    alert_filters.join(", ")
+    open_on_weekends = filters[:open_weekends] ? ['Open on Weekends'] : []
+    @alert_filters = beneficiary_groups + services + open_on_weekends
+    @alert_filters = @alert_filters.join(", ")
   end
 
   def attach_gc_logo
@@ -43,7 +42,7 @@ class SavedSearchAlertMailer < ApplicationMailer
 
   def attach_organizations_logos
     @new_locations&.each do |location|
-      logo = location.organization.logo
+      logo = location.organization&.logo
       attachments.inline[logo.blob.filename.to_s] = { mime_type: logo.blob.content_type, content: logo.blob.download }
     end
   end
