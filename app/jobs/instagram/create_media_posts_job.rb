@@ -26,10 +26,10 @@ class Instagram::CreateMediaPostsJob < ApplicationJob
 
   def post_attributes(post)
     {
-      external_id: post[:id].to_i,
-      media_url: post[:media_url],
-      post_url: post[:permalink],
-      creation_date: post[:timestamp]&.to_date
+      external_id: post['id'].to_i,
+      media_url: post['media_url'],
+      post_url: post['permalink'],
+      creation_date: post['timestamp']&.to_date
     }
   end
 end
