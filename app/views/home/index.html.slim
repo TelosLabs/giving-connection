@@ -70,13 +70,13 @@ main
       div class="flex justify-center px-0"
         = image_tag 'board-members.png', class:"525px:rounded-xl object-cover h-350px sm:h-full"
   section class="relative bg-seafoam"
-    div class="relative z-20 max-w-md pb-20 mx-auto text-center"
+    div class="relative max-w-md pb-20 mx-auto text-center"
       h2 class="px-5 pt-20 text-2xl font-bold text-center sm:px-0 md:pt-28 text-blue-dark pb-11"
         | Are you a nonprofit organization interested in joining our listings?
       = link_to "Add or Claim a Nonprofit", contact_path({data: "claim-or-add-ngo"}), class:'c-button inline-block my-1 text-white bg-blue-dark'
-    div class="top-0 left-0 z-10 hidden sm:block sm:absolute"
+    div class="top-0 left-0 -z-1 hidden sm:block sm:absolute"
       = inline_svg_tag 'lc-desk-blur-left.svg'
-    div class="top-0 right-0 z-10 hidden sm:block sm:absolute"
+    div class="top-0 right-0 -z-1 hidden sm:block sm:absolute"
       = inline_svg_tag 'lc-desk-blur-right.svg'
-    div class="absolute bottom-0 right-0 z-10 sm:hidden"
+    div class="absolute bottom-0 right-0 -z-1 sm:hidden"
       = inline_svg_tag 'lc-mob-blur-right.svg'

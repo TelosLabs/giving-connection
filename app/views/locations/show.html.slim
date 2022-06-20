@@ -11,7 +11,7 @@ div class=""
       div class="pt-5 md:px-11 md:text-left"
         h5 class="text-lg font-bold mb-2.5 text-center"
           = @location.name
-        p class="text-xs text-center font-base text-gray-4"
+        p class="text-xs text-center font-base text-gray-4" id="pointer"
           = link_to @location.formatted_address, "https://www.google.com/maps/search/#{@location.address}", target: "blank"
         p class="text-xs text-center font-base text-gray-4"
           = "EIN Number: #{@location.organization.ein_number}"

@@ -26,7 +26,7 @@
         <% end %>
       </div>
       <div class="flex flex-col text-xs text-gray-4">
-        <p><%= link_to @address, "https://www.google.com/maps/search/#{@address}", target: "blank" %></p>
+        <p id="pointer"><%= link_to @address, "https://www.google.com/maps/search/#{@address}", target: "blank" %></p>
         <% if @website.present? %>
           <%= link_to website_url, website_url, target: '_blank', class: 'text-blue-medium'%>
         <% end %>

@@ -26,4 +26,12 @@ class LocationDecorator < ApplicationDecorator
   def close_time_for_display
     object.office_hours.find_by(day: Time::DAYS_INTO_WEEK[:monday]).formatted_close_time&.strftime("%l %p")
   end
+
+  def street
+    address.split(",").slice(0)
+  end
+
+  def city_state_zipcode
+    address.split(",").drop(1).join(", ")
+  end
 end
