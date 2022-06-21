@@ -9,7 +9,7 @@ module Locations
       pg_search_scope :search_by_keyword,
                       against: {
                         name: 'A',
-                        address: 'E'
+                        address: 'D'
                       },
                       associated_against: {
                         causes: { name: 'B' },
