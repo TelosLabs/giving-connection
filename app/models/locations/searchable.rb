@@ -7,10 +7,14 @@ module Locations
 
     included do
       pg_search_scope :search_by_keyword,
-                      against: :address,
+                      against: {
+                        name: 'A',
+                        address: 'E'
+                      },
                       associated_against: {
-                        tags: [:name],
-                        services: [:name],
+                        causes: { name: 'B' },
+                        services: { name: 'C' },
+                        tags: { name: 'D' },
                         organization: %i[name second_name scope_of_work website ein_number irs_ntee_code
                                          mission_statement_en vision_statement_en tagline_en
                                          mission_statement_es vision_statement_es tagline_es],
@@ -20,8 +24,7 @@ module Locations
                         tsearch: { prefix: true, any_word: true },
                         dmetaphone: {},
                         trigram: {}
-                      },
-                      ranked_by: ":trigram"
+                      }
     end
   end
 end
