@@ -8,7 +8,7 @@ div class="bg-white rounded-3xl"
     div class="flex flex-col w-full overflow-y-auto divide-y divide-gray-8"
       div class="px-6 py-8"
         = form.label :causes, 'Causes', class: 'w-full text-base font-bold text-gray-2'
-        = render SelectMultipleFromArray::Component.new(name: 'search[causes]', items: causes, selected: list_of_causes(search))
+        = render SelectMultiple::Component.new(name: 'search[causes]', items: causes, selected: list_of_causes(search))
 
       div class="px-6 py-8"
         = form.label :services, 'Services', class: 'w-full text-base font-bold text-gray-2'
