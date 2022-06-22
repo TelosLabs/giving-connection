@@ -5,18 +5,13 @@
   <div data-extend-dropdown-target="menu" class="absolute left-0 z-10 hidden w-full mt-2 top-full max-h-52" >
     <div class="p-5 overflow-y-auto bg-white border rounded border-gray-5 max-h-52">
       <div class="flex flex-col gap-y-2">
-        <% @items&.sort&.each do |group, list|%>
-          <div class="mb-6" data-select-multiple-target="group">
-            <div class="pl-6 my-2 text-sm font-bold text-black">
-              <%= group %>
+        <% @items&.sort&.each do |item| %>
+          <div class="" data-select-multiple-target="group">
+            <div class="flex flex-row items-center">
+              <%= check_box_tag "#{@name}[]", item, false, class: "h-4 w-4 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent",
+              data: { 'select-multiple-target': "checkbox", action: 'click->select-multiple#select', value: item } %>
+              <%= label_tag item, item, for: item, class: "text-sm text-black w-full" %>
             </div>
-            <% list&.sort&.each do |item| %>
-              <div class="flex flex-row items-center my-2">
-                <%= check_box_tag "#{@name}[#{group}][]", item, false, class: "h-4 w-4 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent",
-                data: { 'select-multiple-target': "checkbox", action: 'click->select-multiple#select', value: item } %>
-                <%= label_tag @name, item, for: item, class: "text-sm text-black w-full" %>
-              </div>
-            <% end %>
           </div>
         <% end %>
       </div>

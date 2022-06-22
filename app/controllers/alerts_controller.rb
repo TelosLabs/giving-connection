@@ -43,7 +43,7 @@ class AlertsController < ApplicationController
   private
 
   def alert_params
-    params.require(:search).permit(:distance, :city, :state, :beneficiary_groups,
+    params.require(:search).permit(:distance, :city, :state, :beneficiary_groups, :causes,
                                    :services, :open_weekends, :keyword, :frequency)
   end
 
@@ -52,8 +52,8 @@ class AlertsController < ApplicationController
     new_alert
   end
 
-  def create_alert_services(alert, causes_and_services)
-    causes_and_services.values.flatten.each do |service|
+  def create_alert_services(alert, services)
+    services.values.flatten.each do |service|
       find_service = Service.find_by_name(service)
       AlertService.create!(service: find_service, alert: alert)
     end
