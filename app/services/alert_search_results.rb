@@ -17,6 +17,7 @@ class AlertSearchResults < ApplicationService
       lon: nil,
       open_now: nil,
       services: build_services,
+      causes: build_causes,
       keyword: alert.keyword.presence,
       distance: alert.distance.presence&.to_i,
       beneficiary_groups: build_beneficiary_groups,
@@ -35,6 +36,14 @@ class AlertSearchResults < ApplicationService
       end
     end
     alert_services_hash
+  end
+
+  def build_causes
+    alert_causes_array = []
+    alert.alert_causes.each do |alert_cause|
+      alert_causes_array = alert_cause.cause.name
+    end
+    alert_causes_array
   end
 
   def build_beneficiary_groups

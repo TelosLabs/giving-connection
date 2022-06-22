@@ -10,7 +10,7 @@ module Locations
     attr_reader :locations
 
     class << self
-      def call(params = {}, locations =  Location.active)
+      def call(params = {}, locations = Location.active)
         scope = locations
         scope = geo_near(scope, starting_coordinates(params[:lat], params[:lon]), params[:distance])
         scope = by_address(scope, params[:address])
