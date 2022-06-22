@@ -9,7 +9,6 @@ class SearchesController < ApplicationController
 
   def show
     @search = params['search'].present? ? Search.new(create_params) : Search.new
-
     @search.save
     @pagy, @results = pagy(@search.results)
 
@@ -18,15 +17,9 @@ class SearchesController < ApplicationController
   end
 
   def create_params
-    input_causes = params.require(:search)[:causes].try(:permit!)
-    input_services = params.require(:search)[:services].try(:permit!)
-    input_groups = params.require(:search)[:beneficiary_groups].try(:permit!)
     params.require(:search).permit(:distance, :city, :state, :lat, :lon,
-                                   :open_now, :open_weekends, :keyword, :zipcode).merge(
-                                     services: input_services,
-                                     causes: input_causes,
-                                     beneficiary_groups: input_groups
-                                   )
+                                   :open_now, :open_weekends, :keyword,
+                                   :zipcode, causes: [], services: {}, beneficiary_groups: {})
   end
 
   def verify_search_params
