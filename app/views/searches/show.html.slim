@@ -76,7 +76,7 @@
                   = link_to user_session_path, class: 'mt-10 text-sm font-bold text-black'
                     | Create an Alert for this Search
           = render SearchAlert::Component.new(keywords: params.dig('search', 'keyword'), filters: list_of_filters(@search))
-        div class="hidden w-full h-85vh md:h-0" data-tabs-target="panel" data-controller="places result-card--component" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
+        div class="hidden w-full h-85vh md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
           div# class="w-full h-full" data-places-target="map"
           div class="hidden"
             - @results.besides_po_boxes&.each do |result|
