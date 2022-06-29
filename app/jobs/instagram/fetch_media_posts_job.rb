@@ -4,10 +4,12 @@ class Instagram::FetchMediaPostsJob < ApplicationJob
   queue_as :default
 
   after_perform do
-    Instagram::CreateMediaPostsJob.perform_later(@posts)
+    @posts.each do |post|
+      Instagram::CreateMediaPostJob.perform_later(post)
+    end
   end
 
   def perform
-   @posts = InstagramMedia.new.latest_media_posts
+    @posts = FetchInstagramMedia.new.latest_media_posts
   end
 end

@@ -1,4 +1,4 @@
-class InstagramMedia < ApplicationService
+class FetchInstagramMedia < ApplicationService
   INSTAGRAM_ACCOUNT_ID = Rails.application.credentials.dig(:instagram, :account_id)
 
   attr_accessor :client

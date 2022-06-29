@@ -132,10 +132,10 @@ ActiveRecord::Schema.define(version: 2022_06_16_220704) do
   end
 
   create_table "instagram_posts", force: :cascade do |t|
-    t.string "media_url"
-    t.string "post_url"
-    t.bigint "external_id"
-    t.datetime "creation_date"
+    t.string "media_url", null: false
+    t.string "post_url", null: false
+    t.bigint "external_id", null: false
+    t.datetime "creation_date", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
