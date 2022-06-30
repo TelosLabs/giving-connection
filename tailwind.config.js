@@ -84,6 +84,9 @@ module.exports = {
         '656px': '656px',
         ms: '343px'
       },
+      width: {
+        fit: 'fit-content',
+      },
       minHeight: {
         '46px': '46px',
         '800px': '800px',
