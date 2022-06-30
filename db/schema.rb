@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_16_220704) do
+ActiveRecord::Schema.define(version: 2022_06_22_165015) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -73,6 +73,15 @@ ActiveRecord::Schema.define(version: 2022_06_16_220704) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["alert_id"], name: "index_alert_beneficiaries_on_alert_id"
     t.index ["beneficiary_subcategory_id"], name: "index_alert_beneficiaries_on_beneficiary_subcategory_id"
+  end
+
+  create_table "alert_causes", force: :cascade do |t|
+    t.bigint "alert_id", null: false
+    t.bigint "cause_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["alert_id"], name: "index_alert_causes_on_alert_id"
+    t.index ["cause_id"], name: "index_alert_causes_on_cause_id"
   end
 
   create_table "alert_services", force: :cascade do |t|
@@ -329,6 +338,8 @@ ActiveRecord::Schema.define(version: 2022_06_16_220704) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "alert_beneficiaries", "alerts"
   add_foreign_key "alert_beneficiaries", "beneficiary_subcategories"
+  add_foreign_key "alert_causes", "alerts"
+  add_foreign_key "alert_causes", "causes"
   add_foreign_key "alert_services", "alerts"
   add_foreign_key "alert_services", "services"
   add_foreign_key "alerts", "users"

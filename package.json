@@ -11,7 +11,7 @@
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "5.4.0",
     "@tailwindcss/forms": "^0.3.4",
-    "@yaireo/tagify": "^4.8.1",
+    "@yaireo/tagify": "^4.9.8",
     "autoprefixer": "^9",
     "flatpickr": "^4.6.9",
     "moment": "^2.29.2",

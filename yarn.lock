@@ -1213,10 +1213,10 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@yaireo/tagify@^4.8.1":
-  version "4.8.1"
-  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-4.8.1.tgz#464708e3204b03e0991c06fb8fd12fac60f5abd2"
-  integrity sha512-SK3mN6HPzNzW3rgolvdsv/3m8OX5xdbh6H8oz/fjdLCa0Qt3JoaAQqjsMxaLG575+ywl5jpvsaIj+JB6yi9LUQ==
+"@yaireo/tagify@^4.9.8":
+  version "4.9.8"
+  resolved "https://registry.yarnpkg.com/@yaireo/tagify/-/tagify-4.9.8.tgz#67082ecca81fbbec4d75bb95581280f27af22fba"
+  integrity sha512-JqRTN4vb5tx06PJIRIOAlriO/B6u+a3jD/VBb5x6E1MOlC4wrMfaLHmNnrMpiZCHMXox7pVmrtNuyBe4YReJ4w==
 
 accepts@~1.3.4, accepts@~1.3.5, accepts@~1.3.7:
   version "1.3.7"
@@ -2891,9 +2891,9 @@ events@^3.0.0:
   integrity sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==
 
 eventsource@^1.0.7:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/eventsource/-/eventsource-1.1.0.tgz#00e8ca7c92109e94b0ddf32dac677d841028cfaf"
-  integrity sha512-VSJjT5oCNrFvCS6igjzPAt5hBzQ2qPBFIbJ03zLI9SE0mxwZpMw6BfJrbFHm1a141AavMEB8JHmBhWAd66PfCg==
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/eventsource/-/eventsource-1.1.1.tgz#4544a35a57d7120fba4fa4c86cb4023b2c09df2f"
+  integrity sha512-qV5ZC0h7jYIAOhArFJgSfdyz6rALJyb270714o7ZtNnw2WSJ+eexhKtE0O8LYPRsHZHf2osHKZBxGPvm3kPkCA==
   dependencies:
     original "^1.0.0"
 

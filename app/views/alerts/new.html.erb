@@ -7,6 +7,7 @@
 	state: <%= @alert_params['state'] %>
 	beneficary groups: <%= @alert_params['beneficiary_groups'] %>
 	services: <%= @alert_params['services'] %>
+	causes: <%= @alert_params['causes'] %>
 	open now: <%= @alert_params['open_now'] %>
 	open weekends: <%= @alert_params['open_weekends'] %>
 </p>
@@ -20,6 +21,7 @@
 	<%= f.hidden_field :state, value: @alert_params['state'] %>
 	<%= f.hidden_field :beneficiary_groups, value: @alert_params['beneficiary_groups'] %>
 	<%= f.hidden_field :services, value: @alert_params['services'] %>
+	<%= f.hidden_field :causes, value: @alert_params['causes'] %>
 	<%= f.hidden_field :open_now, value: @alert_params['open_now'] %>
 	<%= f.hidden_field :open_weekends, value: @alert_params['open_weekends'] %>
 	<%= f.submit %>

@@ -23,6 +23,7 @@ class Alert < ApplicationRecord
   belongs_to :user
   has_many :alert_services, dependent: :destroy
   has_many :alert_beneficiaries, dependent: :destroy
+  has_many :alert_causes, dependent: :destroy
 
   validates :frequency, presence: true, inclusion: { in: %w[daily weekly monthly] }
 

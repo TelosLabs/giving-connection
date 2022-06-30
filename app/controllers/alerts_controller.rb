@@ -16,6 +16,7 @@ class AlertsController < ApplicationController
     if new_alert.save
       create_alert_services(new_alert, params['search']['services']) unless params['search']['services'].nil?
       create_alert_beneficiaries(new_alert, params['search']['beneficiary_groups']) unless params['search']['beneficiary_groups'].nil?
+      create_alert_causes(new_alert, params['search']['causes']) unless params['search']['causes'].nil?
     end
     update_alert_search_results(new_alert)
     authorize new_alert
@@ -43,8 +44,7 @@ class AlertsController < ApplicationController
   private
 
   def alert_params
-    params.require(:search).permit(:distance, :city, :state, :beneficiary_groups,
-                                   :services, :open_weekends, :keyword, :frequency)
+    params.require(:search).permit(:distance, :city, :state, :open_weekends, :keyword, :frequency, :causes, :services, :beneficiary_groups)
   end
 
   def clean_open_weekends(new_alert)
@@ -52,8 +52,15 @@ class AlertsController < ApplicationController
     new_alert
   end
 
-  def create_alert_services(alert, causes_and_services)
-    causes_and_services.values.flatten.each do |service|
+  def create_alert_causes(alert, causes)
+    causes.each do |cause|
+      find_cause = Cause.find_by_name(cause)
+      AlertCause.create!(cause: find_cause, alert: alert)
+    end
+  end
+
+  def create_alert_services(alert, services)
+    services.values.flatten.each do |service|
       find_service = Service.find_by_name(service)
       AlertService.create!(service: find_service, alert: alert)
     end

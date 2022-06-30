@@ -1,13 +1,13 @@
 <div class="p-4" data-controller="result-card--component" >
   <div class="flex flex-row gap-3 mb-3">
     <div class="flex-shrink-0 w-24 my-1">
-      <a href="<%= location_path(@id)%>" class="inline-flex items-start p-2 text-sm font-bold text-blue-medium">
+      <a href="<%= location_path(@id)%>" class="inline-flex items-start p-2 text-sm font-bold text-blue-medium" target="_blank">
         <%= image_tag @image_url, class: 'object-contain w-full h-20' %>
       </a>
     </div>
     <div class="w-full">
       <div class="flex flex-row items-start justify-between">
-        <a href="<%= location_path(@id)%>" class="inline-flex items-center py-2 text-sm font-bold text-blue-medium" 
+        <a href="<%= location_path(@id)%>" class="inline-flex items-center py-2 text-sm font-bold text-blue-medium"  target="_blank"
            id="new_favorite_location_<%= @id %>">
           <h5 class="text-lg font-bold text-black">
             <%= @title %>

@@ -7,6 +7,7 @@ module SearchesHelper
     list = []
     list << object.beneficiary_groups&.map(&:last)&.flatten
     list << object.services&.map(&:last)&.flatten
+    list << object.causes&.flatten
     list << "Open On Weekends" if object.open_weekends.present?
     list << "#{kilometers_to_miles(object.distance).to_i} mi" if object.distance.present?
     list.flatten.compact
@@ -18,9 +19,15 @@ module SearchesHelper
     list.flatten.compact
   end
 
+  def list_of_causes(object)
+    list = []
+    list << object.causes&.flatten
+    list.flatten.compact
+  end
+
   def list_of_beneficiary_groups(object)
     list = []
-    list << object.beneficiary_groups&.map(&:last)&.flatten 
+    list << object.beneficiary_groups&.map(&:last)&.flatten
     list.flatten.compact
   end
 

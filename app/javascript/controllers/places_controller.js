@@ -65,6 +65,8 @@ export default class extends Controller {
 
   setMarkers(map, image) {
     // Adds markers to the map.
+    let prevInfoWindow = false
+
     for (let i = 0; i < this.markerTargets.length; i++) {
       const element = this.markerTargets[i];
       const latitudeTarget = Number(element.dataset.latitude)
@@ -82,6 +84,12 @@ export default class extends Controller {
       });
 
       marker.addListener("click", () => {
+        if( prevInfoWindow ) {
+          prevInfoWindow.close()
+        }
+
+        prevInfoWindow = infowindow
+
         infowindow.open({
           anchor: marker,
           map,
