@@ -3,7 +3,7 @@
   = render SearchBar::Component.new(form: f, search: @search)
   div class="flex flex-row justify-center w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
     div class="flex flex-row justify-center w-full min-h-full"
-      div class="flex flex-col w-full max-w-470px md:border-r border-gray-7"
+      div class="flex flex-col w-full md:border-r border-gray-7"
         div class="flex flex-row justify-between w-full p-4 bg-gray-9" data-controller="modal"
           button class="inline-flex items-center px-3 py-2 text-sm leading-4" type="button" data-action="click->modal#open"
             /! Heroicon name: solid/mail
@@ -79,32 +79,70 @@
         div class="hidden w-full h-85vh md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
           div# class="w-full h-full" data-places-target="map"
           div class="hidden"
+            div class="hidden" data-places-target="latitude"
+            div class="hidden" data-places-target="longitude"
+            - @results.besides_po_boxes&.each do |result|
+              div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}" data-po_box="#{result.po_box}"
+                - if user_signed_in?
+                  - if !current_user.favorited_locations.include?(result)
+                    = link_to favorite_locations_path(location_id: result.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", method: :post, remote: true do
+                      = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
+                  - else
+                    = link_to favorite_location_path(current_user.fav_locs.find_by(location_id: result.id)), method: :delete, class: "inline-flex self-end text-xs text-gray-3", remote: true do
+                      = inline_svg_tag 'bookmark_colored.svg', class: 'w-4 h-4'
+                - else
+                  = link_to favorite_locations_path(location_id: result.id), method: :post, class: "inline-flex self-end text-xs text-gray-3" do
+                    = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
+                h5 class="text-lg font-bold leading-6 text-gray-2" id="pointer"
+                  = link_to result.name, location_path(result)
+                p class="text-xs text-gray-4" id="pointer"
+                  = link_to result.address, result.link_to_google_maps, target: "blank"
+                p class="text-xs text-blue-medium"
+                  = link_to result.organization.website, "http://#{result.organization.website}", target: "_blank"
+                - if device == "mobile"
+                  a.text-xs.text-blue-medium[href="tel:#{result.phone_number&.number}"]
+                    = "call: #{result.phone_number&.number}"
+                - else
+                  p class="text-xs text-blue-medium"
+                    = result.phone_number&.number
+                p class="text-xs font-medium text-gray-2"
+                  - if result.appointment_only?
+                    span class="text-states-error"
+                      ' Appointment only
+                  - elsif result.open_now?
+                    span class="text-green-fountain"
+                      ' Open Now
+                  - else
+                    span class="text-states-error"
+                      ' Closed
+                    | -&nbsp;
+                    = result.decorate.closed_office_hours_display
+
+      div class="relative hidden w-full md:flex" data-controller="places result-card--component" data-places-zoom-value="10" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
+        div# class="absolute inset-0 w-full h-full" data-places-target="map"
+        div class="hidden"
           div class="hidden" data-places-target="latitude"
           div class="hidden" data-places-target="longitude"
           - @results.besides_po_boxes&.each do |result|
-            div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}" data-po_box="#{result.po_box}"
+            div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}"
               - if user_signed_in?
                 - if !current_user.favorited_locations.include?(result)
-                  = link_to favorite_locations_path(location_id: result.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", method: :post, remote: true do
+                  = link_to favorite_locations_path(location_id: result.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", method: :post, remote: true, data: { action: "click->result-card--component#reloadPage" }do
                     = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
                 - else
-                  = link_to favorite_location_path(current_user.fav_locs.find_by(location_id: result.id)), method: :delete, class: "inline-flex self-end text-xs text-gray-3", remote: true do
+                  = link_to favorite_location_path(current_user.fav_locs.find_by(location_id: result.id)), method: :delete, class: "inline-flex self-end text-xs text-gray-3", remote: true, data: { action: "click->result-card--component#reloadPage" } do
                     = inline_svg_tag 'bookmark_colored.svg', class: 'w-4 h-4'
               - else
                 = link_to favorite_locations_path(location_id: result.id), method: :post, class: "inline-flex self-end text-xs text-gray-3" do
                   = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
-              h5 class="text-lg font-bold leading-6 text-gray-2"
+              h5 class="text-lg font-bold leading-6 text-gray-2" id="pointer"
                 = link_to result.name, location_path(result)
               p class="text-xs text-gray-4" id="pointer"
-                = link_to result.address, result.link_to_google_maps, target: "blank"
+                = link_to result.formatted_address, result.link_to_google_maps, target: "blank"
               p class="text-xs text-blue-medium"
-                = link_to result.organization.website, "http://#{result.organization.website}", target: "_blank"
-              - if device == "mobile"
-                a.text-xs.text-blue-medium[href="tel:#{result.phone_number&.number}"]
-                  = "call: #{result.phone_number&.number}"
-              - else
-                p class="text-xs text-blue-medium"
-                  = result.phone_number&.number
+                = link_to "#{result.organization.website}", "http://#{result.organization.website}", target: "_blank"
+              p class="text-xs text-gray-4"
+                | #{result.phone_number&.number}
               p class="text-xs font-medium text-gray-2"
                 - if result.appointment_only?
                   span class="text-states-error"
@@ -117,41 +155,3 @@
                     ' Closed
                   | -&nbsp;
                   = result.decorate.closed_office_hours_display
-
-      div class="relative hidden w-full md:flex" data-controller="places result-card--component" data-places-zoom-value="10" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
-        div# class="absolute inset-0 w-full h-full" data-places-target="map"
-        div class="hidden"
-        div class="hidden" data-places-target="latitude"
-        div class="hidden" data-places-target="longitude"
-        - @results.besides_po_boxes&.each do |result|
-          div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}"
-            - if user_signed_in?
-              - if !current_user.favorited_locations.include?(result)
-                = link_to favorite_locations_path(location_id: result.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", method: :post, remote: true, data: { action: "click->result-card--component#reloadPage" }do
-                  = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
-              - else
-                = link_to favorite_location_path(current_user.fav_locs.find_by(location_id: result.id)), method: :delete, class: "inline-flex self-end text-xs text-gray-3", remote: true, data: { action: "click->result-card--component#reloadPage" } do
-                  = inline_svg_tag 'bookmark_colored.svg', class: 'w-4 h-4'
-            - else
-              = link_to favorite_locations_path(location_id: result.id), method: :post, class: "inline-flex self-end text-xs text-gray-3" do
-                = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
-            h5 class="text-lg font-bold leading-6 text-gray-2" id="pointer"
-              = link_to result.name, location_path(result)
-            p class="text-xs text-gray-4" id="pointer"
-              = link_to result.formatted_address, result.link_to_google_maps, target: "blank"
-            p class="text-xs text-blue-medium"
-              = link_to "#{result.organization.website}", "http://#{result.organization.website}", target: "_blank"
-            p class="text-xs text-gray-4"
-              | #{result.phone_number&.number}
-            p class="text-xs font-medium text-gray-2"
-              - if result.appointment_only?
-                span class="text-states-error"
-                  ' Appointment only
-              - elsif result.open_now?
-                span class="text-green-fountain"
-                  ' Open Now
-              - else
-                span class="text-states-error"
-                  ' Closed
-                | -&nbsp;
-                = result.decorate.closed_office_hours_display
