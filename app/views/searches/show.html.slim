@@ -18,7 +18,7 @@
             /! Modal Inner Container
             div class="relative w-full max-h-full max-w-375px"
               /! Modal Card
-              = render partial: 'filter', locals: { form: f, search: @search, causes_and_services: @causes_and_services, beneficiary_groups: @beneficiary_groups }
+              = render partial: 'filter', locals: { form: f, search: @search, services: @services, causes: @causes, beneficiary_groups: @beneficiary_groups }
           span class="relative z-0 inline-flex shadow-sm md:hidden rounded-6px"
             / active bg-blue-dark.focus:text-white
             / inactive bg-white text-gray-3

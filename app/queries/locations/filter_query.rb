@@ -10,10 +10,11 @@ module Locations
     attr_reader :locations
 
     class << self
-      def call(params = {}, locations =  Location.active)
+      def call(params = {}, locations = Location.active)
         scope = locations
         scope = geo_near(scope, starting_coordinates(params[:lat], params[:lon]), params[:distance])
         scope = by_address(scope, params[:address])
+        scope = by_cause(scope, params[:causes])
         scope = by_service(scope, params[:services])
         scope = by_beneficiary_groups_served(scope, params[:beneficiary_groups])
         scope = opened_now(scope, params[:open_now])
@@ -47,6 +48,18 @@ module Locations
           'address ILIKE ALL ( array[?] )',
           parameterize_address_filters(address_params)
         )
+      end
+
+      def by_cause(scope, causes)
+        return scope if causes.blank? || scope.empty?
+
+        Location.joins(
+          organization: { organization_causes: :cause }
+        ).where(
+          "locations.id IN (?)", scope.ids
+        ).where(
+          "causes.name IN (?)", causes
+        ).distinct
       end
 
       def by_service(scope, services)

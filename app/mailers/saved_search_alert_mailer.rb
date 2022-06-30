@@ -31,8 +31,9 @@ class SavedSearchAlertMailer < ApplicationMailer
     filters = AlertSearchResults.new(@alert).search_params
     beneficiary_groups = filters[:beneficiary_groups].values.flatten
     services = filters[:services].values.flatten
+    causes = filters[:causes].flatten
     open_on_weekends = filters[:open_weekends] ? ['Open on Weekends'] : []
-    @alert_filters = beneficiary_groups + services + open_on_weekends
+    @alert_filters = beneficiary_groups + services + causes + open_on_weekends
     @alert_filters = @alert_filters.join(", ")
   end
 
