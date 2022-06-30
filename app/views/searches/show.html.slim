@@ -93,8 +93,6 @@
                 - else
                   = link_to favorite_locations_path(location_id: result.id), method: :post, class: "inline-flex self-end text-xs text-gray-3" do
                     = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
-                h5 class="text-lg font-bold leading-6 text-gray-2"
-                  = link_to result.name, location_path(result), target:"_blank"
                 h5 class="text-lg font-bold leading-6 text-gray-2" id="pointer"
                   = link_to result.name, location_path(result), target:"_blank"
                 p class="text-xs text-gray-4" id="pointer"
