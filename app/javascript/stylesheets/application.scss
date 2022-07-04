@@ -9,3 +9,7 @@
 .scroll-margin-navbar {
   scroll-margin-top: 91px;
 }
+
+.tagify__input::before{
+  position:static;
+}
