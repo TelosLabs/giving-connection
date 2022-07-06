@@ -41,7 +41,7 @@ class AlertSearchResults < ApplicationService
   def build_causes
     alert_causes_array = []
     alert.alert_causes.each do |alert_cause|
-      alert_causes_array = alert_cause.cause.name
+      alert_causes_array << alert_cause.cause.name
     end
     alert_causes_array
   end
