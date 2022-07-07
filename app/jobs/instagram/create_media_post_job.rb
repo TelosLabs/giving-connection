@@ -11,13 +11,12 @@ class Instagram::CreateMediaPostJob < ApplicationJob
   private
 
   def create_instagram_post
-    return if InstagramPost.find_by(external_id: @post['id'])
-
-    new_post = InstagramPost.new(post_attributes)
-    if new_post.save!
-      Rails.logger.info "Succesfully created Instagram Post with id #{new_post.id}"
+    instagram_post = InstagramPost.find_by(external_id: @post['id'])
+    if instagram_post
+      Rails.logger.info "Succesfully updated Instagram Post with id #{instagram_post.id}" if instagram_post.update!(post_attributes)
     else
-      Rails.logger.info "Unable to create Instagram Post with external id #{@post['id']}"
+      new_post = InstagramPost.new(post_attributes)
+      Rails.logger.info "Succesfully created Instagram Post with id #{new_post.id}" if new_post.save!
     end
   end
 
@@ -26,7 +25,9 @@ class Instagram::CreateMediaPostJob < ApplicationJob
       external_id: @post['id'].to_i,
       media_url: @post['media_url'],
       post_url: @post['permalink'],
-      creation_date: @post['timestamp'].to_date
+      media_type: @post['media_type'].downcase,
+      creation_date: @post['timestamp'].to_date,
+      updated_at: DateTime.current
     }
   end
 end
