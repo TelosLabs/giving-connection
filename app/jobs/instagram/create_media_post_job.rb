@@ -11,13 +11,10 @@ class Instagram::CreateMediaPostJob < ApplicationJob
   private
 
   def create_instagram_post
-    instagram_post = InstagramPost.find_by(external_id: @post['id'])
-    if instagram_post
-      Rails.logger.info "Succesfully updated Instagram Post with id #{instagram_post.id}" if instagram_post.update!(post_attributes)
-    else
-      new_post = InstagramPost.new(post_attributes)
-      Rails.logger.info "Succesfully created Instagram Post with id #{new_post.id}" if new_post.save!
-    end
+    instagram_post = InstagramPost.find_or_initialize_by(external_id: @post['id'])
+    instagram_post.assign_attributes(post_attributes)
+    instagram_post.save!
+    Rails.logger.info "Successfully saved Instagram Post with id #{instagram_post.id}"
   end
 
   def post_attributes
