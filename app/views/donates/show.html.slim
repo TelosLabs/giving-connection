@@ -153,13 +153,21 @@ div class="bg-white main"
         = inline_svg_tag 'pablita-3.svg', size: '327*223', class: "xl:transform xl:scale-150"
 
   /* Follow Instagram */
-  div class="flex flex-col items-center justify-center text-center relative bg-blue-pale pt-16 pb-28 px-6 lg:py-28"
+  div class="text-center items-center justify-center relative bg-blue-pale pt-16 pb-28 px-6 lg:py-28"
     h2 class="text-2xl font-bold text-blue-dark"
       ' Follow our updates on Instagram
-    a href="https://www.instagram.com/givingconnection/" class="text-2xl font-bold text-blue-dark mb-14"
+    a href="https://www.instagram.com/givingconnection/" target="_blank" class="text-2xl font-bold text-blue-dark mb-14"
       ' @givingconnection
-
-    = image_tag  "instagram-capture.png"
+    - if @posts.present?
+      div class="grid grid-cols-3 gap-1 max-w-max m-auto mt-10"
+        - @posts.each do |post|
+          = link_to "#{post.post_url}", target:"_blank" do
+            - if ["image", "carousel_album"].include?(post.media_type)
+              div class="col overflow-hidden" style='max-height:180px; max-width:180px; aspect-ratio:1/1;'
+                = image_tag "#{post.media_url}", class: "overflow-hidden object-cover"
+            - elsif post.media_type == "video"
+              div class="col overflow-hidden flex justify-items-center" style='max-height:180px; max-width:180px; aspect-ratio:1/1;'
+                = video_tag "#{post.media_url}", autoplay: :autoplay, loop: :loop, muted: :muted, class: "overflow-hidden object-cover"
 
     div
       = inline_svg_tag 'sticker-heart.svg', size: '39*39', class:"absolute top-20 left-80 hidden lg:block"

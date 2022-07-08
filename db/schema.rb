@@ -140,6 +140,16 @@ ActiveRecord::Schema.define(version: 2022_06_22_165015) do
     t.index ["user_id"], name: "index_favorite_locations_on_user_id"
   end
 
+  create_table "instagram_posts", force: :cascade do |t|
+    t.string "media_url", null: false
+    t.string "post_url", null: false
+    t.bigint "external_id", null: false
+    t.string "media_type", null: false
+    t.datetime "creation_date", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "location_services", force: :cascade do |t|
     t.string "description"
     t.bigint "location_id", null: false

@@ -7,5 +7,6 @@ class DonatesController < ApplicationController
   skip_after_action :verify_authorized
 
   def show
+    @posts = InstagramPost.latest_six_created
   end
 end
