@@ -6,7 +6,7 @@
     div class="max-w-md px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
       | Giving Connection is a platform designed to connect people with nonprofits in their communities.
     div class="max-w-md px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
-      |  In order to create a nonprofit profile that is listed in Giving Connection's search results, a representative from your nonprofit should fill out the following form. 
+      |  In order to create a nonprofit profile that is listed in Giving Connection's search results, a representative from your nonprofit should fill out the following form.
     div class="max-w-md px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
       |  After we verify the nonprofit organization, we will contact the representative listed below to set up an account. You should expect to hear back from us within 1-2 weeks.
   - else
@@ -44,15 +44,6 @@
         = f.select :subject,\
         [['I want to publish a nonprofit on Giving Connection', '1'],['I want to claim ownership of a nonprofit page', '2'], ['Other', '3']],\
         {}, {class: "c-input pr-7 bg-white", required: true, data: { action: "change->contact-form#subjectSelected",'contact-form-target': 'subject'}}
-      div class="w-full"
-        = f.label :organization_name, "*Organization Name"
-        = f.text_field :organization_name, class:"c-input", required: true
-      div class="w-full"
-        = f.label :organization_website, "Organization Website"
-        = f.text_field :organization_website, class:"c-input", placeholder:"Your Website"
-      div class="w-full"
-        = f.label :organization_ein, "Organization EIN"
-        = f.text_field :organization_ein, class:"c-input", placeholder:"Your Organization EIN"
       div class="w-full"
         = f.label :content, "*Message"
         = f.text_area :content, class:"c-input h-40", required: true, data: { 'contact-form-target': 'message'}
