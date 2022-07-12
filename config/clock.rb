@@ -23,7 +23,7 @@ module Clockwork
     end
   end
 
-  every(1.day, 'Fetch Instagram Media Posts', at: '22:00') do
+  every(3.hours, 'Fetch Instagram Media Posts') do
     Instagram::FetchMediaPostsJob.perform_later
   end
 end
