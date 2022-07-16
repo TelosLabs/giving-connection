@@ -40,3 +40,6 @@ yarn-debug.log*
 .yarn-integrity
 
 database_consistency*
+
+# Ignore application configuration
+/config/application.yml
