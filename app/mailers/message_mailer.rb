@@ -19,6 +19,6 @@ class MessageMailer < ApplicationMailer
 
   def mandrill_template(template_name)
     mandrill = Mandrill::API.new(ENV["SMTP_PASSWORD"])
-    mandrill.templates.render(template_name)["html"]
+    mandrill.templates.render(template_name, [], [])["html"]
   end
 end
