@@ -46,6 +46,7 @@ gem 'roo', '~> 2.8.0'
 gem 'sidekiq'
 gem 'slim-rails'
 gem 'view_component'
+gem 'mandrill-api-json'
 # Use Turbo for rails
 gem 'turbo-rails', '~> 0.8.1'
 
