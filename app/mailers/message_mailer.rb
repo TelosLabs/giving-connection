@@ -7,6 +7,7 @@ class MessageMailer < ApplicationMailer
   def default_response(message)
     @message = message
     mail to: @message.email, subject: 'We received your message!'
+    raise
   end
 
   def admins_notification(message)
