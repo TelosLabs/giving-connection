@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'mandrill'
+
 class MessageMailer < ApplicationMailer
   default to: -> { AdminUser.pluck(:email) },
           from: 'Giving Connection <info@givingconnection.org>'
