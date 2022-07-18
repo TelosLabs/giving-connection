@@ -8,8 +8,8 @@ class MessageMailer < ApplicationMailer
 
   def default_response(message)
     @message = message
-    @body = mandrill_template("test_template")
-    mail(to: @message.email, subject: 'We received your message!', body: @body, content_type: "text/html")
+    @body = mandrill_template('test_template')
+    mail(to: @message.email, subject: 'We received your message!', body: @body, content_type: 'text/html')
   end
 
   def admins_notification(message)
@@ -20,10 +20,11 @@ class MessageMailer < ApplicationMailer
   private
 
   def mandrill_template(template_name)
-    mandrill = Mandrill::API.new(ENV["SMTP_PASSWORD"])
-    merge_vars = { 'CURRENT_YEAR': Date.today.year, 'COMPANY': "Giving Connection", 'EMAIL_ADDRESS': "info@givingconnection.org"}.map do |key, value|
-      { name: key, content: value }
-    end
-    mandrill.templates.render(template_name, [], merge_vars)["html"]
+    mandrill   = Mandrill::API.new(`ENV.fetch('SMTP_PASSWORD')`)
+    attributes = { `CURRENT_YEAR` => Date.today.year,
+                   `COMPANY` => 'Giving Connection',
+                   `EMAIL_ADDRESS` => 'info@givingconnection.org' }
+    attributes.map { |key, value| { name: key, content: value } }
+    mandrill.templates.render(template_name, [], merge_vars)['html']
   end
 end
