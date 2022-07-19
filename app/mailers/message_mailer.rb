@@ -21,10 +21,10 @@ class MessageMailer < ApplicationMailer
 
   def mandrill_template(template_name)
     mandrill   = Mandrill::API.new(`ENV.fetch('SMTP_PASSWORD')`)
-    attributes = { `CURRENT_YEAR` => Date.today.year,
-                   `COMPANY` => 'Giving Connection',
-                   `EMAIL_ADDRESS` => 'info@givingconnection.org' }
-    attributes.map { |key, value| { name: key, content: value } }
+    attributes = { 'CURRENT_YEAR' => Date.today.year,
+                   'COMPANY' => 'Giving Connection',
+                   'EMAIL_ADDRESS' => 'info@givingconnection.org' }
+    merge_vars = attributes.map { |key, value| { name: key, content: value } }
     mandrill.templates.render(template_name, [], merge_vars)['html']
   end
 end
