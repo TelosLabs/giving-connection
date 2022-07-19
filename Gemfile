@@ -47,7 +47,7 @@ gem 'sidekiq'
 gem 'slim-rails'
 gem 'view_component'
 gem 'mandrill-api-json'
-gem 'figaro'
+
 # Use Turbo for rails
 gem 'turbo-rails', '~> 0.8.1'
 

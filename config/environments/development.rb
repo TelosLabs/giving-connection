@@ -51,15 +51,14 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
 
   config.action_mailer.smtp_settings = {
-    address: ENV.fetch("SMTP_ADDRESS"),
-    authentication: :plain,
-    domain: ENV.fetch("SMTP_DOMAIN"),
+    address: Rails.application.credentials.dig(:mailchimp, :host),
+    port: Rails.application.credentials.dig(:mailchimp, :port),
     enable_starttls_auto: true,
-    password: ENV.fetch("SMTP_PASSWORD"),
-    port: "587",
-    user_name: ENV.fetch("SMTP_USERNAME")
+    user_name: Rails.application.credentials.dig(:mailchimp, :username),
+    password: Rails.application.credentials.dig(:mailchimp, :api_key),
+    domain: Rails.application.credentials.dig(:mailchimp, :domain),
+    authentication: 'login'
   }
-  config.action_mailer.default_url_options = { host: ENV["SMTP_DOMAIN"] }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
