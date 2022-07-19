@@ -20,11 +20,11 @@ class MessageMailer < ApplicationMailer
   private
 
   def mandrill_template(template_name)
-    mandrill   = Mandrill::API.new(Rails.application.credentials.dig(:mailchimp, :api_key))
-    attributes = { 'CURRENT_YEAR' => Date.today.year,
-                   'FIRST_NAME' => 'Giving Connection',
+    mandrill = Mandrill::API.new(Rails.application.credentials.dig(:mailchimp, :api_key))
+    attributes = { 'FIRST_NAME' => @message.name,
                    'EMAIL' => @message.email,
-                   'MESSAGE' => @message.message,
+                   'SUBJECT' => @message.subject,
+                   'MESSAGE' => @message.content,
                    'PHONE' => @message.phone }
     merge_vars = attributes.map { |key, value| { name: key, content: value } }
     mandrill.templates.render(template_name, [], merge_vars)['html']
