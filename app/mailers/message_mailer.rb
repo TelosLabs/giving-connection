@@ -20,7 +20,7 @@ class MessageMailer < ApplicationMailer
   private
 
   def mandrill_template(template_name)
-    mandrill   = Mandrill::API.new(`ENV.fetch('SMTP_PASSWORD')`)
+    mandrill   = Mandrill::API.new(Rails.application.credentials.dig(:mailchimp, :api_key))
     attributes = { 'CURRENT_YEAR' => Date.today.year,
                    'COMPANY' => 'Giving Connection',
                    'EMAIL_ADDRESS' => 'info@givingconnection.org' }
