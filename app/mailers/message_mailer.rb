@@ -8,7 +8,7 @@ class MessageMailer < ApplicationMailer
 
   def default_response(message)
     @message = message
-    @body = mandrill_template('test_template')
+    @body = mandrill_template('contact_form_confirmation')
     mail(to: @message.email, subject: 'We received your message!', body: @body, content_type: 'text/html')
   end
 
@@ -22,8 +22,10 @@ class MessageMailer < ApplicationMailer
   def mandrill_template(template_name)
     mandrill   = Mandrill::API.new(Rails.application.credentials.dig(:mailchimp, :api_key))
     attributes = { 'CURRENT_YEAR' => Date.today.year,
-                   'COMPANY' => 'Giving Connection',
-                   'EMAIL_ADDRESS' => 'info@givingconnection.org' }
+                   'FIRST_NAME' => 'Giving Connection',
+                   'EMAIL' => @message.email,
+                   'MESSAGE' => @message.message,
+                   'PHONE' => @message.phone }
     merge_vars = attributes.map { |key, value| { name: key, content: value } }
     mandrill.templates.render(template_name, [], merge_vars)['html']
   end
