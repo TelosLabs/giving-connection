@@ -28,7 +28,7 @@
     <div style="text-align: center; background-color: #EFF2F7;">
       <div style="border-radius: 10px; display: inline-block; margin-top: 64px; max-width: 600px; background-color: #ffffff; padding-top: 44px; padding-bottom: 40px;">
         <div style="text-align: center;">
-          <%= image_tag("white_logo.jpg", style: "height: 100px; max-width: 400px") %>
+          <%= image_tag(attachments['white_logo.jpg'].url, style: "height: 100px; max-width: 400px") %>
         </div>
         <div class="sm-px-64" style="text-align: left; padding-left: 24px; padding-right: 24px;">
           <%= yield %>
@@ -37,10 +37,10 @@
           <div style="border-bottom: 1px solid #E6E6E6; display: block; height: 2px; margin: 0 auto; width: 90%;"></div>
           <p style="margin: 0px; margin-top: 30px; font-size: 16px; color: #0782D0; font-family: 'Inter'; font-style: normal; font-weight: 700;">Connect with us!</p>
           <div style="margin: 0px; margin-top: 20px; font-size: 12px; font-weight: 500;">
-            <a href="https://www.facebook.com/givingconnection.org" target="_blank" style="margin: 0px 7px; text-decoration: none; color: inherit;"><%= image_tag("facebook.jpg", style: "height: 30px; max-width: 35px") %></a>
-            <a href="https://www.instagram.com/givingconnection/" target="_blank" style="margin: 0px 7px; text-decoration: none; color: inherit;"><%= image_tag("instagram.jpg", style: "height: 30px; max-width: 35px") %></a>
-            <a href="https://twitter.com/giveconnection" target="_blank" style="margin: 0px 7px; text-decoration: none; color: inherit;"><%= image_tag("twitter.jpg", style: "height: 30px; max-width: 35px") %></a>
-            <a href="https://www.youtube.com/channel/UCZXvN1tltX192vFpKIfH8fA" target="_blank" style="margin: 0px 7px; text-decoration: none; color: inherit;"><%= image_tag("youtoube.jpg", style: "height: 30px; max-width: 35px") %></a>
+            <a href="https://www.facebook.com/givingconnection.org" target="_blank" style="margin: 0px 7px; text-decoration: none; color: inherit;"><%= image_tag(attachments['facebook.jpg'].url, style: "height: 30px; max-width: 35px") %></a>
+            <a href="https://www.instagram.com/givingconnection/" target="_blank" style="margin: 0px 7px; text-decoration: none; color: inherit;"><%= image_tag(attachments['instagram.jpg'].url, style: "height: 30px; max-width: 35px") %></a>
+            <a href="https://twitter.com/giveconnection" target="_blank" style="margin: 0px 7px; text-decoration: none; color: inherit;"><%= image_tag(attachments['twitter.jpg'].url, style: "height: 30px; max-width: 35px") %></a>
+            <a href="https://www.youtube.com/channel/UCZXvN1tltX192vFpKIfH8fA" target="_blank" style="margin: 0px 7px; text-decoration: none; color: inherit;"><%= image_tag(attachments['youtoube.jpg'].url, style: "height: 30px; max-width: 35px") %></a>
           </div>
           <div style="margin: 0px; margin-top: 20px; font-size: 12px; font-weight: 500; font-family: 'Inter'; font-style: normal; font-weight: 400;">
             <a href="https://www.givingconnection.org/contact" target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">Contact us</a>
