@@ -5,12 +5,12 @@ class MessageMailer < ApplicationMailer
           from: 'Giving Connection <info@givingconnection.org>'
 
   def default_response(message)
-    @message = params[:message] || message
+    @message = message
     mail to: @message.email, subject: 'We received your message!'
   end
 
   def admins_notification(message)
-    @message = params[:message] || message
+    @message = message
     mail subject: 'Contact notification'
   end
 end

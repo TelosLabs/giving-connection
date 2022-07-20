@@ -5,6 +5,6 @@ class MessageMailerPreview < ActionMailer::Preview
                           subject: 'Hello, this is subject', organization_name: '',
                           organization_website: '', organization_ein: '', content: 'Hello, this is content')
 
-    MessageMailer.with(message: message).default_response
+    MessageMailer.default_response(message)
   end
 end
