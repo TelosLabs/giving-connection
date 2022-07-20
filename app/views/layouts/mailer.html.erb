@@ -3,11 +3,60 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style>
-      /* Email styles need to be inline */
+      @media (min-width: 640px) {
+        body {
+          width: 100%;
+          padding: 0;
+          word-break: break-word;
+          -webkit-font-smoothing: antialiased;
+        }
+        .sm-ml-44 {
+          margin-left: 44px !important;
+        }
+        .sm-px-0 {
+          padding-left: 0 !important;
+          padding-right: 0 !important;
+        }
+        .sm-px-64 {
+          padding-left: 64px !important;
+          padding-right: 64px !important;
+        }
+      }
+      .connect-with-us-label {
+        color: #0782D0;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+      }
+      .contact-links {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+      }
     </style>
   </head>
-
   <body>
-    <%= yield %>
+    <div style="text-align: center; background-color: #e5e7eb;">
+      <div style="display: inline-block; margin-top: 64px; max-width: 600px; background-color: #ffffff; padding-top: 44px; padding-bottom: 40px;">
+        <div style="text-align: center;">
+          <%= image_tag("white_logo.jpg", style: "height: 100px; max-width: 400px") %>
+        </div>
+        <div class="sm-px-64" style="text-align: left; margin-top: 56px; padding-left: 24px; padding-right: 24px;">
+          <%= yield %>
+        </div>
+        <div class="sm-px-0" style="margin: 0px; margin-top: 60px; padding-left: 24px; padding-right: 24px; text-align: center;">
+          <p class="connect-with-us-label" style="margin: 0px; font-size: 16px;">Connect with us!</p>
+          <div style="margin: 0px; margin-top: 20px; font-size: 12px; font-weight: 500;" class="contact-links">
+            <a href="https://www.givingconnection.org/contact" target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">Contact us</a>
+            <span>|</span>
+            <a href="https://www.givingconnection.org/my_account" target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">My Account</a>
+            <span>|</span>
+            <a href="https://www.givingconnection.org/privacy_policy" target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">My Account</a>
+          </div>
+        </div>
+      </div>
+      <p style="font-family: Inter font-size: 12px">© Copyright Giving Connection <%= Date.today.year %></p>
+      <p style="font-family: Inter font-size: 12px">All rights reserved.</p>
+    </div>
   </body>
 </html>
