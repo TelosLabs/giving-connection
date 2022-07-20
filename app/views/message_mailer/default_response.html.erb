@@ -1,0 +1,16 @@
+<p>Hi <%= @message.name %>, </p>
+<br>
+<p>Thank you for contacting us. We will get back to you with a response in the next few days.</p>
+<br>
+<p>With gratitude,</p>
+<p>The Giving Connection Team</p>
+<br>
+<div style="background-color: #EFF2F7; padding: 10px;">
+  <p>Your message was:</p>
+  <br>
+  <p>Name: <%= @message.name %></p>
+  <p>Email: <%= @message.email %></p>
+  <p>Phone: <%= @message.phone %></p>
+  <p>Subject: <%= @message.subject %></p>
+  <p>Message: <%= @message.content %></p>
+</div>
