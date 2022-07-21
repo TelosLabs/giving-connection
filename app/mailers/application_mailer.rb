@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationMailer < ActionMailer::Base
-  default from: 'Giving Connection <info@givingconnection.org>'
+  default from: Rails.application.credentials.dig(:mailer, :from)
   layout 'mailer'
   before_action :attach_logos
 
