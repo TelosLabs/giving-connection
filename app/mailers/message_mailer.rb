@@ -4,8 +4,6 @@ class MessageMailer < ApplicationMailer
   default to: -> { AdminUser.pluck(:email) },
           from: Rails.application.credentials.dig(:mailer, :from)
 
-  before_action :attach_logos, only: [:default_response]
-
   def default_response(message)
     @message = message
     mail to: @message.email, subject: 'We received your message!'
