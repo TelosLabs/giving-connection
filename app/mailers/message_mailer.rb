@@ -6,7 +6,6 @@ class MessageMailer < ApplicationMailer
 
   def default_response(message)
     @message = message
-    attach_logos
     mail to: @message.email, subject: 'We received your message!'
   end
 
