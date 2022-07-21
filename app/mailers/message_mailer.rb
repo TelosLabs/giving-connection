@@ -16,7 +16,7 @@ class MessageMailer < ApplicationMailer
   end
 
   def attach_logos
-    attachments.inline["white_logo.jpg"] = File.read("#{Rails.root}/app/assets/images/white_logo.jpg")
+    attachments.inline["giving_connection_logo.png"] = File.read("#{Rails.root}/app/assets/images/send_alert_logo.png")
     attachments.inline["facebook.jpg"] = File.read("#{Rails.root}/app/assets/images/facebook.jpg")
     attachments.inline["instagram.jpg"] = File.read("#{Rails.root}/app/assets/images/instagram.jpg")
     attachments.inline["twitter.jpg"] = File.read("#{Rails.root}/app/assets/images/twitter.jpg")
