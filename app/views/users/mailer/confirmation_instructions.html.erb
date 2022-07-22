@@ -1,5 +1,4 @@
-<p>Welcome <%= @user&.name %>!</p>
-
-<p>You can confirm your account email through the link below:</p>
-
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+<p>Welcome <%= @user&.name %>,</p>
+<p style = "margin-top: 10px;">We are thrilled you are joining the Giving Connection community. We look forward to serving your nonprofit needs by making finding help and serving others easier. You can confirm your account email through the link below:</p>
+<p style = "margin-top: 10px; display: flex; justify-content: center; align-items: center; padding: 10px 20px; gap: 10px; width: 245px; height: 39px; background: #0782D0; border-radius: 6px; color: white;"><%= link_to 'CONFIRM MY ACCOUNT', confirmation_url(@resource, confirmation_token: @token) %></p>
+<p style = "margin-top: 10px;">With gratitude,<br>The Giving Connection Team </p>
