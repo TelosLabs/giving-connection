@@ -13,8 +13,8 @@
       Email: <span style = "font-weight: 100px;"><%= @message.email %></span><br>
       Phone: <span style = "font-weight: 100px;"><%= @message.phone %></span><br>
       Subject: <span style = "font-weight: 100px;"><%= @message.subject %></span><br>
-      Message: <span style = "font-weight: 100px;"><%= @message.content %></span>
-      <%= if @message.organization_name.present? %>
+      Message: <span style = "font-weight: 100px;"><%= @message.content %></span><br>
+      <% if @message.organization_name.present? %>
         Organization Name: <span style = "font-weight: 100px;"><%= @message.organization_name %></span><br>
         Organization Email: <span style = "font-weight: 100px;"><%= @message.organization_website %></span><br>
         Organization Ein: <span style = "font-weight: 100px;"><%= @message.organization_ein %></span><br>

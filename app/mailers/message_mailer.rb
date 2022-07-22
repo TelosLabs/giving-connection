@@ -11,6 +11,6 @@ class MessageMailer < ApplicationMailer
 
   def admins_notification(message)
     @message = message
-    mail subject: 'Contact notification'
+    mail to: @message.email, subject: 'Contact notification'
   end
 end
