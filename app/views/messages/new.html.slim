@@ -47,7 +47,7 @@
       - if params["data"] == "claim-or-add-ngo"
         div class="w-full"
           = f.label :organization_name, "*Organization Name"
-          = f.text_field :organization_name, class:"c-input", required: true
+          = f.text_field :organization_name, class:"c-input", required: true if params["data"] == "claim-or-add-ngo"
         div class="w-full"
           = f.label :organization_website, "Organization Website"
           = f.text_field :organization_website, class:"c-input", placeholder:"Your Website"
