@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   after_action :verify_authorized, except: :index, unless: :skip_pundit?
   after_action :verify_policy_scoped, only: :index, unless: :skip_pundit?
   before_action :configure_permitted_parameters, if: :devise_controller?
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   private
 
@@ -23,7 +24,7 @@ class ApplicationController < ActionController::Base
   end
 
   def storable_location?
-     request.get? && is_navigational_format? && !devise_controller? && !request.xhr? 
+     request.get? && is_navigational_format? && !devise_controller? && !request.xhr?
    end
 
    def store_user_location!
@@ -40,5 +41,10 @@ class ApplicationController < ActionController::Base
       FavoriteLocation.create(location_id: session[:fav_loc_id], user: current_user)
       session.delete(:fav_loc_id)
     end
+  end
+
+  def user_not_authorized
+    flash[:error] = 'You are not allowed to perform this action'
+    redirect_to root_path
   end
 end
