@@ -21,7 +21,6 @@ class Search
 
   def execute_search
     filters = {
-      address: { city: city.presence, state: state.presence, zipcode: zipcode.presence },
       open_now: ActiveModel::Type::Boolean.new.cast(open_now),
       open_weekends: ActiveModel::Type::Boolean.new.cast(open_weekends),
       beneficiary_groups: beneficiary_groups,
@@ -30,12 +29,13 @@ class Search
     }
 
     geo_filters = {
+      lat: lat.presence&.to_f, lon: lon.presence&.to_f,
       distance: distance.presence&.to_i,
-      lat: lat.presence&.to_f, lon: lon.presence&.to_f
+      address: { city: city.presence, state: state.presence, zipcode: zipcode.presence }
     }
 
     @results = Locations::GeolocationQuery.call(geo_filters)
-    @results = keyword.present? ? Locations::KeywordQuery.call({ keyword: keyword }, @results) : Location.active
+    @results = keyword.present? ? Locations::KeywordQuery.call({ keyword: keyword }, @results) : @results
     @results = Locations::FilterQuery.call(filters, @results)
   end
 end
