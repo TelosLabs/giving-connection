@@ -30,8 +30,12 @@ class OrganizationsController < ApplicationController
       redirect_to my_account_path
       flash[:notice] = 'The Organization was successfully updated'
     else
-      render :edit
-      flash[:alert] = 'The Organization was not updated'
+      @causes = Cause.order(:name).pluck(:name)
+      @beneficiaries = BeneficiarySubcategory.order(:name).pluck(:name)
+      @beneficiary_groups = set_beneficiary_groups
+      @services = set_services
+      flash.now[:alert] = 'The Organization was not updated'
+      render 'edit', status: :unprocessable_entity
     end
   end
 
