@@ -13,10 +13,7 @@ class OrganizationsController < ApplicationController
   def edit
     @organization = Organization.find(params[:id])
     authorize @organization
-    @causes = Cause.order(:name).pluck(:name)
-    @beneficiaries = BeneficiarySubcategory.order(:name).pluck(:name)
-    @beneficiary_groups = set_beneficiary_groups
-    @services = set_services
+    set_form_data
   end
 
   def update
@@ -30,13 +27,17 @@ class OrganizationsController < ApplicationController
       redirect_to my_account_path
       flash[:notice] = 'The Organization was successfully updated'
     else
-      @causes = Cause.order(:name).pluck(:name)
-      @beneficiaries = BeneficiarySubcategory.order(:name).pluck(:name)
-      @beneficiary_groups = set_beneficiary_groups
-      @services = set_services
+      set_form_data
       flash.now[:alert] = 'The Organization was not updated'
       render 'edit', status: :unprocessable_entity
     end
+  end
+
+  def set_form_data
+    @causes = Cause.order(:name).pluck(:name)
+    @beneficiaries = BeneficiarySubcategory.order(:name).pluck(:name)
+    @beneficiary_groups = set_beneficiary_groups
+    @services = set_services
   end
 
   def set_services
