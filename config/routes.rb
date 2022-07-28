@@ -30,7 +30,8 @@ Rails.application.routes.draw do
   devise_for :users
 
   devise_scope :user do
-    get '/sign_up', to: 'devise/registrations#new', as: :new_user_registration_simplified
+    get '/signup', to: 'devise/registrations#new', as: :new_user_registration_simplified
+    get '/signin', to: 'devise/sessions#new', as: :new_user_session_simplified
   end
 
   resources :users, only: [:update]
@@ -48,7 +49,9 @@ Rails.application.routes.draw do
 
   resources :favorite_locations, only: %i[create destroy]
   resources :alerts, only: %i[new create update destroy]
-  resource :searches, only: %i[show]
+  resource :searches, only: %i[show] do
+    get '/search', to: 'searches#show', as: :search
+  end
   resource :my_account, only: %i[show]
   resource :about_us, only: %i[show]
   resource :faqs, only: %i[show]
