@@ -29,9 +29,14 @@ Rails.application.routes.draw do
   devise_for :admin_users
   devise_for :users
 
+  devise_scope :user do
+    get '/sign_up', to: 'devise/registrations#new', as: :new_user_registration_simplified
+  end
+
   resources :users, only: [:update]
 
   get '/contact', to: 'messages#new', as: :contact
+
   resources :messages, only: %i[create]
   resources :reset_password, only: %i[new]
 
@@ -40,7 +45,7 @@ Rails.application.routes.draw do
   resources :organizations, only: %i[edit update] do
     resources :locations, only: %i[index new create]
   end
-  
+
   resources :favorite_locations, only: %i[create destroy]
   resources :alerts, only: %i[new create update destroy]
   resource :searches, only: %i[show]
