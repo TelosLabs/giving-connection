@@ -7,7 +7,7 @@
     Name: <%= @message.name %><br>
     Email: <%= @message.email %><br>
     Phone: <%= @message.phone %><br>
-    Subject: <%= @message.subject %><br>
+    Subject: <%= @message.decorate.real_subject %><br>
     Message: <%= @message.content %>
   </p>
 </div>
