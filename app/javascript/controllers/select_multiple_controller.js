@@ -66,6 +66,13 @@ export default class extends Controller {
 
   updateBadges() {
     this.badgesContainerTarget.innerHTML = ''
+
+    if(this.store.size == 0 && this.inputTarget.id == 'required') {
+      this.inputTarget.setAttribute('required', true)
+    }else if(this.inputTarget.hasAttribute('required')) {
+        this.inputTarget.removeAttribute('required')
+    }
+
     this.store.forEach(value => {
       const badge = this.badgeTemplateTarget.cloneNode(true)
       const valueTarget = badge.querySelector('span')
