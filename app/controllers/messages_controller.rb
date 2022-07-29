@@ -22,10 +22,6 @@ class MessagesController < ApplicationController
   private
 
   def build_message
-    # message_params[:subject] = 'I want to publish a nonprofit on Giving Connection' if message_params[:subject] == '1'
-    # message_params[:subject] = 'I want to claim ownership of a nonprofit page' if message_params[:subject] == '2'
-    # message_params[:subject] = 'Other' if message_params[:subject] == '3'
-    # raise
     DeliveringMessage.new(
       Message.new(message_params)
     )
