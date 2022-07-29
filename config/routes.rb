@@ -56,9 +56,7 @@ Rails.application.routes.draw do
   resource :about_us, only: %i[show]
   resource :faqs, only: %i[show]
   resource :donate, only: %i[show]
-  resource :terms_and_conditions, only: %i[show] do
-    get '/termsofuse', to: 'terms_and_conditions#show', as: :termsofuse
-  end
+  get '/termsofuse', to: 'terms_and_conditions#show', as: :terms_of_use
   resource :privacy_policy, only: %i[show]
   root to: 'home#index'
 end
