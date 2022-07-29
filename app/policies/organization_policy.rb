@@ -8,12 +8,6 @@ class OrganizationPolicy < ApplicationPolicy
   end
 
   def update?
-    # record.organization_admins.exists?(user_id: user.id)
-    true
-  end
-
-  def edit?
-    # update?
-    true
+    record.organization_admins.exists?(user_id: user.id)
   end
 end
