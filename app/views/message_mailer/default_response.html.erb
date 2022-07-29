@@ -4,21 +4,18 @@
 <% else %>
   <%= render 'message_mailer/shared/contact' %>
 <% end %>
-<p style = "margin-top: 10px;">With gratitude,<br>The Giving Connection Team</p>
 <div style = "background-color: #EFF2F7; padding: 10px; border-radius: 5px; margin-top: 10px;">
-  <div style = "margin-top: 10px; font-style: normal; font-size: 14px; line-height: 20px;">
-    <p style = "font-weight: 900;">Your message was:</p>
-    <p style = "font-weight: 700;">
-      Name: <span style = "font-weight: 100px;"><%= @message.name %></span><br>
-      Email: <span style = "font-weight: 100px;"><%= @message.email %></span><br>
-      Phone: <span style = "font-weight: 100px;"><%= @message.phone %></span><br>
-      Subject: <span style = "font-weight: 100px;"><%= @message.subject %></span><br>
-      Message: <span style = "font-weight: 100px;"><%= @message.content %></span><br>
-      <% if @message.organization_name.present? %>
-        Organization Name: <span style = "font-weight: 100px;"><%= @message.organization_name %></span><br>
-        Organization Email: <span style = "font-weight: 100px;"><%= @message.organization_website %></span><br>
-        Organization Ein: <span style = "font-weight: 100px;"><%= @message.organization_ein %></span><br>
-      <% end %>
-    </p>
-  </div>
+  <p style = "font-weight: 700; margin-top: 10px; font-style: normal; font-size: 14px; line-height: 20px;">
+    Your message was:<br><br>
+    Name: <%= @message.name %><br>
+    Email: <%= @message.email %><br>
+    Phone: <%= @message.phone %><br>
+    Subject: <%= @message.subject %><br>
+    Message: <%= @message.content %><br>
+    <% if @message.organization_name.present? %>
+      Organization Name: <%= @message.organization_name %><br>
+      Organization Email: <%= @message.organization_website %><br>
+      Organization Ein: <%= @message.organization_ein %><br>
+    <% end %>
+  </p>
 </div>
