@@ -1,5 +1,5 @@
 - markers = @results&.map { |l| [l.latitude, l.longitude] }  || []
-= form_with model: @search, url: searches_path, class: 'relative', data: { controller: 'search search--alerts', 'search--alerts-target': 'form', 'search-target': 'form' }, method: :get do |f|
+= form_with model: @search, url: search_path, class: 'relative', data: { controller: 'search search--alerts', 'search--alerts-target': 'form', 'search-target': 'form' }, method: :get do |f|
   = render SearchBar::Component.new(form: f, search: @search)
   div class="flex flex-row justify-center w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
     div class="flex flex-row justify-center w-full min-h-full"
@@ -47,7 +47,7 @@
                   li
                     = render ResultCard::Component.new(title: result&.name, \
                                                     address: result&.formatted_address, \
-                                                    image_url: result&.organization&.logo.service_url, \
+                                                    image_url: result&.organization&.service_url.logo, \
                                                     id: result&.id, \
                                                     website: result&.decorate&.website || result&.organization&.decorate&.website, \
                                                     description: result&.organization&.mission_statement_en, \
