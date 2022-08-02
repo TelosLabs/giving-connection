@@ -20,7 +20,7 @@ main
       | What are you looking for today?
     div class="hidden px-6 pb-6 text-center text-white sm:block"
       | Search for listings of nonprofit organizations based on your needs.
-    = form_with model: @search, url: searches_path, method: :get do |f|
+    = form_with model: @search, url: search_path, method: :get do |f|
       .c-form class="py-0 mx-auto sm:px-3 sm:flex-col sm:justify-center sm:max-w-4xl"
         div class="relative w-full sm:max-w-xl mb-7 sm:mb-0"
           = f.text_field :keyword, autocomplete: "search", class:"c-input pl-10 m-0 w-full", placeholder: "Try \"Mental Health Nonprofits\""
@@ -74,7 +74,7 @@ main
     div class="relative max-w-md pb-20 mx-auto text-center"
       h2 class="px-5 pt-20 text-2xl font-bold text-center sm:px-0 md:pt-28 text-blue-dark pb-11"
         | Are you a nonprofit organization interested in joining our listings?
-      = link_to "Add or Claim a Nonprofit", contact_path({data: "claim-or-add-ngo"}), class:'c-button inline-block my-1 text-white bg-blue-dark'
+      = link_to 'Add or Claim a Nonprofit', non_profit_contact_path, class:'c-button inline-block my-1 text-white bg-blue-dark'
     div class="top-0 left-0 -z-1 hidden sm:block sm:absolute"
       = inline_svg_tag 'lc-desk-blur-left.svg'
     div class="top-0 right-0 -z-1 hidden sm:block sm:absolute"

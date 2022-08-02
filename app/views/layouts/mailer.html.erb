@@ -32,7 +32,7 @@
     <div style="text-align: center; background-color: #EFF2F7;">
       <div style="border-radius: 10px; display: inline-block; margin-top: 64px; margin-left: 16px; margin-right: 16px; max-width: 600px; background-color: #ffffff; padding-top: 44px; padding-bottom: 40px;">
         <div style="text-align: center;">
-          <%= image_tag(attachments['giving_connection_logo.png'].url, style: "height: 52px; max-width: 224px") %>
+          <%= link_to image_tag(attachments['giving_connection_logo.png'].url, style: "height: 52px; max-width: 224px"), 'https://www.givingconnection.org/' %>
         </div>
         <div class="sm-px-64" style="text-align: left; margin-top: 20px; padding-left: 24px; padding-right: 24px;">
           <%= yield %>
