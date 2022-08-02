@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   resources :users, only: [:update]
 
   get '/contact', to: 'messages#new', as: :contact
+  get '/nonprofit', to: 'messages#new', as: :non_profit_contact
 
   resources :messages, only: %i[create]
   resources :reset_password, only: %i[new]
