@@ -12,11 +12,11 @@
     Email: <%= @message.email %><br>
     Phone: <%= @message.phone %><br>
     Subject: <%= @message.decorate.real_subject %><br>
-    Message: <%= @message.content %><br>
     <% if @message.organization_name.present? %>
       Organization Name: <%= @message.organization_name %><br>
-      Organization Email: <%= @message.organization_website %><br>
-      Organization Ein: <%= @message.organization_ein %><br>
+      Organization Website: <%= @message.organization_website %><br>
+      Organization EIN: <%= @message.organization_ein %><br>
     <% end %>
+    Message: <%= @message.content %><br>
   </p>
 </div>
