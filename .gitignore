@@ -40,3 +40,4 @@ yarn-debug.log*
 .yarn-integrity
 
 database_consistency*
+dump.rdb
