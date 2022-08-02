@@ -30,15 +30,16 @@ Rails.application.routes.draw do
   devise_for :users
 
   devise_scope :user do
-    get '/signup', to: 'devise/registrations#new', as: :new_user_registration_simplified
-    get '/signin', to: 'devise/sessions#new', as: :new_user_session_simplified
+    get 'signup' => 'devise/registrations#new'
+    get 'signin' => 'devise/sessions#new'
   end
 
+  get 'contact' => 'messages#new'
+  get '/non-profit', to: 'messages#new', as: :non_profit_contact
+  get 'search' => 'searches#show'
+  get 'termsofuse' => 'terms_and_conditions#show', as: :terms_of_use
+
   resources :users, only: [:update]
-
-  get '/contact', to: 'messages#new', as: :contact
-  get '/nonprofit', to: 'messages#new', as: :non_profit_contact
-
   resources :messages, only: %i[create]
   resources :reset_password, only: %i[new]
 
@@ -50,12 +51,10 @@ Rails.application.routes.draw do
 
   resources :favorite_locations, only: %i[create destroy]
   resources :alerts, only: %i[new create update destroy]
-  get '/search', to: 'searches#show', as: :searches
   resource :my_account, only: %i[show]
   resource :about_us, only: %i[show]
   resource :faqs, only: %i[show]
   resource :donate, only: %i[show]
-  get '/termsofuse', to: 'terms_and_conditions#show', as: :terms_of_use
   resource :privacy_policy, only: %i[show]
   root to: 'home#index'
 end
