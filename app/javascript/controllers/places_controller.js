@@ -26,16 +26,23 @@ export default class extends Controller {
     })
 
     function success (position) {
-       document.getElementById('search_lat').value = position.coords.latitude;
-       document.getElementById('search_lon').value = position.coords.longitude;
+       this.map.setCenter({lat: position.coords.latitude, lng: position.coords.longitude});
+       console.log('si entro')
      }
 
     if(!navigator.geolocation) {
        console.log('Geolocation is not supported by your browser');
      } else {
-       navigator.geolocation.getCurrentPosition(success);
+       navigator.geolocation.getCurrentPosition((position) => {
+         this.latitudeValue = position.coords.latitude;
+         this.longitudeValue = position.coords.longitude;
+         this.map.setCenter({lat: position.coords.latitude, lng: position.coords.longitude});
+         this.map.setZoom(10);
+       });
      }
-    
+
+
+
     const image = this.imageurlValue
 
     if (this.hasFieldTarget) {
