@@ -10,7 +10,6 @@ class MessagesController < ApplicationController
 
   def create
     @message = build_message
-
     if @message.save
       flash[:notice] = 'Your message was successfully sent!'
       redirect_to root_path
