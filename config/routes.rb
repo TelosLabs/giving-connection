@@ -35,7 +35,7 @@ Rails.application.routes.draw do
   end
 
   get 'contact' => 'messages#new'
-  get '/non-profit', to: 'messages#new', as: :non_profit_contact
+  get '/nonprofit' => 'messages#new', as: :non_profit_contact
   get 'search' => 'searches#show'
   get 'termsofuse' => 'terms_and_conditions#show', as: :terms_of_use
 

@@ -7,7 +7,7 @@ main
         div class="text-sm md:text-base mb-1.5 font-bold"
           | We are currently in our testing phase
         div class="text-xs leading-5 md:leading-6 md:text-sm md:pr-2"
-          | The information listed is for testing purposes only. We currently only have nonprofit listings in Nashville, TN. 
+          | The information listed is for testing purposes only. We currently only have nonprofit listings in Nashville, TN.
           | We will enable searching by City, State, and Zip Code once we expand to other cities.
       div class="absolute inset-y-0 right-0 flex items-start pt-1 pr-1 sm:pt-1.5 sm:pr-5 sm:items-start"
         button class="flex p-2 rounded-md hover:bg-gray" type="button" data-action="banner#closeBanner"
@@ -73,7 +73,7 @@ main
     div class="relative max-w-md pb-20 mx-auto text-center"
       h2 class="px-5 pt-20 text-2xl font-bold text-center sm:px-0 md:pt-28 text-blue-dark pb-11"
         | Are you a nonprofit organization interested in joining our listings?
-      = link_to "Add or Claim a Nonprofit", contact_path({data: "claim-or-add-ngo"}), class:'c-button inline-block my-1 text-white bg-blue-dark'
+      = link_to 'Add or Claim a Nonprofit', non_profit_contact_path, class:'c-button inline-block my-1 text-white bg-blue-dark'
     div class="top-0 left-0 -z-1 hidden sm:block sm:absolute"
       = inline_svg_tag 'lc-desk-blur-left.svg'
     div class="top-0 right-0 -z-1 hidden sm:block sm:absolute"
