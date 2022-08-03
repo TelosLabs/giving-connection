@@ -3,9 +3,11 @@ div class="w-full h-full bg-grey-9"
     h2 class="mb-5 text-2xl font-bold text-center sm:text-left text-gray-3"
       | Edit Page
 
-    h4 class="text-xl text-gray-2"
-      = @organization.name
-
+    div class="flex items-center"
+      h4 class="text-xl text-gray-2 mb-1"
+        = @organization.name
+      - if @organization.verified?
+        = image_tag 'check.jpg', class: "w-4 h-4 ml-2"
     div class="my-4 border-t border-t-blue-pale"
 
     = form_for @organization do |f|
