@@ -17,9 +17,13 @@ div class="w-full h-full bg-grey-9"
 
         div class="grid grid-cols-12 gap-6 mt-8" data-controller="toggle"
           div class="col-span-12 lg:col-span-6 md:col-span-7"
-            div class="flex items-center"
-              = f.check_box :active, class: "h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent", checked: @organization.active
-              = f.label :active, "My organization is active", class: "text-sm text-black"
+            div class="flex flex-col"
+              = f.label :name, "Do you verify the listed information?", class: "block text-sm text-gray-3 font-medium"
+              p class="text-sm leading-5 text-gray-4 mt-1"
+                | Once you verify, a green checkmark will appear on your nonprofit page
+            div class="flex items-center mt-3"
+              = f.check_box :verifeid, class: "h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent", checked: @organization.verified
+              = f.label :verified, "Check to verify", class: "text-sm"
 
           div class="hidden col-span-3 md:flex"
 
@@ -29,7 +33,7 @@ div class="w-full h-full bg-grey-9"
 
             div class="flex items-center mt-3"
               = check_box_tag :other_name_check, true, false, class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent ", data: { action: "toggle#toggle" }
-              = label_tag :other_name_check, "My Organization is known by other names", class: "text-sm text-black "
+              = label_tag :other_name_check, "My Organization is known by other names", class: "text-sm"
 
           div class="hidden col-span-3 lg:flex"
 
