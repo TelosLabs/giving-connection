@@ -12,6 +12,7 @@ div class="w-full h-full bg-grey-9"
       section class="text-gray-2"
         h5 class="text-lg font-medium leading-7"
           | General Information
+          = image_tag url_for(@organization.logo), class: "h-24 w-24"
         p class="text-sm leading-5 text-gray-4"
           | General information about your nonprofit.
 
