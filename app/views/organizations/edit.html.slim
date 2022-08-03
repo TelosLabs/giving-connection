@@ -24,7 +24,7 @@ div class="w-full h-full bg-grey-9"
               p class="text-sm leading-5 text-gray-4 mt-1"
                 | Once you verify, a green checkmark will appear on your nonprofit page
             div class="flex items-center mt-3"
-              = f.check_box :verifeid, class: "h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent", checked: @organization.verified
+              = f.check_box :verified, class: "h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent", checked: @organization.verified
               = f.label :verified, "Check to verify", class: "text-sm"
 
           div class="hidden col-span-3 md:flex"
