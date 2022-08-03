@@ -9,9 +9,12 @@
       <div class="flex flex-row items-start justify-between">
         <a href="<%= location_path(@id)%>" class="inline-flex items-center py-2 text-sm font-bold text-blue-medium"  target="_blank"
            id="new_favorite_location_<%= @id %>">
-          <h5 class="text-lg font-bold text-black">
-            <%= @title %>
-          </h5>
+          <div class="flex items-center">
+            <h5 class="text-lg font-bold text-black"><%= @title %></h5>
+            <% if @verified %>
+              <%= image_tag 'check.jpg', class: "w-4 h-4 ml-2" %>
+            <% end %>
+          </div>
         </a>
         <% if @current_user.present? %>
           <% if FavoriteLocation.exists?(user_id: @current_user&.id, location_id: @id) %>

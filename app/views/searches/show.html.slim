@@ -52,7 +52,8 @@
                                                     website: result&.decorate&.website || result&.organization&.decorate&.website, \
                                                     description: result&.organization&.mission_statement_en, \
                                                     phone_number: result.phone_number&.number, \
-                                                    current_user: current_user)
+                                                    current_user: current_user,
+                                                    verified: result.organization.verified?)
               - if @pagy.pages > SearchesHelper::MIN_REQUIRED_PAGES
                 div class="h-40 px-4 mt-7"
                   p class="mb-5 text-sm text-gray-3"
