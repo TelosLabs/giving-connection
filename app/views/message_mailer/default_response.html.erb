@@ -4,19 +4,19 @@
 <% else %>
   <p>Thank you for contacting us about adding or claiming a nonprofit on the Giving Connection platform. After we verify the nonprofit organization you specified in your message, we will contact you to set up an account. You should expect to hear back from us within 1-2 weeks.</p>
 <% end %>
-<p style = "margin-top: 10px;">With gratitude,<br />The Giving Connection Team</p>
+<p style = "margin-top: 10px;">With gratitude,<br>The Giving Connection Team</p>
 <div style = "background-color: #EFF2F7; padding: 10px; border-radius: 5px; margin-top: 10px;">
   <p style = "margin-top: 10px; font-style: normal; font-size: 14px; line-height: 20px;">
-    Your message was:<br /><br />
-    <span style="font-weight: 700px;">Name:</span> <%= @message.name %><br />
-    Email: <%= @message.email %><br />
-    Phone: <%= @message.phone %><br />
-    Subject: <%= @message.decorate.real_subject %><br />
+    Your message was:<br><br>
+    <span style="font-weight: 700;">Name:</span> <%= @message.name %><br />
+    <span style="font-weight: 700;">Email:</span> <%= @message.email %><br />
+    <span style="font-weight: 700;">Phone:</span> <%= @message.phone %><br />
+    <span style="font-weight: 700;">Subject:</span> <%= @message.decorate.real_subject %><br />
     <% if @message.organization_name.present? %>
-      Organization Name: <%= @message.organization_name %><br />
-      Organization Website: <%= @message.organization_website %><br />
-      Organization EIN: <%= @message.organization_ein %><br />
+      <span style="font-weight: 700;">Organization Name:</span> <%= @message.organization_name %><br />
+      <span style="font-weight: 700;">Organization Website:</span> <%= @message.organization_website %><br />
+      <span style="font-weight: 700;">Organization EIN:</span> <%= @message.organization_ein %><br />
     <% end %>
-    Message: <%= @message.content %>
+    <span style="font-weight: 700;">Message:</span> <%= @message.content %>
   </p>
 </div>
