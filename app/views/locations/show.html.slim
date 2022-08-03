@@ -10,15 +10,17 @@ div class=""
 
       div class="pt-5 md:px-11 md:text-left"
         - if @location.organization.verified?
-            h5 class="text-lg font-bold mb-2.5 text-center"
-              = @location.name
+            div class="flex justify-center items-center mb-2.5"
+              h5 class="text-lg font-bold text-center mb-1"
+                = @location.name
+              = image_tag 'check.jpg', class: "w-4 h-4 ml-2"
             p class="text-xs text-center font-base text-gray-4"
               = "This nonprofit has verified the listed information."
         - else
             h5 class="text-lg font-bold mb-2.5 text-center"
               = @location.name
             p class="text-xs text-center font-base text-gray-4"
-              = "This nonprofit has not yet verified the listed information."
+              = "This nonprofit has not verified the listed information."
         - if policy(@location.organization).update?
             p class="text-xs text-center font-base text-blue-500" id="pointer"
               = link_to "Edit my Nonprofit", edit_organization_path( @location.organization)
