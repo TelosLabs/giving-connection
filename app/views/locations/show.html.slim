@@ -21,7 +21,7 @@ div class=""
               = @location.name
             p class="text-xs text-center font-base text-gray-4"
               = "This nonprofit has not verified the listed information."
-        - if policy(@location.organization).update?
+        - if current_user.present? && policy(@location.organization).update?
             p class="text-xs text-center font-base text-blue-500" id="pointer"
               = link_to "Edit my Nonprofit", edit_organization_path( @location.organization)
         p class="text-xs text-center font-base text-gray-4 mt-3" id="pointer"
