@@ -21,7 +21,7 @@
 #
 FactoryBot.define do
   factory :alert do
-    user { nil }
+    user { association(:user) }
     distance { 'MyString' }
     city { 'MyString' }
     state { 'MyString' }

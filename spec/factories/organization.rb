@@ -35,10 +35,9 @@ FactoryBot.define do
     vision_statement_es { 'pruebas' }
     tagline_en { 'testing' }
     tagline_es { 'pruebas' }
-    description_en { 'testing' }
-    description_es { 'pruebas' }
     website { 'testing' }
     scope_of_work { 'International' }
     creator { association :user }
+    location { association :location }
   end
 end
