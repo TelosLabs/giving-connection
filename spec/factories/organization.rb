@@ -38,6 +38,6 @@ FactoryBot.define do
     website { 'testing' }
     scope_of_work { 'International' }
     creator { association(:admin_user) }
-    location { association :location }
+    location { association(:location) }
   end
 end
