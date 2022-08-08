@@ -37,7 +37,7 @@ FactoryBot.define do
     tagline_es { 'pruebas' }
     website { 'testing' }
     scope_of_work { 'International' }
-    creator { association :user }
+    creator { association(:admin_user) }
     location { association :location }
   end
 end
