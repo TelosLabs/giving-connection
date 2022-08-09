@@ -23,8 +23,10 @@ export default class extends Controller {
   askForGeoPermissions(event){
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
-        event.target.options[event.target.selectedIndex].setAttribute("latitude", position.coords.latitude)
-        event.target.options[event.target.selectedIndex].setAttribute("longitude", position.coords.longitude)
+        if( event.target.value == "Current Location" ) {
+          event.target.options[event.target.selectedIndex].setAttribute("latitude", position.coords.latitude)
+          event.target.options[event.target.selectedIndex].setAttribute("longitude", position.coords.longitude)
+        }
         // set search_city div to current event target value
         console.log(event.target.value)
         this.centerOnLocation( position.coords )
