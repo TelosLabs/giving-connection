@@ -6,19 +6,39 @@ module Locations
       latitude: 36.16404968727089,
       longitude: -86.78125827725053
     }.freeze
+    DEFAULT_DISTANCE = 20
+    DEFAULT_CITY = "Nashville"
 
     attr_reader :locations
 
     class << self
       def call(params = {}, locations = Location.active)
         scope = locations
-        # Agregar busqueda para landing page
-        scope = by_address(scope, params[:address])
-        scope = geo_near(scope, starting_coordinates(params[:lat], params[:lon]), params[:distance])
+
+        if params[:lat] && params[:lon]
+          scope = geo_near(scope, params[:lat], params[:lon], params[:distance])
+        else
+          scope = by_city(scope, params[:city])
+        end
+        scope = by_zipcode(scope, params[:zipcode])
       end
 
-      def geo_near(scope, coords, distance)
-        return scope if distance.blank? || distance.zero? || scope.empty?
+      def by_city(scope, city)
+        return scope if scope.empty?
+
+        city = DEFAULT_CITY if city.nil?
+
+        scope.where(
+          'address ILIKE ANY ( array[?] )', # Cambiar sintaxys por que ya no es un array
+          ["%#{city}%"]
+        )
+      end
+
+      def geo_near(scope, lat, lon, distance)
+        return scope if scope.empty?
+
+        distance = DEFAULT_DISTANCE if distance.blank? || distance.zero?
+        coords = Geo.to_wkt(Geo.point(lon, lat))
 
         scope.where(
           'ST_DWithin(lonlat, :point, :distance)',
@@ -26,38 +46,14 @@ module Locations
         )
       end
 
-      def by_address(scope, address_params)
-        return scope if address_params.values.all?(&:blank?) || scope.empty?
-
-        address_params[:state_name] = CS.states(:us)[address_params[:state].to_sym]
-
-        scope = scope.where(
-          'address ILIKE ANY ( array[?] )',
-          ["%#{address_params[:state_name]}%", "%#{address_params[:state]}%"]
-        )
-        address_params[:state] = nil
-        address_params[:state_name] = nil
-
-        return scope if address_params.values.all?(&:blank?)
+      def by_zipcode(scope, zipcode)
+        return scope if scope.empty? || zipcode.blank?
 
         scope.where(
           'address ILIKE ALL ( array[?] )',
-          parameterize_address_filters(address_params)
+          ["%#{zipcode}%"]
         )
       end
-
-      def starting_coordinates(lat, lon)
-        if lat.nil? || lon.nil?
-          Geo.to_wkt(Geo.point(DEFAULT_LOCATION[:longitude], DEFAULT_LOCATION[:latitude]))
-        else
-          Geo.to_wkt(Geo.point(lon, lat))
-        end
-      end
-
-      def parameterize_address_filters(address_params)
-        address_params.values.reject!(&:blank?).compact.map { |v| "%#{v}%" }
-      end
-
     end
   end
 end

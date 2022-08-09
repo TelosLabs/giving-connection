@@ -30,8 +30,9 @@ class Search
 
     geo_filters = {
       lat: lat.presence&.to_f, lon: lon.presence&.to_f,
+      city: city.presence,
       distance: distance.presence&.to_i,
-      address: { city: city.presence, state: state.presence, zipcode: zipcode.presence }
+      zipcode: zipcode.presence
     }
 
     @results = Locations::GeolocationQuery.call(geo_filters)
