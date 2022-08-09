@@ -7,7 +7,7 @@ module LocationsHelper
   def get_ip_location
     reader = MaxMind::DB.new("#{Rails.root}/app/assets/GeoLite2-City.mmdb", mode: MaxMind::DB::MODE_MEMORY)
 
-    record = reader.get('209.141.51.20')
+    record = reader.get('24.165.90.33')
     if record.nil?
       puts request.remote_ip.to_s
       puts '1.1.1.1 was not found in the database'

@@ -20,11 +20,42 @@ export default class extends Controller {
     this.markersArray = []
   }
 
+  askForGeoPermissions(event){
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        event.target.options[event.target.selectedIndex].setAttribute("latitude", position.coords.latitude)
+        event.target.options[event.target.selectedIndex].setAttribute("longitude", position.coords.longitude)
+        this.centerOnLocation( position.coords )
+      })
+    } else {
+      console.log('Geolocation is not supported by your browser');
+    }
+  }
+
+  centerOnLocation( coords ) {
+    this.map.setCenter({lat: coords.latitude, lng: coords.longitude})
+    this.map.setZoom(10);
+  }
+
+  initListeners(){
+    let select = document.getElementById("location")
+
+    select.addEventListener("change", async (event) => {
+      switch(event.target.value) {
+        case "Current Location, ":
+          await this.askForGeoPermissions(event)
+        default:
+      }
+    })
+  }
+
   initMap() {
     this.map = new google.maps.Map(this.mapTarget, {
       center: new google.maps.LatLng(this.latitudeValue || Number(this.latitudeTarget.value) || 36.16404968727089, this.longitudeValue || Number(this.longitudeTarget.value) || -86.78125827725053),
       zoom: (this.zoomValue || 10)
     })
+
+    this.initListeners()
 
     const image = this.imageurlValue
 
@@ -52,19 +83,19 @@ export default class extends Controller {
       })
     }
 
-    const select = document.getElementById('location')
-
-    select.addEventListener('change', this.changePosition)
+    // const select = document.getElementById('location')
+    //
+    // select.addEventListener('onchange', this.changePosition)
 
   }
 
   async changePosition(event){
     console.log(event)
-    event.preventDefault()
     let latitude = event.target.options[event.target.selectedIndex].getAttribute("latitude")
     let longitude = event.target.options[event.target.selectedIndex].getAttribute("longitude")
     console.log(latitude, longitude)
     this.centerOnLocation({latitude, longitude})
+    event.preventDefault()
   }
 
   centerOnLocation( coords ) {
