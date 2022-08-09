@@ -7,7 +7,7 @@ module SearchBar
     def initialize(form:, search:)
       @form = form
       @search = search
-      @location = get_ip_location.map { | l | ["#{l[:city]}, #{l[:state]}", {value: l[:city], latitude: l[:latitude], longitude: l[:longitude]} ] }
+      @location = get_ip_location.map { | l | ["#{l[:city]}", {value: l[:city], latitude: l[:latitude], longitude: l[:longitude]} ] }
     end
 
     def options

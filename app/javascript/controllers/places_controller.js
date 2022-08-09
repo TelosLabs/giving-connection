@@ -25,6 +25,8 @@ export default class extends Controller {
       navigator.geolocation.getCurrentPosition((position) => {
         event.target.options[event.target.selectedIndex].setAttribute("latitude", position.coords.latitude)
         event.target.options[event.target.selectedIndex].setAttribute("longitude", position.coords.longitude)
+        // set search_city div to current event target value
+        console.log(event.target.value)
         this.centerOnLocation( position.coords )
       })
     } else {
@@ -54,6 +56,9 @@ export default class extends Controller {
       center: new google.maps.LatLng(this.latitudeValue || Number(this.latitudeTarget.value) || 36.16404968727089, this.longitudeValue || Number(this.longitudeTarget.value) || -86.78125827725053),
       zoom: (this.zoomValue || 10)
     })
+
+    console.log(document.getElementById("search_city").value)
+    document.getElementById("search_city").value = document.getElementById("location").value
 
     this.initListeners()
 
