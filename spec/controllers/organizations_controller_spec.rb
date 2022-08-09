@@ -5,7 +5,15 @@ require 'rails_helper'
 RSpec.describe Admin::OrganizationsController, type: :controller do
   before(:each) do
     @admin        = create(:admin_user)
-    @organization = create(:organization)
+    @organization = create(:organization, creator: @admin) do |organization|
+      organization.main_location.office_hours.create(day: 0, open_time: '10:00', close_time: '18:00', closed: true)
+      organization.main_location.office_hours.create(day: 1, open_time: '10:00', close_time: '18:00', closed: true)
+      organization.main_location.office_hours.create(day: 2, open_time: '10:00', close_time: '18:00', closed: true)
+      organization.main_location.office_hours.create(day: 3, open_time: '10:00', close_time: '18:00', closed: true)
+      organization.main_location.office_hours.create(day: 4, open_time: '10:00', close_time: '18:00', closed: true)
+      organization.main_location.office_hours.create(day: 5, open_time: '10:00', close_time: '18:00', closed: true)
+      organization.main_location.office_hours.create(day: 6, open_time: '10:00', close_time: '18:00', closed: false)
+    end
     @params       = { name: 'organization', ein_number: 'testing', irs_ntee_code: 'A90',
                       mission_statement_en: 'testing', mission_statement_es: 'pruebas',
                       vision_statement_en: 'testing', vision_statement_es: 'pruebas',
