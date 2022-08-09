@@ -42,7 +42,7 @@ export default class extends Controller {
   initListeners(){
     let select = document.getElementById("location")
 
-    select.addEventListener("change", async (event) => {
+    select.addEventListener("onchange", async (event) => {
       switch(event.target.value) {
         case "Current Location, ":
           await this.askForGeoPermissions(event)
@@ -88,9 +88,17 @@ export default class extends Controller {
       })
     }
 
-    // const select = document.getElementById('location')
-    //
-    // select.addEventListener('onchange', this.changePosition)
+    const select = document.getElementById('location')
+
+    select.addEventListener('onchange', this.changePosition)
+
+    select.addEventListener("change", async (event) => {
+      switch(event.target.value) {
+        case "Current Location":
+          await this.askForGeoPermissions(event)
+        default:
+      }
+    })
 
   }
 
