@@ -29,11 +29,11 @@ module Locations
       def by_address(scope, address_params)
         return scope if address_params.values.all?(&:blank?) || scope.empty?
 
-        address_params[:state_name] = CS.states(:us)[address_params[:state].to_sym]
+        address_params[:city_name] = CS.cities(:us, [address_params[:city].to_sym])
 
         scope = scope.where(
           'address ILIKE ANY ( array[?] )',
-          ["%#{address_params[:state_name]}%", "%#{address_params[:state]}%"]
+          ["%#{address_params[:city_name]}%", "%#{address_params[:city]}%"]
         )
         address_params[:state] = nil
         address_params[:state_name] = nil

@@ -1,15 +1,16 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "field", "map", "latitude", "longitude", "marker" ]
+  static targets = [ "field", "map", "latitude", "longitude", "marker", "geo", "lat", "lon" ]
   static values = {
     imageurl: String,
     zoom: { type: Number, default: 10 },
     latitude: Number,
-    longitude: Number
+    longitude: Number,
   }
 
   connect() {
+    console.log(this.mapTarget)
     if (typeof(google) != "undefined") {
       this.initMap()
     }
@@ -24,24 +25,6 @@ export default class extends Controller {
       center: new google.maps.LatLng(this.latitudeValue || Number(this.latitudeTarget.value) || 36.16404968727089, this.longitudeValue || Number(this.longitudeTarget.value) || -86.78125827725053),
       zoom: (this.zoomValue || 10)
     })
-
-    function success (position) {
-       this.map.setCenter({lat: position.coords.latitude, lng: position.coords.longitude});
-       console.log('si entro')
-     }
-
-    if(!navigator.geolocation) {
-       console.log('Geolocation is not supported by your browser');
-     } else {
-       navigator.geolocation.getCurrentPosition((position) => {
-         this.latitudeValue = position.coords.latitude;
-         this.longitudeValue = position.coords.longitude;
-         this.map.setCenter({lat: position.coords.latitude, lng: position.coords.longitude});
-         this.map.setZoom(10);
-       });
-     }
-
-
 
     const image = this.imageurlValue
 
@@ -68,6 +51,26 @@ export default class extends Controller {
         icon: image
       })
     }
+
+    const select = document.getElementById('location')
+
+    select.addEventListener('change', this.changePosition)
+
+  }
+
+  async changePosition(event){
+    console.log(event)
+    event.preventDefault()
+    let latitude = event.target.options[event.target.selectedIndex].getAttribute("latitude")
+    let longitude = event.target.options[event.target.selectedIndex].getAttribute("longitude")
+    console.log(latitude, longitude)
+    this.centerOnLocation({latitude, longitude})
+  }
+
+  centerOnLocation( coords ) {
+    console.log(coords)
+    this.map.setCenter({lat: coords.latitude, lng: coords.longitude})
+    this.map.setZoom(10);
   }
 
   setMarkers(map, image) {
