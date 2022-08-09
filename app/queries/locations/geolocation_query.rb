@@ -29,8 +29,8 @@ module Locations
         city = DEFAULT_CITY if city.nil?
 
         scope.where(
-          'address ILIKE ANY ( array[?] )', # Cambiar sintaxys por que ya no es un array
-          ["%#{city}%"]
+          'address ILIKE ?',
+          "%#{city}%"
         )
       end
 
@@ -50,8 +50,8 @@ module Locations
         return scope if scope.empty? || zipcode.blank?
 
         scope.where(
-          'address ILIKE ALL ( array[?] )',
-          ["%#{zipcode}%"]
+          'address ILIKE ?',
+          "%#{zipcode}%"
         )
       end
     end
