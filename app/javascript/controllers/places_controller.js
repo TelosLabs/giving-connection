@@ -55,15 +55,15 @@ export default class extends Controller {
 
     // center map on params longitude and latitude
     const params = new URLSearchParams(window.location.search)
+    let location = document.getElementById("location")
 
     if( params.has("search[location_search]")) {
       document.getElementById("location").value = params.get("search[location_search]")
     }else{
-      let location = document.getElementById("location")
       document.getElementById("search_city").value = location.value
-      let coords = {latitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-latitude")), longitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-longitude"))}
-      this.centerOnLocation(coords)
     }
+    let coords = {latitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-latitude")), longitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-longitude"))}
+    this.centerOnLocation(coords)
 
     if( params.has("search[lat]")) {
       this.centerOnLocation({latitude: parseFloat(params.get("search[lat]")), longitude: parseFloat(params.get("search[lon]"))})
@@ -105,9 +105,7 @@ export default class extends Controller {
         case "Current Location":
           this.askForGeoPermissions(event)
               .then(() => {
-                console.log(lat, lon)
-                console.log('prueba',event.target.options[event.target.selectedIndex].getAttribute("data-latitude"));
-
+                console.log("geo access granted")
               }
             );
           break
@@ -122,11 +120,6 @@ export default class extends Controller {
             this.centerOnLocation(coords)
       }
     })
-
-
-
-
-
   }
 
   async changePosition(event){
