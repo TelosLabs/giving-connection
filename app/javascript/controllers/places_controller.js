@@ -1,15 +1,16 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "field", "map", "latitude", "longitude", "marker" ]
+  static targets = [ "field", "map", "latitude", "longitude", "marker", "geo", "lat", "lon" ]
   static values = {
     imageurl: String,
     zoom: { type: Number, default: 10 },
     latitude: Number,
-    longitude: Number
+    longitude: Number,
   }
 
   connect() {
+    console.log(this.mapTarget)
     if (typeof(google) != "undefined") {
       this.initMap()
     }
@@ -19,23 +20,48 @@ export default class extends Controller {
     this.markersArray = []
   }
 
+  askForGeoPermissions(event){
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        event.target.options[event.target.selectedIndex].setAttribute("latitude", position.coords.latitude)
+        event.target.options[event.target.selectedIndex].setAttribute("longitude", position.coords.longitude)
+        // set search_city div to current event target value
+        console.log(event.target.value)
+        this.centerOnLocation( position.coords )
+      })
+    } else {
+      console.log('Geolocation is not supported by your browser');
+    }
+  }
+
+  centerOnLocation( coords ) {
+    this.map.setCenter({lat: coords.latitude, lng: coords.longitude})
+    this.map.setZoom(10);
+  }
+
+  initListeners(){
+    let select = document.getElementById("location")
+
+    select.addEventListener("change", async (event) => {
+      switch(event.target.value) {
+        case "Current Location, ":
+          await this.askForGeoPermissions(event)
+        default:
+      }
+    })
+  }
+
   initMap() {
     this.map = new google.maps.Map(this.mapTarget, {
       center: new google.maps.LatLng(this.latitudeValue || Number(this.latitudeTarget.value) || 36.16404968727089, this.longitudeValue || Number(this.longitudeTarget.value) || -86.78125827725053),
       zoom: (this.zoomValue || 10)
     })
 
-    function success (position) {
-       document.getElementById('search_lat').value = position.coords.latitude;
-       document.getElementById('search_lon').value = position.coords.longitude;
-     }
+    console.log(document.getElementById("search_city").value)
+    document.getElementById("search_city").value = document.getElementById("location").value
 
-    if(!navigator.geolocation) {
-       console.log('Geolocation is not supported by your browser');
-     } else {
-       navigator.geolocation.getCurrentPosition(success);
-     }
-    
+    this.initListeners()
+
     const image = this.imageurlValue
 
     if (this.hasFieldTarget) {
@@ -61,6 +87,26 @@ export default class extends Controller {
         icon: image
       })
     }
+
+    // const select = document.getElementById('location')
+    //
+    // select.addEventListener('onchange', this.changePosition)
+
+  }
+
+  async changePosition(event){
+    console.log(event)
+    let latitude = event.target.options[event.target.selectedIndex].getAttribute("latitude")
+    let longitude = event.target.options[event.target.selectedIndex].getAttribute("longitude")
+    console.log(latitude, longitude)
+    this.centerOnLocation({latitude, longitude})
+    event.preventDefault()
+  }
+
+  centerOnLocation( coords ) {
+    console.log(coords)
+    this.map.setCenter({lat: coords.latitude, lng: coords.longitude})
+    this.map.setZoom(10);
   }
 
   setMarkers(map, image) {

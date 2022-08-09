@@ -127,10 +127,10 @@
             div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}"
               - if user_signed_in?
                 - if !current_user.favorited_locations.include?(result)
-                  = link_to favorite_locations_path(location_id: result.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", method: :post, remote: true, data: { action: "click->result-card--component#reloadPage" }do
+                  = link_to favorite_locations_path(location_id: result.id), id: '', class: "inline-flex self-end text-xs text-gray-3", type: "button", method: :post, remote: true, data: { action: "click->result-card--component#reloadPage", id: result.id }do
                     = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
                 - else
-                  = link_to favorite_location_path(current_user.fav_locs.find_by(location_id: result.id)), method: :delete, class: "inline-flex self-end text-xs text-gray-3", remote: true, data: { action: "click->result-card--component#reloadPage" } do
+                  = link_to favorite_location_path(current_user.fav_locs.find_by(location_id: result.id)), method: :delete, class: "inline-flex self-end text-xs text-gray-3", remote: true, data: { action: "click->result-card--component#reloadPage", id: result.id } do
                     = inline_svg_tag 'bookmark_colored.svg', class: 'w-4 h-4'
               - else
                 = link_to favorite_locations_path(location_id: result.id), method: :post, class: "inline-flex self-end text-xs text-gray-3" do
