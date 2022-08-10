@@ -28,7 +28,7 @@ FactoryBot.define do
   factory :organization do
     name { 'organization' }
     ein_number { 'testing' }
-    irs_ntee_code { 'A90' }
+    irs_ntee_code { 'A90: Arts Services' }
     mission_statement_en { 'testing' }
     mission_statement_es { 'pruebas' }
     vision_statement_en { 'testing' }
@@ -37,6 +37,7 @@ FactoryBot.define do
     tagline_es { 'pruebas' }
     website { 'testing' }
     scope_of_work { 'International' }
-    main_location { association :location }
+    locations { [create(:location)] }
+    creator { create(:admin_user) }
   end
 end

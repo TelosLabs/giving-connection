@@ -36,7 +36,7 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
       fill_in('organization_mission_statement_en',             with: 'mission testing')
       fill_in('organization_vision_statement_en',              with: 'vision testing')
       fill_in('organization_tagline_en',                       with: 'tagline testing')
-      fill_in('organization_description_en',                   with: 'description testing')
+      # fill_in('organization_description_en',                   with: 'description testing')
       fill_in('organization_social_media_attributes_facebook', with: 'facebook.com/test')
       # fill_in('tags_attributes',                               with: 'special care')
       select('A51',                                            from: 'organization_irs_ntee_code')
