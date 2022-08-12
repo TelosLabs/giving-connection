@@ -1,17 +1,14 @@
 <div class="sm-px-64" style="text-align: left; margin-top: 56px; padding-left: 24px; padding-right: 24px;">
-  <div style="margin: 0px;">
-    <p style="margin: 0px; font-size: 24px;">
-      Your search alert for
-      <% if @alert.keyword.present? %>
-        <strong style="margin: 0px;"><%= @alert.keyword %> </strong>
-      <% else %>
-        the following filters
-      <% end %>
-    </p>
+
+  <p style="margin: 0px; font-size: 16px;"><%= "We found #{@new_locations.count} new organizations matching your search." %></p>
+  <div style="margin: 0px; background-color: #EFF2F7;">
+    <% if @alert.keyword.present? %>
+      <p style="margin: 0px; font-size: 24px;"> Your search alert for <strong style="margin: 0px;"><%= @alert.keyword %> </strong></p>
+    <% end %>
     <p style="margin: 0px; margin-top: 7px; font-size: 14px;"><%= "Filters: #{@alert_filters}" %></p>
   </div>
+
   <div style="margin: 0px; margin-top: 48px;">
-    <p style="margin: 0px; font-size: 16px;"><%= "We found #{@new_locations.count} new organizations that match your search" %></p>
     <div class="sm-ml-44" style="margin: 0px; margin-top: 60px; max-width: 512px;">
       <% @new_locations.each do |location| %>
         <div style="margin: 0px; margin-top: 20px; display: flex; align-content: flex-start;">
@@ -34,12 +31,12 @@
     </div>
   </div>
 </div>
+
 <div class="sm-px-0" style="margin: 0px; margin-top: 60px; padding-left: 24px; padding-right: 24px; text-align: center;">
-  <p style="margin: 0px; font-size: 16px;">The Giving Connection Team</p>
-  <p style="margin: 0px; margin-top: 24px; font-size: 12px;"><%= "This email was intended for #{@alert.user.email}. You are receiving search alerts." %></p>
-  <div style="margin: 0px; margin-top: 20px; font-size: 12px; font-weight: 500;">
-    <a href="https://www.givingconnection.org/my_account" target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">Manage my alerts</a>
-    <span>|</span>
-    <a href="https://www.givingconnection.org/faqs" target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">Help</a>
+  <div style="text-align: center;">
+    <%= link_to 'EXPLORE MORE NONPROFITS', search_url, target: "_blank", class: "sm-mg-5", style: "width: 200px; height: 39px; margin-left:0%; margin-right:0%; padding: 10px 20px; font-weight: 700; text-decoration: none; background: #0782D0; border-radius: 6px; color: white;" %>
   </div>
+  <p style="margin: 0px; margin-top: 24px; font-size: 12px;"><%= "This email was intended for #{@alert.user.email}" %></p>
+  <p style="margin: 0px; margin-top: 24px; font-size: 12px;"><%= "You are receiving search alerts." %></p>
 </div>
+
