@@ -20,7 +20,7 @@ div class=""
             h5 class="text-lg font-bold mb-2.5 text-center"
               = @location.name
             p class="text-xs text-center font-base text-gray-4"
-              = "This nonprofit has not verified the listed information."
+              = "This nonprofit has not yet verified the listed information."
         - if current_user.present? && policy(@location.organization).update?
             p class="text-xs text-center font-base text-blue-500" id="pointer"
               = link_to "Edit my Nonprofit", edit_organization_path( @location.organization)
