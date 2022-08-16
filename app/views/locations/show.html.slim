@@ -13,7 +13,7 @@ div class=""
             div class="flex justify-center items-center mb-2.5"
               h5 class="text-lg font-bold text-center mb-1"
                 = @location.name
-              = image_tag 'check.jpg', class: "w-4 h-4 ml-2"
+              = image_tag 'verified_nonprofit_check.jpg', class: "w-4 h-4 ml-2"
             p class="text-xs text-center font-base text-gray-4"
               = "This nonprofit has verified the listed information."
         - else
@@ -195,7 +195,7 @@ div class=""
                   h5 class="text-md font-bold text-gray-2"
                     | #{@location.organization.name}
                   - if @location.organization.verified?
-                    = image_tag 'check.jpg', class: "w-4 h-4 ml-2"
+                    = image_tag 'verified_nonprofit_check.jpg', class: "w-4 h-4 ml-2"
                 p class="text-xs text-gray-4"
                   | #{@location.address}
                 p class="text-xs text-gray-4"
