@@ -1,12 +1,13 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "field", "map", "latitude", "longitude", "marker" ]
+  static targets = [ "field", "map", "latitude", "longitude", "marker", "location" ]
   static values = {
     imageurl: String,
     zoom: { type: Number, default: 10 },
     latitude: Number,
-    longitude: Number
+    longitude: Number,
+    markers: Array,
   }
 
   connect() {
@@ -66,6 +67,8 @@ export default class extends Controller {
   setMarkers(map, image) {
     // Adds markers to the map.
     let prevInfoWindow = false
+    let pin = document.getElementById(sessionStorage.getItem('location_id'))
+
 
     for (let i = 0; i < this.markerTargets.length; i++) {
       const element = this.markerTargets[i];
@@ -95,8 +98,24 @@ export default class extends Controller {
           map,
           shouldFocus: false,
         });
+
+        sessionStorage.setItem('location_id', element.id)
       });
+
+     if( pin && pin.id == element.id ) {
+       prevInfoWindow = infowindow
+       infowindow.open({
+         anchor: marker,
+         map,
+         shouldFocus: false,
+       });
+     }
     }
+  }
+
+  changeUrl(url, title) {
+    let new_url = '/' + url;
+    window.history.pushState('data', title, new_url);
   }
 
   placeChanged() {

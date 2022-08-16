@@ -40,5 +40,9 @@ class ApplicationController < ActionController::Base
       FavoriteLocation.create(location_id: session[:fav_loc_id], user: current_user)
       session.delete(:fav_loc_id)
     end
+
+    if session[:location_id].present?
+      params[:location_id] = session[:location_id]
+    end
   end
 end

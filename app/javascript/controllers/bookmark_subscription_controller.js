@@ -10,6 +10,8 @@ export default class extends Controller {
   }
 
   received(data) {
+    console.log(data)
+
     if (data["method"] == "create") {
       document.getElementById(`location_${data["location_id"]}`).remove()
       document.getElementById(`new_favorite_location_${data["location_id"]}`).insertAdjacentHTML("afterend", data["marked_partial"])
