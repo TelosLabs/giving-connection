@@ -33,11 +33,11 @@
 </div>
 <div class="sm-px-0" style="margin: 0px; margin-top: 48px; padding-left: 24px; padding-right: 24px;">
   <div style="text-align: center;">
-    <%= link_to 'EXPLORE MORE NONPROFITS', search_url, target: "_blank", class: "", style: "width: 200px; height: 39px; margin-left: 0; margin-right: 0; padding: 10px 20px; font-weight: 700; text-decoration: none; background: #0782D0; border-radius: 6px; color: white;" %>
+    <%= link_to 'EXPLORE MORE NONPROFITS', search_url, target: "_blank", style: "width: 200px; height: 39px; margin-left: 0; margin-right: 0; padding: 10px 20px; font-weight: 700; text-decoration: none; background: #0782D0; border-radius: 6px; color: white;" %>
   </div>
   <div style="margin-top: 40px;">
     <p style="margin: 0px; font-size: 14px;"><%= "This email was intended for #{@alert.user.email}" %></p>
-    <p style="margin: 0px; font-size: 14px;"><%= "You are receiving search alerts." %></p>
+    <p style="margin: 0px; font-size: 14px;">You are receiving search alerts. <%= link_to 'Manage Alerts', my_account_url,  target: "_blank", style: "margin: 0px; font-size: 14px;"%>
   </div>
 </div>
 
