@@ -7,13 +7,13 @@ export default class extends Controller {
 
   initialize() {
     console.log(sessionStorage.getItem('banner-session'))
-    if (sessionStorage.getItem('banner-session') === 'inactive' ) {
-      this.bannerTarget.classList.toggle('hidden')
+    if (sessionStorage.getItem('banner-session') != 'user-closed') {
+      this.bannerTarget.classList.remove('hidden')
     }
   }
 
   closeBanner() {
     sessionStorage.setItem('banner-session', 'user-closed')
-    this.bannerTarget.classList.toggle('hidden')
+    this.bannerTarget.classList.add('hidden')
   }
 }
