@@ -9,7 +9,7 @@
       <div class="flex flex-row items-start justify-between">
         <a href="<%= location_path(@id)%>" class="inline-flex items-center py-2 text-sm font-bold text-blue-medium"  target="_blank"
            id="new_favorite_location_<%= @id %>">
-          <div class="flex items-center">
+          <div class="flex items-center" style="display: inline">
             <h5 class="text-lg font-bold text-black"><%= @title %></h5>
             <% if @verified %>
               <%= image_tag 'verified_nonprofit_check.jpg', class: "w-4 h-4 ml-2" %>
