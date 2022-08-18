@@ -98,7 +98,7 @@
                   h5 class="text-lg font-bold leading-6 text-gray-2" id="pointer"
                     = link_to result.name, location_path(result), target:"_blank"
                   - if result.organization.verified?
-                    = image_tag 'verified_nonprofit_check.jpg', class: "w-4 h-4 ml-2"
+                    = image_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-2"
                 p class="text-xs text-gray-4" id="pointer"
                   = link_to result.address, result.link_to_google_maps, target: "blank"
                 p class="text-xs text-blue-medium"
@@ -143,7 +143,7 @@
                 h5 class="text-lg font-bold leading-6 text-gray-2" id="pointer"
                   = link_to result.name, location_path(result), target:"_blank"
                 - if result.organization.verified?
-                  = image_tag 'verified_nonprofit_check.jpg', class: "w-4 h-4 ml-2"
+                  = image_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-2"
               p class="text-xs text-gray-4" id="pointer"
                 = link_to result.formatted_address, result.link_to_google_maps, target: "blank"
               p class="text-xs text-blue-medium"

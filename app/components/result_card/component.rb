@@ -4,7 +4,7 @@ class ResultCard::Component < ViewComponent::Base
 
   def initialize(title:, address:, image_url:, website:, description:, id:, current_user:, phone_number:, verified: )
     # <span><%= image_tag 'verified_nonprofit_check.jpg', class: "w-4 h-4 ml-2" %></span>
-    @title = verified ? "#{title}✅" : title
+    @title = title
     @address = address
     @image_url = image_url
     @website = website
