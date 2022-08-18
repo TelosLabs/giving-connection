@@ -18,6 +18,11 @@ export default class extends Controller {
 
   initialize() {
     this.markersArray = []
+    if(sessionStorage.getItem('location_id')) {
+      let id = sessionStorage.getItem('location_id').split('_')[1]
+      let card = document.getElementById(id)
+      card.scrollIntoView({behavior: 'smooth'})
+    }
   }
 
   initMap() {
@@ -68,7 +73,6 @@ export default class extends Controller {
     // Adds markers to the map.
     let prevInfoWindow = false
     let pin = document.getElementById(sessionStorage.getItem('location_id'))
-
 
     for (let i = 0; i < this.markerTargets.length; i++) {
       const element = this.markerTargets[i];
