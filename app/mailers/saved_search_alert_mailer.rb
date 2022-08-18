@@ -23,7 +23,6 @@ class SavedSearchAlertMailer < ApplicationMailer
 
   def set_assets_for_template
     build_alert_filters
-    attach_gc_logo
     attach_organizations_logos
   end
 
@@ -35,10 +34,6 @@ class SavedSearchAlertMailer < ApplicationMailer
     open_on_weekends = filters[:open_weekends] ? ['Open on Weekends'] : []
     @alert_filters = beneficiary_groups + services + causes + open_on_weekends
     @alert_filters = @alert_filters.join(", ")
-  end
-
-  def attach_gc_logo
-    attachments.inline["send_alert_logo.png"] = File.read("#{Rails.root}/app/assets/images/send_alert_logo.png")
   end
 
   def attach_organizations_logos
