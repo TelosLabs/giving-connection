@@ -12,7 +12,7 @@
     <div class="sm-ml-44" style="max-width: 512px;">
       <% @new_locations.each do |location| %>
         <div style="margin: 0px; margin-top: 20px; display: flex; align-content: flex-start;">
-          <div style="margin: 0px; width: 96px; flex-shrink: 0;">
+          <div style="margin: 0px; min-width: 96px; flex-shrink: 0;">
             <a href=<%= location.organization.decorate.website %> target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">
               <%= image_tag(attachments[location.organization.logo.blob.filename.to_s].url, style: "max-width: 100%; height: 96px; object-fit: contain;") %>
             </a>
