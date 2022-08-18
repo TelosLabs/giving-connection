@@ -117,11 +117,6 @@ export default class extends Controller {
     }
   }
 
-  changeUrl(url, title) {
-    let new_url = '/' + url;
-    window.history.pushState('data', title, new_url);
-  }
-
   placeChanged() {
     this.clearMarkers()
     let place = this.autocomplete.getPlace()
