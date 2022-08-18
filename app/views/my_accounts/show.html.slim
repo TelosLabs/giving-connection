@@ -121,7 +121,7 @@ div class="w-full h-full bg-white"
                       span class="flex text-base font-medium text-grey-2"
                         | #{organization.name}
                         - if organization.verified?
-                          = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-2 mt-1"
+                          = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1"
                       = link_to "Edit", edit_organization_path(organization), class:"text-blue-medium"
 
             - else

@@ -13,7 +13,7 @@ module.exports = {
     },
     extend: {
       fontSize: {
-        'small': '10px',
+        'small': '15px',
         '22px': '22px',
         '28px': '28px',
         '34px': '34px',
