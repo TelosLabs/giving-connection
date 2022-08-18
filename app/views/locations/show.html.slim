@@ -15,6 +15,13 @@ div class=""
               h5 class="text-lg font-bold text-center mb-1"
                 = @location.name
               = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1"
+            p class="text-xs text-center font-base text-gray-4"
+              = "This nonprofit has verified the listed information."
+          - else
+            h5 class="text-lg font-bold text-center mb-1"
+              = @location.name
+            p class="text-xs text-center font-base text-gray-4"
+              = "This nonprofit has not yet verified the listed information."
         - if current_user.present? && policy(@location.organization).update?
             p class="text-xs text-center font-base text-blue-500" id="pointer"
               = link_to "Edit my Nonprofit", edit_organization_path( @location.organization)
