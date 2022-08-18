@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   after_action :verify_authorized, except: :index, unless: :skip_pundit?
   after_action :verify_policy_scoped, only: :index, unless: :skip_pundit?
   before_action :configure_permitted_parameters, if: :devise_controller?
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   private
 
@@ -23,12 +24,12 @@ class ApplicationController < ActionController::Base
   end
 
   def storable_location?
-     request.get? && is_navigational_format? && !devise_controller? && !request.xhr? 
-   end
+    request.get? && is_navigational_format? && !devise_controller? && !request.xhr?
+  end
 
-   def store_user_location!
-     store_location_for(:user, request.fullpath)
-   end
+  def store_user_location!
+    store_location_for(:user, request.fullpath)
+  end
 
   def after_sign_in_path_for(resource_or_scope)
     create_instances_from_session
@@ -44,5 +45,10 @@ class ApplicationController < ActionController::Base
     if session[:location_id].present?
       params[:location_id] = session[:location_id]
     end
+  end
+
+  def user_not_authorized
+    flash[:error] = 'You are not allowed to perform this action'
+    redirect_to root_path
   end
 end

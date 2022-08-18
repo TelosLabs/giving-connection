@@ -3,11 +3,63 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style>
-      /* Email styles need to be inline */
+      @media (min-width: 640px) {
+        body {
+          width: 100%;
+          padding: 0;
+          word-break: break-word;
+          -webkit-font-smoothing: antialiased;
+        }
+        .sm-ml-44 {
+          margin-left: 44px !important;
+        }
+        .sm-px-0 {
+          padding-left: 0 !important;
+          padding-right: 0 !important;
+        }
+        .sm-px-64 {
+          padding-left: 24px !important;
+          padding-right: 24px !important;
+        }
+        .sm-mg-5 {
+          margin-left: 5 !important;
+          margin-right: 5 !important;
+        }
+      }
     </style>
   </head>
-
   <body>
-    <%= yield %>
+    <div style="text-align: center; background-color: #EFF2F7;">
+      <div style="border-radius: 10px; display: inline-block; margin-top: 64px; margin-left: 16px; margin-right: 16px; max-width: 500px; background-color: #ffffff; padding-top: 44px; padding-bottom: 40px;">
+        <div style="text-align: center;">
+          <%= link_to image_tag(attachments['giving_connection_logo.png'].url, style: "height: 52px; max-width: 224px"), 'https://www.givingconnection.org/' %>
+        </div>
+        <div class="sm-px-64" style="text-align: left; margin-top: 20px; padding-left: 24px; padding-right: 24px;">
+          <%= yield %>
+        </div>
+        <div class="sm-px-0" style="margin: 0px; margin-top: 40px; padding-left: 24px; padding-right: 24px; text-align: center;">
+          <div style="border-bottom: 1px solid #E6E6E6; display: block; height: 2px; margin: 0 auto; width: 95%;"></div>
+          <p style="margin: 0px; margin-top: 40px; font-size: 16px; color: #0782D0; font-style: normal; font-weight: 700;">Connect with us!</p>
+          <div style="margin: 0px; margin-top: 20px; font-size: 12px; font-weight: 500;">
+            <a href="https://www.facebook.com/givingconnection.org" target="_blank" style="margin: 0px 7px; text-decoration: none; color: inherit;"><%= image_tag(attachments['facebook.jpg'].url, style: "max-height: 30px; max-width: 35px") %></a>
+            <a href="https://www.instagram.com/givingconnection/" target="_blank" style="margin: 0px 7px; text-decoration: none; color: inherit;"><%= image_tag(attachments['instagram.jpg'].url, style: "max-height: 30px; max-width: 35px") %></a>
+            <a href="https://twitter.com/giveconnection" target="_blank" style="margin: 0px 7px; text-decoration: none; color: inherit;"><%= image_tag(attachments['twitter.jpg'].url, style: "max-height: 30px; max-width: 35px") %></a>
+            <a href="https://www.youtube.com/channel/UCZXvN1tltX192vFpKIfH8fA" target="_blank" style="margin: 0px 7px; text-decoration: none; color: inherit;"><%= image_tag(attachments['youtoube.jpg'].url, style: "max-height: 30px; max-width: 35px") %></a>
+          </div>
+          <div style="margin: 0px; margin-top: 20px; font-size: 12px; font-weight: 500; font-style: normal; font-weight: 400;">
+            <a href="https://www.givingconnection.org/contact" target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">Contact us</a>
+            <span>|</span>
+            <a href="https://www.givingconnection.org/my_account" target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">My Account</a>
+            <span>|</span>
+            <a href="https://www.givingconnection.org/privacy_policy" target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">Privacy Policy</a>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 30px; margin-bottom: 30px">
+        <p style="font-size: 12px">© Copyright Giving Connection <%= Date.today.year %>.<br>All rights reserved.</p>
+      </div>
+      <br>
+      <br>
+    </div>
   </body>
 </html>

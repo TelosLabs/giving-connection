@@ -1,13 +1,14 @@
 main
-  section class="relative bg-electric-teal" data-controller="banner" data-banner-target="banner"
+  section class="relative bg-electric-teal hidden" data-controller="banner" data-banner-target="banner"
     div class="flex max-w-3xl mx-auto py-7 md:py-8"
       div class="hidden md:block md:pl-4 lg:pl-0"
         = inline_svg_tag 'megaphone.svg', size: '65*70'
       div class="pl-8 pr-10 md:px-0 md:ml-8 text-gray-1 "
         div class="text-sm md:text-base mb-1.5 font-bold"
-          | We are currently in our testing phase
+          | We officially launched in Nashville!
         div class="text-xs leading-5 md:leading-6 md:text-sm md:pr-2"
-          | The information listed is for testing purposes only. We currently only have nonprofit listings in Nashville, TN. 
+          | We currently only have nonprofit listings in Nashville, TN.
+          br
           | We will enable searching by City, State, and Zip Code once we expand to other cities.
       div class="absolute inset-y-0 right-0 flex items-start pt-1 pr-1 sm:pt-1.5 sm:pr-5 sm:items-start"
         button class="flex p-2 rounded-md hover:bg-gray" type="button" data-action="banner#closeBanner"
@@ -19,7 +20,7 @@ main
       | What are you looking for today?
     div class="hidden px-6 pb-6 text-center text-white sm:block"
       | Search for listings of nonprofit organizations based on your needs.
-    = form_with model: @search, url: searches_path, method: :get do |f|
+    = form_with model: @search, url: search_path, method: :get do |f|
       .c-form class="py-0 mx-auto sm:px-3 sm:flex-col sm:justify-center sm:max-w-4xl"
         div class="relative w-full sm:max-w-xl mb-7 sm:mb-0"
           = f.text_field :keyword, autocomplete: "search", class:"c-input pl-10 m-0 w-full", placeholder: "Try \"Mental Health Nonprofits\""
@@ -73,7 +74,7 @@ main
     div class="relative max-w-md pb-20 mx-auto text-center"
       h2 class="px-5 pt-20 text-2xl font-bold text-center sm:px-0 md:pt-28 text-blue-dark pb-11"
         | Are you a nonprofit organization interested in joining our listings?
-      = link_to "Add or Claim a Nonprofit", contact_path({data: "claim-or-add-ngo"}), class:'c-button inline-block my-1 text-white bg-blue-dark'
+      = link_to 'Add or Claim a Nonprofit', non_profit_contact_path, class:'c-button inline-block my-1 text-white bg-blue-dark'
     div class="top-0 left-0 -z-1 hidden sm:block sm:absolute"
       = inline_svg_tag 'lc-desk-blur-left.svg'
     div class="top-0 right-0 -z-1 hidden sm:block sm:absolute"
