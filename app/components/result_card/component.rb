@@ -31,9 +31,4 @@ class ResultCard::Component < ViewComponent::Base
   def formated_description
     @description.length <= 280 ? @description : "#{@description[0..280]} (...)"
   end
-
-  def logo
-    data = open("http://www.gravatar.com/avatar/c2713a4959692f16d27d2553fb06cc4b.png?r=x&s=170")
-    send_data data, type: image.content_type, disposition: 'inline'
-  end
 end
