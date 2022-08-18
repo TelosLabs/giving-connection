@@ -7,7 +7,7 @@ div class="w-full h-full bg-grey-9"
       h4 class="text-xl text-gray-2 mb-1"
         = @organization.name
       - if @organization.verified?
-        = image_tag 'verified_nonprofit_check.jpg', class: "w-4 h-4 ml-2"
+        = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-2"
     div class="my-4 border-t border-t-blue-pale"
 
     = form_for @organization do |f|

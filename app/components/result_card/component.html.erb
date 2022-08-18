@@ -11,7 +11,7 @@
           <a class="text-lg font-bold text-black" href="<%= location_path(@id)%> target="_blank" id="new_favorite_location_<%= @id %>">
             <%= @title %>
           </a>
-          <% if !@verified %>
+          <% if @verified %>
             <%= inline_svg_tag 'verified_nonprofit_check.svg', class: 'w-4 h-4 ml-1 align-text-bottom inline' %>
           <% end %>
         </div>
