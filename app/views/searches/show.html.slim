@@ -96,8 +96,8 @@
                     = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
                 div
                   a id="pointer"
-                    = link_to result.name, location_path(result), target:"_blank", class: "text-lg font-bold leading-6 text-gray-2"
-                  - if result.organization.verified?
+                    = link_to result.name, location_path(result), target:"_blank", class: "text-small font-bold text-gray-2"
+                  - if result.organization.verified? == false
                     = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1 align-text-bottom inline"
                 p class="text-xs text-gray-4" id="pointer"
                   = link_to result.address, result.link_to_google_maps, target: "blank"
@@ -141,8 +141,8 @@
                   = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
               div
                 a id="pointer"
-                  = link_to result.name, location_path(result), target:"_blank", class: "text-lg font-bold leading-6 text-gray-2"
-                - if result.organization.verified?
+                  = link_to result.name, location_path(result), target:"_blank", class: "text-small font-bold text-gray-2"
+                - if result.organization.verified? == false
                   = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1 align-text-bottom inline"
               p class="text-xs text-gray-4" id="pointer"
                 = link_to result.formatted_address, result.link_to_google_maps, target: "blank"
