@@ -1,11 +1,4 @@
 namespace :populate do
-
-  desc "Populate the database with sample data"
-  task :default do
-    Rake::Task['populate:seed_causes_and_services'].execute
-    Rake::Task['populate:seed_beneficiaries_and_beneficiaries_subcategories'].execute
-  end
-
   desc "Seed causes and services to DB"
   task seed_causes_and_services: :environment do
     Organizations::Constants::CAUSES_AND_SERVICES.each do |cause, services|
