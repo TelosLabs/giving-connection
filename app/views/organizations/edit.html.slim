@@ -3,9 +3,11 @@ div class="w-full h-full bg-grey-9"
     h2 class="mb-5 text-2xl font-bold text-center sm:text-left text-gray-3"
       | Edit Page
 
-    h4 class="text-xl text-gray-2"
-      = @organization.name
-
+    div class="flex items-center"
+      h4 class="text-xl text-gray-2 mb-1"
+        = @organization.name
+      - if @organization.verified?
+        = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1"
     div class="my-4 border-t border-t-blue-pale"
 
     = form_for @organization do |f|
@@ -17,9 +19,13 @@ div class="w-full h-full bg-grey-9"
 
         div class="grid grid-cols-12 gap-6 mt-8" data-controller="toggle"
           div class="col-span-12 lg:col-span-6 md:col-span-7"
-            div class="flex items-center"
-              = f.check_box :active, class: "h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent", checked: @organization.active
-              = f.label :active, "My organization is active", class: "text-sm text-black"
+            div class="flex flex-col"
+              = f.label :name, "Do you verify the listed information?", class: "block text-sm text-gray-3 font-medium"
+              p class="text-sm leading-5 text-gray-4 mt-1"
+                | Once you verify, a green checkmark will appear on your nonprofit page
+            div class="flex items-center mt-3"
+              = f.check_box :verified, class: "h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent", checked: @organization.verified
+              = f.label :verified, "Check to verify", class: "text-sm"
 
           div class="hidden col-span-3 md:flex"
 
@@ -29,7 +35,7 @@ div class="w-full h-full bg-grey-9"
 
             div class="flex items-center mt-3"
               = check_box_tag :other_name_check, true, false, class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent ", data: { action: "toggle#toggle" }
-              = label_tag :other_name_check, "My Organization is known by other names", class: "text-sm text-black "
+              = label_tag :other_name_check, "My Organization is known by other names", class: "text-sm"
 
           div class="hidden col-span-3 lg:flex"
 
@@ -214,10 +220,10 @@ div class="w-full h-full bg-grey-9"
                       div class="flex items-center gap-2"
                         = location_form.radio_button :offer_services, 0, class: "focus:ring-0 focus:ring-transparent", data: { action: "extend-toggle#hide" }, checked: !location_form.object.offer_services
                         = location_form.label :offer_services_no, "No", class: "text-sm text-black "
-                div class="col-span-12 px-3.5 py-5 bg-gray-9" 
+                div class="col-span-12 px-3.5 py-5 bg-gray-9"
                   p class="text-sm leading-5 text-gray-3"
                     ' If you choose
-                    strong 
+                    strong
                       | yes
                     |, this location will be displayed on the search listings as a pin on the map.
 
@@ -270,7 +276,7 @@ div class="w-full h-full bg-grey-9"
                     div class="flex items-center mt-3"
                       = location_form.check_box :appointment_only, class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent "
                       = location_form.label :appointment_only, "By Appointment Only", class: "text-sm text-black"
-                
+
                 div class="hidden col-span-3 md:flex"
                 div class="col-span-12 text-center lg:col-span-5 md:col-span-7"
                   = link_to 'Remove Location', "#", data: { action: "click->nested-form#remove_association" }, class:"text-sm font-bold cursor-pointer text-blue-medium"
