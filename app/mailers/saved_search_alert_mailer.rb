@@ -6,7 +6,9 @@ class SavedSearchAlertMailer < ApplicationMailer
     set_results
     set_assets_for_template
     unless @new_locations.empty?
-      mail from: 'Giving Connection <info@givingconnection.org>', to: alert.user.email, subject: "Giving Connection - #{@new_locations.count} New Locations Added !"
+      mail from: 'Giving Connection <info@givingconnection.org>',
+           to: alert.user.email,
+           subject: "Giving Connection - #{@new_locations.count} New #{'Location'.pluralize(@new_locations.count)} Added!"
       update_alert_search_results
     end
   end
