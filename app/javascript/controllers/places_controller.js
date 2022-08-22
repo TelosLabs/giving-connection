@@ -18,6 +18,7 @@ export default class extends Controller {
 
   initialize() {
     this.markersArray = []
+
     if(sessionStorage.getItem('location_id')) {
       let id = sessionStorage.getItem('location_id').split('_')[1]
       let card = document.getElementById(id)

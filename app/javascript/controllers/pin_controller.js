@@ -8,14 +8,6 @@ export default class extends Controller {
     }
 
     reloadPage(event) {
-        const queryString = window.location.search;
-        const urlParams = new URLSearchParams(queryString);
-
-        if( !urlParams.has('location_id') ) {
-            urlParams.append('location_id', this.pinTarget.id)
-        }else{
-            urlParams.set('location_id', this.pinTarget.id)
-        }
-        window.location.search = urlParams.toString()
+        window.location.reload()
     }
 }
