@@ -29,6 +29,5 @@ FactoryBot.define do
     open_now { 'MyString' }
     open_weekends { 'MyString' }
     keyword { 'MyString' }
-    frequency { 'MyString' }
   end
 end
