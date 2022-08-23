@@ -43,6 +43,10 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
       select('National',                                       from: 'organization_scope_of_work')
       # select('Advocacy',                                       from: 'organization_category_ids')
       attach_file('organization_logo', "#{Rails.root}/spec/support/images/testing.png")
+      select('Advocacy',                                       from: 'organization_causes')
+      click_button 'Add Location'
+      fill_in('location_name',                                 with: 'testing')
+      fill_in('location_address',                              with: 'testing')
 
       click_button 'Create Organization'
     end
