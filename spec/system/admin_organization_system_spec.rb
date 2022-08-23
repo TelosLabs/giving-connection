@@ -36,17 +36,17 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
       fill_in('organization_mission_statement_en',             with: 'mission testing')
       fill_in('organization_vision_statement_en',              with: 'vision testing')
       fill_in('organization_tagline_en',                       with: 'tagline testing')
-      # fill_in('organization_description_en',                   with: 'description testing')
       fill_in('organization_social_media_attributes_facebook', with: 'facebook.com/test')
-      # fill_in('tags_attributes',                               with: 'special care')
       select('A51',                                            from: 'organization_irs_ntee_code')
       select('National',                                       from: 'organization_scope_of_work')
-      # select('Advocacy',                                       from: 'organization_category_ids')
+      fill_in('location_attributes_street_address',            with: '123 Main St')
+      fill_in('location_attributes_city',                      with: 'Anytown')
+      fill_in('location_attributes_state',                     with: 'CA')
+      fill_in('location_attributes_zip_code',                  with: '12345')
+      fill_in('location_attributes_phone_number',              with: '1234567890')
+      fill_in('location_attributes_fax_number',                with: '1234567890')
+      check('location_attributes_is_mailing_address')
       attach_file('organization_logo', "#{Rails.root}/spec/support/images/testing.png")
-      select('Advocacy',                                       from: 'organization_causes')
-      click_button 'Add Location'
-      fill_in('location_name',                                 with: 'testing')
-      fill_in('location_address',                              with: 'testing')
 
       click_button 'Create Organization'
     end
