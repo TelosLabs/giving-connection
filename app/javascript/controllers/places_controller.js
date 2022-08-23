@@ -22,7 +22,7 @@ export default class extends Controller {
     if(sessionStorage.getItem('selected_location_id')) {
       let id = sessionStorage.getItem('selected_location_id').split('_')[1]
       let card = document.getElementById(id)
-      card.scrollIntoView({behavior: 'smooth'})
+      card.scrollIntoView({behavior: "smooth", block: "end"})
     }
   }
 
