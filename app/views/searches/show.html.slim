@@ -82,7 +82,7 @@
             div class="hidden" data-places-target="latitude"
             div class="hidden" data-places-target="longitude"
             - @results.besides_po_boxes&.each do |result|
-              div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}" data-po_box="#{result.po_box}"  id="loc_#{result.id}"
+              div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}" data-po_box="#{result.po_box}" id="loc_#{result.id}" data-controller="pin" data-pin-target="pin"
                 - if user_signed_in?
                   - if !current_user.favorited_locations.include?(result)
                     = link_to favorite_locations_path(location_id: result.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", method: :post, remote: true do

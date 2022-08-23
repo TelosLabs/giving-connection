@@ -8,6 +8,6 @@ export default class extends Controller {
     }
 
     reloadPage(event) {
-        window.location.reload()
+        window.location.search = window.location.search
     }
 }

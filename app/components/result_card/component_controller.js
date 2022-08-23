@@ -5,8 +5,4 @@ export default class extends Controller {
   connect() {
 
   }
-
-  reloadPage(event) {
-
-  }
 }
