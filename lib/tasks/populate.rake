@@ -1,5 +1,4 @@
 namespace :populate do
-
   desc "Seed causes and services to DB"
   task seed_causes_and_services: :environment do
     Organizations::Constants::CAUSES_AND_SERVICES.each do |cause, services|

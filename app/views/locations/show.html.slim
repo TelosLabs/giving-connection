@@ -9,12 +9,26 @@ div class=""
         = image_tag @location.organization.logo, class: 'shadow rounded logo-size bg-white'
 
       div class="pt-5 md:px-11 md:text-left"
-        h5 class="text-lg font-bold mb-2.5 text-center"
-          = @location.name
-        p class="text-xs text-center font-base text-gray-4" id="pointer"
-          = link_to @location.formatted_address, "https://www.google.com/maps/search/#{@location.address}", target: "blank"
-        p class="text-xs text-center font-base text-gray-4"
-          = "EIN Number: #{@location.organization.ein_number}"
+        div
+          - if @location.organization.verified?
+            div class="flex justify-center items-center mb-2.5"
+              h5 class="text-lg font-bold text-center mb-1"
+                = @location.name
+              = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1"
+            p class="text-xs text-center font-base text-gray-4"
+              = "This nonprofit has verified the listed information."
+          - else
+            h5 class="text-lg font-bold text-center mb-1"
+              = @location.name
+            p class="text-xs text-center font-base text-gray-4"
+              = "This nonprofit has not yet verified the listed information."
+          - if current_user.present? && policy(@location.organization).update?
+            p class="text-xs text-center font-base text-blue-500" id="pointer"
+              = link_to "Edit my Nonprofit", edit_organization_path( @location.organization)
+          p class="text-xs text-center font-base text-gray-4 mt-3" id="pointer"
+            = link_to @location.formatted_address, "https://www.google.com/maps/search/#{@location.address}", target: "blank"
+          p class="text-xs text-center font-base text-gray-4"
+            = "EIN Number: #{@location.organization.ein_number}"
 
         div class="flex justify-center items-center mt-4 gap-2.5" data-controller="copy-to-clipboard"
           button type="button" class="flex items-center text-sm gray-2" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="#{request.url}"
@@ -178,8 +192,11 @@ div class=""
           div# class="w-full h-full" data-places-target="map"
           div class="hidden"
               div class="flex flex-col items-center gap-2 p-5 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{@location.latitude}" data-longitude="#{@location.longitude}"
-                h5 class="text-lg font-bold text-gray-2"
-                  | #{@location.organization.name}
+                div
+                  a class="text-small font-bold text-gray-2"
+                    | #{@location.organization.name}
+                  - if @location.organization.verified?
+                    = inline_svg_tag 'verified_nonprofit_check.svg', class: "align-text-bottom inline w-4 h-4 ml-1"
                 p class="text-xs text-gray-4"
                   | #{@location.address}
                 p class="text-xs text-gray-4"

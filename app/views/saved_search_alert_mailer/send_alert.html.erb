@@ -1,21 +1,18 @@
-<div class="sm-px-64" style="text-align: left; margin-top: 56px; padding-left: 24px; padding-right: 24px;">
-  <div style="margin: 0px;">
-    <p style="margin: 0px; font-size: 24px;">
-      Your search alert for
-      <% if @alert.keyword.present? %>
-        <strong style="margin: 0px;"><%= @alert.keyword %> </strong>
-      <% else %>
-        the following filters
-      <% end %>
-    </p>
-    <p style="margin: 0px; margin-top: 7px; font-size: 14px;"><%= "Filters: #{@alert_filters}" %></p>
+<div style="margin: 0px; margin-top: 56px" >
+  <p style="margin: 0px; font-size: 22px;"><%= "We found #{@new_locations.count} new #{'organization'.pluralize(@new_locations.count)} matching your search." %></p>
+  <div style="margin-top: 40px; padding: 24px; background-color: #EFF2F7;">
+    <% if @alert.keyword.present? %>
+      <p style="margin: 0px;  margin-bottom: 24px; font-size: 22px;"> Your search alert for <strong style="margin: 0px;"><%= @alert.keyword %> </strong></p>
+    <% end %>
+    <p style="margin: 0px; font-size: 16px;"><strong> Filters: </strong><%=@alert_filters%></p>
   </div>
-  <div style="margin: 0px; margin-top: 48px;">
-    <p style="margin: 0px; font-size: 16px;"><%= "We found #{@new_locations.count} new organizations that match your search" %></p>
-    <div class="sm-ml-44" style="margin: 0px; margin-top: 60px; max-width: 512px;">
+</div>
+<div class="sm-px-64" style="text-align: left; margin-top: 40px; padding-left: 24px; padding-right: 24px;">
+  <div>
+    <div class="sm-ml-44" style="max-width: 512px;">
       <% @new_locations.each do |location| %>
         <div style="margin: 0px; margin-top: 20px; display: flex; align-content: flex-start;">
-          <div style="margin: 0px; width: 96px; flex-shrink: 0;">
+          <div style="margin: 0px; min-width: 96px; flex-shrink: 0;">
             <a href=<%= location.organization.decorate.website %> target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">
               <%= image_tag(attachments[location.organization.logo.blob.filename.to_s].url, style: "max-width: 100%; height: 96px; object-fit: contain;") %>
             </a>
@@ -23,9 +20,13 @@
           <div style="margin: 0px; margin-left: 16px;">
             <a href=<%= location.organization.decorate.website %> target="_blank" style="margin: 0px; text-decoration: none; color: inherit;"><h5 style="margin: 0px; font-size: 18px; font-weight: 700; color: #000000;"><%= location.name %></h5></a>
             <div style="margin: 0px; margin-top: 5px; font-size: 12px; color: #9ca3af;">
-              <p style="margin: 0px;"><%= location.decorate.street %></p>
-              <p style="margin: 0px;"><%= location.decorate.city_state_zipcode %></p>
-              <a href=<%= location.organization.decorate.website %> target="_blank" style="margin: 0px; text-decoration: none; color: inherit;"><%= location.organization.website %></a>
+              <a href=<%= "https://www.google.com/maps/search/#{location.address}" %> target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">
+                <p style="margin: 0px;"><%= location.decorate.street %></p>
+                <p style="margin: 0px;"><%= location.decorate.city_state_zipcode %></p>
+              </a>
+              <div style="margin: 0px; margin-top: 5px;">
+                <a href=<%= location.organization.decorate.website %> target="_blank" style="margin: 0px; text-decoration: none; color: inherit; margin-top: 16px;"><%= location.organization.website %></a>
+              </div>
               <p style="margin: 0px; margin-top: 16px;"><%= location.phone_number&.number %></p>
             </div>
           </div>
@@ -34,12 +35,13 @@
     </div>
   </div>
 </div>
-<div class="sm-px-0" style="margin: 0px; margin-top: 60px; padding-left: 24px; padding-right: 24px; text-align: center;">
-  <p style="margin: 0px; font-size: 16px;">The Giving Connection Team</p>
-  <p style="margin: 0px; margin-top: 24px; font-size: 12px;"><%= "This email was intended for #{@alert.user.email}. You are receiving search alerts." %></p>
-  <div style="margin: 0px; margin-top: 20px; font-size: 12px; font-weight: 500;">
-    <a href="https://www.givingconnection.org/my_account" target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">Manage my alerts</a>
-    <span>|</span>
-    <a href="https://www.givingconnection.org/faqs" target="_blank" style="margin: 0px; text-decoration: none; color: inherit;">Help</a>
+<div class="sm-px-0" style="margin: 0px; margin-top: 48px; padding-left: 24px; padding-right: 24px;">
+  <div style="text-align: center;">
+    <%= link_to 'EXPLORE MORE NONPROFITS', search_url, target: "_blank", style: "width: 200px; height: 39px; margin-left: 0; margin-right: 0; padding: 10px 20px; font-weight: 700; text-decoration: none; background: #0782D0; border-radius: 6px; color: white;" %>
+  </div>
+  <div style="margin-top: 40px;">
+    <p style="margin: 0px; font-size: 14px;"><%= "This email was intended for #{@alert.user.email}" %></p>
+    <p style="margin: 0px; font-size: 14px;">You are receiving search alerts. <%= link_to 'Manage Alerts', my_account_url,  target: "_blank", style: "margin: 0px; font-size: 14px;"%>
   </div>
 </div>
+

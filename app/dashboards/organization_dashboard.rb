@@ -37,6 +37,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     phone_number: Field::Text,
     email: Field::Text,
     active: Field::Boolean,
+    verified: Field::Boolean,
     organization_causes: Field::NestedHasMany
   }.freeze
 
@@ -56,6 +57,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = %i[
     logo
     active
+    verified
     name
     second_name
     ein_number
@@ -82,6 +84,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
     logo
     active
+    verified
     name
     second_name
     ein_number
