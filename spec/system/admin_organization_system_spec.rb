@@ -26,51 +26,6 @@ RSpec.describe 'Admin Organization System Spec', type: :system do
     end
   end
 
-  context 'Creating new organizaton when form is correctly filled', skip: 'unable to find location and causes fields' do
-    before { visit new_admin_organization_path }
-
-    before(:each) do
-      fill_in('organization_name',                             with: 'testing')
-      fill_in('organization_ein_number',                       with: '161616')
-      select('A51',                                            from: 'organization_irs_ntee_code')
-      fill_in('organization_website',                          with: 'www.org.com')
-      select('National',                                       from: 'organization_scope_of_work')
-      fill_in('organization_mission_statement_en',             with: 'mission testing')
-      select('Advocacy',                                       from: 'organization_organization_beneficiaries_causes_0_cause_id')
-
-      fill_in('organization_social_media_attributes_facebook', with: 'facebook.com/test')
-
-
-      attach_file('organization_logo', "#{Rails.root}/spec/support/images/testing.png")
-      click_button 'Create Organization'
-    end
-
-    it 'should redirect to the organization show page after creating new organization' do
-      sleep(3)
-      expect(page).to have_content('Organization was successfully created.')
-    end
-
-    it 'creates new organization' do
-      sleep(3)
-      expect(Organization.count).to eq 2
-    end
-
-    it 'creates social media associated with organization' do
-      sleep(3)
-      expect(Organization.last.social_media.facebook).to eq('facebook.com/test')
-    end
-
-    it 'attaches a default cover photo' do
-      sleep(3)
-      expect(Organization.last.cover_photo.attached?).to eq(true)
-    end
-
-    it 'attaches the uploaded logo when file is provided' do
-      sleep(3)
-      expect(Organization.last.logo.blob.filename).to eq('testing.png')
-    end
-  end
-
   context 'Creating new organizaton when form is not correctly filled' do
     before { visit new_admin_organization_path }
 
