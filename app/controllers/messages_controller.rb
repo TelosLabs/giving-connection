@@ -10,12 +10,11 @@ class MessagesController < ApplicationController
 
   def create
     @message = build_message
-    if @message.save
+    if verify_recaptcha(model: @message) && @message.save
       flash[:notice] = 'Your message was successfully sent!'
       redirect_to root_path
     else
       render :new
-      puts search.errors.full_messages
     end
   end
 
