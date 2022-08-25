@@ -177,7 +177,7 @@ ActiveRecord::Schema.define(version: 2022_08_25_161720) do
     t.string "email"
     t.boolean "po_box", default: false
     t.string "suite"
-    t.string "youtube_video"
+    t.string "youtube_video_link"
     t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
     t.index ["organization_id"], name: "index_locations_on_organization_id"
   end
