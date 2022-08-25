@@ -117,7 +117,7 @@ class OrganizationsController < ApplicationController
     params.require(:organization)
           .permit(:name, :second_name, :ein_number, :irs_ntee_code, :website, :scope_of_work,
                   :mission_statement_en, :mission_statement_es, :vision_statement_en, :logo,
-                  :vision_statement_es, :tagline_en, :tagline_es, :email, :phone_number, :active, :verified,
+                  :vision_statement_es, :tagline_en, :tagline_es, :email, :phone_number, :active, :verified, :donation_link,
                   social_media_attributes: %i[facebook instagram twitter linkedin youtube blog id],
                   tags_attributes: [],
                   locations_attributes: [:id, :name, :address, :latitude, :longitude, :website, :po_box,
