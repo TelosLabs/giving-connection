@@ -39,6 +39,5 @@ FactoryBot.define do
     scope_of_work { 'International' }
     locations { [create(:location)] }
     creator { create(:admin_user) }
-    organization_causes { [create(:organization_cause)] }
   end
 end
