@@ -118,10 +118,10 @@ div class="w-full h-full bg-white"
                 - @my_organizations.each do |organization|
                   li class="flex flex-col w-full "
                     div class="flex flex-row justify-between w-full"
-                      span class="flex text-base font-medium text-grey-2"
+                      span class="flex items-center text-base font-medium text-grey-2"
                         | #{organization.name}
                         - if organization.verified?
-                          = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1"
+                          = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1 mt-1"
                       = link_to "Edit", edit_organization_path(organization), class:"text-blue-medium"
 
             - else
