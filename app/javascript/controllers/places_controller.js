@@ -1,13 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "field", "map", "latitude", "longitude", "marker", "location" ]
+  static targets = [ "field", "map", "latitude", "longitude", "marker" ]
   static values = {
     imageurl: String,
     zoom: { type: Number, default: 10 },
     latitude: Number,
-    longitude: Number,
-    markers: Array,
+    longitude: Number
   }
 
   connect() {
@@ -18,11 +17,14 @@ export default class extends Controller {
 
   initialize() {
     this.markersArray = []
+    this.scrollToSelectedLocation()
+  }
 
+  scrollToSelectedLocation(){
     if(sessionStorage.getItem('selected_location_id')) {
       let id = sessionStorage.getItem('selected_location_id').split('_')[1]
       let card = document.getElementById(id)
-      card.scrollIntoView({behavior: "smooth", block: "end"})
+      card.scrollIntoView({behavior: 'smooth', block: "nearest", inline: "nearest"})
     }
   }
 
