@@ -101,10 +101,9 @@ class OrganizationsController < ApplicationController
   def update_location_services(locations_attributes)
     locations_attributes.each do |location|
       @location = Location.find_by_name(location.last['name'])
-      location_services = location.last['location_services_attributes']['0']['services']['service'].values.flatten
-
       if @location&.offer_services
-        next if location.last['location_services_attributes']['0']['services']['service'].empty? || location.last['location_services_attributes'].nil?
+        next if location&.last['location_services_attributes']['0'].empty?
+        location_services = location.last['location_services_attributes']['0'].values.flatten
         @location.location_services.destroy_all
         location_services.each do |service|
           LocationService.create(location: @location, service: Service.find_by_name(service))
