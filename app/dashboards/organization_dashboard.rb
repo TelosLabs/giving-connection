@@ -38,6 +38,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     email: Field::Text,
     active: Field::Boolean,
     verified: Field::Boolean,
+    donation_link: Field::String,
     organization_causes: Field::NestedHasMany
   }.freeze
 
@@ -74,6 +75,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     tagline_es
     organization_beneficiaries
     tags
+    donation_link
     social_media
     locations
   ].freeze
@@ -99,6 +101,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     tagline_es
     organization_beneficiaries
     tags
+    donation_link
     organization_causes
     social_media
     locations
