@@ -233,7 +233,7 @@ div class="w-full h-full bg-grey-9"
                       = location_service_form.fields_for :services do |service_form|
                         div class="col-span-12 lg:col-span-5 md:col-span-7"
                           = service_form.label "Services offered at this location", class:"text-sm font-medium leading-4 text-gray-2"
-                          = render SelectMultiple::Component.new(name: "organization[locations_attributes][#{location_service_form.index}][location_services_attributes][#{service_form.index ? service_form.index : '0'}][services][service]" , items: @services, selected: location_form.object.location_services.map{ |location_service| location_service.service.name }, placeholder: "Write services", required: true)
+                          = render SelectMultiple::Component.new(name: location_service_form.object_name , items: @services, selected: location_form.object.location_services.map{ |location_service| location_service.service.name }, placeholder: "Write services", required: true)
 
                   div[data-controller="modal" data-modal-allow-background-close="false"]
                     a class="flex justify-center px-6 py-3 text-base font-medium hover:text-blue-medium text-gray-3" href="#" data-action="click->modal#open"

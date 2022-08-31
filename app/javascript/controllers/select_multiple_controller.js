@@ -45,6 +45,7 @@ export default class extends Controller {
 
   addCheckboxToStore(event) {
     const value = event.currentTarget.dataset.value
+
     if (event.currentTarget.checked) {
       this.store.add(value)
     } else {
