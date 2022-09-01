@@ -13,6 +13,7 @@ class LocationDashboard < Administrate::BaseDashboard
     organization: Field::BelongsTo,
     name: Field::String,
     id: Field::Number,
+    youtube_video_link: Field::String,
     latitude: HiddenField,
     longitude: HiddenField,
     lonlat: Field::String.with_options(searchable: false),
@@ -73,6 +74,7 @@ class LocationDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
     name
     main
+    youtube_video_link
     physical
     appointment_only
     email
