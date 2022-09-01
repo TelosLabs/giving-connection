@@ -14,5 +14,11 @@
 require 'rails_helper'
 
 RSpec.describe OrganizationAdmin, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context 'OrganizationAdmin model validation test' do
+    subject { create(:organization_admin) }
+
+    it 'ensures organization_admin can be created' do
+      expect(subject).to be_valid
+    end
+  end
 end

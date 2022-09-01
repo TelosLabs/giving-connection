@@ -14,6 +14,7 @@ class MessagesController < ApplicationController
       flash[:notice] = 'Your message was successfully sent!'
       redirect_to root_path
     else
+      flash.now[:error] = 'Invalid reCAPTCHA!'
       render :new
     end
   end

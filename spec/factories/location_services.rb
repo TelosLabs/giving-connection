@@ -13,7 +13,7 @@
 #
 FactoryBot.define do
   factory :location_service do
-    location { nil }
-    service { nil }
+    location { association(:location) }
+    service { association(:service) }
   end
 end
