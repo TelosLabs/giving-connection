@@ -12,5 +12,11 @@
 require 'rails_helper'
 
 RSpec.describe Cause, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context 'Cause model validation test' do
+    subject { create(:cause) }
+
+    it 'ensures cause can be created' do
+      expect(subject).to be_valid
+    end
+  end
 end

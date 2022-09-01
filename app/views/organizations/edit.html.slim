@@ -22,7 +22,7 @@ div class="w-full h-full bg-grey-9"
             div class="flex flex-col"
               = f.label :name, "Do you verify the listed information?", class: "block text-sm text-gray-3 font-medium"
               p class="text-sm leading-5 text-gray-4 mt-1"
-                | Once you verify, a green checkmark will appear on your nonprofit page
+                | Once you verify, a green checkmark will appear next to the nonprofit’s name throughout the platform.
             div class="flex items-center mt-3"
               = f.check_box :verified, class: "h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent", checked: @organization.verified
               = f.label :verified, "Check to verify", class: "text-sm"
@@ -76,9 +76,13 @@ div class="w-full h-full bg-grey-9"
 
           div class="hidden col-span-3 md:flex"
 
-          div class="col-span-12 lg:col-span-6 md:col-span-7"
+          div class="col-span-12 lg:col-span-7 md:col-span-6"
             = f.label :website, class: "block text-sm text-gray-3 font-medium"
             = f.text_field :website, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+
+          div class="col-span-12 lg:col-span-7 md:col-span-6"
+            = f.label :donation_link, class: "block text-sm text-gray-3 font-medium"
+            = f.text_field :donation_link, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
         section class="mt-12 text-gray-2" data-controller="toggle"
           h5 class="text-lg font-medium leading-7"
@@ -237,7 +241,7 @@ div class="w-full h-full bg-grey-9"
                       = location_service_form.fields_for :services do |service_form|
                         div class="col-span-12 lg:col-span-5 md:col-span-7"
                           = service_form.label "Services offered at this location", class:"text-sm font-medium leading-4 text-gray-2"
-                          = render SelectMultiple::Component.new(name: "organization[locations_attributes][#{location_service_form.index}][location_services_attributes][#{service_form.index ? service_form.index : '0'}][services][service]" , items: @services, selected: location_form.object.location_services.map{ |location_service| location_service.service.name }, placeholder: "Write services", required: true)
+                          = render SelectMultiple::Component.new(name: location_service_form.object_name , items: @services, selected: location_form.object.location_services.map{ |location_service| location_service.service.name }, placeholder: "Write services", required: true)
 
                   div[data-controller="modal" data-modal-allow-background-close="false"]
                     a class="flex justify-center px-6 py-3 text-base font-medium hover:text-blue-medium text-gray-3" href="#" data-action="click->modal#open"
@@ -336,6 +340,6 @@ div class="w-full h-full bg-grey-9"
               = social_media_form.label :blog, class: "block text-sm text-gray-3 font-medium"
               = social_media_form.text_field :blog, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
-      = f.submit 'SAVE', class: 'mx-auto mt-12 flex cursor-pointer uppercase flex-row justify-center items-center bg-seafoam py-4 px-10 rounded-6px text-blue-dark text-base font-bold focus:outline-none'
+      = f.submit 'Save', class: 'mx-auto mt-12 flex cursor-pointer uppercase flex-row justify-center items-center bg-seafoam py-4 px-10 rounded-6px text-blue-dark text-base font-bold focus:outline-none'
 
 /div data-controller="causes" data-causes-options-value=@causes

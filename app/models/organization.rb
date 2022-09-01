@@ -28,7 +28,7 @@ class Organization < ApplicationRecord
   include Organizations::Constants
   validates_with OrganizationValidator
 
-  scope :active, -> { where(active: true) } 
+  scope :active, -> { where(active: true) }
 
   has_many :tags, dependent: :destroy
   has_many :organization_causes, dependent: :destroy
@@ -45,7 +45,7 @@ class Organization < ApplicationRecord
   belongs_to :creator, polymorphic: true
 
   validates :name, presence: true, uniqueness: true
-  validates :organization_causes, presence: true
+  validates :causes, presence: true
   validates :ein_number, presence: true, uniqueness: true
   validates :irs_ntee_code, presence: true, inclusion: { in: Organizations::Constants::NTEE_CODE }
   validates :mission_statement_en, presence: true
