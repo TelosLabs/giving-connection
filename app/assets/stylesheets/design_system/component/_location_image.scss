@@ -1,0 +1,8 @@
+.location_image:hover {
+  transform: translateY(-10px);
+}
+
+.location_image {
+  transition-duration: 0.5s;
+  transition-timing-function: ease;
+}
