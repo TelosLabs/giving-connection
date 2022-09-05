@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_25_190859) do
+ActiveRecord::Schema.define(version: 2022_09_05_132005) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -178,6 +178,7 @@ ActiveRecord::Schema.define(version: 2022_08_25_190859) do
     t.boolean "po_box", default: false
     t.string "suite"
     t.string "youtube_video_link"
+    t.json "images"
     t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
     t.index ["organization_id"], name: "index_locations_on_organization_id"
   end
