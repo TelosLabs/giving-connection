@@ -36,7 +36,7 @@ class Location < ActiveRecord::Base
   has_many :location_services, dependent: :destroy
   has_many :services, through: :location_services
   has_many :causes, through: :organization
-  has_many_attached :images, service: :s3
+  has_many_attached :images
 
   has_one :phone_number, dependent: :destroy
   has_one :social_media, through: :organization
