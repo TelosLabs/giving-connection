@@ -217,6 +217,12 @@ div class="w-full h-full bg-grey-9"
                     | The listed YouTube video will appear on your nonprofit’s page.
                   = location_form.text_field :youtube_video_link, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
 
+                  div class="hidden col-span-3 md:flex"
+                  = location_form.label :images, "Locations Images", class:"block text-sm text-gray-3 font-medium pt-4"
+                  p class="text-sm leading-5 text-gray-4 mt-1"
+                    | The listed images will appear as a carousel on your nonprofit’s page.
+                  = location_form.file_field :images, multiple: true, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
+
                 div class="hidden col-span-3 md:flex"
                 div class="col-span-12 lg:col-span-6 md:col-span-7"
                   fieldset class='mt-4'
