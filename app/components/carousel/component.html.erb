@@ -1,7 +1,7 @@
 <div id="default-carousel" class="relative" data-carousel="static">
     <!-- Carousel wrapper -->
     <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
-      <% location.images.each do |image| %>
+      <% @location.images.each do |image| %>
         <div class="duration-700 ease-in-out absolute inset-0 transition-all transform translate-x-0 z-20 background- " data-carousel-item="">
           <%= image_tag url_for(image), class: "absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" %>
         </div>
