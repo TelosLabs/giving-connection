@@ -191,7 +191,7 @@ div class=""
             iframe class="w-full h-400px" src="https://www.youtube.com/embed/#{@youtube_video_id}?"
 
         - if @location.images.attached?
-          = render partial: 'shared/courousel', locals: { location: @location }
+          = render Courousel::Component.new(location: @location)
 
         div class="border-t border-gray-8 my-7"
         h4 class="px-6 text-sm font-bold text-black uppercase"
