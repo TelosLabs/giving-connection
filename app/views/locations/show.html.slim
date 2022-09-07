@@ -190,6 +190,9 @@ div class=""
             a href=@location.organization.donation_link class="flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200" target="_blank"
               | Donate
 
+        - if @location.images.attached?
+            = render Carousel::Component.new(location: @location)
+
         - if @location.youtube_video_link.present?
           div class="flex flex-col items-center p-5 text-center"
             iframe class="w-full h-400px" src="https://www.youtube.com/embed/#{@youtube_video_id}?"

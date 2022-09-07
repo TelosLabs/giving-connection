@@ -202,7 +202,7 @@ div class="w-full h-full bg-grey-9"
 
                 div class="hidden col-span-3 md:flex"
 
-                div class="col-span-12 lg:col-span-6 md:col-span-7"
+                div class="col-span-12 lg:col-span-6 md:col-span-7" id="location-specific-fields"
                   = location_form.fields_for :phone_number, PhoneNumber.find_or_initialize_by(location: location_form.object) do |phone_form|
                     = phone_form.label :number, "Phone", class: "block text-sm text-gray-3 font-medium"
                     = phone_form.text_field :number, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
@@ -216,6 +216,18 @@ div class="w-full h-full bg-grey-9"
                   p class="text-sm leading-5 text-gray-4 mt-1"
                     | The listed YouTube video will appear on your nonprofit’s page.
                   = location_form.text_field :youtube_video_link, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
+
+                  div class="hidden col-span-3 md:flex"
+                  = location_form.label :images, "Location Images", class:"block text-sm text-gray-3 font-medium pt-4"
+                  p class="text-sm leading-5 text-gray-4 mt-1"
+                    | The listed images will appear as a carousel on your nonprofit’s page.
+                  - if location_form.object.images.attached?
+                    div class="flex flex-wrap p-5 text-center"
+                      - location_form.object.images.each do |image|
+                        div class="relative"
+                          = link_to inline_svg_tag('trash.svg', class: 'absolute trash bottom-0 top-2.5 right-2.5'), url_for(controller: :organizations, action: :delete_upload, id: @organization.id, upload_id: image.id), data: { confirm: 'Are you sure?' }
+                          = image_tag url_for(image), class: "block object-cover rounded-6px m-2 w-20 h-20 lg:w-40 lg:h-40"
+                  = location_form.file_field :images, multiple: true, class: "block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
 
                 div class="hidden col-span-3 md:flex"
                 div class="col-span-12 lg:col-span-6 md:col-span-7"
