@@ -187,6 +187,7 @@ div class=""
                   = inline_svg_tag 'blog_box.svg', class: "text-salmon fill-current"
 
         - if @location.images.attached?
+          div class="p-5"
             = render Carousel::Component.new(location: @location)
 
         - if @location.youtube_video_link.present?

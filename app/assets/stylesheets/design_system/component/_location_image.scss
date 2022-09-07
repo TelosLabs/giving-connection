@@ -6,3 +6,7 @@
   transition-duration: 0.5s;
   transition-timing-function: ease;
 }
+
+.carousel-image-container { position: relative; }
+.carousel-image-container .location_image { display: block; }
+.carousel-image-container .fa-download { position: absolute; bottom:0; left:0; }

@@ -224,8 +224,9 @@ div class="w-full h-full bg-grey-9"
                   - if location_form.object.images.attached?
                     div class="flex flex-wrap p-5 text-center"
                       - location_form.object.images.each do |image|
-                          = link_to inline_svg_tag('trash.svg', class: 'trash mt-2'), url_for(controller: :organizations, action: :delete_upload, id: @organization.id, upload_id: image.id), data: { confirm: 'Are you sure?' }
-                          = image_tag url_for(image), class: "object-cover rounded-6px m-2 location_image sm:w-80 sm:h-80 md:w-40 md:h-40"
+                        div class="relative"
+                          = link_to inline_svg_tag('trash.svg', class: 'absolute trash bottom-0 top-2.5 right-2.5'), url_for(controller: :organizations, action: :delete_upload, id: @organization.id, upload_id: image.id), data: { confirm: 'Are you sure?' }
+                          = image_tag url_for(image), class: "block object-cover rounded-6px m-2 w-20 h-20 lg:w-40 lg:h-40"
                   = location_form.file_field :images, multiple: true, class: "block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
 
                 div class="hidden col-span-3 md:flex"
