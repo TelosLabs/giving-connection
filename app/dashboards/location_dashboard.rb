@@ -60,6 +60,7 @@ class LocationDashboard < Administrate::BaseDashboard
     longitude
     email
     main
+    images
     physical
     offer_services
     address
