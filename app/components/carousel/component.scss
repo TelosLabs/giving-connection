@@ -1,7 +1,11 @@
 #prev-button:hover {
-  fill: rgb(0, 166, 249);
+  color: rgb(0, 166, 249);
 }
 
 #next-button:hover {
-  fill: rgb(0, 166, 249);
+  color: rgb(0, 166, 249);
+}
+
+#carousel {
+  z-index: 0;
 }
