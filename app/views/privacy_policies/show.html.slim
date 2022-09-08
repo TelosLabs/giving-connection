@@ -211,8 +211,7 @@ div class="max-w-5xl px-6 pb-12 mx-auto text-justify main text-gray-3 sm:pb-6"
   ol class="pl-10 list-disc"
     li class="pb-2"
       ' All of your User Content, as defined in our
-      a class="text-blue-medium" href="https://www.givingconnection.org/termsofuse"
-        | Terms of Use
+      = link_to 'Terms of Use', terms_of_use_path, class: "text-blue-medium"
       ' , on the Platform will be publicly viewable and shareable by other users both within and outside the Platform.
     li class="pb-2"
       ' We may from time to time share Nonprofit Representative Users’ Personal Information and Other Information with other companies who may provide such users information about the products and services they offer. However, to the extent required by law, such users will be given the opportunity to opt-out of such sharing by contacting us as described in the “Contact Us” section below.
