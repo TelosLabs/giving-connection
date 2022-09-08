@@ -19,11 +19,9 @@ namespace :installation do
   desc 'Creating new organization admin'
   task create_admin: :environment do
     user = User.find(1)
-    organization_with_one_location = Organization.find_by(name: 'Room In the Inn')
-    organization_with_many_locations = Organization.find_by(name: 'NAMI Tennessee')
-    OrganizationAdmin.create!(organization: organization_with_one_location, user: user, role: 'admin')
-    OrganizationAdmin.create!(organization: organization_with_many_locations, user: user, role: 'admin')
-    puts 'User assigned as admin to organizations successfully!'
+    organization = Organization.all.sample
+    OrganizationAdmin.create!(organization: organization, user: user, role: 'admin')
+    puts "User assigned as admin to #{organization.name} successfully!"
   end
 
   desc 'Creating join table between organizations and causes'
@@ -39,7 +37,7 @@ namespace :installation do
     puts 'PROCESS FINISHED!'
     puts 'You can now login into http://localhost:5000/my_account with the following credentials:'
     puts 'Email: user@example.com | Password: testing'
-    puts 'You should be admin of 2 organizations, check them in My Nonprofit Pages section.'
+    puts 'You should be admin of 1 organization, check them in My Nonprofit Pages section.'
     puts '____________________________________________________________'
   end
 end
