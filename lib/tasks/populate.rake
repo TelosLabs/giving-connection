@@ -6,13 +6,12 @@ namespace :populate do
       print '.' if new_cause.save
       services.each do |service|
         new_service = Service.new(name: service, cause: new_cause)
-
         print '.' if new_service.save!
       end
     end
     puts 'Seeding Causes and Services to DB completed'
   end
-  puts '.'
+
   desc 'Seed beneficiaries groups and subcategories to DB'
   task seed_beneficiaries_and_beneficiaries_subcategories: :environment do
     Organizations::Constants::BENEFICIARIES.each do |beneficiary, subbeneficiaries|
