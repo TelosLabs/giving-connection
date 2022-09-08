@@ -33,10 +33,8 @@ namespace :installation do
     organization_with_many_locations = Organization.find_by(name: 'NAMI Tennessee')
     OrganizationAdmin.create!(organization: organization_with_one_location, user: user, role: 'admin')
     OrganizationAdmin.create!(organization: organization_with_many_locations, user: user, role: 'admin')
-
     puts 'User assigned as admin to organizations successfully!'
 
-    puts '.'
     puts '____________________________________________________________'
     puts 'PROCESS FINISHED!'
     puts 'You can now login into http://localhost:5000/my_account with the following credentials:'
