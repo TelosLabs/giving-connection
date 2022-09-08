@@ -10,5 +10,7 @@
 #  updated_at :datetime         not null
 #
 class Cause < ApplicationRecord
+  has_many :organization_causes, dependent: :destroy
+  has_many :organizations, through: :organization_causes
   has_many :services
 end

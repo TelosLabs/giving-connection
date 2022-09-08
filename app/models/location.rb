@@ -45,10 +45,6 @@ class Location < ActiveRecord::Base
   validates :latitude, presence: true
   validates :longitude, presence: true
   validates :lonlat, presence: true
-  validates :main, inclusion: { in: [true, false] }
-  validates :physical, inclusion: { in: [true, false] }
-  validates :offer_services, inclusion: { in: [ true, false ] }
-  validates :appointment_only, inclusion: { in: [true, false] }
 
   scope :additional, -> { where(main: false) }
   scope :main, -> { where(main: true) }
@@ -80,7 +76,8 @@ class Location < ActiveRecord::Base
   end
 
   def address_with_suite_number
-    address.split(",").insert(1, suite).join(", ")
+    address_fields = address.split(",").insert(1, suite).each { |field| field.strip! }
+    address_fields.join(", ")
   end
 
   def link_to_google_maps
