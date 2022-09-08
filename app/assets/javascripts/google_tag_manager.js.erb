@@ -1,0 +1,7 @@
+document.addEventListener('turbolinks:load', function(event) {
+    if (typeof gtag === 'function') {
+        gtag('config', 'G-23X6N4ZWST', {
+            'page_location': event.data.url
+        })
+    }
+})
