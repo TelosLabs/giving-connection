@@ -9,10 +9,10 @@ namespace :installation do
     Rake::Task['populate:seed_beneficiaries_and_beneficiaries_subcategories'].invoke
     puts '____________________________________________________________'
     puts 'Next steps...'
-    puts '1.- redis-server and overmind start or hivemind start'
-    puts '2.- Please go to http://localhost:5000/admin/organizations and log in with the following credentials:'
-    puts '3.- Email: admin@example.com | Password: testing'
-    puts '4.- Then, upload the xlsx file with the organizations data and wait for all the organizations to be created.'
+    puts '1.- redis-server and (overmind s or hivemind s)'
+    puts '2.- Please, go to http://localhost:5000/admin/organizations'
+    puts "3.- Log in with the following credentials Email: 'admin@example.com' | Password: 'testing'"
+    puts "4.- Then, upload the 'xlsx' file with the organizations data and wait for all the organizations to be created."
     puts '5.- Finally run rake installation:finish'
   end
 
@@ -29,21 +29,11 @@ namespace :installation do
   desc 'Creating new organization admin'
   task create_admin: :environment do
     user = User.find(1)
-    organization_with_one_location = Organization.all.each do |org|
-      if org.locations.count == 1
-        org
-        break
-      end
-    end
+    organization_with_one_location = Organization.find_by(name: 'Room In The Inn')
     organization_with_one_location.admin = user
     organization_with_one_location.save!
 
-    organization_with_many_locations = Organization.all.each do |org|
-      if org.locations.count > 1
-        org
-        break
-      end
-    end
+    organization_with_many_locations = Organization.find_by(name: 'NAMI Tennessee')
     organization_with_many_locations.admin = user
     organization_with_many_locations.save!
     puts 'User assigned as admin to organizations successfully!'
