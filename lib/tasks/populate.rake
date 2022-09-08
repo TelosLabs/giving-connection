@@ -12,7 +12,7 @@ namespace :populate do
         print '.' if new_service.save!
       end
     end
-    puts 'Seeded causes and services to DB successfully!'
+    puts 'Ready first'
   end
 
   desc 'Seed beneficiaries groups and subcategories to DB'
@@ -28,6 +28,6 @@ namespace :populate do
         print '.' if new_subbeneficiary.save!
       end
     end
-    puts 'Seeded beneficiaries groups and subcategories to DB successfully!'
+    puts 'Ready second'
   end
 end
