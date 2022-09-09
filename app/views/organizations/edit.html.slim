@@ -220,7 +220,7 @@ div class="w-full h-full bg-grey-9"
                   div class="hidden col-span-3 md:flex"
                   = location_form.label :images, "Location Images", class:"block text-sm text-gray-3 font-medium pt-4"
                   p class="text-sm leading-5 text-gray-4 mt-1"
-                    | The listed images will appear as a carousel on your nonprofit’s page. You can select multiple photos at once and press save at the bottom of the screen when you are ready to upload.
+                    | The listed images will appear as a carousel on your nonprofit’s page. You can select multiple photos at once and press save at the bottom of the page when you are ready to upload.
                   - if location_form.object.images.attached?
                     div class="flex flex-wrap p-5 text-center"
                       - location_form.object.images.each do |image|
