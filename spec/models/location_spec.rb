@@ -115,6 +115,12 @@ RSpec.describe Location, type: :model do
       end
     end
 
+    fdescribe "has many attached images" do 
+      subject { create(:location) }
+
+      it { should have_many_attached(:images) }
+    end
+
     describe "has one phone number" do 
       let(:location1) { create(:location) }
       let!(:phone_number1) { create(:phone_number, location: location1)}
