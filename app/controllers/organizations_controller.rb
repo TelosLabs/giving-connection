@@ -33,6 +33,14 @@ class OrganizationsController < ApplicationController
     end
   end
 
+  def delete_upload
+    @organization = Organization.find(params[:id])
+    authorize @organization
+    @attachment = ActiveStorage::Attachment.find(params[:upload_id])
+    @attachment.purge
+    redirect_to edit_organization_path(@organization, anchor: 'location-specific-fields')
+  end
+
   def set_form_data
     @causes = Cause.order(:name).pluck(:name)
     @beneficiaries = BeneficiarySubcategory.order(:name).pluck(:name)
@@ -122,7 +130,8 @@ class OrganizationsController < ApplicationController
                   locations_attributes: [:id, :name, :address, :latitude, :longitude, :website, :po_box, :youtube_video_link,
                                          :main, :physical, :offer_services, :appointment_only, :email, :_destroy,
                                          { phone_number_attributes: [:number],
-                                           office_hours_attributes: %i[id day open_time close_time closed]
+                                           office_hours_attributes: %i[id day open_time close_time closed],
+                                           images: []
                                          }],
                   beneficiary_subcategories: [],
                   causes: [])

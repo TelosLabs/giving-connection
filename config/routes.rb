@@ -47,7 +47,13 @@ Rails.application.routes.draw do
 
   resources :organizations, only: %i[edit update] do
     resources :locations, only: %i[index new create]
+    member do
+      get "delete_upload/:upload_id", action: :delete_upload
+    end
   end
+
+  # delete image route for organization
+
 
   resources :favorite_locations, only: %i[create destroy]
   resources :alerts, only: %i[new create update destroy]
