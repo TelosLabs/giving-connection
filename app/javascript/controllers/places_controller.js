@@ -6,7 +6,7 @@ export default class extends Controller {
     imageurl: String,
     zoom: { type: Number, default: 10 },
     latitude: Number,
-    longitude: Number
+    longitude: Number,
   }
 
   connect() {
@@ -17,7 +17,6 @@ export default class extends Controller {
 
   initialize() {
     this.markersArray = []
-    this.scrollToSelectedLocation()
   }
 
   scrollToSelectedLocation(){
@@ -109,13 +108,14 @@ export default class extends Controller {
         sessionStorage.setItem('selected_location_id', element.id)
       });
 
-     if( pin && pin.id == element.id ) {
+     if( pin && pin.id == element.id) {
        prevInfoWindow = infowindow
        infowindow.open({
          anchor: marker,
          map,
          shouldFocus: false,
        });
+       this.scrollToSelectedLocation()
      }
     }
   }
