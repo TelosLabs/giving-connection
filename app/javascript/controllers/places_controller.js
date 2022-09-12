@@ -106,6 +106,7 @@ export default class extends Controller {
         });
 
         sessionStorage.setItem('selected_location_id', element.id)
+        this.scrollToSelectedLocation()
       });
 
      if( pin && pin.id == element.id) {
