@@ -1,5 +1,2 @@
-class CausesController < ApplicationRecord
-  def index
-    @location_causes = LocationCause.all
-  end
+class CausesController < ApplicationController
 end
