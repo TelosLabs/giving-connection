@@ -50,6 +50,7 @@ Rails.application.routes.draw do
     member do
       get "delete_upload/:upload_id", action: :delete_upload
     end
+    resources :causes, only: %i[index show]
   end
 
   # delete image route for organization

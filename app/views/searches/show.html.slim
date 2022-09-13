@@ -13,6 +13,10 @@
               - if @params_applied
                 span class="relative inline-flex w-2 h-2 rounded-full bg-salmon"
             | Filters
+          button class="inline-flex items-center px-3 py-2 text-sm leading-4" type="button"
+            /! Heroicon name: solid/mail
+            = link_to "Search by Category", search_path
+            = inline_svg_tag "search-icon.svg", class: 'h-4 w-4 fill-current text-gray-2 ml-2 relative'
           /! Modal Container
           div class="fixed inset-0 flex items-center justify-center hidden min-h-screen overflow-y-auto animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;")
             /! Modal Inner Container
