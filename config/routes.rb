@@ -48,9 +48,8 @@ Rails.application.routes.draw do
   resources :organizations, only: %i[edit update] do
     resources :locations, only: %i[index new create]
     member do
-      get "delete_upload/:upload_id", action: :delete_upload
+      get 'delete_upload/:upload_id', action: :delete_upload
     end
-    resources :causes, only: %i[index show]
   end
 
   # delete image route for organization
@@ -58,6 +57,7 @@ Rails.application.routes.draw do
 
   resources :favorite_locations, only: %i[create destroy]
   resources :alerts, only: %i[new create update destroy]
+  resources :causes, only: %i[index show]
   resource :my_account, only: %i[show]
   resource :about_us, only: %i[show]
   resource :faqs, only: %i[show]
