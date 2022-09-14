@@ -30,7 +30,8 @@ class MessagesController < ApplicationController
   def message_params
     params.require(:message).permit(
       :name, :email, :phone, :subject, :organization_name,
-      :organization_website, :organization_ein, :content
+      :organization_website, :organization_ein, :profile_admin_name,
+      :profile_admin_email, :content
     )
   end
 end

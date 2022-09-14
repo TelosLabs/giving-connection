@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_05_132005) do
+ActiveRecord::Schema.define(version: 2022_09_14_174749) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -187,11 +187,15 @@ ActiveRecord::Schema.define(version: 2022_09_05_132005) do
     t.string "name", null: false
     t.string "email", null: false
     t.string "phone"
-    t.string "subject"
-    t.string "organization_name"
+    t.string "subject", null: false
+    t.string "organization_name", null: false
     t.string "organization_website"
     t.string "organization_ein"
-    t.text "content"
+    t.text "content", null: false
+    t.string "profile_admin_name"
+    t.string "profile_admin_email"
+    t.index ["name"], name: "index_messages_on_name"
+    t.index ["organization_name"], name: "index_messages_on_organization_name"
   end
 
   create_table "office_hours", force: :cascade do |t|
