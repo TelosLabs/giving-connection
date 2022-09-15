@@ -55,13 +55,13 @@
           = f.label :organization_ein, "Organization EIN"
           = f.text_field :organization_ein, class:"c-input", placeholder:"Your Organization EIN"
         div class="w-full"
-          = f.label :profile_admin_name, "Profile Admin Name"
-          = f.text_field :profile_admin_name, class:"c-input"
+          = f.label :profile_admin_name, "*Profile Admin Name"
+          = f.text_field :profile_admin_name, class:"c-input", required: true
           small class="inline-block mt-1.5 leading-normal"
             | Your profile admin is the person who will be updating the page information.
         div class="w-full"
-          = f.label :profile_admin_email, "Profile Admin Email"
-          = f.text_field :profile_admin_email, class:"c-input"
+          = f.label :profile_admin_email, "*Profile Admin Email"
+          = f.text_field :profile_admin_email, class:"c-input", required: true
       div class="w-full"
         = f.label :content, "*Message"
         = f.text_area :content, class:"c-input h-40", required: true, data: { 'contact-form-target': 'message'}
