@@ -10,6 +10,7 @@ module LocationsHelper
     houston_ip = '76.30.42.176'
     sanjose_ip = '54.219.18.140'
     record = reader.get(houston_ip)
+    #record = reader.get(request.remote_ip.to_s) para jalar el ip desde el servidor
 
     if record.nil?
       puts request.remote_ip.to_s

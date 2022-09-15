@@ -8,7 +8,14 @@ class SearchesController < ApplicationController
   before_action :verify_search_params, only: [:show]
 
   def show
-    @search = params['search'].present? ? Search.new(create_params) : Search.new
+    if params['search'].present?
+      @search = Search.new(create_params)
+    else
+      op = helpers.get_ip_location
+      lat = op[0][:latitude]
+      lon = op[0][:longitude]
+      @search = Search.new(lat: lat, lon: lon)
+    end
     @search.save
     @pagy, @results = pagy(@search.results)
     puts @search.errors.full_messages if @search.results.any?

@@ -22,21 +22,24 @@ export default class extends Controller {
 
   async askForGeoPermissions(event){
     if (navigator.geolocation) {
+      //document.getElementById('search_submit').disabled = true para desabilitar el buton de submit mientras se carga el current location
       await navigator.geolocation.getCurrentPosition((position) => {
         // sessionStorage.setItem("geo_access", "granted");
         if( event.target.value == "Current Location" ) {
           const lat = document.getElementById('hidden_lat')
           const lon = document.getElementById('hidden_lon')
 
+          // Set multiselect options with coords, no se utiliza por ahora
           event.target.options[event.target.selectedIndex].setAttribute("data-latitude", position.coords.latitude)
           event.target.options[event.target.selectedIndex].setAttribute("data-longitude", position.coords.longitude)
-          lat.value = event.target.options[event.target.selectedIndex].getAttribute("data-latitude");
-          lon.value = event.target.options[event.target.selectedIndex].getAttribute("data-longitude");
+
+          // Set hidden fields with coords
+          lat.value = position.coords.latitude;
+          lon.value = position.coords.longitude;
         }
-        // set search_city div to current event target value
-        console.log(event.target.value)
         this.centerOnLocation( position.coords )
       })
+      //document.getElementById('search_submit').disabled = reactiver submit buton
     } else {
       console.log('Geolocation is not supported by your browser');
     }
@@ -56,17 +59,22 @@ export default class extends Controller {
     // center map on params longitude and latitude
     const params = new URLSearchParams(window.location.search)
     let location = document.getElementById("location")
+    const lat = document.getElementById('hidden_lat')
+    const lon = document.getElementById('hidden_lon')
 
     if( params.has("search[location_search]")) {
       document.getElementById("location").value = params.get("search[location_search]")
-    }else{
-      document.getElementById("search_city").value = location.value
     }
-    let coords = {latitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-latitude")), longitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-longitude"))}
-    this.centerOnLocation(coords)
 
-    if( params.has("search[lat]")) {
+    let coords = {latitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-latitude")), longitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-longitude"))}
+
+    lat.value = location.options[location.selectedIndex].getAttribute("data-latitude");
+    lon.value = location.options[location.selectedIndex].getAttribute("data-longitude");
+
+    if( params.has("search[lat]")) { // Checa si hay parametros en el URL para cargarlo en el mapa en lugar de recargar el ip lookup
       this.centerOnLocation({latitude: parseFloat(params.get("search[lat]")), longitude: parseFloat(params.get("search[lon]"))})
+    } else { // ip lookup
+      this.centerOnLocation(coords)
     }
 
     const image = this.imageurlValue
@@ -76,7 +84,7 @@ export default class extends Controller {
       this.autocomplete.bindTo('bounds', this.map)
       this.autocomplete.setFields(['address_components', 'geometry', 'icon', 'name'])
       this.autocomplete.addListener('place_changed', this.placeChanged.bind(this))
-      
+
       this.marker = new google.maps.Marker({
         position: { lat: Number(this.latitudeTarget.value) , lng: Number(this.longitudeTarget.value) },
         map: this.map,
@@ -97,7 +105,6 @@ export default class extends Controller {
 
     const select = document.getElementById('location')
 
-    // select.addEventListener('onchange', this.changePosition)
 
 
     select.addEventListener("change", async (event) => {
@@ -112,8 +119,9 @@ export default class extends Controller {
         default:
           const lat = document.getElementById('hidden_lat')
           const lon = document.getElementById('hidden_lon')
-            lat.value = '';
-            lon.value = '';
+
+          lat.value = event.target.options[event.target.selectedIndex].getAttribute("data-latitude");
+          lon.value = event.target.options[event.target.selectedIndex].getAttribute("data-longitude");
 
           let coords = {latitude: parseFloat(event.target.options[event.target.selectedIndex].getAttribute("data-latitude")), longitude: parseFloat(event.target.options[event.target.selectedIndex].getAttribute("data-longitude"))}
             console.log("coords", coords)
@@ -129,12 +137,6 @@ export default class extends Controller {
     console.log(latitude, longitude)
     this.centerOnLocation({latitude, longitude})
     event.preventDefault()
-  }
-
-  centerOnLocation( coords ) {
-    console.log(coords)
-    this.map.setCenter({lat: coords.latitude, lng: coords.longitude})
-    this.map.setZoom(10);
   }
 
   setMarkers(map, image) {
