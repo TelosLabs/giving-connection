@@ -7,7 +7,7 @@ class CausesController < ApplicationController
   end
 
   def show
-    @cause = Cause.find(params[:id])
+    @cause = Cause.find_by(name: params[:name])
     authorize @cause
     @locations = location_with_cause(@cause)
   end

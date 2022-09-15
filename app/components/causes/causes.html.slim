@@ -1,8 +1,0 @@
-.flex.justify-center
-  .grid.grid-cols-1.md:grid-cols-3.gap-4.m-10
-    = @causes.each do |cause|
-    .max-w-sm.bg-white.rounded-lg.border.border-gray-200.shadow-md.dark:bg-gray-800.dark:border-gray-700
-      a href="#"
-        img.rounded-t-lg alt="" src="/docs/images/blog/image-1.jpg" /
-      .p-5
-      =  link_to cause.name, cause_path(cause), class: "mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"

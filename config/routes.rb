@@ -57,8 +57,9 @@ Rails.application.routes.draw do
 
   resources :favorite_locations, only: %i[create destroy]
   resources :alerts, only: %i[new create update destroy]
-  resources :causes, only: %i[index show]
+  resources :causes, param: :name
   get 'discovery' => 'causes#index', as: :discovery
+  get 'discovery/:name' => 'causes#show', as: :discovery_show
   resource :my_account, only: %i[show]
   resource :about_us, only: %i[show]
   resource :faqs, only: %i[show]
