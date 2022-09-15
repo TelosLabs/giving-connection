@@ -29,9 +29,6 @@ module LocationsHelper
           type: 'current_location'
         }
       ]
-
-      # puts record['country']['iso_code']
-      # puts record['country']['names']['en']
     end
 
     reader.close
