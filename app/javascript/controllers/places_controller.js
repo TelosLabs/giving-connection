@@ -22,6 +22,7 @@ export default class extends Controller {
 
   async askForGeoPermissions(event){
     if (navigator.geolocation) {
+      document.getElementById('search_submit').disabled = true
       await navigator.geolocation.getCurrentPosition((position) => {
         // sessionStorage.setItem("geo_access", "granted");
         if( event.target.value == "Current Location" ) {
@@ -30,21 +31,18 @@ export default class extends Controller {
 
           event.target.options[event.target.selectedIndex].setAttribute("data-latitude", position.coords.latitude)
           event.target.options[event.target.selectedIndex].setAttribute("data-longitude", position.coords.longitude)
+
           lat.value = event.target.options[event.target.selectedIndex].getAttribute("data-latitude");
           lon.value = event.target.options[event.target.selectedIndex].getAttribute("data-longitude");
         }
         // set search_city div to current event target value
-        console.log(event.target.value)
-        this.centerOnLocation( position.coords )
+        // this.centerOnLocation( position.coords )
+        document.getElementById('search_submit').disabled = false
       })
+
     } else {
       console.log('Geolocation is not supported by your browser');
     }
-  }
-
-  centerOnLocation( coords ) {
-    this.map.setCenter({lat: coords.latitude, lng: coords.longitude})
-    this.map.setZoom(10);
   }
 
   async initMap() {
@@ -58,15 +56,20 @@ export default class extends Controller {
     let location = document.getElementById("location")
 
     if( params.has("search[location_search]")) {
-      document.getElementById("location").value = params.get("search[location_search]")
+      location.value = params.get("search[location_search]")
     }else{
       document.getElementById("search_city").value = location.value
     }
-    let coords = {latitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-latitude")), longitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-longitude"))}
-    this.centerOnLocation(coords)
+
+    let coords = {
+      latitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-latitude")),
+      longitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-longitude"))
+    }
 
     if( params.has("search[lat]")) {
       this.centerOnLocation({latitude: parseFloat(params.get("search[lat]")), longitude: parseFloat(params.get("search[lon]"))})
+    }else{
+      this.centerOnLocation(coords)
     }
 
     const image = this.imageurlValue
@@ -94,13 +97,7 @@ export default class extends Controller {
         icon: image
       })
     }
-
-    const select = document.getElementById('location')
-
-    // select.addEventListener('onchange', this.changePosition)
-
-
-    select.addEventListener("change", async (event) => {
+    location.addEventListener("change", async (event) => {
       switch(event.target.value) {
         case "Current Location":
           this.askForGeoPermissions(event)
@@ -112,12 +109,14 @@ export default class extends Controller {
         default:
           const lat = document.getElementById('hidden_lat')
           const lon = document.getElementById('hidden_lon')
-            lat.value = '';
-            lon.value = '';
+          lat.value = '';
+          lon.value = '';
 
-          let coords = {latitude: parseFloat(event.target.options[event.target.selectedIndex].getAttribute("data-latitude")), longitude: parseFloat(event.target.options[event.target.selectedIndex].getAttribute("data-longitude"))}
-            console.log("coords", coords)
-            this.centerOnLocation(coords)
+          let coords = {
+            latitude: parseFloat(event.target.options[event.target.selectedIndex].getAttribute("data-latitude")),
+            longitude: parseFloat(event.target.options[event.target.selectedIndex].getAttribute("data-longitude"))
+          }
+          this.centerOnLocation(coords)
       }
     })
   }
@@ -132,7 +131,6 @@ export default class extends Controller {
   }
 
   centerOnLocation( coords ) {
-    console.log(coords)
     this.map.setCenter({lat: coords.latitude, lng: coords.longitude})
     this.map.setZoom(10);
   }

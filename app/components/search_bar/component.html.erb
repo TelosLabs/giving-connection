@@ -9,6 +9,6 @@
       <%= @form.hidden_field :lon, value: params.dig('search','lon'), id: 'hidden_lon',  data: { 'search-bar-target': "lon"} %>
       <%= @form.select 'location_search', @location, { }, id: "location",  selected: "#{ params.dig('search', 'city') }", class: "m-0 w-1/3 rounded-l-none rounded-r-6px border-0 text-base text-gray-3 focus:outline-none", data: { action: '' }, prompt: 'true' %>
     </div>
-    <%= @form.submit 'Search', class: 'invisible w-0 md:w-36 p-0 md:visible md:flex cursor-pointer uppercase flex-row justify-center items-center bg-seafoam md:py-4 md:px-10 rounded-6px text-blue-dark text-base font-bold focus:outline-none mx-2'%>
+    <%= @form.submit 'Search', id: "search_submit", class: 'invisible w-0 md:w-36 p-0 md:visible md:flex cursor-pointer uppercase flex-row justify-center items-center bg-seafoam md:py-4 md:px-10 rounded-6px text-blue-dark text-base font-bold focus:outline-none mx-2'%>
   </div>
 </div>
