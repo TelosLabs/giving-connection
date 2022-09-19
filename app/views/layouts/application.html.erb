@@ -23,6 +23,8 @@
 
   <body class="bg-gray-9">
     <script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<%= Rails.application.credentials.dig(Rails.env.to_sym)[:google_tag_key] %>"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <%= render Navbar::Component.new(signed_in: user_signed_in?) %>
     <main class="main">
       <% flash.each do |type, message| %>
