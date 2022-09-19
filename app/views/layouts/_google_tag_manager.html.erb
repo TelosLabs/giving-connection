@@ -1,6 +1,5 @@
-<% if Rails.env.production? %>
 <!-- Google tag (gtag.js) -->
-<script async src="[https://www.googletagmanager.com/gtag/js?id=<%= Rails.application.credentials.dig(Rails.env.to_sym)[:google_tag_key] %>](https://www.googletagmanager.com/gtag/js?id=<%= Rails.application.credentials.dig(:google_tag_key) %>)"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=<%= Rails.application.credentials.dig(Rails.env.to_sym)[:google_tag_key] %>"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -8,4 +7,3 @@
 
   gtag('config', '<%= Rails.application.credentials.dig(Rails.env.to_sym)[:google_tag_key] %>');
 </script>
-<% end %>
