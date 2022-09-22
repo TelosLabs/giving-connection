@@ -21,13 +21,14 @@ class Search
 
   def execute_search
     filters = {
+      address: { city: city.presence, state: state.presence, zipcode: zipcode.presence },
       open_now: ActiveModel::Type::Boolean.new.cast(open_now),
       open_weekends: ActiveModel::Type::Boolean.new.cast(open_weekends),
       beneficiary_groups: beneficiary_groups,
       services: services,
       causes: causes,
       distance: distance.presence&.to_i,
-      address: { city: city.presence, state: state.presence, zipcode: zipcode.presence }
+      lat: lat.presence&.to_f, lon: lon.presence&.to_f
     }
 
     @results = keyword.present? ? Locations::KeywordQuery.call({ keyword: keyword }) : Location.active
