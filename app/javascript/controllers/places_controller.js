@@ -22,21 +22,24 @@ export default class extends Controller {
 
   async askForGeoPermissions(event){
     if (navigator.geolocation) {
+      // Deactivate Search button while getting current location
       document.getElementById('search_submit').disabled = true
       await navigator.geolocation.getCurrentPosition((position) => {
         if( event.target.value == "Current Location" ) {
+
+          // Get hidden fields
           const lat = document.getElementById('hidden_lat')
           const lon = document.getElementById('hidden_lon')
-
-          // Set multiselect options with coords, no se utiliza por ahora
-          event.target.options[event.target.selectedIndex].setAttribute("data-latitude", position.coords.latitude)
-          event.target.options[event.target.selectedIndex].setAttribute("data-longitude", position.coords.longitude)
 
           // Set hidden fields with coords
           lat.value = position.coords.latitude;
           lon.value = position.coords.longitude;
         }
+
+        // Center location on the map
         this.centerOnLocation( position.coords )
+
+        // Activate Search button after get current location
         document.getElementById('search_submit').disabled = false
       })
     } else {
@@ -50,28 +53,35 @@ export default class extends Controller {
       zoom: (this.zoomValue || 10)
     })
 
-    // center map on params longitude and latitude
     const params = new URLSearchParams(window.location.search)
+
+    // Get the location select input
     let location = document.getElementById("location")
+
+    // Get hidden fields
     const lat = document.getElementById('hidden_lat')
     const lon = document.getElementById('hidden_lon')
 
+    // Use previous selecction of location select if it exist, this helps to keep the current selection if the page renders
     if( params.has("search[location_search]")) {
       document.getElementById("location").value = params.get("search[location_search]")
     }
 
+    // Get coords from location select options
     let coords = {
       latitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-latitude")),
       longitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-longitude"))
     }
 
+    // Set the hidden inputs with coords
     lat.value = location.options[location.selectedIndex].getAttribute("data-latitude");
     lon.value = location.options[location.selectedIndex].getAttribute("data-longitude");
 
-    if( params.has("search[lat]")) { // Checa si hay parametros en el URL para cargarlo en el mapa en lugar de recargar el ip lookup
+    // Center location on the map
+    if( params.has("search[lat]")) { // Using coords from the URL params instead of reload ip-lookup
       this.centerOnLocation({latitude: parseFloat(params.get("search[lat]")), longitude: parseFloat(params.get("search[lon]"))})
     }else{
-      this.centerOnLocation(coords)
+      this.centerOnLocation(coords) // Using coords from ip-lookup
     }
 
     const image = this.imageurlValue
@@ -99,6 +109,7 @@ export default class extends Controller {
         icon: image
       })
     }
+
     location.addEventListener("change", async (event) => {
       switch(event.target.value) {
         case "Current Location":
@@ -109,16 +120,21 @@ export default class extends Controller {
             );
           break
         default:
+          // Get hidden fields
           const lat = document.getElementById('hidden_lat')
           const lon = document.getElementById('hidden_lon')
 
+          // Set the hidden inputs with coords
           lat.value = event.target.options[event.target.selectedIndex].getAttribute("data-latitude");
           lon.value = event.target.options[event.target.selectedIndex].getAttribute("data-longitude");
 
+          // Get coords from location select options
           let coords = {
             latitude: parseFloat(event.target.options[event.target.selectedIndex].getAttribute("data-latitude")),
             longitude: parseFloat(event.target.options[event.target.selectedIndex].getAttribute("data-longitude"))
           }
+
+          // Center location on the map
           this.centerOnLocation(coords)
       }
     })
