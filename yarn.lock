@@ -6859,10 +6859,10 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-tailwindcss-stimulus-components@^3.0.1:
-  version "3.0.2"
-  resolved "https://registry.npmjs.org/tailwindcss-stimulus-components/-/tailwindcss-stimulus-components-3.0.2.tgz"
-  integrity sha512-jwTP+keIYN/AMIDBhUAklfUvqqhAnRN18eF8Sqm9qoEpJPssyY3kLZjJPTw13MmtPVcFmYOybdBQ015sI+SmTg==
+tailwindcss-stimulus-components@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/tailwindcss-stimulus-components/-/tailwindcss-stimulus-components-3.0.4.tgz#598a880aed1a4966c2bf85fcc9c65fb63d02d2f0"
+  integrity sha512-kv4CHEcTvZSmthV6PseSdnW/QqKh237fZrvbNKNhWeYsTuEnOrKvdbR+3CmpuTok7L4XgEXk+XOFfo7AMhhtAA==
   dependencies:
     "@hotwired/stimulus" ">=3.0.0"
 
