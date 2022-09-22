@@ -26,16 +26,11 @@ class Search
       beneficiary_groups: beneficiary_groups,
       services: services,
       causes: causes,
-    }
-
-    geo_filters = {
-      lat: lat.presence&.to_f, lon: lon.presence&.to_f,
       distance: distance.presence&.to_i,
       address: { city: city.presence, state: state.presence, zipcode: zipcode.presence }
     }
 
-    @results = Locations::GeolocationQuery.call(geo_filters)
-    @results = keyword.present? ? Locations::KeywordQuery.call({ keyword: keyword }, @results) : @results
+    @results = keyword.present? ? Locations::KeywordQuery.call({ keyword: keyword }) : Location.active
     @results = Locations::FilterQuery.call(filters, @results)
   end
 end
