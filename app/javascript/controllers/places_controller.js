@@ -24,7 +24,6 @@ export default class extends Controller {
     if (navigator.geolocation) {
       document.getElementById('search_submit').disabled = true
       await navigator.geolocation.getCurrentPosition((position) => {
-        // sessionStorage.setItem("geo_access", "granted");
         if( event.target.value == "Current Location" ) {
           const lat = document.getElementById('hidden_lat')
           const lon = document.getElementById('hidden_lon')
@@ -32,11 +31,12 @@ export default class extends Controller {
           event.target.options[event.target.selectedIndex].setAttribute("data-latitude", position.coords.latitude)
           event.target.options[event.target.selectedIndex].setAttribute("data-longitude", position.coords.longitude)
 
-          lat.value = event.target.options[event.target.selectedIndex].getAttribute("data-latitude");
-          lon.value = event.target.options[event.target.selectedIndex].getAttribute("data-longitude");
+          // Set hidden fields with coords
+          lat.value = position.coords.latitude;
+          lon.value = position.coords.longitude;
+
         }
-        // set search_city div to current event target value
-        // this.centerOnLocation( position.coords )
+        this.centerOnLocation( position.coords )
         document.getElementById('search_submit').disabled = false
       })
 
@@ -54,17 +54,20 @@ export default class extends Controller {
     // center map on params longitude and latitude
     const params = new URLSearchParams(window.location.search)
     let location = document.getElementById("location")
+    const lat = document.getElementById('hidden_lat')
+    const lon = document.getElementById('hidden_lon')
 
     if( params.has("search[location_search]")) {
-      location.value = params.get("search[location_search]")
-    }else{
-      document.getElementById("search_city").value = location.value
+      document.getElementById("location").value = params.get("search[location_search]")
     }
 
     let coords = {
       latitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-latitude")),
       longitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-longitude"))
     }
+
+    lat.value = location.options[location.selectedIndex].getAttribute("data-latitude");
+    lon.value = location.options[location.selectedIndex].getAttribute("data-longitude");
 
     if( params.has("search[lat]")) {
       this.centerOnLocation({latitude: parseFloat(params.get("search[lat]")), longitude: parseFloat(params.get("search[lon]"))})
@@ -109,8 +112,9 @@ export default class extends Controller {
         default:
           const lat = document.getElementById('hidden_lat')
           const lon = document.getElementById('hidden_lon')
-          lat.value = '';
-          lon.value = '';
+
+          lat.value = event.target.options[event.target.selectedIndex].getAttribute("data-latitude");
+          lon.value = event.target.options[event.target.selectedIndex].getAttribute("data-longitude");
 
           let coords = {
             latitude: parseFloat(event.target.options[event.target.selectedIndex].getAttribute("data-latitude")),
