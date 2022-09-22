@@ -28,17 +28,17 @@ FactoryBot.define do
   factory :organization do
     name { 'organization' }
     ein_number { 'testing' }
-    irs_ntee_code { 'A90' }
+    irs_ntee_code { 'A90: Arts Services' }
     mission_statement_en { 'testing' }
     mission_statement_es { 'pruebas' }
     vision_statement_en { 'testing' }
     vision_statement_es { 'pruebas' }
     tagline_en { 'testing' }
     tagline_es { 'pruebas' }
-    description_en { 'testing' }
-    description_es { 'pruebas' }
     website { 'testing' }
     scope_of_work { 'International' }
-    creator { association :user }
+    locations { [create(:location)] }
+    creator { create(:admin_user) }
+    causes { [association(:cause)] }
   end
 end

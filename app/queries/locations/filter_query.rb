@@ -2,32 +2,18 @@
 
 module Locations
   class FilterQuery
-    DEFAULT_LOCATION = {
-      latitude: 36.16404968727089,
-      longitude: -86.78125827725053
-    }.freeze
 
     attr_reader :locations
 
     class << self
       def call(params = {}, locations = Location.active)
         scope = locations
-        scope = geo_near(scope, starting_coordinates(params[:lat], params[:lon]), params[:distance])
         scope = by_address(scope, params[:address])
         scope = by_cause(scope, params[:causes])
         scope = by_service(scope, params[:services])
         scope = by_beneficiary_groups_served(scope, params[:beneficiary_groups])
         scope = opened_now(scope, params[:open_now])
-        scope = opened_on_weekends(scope, params[:open_weekends])
-      end
-
-      def geo_near(scope, coords, distance)
-        return scope if distance.blank? || distance.zero? || scope.empty?
-
-        scope.where(
-          'ST_DWithin(lonlat, :point, :distance)',
-          { point: coords, distance: distance * 1000 } # wants meters not kms
-        )
+        opened_on_weekends(scope, params[:open_weekends])
       end
 
       def by_address(scope, address_params)
@@ -67,11 +53,11 @@ module Locations
         complex_query = []
         services.each do |cause, services_list|
           services_list.each do |ser|
-            cause = cause&.gsub("'","''") 
-            ser = ser&.gsub("'","''") 
+            cause = cause&.gsub("'","''")
+            ser = ser&.gsub("'","''")
             complex_query << "('#{cause}', '#{ser}')"
           end
-        end  
+        end
 
         Location.joins(
           location_services: { service: :cause }
@@ -100,14 +86,6 @@ module Locations
         ).where(
           "(beneficiary_groups.name, beneficiary_subcategories.name) IN (#{complex_query.join(",")})"
         ).distinct
-      end
-
-      def starting_coordinates(lat, lon)
-        if lat.nil? || lon.nil?  
-          Geo.to_wkt(Geo.point(DEFAULT_LOCATION[:longitude], DEFAULT_LOCATION[:latitude]))
-        else
-          Geo.to_wkt(Geo.point(lon, lat))
-        end
       end
 
       def parameterize_address_filters(address_params)

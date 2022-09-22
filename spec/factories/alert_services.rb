@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :alert_service do
-    alert { nil }
-    service { nil }
+    alert { association(:alert) }
+    service { association(:service) }
   end
 end

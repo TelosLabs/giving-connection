@@ -1,5 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe OrganizationCause, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context 'OrganizationCause model validation test' do
+    subject { create(:organization_cause) }
+
+    it 'ensures organization_cause can be created' do
+      expect(subject).to be_valid
+    end
+  end
 end

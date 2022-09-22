@@ -4,8 +4,9 @@ require 'rails_helper'
 
 RSpec.describe Admin::OrganizationsController, type: :controller do
   before(:each) do
-    @admin        = create(:admin_user)
-    @organization = create(:organization)
+    @admin             = create(:admin_user)
+    organization_cause = create(:organization_cause)
+    @organization = organization_cause.organization
     @params       = { name: 'organization', ein_number: 'testing', irs_ntee_code: 'A90',
                       mission_statement_en: 'testing', mission_statement_es: 'pruebas',
                       vision_statement_en: 'testing', vision_statement_es: 'pruebas',

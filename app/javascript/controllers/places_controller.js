@@ -141,6 +141,7 @@ export default class extends Controller {
   setMarkers(map, image) {
     // Adds markers to the map.
     let prevInfoWindow = false
+    let pin = document.getElementById(sessionStorage.getItem('selected_location_id'))
 
     for (let i = 0; i < this.markerTargets.length; i++) {
       const element = this.markerTargets[i];
@@ -170,7 +171,20 @@ export default class extends Controller {
           map,
           shouldFocus: false,
         });
+
+        sessionStorage.setItem('selected_location_id', element.id)
+        this.scrollToSelectedLocation()
       });
+
+     if( pin && pin.id == element.id) {
+       prevInfoWindow = infowindow
+       infowindow.open({
+         anchor: marker,
+         map,
+         shouldFocus: false,
+       });
+       this.scrollToSelectedLocation()
+     }
     }
   }
 

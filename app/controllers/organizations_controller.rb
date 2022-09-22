@@ -33,6 +33,14 @@ class OrganizationsController < ApplicationController
     end
   end
 
+  def delete_upload
+    @organization = Organization.find(params[:id])
+    authorize @organization
+    @attachment = ActiveStorage::Attachment.find(params[:upload_id])
+    @attachment.purge
+    redirect_to edit_organization_path(@organization, anchor: 'location-specific-fields')
+  end
+
   def set_form_data
     @causes = Cause.order(:name).pluck(:name)
     @beneficiaries = BeneficiarySubcategory.order(:name).pluck(:name)
@@ -101,10 +109,9 @@ class OrganizationsController < ApplicationController
   def update_location_services(locations_attributes)
     locations_attributes.each do |location|
       @location = Location.find_by_name(location.last['name'])
-      location_services = location.last['location_services_attributes']['0']['services']['service'].values.flatten
-
       if @location&.offer_services
-        next if location.last['location_services_attributes']['0']['services']['service'].empty? || location.last['location_services_attributes'].nil?
+        next if location&.last['location_services_attributes']['0'].empty?
+        location_services = location.last['location_services_attributes']['0'].values.flatten
         @location.location_services.destroy_all
         location_services.each do |service|
           LocationService.create(location: @location, service: Service.find_by_name(service))
@@ -117,13 +124,14 @@ class OrganizationsController < ApplicationController
     params.require(:organization)
           .permit(:name, :second_name, :ein_number, :irs_ntee_code, :website, :scope_of_work,
                   :mission_statement_en, :mission_statement_es, :vision_statement_en, :logo,
-                  :vision_statement_es, :tagline_en, :tagline_es, :email, :phone_number, :active,
+                  :vision_statement_es, :tagline_en, :tagline_es, :email, :phone_number, :active, :verified, :donation_link,
                   social_media_attributes: %i[facebook instagram twitter linkedin youtube blog id],
                   tags_attributes: [],
-                  locations_attributes: [:id, :name, :address, :latitude, :longitude, :website, :po_box,
+                  locations_attributes: [:id, :name, :address, :latitude, :longitude, :website, :po_box, :youtube_video_link,
                                          :main, :physical, :offer_services, :appointment_only, :email, :_destroy,
                                          { phone_number_attributes: [:number],
-                                           office_hours_attributes: %i[id day open_time close_time closed]
+                                           office_hours_attributes: %i[id day open_time close_time closed],
+                                           images: []
                                          }],
                   beneficiary_subcategories: [],
                   causes: [])

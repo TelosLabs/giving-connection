@@ -26,14 +26,13 @@ class Search
       open_weekends: ActiveModel::Type::Boolean.new.cast(open_weekends),
       beneficiary_groups: beneficiary_groups,
       services: services,
-      causes: causes,
+      causes: causes
     }
 
     geo_filters = {
-      lat: lat.presence&.to_f, lon: lon.presence&.to_f,
-      city: city.presence,
-      distance: distance.presence&.to_i,
-      zipcode: zipcode.presence
+      lat: lat.presence&.to_f,
+      lon: lon.presence&.to_f,
+      distance: distance.presence&.to_i
     }
 
     @results = Locations::GeolocationQuery.call(geo_filters)

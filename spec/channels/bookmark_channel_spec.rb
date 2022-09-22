@@ -1,5 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe BookmarkChannel, type: :channel do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:user) { create(:user) }
+
+  before do
+    stub_connection current_user: user
+  end
+
+  describe '#subscribed' do
+    it 'subscribes to a stream when a user is created' do
+      subscribe
+      expect(subscription).to be_confirmed
+    end
+  end
 end
