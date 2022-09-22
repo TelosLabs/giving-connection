@@ -29,9 +29,17 @@ Rails.application.routes.draw do
   devise_for :admin_users
   devise_for :users
 
-  resources :users, only: [:update]
+  devise_scope :user do
+    get 'signup' => 'devise/registrations#new'
+    get 'signin' => 'devise/sessions#new'
+  end
 
-  get '/contact', to: 'messages#new', as: :contact
+  get 'contact' => 'messages#new'
+  get '/nonprofit' => 'messages#new', as: :non_profit_contact
+  get 'search' => 'searches#show'
+  get 'termsofuse' => 'terms_and_conditions#show', as: :terms_of_use
+
+  resources :users, only: [:update]
   resources :messages, only: %i[create]
   resources :reset_password, only: %i[new]
 
@@ -39,16 +47,20 @@ Rails.application.routes.draw do
 
   resources :organizations, only: %i[edit update] do
     resources :locations, only: %i[index new create]
+    member do
+      get "delete_upload/:upload_id", action: :delete_upload
+    end
   end
-  
+
+  # delete image route for organization
+
+
   resources :favorite_locations, only: %i[create destroy]
   resources :alerts, only: %i[new create update destroy]
-  resource :searches, only: %i[show]
   resource :my_account, only: %i[show]
   resource :about_us, only: %i[show]
   resource :faqs, only: %i[show]
   resource :donate, only: %i[show]
-  resource :terms_and_conditions, only: %i[show]
   resource :privacy_policy, only: %i[show]
   root to: 'home#index'
 end

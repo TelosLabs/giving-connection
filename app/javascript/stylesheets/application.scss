@@ -5,7 +5,37 @@
 @import "tailwindcss/utilities.css";
 @import '@yaireo/tagify/src/tagify';
 
+.scroll-mt-25 {
+  scroll-margin-top: 6.25rem;
+}
 
-.scroll-margin-navbar {
-  scroll-margin-top: 91px;
+.custom-file-input {
+  visibility: hidden;
+}
+
+.tagify__input::before{
+  position:static;
+}
+
+.tagify-look {
+ //@apply bg-blue-medium py-1.5 pl-2 pr-1 min-h-7 inline-flex items-center text-xs text-white flex-shrink-0 rounded-6px;
+  --tag-bg                  : #0782d0;
+  --tag-hover               : #0782d0;
+  --tag-text-color          : #FFF;
+  --tags-border-color       : rgba(229, 231, 235,1);
+  --tag-text-color--edit    : #111;
+  --tag-pad                 : .375rem 0.25rem 0.375rem 0.5rem;
+  --tag-inset-shadow-size   : 1.35em;
+  --tag-remove-bg           : #0782d0;
+  --tag-remove-btn-color    : #FFF;
+  --tag-remove-btn-bg--hover: rgba(255, 255, 255, 0.8);
+  padding-right: 6px;
+
+  .tagify__tag > div {
+    border-radius: 6px;
+  }
+
+  tagify__tag__removeBtn {
+    @apply text-base;
+  }
 }

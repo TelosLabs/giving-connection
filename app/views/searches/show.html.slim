@@ -1,5 +1,5 @@
 - markers = @results&.map { |l| [l.latitude, l.longitude] }  || []
-= form_with model: @search, url: searches_path, class: 'relative', data: { controller: 'search search--alerts', 'search--alerts-target': 'form', 'search-target': 'form' }, method: :get do |f|
+= form_with model: @search, url: search_path, class: 'relative', data: { controller: 'search search--alerts', 'search--alerts-target': 'form', 'search-target': 'form' }, method: :get do |f|
   = render SearchBar::Component.new(form: f, search: @search)
   div class="flex flex-row justify-center w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
     div class="flex flex-row justify-center w-full min-h-full"
@@ -52,7 +52,8 @@
                                                     website: result&.decorate&.website || result&.organization&.decorate&.website, \
                                                     description: result&.organization&.mission_statement_en, \
                                                     phone_number: result.phone_number&.number, \
-                                                    current_user: current_user)
+                                                    current_user: current_user,
+                                                    verified: result.organization.verified?)
               - if @pagy.pages > SearchesHelper::MIN_REQUIRED_PAGES
                 div class="h-40 px-4 mt-7"
                   p class="mb-5 text-sm text-gray-3"
@@ -73,8 +74,7 @@
                   button class="mt-10 text-sm font-bold text-black" type="button" data-action="click->modal#open"
                     | Create an Alert for this Search
                 - else
-                  = link_to user_session_path, class: 'mt-10 text-sm font-bold text-black'
-                  | Create an Alert for this Search
+                  = link_to "Create an Alert for this Search", user_session_path, class: 'mt-10 text-sm font-bold text-black'
           = render SearchAlert::Component.new(keywords: params.dig('search', 'keyword'), filters: list_of_filters(@search))
         div class="hidden w-full h-85vh md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
           div# class="w-full h-full" data-places-target="map"
@@ -82,7 +82,7 @@
             div class="hidden" data-places-target="latitude"
             div class="hidden" data-places-target="longitude"
             - @results.besides_po_boxes&.each do |result|
-              div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}" data-po_box="#{result.po_box}"
+              div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}" data-po_box="#{result.po_box}" id="loc_#{result.id}" data-controller="pin" data-pin-target="pin"
                 - if user_signed_in?
                   - if !current_user.favorited_locations.include?(result)
                     = link_to favorite_locations_path(location_id: result.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", method: :post, remote: true do
@@ -93,8 +93,11 @@
                 - else
                   = link_to favorite_locations_path(location_id: result.id), method: :post, class: "inline-flex self-end text-xs text-gray-3" do
                     = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
-                h5 class="text-lg font-bold leading-6 text-gray-2" id="pointer"
-                  = link_to result.name, location_path(result), target:"_blank"
+                div
+                  a id="pointer"
+                    = link_to result.name, location_path(result), target:"_blank", class: "text-small font-bold text-gray-2"
+                  - if result.organization.verified?
+                    = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1 align-text-bottom inline"
                 p class="text-xs text-gray-4" id="pointer"
                   = link_to result.address, result.link_to_google_maps, target: "blank"
                 p class="text-xs text-blue-medium"
@@ -119,12 +122,12 @@
                     = result.decorate.closed_office_hours_display
 
       div class="relative hidden w-full md:flex" data-controller="places result-card--component" data-places-zoom-value="10" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
-        div# class="absolute inset-0 w-full h-full" data-places-target="map"
+        div# class="absolute inset-0 w-full h-full xs:h-85vh" data-places-target="map"
         div class="hidden"
           div class="hidden" data-places-target="latitude"
           div class="hidden" data-places-target="longitude"
           - @results.besides_po_boxes&.each do |result|
-            div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}"
+            div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}" id="loc_#{result.id}" data-controller="pin" data-pin-target="pin"
               - if user_signed_in?
                 - if !current_user.favorited_locations.include?(result)
                   = link_to favorite_locations_path(location_id: result.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", method: :post, remote: true, data: { action: "click->result-card--component#reloadPage", id: result.id }do
@@ -135,8 +138,11 @@
               - else
                 = link_to favorite_locations_path(location_id: result.id), method: :post, class: "inline-flex self-end text-xs text-gray-3" do
                   = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
-              h5 class="text-lg font-bold leading-6 text-gray-2" id="pointer"
-                = link_to result.name, location_path(result), target:"_blank"
+              div
+                a id="pointer"
+                  = link_to result.name, location_path(result), target:"_blank", class: "text-small font-bold text-gray-2"
+                - if result.organization.verified?
+                  = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1 align-text-bottom inline"
               p class="text-xs text-gray-4" id="pointer"
                 = link_to result.formatted_address, result.link_to_google_maps, target: "blank"
               p class="text-xs text-blue-medium"

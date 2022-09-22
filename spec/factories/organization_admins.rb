@@ -13,8 +13,8 @@
 #
 FactoryBot.define do
   factory :organization_admin do
-    organization { nil }
-    user { nil }
+    organization { association(:organization) }
+    user { association(:user) }
     role { 'MyString' }
   end
 end

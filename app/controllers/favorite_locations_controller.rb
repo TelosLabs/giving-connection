@@ -38,6 +38,7 @@ class FavoriteLocationsController < ApplicationController
 
   def set_session_favorite
     unless user_signed_in?
+      session[:selected_location_id] = params[:location_id]
       session[:fav_loc_id] = params[:location_id]
       redirect_to user_session_path
     end
