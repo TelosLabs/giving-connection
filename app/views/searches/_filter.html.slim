@@ -28,7 +28,7 @@ div class="bg-white rounded-3xl"
 
           div class="col-span-6"
             = form.label :city, "City", class: "block text-sm text-gray-3 font-medium"
-            = form.select :city, ['Nashville', 'Las Vegas', 'San Diego', 'Culiacan', 'Houston', 'Columbia', 'San Jose'], { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", data: { 'search-target': 'input', 'search-bar-target': "city"}, autocomplete:"off" }
+            = form.select :city, ['Nashville'], { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", data: { 'search-target': 'input', 'search-bar-target': "city"}, autocomplete:"off" }
 
           div class="col-span-3"
             = form.label :zipcode, "Zip Code", class: "block text-sm text-gray-3 font-medium"

@@ -22,9 +22,8 @@ export default class extends Controller {
 
   async askForGeoPermissions(event){
     if (navigator.geolocation) {
-      //document.getElementById('search_submit').disabled = true para desabilitar el buton de submit mientras se carga el current location
+      document.getElementById('search_submit').disabled = true
       await navigator.geolocation.getCurrentPosition((position) => {
-        // sessionStorage.setItem("geo_access", "granted");
         if( event.target.value == "Current Location" ) {
           const lat = document.getElementById('hidden_lat')
           const lon = document.getElementById('hidden_lon')
@@ -38,16 +37,11 @@ export default class extends Controller {
           lon.value = position.coords.longitude;
         }
         this.centerOnLocation( position.coords )
+        document.getElementById('search_submit').disabled = false
       })
-      //document.getElementById('search_submit').disabled = reactiver submit buton
     } else {
       console.log('Geolocation is not supported by your browser');
     }
-  }
-
-  centerOnLocation( coords ) {
-    this.map.setCenter({lat: coords.latitude, lng: coords.longitude})
-    this.map.setZoom(10);
   }
 
   async initMap() {
@@ -66,14 +60,17 @@ export default class extends Controller {
       document.getElementById("location").value = params.get("search[location_search]")
     }
 
-    let coords = {latitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-latitude")), longitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-longitude"))}
+    let coords = {
+      latitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-latitude")),
+      longitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-longitude"))
+    }
 
     lat.value = location.options[location.selectedIndex].getAttribute("data-latitude");
     lon.value = location.options[location.selectedIndex].getAttribute("data-longitude");
 
     if( params.has("search[lat]")) { // Checa si hay parametros en el URL para cargarlo en el mapa en lugar de recargar el ip lookup
       this.centerOnLocation({latitude: parseFloat(params.get("search[lat]")), longitude: parseFloat(params.get("search[lon]"))})
-    } else { // ip lookup
+    }else{
       this.centerOnLocation(coords)
     }
 
@@ -102,12 +99,7 @@ export default class extends Controller {
         icon: image
       })
     }
-
-    const select = document.getElementById('location')
-
-
-
-    select.addEventListener("change", async (event) => {
+    location.addEventListener("change", async (event) => {
       switch(event.target.value) {
         case "Current Location":
           this.askForGeoPermissions(event)
@@ -123,9 +115,11 @@ export default class extends Controller {
           lat.value = event.target.options[event.target.selectedIndex].getAttribute("data-latitude");
           lon.value = event.target.options[event.target.selectedIndex].getAttribute("data-longitude");
 
-          let coords = {latitude: parseFloat(event.target.options[event.target.selectedIndex].getAttribute("data-latitude")), longitude: parseFloat(event.target.options[event.target.selectedIndex].getAttribute("data-longitude"))}
-            console.log("coords", coords)
-            this.centerOnLocation(coords)
+          let coords = {
+            latitude: parseFloat(event.target.options[event.target.selectedIndex].getAttribute("data-latitude")),
+            longitude: parseFloat(event.target.options[event.target.selectedIndex].getAttribute("data-longitude"))
+          }
+          this.centerOnLocation(coords)
       }
     })
   }
@@ -137,6 +131,11 @@ export default class extends Controller {
     console.log(latitude, longitude)
     this.centerOnLocation({latitude, longitude})
     event.preventDefault()
+  }
+
+  centerOnLocation( coords ) {
+    this.map.setCenter({lat: coords.latitude, lng: coords.longitude})
+    this.map.setZoom(10);
   }
 
   setMarkers(map, image) {
