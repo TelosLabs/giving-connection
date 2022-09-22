@@ -5,7 +5,7 @@
     div class="flex flex-row justify-center w-full min-h-full"
       div class="flex flex-col w-full md:border-r max-w-470px border-gray-7"
         div class="flex flex-row justify-between w-full p-4 bg-gray-9" data-controller="pills"
-          button class="inline-flex items-center px-3 py-2 text-sm leading-4" type="button" data-action="click->pills#displayPills"
+          button class="inline-flex items-center px-3 py-2 text-sm leading-4" type="button"
             = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative'
             // Pills Options || Future View Component
           div class="flex flex-col w-full h-full overflow-y-auto"
@@ -21,15 +21,22 @@
                   a.bg-white.inline-block.py-2.px-4.text-blue-500.hover:text-blue-700.font-semibold.no-underline href="#"  P.Served
                 li.mr-1 data-action="click->tabs#change" data-tabs-target="tab"
                   a.bg-white.inline-block.py-2.px-4.text-blue-500.hover:text-blue-700.font-semibold.no-underline href="#"  Hours
-              div class="hidden" data-pills-target="pills"
+              div
                 .hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
-                  = render SelectMultiple::Component.new(name: 'search[causes]', items: @causes, selected: list_of_causes(@search))
+                  // Select multple causes and save them to the search
+                  - Cause.all.limit(10).each do |cause|
+                    = f.check_box :causes, {multiple: true, checked: params.dig(:search, :causes)&.include?(cause.name)}, cause.name, nil
+                    = f.label :causes, cause.name, class: 'form-checkbox text-blue-500 m-1'
                 .hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
-                  / = render SelectMultiple::Component.new(name: 'search[locations]', items: @locations, selected: list_of_locations(@search))
+                  / = f.select :locations, options_for_select(Location.all.map { |l| [l.name, l.id] }, @search.locations), { include_blank: 'All Locations' }, { class: 'w-full' }
                 .hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
-                  = render SelectMultiple::Component.new(name: 'search[services]', items: @services, selected: list_of_services(@search))
+                  - Service.all.limit(10).each do |service|
+                    = f.check_box :services, {multiple: true, checked: params.dig(:search, :services)&.include?(service.name)}, service.name, nil
+                    = f.label :services, service.name, class: 'form-checkbox text-blue-500 m-1'
                 .hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
-                  = render SelectMultiple::Component.new(name: 'search[beneficiary_groups]',items: @beneficiary_groups, selected: list_of_beneficiary_groups(@search))
+                  - BeneficiaryGroup.all.limit(10).each do |group|
+                    = f.check_box :beneficiary_groups, {multiple: true, checked: params.dig(:search, :beneficiary_groups)&.include?(group.name)}, group.name, nil
+                    = f.label :beneficiary_groups, group.name, class: 'form-checkbox text-blue-500 m-1'
                 .hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
                   = f.select :open_weekends, options_for_select([['Open Weekends', true], ['Closed Weekends', false]], @search.open_weekends), { include_blank: 'All Hours' }, { class: 'w-full' }
 
