@@ -20,7 +20,7 @@ main
       | What are you looking for today?
     div class="hidden px-6 pb-6 text-center text-white sm:block"
       | Search for listings of nonprofit organizations based on your needs.
-    = form_with model: @search, url: searches_path, method: :get do |f|
+    = form_with model: @search, url: search_path, method: :get do |f|
       = render SearchBar::Component.new(form: f, search: @search)
   section class="pt-12 text-gray-2 sm:pt-24"
     h2 class="pb-8 text-2xl font-bold text-center uppercase sm:pb-5"
