@@ -25,7 +25,7 @@
                 .hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
                   = render SelectMultiple::Component.new(name: 'search[causes]', items: @causes, selected: list_of_causes(@search))
                 .hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
-                  = render SelectMultiple::Component.new(name: 'search[locations]', items: @locations, selected: list_of_locations(@search))
+                  / = render SelectMultiple::Component.new(name: 'search[locations]', items: @locations, selected: list_of_locations(@search))
                 .hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
                   = render SelectMultiple::Component.new(name: 'search[services]', items: @services, selected: list_of_services(@search))
                 .hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
