@@ -6,18 +6,20 @@ module Locations
       latitude: 36.16404968727089,
       longitude: -86.78125827725053
     }.freeze
+    DEFAULT_DISTANCE = 100
 
     attr_reader :locations
 
     class << self
       def call(params = {}, locations = Location.active)
         scope = locations
-
         geo_near(scope, starting_coordinates(params[:lat], params[:lon]), params[:distance])
       end
 
       def geo_near(scope, coords, distance)
-        return scope if distance.blank? || distance.zero? || scope.empty?
+        return scope if scope.empty?
+
+        distance = DEFAULT_DISTANCE if distance.blank? || distance.zero?
 
         scope.where(
           'ST_DWithin(lonlat, :point, :distance)',
@@ -32,7 +34,6 @@ module Locations
           Geo.to_wkt(Geo.point(lon, lat))
         end
       end
-
     end
   end
 end
