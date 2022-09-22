@@ -55,4 +55,9 @@ export default class extends Controller {
     console.log('openSearchAlertModal')
     this.dispatch("openSearchAlertModal")
   }
+
+  submitForm() {
+    console.log('submitForm')
+    this.formTarget.requestSubmit()
+  }
 }
