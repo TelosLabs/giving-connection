@@ -4,7 +4,7 @@ import Rails from '@rails/ujs'
 
 export default class extends Controller {
   static get targets() {
-    return ['input', 'customInput', 'form']
+    return ['input', 'customInput', 'form', 'pills', "pills_counter"]
   }
 
   connect() {
@@ -57,6 +57,8 @@ export default class extends Controller {
   }
 
   submitForm() {
+    let count = this.pillsTarget.querySelectorAll('input[type="checkbox"]:checked').length
+    this.pills_counterTarget.innerHTML = count
     this.formTarget.requestSubmit()
   }
 }
