@@ -57,7 +57,6 @@ export default class extends Controller {
   }
 
   submitForm() {
-    console.log('submitForm')
     this.formTarget.requestSubmit()
   }
 }

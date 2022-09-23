@@ -4,12 +4,11 @@
   div class="flex flex-row justify-center w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
     div class="flex flex-row justify-center w-full min-h-full"
       div class="flex flex-col w-full md:border-r max-w-470px border-gray-7"
-        div class="flex flex-row justify-between w-full p-4 bg-gray-9" data-controller="pills"
+        div class="flex flex-row justify-between w-full p-4 bg-gray-9" data-controller="pills" data-pills-index-value=  @search
           button class="inline-flex items-center px-3 py-2 text-sm leading-4" type="button"
             = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative'
             // Pills Options || Future View Component
           div class="flex flex-col w-full h-full overflow-y-auto"
-            = params
             div data-controller="tabs" data-tabs-active-tab=("-mb-px border-l border-t border-r rounded-t")
               ul.list-reset.flex.border-b
                 li.-mb-px.mr-1 data-action="click->tabs#change" data-tabs-target="tab"
