@@ -9,6 +9,8 @@ export default class extends Controller {
 
   connect() {
     useDispatch(this)
+    let count = this.pillsTarget.querySelectorAll('input[type="checkbox"]:checked').length
+    this.pills_counterTarget.innerHTML = count
   }
 
   clearAll() {
@@ -57,8 +59,6 @@ export default class extends Controller {
   }
 
   submitForm() {
-    let count = this.pillsTarget.querySelectorAll('input[type="checkbox"]:checked').length
-    this.pills_counterTarget.innerHTML = count
     this.formTarget.requestSubmit()
   }
 }
