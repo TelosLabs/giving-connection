@@ -4,6 +4,7 @@
   div class="flex flex-row justify-center w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
     div class="flex flex-row justify-center w-full min-h-full"
       div class="flex flex-col w-full md:border-r max-w-470px border-gray-7"
+        = params
         div class="flex flex-row justify-between w-full p-4 bg-gray-9"
           button class="inline-flex items-center px-3 py-2 text-sm leading-4" type="button" data-action="click->search#clearChecked"
             - if @params_applied
@@ -77,11 +78,11 @@
                     = f.label :beneficiary_groups, group.name, class: 'form-checkbox text-blue-500 m-1'
                 .hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
                   div class="flex flex-row justify-between w-full"
-                    = check_box_tag "search[open_now]", true, params.dig('search', 'open_now') == 'true', class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent "
-                    = label_tag "search[open_now]", "Open Now", class: "text-sm text-black "
+                    = f.check_box :open_now, {checked: params.dig('search', 'open_now') == 'true'}, 'true', nil
+                    = f.label :open_now, "Open Now", class: "text-sm text-black "
 
-                    = check_box_tag 'search[open_weekends]', true, params.dig('search', 'open_weekends') == 'true', class: "h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent "
-                    = label_tag 'search[open_weekends]', "Open on Weekends", class: "text-sm text-black "
+                    = f.check_box :open_weekends, {checked: params.dig('search', 'open_weekends') == 'true'}, 'true', nil
+                    = f.label :open_weekends, "Open Weekends", class: "text-sm text-black "
 
         div class="flex flex-row justify-between w-full p-4 bg-gray-9" data-controller="modal"
           button class="inline-flex items-center px-3 py-2 text-sm leading-4" type="button" data-action="click->modal#open"
