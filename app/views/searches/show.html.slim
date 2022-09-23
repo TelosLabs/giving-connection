@@ -6,11 +6,13 @@
       div class="flex flex-col w-full md:border-r max-w-470px border-gray-7"
         div class="flex flex-row justify-between w-full p-4 bg-gray-9"
           button class="inline-flex items-center px-3 py-2 text-sm leading-4" type="button" data-action="click->search#clearChecked"
-            = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative'
-            p data-search-target="pills_counter"
+            - if @params_applied
+              p data-search-target="pills_counter"
+              = inline_svg_tag "x-icon.svg", class: 'h-2.5 w-2.5 fill-current text-gray-2 ml-2 relative'
+            - else
+              = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative'
             // Pills Options || Future View Component
           div class="flex flex-col w-full h-full overflow-y-auto" data-search-target="pills"
-            = params
             div data-controller="tabs" data-tabs-active-tab=("-mb-px border-l border-t border-r rounded-t")
               ul.list-reset.flex.border-b
                 li.-mb-px.mr-1 data-action="click->tabs#change" data-tabs-target="tab"
@@ -58,13 +60,13 @@
                   div class="flex flex-row justify-between w-full"
                     div class="flex flex-col w-full"
                       = f.label :zip_code, 'Zip Code', class: 'text-gray-2'
-                      = f.text_field :zipcode, { value: "#{ params.dig('search', 'zipcode') }", class: "block h-46px h-full w-full py-0 px-4 rounded-6px text-base text-gray-3 border-gray-5 focus:ring-blue-medium focus:border-blue-medium", data: { 'search-target': 'input'}, autocomplete:"off" }
+                      = f.text_field :zipcode, { value: "#{ params.dig('search', 'zipcode') }", class: "block h-46px h-full w-full py-0 px-4 rounded-6px text-base text-gray-3 border-gray-5 focus:ring-blue-medium focus:border-blue-medium", autocomplete:"off" }
                     div class="flex flex-col w-full"
                       = f.label :state, "State", class: "block text-sm text-gray-3 font-medium"
                       = f.select :state, { Tennessee: "TN" }, {}, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
                     div class="flex flex-col w-full"
                       = f.label :city, "City", class: "block text-sm text-gray-3 font-medium"
-                      = f.select :city, { Nashville: "Nashville" }, {}, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", data: { 'search-target': 'input'}, autocomplete:"off" }
+                      = f.select :city, { Nashville: "Nashville" }, {}, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", autocomplete:"off" }
                 .hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
                   - Service.all.limit(10).each do |service|
                     = f.check_box :services, {multiple: true, checked: params.dig(:search, :services)&.include?(service.name)}, service.name, nil
@@ -74,7 +76,13 @@
                     = f.check_box :beneficiary_groups, {multiple: true, checked: params.dig(:search, :beneficiary_groups)&.include?(group.name)}, group.name, nil
                     = f.label :beneficiary_groups, group.name, class: 'form-checkbox text-blue-500 m-1'
                 .hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
-                  = f.select :open_weekends, options_for_select([['Open Weekends', true], ['Closed Weekends', false]], @search.open_weekends), { include_blank: 'All Hours' }, { class: 'w-full' }
+                  div class="flex flex-row justify-between w-full"
+                    = check_box_tag "search[open_now]", true, params.dig('search', 'open_now') == 'true', class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent "
+                    = label_tag "search[open_now]", "Open Now", class: "text-sm text-black "
+
+                    = check_box_tag 'search[open_weekends]', true, params.dig('search', 'open_weekends') == 'true', class: "h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent "
+                    = label_tag 'search[open_weekends]', "Open on Weekends", class: "text-sm text-black "
+
         div class="flex flex-row justify-between w-full p-4 bg-gray-9" data-controller="modal"
           button class="inline-flex items-center px-3 py-2 text-sm leading-4" type="button" data-action="click->modal#open"
             /! Heroicon name: solid/mail
