@@ -18,26 +18,7 @@ div class="bg-white rounded-3xl"
         = form.label :beneficiary_groups, 'Populations Served', class: 'w-full text-base font-bold text-gray-2'
         = render SelectMultiple::Component.new(name: 'search[beneficiary_groups]',items: beneficiary_groups, selected: list_of_beneficiary_groups(search))
 
-      div class="px-6 py-8"
-        p class="text-base font-bold text-gray-2"
-          | Location
-        div class="grid grid-cols-6 gap-6 mt-4"
-          div class="col-span-6"
-            = form.label :state, "State", class: "block text-sm text-gray-3 font-medium"
-            = form.select :state, { Tennessee: "TN" }, {}, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
-
-          div class="col-span-6"
-            = form.label :city, "City", class: "block text-sm text-gray-3 font-medium"
-            = form.select :city, ['Nashville'], { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", data: { 'search-target': 'input', 'search-bar-target': "city"}, autocomplete:"off" }
-
-          div class="col-span-3"
-            = form.label :zipcode, "Zip Code", class: "block text-sm text-gray-3 font-medium"
-            = form.text_field :zipcode, { value: "#{ params.dig('search', 'zipcode') }", class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px text-base text-gray-3 border-gray-5 focus:ring-blue-medium focus:border-blue-medium", data: { 'search-target': 'input'}, autocomplete:"off" }
-
-          div class="col-span-3"
-            = form.label :distance, "Distance", class: "block text-sm text-gray-3 font-medium"
-            = form.select :distance, options_for_select({"2 mi": 3.21, "5 mi": 8.04, "15 mi": 24.1402}, "#{ params.dig('search', 'distance') }"), { include_blank: '' }, { selected: nil, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px text-base text-gray-3 border-gray-5 focus:ring-blue-medium focus:border-blue-medium", data: { 'search-target': 'input'}, autocomplete:"off" }
-
+      
       div class="px-6 py-8"
         p class="pb-3 text-base font-bold text-gray-2"
           | Hours

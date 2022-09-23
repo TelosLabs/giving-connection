@@ -68,7 +68,10 @@ gem 'pronto-rubocop', require: false
 
 # Geolocation
 gem 'activerecord-postgis-adapter'
-gem 'maxmind-db'
+gem 'maxminddb'
+gem 'dry-initializer'
+gem "view_component-contrib"
+gem "geocoder"
 
 # Instagram feed
 gem 'koala'

@@ -20,34 +20,7 @@ export default class extends Controller {
     this.markersArray = []
   }
 
-  async askForGeoPermissions(event){
-    if (navigator.geolocation) {
-      // Deactivate Search button while getting current location
-      document.getElementById('search_submit').disabled = true
-      await navigator.geolocation.getCurrentPosition((position) => {
-        if( event.target.value == "Current Location" ) {
-
-          // Get hidden fields
-          const lat = document.getElementById('hidden_lat')
-          const lon = document.getElementById('hidden_lon')
-
-          // Set hidden fields with coords
-          lat.value = position.coords.latitude;
-          lon.value = position.coords.longitude;
-
-        }
-
-        // Center location on the map
-        this.centerOnLocation( position.coords )
-
-        // Activate Search button after get current location
-        document.getElementById('search_submit').disabled = false
-      })
-
-    } else {
-      console.log('Geolocation is not supported by your browser');
-    }
-  }
+  
 
   async initMap() {
     this.map = await new google.maps.Map(this.mapTarget, {
@@ -61,8 +34,8 @@ export default class extends Controller {
     let location = document.getElementById("location")
 
     // Get hidden fields
-    const lat = document.getElementById('hidden_lat')
-    const lon = document.getElementById('hidden_lon')
+    const latitude = document.getElementById('hidden_lat')
+    const longitude = document.getElementById('hidden_lon')
 
     // Use previous selecction of location select if it exist, this helps to keep the current selection if the page renders
     if( params.has("search[location_search]")) {
@@ -71,13 +44,9 @@ export default class extends Controller {
 
     // Get coords from location select options
     let coords = {
-      latitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-latitude")),
-      longitude: parseFloat(location.options[location.selectedIndex].getAttribute("data-longitude"))
+      latitude: parseFloat(latitude),
+      longitude: parseFloat(longitude)
     }
-
-    // Set the hidden inputs with coords
-    lat.value = location.options[location.selectedIndex].getAttribute("data-latitude");
-    lon.value = location.options[location.selectedIndex].getAttribute("data-longitude");
 
     // Center location on the map
     if( params.has("search[lat]")) { // Using coords from the URL params instead of reload ip-lookup

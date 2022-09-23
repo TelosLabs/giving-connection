@@ -1,13 +1,54 @@
 <div class="inset-x-0 top-0 z-10 px-6 py-8 bg-gradient-to-r from-blue-gradient-2 to-blue-gradient-1">
   <div class="flex flex-row items-center justify-center md:gap-5">
-    <div class="flex relative w-full max-w-xl h-46px" data-controller="search-bar">
+    <div class="relative flex w-full max-w-xl p-0 overflow-hidden bg-white rounded-md h-46px"
+      data-controller="places-autocomplete"
+      data-action="google-maps-callback@window->places-autocomplete#initAutocomplete"
+      data-places-autocomplete-country-value='["us"]'
+    >
       <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
         <%= inline_svg_tag "solid_search.svg", class: 'h-4 w-4 fill-current text-gray-2' %>
       </div>
-      <%= @form.search_field :keyword, value: "#{ params.dig('search', 'keyword') }", class: 'block pl-8 h-46px w-2/3 py-3.5 px-4 rounded-6px rounded-r-none border-0 border-r text-base text-gray-3 focus:outline-none', placeholder: 'Try “Mental Health Nonprofits”'%>
-      <%= @form.hidden_field :lat, value: params.dig('search', 'lat'), id: 'hidden_lat', data: { 'search-bar-target': "lat"} %>
-      <%= @form.hidden_field :lon, value: params.dig('search','lon'), id: 'hidden_lon',  data: { 'search-bar-target': "lon"} %>
-      <%= @form.select 'location_search', @location, { }, id: "location",  selected: "#{ params.dig('search', 'city') }", class: "m-0 w-1/3 rounded-l-none rounded-r-6px border-0 text-base text-gray-3 focus:outline-none", data: { action: '' }, prompt: 'true' %>
+      <%= @form.search_field :keyword, value: "#{ params.dig('search', 'keyword') }", class: 'block pl-8 h-full w-2/3 py-3.5 px-4 rounded-6px rounded-r-none border-0 border-r text-base text-gray-3 focus:outline-none', placeholder: 'Try “Mental Health Nonprofits”'%>
+
+      <input
+        type="text"
+        data-action="keydown->places-autocomplete#preventSubmit"
+        data-places-autocomplete-target="address"
+        placeholder="Search a location"
+        class="items-center h-full p-4 text-sm font-medium text-gray-700 border-0"
+        value="<%= location_full_city %>"
+      />
+      <button type="button" class="relative inline-flex items-center px-4 py-2 -ml-px space-x-2 text-sm font-medium text-gray-700 border border-gray-300 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-1 "
+        data-action="places-autocomplete#askForGeoPermissions"
+      >
+        <%= inline_svg_tag 'my-location.svg', size:'', class:'h-4 w-4' %>
+      </button>
+      <%= @form.hidden_field :lat, value: params.dig('search', 'lat') || @current_location&.dig(:latitude), id: 'hidden_lat',
+        data: {
+          "places-autocomplete-target": "latitude",
+          }
+      %>
+      <%= @form.hidden_field :lon, value: params.dig('search', 'lon') || @current_location&.dig(:longitude), id: 'hidden_lon',
+        data: {
+          "places-autocomplete-target": "longitude",
+          }
+      %>
+      <%= @form.hidden_field :city, value: params.dig('search', 'city'), id: 'hidden_city',
+        data: {
+          "places-autocomplete-target": "city",
+          }
+      %>
+      <%= @form.hidden_field :country, value: params.dig('search', 'country'), id: 'hidden_country',
+        data: {
+          "places-autocomplete-target": "country",
+          }
+      %>
+      <%= @form.hidden_field :state, value: params.dig('search', 'state'), id: 'hidden_state',
+        data: {
+          "places-autocomplete-target": "state",
+          }
+      %>
+
     </div>
     <%= @form.submit 'Search', id: "search_submit", class: 'invisible w-0 md:w-36 p-0 md:visible md:flex cursor-pointer uppercase flex-row justify-center items-center bg-seafoam md:py-4 md:px-10 rounded-6px text-blue-dark text-base font-bold focus:outline-none mx-2'%>
   </div>

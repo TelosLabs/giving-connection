@@ -6700,6 +6700,11 @@ static-extend@^0.1.1:
   resolved "https://registry.npmjs.org/statuses/-/statuses-1.5.0.tgz"
   integrity sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow=
 
+stimulus-places-autocomplete@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/stimulus-places-autocomplete/-/stimulus-places-autocomplete-0.5.0.tgz#a18603ee629ec0944c4adae6b76b3fed515e1e1a"
+  integrity sha512-9cVHWDXlkewELruJlbkNjLm4izybkOnLKQLUX/5F18ht5Dev+4/p+venaTfcHOkX9lyVj1qDz/SAiAjZnLx7tQ==
+
 stimulus-use@^0.50.0-2:
   version "0.50.0-2"
   resolved "https://registry.npmjs.org/stimulus-use/-/stimulus-use-0.50.0-2.tgz"

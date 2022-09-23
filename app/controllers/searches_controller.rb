@@ -5,17 +5,10 @@ class SearchesController < ApplicationController
   before_action :set_causes, only: [:show]
   before_action :set_services, only: [:show]
   before_action :set_beneficiary_groups, only: [:show]
-  before_action :verify_search_params, only: [:show]
+  before_action :verify_search_params, :set_location_in_session, only: [:show]
 
   def show
-    if params['search'].present?
-      @search = Search.new(create_params)
-    else
-      op = helpers.get_ip_location
-      lat = op[0][:latitude]
-      lon = op[0][:longitude]
-      @search = Search.new(lat: lat, lon: lon)
-    end
+    @search = params['search'].present? ? Search.new(create_params) : Search.new(lat: @current_location[:latitude], lon: @current_location[:longitude])
     @search.save
     @pagy, @results = pagy(@search.results)
     puts @search.errors.full_messages if @search.results.any?
@@ -23,9 +16,12 @@ class SearchesController < ApplicationController
   end
 
   def create_params
-    params.require(:search).permit(:distance, :city, :state, :lat, :lon,
-                                   :open_now, :open_weekends, :keyword,
-                                   :zipcode, causes: [], services: {}, beneficiary_groups: {})
+    params
+      .require(:search)
+      .permit(:distance, :city, :state, :lat, :lon,
+              :open_now, :open_weekends, :keyword,
+              :zipcode, causes: [], services: {}, beneficiary_groups: {})
+      .with_defaults(lat: @current_location[:latitude], lon: @current_location[:longitude])
   end
 
   def verify_search_params
@@ -58,5 +54,15 @@ class SearchesController < ApplicationController
     BeneficiaryGroup.all.each do |group|
       @beneficiary_groups[group.name] = group.beneficiary_subcategories.map(&:name)
     end
+  end
+
+  def set_location_in_session
+    session[:current_location] = {
+      city: params.dig('search', 'city').presence || @current_location[:city],
+      state: params.dig('search', 'state').presence || @current_location[:state],
+      country: params.dig('search', 'country').presence || @current_location[:country],
+      latitude: params.dig('search', 'lat').presence || @current_location[:latitude],
+      longitude: params.dig('search', 'lon').presence || @current_location[:longitude]
+    }
   end
 end

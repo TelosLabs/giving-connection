@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  include Locationable
+
   before_action :store_user_location!, if: :storable_location?
 
   include Pagy::Backend
