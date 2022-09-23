@@ -10,6 +10,7 @@
             p data-search-target="pills_counter"
             // Pills Options || Future View Component
           div class="flex flex-col w-full h-full overflow-y-auto" data-search-target="pills"
+            = params
             div data-controller="tabs" data-tabs-active-tab=("-mb-px border-l border-t border-r rounded-t")
               ul.list-reset.flex.border-b
                 li.-mb-px.mr-1 data-action="click->tabs#change" data-tabs-target="tab"
@@ -31,28 +32,29 @@
                 .hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
                   div class="flex flex-row justify-between w-full"
                     / = f.select :distance, options_for_select({"2 mi": 3.21, "5 mi": 8.04, "15 mi": 24.1402}, "#{ params.dig('search', 'distance') }"), { include_blank: '' }, { selected: nil, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px text-base text-gray-3 border-gray-5 focus:ring-blue-medium focus:border-blue-medium", data: { 'search-target': 'input'}, autocomplete:"off" }
-                    = f.hidden_field :lat, value: ""
-                    = f.hidden_field :lon, value: ""
-                    = f.radio_button :distance, ({"2 mi": 3.21}), checked: params.dig('search', 'distance') == "3.21 mi 3.21"
+                    = f.radio_button :distance, (3.21), checked: params.dig(:search, :distance) == "3.21"
                     = f.label :distance, "2 mi", class: 'form-radio text-blue-500 m-1'
 
-                    = f.radio_button :distance, ({"5 mi": 8.04}), checked: params.dig(:search, :distance) == "5 mi 8.04"
+                    = f.radio_button :distance, (8.04), checked: params.dig(:search, :distance) == "8.04"
                     = f.label :distance, "5 mi", class: 'form-radio text-blue-500 m-1'
 
-                    = f.radio_button :distance, ({"15 mi": 24.1402}), checked: params.dig(:search, :distance) == "15 mi 24.1402"
+                    = f.radio_button :distance, (24.1402), checked: params.dig(:search, :distance) == "24.1402"
                     = f.label :distance, "15 mi", class: 'form-radio text-blue-500 m-1'
 
-                    = f.radio_button :distance, ({"30 mi": 48.2804}), checked: params.dig(:search, :distance) == "30 mi 48.2804"
+                    = f.radio_button :distance, (48.2804), checked: params.dig(:search, :distance) == "48.2804"
                     = f.label :distance, "30 mi", class: 'form-radio text-blue-500 m-1'
 
-                    = f.radio_button :distance, ({"60 mi": 96.5608}), checked: params.dig(:search, :distance) == "60 mi 96.5608"
+                    = f.radio_button :distance, (96.5608), checked: params.dig(:search, :distance) == "96.5608"
                     = f.label :distance, "60 mi", class: 'form-radio text-blue-500 m-1'
 
-                    = f.radio_button :distance, ({"180 mi": 289.6824}), checked: params.dig(:search, :distance) == "180 mi 289.6824"
+                    = f.radio_button :distance, (289.6824), checked: params.dig(:search, :distance) == "289.6824"
                     = f.label :distance, "180 mi", class: 'form-radio text-blue-500 m-1'
 
-                    = f.radio_button :distance, ({"Any": 1000000}), checked: params.dig(:search, :distance) == "Any 1000000"
+                    = f.radio_button :distance, (1000000), checked: params.dig(:search, :distance) == "Any 1000000"
                     = f.label :distance, "Any", class: 'form-radio text-blue-500 m-1'
+
+                    = f.hidden_field :lat, value: ""
+                    = f.hidden_field :lon, value: ""
                   div class="flex flex-row justify-between w-full"
                     div class="flex flex-col w-full"
                       = f.label :zip_code, 'Zip Code', class: 'text-gray-2'
