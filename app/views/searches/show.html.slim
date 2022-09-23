@@ -5,7 +5,7 @@
     div class="flex flex-row justify-center w-full min-h-full"
       div class="flex flex-col w-full md:border-r max-w-470px border-gray-7"
         div class="flex flex-row justify-between w-full p-4 bg-gray-9"
-          button class="inline-flex items-center px-3 py-2 text-sm leading-4" type="button"
+          button class="inline-flex items-center px-3 py-2 text-sm leading-4" type="button" data-action="click->search#clearChecked"
             = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative'
             p data-search-target="pills_counter"
             // Pills Options || Future View Component

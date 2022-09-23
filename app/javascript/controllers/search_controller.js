@@ -62,4 +62,17 @@ export default class extends Controller {
   submitForm() {
     this.formTarget.requestSubmit()
   }
+
+  clearChecked() {
+    this.pillsTarget.querySelectorAll('input[type="checkbox"]:checked').forEach(input => {
+      input.checked = false
+      input.removeAttribute('checked')
+    })
+    this.pillsTarget.querySelectorAll('input[type="radio"]:checked').forEach(input => {
+      input.checked = false
+      input.removeAttribute('checked')
+    })
+    this.pills_counterTarget.innerHTML = 0
+    this.submitForm()
+  }
 }
