@@ -47,18 +47,8 @@
                     = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 1000000, checked: params.dig(:search, :distance) == "Any 1000000", copy: "Any")
                   // Search Nashville, TN
                   div class="flex flex-wrap gap-x-2 gap-y-3"
-                    = f.hidden_field :state, value: "TN" if params.dig(:search, :state).blank?
-                    = f.check_box :city, { checked: params.dig(:search, :city) == "Nashville" }, "Nashville", nil
+                    = f.check_box :city, { checked: true }, "Nashville", nil
                     = f.label :city, 'Nashville, TN', class: 'text-gray-2'
-
-                    = f.check_box :city, { checked: params.dig(:search, :city) == "Brentwood" }, "Brentwood", nil
-                    = f.label :city, 'Brentwood, TN', class: 'text-gray-2'
-
-                    = f.check_box :city, { checked: params.dig(:search, :city) == "Franklin" }, "Franklin", nil
-                    = f.label :city, 'Franklin, TN', class: 'text-gray-2'
-
-                    = f.check_box :city, { checked: params.dig(:search, :city) == "Murfreesboro" }, "Murfreesboro", nil
-                    = f.label :city, 'Murfreesboro, TN', class: 'text-gray-2'
                 .flex.flex-wrap.gap-x-2.gap-y-3.hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
                   - Service.all.limit(10).each do |service|
                     = render SearchPills::Pill::Component.new(form: f, record_attr: :services, checked: params.dig(:search, :services)&.include?(service.name), value: service.name)
@@ -76,8 +66,12 @@
                     /   | Open Weekends
                     = f.check_box :open_weekends, {checked: params.dig('search', 'open_weekends') == 'true'}, 'true', nil
                     = f.label :open_weekends, "Open Weekends", class: "text-sm text-black "
+
                     = f.hidden_field :lat, value: ""
                     = f.hidden_field :lon, value: ""
+                    / Should leave this hardcode for now
+                    = f.hidden_field :state, value: "TN"
+                    = f.hidden_field :city, value: "Nashville"
 
         div class="flex flex-row justify-between w-full p-4 bg-gray-9" data-controller="modal"
           button class="inline-flex items-center px-3 py-2 text-sm leading-4" type="button" data-action="click->modal#open"
