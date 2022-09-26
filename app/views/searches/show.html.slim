@@ -47,7 +47,7 @@
                     = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 1000000, checked: params.dig(:search, :distance) == "Any 1000000", copy: "Any")
                   // Search Nashville, TN
                   div class="flex flex-row w-full"
-                    = f.check_box :city, { checked: params.dig(:search, :city) == "Nashville" }, "Nashville", nil
+                    = f.check_box :city, { checked: true }, "Nashville", nil
                     = f.hidden_field :state, value: "TN"
                     = f.label :city, 'Nashville, TN', class: 'text-gray-2'
                 .flex.flex-wrap.gap-x-2.gap-y-3.hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
