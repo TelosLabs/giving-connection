@@ -47,16 +47,11 @@
 
                     = f.hidden_field :lat, value: ""
                     = f.hidden_field :lon, value: ""
-                  div class="flex flex-row justify-between w-full"
-                    div class="flex flex-col w-full"
-                      = f.label :zip_code, 'Zip Code', class: 'text-gray-2'
-                      = f.text_field :zipcode, { value: "#{ params.dig('search', 'zipcode') }", class: "block h-46px h-full w-full py-0 px-4 rounded-6px text-base text-gray-3 border-gray-5 focus:ring-blue-medium focus:border-blue-medium", autocomplete:"off" }
-                    div class="flex flex-col w-full"
-                      = f.label :state, "State", class: "block text-sm text-gray-3 font-medium"
-                      = f.select :state, { Tennessee: "TN" }, {}, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
-                    div class="flex flex-col w-full"
-                      = f.label :city, "City", class: "block text-sm text-gray-3 font-medium"
-                      = f.select :city, { Nashville: "Nashville" }, {}, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", autocomplete:"off" }
+                  // Search Nashville, TN
+                  div class="flex flex-row w-full"
+                      = f.check_box :city, { checked: params.dig('search', 'city') == "Nashville" }, "Nashville", nil
+                      = f.hidden_field :state, value: "TN"
+                      = f.label :city, 'Nashville, TN', class: 'text-gray-2'
                 .flex.flex-wrap.gap-x-2.gap-y-3.hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
                   - Service.all.limit(10).each do |service|
                     = render SearchPills::Pill::Component.new(form: f, record_attr: :services, checked: params.dig(:search, :services)&.include?(service.name), value: service.name)
@@ -66,11 +61,11 @@
                 .hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
                   div class="flex flex-row w-full"
                     // This component needs fixes
-                    / = render SearchPills::Pill::Component.new(form: f, record_attr: :open_now, checked: params.dig('search', 'open_now') == 'true', value: true) do 
+                    / = render SearchPills::Pill::Component.new(form: f, record_attr: :open_now, checked: params.dig('search', 'open_now') == 'true', value: true) do
                     /   | Open Now
                     = f.check_box :open_now, {checked: params.dig('search', 'open_now') == 'true'}, 'true', nil
                     = f.label :open_now, "Open Now", class: "text-sm text-black "
-                    / = render SearchPills::Pill::Component.new(form: f, record_attr: :open_weekends, checked: params.dig('search', 'open_weekends') == 'true', value: true) do 
+                    / = render SearchPills::Pill::Component.new(form: f, record_attr: :open_weekends, checked: params.dig('search', 'open_weekends') == 'true', value: true) do
                     /   | Open Weekends
                     = f.check_box :open_weekends, {checked: params.dig('search', 'open_weekends') == 'true'}, 'true', nil
                     = f.label :open_weekends, "Open Weekends", class: "text-sm text-black "
