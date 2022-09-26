@@ -39,3 +39,12 @@
     @apply text-base;
   }
 }
+
+.pill:checked + label {
+  border: 1px solid #0782D0;
+  background-color: #E2ECF7;
+}
+
+.button-label:first-of-type {
+  border-left: 1px solid #D3DCE6;
+}

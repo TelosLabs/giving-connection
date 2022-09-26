@@ -5,16 +5,18 @@
     div class="flex flex-row justify-center w-full min-h-full"
       div class="flex flex-col w-full md:border-r max-w-470px border-gray-7"
         div class="flex flex-row justify-between w-full p-4 bg-gray-9"
-          button class="inline-flex items-center px-3 py-2 text-sm leading-4" type="button" data-action="click->search#clearChecked"
-            - if @params_applied
-              p data-search-target="pills_counter"
-              = inline_svg_tag "x-icon.svg", class: 'h-2.5 w-2.5 fill-current text-gray-2 ml-2 relative'
-            - else
-              = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative'
-            // Pills Options || Future View Component
-          div class="flex flex-col w-full h-full overflow-y-auto" data-search-target="pills"
+          // Pills Options || Future View Component
+          div class="flex w-full h-full overflow-y-auto" data-search-target="pills"
             div data-controller="tabs" data-tabs-active-tab=("-mb-px border-l border-t border-r rounded-t")
               ul.list-reset.flex.border-b
+                li
+                  // Temporary place
+                  button class="inline-flex items-center px-1.5 py-0.5 border border-blue-medium rounded-full text-xs leading-[3.5em] bg-white" type="button" data-action="click->search#clearChecked"
+                    - if @params_applied
+                      span data-search-target="pills_counter"
+                      = inline_svg_tag "x-icon.svg", class: 'h-2 w-2 fill-current stroke-current stroke-1 text-blue-medium ml-1 relative'
+                    - else
+                      = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative'
                 li.-mb-px.mr-1 data-action="click->tabs#change" data-tabs-target="tab"
                   a.bg-white.inline-block.py-2.px-4.text-blue-500.hover:text-blue-700.font-semibold.no-underline href="#" Cause
                 li.mr-1 data-action="click->tabs#change" data-tabs-target="tab"
@@ -26,34 +28,22 @@
                 li.mr-1 data-action="click->tabs#change" data-tabs-target="tab"
                   a.bg-white.inline-block.py-2.px-4.text-blue-500.hover:text-blue-700.font-semibold.no-underline href="#"  Hours
               div
-                .hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
+                .flex.flex-wrap.gap-x-2.gap-y-3.hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
                   // Select multple causes and save them to the search
                   - Cause.all.limit(10).each do |cause|
-                    = f.check_box :causes, {multiple: true, checked: params.dig(:search, :causes)&.include?(cause.name)}, cause.name, nil
-                    = f.label :causes, cause.name, class: 'form-checkbox text-blue-500 m-1'
+                    = render SearchPills::Pill::Component.new(form: f, record_attr: :causes, checked: params.dig(:search, :causes)&.include?(cause.name), value: cause.name)
                 .hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
-                  div class="flex flex-row justify-between w-full"
+                  div class="flex flex-row w-full"
                     / = f.select :distance, options_for_select({"2 mi": 3.21, "5 mi": 8.04, "15 mi": 24.1402}, "#{ params.dig('search', 'distance') }"), { include_blank: '' }, { selected: nil, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px text-base text-gray-3 border-gray-5 focus:ring-blue-medium focus:border-blue-medium", data: { 'search-target': 'input'}, autocomplete:"off" }
-                    = f.radio_button :distance, (3.21), checked: params.dig(:search, :distance) == "3.21"
-                    = f.label :distance, "2 mi", class: 'form-radio text-blue-500 m-1'
-
-                    = f.radio_button :distance, (8.04), checked: params.dig(:search, :distance) == "8.04"
-                    = f.label :distance, "5 mi", class: 'form-radio text-blue-500 m-1'
-
-                    = f.radio_button :distance, (24.1402), checked: params.dig(:search, :distance) == "24.1402"
-                    = f.label :distance, "15 mi", class: 'form-radio text-blue-500 m-1'
-
-                    = f.radio_button :distance, (48.2804), checked: params.dig(:search, :distance) == "48.2804"
-                    = f.label :distance, "30 mi", class: 'form-radio text-blue-500 m-1'
-
-                    = f.radio_button :distance, (96.5608), checked: params.dig(:search, :distance) == "96.5608"
-                    = f.label :distance, "60 mi", class: 'form-radio text-blue-500 m-1'
-
-                    = f.radio_button :distance, (289.6824), checked: params.dig(:search, :distance) == "289.6824"
-                    = f.label :distance, "180 mi", class: 'form-radio text-blue-500 m-1'
-
-                    = f.radio_button :distance, (1000000), checked: params.dig(:search, :distance) == "Any 1000000"
-                    = f.label :distance, "Any", class: 'form-radio text-blue-500 m-1'
+                    /= f.radio_button :distance, (3.21), checked: params.dig(:search, :distance) == "3.21"
+                    /= f.label :distance, "2 mi", class: 'form-radio text-blue-500 m-1'
+                    = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 3.21, checked: params.dig(:search, :distance) == "3.21", copy: "2 mi")
+                    = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 8.04, checked: params.dig(:search, :distance) == "8.04", copy: "5 mi")
+                    = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 24.1402, checked: params.dig(:search, :distance) == "24.1402", copy: "15 mi")
+                    = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 48.2804, checked: params.dig(:search, :distance) == "48.2804", copy: "30 mi")
+                    = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 96.5608, checked: params.dig(:search, :distance) == "96.5608", copy: "60 mi")
+                    = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 289.6824, checked: params.dig(:search, :distance) == "289.6824", copy: "180 mi")
+                    = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 1000000, checked: params.dig(:search, :distance) == "Any 1000000", copy: "Any")
 
                     = f.hidden_field :lat, value: ""
                     = f.hidden_field :lon, value: ""
@@ -67,19 +57,21 @@
                     div class="flex flex-col w-full"
                       = f.label :city, "City", class: "block text-sm text-gray-3 font-medium"
                       = f.select :city, { Nashville: "Nashville" }, {}, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", autocomplete:"off" }
-                .hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
+                .flex.flex-wrap.gap-x-2.gap-y-3.hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
                   - Service.all.limit(10).each do |service|
-                    = f.check_box :services, {multiple: true, checked: params.dig(:search, :services)&.include?(service.name)}, service.name, nil
-                    = f.label :services, service.name, class: 'form-checkbox text-blue-500 m-1'
-                .hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
+                    = render SearchPills::Pill::Component.new(form: f, record_attr: :services, checked: params.dig(:search, :services)&.include?(service.name), value: service.name)
+                .flex.flex-wrap.gap-x-2.gap-y-3.hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
                   - BeneficiaryGroup.all.limit(10).each do |group|
-                    = f.check_box :beneficiary_groups, {multiple: true, checked: params.dig(:search, :beneficiary_groups)&.include?(group.name)}, group.name, nil
-                    = f.label :beneficiary_groups, group.name, class: 'form-checkbox text-blue-500 m-1'
+                    = render SearchPills::Pill::Component.new(form: f, record_attr: :beneficiary_groups, checked: params.dig(:search, :beneficiary_groups)&.include?(group.name), value: group.name)
                 .hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
-                  div class="flex flex-row justify-between w-full"
+                  div class="flex flex-row w-full"
+                    // This component needs fixes
+                    / = render SearchPills::Pill::Component.new(form: f, record_attr: :open_now, checked: params.dig('search', 'open_now') == 'true', value: true) do 
+                    /   | Open Now
                     = f.check_box :open_now, {checked: params.dig('search', 'open_now') == 'true'}, 'true', nil
                     = f.label :open_now, "Open Now", class: "text-sm text-black "
-
+                    / = render SearchPills::Pill::Component.new(form: f, record_attr: :open_weekends, checked: params.dig('search', 'open_weekends') == 'true', value: true) do 
+                    /   | Open Weekends
                     = f.check_box :open_weekends, {checked: params.dig('search', 'open_weekends') == 'true'}, 'true', nil
                     = f.label :open_weekends, "Open Weekends", class: "text-sm text-black "
 
