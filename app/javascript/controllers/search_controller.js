@@ -4,11 +4,14 @@ import Rails from '@rails/ujs'
 
 export default class extends Controller {
   static get targets() {
-    return ['input', 'customInput', 'form']
+    return ['input', 'customInput', 'form', 'pills', "pills_counter"]
   }
 
   connect() {
     useDispatch(this)
+    let checks = this.pillsTarget.querySelectorAll('input[type="checkbox"]:checked').length
+    let radio = this.pillsTarget.querySelectorAll('input[type="radio"]:checked').length
+    this.pills_counterTarget.innerHTML = checks + radio
   }
 
   clearAll() {
@@ -54,5 +57,22 @@ export default class extends Controller {
   openSearchAlertModal() {
     console.log('openSearchAlertModal')
     this.dispatch("openSearchAlertModal")
+  }
+
+  submitForm() {
+    this.formTarget.requestSubmit()
+  }
+
+  clearChecked() {
+    this.pillsTarget.querySelectorAll('input[type="checkbox"]:checked').forEach(input => {
+      input.checked = false
+      input.removeAttribute('checked')
+    })
+    this.pillsTarget.querySelectorAll('input[type="radio"]:checked').forEach(input => {
+      input.checked = false
+      input.removeAttribute('checked')
+    })
+    this.pills_counterTarget.innerHTML = 0
+    this.submitForm()
   }
 }

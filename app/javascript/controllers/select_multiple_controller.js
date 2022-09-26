@@ -51,8 +51,6 @@ export default class extends Controller {
     } else {
       this.store.delete(value)
     }
-    this.inputTarget.value = ''
-    this.search()
   }
 
   updateCheckboxes() {
@@ -63,6 +61,7 @@ export default class extends Controller {
         checkbox.checked = false
       }
     })
+    this.search()
   }
 
   updateBadges() {
