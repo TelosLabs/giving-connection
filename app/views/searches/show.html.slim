@@ -46,10 +46,19 @@
                     = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 289.6824, checked: params.dig(:search, :distance) == "289.6824", copy: "180 mi")
                     = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 1000000, checked: params.dig(:search, :distance) == "Any 1000000", copy: "Any")
                   // Search Nashville, TN
-                  div class="flex flex-row w-full"
+                  div class="flex flex-wrap gap-x-2 gap-y-3"
+                    = f.hidden_field :state, value: "TN" if params.dig(:search, :state).blank?
                     = f.check_box :city, { checked: params.dig(:search, :city) == "Nashville" }, "Nashville", nil
-                    = f.hidden_field :state, value: "TN"
                     = f.label :city, 'Nashville, TN', class: 'text-gray-2'
+
+                    = f.check_box :city, { checked: params.dig(:search, :city) == "Brentwood" }, "Brentwood", nil
+                    = f.label :city, 'Brentwood, TN', class: 'text-gray-2'
+
+                    = f.check_box :city, { checked: params.dig(:search, :city) == "Franklin" }, "Franklin", nil
+                    = f.label :city, 'Franklin, TN', class: 'text-gray-2'
+
+                    = f.check_box :city, { checked: params.dig(:search, :city) == "Murfreesboro" }, "Murfreesboro", nil
+                    = f.label :city, 'Murfreesboro, TN', class: 'text-gray-2'
                 .flex.flex-wrap.gap-x-2.gap-y-3.hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
                   - Service.all.limit(10).each do |service|
                     = render SearchPills::Pill::Component.new(form: f, record_attr: :services, checked: params.dig(:search, :services)&.include?(service.name), value: service.name)
