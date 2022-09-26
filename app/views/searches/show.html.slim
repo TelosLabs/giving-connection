@@ -4,6 +4,7 @@
   div class="flex flex-row justify-center w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
     div class="flex flex-row justify-center w-full min-h-full"
       div class="flex flex-col w-full md:border-r max-w-470px border-gray-7"
+        = params
         div class="flex flex-row justify-between w-full p-4 bg-gray-9"
           // Pills Options || Future View Component
           div class="flex w-full h-full overflow-y-auto" data-search-target="pills"
@@ -44,14 +45,11 @@
                     = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 96.5608, checked: params.dig(:search, :distance) == "96.5608", copy: "60 mi")
                     = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 289.6824, checked: params.dig(:search, :distance) == "289.6824", copy: "180 mi")
                     = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 1000000, checked: params.dig(:search, :distance) == "Any 1000000", copy: "Any")
-
-                    = f.hidden_field :lat, value: ""
-                    = f.hidden_field :lon, value: ""
                   // Search Nashville, TN
                   div class="flex flex-row w-full"
-                      = f.check_box :city, { checked: params.dig('search', 'city') == "Nashville" }, "Nashville", nil
-                      = f.hidden_field :state, value: "TN"
-                      = f.label :city, 'Nashville, TN', class: 'text-gray-2'
+                    = f.check_box :city, { checked: params.dig(:search, :city) == "Nashville" }, "Nashville", nil
+                    = f.hidden_field :state, value: "TN"
+                    = f.label :city, 'Nashville, TN', class: 'text-gray-2'
                 .flex.flex-wrap.gap-x-2.gap-y-3.hidden.py-4.px-4.border-l.border-b.border-r data-tabs-target="panel"
                   - Service.all.limit(10).each do |service|
                     = render SearchPills::Pill::Component.new(form: f, record_attr: :services, checked: params.dig(:search, :services)&.include?(service.name), value: service.name)
@@ -69,6 +67,8 @@
                     /   | Open Weekends
                     = f.check_box :open_weekends, {checked: params.dig('search', 'open_weekends') == 'true'}, 'true', nil
                     = f.label :open_weekends, "Open Weekends", class: "text-sm text-black "
+                    = f.hidden_field :lat, value: ""
+                    = f.hidden_field :lon, value: ""
 
         div class="flex flex-row justify-between w-full p-4 bg-gray-9" data-controller="modal"
           button class="inline-flex items-center px-3 py-2 text-sm leading-4" type="button" data-action="click->modal#open"
