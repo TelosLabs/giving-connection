@@ -134,6 +134,11 @@ div class="w-full h-full bg-grey-9"
         section class="mt-12 text-gray-2"
           h5 class="text-lg font-medium leading-7"
             | Causes
+          p class="max-w-lg text-sm text-gray-4"
+            | Email 
+            a href="mailto:admin@givingconnection.org"
+              | admin@givingconnection.org 
+            | if you would like to add a cause not currently found in the list below.
 
           div class="grid grid-cols-12 gap-6 mt-8"
             div class="col-span-12 lg:col-span-6 md:col-span-7"
@@ -143,6 +148,11 @@ div class="w-full h-full bg-grey-9"
         section class="mt-12 text-gray-2"
           h5 class="text-lg font-medium leading-7"
             | Population Served
+          p class="max-w-lg text-sm text-gray-4"
+            | Email 
+            a href="mailto:admin@givingconnection.org"
+              | admin@givingconnection.org 
+            | if you would like to add a population you serve that is not currently found in the list below.
 
           div class="grid grid-cols-12 gap-6 mt-8"
             div class="col-span-12 lg:col-span-6 md:col-span-7" data-controller="options" data-options-options-value=@beneficiaries
@@ -255,6 +265,11 @@ div class="w-full h-full bg-grey-9"
                       = location_service_form.fields_for :services do |service_form|
                         div class="col-span-12 lg:col-span-5 md:col-span-7"
                           = service_form.label "Services offered at this location", class:"text-sm font-medium leading-4 text-gray-2"
+                          p class="text-sm text-gray-4 mt-1"
+                            | Email 
+                            a href="mailto:admin@givingconnection.org"
+                              | admin@givingconnection.org 
+                            | if you would like to add a service not currently found in the list below.
                           = render SelectMultiple::Component.new(name: location_service_form.object_name , items: @services, selected: location_form.object.location_services.map{ |location_service| location_service.service.name }, placeholder: "Write services", required: true)
 
                   div[data-controller="modal" data-modal-allow-background-close="false"]
