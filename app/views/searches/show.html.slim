@@ -1,7 +1,7 @@
 - markers = @results&.map { |l| [l.latitude, l.longitude] }  || []
-= form_with model: @search, url: search_path, class: 'relative', data: { turbo_frame: "search_locations", turbo_action: "advance", controller: 'search search--alerts', 'search--alerts-target': 'form', 'search-target': 'form'}, method: :get do |f|
+= form_with model: @search, url: search_path, class: 'relative', data: { turbo_frame: "search_locations", turbo_action: "advance", controller: 'search search--alerts', 'search--alerts-target': 'form', 'search-target': 'form', onchange: "this.form.requestSubmit()"}, method: :get do |f|
   = render SearchBar::Component.new(form: f, search: @search)
-  - turbo_frame_tag 'search_locations' do
+  = turbo_frame_tag 'search_locations' do
     div class="flex flex-row justify-center w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
       div class="flex flex-row justify-center w-full min-h-full"
         div class="flex flex-col w-full md:border-r max-w-470px border-gray-7"
