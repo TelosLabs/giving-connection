@@ -192,10 +192,8 @@ ActiveRecord::Schema.define(version: 2022_09_14_174749) do
     t.string "organization_website"
     t.string "organization_ein"
     t.text "content"
-    t.string "profile_admin_name", null: false
-    t.string "profile_admin_email", null: false
-    t.index ["name"], name: "index_messages_on_name"
-    t.index ["organization_name"], name: "index_messages_on_organization_name"
+    t.string "profile_admin_name"
+    t.string "profile_admin_email"
   end
 
   create_table "office_hours", force: :cascade do |t|
