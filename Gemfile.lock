@@ -7,15 +7,6 @@ GIT
       administrate (>= 0.15, < 1)
       cocoon (~> 1.2, >= 1.2.11)
 
-GIT
-  remote: https://github.com/hotwired/turbo-rails.git
-  revision: 454efaa27fc64789fca1ea584a0873c82855ba2c
-  specs:
-    turbo-rails (1.3.0)
-      actionpack (>= 6.0.0)
-      activejob (>= 6.0.0)
-      railties (>= 6.0.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -513,6 +504,10 @@ GEM
     thor (1.1.0)
     tilt (2.0.10)
     timecop (0.9.4)
+    turbo-rails (1.3.0)
+      actionpack (>= 6.0.0)
+      activejob (>= 6.0.0)
+      railties (>= 6.0.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (1.8.0)
@@ -609,7 +604,7 @@ DEPENDENCIES
   slim-rails
   spring
   timecop
-  turbo-rails!
+  turbo-rails
   tzinfo-data
   view_component
   web-console (>= 4.1.0)

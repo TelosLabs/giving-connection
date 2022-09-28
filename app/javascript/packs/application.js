@@ -5,7 +5,7 @@
 
 import '../stylesheets/application'
 import Rails from "@rails/ujs"
-import "@hotwired/turbo-rails"
+import * as Turbo from "@hotwired/turbo"
 import * as ActiveStorage from "@rails/activestorage"
 import "../components"
 import "channels"
@@ -21,3 +21,7 @@ window.initMap = function(...args) {
   event.args = args
   window.dispatchEvent(event)
 }
+
+document.addEventListener("turbo:load", () => {
+  console.log("Turbo loaded")
+})
