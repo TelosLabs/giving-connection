@@ -21,7 +21,3 @@ window.initMap = function(...args) {
   event.args = args
   window.dispatchEvent(event)
 }
-
-document.addEventListener("turbo:load", () => {
-  console.log("Turbo loaded")
-})
