@@ -1,6 +1,6 @@
 - markers = @results&.map { |l| [l.latitude, l.longitude] }  || []
 = form_with model: @search, url: search_path, class: 'relative', data: { turbo_frame: "search_locations", turbo_action: "advance", controller: 'search search--alerts', 'search--alerts-target': 'form', 'search-target': 'form'}, method: :get do |f|
-  div data-controller="modal pills"
+  div data-controller="modal"
     = render SearchBar::Component.new(form: f, search: @search)
     = render SearchPills::Component.new(form: f, search: @search)
     div class="fixed inset-0 flex items-center justify-center hidden min-h-screen overflow-y-auto animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;")
