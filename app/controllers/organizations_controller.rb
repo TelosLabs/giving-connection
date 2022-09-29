@@ -29,6 +29,9 @@ class OrganizationsController < ApplicationController
     else
       set_form_data
       flash.now[:alert] = 'The Organization was not updated'
+      @organization.errors.full_messages.each do |message|
+        flash.now[:alert] += ", #{message}"
+      end
       render 'edit', status: :unprocessable_entity
     end
   end
