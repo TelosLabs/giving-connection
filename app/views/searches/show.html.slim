@@ -1,16 +1,16 @@
 - markers = @results&.map { |l| [l.latitude, l.longitude] }  || []
-= form_with model: @search, url: "", class: 'relative', method: :get, data: { turbo_frame: "search-locations", turbo_action: "advance", controller: 'search search--alerts', 'search--alerts-target': 'form', 'search-target': 'form'} do |f|
+= form_with model: @search, url: "", class: 'relative', method: :get, data: { turbo_frame: "search-locations", turbo_action: "replace", controller: 'search search--alerts', 'search--alerts-target': 'form', 'search-target': 'form'} do |f|
   = render SearchBar::Component.new(form: f, search: @search)
   div class="w-full bg-gray-9"
     // Pills Options || Future View Component
     div data-search-target="pills"
       div class="relative" data-controller="tabs" data-tabs-active-tab=("border-b-4 border-blue-medium")
-        button class="absolute top-0 left-0 inline-flex items-center px-1.5 py-0.5 border border-blue-medium rounded-full text-xs leading-[3.5em] bg-white" type="button" data-action="click->search#clearChecked"
-          span data-search-target="pills_counter"
+        button class="absolute top-5 left-5 inline-flex items-center px-1.5 py-0.5 border border-blue-medium rounded-full text-xs leading-[3.5em] bg-white" type="button" data-action="click->search#clearChecked"
+          span data-search-target="pillsCounter"
           - if @params_applied
-            = inline_svg_tag "x-icon.svg", class: 'h-2 w-2 fill-current stroke-current stroke-1 text-blue-medium ml-1 relative'
+            = inline_svg_tag "x-icon.svg", class: 'h-2 w-2 fill-current stroke-current stroke-1 text-blue-medium ml-2 relative'
           - else
-            = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative'
+            = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 ml-2 relative'
         ul class="flex gap-x-6 pl-20 pr-6 text-sm list-none overflow-x-auto overflow-y-hidden bg-blue-pale text-gray-2"
           li data-action="click->tabs#change" data-tabs-target="tab"
             a.inline-block.py-4 href="#" Cause
@@ -186,7 +186,7 @@
                       = result.decorate.closed_office_hours_display
 
         div class="relative hidden w-full md:flex" data-controller="places result-card--component" data-places-zoom-value="10" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
-          div# class="absolute inset-0 w-full h-full xs:h-85vh" data-places-target="map"
+          div class="absolute inset-0 w-full h-full xs:h-85vh" data-places-target="map"
           div class="hidden"
             div class="hidden" data-places-target="latitude"
             div class="hidden" data-places-target="longitude"

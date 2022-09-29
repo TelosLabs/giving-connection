@@ -9,9 +9,6 @@ export default class extends Controller {
 
   connect() {
     useDispatch(this)
-    let checks = this.pillsTarget.querySelectorAll('input[type="checkbox"]:checked').length
-    let radio = this.pillsTarget.querySelectorAll('input[type="radio"]:checked').length
-    this.pillsCounterTarget.innerHTML = checks + radio
   }
 
   clearAll() {

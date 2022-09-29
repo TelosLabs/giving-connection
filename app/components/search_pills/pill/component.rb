@@ -8,7 +8,10 @@ class SearchPills::Pill::Component < ViewComponent::Base
       {
         class: "hidden pill",
         id: SecureRandom.alphanumeric,
-        onchange: "this.form.requestSubmit()"
+        onchange: "this.form.requestSubmit()",
+        data: {
+          action: "change->search#updatePillsCounter"
+        }
       }
     )
     # raise if record_attr == :services

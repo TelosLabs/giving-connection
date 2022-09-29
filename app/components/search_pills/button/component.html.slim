@@ -1,3 +1,3 @@
-= @form.radio_button @record_attr, (@value), checked: @checked, class: "hidden pill", id: @radio_id, onchange: "this.form.requestSubmit()"
+= @form.radio_button @record_attr, (@value), checked: @checked, class: "hidden pill", id: @radio_id, onchange: "this.form.requestSubmit()", data: {action: "change->search#updatePillsCounter"}
 label for=@radio_id class="flex-auto pl-3 py-4 text-xs text-gray-2 border-y border-l-0 border-r border-gray-6 button-label"
   = @copy
