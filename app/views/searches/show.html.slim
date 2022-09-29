@@ -1,67 +1,68 @@
-- markers = @results&.map { |l| [l.latitude, l.longitude] }  || []
-= form_with model: @search, url: search_path, class: 'relative', data: { turbo_frame: "search_locations", turbo_action: "advance", controller: 'search search--alerts', 'search--alerts-target': 'form', 'search-target': 'form'}, method: :get do |f|
-  = render SearchBar::Component.new(form: f, search: @search)
-  div class="w-full bg-gray-9"
-    // Pills Options || Future View Component
-    div data-search-target="pills"
-      div class="relative" data-controller="tabs" data-tabs-active-tab=("-mb-px border-l border-t border-r rounded-t")
-        button class="absolute top-0 left-0 inline-flex items-center px-1.5 py-0.5 border border-blue-medium rounded-full text-xs leading-[3.5em] bg-white" type="button" data-action="click->search#clearChecked"
-          - if @params_applied
-            span data-search-target="pills_counter"
-            = inline_svg_tag "x-icon.svg", class: 'h-2 w-2 fill-current stroke-current stroke-1 text-blue-medium ml-1 relative'
-          - else
-            = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative'
-        ul class="flex gap-x-6 pl-20 pr-6 text-sm list-none overflow-x-auto overflow-y-hidden bg-blue-pale text-gray-2"
-          li data-action="click->tabs#change" data-tabs-target="tab"
-            a.inline-block.py-4 href="#" Cause
-          li data-action="click->tabs#change" data-tabs-target="tab"
-            a.inline-block.py-4 href="#"  Location
-          li data-action="click->tabs#change" data-tabs-target="tab"
-            a.inline-block.py-4 href="#"  Services
-          li data-action="click->tabs#change" data-tabs-target="tab"
-            a.inline-block.py-4 href="#"  P.Served
-          li data-action="click->tabs#change" data-tabs-target="tab"
-            a.inline-block.py-4 href="#"  Hours
-        div
-          div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
-            // Select multple causes and save them to the search
-            - Cause.all.limit(10).each do |cause|
-              = render SearchPills::Pill::Component.new(form: f, record_attr: :causes, options: { multiple: true, checked: params.dig(:search, :causes)&.include?(cause.name) }, value: cause.name)
-          div class="hidden border-l border-b border-r" data-tabs-target="panel"
-            div class="flex w-full md:max-w-485px"
-              / = f.select :distance, options_for_select({"2 mi": 3.21, "5 mi": 8.04, "15 mi": 24.1402}, "#{ params.dig('search', 'distance') }"), { include_blank: '' }, { selected: nil, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px text-base text-gray-3 border-gray-5 focus:ring-blue-medium focus:border-blue-medium", data: { 'search-target': 'input'}, autocomplete:"off" }
-              /= f.radio_button :distance, (3.21), checked: params.dig(:search, :distance) == "3.21"
-              /= f.label :distance, "2 mi", class: 'form-radio text-blue-500 m-1'
-              = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 3.21, checked: params.dig(:search, :distance) == "3.21", copy: "2 mi")
-              = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 8.04, checked: params.dig(:search, :distance) == "8.04", copy: "5 mi")
-              = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 24.1402, checked: params.dig(:search, :distance) == "24.1402", copy: "15 mi")
-              = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 48.2804, checked: params.dig(:search, :distance) == "48.2804", copy: "30 mi")
-              = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 96.5608, checked: params.dig(:search, :distance) == "96.5608", copy: "60 mi")
-              = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 289.6824, checked: params.dig(:search, :distance) == "289.6824", copy: "180 mi")
-              = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 1000000, checked: params.dig(:search, :distance) == "Any 1000000", copy: "Any")
-            // Search Nashville, TN
-            div class="flex flex-wrap gap-x-2 gap-y-3 px-6 py-4"
-              = render SearchPills::Pill::Component.new(form: f, record_attr: :city, options: { checked: true } , value: "Nashville") do
-                | Nashville, TN
-          div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
-            - Service.all.limit(10).each do |service|
-              = render SearchPills::Pill::Component.new(form: f, record_attr: :services, options: { multiple: true, checked: params.dig(:search, :services)&.include?(service.name) }, value: service.name)
-          div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
-            - BeneficiaryGroup.all.limit(10).each do |group|
-              = render SearchPills::Pill::Component.new(form: f, record_attr: :beneficiary_groups, options: { multiple: true, checked: params.dig(:search, :beneficiary_groups)&.include?(group.name) }, value: group.name)
-          div class="hidden py-4 px-6 border-l border-b border-r" data-tabs-target="panel"
-            div class="flex flex-row w-full gap-x-2"
-              = render SearchPills::Pill::Component.new(form: f, record_attr: :open_now, options: { checked: params.dig('search', 'open_now') == 'true' }, value: true) do
-                | Open Now
+div
+  - markers = @results&.map { |l| [l.latitude, l.longitude] }  || []
+  = form_with model: @search, url: search_path, class: 'relative', method: :get, data: { turbo_frame: "search_locations", turbo_action: "advance", controller: 'search search--alerts', 'search--alerts-target': 'form', 'search-target': 'form'} do |f|
+    = render SearchBar::Component.new(form: f, search: @search)
+    div class="w-full bg-gray-9"
+      // Pills Options || Future View Component
+      div data-search-target="pills"
+        div class="relative" data-controller="tabs" data-tabs-active-tab=("-mb-px border-l border-t border-r rounded-t")
+          button class="absolute top-0 left-0 inline-flex items-center px-1.5 py-0.5 border border-blue-medium rounded-full text-xs leading-[3.5em] bg-white" type="button" data-action="click->search#clearChecked"
+            - if @params_applied
+              span data-search-target="pills_counter"
+              = inline_svg_tag "x-icon.svg", class: 'h-2 w-2 fill-current stroke-current stroke-1 text-blue-medium ml-1 relative'
+            - else
+              = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative'
+          ul class="flex gap-x-6 pl-20 pr-6 text-sm list-none overflow-x-auto overflow-y-hidden bg-blue-pale text-gray-2"
+            li data-action="click->tabs#change" data-tabs-target="tab"
+              a.inline-block.py-4 href="#" Cause
+            li data-action="click->tabs#change" data-tabs-target="tab"
+              a.inline-block.py-4 href="#"  Location
+            li data-action="click->tabs#change" data-tabs-target="tab"
+              a.inline-block.py-4 href="#"  Services
+            li data-action="click->tabs#change" data-tabs-target="tab"
+              a.inline-block.py-4 href="#"  P.Served
+            li data-action="click->tabs#change" data-tabs-target="tab"
+              a.inline-block.py-4 href="#"  Hours
+          div
+            div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
+              // Select multple causes and save them to the search
+              - Cause.all.limit(10).each do |cause|
+                = render SearchPills::Pill::Component.new(form: f, record_attr: :causes, options: { multiple: true, checked: params.dig(:search, :causes)&.include?(cause.name) }, value: cause.name)
+            div class="hidden border-l border-b border-r" data-tabs-target="panel"
+              div class="flex w-full md:max-w-485px"
+                / = f.select :distance, options_for_select({"2 mi": 3.21, "5 mi": 8.04, "15 mi": 24.1402}, "#{ params.dig('search', 'distance') }"), { include_blank: '' }, { selected: nil, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px text-base text-gray-3 border-gray-5 focus:ring-blue-medium focus:border-blue-medium", data: { 'search-target': 'input'}, autocomplete:"off" }
+                /= f.radio_button :distance, (3.21), checked: params.dig(:search, :distance) == "3.21"
+                /= f.label :distance, "2 mi", class: 'form-radio text-blue-500 m-1'
+                = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 3.21, checked: params.dig(:search, :distance) == "3.21", copy: "2 mi")
+                = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 8.04, checked: params.dig(:search, :distance) == "8.04", copy: "5 mi")
+                = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 24.1402, checked: params.dig(:search, :distance) == "24.1402", copy: "15 mi")
+                = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 48.2804, checked: params.dig(:search, :distance) == "48.2804", copy: "30 mi")
+                = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 96.5608, checked: params.dig(:search, :distance) == "96.5608", copy: "60 mi")
+                = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 289.6824, checked: params.dig(:search, :distance) == "289.6824", copy: "180 mi")
+                = render SearchPills::Button::Component.new(form: f, record_attr: :distance, value: 1000000, checked: params.dig(:search, :distance) == "Any 1000000", copy: "Any")
+              // Search Nashville, TN
+              div class="flex flex-wrap gap-x-2 gap-y-3 px-6 py-4"
+                = render SearchPills::Pill::Component.new(form: f, record_attr: :city, options: { checked: true } , value: "Nashville") do
+                  | Nashville, TN
+            div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
+              - Service.all.limit(10).each do |service|
+                = render SearchPills::Pill::Component.new(form: f, record_attr: :services, options: { multiple: true, checked: params.dig(:search, :services)&.include?(service.name) }, value: service.name)
+            div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
+              - BeneficiaryGroup.all.limit(10).each do |group|
+                = render SearchPills::Pill::Component.new(form: f, record_attr: :beneficiary_groups, options: { multiple: true, checked: params.dig(:search, :beneficiary_groups)&.include?(group.name) }, value: group.name)
+            div class="hidden py-4 px-6 border-l border-b border-r" data-tabs-target="panel"
+              div class="flex flex-row w-full gap-x-2"
+                = render SearchPills::Pill::Component.new(form: f, record_attr: :open_now, options: { checked: params.dig('search', 'open_now') == 'true' }, value: true) do
+                  | Open Now
 
-              = render SearchPills::Pill::Component.new(form: f, record_attr: :open_weekends, options: { checked: params.dig('search', 'open_weekends') == 'true' }, value: true) do
-                | Open Weekends
+                = render SearchPills::Pill::Component.new(form: f, record_attr: :open_weekends, options: { checked: params.dig('search', 'open_weekends') == 'true' }, value: true) do
+                  | Open Weekends
 
-              = f.hidden_field :lat, value: ""
-              = f.hidden_field :lon, value: ""
-              / Should leave this hardcode for now
-              = f.hidden_field :state, value: "TN"
-              = f.hidden_field :city, value: "Nashville"
+                = f.hidden_field :lat, value: ""
+                = f.hidden_field :lon, value: ""
+                / Should leave this hardcode for now
+                = f.hidden_field :state, value: "TN"
+                = f.hidden_field :city, value: "Nashville"
 
 = turbo_frame_tag "search_locations", target: "_top" do
   div class="flex flex-row justify-center w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
