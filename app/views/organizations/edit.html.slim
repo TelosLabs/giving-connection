@@ -9,6 +9,8 @@ div class="w-full h-full bg-grey-9"
       - if @organization.verified?
         = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1"
     div class="my-4 border-t border-t-blue-pale"
+      - @organization.errors.full_messages.each do |message|
+        = flash.now[:error] = message
 
     = form_for @organization do |f|
       section class="text-gray-2"
@@ -31,7 +33,8 @@ div class="w-full h-full bg-grey-9"
 
           div class="col-span-12 lg:col-span-6 md:col-span-7"
             = f.label :name, "* Organization Name", class: "block text-sm text-gray-3 font-medium"
-            = f.text_field :name, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+            - invalid = @organization.errors.include?(:name) ? "border-red-2" : ""
+            = f.text_field :name, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium invalid", required: true }
 
             div class="flex items-center mt-3"
               = check_box_tag :other_name_check, true, false, class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent ", data: { action: "toggle#toggle" }
@@ -47,13 +50,13 @@ div class="w-full h-full bg-grey-9"
 
           div class="col-span-12 lg:col-span-6 md:col-span-7"
             = f.label :ein_number, "* EIN Number", class: "block text-sm text-gray-3 font-medium"
-            = f.text_field :ein_number, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+            = f.text_field :ein_number, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", required: true }
 
           div class="hidden col-span-3 md:flex"
 
           div class="col-span-12 lg:col-span-6 md:col-span-7"
               = f.label :irs_ntee_code, "* IRS NTEE Code", class: "block text-sm text-gray-3 font-medium"
-              = f.select :irs_ntee_code, options_for_select(Organization::NTEE_CODE, @organization.irs_ntee_code), { include_blank: '' }, { selected: nil, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px text-base text-gray-3 border-gray-5 focus:ring-blue-medium focus:border-blue-medium", autocomplete:"off" }
+              = f.select :irs_ntee_code, options_for_select(Organization::NTEE_CODE, @organization.irs_ntee_code), { include_blank: '' }, { selected: nil, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px text-base text-gray-3 border-gray-5 focus:ring-blue-medium focus:border-blue-medium", autocomplete:"off", required: true }
 
           div class="hidden col-span-3 md:flex"
 
@@ -91,7 +94,7 @@ div class="w-full h-full bg-grey-9"
           div class="grid grid-cols-12 gap-6 mt-8"
             div class="col-span-12 lg:col-span-6 md:col-span-7"
               = f.label :mission_statement_en, "* Mission Statement - What We Do", class: "block text-sm text-gray-3 font-medium"
-              = f.text_area :mission_statement_en, rows: 5, class: "block mt-1 w-full p-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
+              = f.text_area :mission_statement_en, rows: 5, class: "block mt-1 w-full p-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", required: true
 
             div class="hidden col-span-3 md:flex"
 
@@ -135,9 +138,9 @@ div class="w-full h-full bg-grey-9"
           h5 class="text-lg font-medium leading-7"
             | Causes
           p class="max-w-lg text-sm text-gray-4"
-            | Email 
+            | Email
             a href="mailto:admin@givingconnection.org"
-              | admin@givingconnection.org 
+              | admin@givingconnection.org
             | if you would like to add a cause not currently found in the list below.
 
           div class="grid grid-cols-12 gap-6 mt-8"
@@ -149,9 +152,9 @@ div class="w-full h-full bg-grey-9"
           h5 class="text-lg font-medium leading-7"
             | Population Served
           p class="max-w-lg text-sm text-gray-4"
-            | Email 
+            | Email
             a href="mailto:admin@givingconnection.org"
-              | admin@givingconnection.org 
+              | admin@givingconnection.org
             | if you would like to add a population you serve that is not currently found in the list below.
 
           div class="grid grid-cols-12 gap-6 mt-8"
@@ -266,9 +269,9 @@ div class="w-full h-full bg-grey-9"
                         div class="col-span-12 lg:col-span-5 md:col-span-7"
                           = service_form.label "Services offered at this location", class:"text-sm font-medium leading-4 text-gray-2"
                           p class="text-sm text-gray-4 mt-1"
-                            | Email 
+                            | Email
                             a href="mailto:admin@givingconnection.org"
-                              | admin@givingconnection.org 
+                              | admin@givingconnection.org
                             | if you would like to add a service not currently found in the list below.
                           = render SelectMultiple::Component.new(name: location_service_form.object_name , items: @services, selected: location_form.object.location_services.map{ |location_service| location_service.service.name }, placeholder: "Write services", required: true)
 
