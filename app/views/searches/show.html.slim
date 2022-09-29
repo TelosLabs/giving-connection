@@ -26,7 +26,7 @@ div
           div
             div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
               // Select multple causes and save them to the search
-              - Cause.most_repeated.each do |cause|
+              - Cause.most_repeated_in_locations.each do |cause|
                 = render SearchPills::Pill::Component.new(form: f, record_attr: :causes, options: { multiple: true, checked: params.dig(:search, :causes)&.include?(cause.name) }, value: cause.name)
             div class="hidden border-l border-b border-r" data-tabs-target="panel"
               div class="flex w-full md:max-w-485px"
@@ -45,10 +45,10 @@ div
                 = render SearchPills::Pill::Component.new(form: f, record_attr: :city, options: { checked: true } , value: "Nashville") do
                   | Nashville, TN
             div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
-              - Service.all.limit(10).each do |service|
+              - Service.most_repeated_in_locations.each do |service|
                 = render SearchPills::Pill::Component.new(form: f, record_attr: :services, options: { multiple: true, checked: params.dig(:search, :services)&.include?(service.name) }, value: service.name)
             div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
-              - BeneficiaryGroup.all.limit(10).each do |group|
+              - BeneficiarySubcategory.most_repeated_in_organizations.each do |group|
                 = render SearchPills::Pill::Component.new(form: f, record_attr: :beneficiary_groups, options: { multiple: true, checked: params.dig(:search, :beneficiary_groups)&.include?(group.name) }, value: group.name)
             div class="hidden py-4 px-6 border-l border-b border-r" data-tabs-target="panel"
               div class="flex flex-row w-full gap-x-2"

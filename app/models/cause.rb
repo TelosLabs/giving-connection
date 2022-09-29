@@ -12,7 +12,7 @@
 class Cause < ApplicationRecord
   has_many :services
 
-  def self.most_repeated
+  def self.most_repeated_in_locations
     causes_count = {}
     Location.all.each do |location|
       location.causes.each do |cause|
