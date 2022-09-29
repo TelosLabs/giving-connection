@@ -11,4 +11,15 @@
 #
 class Cause < ApplicationRecord
   has_many :services
+
+  def self.most_repeated
+    causes_count = {}
+    Location.all.each do |location|
+      location.causes.each do |cause|
+        causes_count[cause] = causes_count[cause].to_i + 1
+      end
+    end
+    arr = causes_count.sort_by { |cause, count| count }.reverse.first(10)
+    arr.map { |cause, count| cause }
+  end
 end
