@@ -46,7 +46,7 @@ class SearchesController < ApplicationController
     end
     arr = causes_count.sort_by { |cause, count| count }.reverse.first(10)
     @top_10_causes = arr.map { |cause, count| cause }
-    @causes = helpers.take_off_intersection_from_array(Cause.limit(10).pluck(:name), Cause.all.pluck(:name))
+    @causes = helpers.take_off_intersection_from_array(@top_10_causes.pluck(:name), Cause.all.pluck(:name))
   end
 
   def set_services

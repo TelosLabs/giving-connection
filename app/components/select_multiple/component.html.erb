@@ -13,7 +13,7 @@
                                   data: { 'select-multiple-target': "checkbox", action: 'click->select-multiple#select', value: item } %>
                 <%= label_tag item, item, for: item, class: "text-sm text-black w-full" %>
               </div>
-            </div>te
+            </div>
           <% end %>
         <% elsif @items.is_a?(Hash) %>
           <% @items&.sort&.each do |group, list|%>
