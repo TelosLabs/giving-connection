@@ -46,19 +46,22 @@ class SearchesController < ApplicationController
     end
     arr = causes_count.sort_by { |cause, count| count }.reverse.first(10)
     @top_10_causes = arr.map { |cause, count| cause }
+    @causes = helpers.take_off_intersection_from_array(Cause.limit(10).pluck(:name), Cause.all.pluck(:name))
   end
 
   def set_services
     @services = {}
+    first_10 = Service.limit(10).pluck(:name)
     Cause.all.each do |cause|
-      @services[cause.name] = cause.services.map(&:name)
+      @services[cause.name] = helpers.take_off_intersection_from_array(first_10, cause.services.map(&:name))
     end
   end
 
   def set_beneficiary_groups
     @beneficiary_groups = {}
+    first_10 = BeneficiarySubcategory.limit(10).pluck(:name)
     BeneficiaryGroup.all.each do |group|
-      @beneficiary_groups[group.name] = group.beneficiary_subcategories.map(&:name)
+      @beneficiary_groups[group.name] = helpers.take_off_intersection_from_array(first_10, group.beneficiary_subcategories.map(&:name))
     end
   end
 end
