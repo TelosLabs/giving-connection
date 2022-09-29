@@ -1,4 +1,4 @@
-import { Dropdown } from "tailwindcss-stimulus-components";
+import Dropdown from './dropdown_controller.js'
 
 // Extend Dropdown to close it when you press ESC.
 

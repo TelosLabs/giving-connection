@@ -4,14 +4,14 @@ import Rails from '@rails/ujs'
 
 export default class extends Controller {
   static get targets() {
-    return ['input', 'customInput', 'form', 'pills', "pills_counter"]
+    return ['input', 'customInput', 'form', 'pills', "pillsCounter"]
   }
 
   connect() {
     useDispatch(this)
     let checks = this.pillsTarget.querySelectorAll('input[type="checkbox"]:checked').length
     let radio = this.pillsTarget.querySelectorAll('input[type="radio"]:checked').length
-    this.pills_counterTarget.innerHTML = checks + radio
+    this.pillsCounterTarget.innerHTML = checks + radio
   }
 
   clearAll() {
@@ -72,13 +72,13 @@ export default class extends Controller {
       input.checked = false
       input.removeAttribute('checked')
     })
-    this.pills_counterTarget.innerHTML = 0
+    this.pillsCounterTarget.innerHTML = ""
     this.submitForm()
   }
 
   updatePillsCounter() {
     let checks = this.pillsTarget.querySelectorAll('input[type="checkbox"]:checked').length
     let radio = this.pillsTarget.querySelectorAll('input[type="radio"]:checked').length
-    this.pills_counterTarget.innerHTML = checks + radio
+    this.pillsCounterTarget.innerHTML = checks + radio
   }
 }
