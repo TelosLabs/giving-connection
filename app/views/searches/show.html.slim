@@ -5,6 +5,7 @@ div
     div class="w-full bg-gray-9"
       // Pills Options || Future View Component
       div data-search-target="pills"
+        = params
         div class="relative" data-controller="tabs" data-tabs-active-tab=("-mb-px border-l border-t border-r rounded-t")
           button class="absolute top-0 left-0 inline-flex items-center px-1.5 py-0.5 border border-blue-medium rounded-full text-xs leading-[3.5em] bg-white" type="button" data-action="click->search#clearChecked"
             span data-search-target="pillsCounter"
@@ -26,7 +27,7 @@ div
           div
             div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
               // Select multple causes and save them to the search
-              - Cause.most_repeated_in_locations.each do |cause|
+              - @top_10_causes.each do |cause|
                 = render SearchPills::Pill::Component.new(form: f, record_attr: :causes, options: { multiple: true, checked: params.dig(:search, :causes)&.include?(cause.name) }, value: cause.name)
             div class="hidden border-l border-b border-r" data-tabs-target="panel"
               div class="flex w-full md:max-w-485px"
@@ -45,7 +46,7 @@ div
                 = render SearchPills::Pill::Component.new(form: f, record_attr: :city, options: { checked: true } , value: "Nashville") do
                   | Nashville, TN
             div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
-              - Service.most_repeated_in_locations.each do |service|
+              - Service.all.each do |service|
                 = render SearchPills::Pill::Component.new(form: f, record_attr: :services, options: { multiple: true, checked: params.dig(:search, :services)&.include?(service.name) }, value: service.name)
             div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
               - BeneficiarySubcategory.most_repeated_in_organizations.each do |group|

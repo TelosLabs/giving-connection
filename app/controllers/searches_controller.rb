@@ -38,6 +38,14 @@ class SearchesController < ApplicationController
 
   def set_causes
     @causes = Cause.all.pluck(:name)
+    causes_count = {}
+    Location.all.each do |location|
+      location.causes.each do |cause|
+        causes_count[cause] = causes_count[cause].to_i + 1
+      end
+    end
+    arr = causes_count.sort_by { |cause, count| count }.reverse.first(10)
+    @top_10_causes = arr.map { |cause, count| cause }
   end
 
   def set_services
@@ -54,3 +62,15 @@ class SearchesController < ApplicationController
     end
   end
 end
+
+
+# def self.most_repeated_in_locations
+#   services_count = {}
+#   Location.all.each do |location|
+#     location.services.each do |service|
+#       services_count[service] = services_count[service].to_i + 1
+#     end
+#   end
+#   arr = services_count.sort_by { |service, count| count }.reverse.first(10)
+#   arr.map { |service, count| service }
+# end
