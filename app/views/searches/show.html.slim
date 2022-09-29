@@ -4,7 +4,7 @@
   div class="w-full bg-gray-9"
     // Pills Options || Future View Component
     div data-search-target="pills"
-      div class="relative" data-controller="tabs" data-tabs-active-tab=("-mb-px border-l border-t border-r rounded-t")
+      div class="relative" data-controller="tabs" data-tabs-active-tab=("border-b-4 border-blue-medium")
         button class="absolute top-0 left-0 inline-flex items-center px-1.5 py-0.5 border border-blue-medium rounded-full text-xs leading-[3.5em] bg-white" type="button" data-action="click->search#clearChecked"
           - if @params_applied
             span data-search-target="pills_counter"
@@ -47,7 +47,7 @@
             - Service.all.limit(10).each do |service|
               = render SearchPills::Pill::Component.new(form: f, record_attr: :services, options: { multiple: true, checked: params.dig(:search, :services)&.include?(service.name) }, value: service.name)
           div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
-            - BeneficiaryGroup.all.limit(10).each do |group|
+            - BeneficiarySubcategory.all.limit(10).each do |group|
               = render SearchPills::Pill::Component.new(form: f, record_attr: :beneficiary_groups, options: { multiple: true, checked: params.dig(:search, :beneficiary_groups)&.include?(group.name) }, value: group.name)
           div class="hidden py-4 px-6 border-l border-b border-r" data-tabs-target="panel"
             div class="flex flex-row w-full gap-x-2"
@@ -82,7 +82,7 @@
             /! Modal Inner Container
             div class="relative w-full max-h-full max-w-375px"
               /! Modal Card
-              / = render partial: 'filter', locals: { form: f, search: @search, services: @services, causes: @causes, beneficiary_groups: @beneficiary_groups }
+              = render partial: 'filter', locals: { form: f, search: @search, services: @services, causes: @causes, beneficiary_groups: @beneficiary_groups }
           span class="relative z-0 inline-flex shadow-sm md:hidden rounded-6px"
             / active bg-blue-dark.focus:text-white
             / inactive bg-white text-gray-3
