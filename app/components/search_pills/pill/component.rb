@@ -11,6 +11,7 @@ class SearchPills::Pill::Component < ViewComponent::Base
         onchange: "this.form.requestSubmit()"
       }
     )
+    # raise if record_attr == :services
     @value = value
   end
 end

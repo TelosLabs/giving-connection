@@ -5,11 +5,10 @@ div
     div class="w-full bg-gray-9"
       // Pills Options || Future View Component
       div data-search-target="pills"
-        = params
         div class="relative" data-controller="tabs" data-tabs-active-tab=("-mb-px border-l border-t border-r rounded-t")
           button class="absolute top-0 left-0 inline-flex items-center px-1.5 py-0.5 border border-blue-medium rounded-full text-xs leading-[3.5em] bg-white" type="button" data-action="click->search#clearChecked"
-            span data-search-target="pillsCounter"
             - if @params_applied
+              span data-search-target="pillsCounter"
               = inline_svg_tag "x-icon.svg", class: 'h-2 w-2 fill-current stroke-current stroke-1 text-blue-medium ml-1 relative'
             - else
               = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative'
