@@ -7,6 +7,7 @@ export default class extends Controller {
     this.activeTabClasses = (this.data.get('activeTab') || 'active').split(' ')
     this.inactiveTabClasses = (this.data.get('inactiveTab') || 'inactive').split(' ')
     if (this.anchor) this.index = this.tabTargets.findIndex((tab) => tab.id === this.anchor)
+    if (localStorage.getItem('tab')) this.index = localStorage.getItem('tab')
     this.showTab()
   }
 
@@ -16,7 +17,7 @@ export default class extends Controller {
     // If target specifies an index, use that
     if (event.currentTarget.dataset.index) {
       this.index = event.currentTarget.dataset.index
-
+      localStorage.setItem('tab', this.index)
     // If target specifies an id, use that
     } else if (event.currentTarget.dataset.id) {
       this.index = this.tabTargets.findIndex((tab) => tab.id == event.currentTarget.dataset.id)
