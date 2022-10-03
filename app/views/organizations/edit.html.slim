@@ -9,8 +9,11 @@ div class="w-full h-full bg-grey-9"
       - if @organization.verified?
         = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1"
     div class="my-4 border-t border-t-blue-pale"
-      - @organization.errors.full_messages.each do |message|
-        = flash.now[:error] = message
+    - if @organization.errors.any?
+      - ul
+        - @organization.errors.full_messages.each do |message|
+          li class="text-red-500"
+            = message
 
     = form_for @organization do |f|
       section class="text-gray-2"
