@@ -25,6 +25,8 @@
         div
           div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
             // Select multple causes and save them to the search
+            = f.check_box :all, { class: "px-2 py-1.5 border border-gray-6 rounded-full text-gray-2 text-xs whitespace-nowrap", data: { action: "change->search#toggleAllCausesPills" } }, "All", nil
+            = f.label :all, 'All'
             - @top_10_causes.each do |cause|
               = render SearchPills::Pill::Component.new(form: f, record_attr: :causes, options: { multiple: true, checked: params.dig(:search, :causes)&.include?(cause.name) }, value: cause.name)
           div class="hidden border-l border-b border-r" data-tabs-target="panel"
@@ -44,9 +46,13 @@
               = render SearchPills::Pill::Component.new(form: f, record_attr: :city, options: { checked: true } , value: "Nashville") do
                 | Nashville, TN
           div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
+            = f.check_box :all, { class: "px-2 py-1.5 border border-gray-6 rounded-full text-gray-2 text-xs whitespace-nowrap", data: { action: "change->search#toggleAllServicesPills" } }, "All", nil
+            = f.label :all, 'All'
             - Service.all.limit(10).each do |service|
               = render SearchPills::Pill::Component.new(form: f, record_attr: :services, options: { multiple: true, checked: params.dig(:search, :services)&.include?(service.name) }, value: service.name)
           div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
+            = f.check_box :all, { class: "px-2 py-1.5 border border-gray-6 rounded-full text-gray-2 text-xs whitespace-nowrap", data: { action: "change->search#toggleAllBeneficiaryGroupsPills" } }, "All", nil
+            = f.label :all, 'All'
             - BeneficiarySubcategory.all.limit(10).each do |group|
               = render SearchPills::Pill::Component.new(form: f, record_attr: :beneficiary_groups, options: { multiple: true, checked: params.dig(:search, :beneficiary_groups)&.include?(group.name) }, value: group.name)
           div class="hidden py-4 px-6 border-l border-b border-r" data-tabs-target="panel"

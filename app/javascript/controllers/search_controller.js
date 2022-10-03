@@ -4,11 +4,38 @@ import Rails from '@rails/ujs'
 
 export default class extends Controller {
   static get targets() {
-    return ['input', 'customInput', 'form', 'pills', "pillsCounter"]
+    return ['input', 'customInput', 'form', 'pills', "pillsCounter", "causesPill", "servicesPill", "beneficiaryGroupsPill"]
   }
 
   connect() {
     useDispatch(this)
+  }
+
+  toggleAllCausesPills() {
+    this.causesPillTargets.forEach(pill => {
+      pill.checked = true
+      pill.setAttribute('checked', true)
+    })
+    this.updatePillsCounter()
+    this.submitForm()
+  }
+
+  toggleAllServicesPills() {
+    this.servicesPillTargets.forEach(pill => {
+      pill.checked = true
+      pill.setAttribute('checked', true)
+    })
+    this.updatePillsCounter()
+    this.submitForm()
+  }
+
+  toggleAllBeneficiaryGroupsPills() {
+    this.beneficiaryGroupsPillTargets.forEach(pill => {
+      pill.checked = true
+      pill.setAttribute('checked', true)
+    })
+    this.updatePillsCounter()
+    this.submitForm()
   }
 
   clearAll() {
