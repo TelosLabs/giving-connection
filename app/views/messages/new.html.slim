@@ -31,6 +31,13 @@
   = form_with model: @message, method: :post, data: { controller: 'contact-form'} do |f|
     .c-form class="gap-6 pb-11 md:pb-36"
       div class="w-full"
+        p class="text-xs text-gray-3"
+          | Please, review this problems below:
+        ul
+          li class="text-xs text-red-1" data-contact-form-target="error"
+            - @message.errors.full_messages.each do |msg|
+              = "- #{msg}"
+      div class="w-full"
         = f.label :name, "*Name"
         = f.text_field :name, autofocus: true, class:"c-input", required: true
       div class="w-full"

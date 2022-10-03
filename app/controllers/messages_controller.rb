@@ -14,8 +14,8 @@ class MessagesController < ApplicationController
       flash[:notice] = 'Your message was successfully sent!'
       redirect_to root_path
     else
-      flash.now[:error] = 'Invalid reCAPTCHA!'
-      render :new
+      flash.now[:alert] = 'Your message was not sent.'
+      render :new, status: :unprocessable_entity
     end
   end
 
