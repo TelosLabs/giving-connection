@@ -13,8 +13,13 @@ export default class extends Controller {
 
   toggleAllCausesPills() {
     this.causesPillTargets.forEach(pill => {
+      if (pill.checked) {
+        pill.checked = false
+        pill.removeAttribute('checked')
+      } else {
       pill.checked = true
       pill.setAttribute('checked', true)
+      }
     })
     this.updatePillsCounter()
     this.submitForm()
@@ -22,8 +27,13 @@ export default class extends Controller {
 
   toggleAllServicesPills() {
     this.servicesPillTargets.forEach(pill => {
+      if (pill.checked) {
+        pill.checked = false
+        pill.removeAttribute('checked')
+      } else {
       pill.checked = true
       pill.setAttribute('checked', true)
+      }
     })
     this.updatePillsCounter()
     this.submitForm()
@@ -31,12 +41,18 @@ export default class extends Controller {
 
   toggleAllBeneficiaryGroupsPills() {
     this.beneficiaryGroupsPillTargets.forEach(pill => {
+      if (pill.checked) {
+        pill.checked = false
+        pill.removeAttribute('checked')
+      } else {
       pill.checked = true
       pill.setAttribute('checked', true)
+      }
     })
     this.updatePillsCounter()
     this.submitForm()
   }
+
 
   clearAll() {
     const event = new CustomEvent('selectmultiple:clear', {  })
