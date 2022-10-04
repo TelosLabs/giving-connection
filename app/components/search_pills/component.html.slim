@@ -32,7 +32,7 @@ div class="w-full bg-gray-9"
         div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
           = @form.check_box :all, { class: "px-2 py-1.5 border border-gray-6 rounded-full text-gray-2 text-xs whitespace-nowrap", data: { action: "change->search#toggleAllBeneficiaryGroupsPills", 'search-target': "selectAllBeneficiaryGroupsPill" } }, "All", nil
           = @form.label :all, 'All'
-          - @beneficiary_subcategories.all.limit(10).each do |subcategory|
+          - @beneficiary_subcategories.each do |subcategory|
             = render SearchPills::Pill::Component.new(name: "search[beneficiary_groups][#{subcategory.beneficiary_group.name}][]", value: subcategory.name, checked: @params.dig('search', 'beneficiary_groups', subcategory.beneficiary_group.name)&.include?(subcategory.name), options: { multiple: true})
         div class="hidden py-4 px-6 border-l border-b border-r" data-tabs-target="panel"
           div class="flex flex-row w-full gap-x-2"
