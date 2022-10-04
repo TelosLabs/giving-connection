@@ -36,6 +36,11 @@ class SearchesController < ApplicationController
   private
 
   def set_causes
+    top_10_causes
+    @causes = helpers.take_off_intersection_from_array(@top_10_causes.pluck(:name), Cause.all.pluck(:name))
+  end
+
+  def top_10_causes
     causes_count = {}
     Location.all.each do |location|
       location.causes.each do |cause|
@@ -44,11 +49,17 @@ class SearchesController < ApplicationController
     end
     arr = causes_count.sort_by { |cause, count| count }.reverse.first(10)
     @top_10_causes = arr.map { |cause, count| cause }
-    @causes = helpers.take_off_intersection_from_array(@top_10_causes.pluck(:name), Cause.all.pluck(:name))
   end
 
   def set_services
     @services = {}
+    top_10_services
+    Cause.all.each do |cause|
+      @services[cause.name] = helpers.take_off_intersection_from_array(@top_10_services.pluck(:name), cause.services.map(&:name))
+    end
+  end
+
+  def top_10_services
     services_count = {}
     Location.all.each do |location|
       location.services.each do |service|
@@ -57,13 +68,17 @@ class SearchesController < ApplicationController
     end
     arr = services_count.sort_by { |service, count| count }.reverse.first(10)
     @top_10_services = arr.map { |service, count| service }
-    Cause.all.each do |cause|
-      @services[cause.name] = helpers.take_off_intersection_from_array(@top_10_services.pluck(:name), cause.services.map(&:name))
-    end
   end
 
   def set_beneficiary_groups
     @beneficiary_groups = {}
+    top_10_beneficiary_subcategories
+    BeneficiaryGroup.all.each do |group|
+      @beneficiary_groups[group.name] = helpers.take_off_intersection_from_array(@top_10_beneficiary_subcategories.pluck(:name), group.beneficiary_subcategories.map(&:name))
+    end
+  end
+
+  def top_10_beneficiary_subcategories
     beneficiary_subcategories_count = {}
     Organization.all.each do |org|
       org.beneficiary_subcategories.each do |beneficiary_subcategory|
@@ -72,8 +87,5 @@ class SearchesController < ApplicationController
     end
     arr = beneficiary_subcategories_count.sort_by { |beneficiary_subcategory, count| count }.reverse.first(10)
     @top_10_beneficiary_subcategories = arr.map { |beneficiary_subcategory, count| beneficiary_subcategory }
-    BeneficiaryGroup.all.each do |group|
-      @beneficiary_groups[group.name] = helpers.take_off_intersection_from_array(@top_10_beneficiary_subcategories.pluck(:name), group.beneficiary_subcategories.map(&:name))
-    end
   end
 end
