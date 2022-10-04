@@ -64,15 +64,3 @@ class SearchesController < ApplicationController
     end
   end
 end
-
-
-# def self.most_repeated_in_locations
-#   services_count = {}
-#   Location.all.each do |location|
-#     location.services.each do |service|
-#       services_count[service] = services_count[service].to_i + 1
-#     end
-#   end
-#   arr = services_count.sort_by { |service, count| count }.reverse.first(10)
-#   arr.map { |service, count| service }
-# end
