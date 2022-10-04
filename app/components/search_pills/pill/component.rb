@@ -10,8 +10,8 @@ class SearchPills::Pill::Component < ViewComponent::Base
         id: SecureRandom.alphanumeric,
         onchange: 'this.form.requestSubmit()',
         data: {
-          action: 'change->search#updatePillsCounter',
-          'search-target': set_target
+          action: 'change->pills#updatePillsCounter',
+          'pill-target': set_target
         }
       }
     )

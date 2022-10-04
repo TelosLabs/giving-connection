@@ -1,12 +1,12 @@
 - markers = @results&.map { |l| [l.latitude, l.longitude] }  || []
-= form_with model: @search, url: "", class: 'relative', method: :get, data: { turbo_frame: "search-locations", turbo_action: "replace", controller: 'search search--alerts', 'search--alerts-target': 'form', 'search-target': 'form'} do |f|
+= form_with model: @search, url: "", class: 'relative', method: :get, data: { turbo_frame: "search-locations", turbo_action: "replace", controller: 'search search--alerts', 'search--alerts-target': 'form', 'search-target': 'form', 'pills-target': 'form'} do |f|
   = render SearchBar::Component.new(form: f, search: @search)
   div class="w-full bg-gray-9"
     // Pills Options || Future View Component
-    div data-search-target="pills"
+    div data-controller="pills" data-pills-target="pills"
       div class="relative" data-controller="tabs" data-tabs-active-tab=("border-b-4 border-blue-medium")
-        button class="absolute top-5 left-5 inline-flex items-center px-1.5 py-0.5 border border-blue-medium rounded-full text-xs leading-[3.5em] bg-white" type="button" data-action="click->search#clearChecked"
-          span data-search-target="pillsCounter"
+        button class="absolute top-5 left-5 inline-flex items-center px-1.5 py-0.5 border border-blue-medium rounded-full text-xs leading-[3.5em] bg-white" type="button" data-action="click->pills#clearChecked"
+          span data-pills-target="pillsCounter"
           - if @params_applied
             = inline_svg_tag "x-icon.svg", class: 'h-2 w-2 fill-current stroke-current stroke-1 text-blue-medium ml-2 relative'
           - else
@@ -25,7 +25,7 @@
         div
           div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
             // Select multple causes and save them to the search
-            = f.check_box :all, { class: "px-2 py-1.5 border border-gray-6 rounded-full text-gray-2 text-xs whitespace-nowrap", data: { action: "change->search#toggleAllCausesPills" } }, "All", nil
+            = f.check_box :all, { class: "px-2 py-1.5 border border-gray-6 rounded-full text-gray-2 text-xs whitespace-nowrap", data: { action: "change->pills#toggleAllCausesPills", 'pills-target': "selectAllCausesPill" } }, "All", nil
             = f.label :all, 'All'
             - @top_10_causes.each do |cause|
               = render SearchPills::Pill::Component.new(form: f, record_attr: :causes, options: { multiple: true, checked: params.dig(:search, :causes)&.include?(cause.name) }, value: cause.name)
@@ -46,12 +46,12 @@
               = render SearchPills::Pill::Component.new(form: f, record_attr: :city, options: { checked: true } , value: "Nashville") do
                 | Nashville, TN
           div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
-            = f.check_box :all, { class: "px-2 py-1.5 border border-gray-6 rounded-full text-gray-2 text-xs whitespace-nowrap", data: { action: "change->search#toggleAllServicesPills" } }, "All", nil
+            = f.check_box :all, { class: "px-2 py-1.5 border border-gray-6 rounded-full text-gray-2 text-xs whitespace-nowrap", data: { action: "change->pills#toggleAllServicesPills", 'pills-target': "selectAllServicesPill" } }, "All", nil
             = f.label :all, 'All'
             - Service.all.limit(10).each do |service|
               = render SearchPills::Pill::Component.new(form: f, record_attr: :services, options: { multiple: true, checked: params.dig(:search, :services)&.include?(service.name) }, value: service.name)
           div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
-            = f.check_box :all, { class: "px-2 py-1.5 border border-gray-6 rounded-full text-gray-2 text-xs whitespace-nowrap", data: { action: "change->search#toggleAllBeneficiaryGroupsPills" } }, "All", nil
+            = f.check_box :all, { class: "px-2 py-1.5 border border-gray-6 rounded-full text-gray-2 text-xs whitespace-nowrap", data: { action: "change->pills#toggleAllBeneficiaryGroupsPills", 'pills-target': "selectAllBeneficiaryGroupsPill" } }, "All", nil
             = f.label :all, 'All'
             - BeneficiarySubcategory.all.limit(10).each do |group|
               = render SearchPills::Pill::Component.new(form: f, record_attr: :beneficiary_groups, options: { multiple: true, checked: params.dig(:search, :beneficiary_groups)&.include?(group.name) }, value: group.name)

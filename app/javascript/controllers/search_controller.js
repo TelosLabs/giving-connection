@@ -4,7 +4,7 @@ import Rails from '@rails/ujs'
 
 export default class extends Controller {
   static get targets() {
-    return ['input', 'customInput', 'form', 'pills', "pillsCounter", "causesPill", "servicesPill", "beneficiaryGroupsPill"]
+    return ['input', 'customInput', 'form', 'pills', "pillsCounter", "causesPill", "servicesPill", "beneficiaryGroupsPill", "selectAllCausesPill", "selectAllServicesPill", "selectAllBeneficiaryGroupsPill"]
   }
 
   connect() {
@@ -12,7 +12,7 @@ export default class extends Controller {
   }
 
   toggleAllCausesPills() {
-    if (this.allPillsAreChecked(this.causesPillTargets)) {
+    if (this.allPillsAreChecked(this.causesPillTargets) == "allSelected") {
       this.causesPillTargets.forEach(pill => {
         pill.checked = false
         pill.removeAttribute('checked')
@@ -28,7 +28,7 @@ export default class extends Controller {
   }
 
   toggleAllServicesPills() {
-    if (this.allPillsAreChecked(this.servicesPillTargets)) {
+    if (this.allPillsAreChecked(this.servicesPillTargets) == "allSelected") {
       this.servicesPillTargets.forEach(pill => {
         pill.checked = false
         pill.removeAttribute('checked')
@@ -44,7 +44,7 @@ export default class extends Controller {
   }
 
   toggleAllBeneficiaryGroupsPills() {
-    if (this.allPillsAreChecked(this.beneficiaryGroupsPillTargets)) {
+    if (this.allPillsAreChecked(this.beneficiaryGroupsPillTargets) == "allSelected") {
       this.beneficiaryGroupsPillTargets.forEach(pill => {
         pill.checked = false
         pill.removeAttribute('checked')
@@ -66,7 +66,13 @@ export default class extends Controller {
         checked_pills.push(pill)
       }
     })
-    return checked_pills.length == pills.length
+    if (checked_pills.length == pills.length) {
+      return "allSelected"
+    } else if (checked_pills.length == 0) {
+      return "noneSelected"
+    } else if (checked_pills.length > 0 && checked_pills.length < pills.length) {
+      return "someSelected"
+    }
   }
 
 
@@ -136,5 +142,17 @@ export default class extends Controller {
     let checks = this.pillsTarget.querySelectorAll('input[type="checkbox"]:checked').length
     let radio = this.pillsTarget.querySelectorAll('input[type="radio"]:checked').length
     this.pillsCounterTarget.innerHTML = checks + radio
+    if (this.allPillsAreChecked(this.causesPillTargets) == "someSelected") {
+      this.selectAllCausesPillTarget.checked = false
+      this.selectAllCausesPillTarget.removeAttribute('checked')
+    }
+    if (this.allPillsAreChecked(this.servicesPillTargets) == "someSelected") {
+      this.selectAllServicesPillTarget.checked = false
+      this.selectAllServicesPillTarget.removeAttribute('checked')
+    }
+    if (this.allPillsAreChecked(this.beneficiaryGroupsPillTargets) == "someSelected") {
+      this.selectAllBeneficiaryGroupsPillTarget.checked = false
+      this.selectAllBeneficiaryGroupsPillTarget.removeAttribute('checked')
+    }
   }
 }
