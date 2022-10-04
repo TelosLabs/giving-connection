@@ -1,19 +1,19 @@
 .main
-  - if current_page?(non_profit_contact_path)
+  - if current_page?(non_profit_contact_path) || @form_to_render == "add_nonprofit"
     h2 class="pb-4 text-2xl font-bold text-center pt-6 md:pt-16 md:mt-2 md:pb-9 text-gray-3"
       | Add or Claim a Nonprofit
 
-    div class="max-w-md px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
+    p class="max-w-2xl px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
       | Giving Connection is a platform designed to connect people with nonprofits in their communities.
-    div class="max-w-md px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
+    p class="max-w-2xl px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
       |  In order to create a nonprofit profile that is listed in Giving Connection's search results, a representative from your nonprofit should fill out the following form.
-    div class="max-w-md px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
+    p class="max-w-2xl px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
       |  After we verify the nonprofit organization, we will contact the representative listed below to set up an account. You should expect to hear back from us within 1-2 weeks.
   - else
     h2 class="pb-4 text-2xl font-bold text-center pt-6 md:pt-16 md:mt-2 md:pb-9 text-gray-3"
       | Get in Touch
 
-    div class="max-w-md px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
+    p class="max-w-lg px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
       | Send us a message and we’ll get back to you as soon as we can.
 
   div class="md:hidden -z-1"
@@ -32,7 +32,7 @@
     .c-form class="gap-6 pb-11 md:pb-36"
       div class="w-full"
         = f.label :name, "*Name"
-        = f.text_field :name, autofocus: true, class:"c-input", required: true
+        = f.text_field :name, class:"c-input", required: true
       div class="w-full"
         = f.label :email, "*Email"
         = f.email_field :email, class:"c-input", required: true
@@ -44,7 +44,8 @@
         = f.select :subject,\
         [['I want to publish a nonprofit on Giving Connection', '1'],['I want to claim ownership of a nonprofit page', '2'], ['Other', '3']],\
         {}, {class: "c-input pr-7 bg-white", required: true, data: { action: "change->contact-form#subjectSelected",'contact-form-target': 'subject'}}
-      - if current_page?(non_profit_contact_path)
+      - if current_page?(non_profit_contact_path) || @form_to_render == "add_nonprofit"
+        = f.text_field :form_definition, value: "add_nonprofit", class:"hidden"
         div class="w-full"
           = f.label :organization_name, "*Organization Name"
           = f.text_field :organization_name, class:"c-input", required: true
@@ -54,6 +55,14 @@
         div class="w-full"
           = f.label :organization_ein, "Organization EIN"
           = f.text_field :organization_ein, class:"c-input", placeholder:"Your Organization EIN"
+        div class="w-full"
+          = f.label :profile_admin_name, "*Profile Admin Name"
+          = f.text_field :profile_admin_name, class:"c-input", required: true
+          small class="inline-block mt-1.5 leading-normal"
+            | Your profile admin is the person who will be updating the page information.
+        div class="w-full"
+          = f.label :profile_admin_email, "*Profile Admin Email"
+          = f.text_field :profile_admin_email, class:"c-input", required: true
       div class="w-full"
         = f.label :content, "*Message"
         = f.text_area :content, class:"c-input h-40", required: true, data: { 'contact-form-target': 'message'}
