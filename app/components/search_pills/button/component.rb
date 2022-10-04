@@ -1,9 +1,8 @@
 require "securerandom"
 
 class SearchPills::Button::Component < ViewComponent::Base
-  def initialize(form:, record_attr:, value:, checked:, copy:)
-    @form = form
-    @record_attr = record_attr
+  def initialize(name:, value:, checked:, copy:)
+    @name = name
     @value = value
     @checked = checked
     @copy = copy
