@@ -1,6 +1,7 @@
 class SearchPills::Component < ViewComponent::Base
-  def initialize(causes:, services:, beneficiary_subcategories:, params:, params_applied:)
+  def initialize(causes:, services:, beneficiary_subcategories:, params:, params_applied:, form:)
     @causes = causes
+    @form = form
     @services = services
     @beneficiary_subcategories = beneficiary_subcategories
     @params = params
