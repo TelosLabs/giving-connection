@@ -28,29 +28,33 @@ export default class extends Controller {
   }
 
   toggleAllServicesPills() {
-    this.servicesPillTargets.forEach(pill => {
-      if (pill.checked) {
+    if (this.allPillsAreChecked(this.servicesPillTargets)) {
+      this.servicesPillTargets.forEach(pill => {
         pill.checked = false
         pill.removeAttribute('checked')
-      } else {
-      pill.checked = true
-      pill.setAttribute('checked', true)
-      }
-    })
+      })
+    } else {
+      this.servicesPillTargets.forEach(pill => {
+        pill.checked = true
+        pill.setAttribute('checked', true)
+      })
+    }
     this.updatePillsCounter()
     this.submitForm()
   }
 
   toggleAllBeneficiaryGroupsPills() {
-    this.beneficiaryGroupsPillTargets.forEach(pill => {
-      if (pill.checked) {
+    if (this.allPillsAreChecked(this.beneficiaryGroupsPillTargets)) {
+      this.beneficiaryGroupsPillTargets.forEach(pill => {
         pill.checked = false
         pill.removeAttribute('checked')
-      } else {
-      pill.checked = true
-      pill.setAttribute('checked', true)
-      }
-    })
+      })
+    } else {
+      this.beneficiaryGroupsPillTargets.forEach(pill => {
+        pill.checked = true
+        pill.setAttribute('checked', true)
+      })
+    }
     this.updatePillsCounter()
     this.submitForm()
   }
