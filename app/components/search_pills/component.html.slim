@@ -3,9 +3,12 @@ div class="w-full bg-gray-9"
     div data-controller="tabs" data-tabs-active-tab=("border-b-4 border-blue-medium")
       div class="flex"
         button class="h-14 pl-6 py-4 pr-3 text-xs bg-blue-pale" type="button" data-action="click->search#clearChecked"
-          span class="inline-flex items-center px-1 py-0.5 border border-blue-medium rounded-full bg-white"
-            span data-search-target="pillsCounter" class="mr-0.5"
-            = inline_svg_tag "x-icon.svg", class: 'h-2 w-2 fill-current stroke-current stroke-1 text-blue-medium ml-1 relative'
+          - if @params_applied
+            span class="inline-flex items-center px-1 py-0.5 border border-blue-medium rounded-full bg-white"
+              span data-search-target="pillsCounter" class="mr-0.5"
+              = inline_svg_tag "x-icon.svg", class: 'h-2 w-2 fill-current stroke-current stroke-1 text-blue-medium ml-1 relative'
+          - else
+            = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative'
         ul class="flex flex-1 gap-x-6 pl-5 pr-6 text-sm list-none overflow-x-auto overflow-y-hidden bg-blue-pale text-gray-2"
           - @tabs_labels.each do |tab_label|
             li data-action="click->tabs#change" data-tabs-target="tab"
