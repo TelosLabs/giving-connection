@@ -1,5 +1,5 @@
 .main
-  - if current_page?(non_profit_contact_path)
+  - if current_page?(non_profit_contact_path) || @form_to_render == "add_nonprofit"
     h2 class="pb-4 text-2xl font-bold text-center pt-6 md:pt-16 md:mt-2 md:pb-9 text-gray-3"
       | Add or Claim a Nonprofit
 
@@ -44,7 +44,8 @@
         = f.select :subject,\
         [['I want to publish a nonprofit on Giving Connection', '1'],['I want to claim ownership of a nonprofit page', '2'], ['Other', '3']],\
         {}, {class: "c-input pr-7 bg-white", required: true, data: { action: "change->contact-form#subjectSelected",'contact-form-target': 'subject'}}
-      - if current_page?(non_profit_contact_path)
+      - if current_page?(non_profit_contact_path) || @form_to_render == "add_nonprofit"
+        = f.text_field :form_definition, value: "add_nonprofit", class:"hidden"
         div class="w-full"
           = f.label :organization_name, "*Organization Name"
           = f.text_field :organization_name, class:"c-input", required: true

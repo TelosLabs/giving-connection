@@ -17,8 +17,8 @@
 #  profile_admin_email  :string           not null
 #
 class Message < ActiveRecord::Base
+  attr_accessor :form_definition
+
   validates :name, presence: true
   validates :email, presence: true
-  validates :profile_admin_name, presence: true
-  validates :profile_admin_email, presence: true
 end
