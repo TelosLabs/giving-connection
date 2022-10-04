@@ -9,7 +9,13 @@ div class="w-full h-full bg-grey-9"
       - if @organization.verified?
         = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1"
     div class="my-4 border-t border-t-blue-pale"
-
+      - if @organization.errors.any?
+        p class="text-red-500 italic font-semibold"
+          | Please review the problems below:
+        ul
+          - @organization.errors.full_messages.each do |message|
+            li class="text-red-500 text-sm"
+              = "- #{message}"
     = form_for @organization do |f|
       section class="text-gray-2"
         h5 class="text-lg font-medium leading-7"
@@ -135,9 +141,9 @@ div class="w-full h-full bg-grey-9"
           h5 class="text-lg font-medium leading-7"
             | Causes
           p class="max-w-lg text-sm text-gray-4"
-            | Email 
+            | Email
             a href="mailto:admin@givingconnection.org"
-              | admin@givingconnection.org 
+              | admin@givingconnection.org
             | if you would like to add a cause not currently found in the list below.
 
           div class="grid grid-cols-12 gap-6 mt-8"
@@ -149,9 +155,9 @@ div class="w-full h-full bg-grey-9"
           h5 class="text-lg font-medium leading-7"
             | Population Served
           p class="max-w-lg text-sm text-gray-4"
-            | Email 
+            | Email
             a href="mailto:admin@givingconnection.org"
-              | admin@givingconnection.org 
+              | admin@givingconnection.org
             | if you would like to add a population you serve that is not currently found in the list below.
 
           div class="grid grid-cols-12 gap-6 mt-8"
@@ -266,9 +272,9 @@ div class="w-full h-full bg-grey-9"
                         div class="col-span-12 lg:col-span-5 md:col-span-7"
                           = service_form.label "Services offered at this location", class:"text-sm font-medium leading-4 text-gray-2"
                           p class="text-sm text-gray-4 mt-1"
-                            | Email 
+                            | Email
                             a href="mailto:admin@givingconnection.org"
-                              | admin@givingconnection.org 
+                              | admin@givingconnection.org
                             | if you would like to add a service not currently found in the list below.
                           = render SelectMultiple::Component.new(name: location_service_form.object_name , items: @services, selected: location_form.object.location_services.map{ |location_service| location_service.service.name }, placeholder: "Write services", required: true)
 
