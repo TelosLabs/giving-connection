@@ -23,8 +23,8 @@ export default class extends Controller {
         pill.setAttribute('checked', true)
       })
     }
-    this.updatePillsCounter()
     this.submitForm()
+    this.updatePillsCounter()
   }
 
   toggleAllServicesPills() {
@@ -39,8 +39,8 @@ export default class extends Controller {
         pill.setAttribute('checked', true)
       })
     }
-    this.updatePillsCounter()
     this.submitForm()
+    this.updatePillsCounter()
   }
 
   toggleAllBeneficiaryGroupsPills() {
@@ -55,8 +55,8 @@ export default class extends Controller {
         pill.setAttribute('checked', true)
       })
     }
-    this.updatePillsCounter()
     this.submitForm()
+    this.updatePillsCounter()
   }
 
   allPillsAreChecked(pills) {
