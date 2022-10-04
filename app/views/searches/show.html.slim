@@ -25,7 +25,7 @@
         div
           div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
             // Select multple causes and save them to the search
-            = f.check_box :all, { class: "px-2 py-1.5 border border-gray-6 rounded-full text-gray-2 text-xs whitespace-nowrap", data: { action: "change->search#toggleAllCausesPills" } }, "All", nil
+            = f.check_box :all, { class: "px-2 py-1.5 border border-gray-6 rounded-full text-gray-2 text-xs whitespace-nowrap", data: { action: "change->search#toggleAllCausesPills", 'search-target': "allCausesPill" } }, "All", nil
             = f.label :all, 'All'
             - @top_10_causes.each do |cause|
               = render SearchPills::Pill::Component.new(form: f, record_attr: :causes, options: { multiple: true, checked: params.dig(:search, :causes)&.include?(cause.name) }, value: cause.name)
