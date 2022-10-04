@@ -12,15 +12,17 @@ export default class extends Controller {
   }
 
   toggleAllCausesPills() {
-    this.causesPillTargets.forEach(pill => {
-      if (pill.checked) {
+    if (this.allPillsAreChecked(this.causesPillTargets)) {
+      this.causesPillTargets.forEach(pill => {
         pill.checked = false
         pill.removeAttribute('checked')
-      } else {
-      pill.checked = true
-      pill.setAttribute('checked', true)
-      }
-    })
+      })
+    } else {
+      this.causesPillTargets.forEach(pill => {
+        pill.checked = true
+        pill.setAttribute('checked', true)
+      })
+    }
     this.updatePillsCounter()
     this.submitForm()
   }
@@ -51,6 +53,16 @@ export default class extends Controller {
     })
     this.updatePillsCounter()
     this.submitForm()
+  }
+
+  allPillsAreChecked(pills) {
+    let checked_pills = []
+    pills.forEach(pill => {
+      if (pill.checked) {
+        checked_pills.push(pill)
+      }
+    })
+    return checked_pills.length == pills.length
   }
 
 
