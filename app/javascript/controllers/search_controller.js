@@ -15,12 +15,12 @@ export default class extends Controller {
     if (this.allPillsAreChecked(this.causesPillTargets) == "allSelected") {
       this.causesPillTargets.forEach(pill => {
         pill.checked = false
-        // pill.removeAttribute('checked')
+        pill.removeAttribute('checked')
       })
     } else {
       this.causesPillTargets.forEach(pill => {
         pill.checked = true
-        // pill.setAttribute('checked', true)
+        pill.setAttribute('checked', true)
       })
     }
     this.updatePillsCounter()

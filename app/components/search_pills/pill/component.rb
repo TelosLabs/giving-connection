@@ -21,13 +21,8 @@ class SearchPills::Pill::Component < ViewComponent::Base
   end
 
   def set_target
-    case @record_attr
-    when :services
-      "servicesPill"
-    when :causes
-      "causesPill"
-    when :beneficiary_groups
-      "beneficiaryGroupsPill"
-    end
+    return 'servicesPill' if @name.include?('services')
+    return 'causesPill' if @name.include?('causes')
+    return 'beneficiaryGroupsPill' if @name.include?('beneficiary_groups')
   end
 end
