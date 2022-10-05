@@ -4,7 +4,7 @@ import Rails from '@rails/ujs'
 
 export default class extends Controller {
   static get targets() {
-    return ['input', 'customInput', 'form', 'pills', "pillsCounter", "causesPill", "servicesPill", "beneficiaryGroupsPill", "selectAllCausesPill", "selectAllServicesPill", "selectAllBeneficiaryGroupsPill"]
+    return ['input', 'customInput', 'form', 'pills', "pillsCounter", "pillsCounterWrapper", "filtersIcon", "causesPill", "servicesPill", "beneficiaryGroupsPill", "selectAllCausesPill", "selectAllServicesPill", "selectAllBeneficiaryGroupsPill"]
   }
 
   connect() {
@@ -77,7 +77,7 @@ export default class extends Controller {
 
 
   clearAll() {
-    const event = new CustomEvent('selectmultiple:clear', {  })
+    const event = new CustomEvent('selectmultiple:clear', {})
 
     this.inputTargets.forEach(input => {
       this.clearInput(input)
@@ -134,14 +134,23 @@ export default class extends Controller {
       input.checked = false
       input.removeAttribute('checked')
     })
-    this.pillsCounterTarget.innerHTML = ""
+    this.pillsCounterTarget.textContent = ""
+    this.filtersIconTarget.classList.remove("hidden")
+    this.pillsCounterWrapperTarget.classList.remove("inline-flex")
+    this.pillsCounterWrapperTarget.classList.add("hidden")
     this.submitForm()
   }
 
   updatePillsCounter() {
     let checks = this.pillsTarget.querySelectorAll('input[type="checkbox"]:checked').length
     let radio = this.pillsTarget.querySelectorAll('input[type="radio"]:checked').length
-    this.pillsCounterTarget.innerHTML = checks + radio
+    const totalChecked = checks + radio
+    this.pillsCounterTarget.textContent = totalChecked
+    if (totalChecked > 0 && this.pillsCounterWrapperTarget.classList.contains("hidden")) {
+      this.pillsCounterWrapperTarget.classList.remove("hidden")
+      this.pillsCounterWrapperTarget.classList.add("inline-flex")
+      this.filtersIconTarget.classList.add("hidden")
+    }
     if (this.allPillsAreChecked(this.causesPillTargets) == "someSelected") {
       this.selectAllCausesPillTarget.checked = false
       this.selectAllCausesPillTarget.removeAttribute('checked')
