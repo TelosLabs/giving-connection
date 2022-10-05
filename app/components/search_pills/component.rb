@@ -6,7 +6,7 @@ class SearchPills::Component < ViewComponent::Base
     @beneficiary_subcategories = beneficiary_subcategories
     @params = params
     @params_applied = params_applied
-    @tabs_labels = ['Cause', 'Location', 'Services', 'P.Served', 'Hours']
+    @tabs_labels = ['Cause', 'Location', 'Services', 'Pop. Served', 'Hours']
     @distances = [
       {
         kilometers: 3.21,
