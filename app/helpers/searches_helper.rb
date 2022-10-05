@@ -19,7 +19,8 @@ module SearchesHelper
     object.services&.map(&:last)&.flatten&.each do |service|
       list << service if top_10_services.include?(service)
     end
-    list.flatten.compact.join(", ")
+    selected = list.flatten.compact.join(", ")
+    "Selected Pills: #{selected}" if selected.present?
   end
 
   def list_of_services(object, top_10_services)
@@ -35,7 +36,8 @@ module SearchesHelper
     object.causes&.flatten&.each do |cause|
       list << cause if top_10_causes.include?(cause)
     end
-    list.flatten.compact.join(", ")
+    selected = list.flatten.compact.join(", ")
+    "Selected Pills: #{selected}" if selected.present?
   end
 
   def list_of_causes(object, top_10_causes)
@@ -51,7 +53,8 @@ module SearchesHelper
     object.beneficiary_groups&.map(&:last)&.flatten&.each do |beneficiary_group|
       list << beneficiary_group if top_10_beneficiary_groups.include?(beneficiary_group)
     end
-    list.flatten.compact.join(", ")
+    selected = list.flatten.compact.join(", ")
+    "Selected Pills: #{selected}" if selected.present?
   end
 
   def list_of_beneficiary_groups(object, top_10_beneficiary_groups)

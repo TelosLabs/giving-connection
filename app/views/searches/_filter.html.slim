@@ -9,21 +9,18 @@ div class="bg-white rounded-3xl"
       p class="px-6 py-4 text-sm text-gray-4" Add more filters to narrow down your search results.
       div class="px-6 py-8"
         = form.label :causes, 'Causes', class: 'w-full text-base font-bold text-gray-2'
-        p class="text-sm text-gray-4" Selected Pill Causes:
         p class='flex flex-wrap gap-2 text-sm text-gray-4'
           = selected_cuases_pills(search, @top_10_causes)
         = render SelectMultiple::Component.new(name: 'search[causes]', items: causes, selected: list_of_causes(search, @top_10_causes))
 
       div class="px-6 py-8"
         = form.label :services, 'Services', class: 'w-full text-base font-bold text-gray-2'
-        p class="text-sm text-gray-4" Selected Pill Services:
         p class='flex flex-wrap gap-2 text-sm text-gray-4'
           = selected_services_pills(search, @top_10_services)
         = render SelectMultiple::Component.new(name: 'search[services]', items: services, selected: list_of_services(search, @top_10_services))
 
       div class="px-6 py-8"
         = form.label :beneficiary_groups, 'Populations Served', class: 'w-full text-base font-bold text-gray-2'
-        p class="text-sm text-gray-4" Selected Pill Populations Served:
         p class='flex flex-wrap gap-2 text-sm text-gray-4'
           = selected_beneficiary_groups_pills(search, @top_10_beneficiary_groups)
         = render SelectMultiple::Component.new(name: 'search[beneficiary_groups]',items: beneficiary_groups, selected: list_of_beneficiary_groups(search, @top_10_beneficiary_groups))
