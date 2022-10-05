@@ -16,7 +16,7 @@ class MessagesController < ApplicationController
     else
       flash.now[:error] = 'Something went wrong'
       @form_to_render = message_params[:form_definition]
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
