@@ -4,4 +4,4 @@
 
 ### How to test it:
 
-[Notion ticket] (url)
+[Notion ticket](url)
