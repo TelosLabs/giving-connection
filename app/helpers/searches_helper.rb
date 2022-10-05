@@ -13,22 +13,55 @@ module SearchesHelper
     list.flatten.compact
   end
 
-  def list_of_services(object)
+  def selected_services_pills(object, top_10_services)
     list = []
+    top_10_services = top_10_services.map(&:name)
+    object.services&.map(&:last)&.flatten&.each do |service|
+      list << service if top_10_services.include?(service)
+    end
+    selected = list.flatten.compact.join(", ")
+    "Selected Pills: #{selected}" if selected.present?
+  end
+
+  def list_of_services(object, top_10_services)
+    list = []
+    top_10_services = top_10_services.map(&:name)
     list << object.services&.map(&:last)&.flatten
-    list.flatten.compact
+    list.flatten.compact - top_10_services
   end
 
-  def list_of_causes(object)
+  def selected_cuases_pills(object, top_10_causes)
     list = []
+    top_10_causes = top_10_causes.map(&:name)
+    object.causes&.flatten&.each do |cause|
+      list << cause if top_10_causes.include?(cause)
+    end
+    selected = list.flatten.compact.join(", ")
+    "Selected Pills: #{selected}" if selected.present?
+  end
+
+  def list_of_causes(object, top_10_causes)
+    list = []
+    top_10_causes = top_10_causes.map(&:name)
     list << object.causes&.flatten
-    list.flatten.compact
+    list.flatten.compact - top_10_causes
   end
 
-  def list_of_beneficiary_groups(object)
+  def selected_beneficiary_groups_pills(object, top_10_beneficiary_groups)
     list = []
+    top_10_beneficiary_groups = top_10_beneficiary_groups.map(&:name)
+    object.beneficiary_groups&.map(&:last)&.flatten&.each do |beneficiary_group|
+      list << beneficiary_group if top_10_beneficiary_groups.include?(beneficiary_group)
+    end
+    selected = list.flatten.compact.join(", ")
+    "Selected Pills: #{selected}" if selected.present?
+  end
+
+  def list_of_beneficiary_groups(object, top_10_beneficiary_groups)
+    list = []
+    top_10_beneficiary_groups = top_10_beneficiary_groups.map(&:name)
     list << object.beneficiary_groups&.map(&:last)&.flatten
-    list.flatten.compact
+    list.flatten.compact - top_10_beneficiary_groups
   end
 
   def kilometers_to_miles(kms)

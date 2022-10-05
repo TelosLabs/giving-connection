@@ -72,20 +72,20 @@ class SearchesController < ApplicationController
 
   def set_beneficiary_groups
     @beneficiary_groups = {}
-    top_10_beneficiary_subcategories
+    top_10_beneficiary_groups
     BeneficiaryGroup.all.each do |group|
-      @beneficiary_groups[group.name] = helpers.take_off_intersection_from_array(@top_10_beneficiary_subcategories.pluck(:name), group.beneficiary_subcategories.map(&:name))
+      @beneficiary_groups[group.name] = helpers.take_off_intersection_from_array(@top_10_beneficiary_groups.pluck(:name), group.beneficiary_subcategories.map(&:name))
     end
   end
 
-  def top_10_beneficiary_subcategories
-    beneficiary_subcategories_count = {}
+  def top_10_beneficiary_groups
+    beneficiary_groups_count = {}
     Organization.all.each do |org|
       org.beneficiary_subcategories.each do |beneficiary_subcategory|
-        beneficiary_subcategories_count[beneficiary_subcategory] = beneficiary_subcategories_count[beneficiary_subcategory].to_i + 1
+        beneficiary_groups_count[beneficiary_subcategory] = beneficiary_groups_count[beneficiary_subcategory].to_i + 1
       end
     end
-    arr = beneficiary_subcategories_count.sort_by { |beneficiary_subcategory, count| count }.reverse.first(10)
-    @top_10_beneficiary_subcategories = arr.map { |beneficiary_subcategory, count| beneficiary_subcategory }
+    arr = beneficiary_groups_count.sort_by { |beneficiary_subcategory, count| count }.reverse.first(10)
+    @top_10_beneficiary_groups = arr.map { |beneficiary_subcategory, count| beneficiary_subcategory }
   end
 end

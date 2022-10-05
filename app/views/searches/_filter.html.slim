@@ -1,22 +1,29 @@
 div class="bg-white rounded-3xl"
   div class="flex flex-col w-full pb-11"
     div class="inline-grid items-center justify-between w-full grid-cols-3 px-6 py-8 pb-5 gap-x-4"
-      h2 class="col-start-2 text-xl font-bold text-center text-gray-2" Filters
+      h2 class="col-start-2 text-xl font-bold text-center text-gray-2" Advanced Filters
       button class="flex justify-end" role="button" data-action="click->modal#close"
         = inline_svg_tag "solid_close.svg", class: 'h-4 w-4 fill-current text-gray-2'
 
     div class="flex flex-col w-full overflow-y-auto divide-y divide-gray-8"
+      p class="px-6 py-4 text-sm text-gray-4" Add more filters to narrow down your search results.
       div class="px-6 py-8"
         = form.label :causes, 'Causes', class: 'w-full text-base font-bold text-gray-2'
-        = render SelectMultiple::Component.new(name: 'search[causes]', items: causes, selected: list_of_causes(search))
+        p class='flex flex-wrap gap-2 text-sm text-gray-4'
+          = selected_cuases_pills(search, @top_10_causes)
+        = render SelectMultiple::Component.new(name: 'search[causes]', items: causes, selected: list_of_causes(search, @top_10_causes))
 
       div class="px-6 py-8"
         = form.label :services, 'Services', class: 'w-full text-base font-bold text-gray-2'
-        = render SelectMultiple::Component.new(name: 'search[services]', items: services, selected: list_of_services(search))
+        p class='flex flex-wrap gap-2 text-sm text-gray-4'
+          = selected_services_pills(search, @top_10_services)
+        = render SelectMultiple::Component.new(name: 'search[services]', items: services, selected: list_of_services(search, @top_10_services))
 
       div class="px-6 py-8"
         = form.label :beneficiary_groups, 'Populations Served', class: 'w-full text-base font-bold text-gray-2'
-        = render SelectMultiple::Component.new(name: 'search[beneficiary_groups]',items: beneficiary_groups, selected: list_of_beneficiary_groups(search))
+        p class='flex flex-wrap gap-2 text-sm text-gray-4'
+          = selected_beneficiary_groups_pills(search, @top_10_beneficiary_groups)
+        = render SelectMultiple::Component.new(name: 'search[beneficiary_groups]',items: beneficiary_groups, selected: list_of_beneficiary_groups(search, @top_10_beneficiary_groups))
 
     div class="flex flex-row justify-between w-full px-6 py-5 border-t border-gray-8"
       button class="flex justify-center px-4 py-2 text-blue-medium" type="submit" data-action="click->search#clearAll"
