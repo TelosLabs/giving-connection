@@ -1,7 +1,9 @@
-### What changed:
+### Context
 
-### Why this change?:
+### What changed
 
-### How to test it:
+### How to test it
+
+### References
 
 [Notion ticket](url)
