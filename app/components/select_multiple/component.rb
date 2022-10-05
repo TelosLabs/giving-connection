@@ -25,6 +25,5 @@ module SelectMultiple
         },
       }
     end
-
   end
 end

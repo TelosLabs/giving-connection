@@ -4,11 +4,7 @@ import Rails from '@rails/ujs'
 
 export default class extends Controller {
   static get targets() {
-    return ['input', 'customInput', 'form', 'pills', "pillsCounter", "causesPill", "servicesPill", "beneficiaryGroupsPill", "selectAllCausesPill", "selectAllServicesPill", "selectAllBeneficiaryGroupsPill"]
-  }
-
-  connect() {
-    useDispatch(this)
+    return ['form', 'pills', "pillsCounter", "causesPill", "servicesPill", "beneficiaryGroupsPill", "selectAllCausesPill", "selectAllServicesPill", "selectAllBeneficiaryGroupsPill"]
   }
 
   toggleAllCausesPills() {
@@ -23,8 +19,8 @@ export default class extends Controller {
         pill.setAttribute('checked', true)
       })
     }
-    this.submitForm()
     this.updatePillsCounter()
+    this.form.requestSubmit()
   }
 
   toggleAllServicesPills() {
@@ -39,8 +35,8 @@ export default class extends Controller {
         pill.setAttribute('checked', true)
       })
     }
-    this.submitForm()
     this.updatePillsCounter()
+    this.submitForm()
   }
 
   toggleAllBeneficiaryGroupsPills() {
@@ -55,8 +51,8 @@ export default class extends Controller {
         pill.setAttribute('checked', true)
       })
     }
-    this.submitForm()
     this.updatePillsCounter()
+    this.submitForm()
   }
 
   allPillsAreChecked(pills) {
@@ -73,56 +69,6 @@ export default class extends Controller {
     } else if (checked_pills.length > 0 && checked_pills.length < pills.length) {
       return "someSelected"
     }
-  }
-
-
-  clearAll() {
-    const event = new CustomEvent('selectmultiple:clear', {  })
-
-    this.inputTargets.forEach(input => {
-      this.clearInput(input)
-    })
-    this.customInputTargets.forEach(input => {
-      input.dispatchEvent(event)
-    })
-    Rails.fire(this.formTarget, 'submit')
-  }
-
-  clearInput(inputElement) {
-    console.log(inputElement)
-    const inputType = inputElement.type.toLowerCase()
-    switch (inputType) {
-      case 'text':
-      case 'password':
-      case 'textarea':
-      case 'search':
-      case 'hidden':
-      case 'date':
-        inputElement.value = ''
-        break
-      case 'radio':
-        inputElement.checked = inputElement.hasAttribute('checked')
-        break
-      case 'checkbox':
-        inputElement.checked = false
-        inputElement.removeAttribute('checked')
-        break
-      case 'select-one':
-      case 'select-multi':
-        inputElement.selectedIndex = -1
-        break
-      default:
-        break
-    }
-  }
-
-  openSearchAlertModal() {
-    console.log('openSearchAlertModal')
-    this.dispatch("openSearchAlertModal")
-  }
-
-  submitForm() {
-    this.formTarget.requestSubmit()
   }
 
   clearChecked() {

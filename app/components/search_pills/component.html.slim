@@ -1,0 +1,52 @@
+div class="w-full bg-gray-9"
+  div data-search-target="pills"
+    div data-controller="tabs" data-tabs-active-tab=("border-b-4 border-blue-medium")
+      div class="flex"
+        button class="h-14 pl-6 py-4 pr-3 text-xs bg-blue-pale" type="button" data-action="click->search#clearChecked"
+          - if @params_applied
+            span class="inline-flex items-center px-1 py-0.5 border border-blue-medium rounded-full bg-white"
+              span data-search-target="pillsCounter" class="mr-0.5"
+              = inline_svg_tag "x-icon.svg", class: 'h-2 w-2 fill-current stroke-current stroke-1 text-blue-medium ml-1 relative'
+          - else
+            = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative'
+        ul class="flex flex-1 gap-x-6 pl-5 pr-6 text-sm list-none overflow-x-auto overflow-y-hidden bg-blue-pale text-gray-2"
+          - @tabs_labels.each do |tab_label|
+            li data-action="click->tabs#change" data-tabs-target="tab"
+              a.inline-block.py-4 href="#" = tab_label
+      div
+        div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
+          = @form.check_box :all, { class: "px-2 py-1.5 border border-gray-6 rounded-full text-gray-2 text-xs whitespace-nowrap", data: { action: "change->search#toggleAllCausesPills", 'search-target': "selectAllCausesPill" } }, "All", nil
+          = @form.label :all, 'All'
+          - @causes.each do |cause|
+            = render SearchPills::Pill::Component.new(name: "search[causes][]", value: cause.name, checked: @params.dig(:search, :causes)&.include?(cause.name), options: { multiple: true})
+        div class="hidden border-l border-b border-r" data-tabs-target="panel"
+          div class="flex w-full"
+            - @distances.each do |distance|
+              = render SearchPills::Button::Component.new(name: "search[distance]", value: distance[:kilometers], checked: @params.dig(:search, :distance) == distance[:kilometers].to_s, copy: distance[:miles])
+          // Search Nashville, TN
+          div class="flex flex-wrap gap-x-2 gap-y-3 px-6 py-4"
+            = render SearchPills::Pill::Component.new(name: "search[city]", value: "Nashville", checked: true) do
+              | Nashville, TN
+        div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
+          = @form.check_box :all, { class: "px-2 py-1.5 border border-gray-6 rounded-full text-gray-2 text-xs whitespace-nowrap", data: { action: "change->search#toggleAllServicesPills", 'search-target': "selectAllServicesPill" } }, "All", nil
+          = @form.label :all, 'All'
+          - @services.each do |service|
+            = render SearchPills::Pill::Component.new(name: "search[services][#{service.cause.name}][]", value: service.name, checked: @params.dig('search', 'services', service.cause.name)&.include?(service.name), options: { multiple: true})
+        div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
+          = @form.check_box :all, { class: "px-2 py-1.5 border border-gray-6 rounded-full text-gray-2 text-xs whitespace-nowrap", data: { action: "change->search#toggleAllBeneficiaryGroupsPills", 'search-target': "selectAllBeneficiaryGroupsPill" } }, "All", nil
+          = @form.label :all, 'All'
+          - @beneficiary_subcategories.each do |subcategory|
+            = render SearchPills::Pill::Component.new(name: "search[beneficiary_groups][#{subcategory.beneficiary_group.name}][]", value: subcategory.name, checked: @params.dig('search', 'beneficiary_groups', subcategory.beneficiary_group.name)&.include?(subcategory.name), options: { multiple: true})
+        div class="hidden py-4 px-6 border-l border-b border-r" data-tabs-target="panel"
+          div class="flex flex-row w-full gap-x-2"
+            = render SearchPills::Pill::Component.new(name: "search[open_now]", value: true, checked: @params.dig('search', 'open_now') == 'true') do
+              | Open Now
+
+            = render SearchPills::Pill::Component.new(name: "search[open_weekends]", value: true, checked: @params.dig('search', 'open_weekends') == 'true') do
+              | Open Weekends
+
+            = hidden_field_tag("search[lat]", "")
+            = hidden_field_tag("search[lon]", "")
+            / Should leave this hardcode for now
+            = hidden_field_tag("search[state]", "TN")
+            = hidden_field_tag("search[city]", "Nashville")
