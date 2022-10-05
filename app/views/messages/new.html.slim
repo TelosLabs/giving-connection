@@ -30,14 +30,14 @@
 
   = form_with model: @message, method: :post, data: { controller: 'contact-form'} do |f|
     .c-form class="gap-6 pb-11 md:pb-36"
-    - if @message.errors.any?
-      div class="w-full"
-        p class="text-xs text-gray-3"
-          | Please, review this problems below:
-        ul
-          li class="text-xs text-red-1" data-contact-form-target="error"
-            - @message.errors.full_messages.each do |msg|
-              = "- #{msg}"
+      - if @message.errors.any?
+          div class="w-full"
+            p class="text-red-500 italic font-semibold"
+              | Please review the problems below:
+            ul
+              - @message.errors.full_messages.each do |message|
+                li class="text-red-500 text-sm"
+                  = "- #{message}"
       div class="w-full"
         = f.label :name, "*Name"
         = f.text_field :name, class:"c-input", required: true
