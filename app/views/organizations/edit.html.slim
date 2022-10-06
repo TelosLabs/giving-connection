@@ -18,7 +18,8 @@ div class="w-full h-full bg-grey-9"
               = "- #{message}"
     = form_for @organization do |f|
       section class="text-gray-2"
-        h3 class="text-lg font-medium leading-7"
+        h3 class="text-lg font-medium leading-7 text-blue-medium flex"
+          = inline_svg_tag 'star.svg', class: "w-4 h-4 mr-1"
           | General Information
         p class="text-sm leading-5 text-gray-4"
           | General information about your nonprofit.
@@ -80,7 +81,8 @@ div class="w-full h-full bg-grey-9"
             = f.text_field :donation_link, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
         div class="my-4 border-t border-t-blue-pale"
         section class="mt-12 text-gray-2" data-controller="toggle"
-          h4 class="text-lg font-medium leading-7"
+          h3 class="text-lg font-medium leading-7 text-blue-medium flex"
+            = inline_svg_tag 'list.svg', class: "w-4 h-4 mr-1"
             | Organization Information
 
           div class="grid grid-cols-12 gap-6 mt-8"
@@ -125,9 +127,9 @@ div class="w-full h-full bg-grey-9"
               div class="col-span-12 lg:col-span-6 md:col-span-7"
                 = f.label :tagline_es, "Services - How We Do It (ES)", class: "block text-sm text-gray-3 font-medium"
                 = f.text_area :tagline_es, rows: 5, class: "block mt-1 w-full p-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
-        
         section class="mt-12 text-gray-2"
-          h4 class="text-lg font-medium leading-7"
+          h3 class="text-lg font-medium leading-7 text-blue-medium flex"
+            = inline_svg_tag 'heart_outlined.svg', class: "w-4 h-4 mr-1"
             | Causes
           p class="max-w-lg text-sm text-gray-4"
             | Email
@@ -141,8 +143,9 @@ div class="w-full h-full bg-grey-9"
               = render SelectMultiple::Component.new(name: 'organization[causes][]', items: @causes, selected: @organization.causes.pluck(:name),placeholder: 'Write causes', required: true)
 
         section class="mt-12 text-gray-2"
-          h4 class="text-lg font-medium leading-7"
-            | Population Served
+          h3 class="text-lg font-medium leading-7 text-blue-medium flex"
+            = inline_svg_tag 'user_group.svg', class: "w-4 h-4 mr-1"
+            | Populations Served
           p class="max-w-lg text-sm text-gray-4"
             | Email
             a href="mailto:admin@givingconnection.org"
@@ -164,7 +167,8 @@ div class="w-full h-full bg-grey-9"
         div class="my-4 border-t border-t-blue-pale"
         section data-controller="nested-form"
           section class="mt-12 text-gray-2"
-            h5 class="text-lg font-medium leading-7"
+            h3 class="text-lg font-medium leading-7 text-blue-medium flex"
+              = inline_svg_tag 'office.svg', class: "w-4 h-4 mr-1"
               | Main Location
             p class="text-sm leading-5 text-gray-4"
               | This is the mailing address and main location for your organization.
@@ -320,7 +324,8 @@ div class="w-full h-full bg-grey-9"
 
         div class="my-4 border-t border-t-blue-pale"
         section class="mt-12 text-gray-2"
-          h5 class="text-lg font-medium leading-7"
+          h3 class="text-lg font-medium leading-7 text-blue-medium flex"
+            = inline_svg_tag 'like.svg', class: "w-4 h-4 mr-1"
             | Social Media
           p class="text-sm leading-5 text-gray-4"
             | Social media of your organization that will be displayed globally on all locations.
@@ -367,7 +372,8 @@ div class="w-full h-full bg-grey-9"
         section class="mt-12 text-gray-2"
           div class="grid grid-cols-12 gap-6"
             div class="col-span-12 lg:col-span-6 md:col-span-7"
-              h6 class="text-lg font-medium leading-7"
+              h3 class="text-lg font-medium leading-7 text-blue-medium flex"
+                = inline_svg_tag 'verify.svg', class: "w-4 h-4 mr-1"
                 | Information Verification
               p class="text-sm leading-5 text-gray-4 mt-1"
                 | Verifying your nonprofit’s profile allows users to see a green checkmark next to the nonprofit’s name throughout the platform. This indicates to users that the information is trusted and reliable.
