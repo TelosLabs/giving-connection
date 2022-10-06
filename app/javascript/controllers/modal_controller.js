@@ -41,13 +41,13 @@ export default class extends Controller {
     this.toggleClass = this.data.get('class') || 'hidden';
 
     // The ID of the background to hide/remove
-    this.backgroundId = this.data.get('backgroundId') || 'modal-background';
+    // this.backgroundId = this.data.get('backgroundId') || 'modal-background';
 
     // The HTML for the background element
-    this.backgroundHtml = this.data.get('backgroundHtml') || this._backgroundHTML();
+    // this.backgroundHtml = this.data.get('backgroundHtml') || this._backgroundHTML();
 
     // Let the user close the modal by clicking on the background
-    this.allowBackgroundClose = (this.data.get('allowBackgroundClose') || 'true') === 'true';
+    // this.allowBackgroundClose = (this.data.get('allowBackgroundClose') || 'true') === 'true';
 
     // Prevent the default action of the clicked element (following a link for example) when opening the modal
     this.preventDefaultActionOpening = (this.data.get('preventDefaultActionOpening') || 'true') === 'true';
@@ -76,10 +76,10 @@ export default class extends Controller {
     this.containerTarget.classList.remove(this.toggleClass);
 
     // Insert the background
-    if (!this.data.get("disable-backdrop")) {
-      document.body.insertAdjacentHTML('beforeend', this.backgroundHtml);
-      this.background = document.querySelector(`#${this.backgroundId}`);
-    }
+    // if (!this.data.get("disable-backdrop")) {
+    //   document.body.insertAdjacentHTML('beforeend', this.backgroundHtml);
+    //   this.background = document.querySelector(`#${this.backgroundId}`);
+    // }
   }
 
   close(e) {
@@ -94,14 +94,14 @@ export default class extends Controller {
     this.containerTarget.classList.add(this.toggleClass);
 
     // Remove the background
-    if (this.background) { this.background.remove() }
+    // if (this.background) { this.background.remove() }
   }
 
-  closeBackground(e) {
-    if (this.allowBackgroundClose && e.target === this.containerTarget) {
-      this.close(e);
-    }
-  }
+  // closeBackground(e) {
+  //   if (this.allowBackgroundClose && e.target === this.containerTarget) {
+  //     this.close(e);
+  //   }
+  // }
 
   closeWithKeyboard(e) {
     if (e.keyCode === 27 && !this.containerTarget.classList.contains(this.toggleClass)) {
@@ -109,9 +109,9 @@ export default class extends Controller {
     }
   }
 
-  _backgroundHTML() {
-    return `<div id="${this.backgroundId}" class="fixed top-0 left-0 w-full h-full" style="background-color: ${this.backdropColorValue}; z-index: 9998;"></div>`;
-  }
+  // _backgroundHTML() {
+  //   return `<div id="${this.backgroundId}" class="fixed top-0 left-0 w-full h-full" style="background-color: ${this.backdropColorValue}; z-index: 9998;"></div>`;
+  // }
 
   lockScroll() {
     // Add right padding to the body so the page doesn't shift
@@ -122,7 +122,7 @@ export default class extends Controller {
     // Add classes to body to fix its position
     document.body.classList.add('fixed', 'inset-x-0', 'overflow-hidden');
 
-    if(this.restoreScrollValue) {
+    if (this.restoreScrollValue) {
       // Save the scroll position
       this.saveScrollPosition();
 
@@ -139,7 +139,7 @@ export default class extends Controller {
     document.body.classList.remove('fixed', 'inset-x-0', 'overflow-hidden');
 
     // Restore the scroll position of the body before it got locked
-    if(this.restoreScrollValue) {
+    if (this.restoreScrollValue) {
       this.restoreScrollPosition();
 
       // Remove the negative top inline style from body

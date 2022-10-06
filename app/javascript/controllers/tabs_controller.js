@@ -18,11 +18,11 @@ export default class extends Controller {
     if (event.currentTarget.dataset.index) {
       this.index = event.currentTarget.dataset.index
       localStorage.setItem('tab', this.index)
-    // If target specifies an id, use that
+      // If target specifies an id, use that
     } else if (event.currentTarget.dataset.id) {
       this.index = this.tabTargets.findIndex((tab) => tab.id == event.currentTarget.dataset.id)
 
-    // Otherwise, use the index of the current target
+      // Otherwise, use the index of the current target
     } else {
       this.index = this.tabTargets.indexOf(event.currentTarget)
     }
