@@ -79,8 +79,8 @@ div class="w-full h-full bg-grey-9"
           div class="col-span-12 lg:col-span-7 md:col-span-6"
             = f.label :donation_link, class: "block text-sm text-gray-3 font-medium"
             = f.text_field :donation_link, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
-        div class="my-4 border-t border-t-blue-pale"
-        section class="mt-12 text-gray-2" data-controller="toggle"
+        div class="my-4 border-t mt-6 border-t-blue-pale"
+        section class="mt-6 text-gray-2" data-controller="toggle"
           h3 class="text-lg font-medium leading-7 text-blue-medium flex"
             = inline_svg_tag 'list.svg', class: "w-4 h-4 mr-1"
             | Organization Information
@@ -106,7 +106,7 @@ div class="w-full h-full bg-grey-9"
 
             div class="col-span-12 lg:col-span-6 md:col-span-7"
               div class="flex items-center mt-3"
-                = check_box_tag :other_name_check, 1, false, class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent", data: { action: "toggle#toggle" }
+                = check_box_tag :other_name_check, 1, false, class: " h-4 w-4 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent", data: { action: "toggle#toggle" }
                 = label_tag :other_name_check, "Add Spanish Version", class: "text-sm text-black "
 
             div class="col-span-3 md:flex"
@@ -127,7 +127,8 @@ div class="w-full h-full bg-grey-9"
               div class="col-span-12 lg:col-span-6 md:col-span-7"
                 = f.label :tagline_es, "Services - How We Do It (ES)", class: "block text-sm text-gray-3 font-medium"
                 = f.text_area :tagline_es, rows: 5, class: "block mt-1 w-full p-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
-        section class="mt-12 text-gray-2"
+        div class="my-4 border-t mt-6 border-t-blue-pale"
+        section class="mt-6 text-gray-2"
           h3 class="text-lg font-medium leading-7 text-blue-medium flex"
             = inline_svg_tag 'heart_outlined.svg', class: "w-4 h-4 mr-1"
             | Causes
@@ -142,7 +143,8 @@ div class="w-full h-full bg-grey-9"
               = f.label :causes, "* Which causes best describe your organization’s work?", class: "block text-sm text-gray-3 font-medium"
               = render SelectMultiple::Component.new(name: 'organization[causes][]', items: @causes, selected: @organization.causes.pluck(:name),placeholder: 'Write causes', required: true)
 
-        section class="mt-12 text-gray-2"
+        div class="my-4 border-t mt-6 border-t-blue-pale"
+        section class="mt-6 text-gray-2"
           h3 class="text-lg font-medium leading-7 text-blue-medium flex"
             = inline_svg_tag 'user_group.svg', class: "w-4 h-4 mr-1"
             | Populations Served
@@ -164,9 +166,9 @@ div class="w-full h-full bg-grey-9"
               = f.label :tags_attributes, "Additional keywords to describe my organization’s work.", class: "block text-sm text-gray-3 font-medium"
               = f.text_field :tags_attributes, { data: { 'tags-target': 'output' }, placeholder:'Write some tags', value: tags, class: "flex flex-wrap tagify-look items-center min-h-46px bg-white text-xs mt-1 w-full px-4 rounded-6px border-gray-5 text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
-        div class="my-4 border-t border-t-blue-pale"
+        div class="my-4 border-t mt-6 border-t-blue-pale"
         section data-controller="nested-form"
-          section class="mt-12 text-gray-2"
+          section class="mt-6 text-gray-2"
             h3 class="text-lg font-medium leading-7 text-blue-medium flex"
               = inline_svg_tag 'office.svg', class: "w-4 h-4 mr-1"
               | Main Location
@@ -322,8 +324,8 @@ div class="w-full h-full bg-grey-9"
             button class="block uppercase border mt-9 border-salmon text-salmon px-5 py-2.5 mx-auto rounded-6px mb-8" type='button' data-action="click->nested-form#add_association"
               | + Add More Locations
 
-        div class="my-4 border-t border-t-blue-pale"
-        section class="mt-12 text-gray-2"
+        div class="my-4 border-t mt-6 border-t-blue-pale"
+        section class="mt-6 text-gray-2"
           h3 class="text-lg font-medium leading-7 text-blue-medium flex"
             = inline_svg_tag 'like.svg', class: "w-4 h-4 mr-1"
             | Social Media
@@ -368,8 +370,8 @@ div class="w-full h-full bg-grey-9"
             div class="col-span-12 lg:col-span-6 md:col-span-7"
               = social_media_form.label :blog, class: "block text-sm text-gray-3 font-medium"
               = social_media_form.text_field :blog, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
-        div class="my-4 border-t border-t-blue-pale"
-        section class="mt-12 text-gray-2"
+        div class="my-4 border-t mt-6 border-t-blue-pale"
+        section class="mt-6 text-gray-2"
           div class="grid grid-cols-12 gap-6"
             div class="col-span-12 lg:col-span-6 md:col-span-7"
               h3 class="text-lg font-medium leading-7 text-blue-medium flex"
