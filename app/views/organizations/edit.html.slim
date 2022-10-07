@@ -263,9 +263,9 @@ div class="w-full h-full bg-grey-9"
                           p class="text-sm text-gray-4 mt-1"
                             | Email
                             a href="mailto:admin@givingconnection.org"
-                              | admin@givingconnection.org
-                            | if you would like to add a service not currently found in the list below.
-                          = render SelectMultiple::Component.new(name: location_service_form.object_name , items: @services, selected: location_form.object.location_services.map{ |location_service| location_service.service.name }, placeholder: "Write services")
+                              |  admin@givingconnection.org
+                            |  if you would like to add a service not currently found in the list below.
+                          = render SelectMultiple::Component.new(name: location_service_form.object_name , items: @services, selected: location_form.object.location_services.map{ |location_service| location_service.service.name }, placeholder: "Write services", required: true)
 
                   div[data-controller="modal" data-modal-allow-background-close="false"]
                     a class="flex justify-center px-6 py-3 text-base font-medium hover:text-blue-medium text-gray-3" href="#" data-action="click->modal#open"
