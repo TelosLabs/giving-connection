@@ -30,7 +30,7 @@ unless Rails.env.production?
   # Population served categories and subcategories
   Rake::Task['populate:seed_beneficiaries_and_beneficiaries_subcategories'].invoke
 
-  # Parse xml
+  # Pupulate organizations and locations
   SpreadsheetParse.new.import("./lib/assets/staging-data-19-01-2022.xlsx")
 
   # Create organizations and causes association
