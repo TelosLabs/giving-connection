@@ -26,4 +26,12 @@ namespace :populate do
     puts '.'
     puts 'Seeding beneficiaries and beneficiaries subcategories finished!'
   end
+
+  desc 'Seed organizations and causes association'
+  task seed_organizations_causes: :environment do
+    Organization.all.each do |org|
+      OrganizationCause.create!(organization: org, cause: Cause.find(rand(1..16)))
+      org.update!(active: true)
+    end
+  end
 end
