@@ -3,7 +3,6 @@
 unless Rails.env.production?
 
   #Delete old records
-  AdminUser.destroy_all
   Organization.destroy_all
   Service.destroy_all
   Cause.destroy_all
@@ -16,13 +15,25 @@ unless Rails.env.production?
   PhoneNumber.destroy_all
   SocialMedia.destroy_all
   Tag.destroy_all
-  User.destroy_all
 
-  # Admin Users
-  AdminUser.create!(email: 'admin@example.com', password: 'testing', password_confirmation: 'testing')
+  # Admin users
+  unless AdminUser.find_by(email: "admin@example.com")
+    AdminUser.create!(
+      email: 'admin@example.com',
+      password: 'testing',
+      password_confirmation: 'testing'
+    )
+  end
 
   # Users
-  User.create!(name: "test user", email: 'user@example.com', password: 'testing', password_confirmation: 'testing')
+  unless User.find_by(email: "user@example.com")
+    User.create!(
+      name: "test user",
+      email: 'user@example.com',
+      password: 'testing',
+      password_confirmation: 'testing'
+    )
+  end
 
   # Causes and Services
   Rake::Task['populate:seed_causes_and_services'].invoke
