@@ -191,6 +191,8 @@ ActiveRecord::Schema.define(version: 2022_09_15_191909) do
     t.string "organization_website"
     t.string "organization_ein"
     t.text "content"
+    t.string "profile_admin_name"
+    t.string "profile_admin_email"
   end
 
   create_table "office_hours", force: :cascade do |t|
