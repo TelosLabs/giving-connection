@@ -1,5 +1,5 @@
 .main
-  - if current_page?(non_profit_contact_path)
+  - if current_page?(non_profit_contact_path) || @form_to_render == "add_nonprofit"
     h2 class="pb-4 text-2xl font-bold text-center pt-6 md:pt-16 md:mt-2 md:pb-9 text-gray-3"
       | Add or Claim a Nonprofit
 
@@ -30,6 +30,14 @@
 
   = form_with model: @message, method: :post, data: { controller: 'contact-form'} do |f|
     .c-form class="gap-6 pb-11 md:pb-36"
+      - if @message.errors.any?
+          div class="w-full"
+            p class="text-red-500 italic font-semibold"
+              | Please review the problems below:
+            ul
+              - @message.errors.full_messages.each do |message|
+                li class="text-red-500 text-sm"
+                  = "- #{message}"
       div class="w-full"
         = f.label :name, "*Name"
         = f.text_field :name, class:"c-input", required: true
@@ -44,7 +52,8 @@
         = f.select :subject,\
         [['I want to publish a nonprofit on Giving Connection', '1'],['I want to claim ownership of a nonprofit page', '2'], ['Other', '3']],\
         {}, {class: "c-input pr-7 bg-white", required: true, data: { action: "change->contact-form#subjectSelected",'contact-form-target': 'subject'}}
-      - if current_page?(non_profit_contact_path)
+      - if current_page?(non_profit_contact_path) || @form_to_render == "add_nonprofit"
+        = f.text_field :form_definition, value: "add_nonprofit", class:"hidden"
         div class="w-full"
           = f.label :organization_name, "*Organization Name"
           = f.text_field :organization_name, class:"c-input", required: true
