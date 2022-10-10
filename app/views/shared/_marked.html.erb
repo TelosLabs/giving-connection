@@ -1,3 +1,3 @@
-<%= link_to favorite_location_path(FavoriteLocation.find_by(user_id: user_id, location_id: id)), class: "inline-flex self-end text-xs text-gray-3", data: { controller: "bookmark-subscription", turbo_method: :delete }, id: dom_id(FavoriteLocation.find_by(user_id: user_id, location_id: id)) do %>
+<%= link_to favorite_location_path(FavoriteLocation.find_by(user_id: user_id, location_id: id)), class: "inline-flex self-end items-center p-2 text-xs text-gray-3", remote: true, data: { controller: "bookmark-subscription", turbo_method: :delete, action: "click->bookmark-subscription#reloadPage" }, id: dom_id(FavoriteLocation.find_by(user_id: user_id, location_id: id)) do %>
   <%= inline_svg_tag 'bookmark_colored.svg', class: 'w-4 h-4' %>
 <% end %>
