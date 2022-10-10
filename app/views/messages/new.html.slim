@@ -56,9 +56,9 @@
           = f.text_field :organization_ein, class:"c-input", placeholder:"Your Organization EIN"
         div class="w-full"
           = f.label :profile_admin_name, "*Profile Admin Name"
-          = f.text_field :profile_admin_name, class:"c-input", required: true
-          small class="inline-block mt-1.5 leading-normal"
+          p class="mt-1.5 text-xs leading-normal"
             | Your profile admin is the person who will be updating the page information.
+          = f.text_field :profile_admin_name, class:"c-input", required: true
         div class="w-full"
           = f.label :profile_admin_email, "*Profile Admin Email"
           = f.text_field :profile_admin_email, class:"c-input", required: true
