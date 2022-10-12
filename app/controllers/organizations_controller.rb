@@ -43,19 +43,22 @@ class OrganizationsController < ApplicationController
   end
 
   def assign_errors
-    params['organization']['locations_attributes'].empty? || params['organization']['locations_attributes'].nil? ? @organization.errors.add(:locations, 'must be present') : nil
+    params['organization']['locations_attributes'].values.map do |location|
+      @organization.errors.add(:location_services, 'must be present') if location['location_services_attributes'].nil?
+    end
     params['organization']['beneficiary_subcategories'].nil? ? @organization.errors.add(:populations_served, 'must be present') : nil
     params['organization']['causes'].nil? ? @organization.errors.add(:causes, 'must be present') : nil
     params['organization']['tags_attributes'].strip.empty? ? @organization.errors.add(:tags, 'must be present') : nil
   end
 
   def nil_values
-    return true if params['organization']['locations_attributes'].nil? || params['organization']['locations_attributes'].empty?
+    params['organization']['locations_attributes'].values.map do |location|
+      return true if location['location_services_attributes'].nil?
+    end
     return true if params['organization']['beneficiary_subcategories'].nil?
     return true if params['organization']['causes'].nil?
     return true if params['organization']['tags_attributes'].strip.empty?
   end
-
 
   def set_form_data
     @causes = Cause.order(:name).pluck(:name)
@@ -147,7 +150,7 @@ class OrganizationsController < ApplicationController
                                          :main, :physical, :offer_services, :appointment_only, :email, :_destroy,
                                          { phone_number_attributes: [:number],
                                            office_hours_attributes: %i[id day open_time close_time closed],
-                                           images: []
+                                           images: [], location_services_attributes: %i[id service_id]
                                          }],
                   beneficiary_subcategories: [],
                   causes: [])
