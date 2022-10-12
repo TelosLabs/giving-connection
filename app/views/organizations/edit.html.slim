@@ -158,7 +158,7 @@ div class="w-full h-full bg-grey-9"
           div class="grid grid-cols-12 gap-6 mt-8"
             div class="col-span-12 lg:col-span-6 md:col-span-7" data-controller="options" data-options-options-value=@beneficiaries
               = f.label :beneficiary_subcategories, "* Which target populations (beneficiaries) does your organization serve?", class: "block text-sm text-gray-3 font-medium"
-              = render SelectMultiple::Component.new(name: 'organization[beneficiary_subcategories]', items: @beneficiary_groups, selected: @organization.beneficiary_subcategories.pluck(:name), placeholder: "Write populations served", required: true)
+              = render SelectMultiple::Component.new(name: 'organization[beneficiary_subcategories]', items: @beneficiary_groups, selected: @organization.beneficiary_subcategories.pluck(:name), placeholder: "Write populations served")
 
             div class="hidden col-span-3 md:flex"
 
@@ -271,7 +271,7 @@ div class="w-full h-full bg-grey-9"
                             a href="mailto:admin@givingconnection.org"
                               |  admin@givingconnection.org
                             |  if you would like to add a service not currently found in the list below.
-                          = render SelectMultiple::Component.new(name: location_service_form.object_name , items: @services, selected: location_form.object.location_services.map{ |location_service| location_service.service.name }, placeholder: "Write services", required: true)
+                          = render SelectMultiple::Component.new(name: location_service_form.object_name , items: @services, selected: location_form.object.location_services.map{ |location_service| location_service.service.name }, placeholder: "Write services")
 
                   div[data-controller="modal" data-modal-allow-background-close="false"]
                     a class="flex justify-center px-6 py-3 text-base font-medium hover:text-blue-medium text-gray-3" href="#" data-action="click->modal#open"

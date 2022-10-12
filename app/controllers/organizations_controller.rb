@@ -19,14 +19,15 @@ class OrganizationsController < ApplicationController
   def update
     @organization = Organization.find(params[:id])
     authorize @organization
-    if @organization.update(organization_params)
+    if @organization.update(organization_params) && !nil_values
       update_location_services(params['organization']['locations_attributes']) unless params['organization']['locations_attributes'].empty? || params['organization']['locations_attributes'].nil?
-      update_organization_beneficiaries(@organization, params['organization']['beneficiary_subcategories']) unless params['organization']['beneficiary_subcategories'].empty?
+      update_organization_beneficiaries(@organization, params['organization']['beneficiary_subcategories']) unless params['organization']['beneficiary_subcategories'].nil?
       update_organization_causes(@organization, params['organization']['causes']) unless params['organization']['causes'].nil?
       update_tags(@organization, JSON.parse(params['organization']['tags_attributes'])) unless params['organization']['tags_attributes'].strip.empty?
       redirect_to my_account_path
       flash[:notice] = 'The Organization was successfully updated'
     else
+      assign_errors
       set_form_data
       flash.now[:alert] = 'The Organization was not updated'
       render 'edit', status: :unprocessable_entity
@@ -40,6 +41,21 @@ class OrganizationsController < ApplicationController
     @attachment.purge
     redirect_to edit_organization_path(@organization, anchor: 'location-specific-fields')
   end
+
+  def assign_errors
+    params['organization']['locations_attributes'].empty? || params['organization']['locations_attributes'].nil? ? @organization.errors.add(:locations, 'must be present') : nil
+    params['organization']['beneficiary_subcategories'].nil? ? @organization.errors.add(:populations_served, 'must be present') : nil
+    params['organization']['causes'].nil? ? @organization.errors.add(:causes, 'must be present') : nil
+    params['organization']['tags_attributes'].strip.empty? ? @organization.errors.add(:tags, 'must be present') : nil
+  end
+
+  def nil_values
+    return true if params['organization']['locations_attributes'].nil? || params['organization']['locations_attributes'].empty?
+    return true if params['organization']['beneficiary_subcategories'].nil?
+    return true if params['organization']['causes'].nil?
+    return true if params['organization']['tags_attributes'].strip.empty?
+  end
+
 
   def set_form_data
     @causes = Cause.order(:name).pluck(:name)
