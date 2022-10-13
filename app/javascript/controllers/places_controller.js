@@ -17,6 +17,9 @@ export default class extends Controller {
 
   initialize() {
     this.markersArray = []
+    // this.leftSidePanelTargets.forEach((element) => {
+    //   element.classList.add("hidden")
+    // })
   }
 
   scrollToSelectedLocation(){
@@ -43,7 +46,7 @@ export default class extends Controller {
      } else {
        navigator.geolocation.getCurrentPosition(success);
      }
-    
+
     const image = this.imageurlValue
 
     if (this.hasFieldTarget) {
@@ -51,7 +54,7 @@ export default class extends Controller {
       this.autocomplete.bindTo('bounds', this.map)
       this.autocomplete.setFields(['address_components', 'geometry', 'icon', 'name'])
       this.autocomplete.addListener('place_changed', this.placeChanged.bind(this))
-      
+
       this.marker = new google.maps.Marker({
         position: { lat: Number(this.latitudeTarget.value) , lng: Number(this.longitudeTarget.value) },
         map: this.map,
@@ -92,7 +95,17 @@ export default class extends Controller {
         maxWidth: 210,
       });
 
+
       marker.addListener("click", () => {
+        let container = document.getElementById('left-side-panel')
+        container.childNodes.forEach((node) => {
+          if (element.id + '_panel' == node.id) {
+            node.classList.remove('hidden')
+          }
+        })
+      })
+
+      marker.addListener("mouseover", () => {
         if( prevInfoWindow ) {
           prevInfoWindow.close()
         }
