@@ -6,7 +6,7 @@ module Locations
       latitude: 36.16404968727089,
       longitude: -86.78125827725053
     }.freeze
-    DEFAULT_DISTANCE = 100
+    DEFAULT_DISTANCE = 20 # km
 
     attr_reader :locations
 

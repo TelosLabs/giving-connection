@@ -35,9 +35,9 @@ namespace :populate do
       [r * Math.cos(theta), r * Math.sin(theta)]
     end
 
-    wb = Roo::Spreadsheet.open "./lib/assets/us_cities_coords.xlsx"
+    wb = Roo::Spreadsheet.open './lib/assets/us_cities_coords.xlsx'
     sheet = wb.sheet(0)
-    cities_coords = sheet.parse(place_name: "place_name", latitude: "latitude", longitude:"longitude", clean:true)
+    cities_coords = sheet.parse(place_name: 'place_name', latitude: 'latitude', longitude: 'longitude', clean: true)
 
     cities_coords.each do |city|
       2.times do
@@ -52,9 +52,9 @@ namespace :populate do
         random_lng = lng + (dx / (one_degree * Math::cos(lat * Math::PI / 180)))
 
         Location.create!(
-          organization_id: Organization.first.id,
-          name: 'Hanas corps',
-          address: 'Anywhere within US',
+          organization_id: Organization.all.sample.id,
+          name: Faker::Company.name,
+          address: city[:place_name],
           latitude: random_lat,
           longitude: random_lng,
           physical: true,
