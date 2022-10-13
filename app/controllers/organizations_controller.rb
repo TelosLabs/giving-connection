@@ -46,9 +46,9 @@ class OrganizationsController < ApplicationController
     params['organization']['locations_attributes'].values.map do |location|
       @organization.errors.add(:location_services, 'must be present') if location['location_services_attributes'].nil?
     end
-    params['organization']['beneficiary_subcategories'].nil? ? @organization.errors.add(:populations_served, 'must be present') : nil
-    params['organization']['causes'].nil? ? @organization.errors.add(:causes, 'must be present') : nil
-    params['organization']['tags_attributes'].strip.empty? ? @organization.errors.add(:tags, 'must be present') : nil
+    @organization.errors.add(:populations_served, 'must be present') if params['organization']['beneficiary_subcategories'].nil?
+    @organization.errors.add(:causes, 'must be present') if params['organization']['causes'].nil?
+    @organization.errors.add(:tags, 'must be present') if params['organization']['tags_attributes'].strip.empty?
   end
 
   def nil_values
