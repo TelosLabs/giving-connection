@@ -17,9 +17,6 @@ export default class extends Controller {
 
   initialize() {
     this.markersArray = []
-    // this.leftSidePanelTargets.forEach((element) => {
-    //   element.classList.add("hidden")
-    // })
   }
 
   scrollToSelectedLocation(){
@@ -94,7 +91,6 @@ export default class extends Controller {
         content: this.markerTargets[i],
         maxWidth: 210,
       });
-
 
       marker.addListener("click", () => {
         let container = document.getElementById('left-side-panel')
