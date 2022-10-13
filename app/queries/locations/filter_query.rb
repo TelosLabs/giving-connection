@@ -12,8 +12,7 @@ module Locations
     class << self
       def call(params = {}, locations = Location.active)
         scope = locations
-        scope = geo_near(scope, starting_coordinates(params[:lat], params[:lon]), params[:distance])
-        scope = by_address(scope, params[:address])
+        # scope = by_address(scope, params[:address])
         scope = by_cause(scope, params[:causes])
         scope = by_service(scope, params[:services])
         scope = by_beneficiary_groups_served(scope, params[:beneficiary_groups])
