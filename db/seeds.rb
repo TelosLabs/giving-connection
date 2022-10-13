@@ -44,7 +44,9 @@ unless Rails.env.production?
   # Pupulate organizations and locations
   SpreadsheetParse.new.import("./lib/assets/staging-data-19-01-2022.xlsx")
 
+  # Create random location around cities in US
+  Rake::Task['populate:random_locations'].invoke
+
   # Create organizations and causes association
   Rake::Task['populate:seed_organizations_causes'].invoke
-
 end
