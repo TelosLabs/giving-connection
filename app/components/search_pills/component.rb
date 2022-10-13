@@ -1,11 +1,9 @@
 class SearchPills::Component < ViewComponent::Base
-  def initialize(causes:, services:, beneficiary_subcategories:, params:, params_applied:, form:)
+  def initialize(causes:, services:, beneficiary_subcategories:, params:)
     @causes = causes
-    @form = form
     @services = services
     @beneficiary_subcategories = beneficiary_subcategories
     @params = params
-    @params_applied = params_applied
     @tabs_labels = ['Cause', 'Location', 'Services', 'Populations served', 'Hours']
     @distances = [
       {
@@ -37,5 +35,17 @@ class SearchPills::Component < ViewComponent::Base
         miles: "Any"
       }
     ]
+  end
+
+  def all_causes_checked?
+    @causes.all? { |cause| @params.dig(:search, :causes)&.include?(cause.name) }
+  end
+
+  def all_services_checked?
+    @services.all? { |service| @params.dig(:search, :services, service.cause.name)&.include?(service.name) }
+  end
+
+  def all_beneficiary_subcategories_checked?
+    @beneficiary_subcategories.all? { |subcategory| @params.dig(:search, :beneficiary_groups, subcategory.beneficiary_group.name)&.include?(subcategory.name) }
   end
 end
