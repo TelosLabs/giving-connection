@@ -99,6 +99,7 @@ export default class extends Controller {
       marker.addListener("click", () => {
         let container = document.getElementById('left-side-panel')
         container.childNodes.forEach((node) => {
+          node.classList.add('hidden')
           if (element.id + '_panel' == node.id) {
             node.classList.remove('hidden')
           }

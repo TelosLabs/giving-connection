@@ -122,7 +122,9 @@
                     = result.decorate.closed_office_hours_display
 
       div class="relative hidden w-full md:flex" data-controller="places result-card--component" data-places-zoom-value="10" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
-        div# class="absolute inset-0 w-full h-full xs:h-85vh" data-places-target="map"
+        div class="absolute inset-0 w-full h-full xs:h-85vh" data-places-target="map"
+        div class="absolute top-14 left-5 w-1/3 h-full" id="left-side-panel"
+          = render partial: 'searches/left_panel', locals: { results: @results }
         div class="hidden"
           div class="hidden" data-places-target="latitude"
           div class="hidden" data-places-target="longitude"
