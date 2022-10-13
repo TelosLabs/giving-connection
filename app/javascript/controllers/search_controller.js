@@ -11,18 +11,19 @@ export default class extends Controller {
     useDispatch(this)
   }
 
-  showPanel() {
-    this.cardLocationNameTargets.forEach(cardLocationName => {
-      cardLocationName.addListener("click", () => {
-        let container = document.getElementById('left-side-panel')
-        container.childNodes.forEach((node) => {
-          node.classList.add('hidden')
-          if (element.id + '_panel' == node.id) {
-            node.classList.remove('hidden')
-          }
-        })
-      })
-    })
+  showPanel(event) {
+    console.log(event.target.id);
+    // this.cardLocationNameTargets.forEach(cardLocationName => {
+    //   cardLocationName.addListener("click", () => {
+    //     let container = document.getElementById('left-side-panel')
+    //     container.childNodes.forEach((node) => {
+    //       node.classList.add('hidden')
+    //       if (element.id + '_panel' == node.id) {
+    //         node.classList.remove('hidden')
+    //       }
+    //     })
+    //   })
+    // })
   }
 
   clearAll() {
