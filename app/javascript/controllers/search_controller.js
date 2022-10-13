@@ -4,75 +4,62 @@ import Rails from '@rails/ujs'
 
 export default class extends Controller {
   static get targets() {
-    return ['input', 'customInput', 'form', 'pills', "pillsCounter", "pillsCounterWrapper", "filtersIcon", "causesPill", "servicesPill", "beneficiaryGroupsPill", "selectAllCausesPill", "selectAllServicesPill", "selectAllBeneficiaryGroupsPill"]
+    return [
+      'input',
+      'customInput',
+      'form',
+      'pills',
+      "pillsCounter",
+      "pillsCounterWrapper",
+      "filtersIcon",
+      "causesPill",
+      "servicesPill",
+      "beneficiaryGroupsPill",
+      "selectAllCausesPill",
+      "selectAllServicesPill",
+      "selectAllBeneficiaryGroupsPill"
+    ]
   }
 
   connect() {
     useDispatch(this)
+    this.updatePillsCounter()
+    this.managePillsCounterDisplay()
   }
 
-  toggleAllCausesPills() {
-    if (this.allPillsAreChecked(this.causesPillTargets) == "allSelected") {
-      this.causesPillTargets.forEach(pill => {
+  toggleAllPills(e) {
+    const allButtonName = e.target.getAttribute("name")
+    let pillsArray
+
+    if (allButtonName === "causes_all") {
+      pillsArray = this.causesPillTargets
+    }
+    else if (allButtonName === "services_all") {
+      pillsArray = this.servicesPillTargets
+    }
+    else if (allButtonName === "groups_all") {
+      pillsArray = this.beneficiaryGroupsPillTargets
+    }
+
+    if (this.allPillsAreChecked(pillsArray) && !e.target.checked) {
+      pillsArray.forEach(pill => {
         pill.checked = false
         pill.removeAttribute('checked')
       })
-    } else {
-      this.causesPillTargets.forEach(pill => {
-        pill.checked = true
-        pill.setAttribute('checked', true)
+    }
+    else {
+      pillsArray.filter(pill => pill.checked === false).forEach(uncheckedPill => {
+        uncheckedPill.checked = true
+        uncheckedPill.setAttribute('checked', true)
       })
     }
-    this.submitForm()
     this.updatePillsCounter()
-  }
-
-  toggleAllServicesPills() {
-    if (this.allPillsAreChecked(this.servicesPillTargets) == "allSelected") {
-      this.servicesPillTargets.forEach(pill => {
-        pill.checked = false
-        pill.removeAttribute('checked')
-      })
-    } else {
-      this.servicesPillTargets.forEach(pill => {
-        pill.checked = true
-        pill.setAttribute('checked', true)
-      })
-    }
+    this.managePillsCounterDisplay()
     this.submitForm()
-    this.updatePillsCounter()
-  }
-
-  toggleAllBeneficiaryGroupsPills() {
-    if (this.allPillsAreChecked(this.beneficiaryGroupsPillTargets) == "allSelected") {
-      this.beneficiaryGroupsPillTargets.forEach(pill => {
-        pill.checked = false
-        pill.removeAttribute('checked')
-      })
-    } else {
-      this.beneficiaryGroupsPillTargets.forEach(pill => {
-        pill.checked = true
-        pill.setAttribute('checked', true)
-      })
-    }
-    this.submitForm()
-    this.updatePillsCounter()
   }
 
   allPillsAreChecked(pills) {
-    let checked_pills = []
-    pills.forEach(pill => {
-      if (pill.checked) {
-        checked_pills.push(pill)
-      }
-    })
-    if (checked_pills.length == pills.length) {
-      return "allSelected"
-    } else if (checked_pills.length == 0) {
-      return "noneSelected"
-    } else if (checked_pills.length > 0 && checked_pills.length < pills.length) {
-      return "someSelected"
-    }
+    return pills.every(pill => pill.checked)
   }
 
 
@@ -134,34 +121,49 @@ export default class extends Controller {
       input.checked = false
       input.removeAttribute('checked')
     })
-    this.pillsCounterTarget.textContent = ""
-    this.filtersIconTarget.classList.remove("hidden")
-    this.pillsCounterWrapperTarget.classList.remove("inline-flex")
-    this.pillsCounterWrapperTarget.classList.add("hidden")
+    this.updatePillsCounter()
+    this.managePillsCounterDisplay()
     this.submitForm()
   }
 
   updatePillsCounter() {
-    let checks = this.pillsTarget.querySelectorAll('input[type="checkbox"]:checked').length
-    let radio = this.pillsTarget.querySelectorAll('input[type="radio"]:checked').length
-    const totalChecked = checks + radio
-    this.pillsCounterTarget.textContent = totalChecked
-    if (totalChecked > 0 && this.pillsCounterWrapperTarget.classList.contains("hidden")) {
+    const checks = this.pillsTarget.querySelectorAll('input[type="checkbox"]:checked').length
+    const radio = this.pillsTarget.querySelectorAll('input[type="radio"]:checked').length
+    this.totalChecked = checks + radio
+    this.pillsCounterTarget.textContent = this.totalChecked
+  }
+
+  managePillsCounterDisplay() {
+    if (this.totalChecked > 0) {
       this.pillsCounterWrapperTarget.classList.remove("hidden")
       this.pillsCounterWrapperTarget.classList.add("inline-flex")
       this.filtersIconTarget.classList.add("hidden")
     }
-    if (this.allPillsAreChecked(this.causesPillTargets) == "someSelected") {
-      this.selectAllCausesPillTarget.checked = false
-      this.selectAllCausesPillTarget.removeAttribute('checked')
+    else {
+      this.pillsCounterWrapperTarget.classList.add("hidden")
+      this.pillsCounterWrapperTarget.classList.remove("inline-flex")
+      this.filtersIconTarget.classList.remove("hidden")
     }
-    if (this.allPillsAreChecked(this.servicesPillTargets) == "someSelected") {
-      this.selectAllServicesPillTarget.checked = false
-      this.selectAllServicesPillTarget.removeAttribute('checked')
+  }
+
+  //Checks if the selectAllPill of a given panel is checked. If that's the case, then unchecks it.
+  manageAllPillCheck(e) {
+    const filterPillName = e.target.getAttribute("name")
+    let allButton
+
+    if (filterPillName.includes("search[causes]")) {
+      allButton = this.selectAllCausesPillTarget
     }
-    if (this.allPillsAreChecked(this.beneficiaryGroupsPillTargets) == "someSelected") {
-      this.selectAllBeneficiaryGroupsPillTarget.checked = false
-      this.selectAllBeneficiaryGroupsPillTarget.removeAttribute('checked')
+    else if (filterPillName.includes("search[services]")) {
+      allButton = this.selectAllServicesPillTarget
+    }
+    else if (filterPillName.includes("search[beneficiary_groups]")) {
+      allButton = this.selectAllBeneficiaryGroupsPillTarget
+    }
+
+    if (allButton.checked) {
+      allButton.checked = false
+      allButton.removeAttribute("checked")
     }
   }
 }
