@@ -11,26 +11,6 @@ export default class extends Controller {
     useDispatch(this)
   }
 
-  showPanel(event) {
-    let container = document.getElementById('left-side-panel')
-    container.childNodes.forEach((node) => {
-      node.classList.add('hidden')
-      let node_id = node.id.replace(/\D/g, '');
-      let event_id = event.target.id.replace(/\D/g, '');
-      if (node_id == event_id) {
-        node.classList.remove('hidden')
-        sessionStorage.setItem('clicked_location_id', node.id)
-      }
-    })
-  }
-
-  hide(event) {
-    let container = document.getElementById('left-side-panel')
-    container.childNodes.forEach((node) => {
-      node.classList.add('hidden')
-    })
-  }
-
   clearAll() {
     const event = new CustomEvent('selectmultiple:clear', {  })
 

@@ -18,6 +18,48 @@ export default class extends Controller {
 
   initialize() {
     this.markersArray = []
+    this.mapMarkers = []
+    this.image = this.imageurlValue
+    this.clickedImage = this.clickedimageurlValue
+    this.searchResultTitles = document.querySelectorAll('[id^="new_favorite"]');
+    this.setSearchResultsListeners()
+  }
+
+  setSearchResultsListeners() {
+    if (this.searchResultTitles) {
+      this.searchResultTitles.forEach((node) => {
+        node.addEventListener('click', this.showPanel.bind(this))
+      })
+    }
+  }
+
+  showPanel(event) {
+    let container = document.getElementById('left-side-panel')
+    container.childNodes.forEach((node) => {
+      node.classList.add('hidden')
+      let node_id = node.id.replace(/\D/g, '');
+      let event_id = event.target.id.replace(/\D/g, '');
+      if (node_id == event_id) {
+        node.classList.remove('hidden')
+        sessionStorage.setItem('clicked_location_id', node.id)
+      }
+      this.mapMarkers.forEach((marker) => {
+        console.log(marker);
+        // if (marker.id == node_id) {
+        //   marker.setIcon(this.clickedImage)
+        // }
+      })
+    })
+  }
+
+  hidePanel() {
+    let container = document.getElementById('left-side-panel')
+    container.childNodes.forEach((node) => {
+      node.classList.add('hidden')
+    })
+    this.mapMarkers.forEach((marker) => {
+      marker.setIcon(this.image)
+    })
   }
 
   scrollToSelectedLocation(){
@@ -82,7 +124,6 @@ export default class extends Controller {
     // Adds markers to the map.
     let prevInfoWindow = false
     let pin = document.getElementById(sessionStorage.getItem('selected_location_id'))
-    let mapMarkers = []
 
     for (let i = 0; i < this.markerTargets.length; i++) {
       const element = this.markerTargets[i];
@@ -95,7 +136,7 @@ export default class extends Controller {
         icon: image
       });
 
-      mapMarkers.push(marker)
+      this.mapMarkers.push(marker)
 
       const infowindow = new google.maps.InfoWindow({
         content: this.markerTargets[i],
@@ -104,12 +145,14 @@ export default class extends Controller {
 
       marker.addListener("click", () => {
         let container = document.getElementById('left-side-panel')
-        mapMarkers.forEach((marker) => {
+        this.mapMarkers.forEach((marker) => {
           marker.setIcon(image)
         })
         container.childNodes.forEach((node) => {
           node.classList.add('hidden')
-          if (element.id + '_panel' == node.id) {
+          let node_id = node.id.replace(/\D/g, '');
+          let event_id = element.id.replace(/\D/g, '');
+          if (node_id == event_id) {
             node.classList.remove('hidden')
             sessionStorage.setItem('clicked_location_id', node.id)
             marker.setIcon(clickedImage)
@@ -145,6 +188,7 @@ export default class extends Controller {
       }
     }
   }
+
 
   placeChanged() {
     this.clearMarkers()
