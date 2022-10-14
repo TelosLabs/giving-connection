@@ -4,7 +4,7 @@ import Rails from '@rails/ujs'
 
 export default class extends Controller {
   static get targets() {
-    return ['input', 'customInput', 'form', 'resultCard', 'card', 'cardLocationName']
+    return ['input', 'customInput', 'form', 'resultCard', 'card']
   }
 
   connect() {
@@ -12,18 +12,15 @@ export default class extends Controller {
   }
 
   showPanel(event) {
-    console.log(event.target.id);
-    // this.cardLocationNameTargets.forEach(cardLocationName => {
-    //   cardLocationName.addListener("click", () => {
-    //     let container = document.getElementById('left-side-panel')
-    //     container.childNodes.forEach((node) => {
-    //       node.classList.add('hidden')
-    //       if (element.id + '_panel' == node.id) {
-    //         node.classList.remove('hidden')
-    //       }
-    //     })
-    //   })
-    // })
+    let container = document.getElementById('left-side-panel')
+    container.childNodes.forEach((node) => {
+      node.classList.add('hidden')
+      let node_id = node.id.replace(/\D/g, '');
+      let event_id = event.target.id.replace(/\D/g, '');
+      if (node_id == event_id) {
+        node.classList.remove('hidden')
+      }
+    })
   }
 
   clearAll() {
