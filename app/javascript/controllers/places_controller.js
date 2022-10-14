@@ -4,6 +4,7 @@ export default class extends Controller {
   static targets = [ "field", "map", "latitude", "longitude", "marker" ]
   static values = {
     imageurl: String,
+    clickedimageurl: String,
     zoom: { type: Number, default: 10 },
     latitude: Number,
     longitude: Number,
@@ -45,6 +46,7 @@ export default class extends Controller {
      }
 
     const image = this.imageurlValue
+    const clickedImage = this.clickedimageurlValue
 
     if (this.hasFieldTarget) {
       this.autocomplete = new google.maps.places.Autocomplete(this.fieldTarget)
@@ -61,7 +63,7 @@ export default class extends Controller {
     }
 
     if (this.hasMarkerTarget) {
-      this.setMarkers(this.map, image);
+      this.setMarkers(this.map, image, clickedImage);
     }else{
       this.marker = new google.maps.Marker({
         map: this.map,
@@ -76,7 +78,7 @@ export default class extends Controller {
     }
   }
 
-  setMarkers(map, image) {
+  setMarkers(map, image, clickedImage) {
     // Adds markers to the map.
     let prevInfoWindow = false
     let pin = document.getElementById(sessionStorage.getItem('selected_location_id'))
@@ -104,6 +106,7 @@ export default class extends Controller {
           if (element.id + '_panel' == node.id) {
             node.classList.remove('hidden')
             sessionStorage.setItem('clicked_location_id', node.id)
+            marker.image = clickedImage
           }
         })
       })
