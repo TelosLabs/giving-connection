@@ -23,6 +23,13 @@ export default class extends Controller {
     })
   }
 
+  hide(event) {
+    let container = document.getElementById('left-side-panel')
+    container.childNodes.forEach((node) => {
+      node.classList.add('hidden')
+    })
+  }
+
   clearAll() {
     const event = new CustomEvent('selectmultiple:clear', {  })
 
