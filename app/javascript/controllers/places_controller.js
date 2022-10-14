@@ -82,6 +82,7 @@ export default class extends Controller {
     // Adds markers to the map.
     let prevInfoWindow = false
     let pin = document.getElementById(sessionStorage.getItem('selected_location_id'))
+    let mapMarkers = []
 
     for (let i = 0; i < this.markerTargets.length; i++) {
       const element = this.markerTargets[i];
@@ -94,6 +95,8 @@ export default class extends Controller {
         icon: image
       });
 
+      mapMarkers.push(marker)
+
       const infowindow = new google.maps.InfoWindow({
         content: this.markerTargets[i],
         maxWidth: 210,
@@ -101,12 +104,15 @@ export default class extends Controller {
 
       marker.addListener("click", () => {
         let container = document.getElementById('left-side-panel')
+        mapMarkers.forEach((marker) => {
+          marker.setIcon(image)
+        })
         container.childNodes.forEach((node) => {
           node.classList.add('hidden')
           if (element.id + '_panel' == node.id) {
             node.classList.remove('hidden')
             sessionStorage.setItem('clicked_location_id', node.id)
-            marker.image = clickedImage
+            marker.setIcon(clickedImage)
           }
         })
       })
