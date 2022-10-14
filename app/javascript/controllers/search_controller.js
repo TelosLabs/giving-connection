@@ -19,6 +19,7 @@ export default class extends Controller {
       let event_id = event.target.id.replace(/\D/g, '');
       if (node_id == event_id) {
         node.classList.remove('hidden')
+        sessionStorage.setItem('clicked_location_id', node.id)
       }
     })
   }

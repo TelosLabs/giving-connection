@@ -69,6 +69,11 @@ export default class extends Controller {
         icon: image
       })
     }
+
+    let clickedPin = document.getElementById(sessionStorage.getItem('clicked_location_id'))
+    if (clickedPin) {
+      clickedPin.classList.remove('hidden')
+    }
   }
 
   setMarkers(map, image) {
@@ -98,6 +103,7 @@ export default class extends Controller {
           node.classList.add('hidden')
           if (element.id + '_panel' == node.id) {
             node.classList.remove('hidden')
+            sessionStorage.setItem('clicked_location_id', node.id)
           }
         })
       })
@@ -119,15 +125,15 @@ export default class extends Controller {
         this.scrollToSelectedLocation()
       });
 
-     if( pin && pin.id == element.id) {
-       prevInfoWindow = infowindow
-       infowindow.open({
-         anchor: marker,
-         map,
-         shouldFocus: false,
-       });
-       this.scrollToSelectedLocation()
-     }
+      if (pin && pin.id == element.id)  {
+        prevInfoWindow = infowindow
+        infowindow.open({
+          anchor: marker,
+          map,
+          shouldFocus: false,
+        });
+        this.scrollToSelectedLocation()
+      }
     }
   }
 
