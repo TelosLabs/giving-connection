@@ -28,13 +28,13 @@ export default class extends Controller {
   setSearchResultsListeners() {
     if (this.searchResultTitles) {
       this.searchResultTitles.forEach((node) => {
-        node.addEventListener('click', this.showPanel.bind(this))
+        node.addEventListener('click', this.showPopup.bind(this))
       })
     }
   }
 
-  showPanel(event) {
-    let container = document.getElementById('left-side-panel')
+  showPopup(event) {
+    let container = document.getElementById('left-popup')
     container.childNodes.forEach((node) => {
       node.classList.add('hidden')
       let node_id = node.id.replace(/\D/g, '');
@@ -53,8 +53,8 @@ export default class extends Controller {
     })
   }
 
-  hidePanel() {
-    let container = document.getElementById('left-side-panel')
+  hidePopup() {
+    let container = document.getElementById('left-popup')
     container.childNodes.forEach((node) => {
       node.classList.add('hidden')
     })
@@ -65,8 +65,8 @@ export default class extends Controller {
   }
 
   scrollToSelectedLocation(){
-    if(sessionStorage.getItem('selected_location_id')) {
-      let id = sessionStorage.getItem('selected_location_id').split('_')[1]
+    if(sessionStorage.getItem('hovered_location_id')) {
+      let id = sessionStorage.getItem('hovered_location_id').split('_')[1]
       let card = document.getElementById(id)
       card.scrollIntoView({behavior: 'smooth', block: "nearest", inline: "nearest"})
     }
@@ -138,7 +138,7 @@ export default class extends Controller {
   setMarkers(map, image, clickedImage) {
     // Adds markers to the map.
     let prevInfoWindow = false
-    let pin = document.getElementById(sessionStorage.getItem('selected_location_id'))
+    let pin = document.getElementById(sessionStorage.getItem('hovered_location_id'))
 
     for (let i = 0; i < this.markerTargets.length; i++) {
       const element = this.markerTargets[i];
@@ -162,7 +162,7 @@ export default class extends Controller {
       });
 
       marker.addListener("click", () => {
-        let container = document.getElementById('left-side-panel')
+        let container = document.getElementById('left-popup')
         this.mapMarkers.forEach((marker) => {
           marker.setIcon(image)
           marker.setAnimation(null);
@@ -194,7 +194,7 @@ export default class extends Controller {
           shouldFocus: false,
         });
 
-        sessionStorage.setItem('selected_location_id', element.id)
+        sessionStorage.setItem('hovered_location_id', element.id)
         this.scrollToSelectedLocation()
       });
 
