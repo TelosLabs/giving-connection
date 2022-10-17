@@ -41,7 +41,6 @@ export default class extends Controller {
       let event_id = event.target.id.replace(/\D/g, '');
       if (node_id == event_id) {
         node.classList.remove('hidden')
-        sessionStorage.setItem('clicked_location_id', node.id)
       }
       this.mapMarkers.forEach((marker) => {
         marker.setIcon(this.image)
@@ -49,7 +48,6 @@ export default class extends Controller {
         if (marker.id == event_id) {
           marker.setIcon(this.clickedImage)
           marker.setAnimation(google.maps.Animation.BOUNCE);
-          sessionStorage.setItem('selected_marker', marker.id)
         }
       })
     })
@@ -169,8 +167,8 @@ export default class extends Controller {
           let node_id = node.id.replace(/\D/g, '');
           if (node_id == element_id) {
             node.classList.remove('hidden')
-            sessionStorage.setItem('clicked_location_id', node.id)
             marker.setIcon(clickedImage)
+            sessionStorage.setItem('clicked_location_id', node.id)
             sessionStorage.setItem('selected_marker', marker.id)
           }
         })
@@ -181,6 +179,7 @@ export default class extends Controller {
         if( prevInfoWindow ) {
           prevInfoWindow.close()
         }
+        marker.setAnimation(null);
 
         prevInfoWindow = infowindow
 
@@ -191,6 +190,7 @@ export default class extends Controller {
         });
 
         sessionStorage.setItem('selected_location_id', element.id)
+        sessionStorage.setItem('selected_marker', marker.id)
         this.scrollToSelectedLocation()
       });
 
