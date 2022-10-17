@@ -190,7 +190,6 @@ export default class extends Controller {
         });
 
         sessionStorage.setItem('selected_location_id', element.id)
-        sessionStorage.setItem('selected_marker', marker.id)
         this.scrollToSelectedLocation()
       });
 
