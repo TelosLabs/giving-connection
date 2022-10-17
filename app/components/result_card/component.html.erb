@@ -42,9 +42,11 @@
     </div>
   </div>
   <div class="flex flex-col px-2">
-    <h6 class="text-sm font-bold text-black uppercase">
-      WHAT WE DO
-    </h6>
+    <% if formated_description.present? %>
+      <h6 class="text-sm font-bold text-black uppercase">
+        WHAT WE DO
+      </h6>
+    <% end %>
     <p class="text-sm text-black">
       <%= formated_description %>
     </p>

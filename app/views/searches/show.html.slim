@@ -50,7 +50,7 @@
                                                     image_url: result&.organization&.logo, \
                                                     id: result&.id, \
                                                     website: result&.decorate&.website || result&.organization&.decorate&.website, \
-                                                    description: result&.organization&.mission_statement_en, \
+                                                    description: "", \
                                                     phone_number: result.phone_number&.number, \
                                                     current_user: current_user,
                                                     verified: result.organization.verified?)
