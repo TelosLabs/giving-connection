@@ -1,10 +1,100 @@
 - results.each do |result|
-  div class="hidden flex flex-col gap-2 p-5 bg-white rounded-6px" id="loc_#{result.id}_panel"
+  div class="hidden flex flex-col gap-2 p-7 bg-white rounded-6px" id="loc_#{result.id}_panel"
     div class="flex gap-2"
-      = image_tag result.organization.logo, class: "w-20 h-20"
+      = image_tag result.organization.logo, class: "w-25 h-25"
       div class="flex flex-col"
         h3 class="text-lg font-bold"
           = result.name
         h3 class="text-gray-500 text-sm"
           = result.address
-      = inline_svg_tag "x-icon.svg", class: "w-4 h-4 cursor-pointer", data: { action: "click->places#hidePanel" }
+      = inline_svg_tag "x-icon.svg", class: "w-7 h-7 cursor-pointer", data: { action: "click->places#hidePanel" }
+    div class="my-4 border-t border-gray-8"
+    div class="flex justify-center gap-5"
+      a class="flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer" href="#" title="Go to Page"
+        = inline_svg_tag "arrow_up_right_light.svg", class: "w-4 h-4"
+      a class="flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border" href="#" title="Save"
+        = inline_svg_tag "bookmark_empty_light.svg", class: "w-4 h-4 cursor-pointer"
+      a class="flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border" href="#" title="Share"
+        = inline_svg_tag "share_icon_light.svg", class: "w-4 h-4 cursor-pointer"
+      a class="flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border" href="#" title="Get Directions"
+        = inline_svg_tag "map_light.svg", class: "w-4 h-4 cursor-pointer"
+      a class="flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border" title="Visit Website"
+        = inline_svg_tag "website_light.svg", class: "w-4 h-4 cursor-pointer"
+    div class="my-4 border-t border-gray-8"
+    - if result.causes.present?
+      div class="mb-4"
+        div class="flex gap-2.5 flex-wrap px-1"
+          - result.organization.causes.uniq.each do |cause|
+            span class="text-sm text-center px-1.5 py-1 rounded-lg border border-gray-6 text-gray-3"
+              = cause.name
+    div class="text-left"
+      h4 class="text-sm font-bold uppercase text-gray-2"
+        | contact information
+      p class="text-sm leading-6 font-base text-gray-2"
+        - if result.phone_number.present?
+          span class="font-bold"
+            ' Phone:
+          span
+            = result.phone_number&.number
+      p class="text-sm leading-6 font-base text-gray-2"
+        span class="font-bold"
+          ' Hours:
+        - if result.appointment_only?
+          span class="text-green-fountain"
+            | Appointment only
+        - elsif result.open_now?
+          span class="text-green-fountain"
+            | Open
+        - else
+          span class="text-states-error"
+            | Closed
+      - if result.consistent_weekdays_hours?
+        p class="ml-12 text-sm leading-6 font-base text-gray-2"
+          span class="font-bold"
+            ' Mon - Fri
+          span
+            = result.decorate.working_hours
+        p class="ml-12 text-sm leading-6 font-base text-gray-2"
+          span class="font-bold"
+            ' Sat
+          span
+            = display_day_working_hours(result.day_hours(Time::DAYS_INTO_WEEK[:saturday]))
+        p class="ml-12 text-sm leading-6 font-base text-gray-2"
+          span class="font-bold"
+            ' Sun
+          span
+            = display_day_working_hours(result.day_hours(Time::DAYS_INTO_WEEK[:sunday]))
+      - else
+        - Location::WEEKDAYS.each do |day_number|
+          p class="ml-12 text-sm leading-6 font-base text-gray-2"
+            span class="font-bold"
+              = Date::DAYNAMES[day_number].first(3)
+              | &nbsp;
+            span
+              = display_day_working_hours(result.day_hours(day_number))
+        p class="ml-12 text-sm leading-6 font-base text-gray-2"
+          span class="font-bold"
+            ' Sat
+          span
+            = display_day_working_hours(result.day_hours(Time::DAYS_INTO_WEEK[:saturday]))
+        p class="ml-12 text-sm leading-6 font-base text-gray-2"
+          span class="font-bold"
+            ' Sun
+          span
+            = display_day_working_hours(result.day_hours(Time::DAYS_INTO_WEEK[:sunday]))
+
+      - if result.website.present? || result.organization.website.present?
+        p class="text-sm leading-6 font-base text-gray-2"
+          span class="font-bold"
+            ' Website:
+          a href="#{result.decorate.website || result.organization.decorate.website}" target="_blank" class="text-blue-medium"
+            = result.decorate.website || result.organization.decorate.website
+      - if result.email.present?
+        p class="text-sm leading-6 font-base text-gray-2"
+          span class="font-bold"
+            ' Email:
+          a href="mailto:#{result.email}" target="_blank"
+            = result.email
+    div class="border-t border-gray-8 h-5"
+    - if result.images.attached?
+      = render Carousel::Component.new(location: result)
