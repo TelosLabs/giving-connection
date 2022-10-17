@@ -95,6 +95,36 @@
             ' Email:
           a href="mailto:#{result.email}" target="_blank"
             = result.email
-    div class="border-t border-gray-8 h-5"
     - if result.images.attached?
-      = render Carousel::Component.new(location: result)
+      div class="border-t border-gray-8"
+        = render Carousel::Component.new(location: result, design_class: "relative h-40 w-64 overflow-hidden rounded-lg")
+    - if result.organization.mission_statement_en.present?
+      div class="border-t border-gray-8"
+      div class="flex flex-col px-6 text-left mt-4"
+        h4 class="text-sm font-bold text-black uppercase"
+          | MISSION - WHAT WE DO
+        p class="text-sm text-black whitespace-pre-wrap"
+          = result.organization.mission_statement_en
+    - if result.social_media.present?
+      div class="my-4 border-t border-gray-8"
+      h3 class="text-sm font-bold uppercase"
+        | Social Media
+      div class="flex flex-row gap-5 my-6"
+        - if result.social_media&.facebook.present?
+          a href=result.social_media&.facebook class="text-sm font-base text-gray-2" target="_blank"
+            = inline_svg_tag 'facebook_box.svg', class: "text-salmon fill-current"
+        - if result.social_media&.linkedin.present?
+          a href=result.social_media&.linkedin class="text-sm font-base text-gray-2" target="_blank"
+            = inline_svg_tag 'linkedin_box.svg', class: "text-salmon fill-current"
+        - if result.social_media&.twitter.present?
+          a href=result.social_media&.twitter class="text-sm font-base text-gray-2" target="_blank"
+            = inline_svg_tag 'twitter_box.svg', class: "text-salmon fill-current"
+        - if result.social_media&.instagram.present?
+          a href=result.social_media&.instagram class="text-sm font-base text-gray-2" target="_blank"
+            = inline_svg_tag 'instagram_box.svg', class: "text-salmon fill-current"
+        - if result.social_media&.youtube.present?
+          a href=result.social_media&.youtube class="text-sm font-base text-gray-2" target="_blank"
+            = inline_svg_tag 'youtube_box.svg', class: "text-salmon fill-current"
+        - if result.social_media&.blog.present?
+          a href=result.social_media&.blog class="text-sm font-base text-gray-2" target="_blank"
+            = inline_svg_tag 'blog_box.svg', class: "text-salmon fill-current"
