@@ -99,8 +99,8 @@
       div class="border-t border-gray-8"
         = render Carousel::Component.new(location: result, design_class: "relative h-40 w-64 overflow-hidden rounded-lg")
     - if result.organization.mission_statement_en.present?
-      div class="border-t border-gray-8"
-      div class="flex flex-col px-6 text-left mt-4"
+      div class="border-t border-gray-8 mb-4"
+      div class="flex flex-col text-left"
         h4 class="text-sm font-bold text-black uppercase"
           | MISSION - WHAT WE DO
         p class="text-sm text-black whitespace-pre-wrap"
