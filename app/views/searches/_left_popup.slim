@@ -10,15 +10,23 @@
       = inline_svg_tag "x-icon.svg", class: "w-7 h-7 cursor-pointer", data: { action: "click->places#hidePopup" }
     div class="my-4 border-t border-gray-8"
     div class="flex justify-center gap-5"
-      a class="flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer" href="#" title="Go to Page"
+      = link_to location_path(result), class: "flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer" do
         = inline_svg_tag "arrow_up_right_light.svg", class: "w-4 h-4"
-      a class="flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border" href="#" title="Save"
-        = inline_svg_tag "bookmark_empty_light.svg", class: "w-4 h-4 cursor-pointer"
-      a class="flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border" href="#" title="Share"
+      - if user_signed_in?
+        - if !current_user.favorited_locations.include?(result)
+          = link_to favorite_locations_path(location_id: result.id), class: "flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer", type: "button", method: :post, remote: true, data: { action: "click->pin#reloadPage" }do
+            = inline_svg_tag 'bookmark_empty_light.svg', class: 'w-4 h-4 cursor-pointer'
+        - else
+          = link_to favorite_location_path(current_user.fav_locs.find_by(location_id: result.id)), method: :delete, class: "flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer", remote: true, data: { action: "click->pin#reloadPage" } do
+            = inline_svg_tag 'bookmark_colored.svg', class: 'w-4 h-4 cursor-pointer'
+      - else
+        = link_to favorite_locations_path(location_id: result.id), method: :post, class: "flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer" do
+          = inline_svg_tag 'bookmark_empty_light.svg', class: 'w-4 h-4 cursor-pointer'
+      = link_to location_path(result), class: "flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer" do
         = inline_svg_tag "share_icon_light.svg", class: "w-4 h-4 cursor-pointer"
-      a class="flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border" href="#" title="Get Directions"
+      = link_to location_path(result), class: "flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer" do
         = inline_svg_tag "map_light.svg", class: "w-4 h-4 cursor-pointer"
-      a class="flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border" title="Visit Website"
+      = link_to location_path(result), class: "flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer" do
         = inline_svg_tag "website_light.svg", class: "w-4 h-4 cursor-pointer"
     div class="my-4 border-t border-gray-8"
     - if result.causes.present?
