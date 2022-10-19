@@ -12,11 +12,9 @@
 require 'rails_helper'
 
 RSpec.describe BeneficiaryGroup, type: :model do
-  context 'Beneficiary model validation test' do
+  describe "associations" do
     subject { create(:beneficiary_group) }
 
-    it 'ensures beneficiary can be created' do
-      expect(subject).to be_valid
-    end
+    it { should have_many(:beneficiary_subcategories).dependent(:destroy) }
   end
 end

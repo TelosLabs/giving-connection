@@ -12,11 +12,11 @@
 require 'rails_helper'
 
 RSpec.describe Cause, type: :model do
-  context 'Cause model validation test' do
+  describe "associations" do
     subject { create(:cause) }
 
-    it 'ensures cause can be created' do
-      expect(subject).to be_valid
-    end
+    it { should have_many(:organization_causes).dependent(:destroy) }
+    it { should have_many(:organizations).through(:organization_causes) }
+    it { should have_many(:services) }
   end
 end

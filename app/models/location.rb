@@ -25,6 +25,9 @@ class Location < ActiveRecord::Base
   include Locations::Officeable
   validates_with LocationValidator
 
+  # For tests. Read https://oozou.com/blog/never-skip-a-callback-in-your-tests-21
+  attr_accessor :_skip_creating_geo_point
+
   belongs_to :organization, optional: true
 
   scope :active, -> { joins(:organization).where(organization: { active: true }) }
@@ -46,11 +49,15 @@ class Location < ActiveRecord::Base
   validates :latitude, presence: true
   validates :longitude, presence: true
   validates :lonlat, presence: true
+  validates :main, inclusion: { in: [true, false] }
+  validates :physical, inclusion: { in: [true, false] }
+  validates :offer_services, inclusion: { in: [ true, false ] }
+  validates :appointment_only, inclusion: { in: [true, false] }
 
   scope :additional, -> { where(main: false) }
   scope :main, -> { where(main: true) }
 
-  before_validation :lonlat_geo_point
+  before_validation :lonlat_geo_point, unless: :_skip_creating_geo_point
 
   delegate :social_media, to: :organization
 
@@ -77,8 +84,7 @@ class Location < ActiveRecord::Base
   end
 
   def address_with_suite_number
-    address_fields = address.split(",").insert(1, suite).each { |field| field.strip! }
-    address_fields.join(", ")
+    address.split(",").insert(1, suite).join(", ")
   end
 
   def link_to_google_maps

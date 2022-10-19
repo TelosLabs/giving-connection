@@ -1,14 +1,12 @@
-require 'faker'
-
 FactoryBot.define do
   factory :message do
-    name { Faker::Name.name}            
-    email { Faker::Internet.email }
-    phone { Faker::PhoneNumber.cell_phone }
-    subject { Faker::Lorem.sentence }
-    organization_name { Faker::Company.name }
-    organization_website { Faker::Internet.domain_name }
-    organization_ein { Faker::Company.ein }
-    content { Faker::Lorem.sentence }
+    name { 'Kevin' }            
+    email { 'kevinsito@email.com' }
+    phone { '12345678910' }
+    subject { 'Lorem' }
+    organization_name { "Kev's Org" }
+    organization_website { 'kevsorg.com' }
+    organization_ein { '123456' }
+    content { 'Lorem ipsum dolor' }
   end
 end

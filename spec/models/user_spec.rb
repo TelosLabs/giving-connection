@@ -29,11 +29,14 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  context 'User model validation test' do
+  describe "associations" do
     subject { create(:user) }
 
-    it 'ensures user can be created' do
-      expect(subject).to be_valid
-    end
+    it { should have_many(:organizations) }
+    it { should have_many(:alerts) }
+    it { should have_many(:fav_locs).class_name("FavoriteLocation") }
+    it { should have_many(:favorited_locations).through(:fav_locs).source(:location) }
+    it { should have_many(:organization_admin) }
+    it { should have_many(:administrated_organizations).through(:organization_admin).source(:organization) }
   end
 end

@@ -22,11 +22,17 @@
 require 'rails_helper'
 
 RSpec.describe Alert, type: :model do
-  context 'Alert model validation test' do
-    subject { create(:alert) }
+  subject { create(:alert) }
 
-    it 'ensures alert can be created' do
-      expect(subject).to be_valid
-    end
+  describe "associations" do
+    it { should belong_to(:user) }
+    it { should have_many(:alert_services).dependent(:destroy) }
+    it { should have_many(:alert_beneficiaries).dependent(:destroy) }
+    it { should have_many(:alert_causes).dependent(:destroy) }
+  end
+
+  describe "validations" do
+    it { should validate_presence_of(:frequency) }
+    it { should validate_inclusion_of(:frequency).in_array( %w[daily weekly monthly] ) }
   end
 end
