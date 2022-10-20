@@ -187,6 +187,20 @@ export default class extends Controller {
             sessionStorage.setItem('selected_marker', marker.id)
           }
         })
+
+        if( prevInfoWindow ) {
+          prevInfoWindow.close()
+        }
+        marker.setAnimation(null);
+
+        prevInfoWindow = infowindow
+
+        infowindow.open({
+          anchor: marker,
+          map,
+          shouldFocus: false,
+        });
+        sessionStorage.setItem('hovered_location_id', element.id)
       })
 
 

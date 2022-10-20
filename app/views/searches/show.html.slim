@@ -125,14 +125,14 @@
                     = result.decorate.closed_office_hours_display
 
       div class="relative hidden w-full md:flex" data-controller="places result-card--component" data-places-zoom-value="10" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}"
-        div class="absolute inset-0 w-full h-full xs:h-85vh" data-places-target="map"
+        div# class="absolute inset-0 w-full h-full xs:h-85vh" data-places-target="map"
         div class="absolute rounded-6px overflow-y-auto left-5 w-1/3 h-5/6 top-5" id="left-popup"
           = render partial: 'searches/left_popup', locals: { results: @results }
         div class="hidden"
           div class="hidden" data-places-target="latitude"
           div class="hidden" data-places-target="longitude"
           - @results.besides_po_boxes&.each do |result|
-            div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}" id="loc_#{result.id}" data-controller="pin" data-pin-target="pin"
+            div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}" data-po_box="#{result.po_box}" id="loc_#{result.id}" data-controller="pin" data-pin-target="pin"
               - if user_signed_in?
                 - if !current_user.favorited_locations.include?(result)
                   = link_to favorite_locations_path(location_id: result.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", method: :post, remote: true, data: { action: "click->pin#reloadPage" }do
