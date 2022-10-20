@@ -45,7 +45,7 @@ export default class extends Controller {
       let event_id = event.target.id.replace(/\D/g, '');
       if (node_id == event_id) {
         node.classList.remove('hidden')
-        sessionStorage.setItem('clicked_location_id', node.id)
+        sessionStorage.setItem('larger_popup', node.id)
       }
       this.mapMarkers.forEach((marker) => {
         marker.setIcon(this.image)
@@ -54,7 +54,7 @@ export default class extends Controller {
           marker.setIcon(this.clickedImage)
           marker.setAnimation(google.maps.Animation.BOUNCE);
           sessionStorage.setItem('selected_marker', marker.id)
-          sessionStorage.removeItem('hovered_location_id')
+          sessionStorage.removeItem('smaller_popup')
         }
       })
     })
@@ -69,14 +69,14 @@ export default class extends Controller {
       marker.setAnimation(null);
       marker.setIcon(this.image)
     })
-    sessionStorage.removeItem('clicked_location_id')
+    sessionStorage.removeItem('larger_popup')
     sessionStorage.removeItem('selected_marker')
-    sessionStorage.removeItem('hovered_location_id')
+    sessionStorage.removeItem('smaller_popup')
   }
 
   scrollToSelectedLocation(){
-    if(sessionStorage.getItem('hovered_location_id')) {
-      let id = sessionStorage.getItem('hovered_location_id').split('_')[1]
+    if(sessionStorage.getItem('smaller_popup')) {
+      let id = sessionStorage.getItem('smaller_popup').split('_')[1]
       let card = document.getElementById(id)
       card.scrollIntoView({behavior: 'smooth', block: "nearest", inline: "nearest"})
     }
@@ -131,7 +131,7 @@ export default class extends Controller {
       })
     }
 
-    let clickedLocation = document.getElementById(sessionStorage.getItem('clicked_location_id'))
+    let clickedLocation = document.getElementById(sessionStorage.getItem('larger_popup'))
     let selectedMarker = sessionStorage.getItem('selected_marker')
     if (clickedLocation) {
       clickedLocation.classList.remove('hidden')
@@ -148,7 +148,7 @@ export default class extends Controller {
   setMarkers(map, image, clickedImage) {
     // Adds markers to the map.
     let prevInfoWindow = false
-    let pin = document.getElementById(sessionStorage.getItem('hovered_location_id'))
+    let pin = document.getElementById(sessionStorage.getItem('smaller_popup'))
 
     for (let i = 0; i < this.markerTargets.length; i++) {
       const element = this.markerTargets[i];
@@ -183,7 +183,7 @@ export default class extends Controller {
           if (node_id == element_id) {
             node.classList.remove('hidden')
             marker.setIcon(clickedImage)
-            sessionStorage.setItem('clicked_location_id', node.id)
+            sessionStorage.setItem('larger_popup', node.id)
             sessionStorage.setItem('selected_marker', marker.id)
           }
         })
@@ -200,7 +200,7 @@ export default class extends Controller {
           map,
           shouldFocus: false,
         });
-        sessionStorage.setItem('hovered_location_id', element.id)
+        sessionStorage.setItem('smaller_popup', element.id)
       })
 
 
@@ -218,7 +218,7 @@ export default class extends Controller {
           shouldFocus: false,
         });
 
-        sessionStorage.setItem('hovered_location_id', element.id)
+        sessionStorage.setItem('smaller_popup', element.id)
         this.scrollToSelectedLocation()
       });
 
