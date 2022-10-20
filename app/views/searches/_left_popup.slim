@@ -14,10 +14,10 @@
         = inline_svg_tag "arrow_up_right_light.svg", class: "w-4 h-4"
       - if user_signed_in?
         - if !current_user.favorited_locations.include?(result)
-          = link_to favorite_locations_path(location_id: result.id), class: "flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer", type: "button", method: :post, remote: true, data: { action: "click->pin#reloadPage" }do
+          = link_to favorite_locations_path(location_id: result.id), class: "flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer", type: "button", method: :post, remote: true, data: { action: "click->places#reloadPage" }do
             = inline_svg_tag 'bookmark_empty_light.svg', class: 'w-4 h-4 cursor-pointer'
         - else
-          = link_to favorite_location_path(current_user.fav_locs.find_by(location_id: result.id)), method: :delete, class: "flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer", remote: true, data: { action: "click->pin#reloadPage" } do
+          = link_to favorite_location_path(current_user.fav_locs.find_by(location_id: result.id)), method: :delete, class: "flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer", remote: true, data: { action: "click->places#reloadPage" } do
             = inline_svg_tag 'bookmark_colored.svg', class: 'w-4 h-4 cursor-pointer'
       - else
         = link_to favorite_locations_path(location_id: result.id), method: :post, class: "flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer" do

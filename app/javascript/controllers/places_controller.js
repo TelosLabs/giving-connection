@@ -25,6 +25,10 @@ export default class extends Controller {
     this.setSearchResultsListeners()
   }
 
+  reloadPage(event) {
+    window.location.search = window.location.search
+}
+
   setSearchResultsListeners() {
     if (this.searchResultTitles) {
       this.searchResultTitles.forEach((node) => {
@@ -41,6 +45,7 @@ export default class extends Controller {
       let event_id = event.target.id.replace(/\D/g, '');
       if (node_id == event_id) {
         node.classList.remove('hidden')
+        sessionStorage.setItem('clicked_location_id', node.id)
       }
       this.mapMarkers.forEach((marker) => {
         marker.setIcon(this.image)
@@ -48,6 +53,8 @@ export default class extends Controller {
         if (marker.id == event_id) {
           marker.setIcon(this.clickedImage)
           marker.setAnimation(google.maps.Animation.BOUNCE);
+          sessionStorage.setItem('selected_marker', marker.id)
+          sessionStorage.removeItem('hovered_location_id')
         }
       })
     })
@@ -62,6 +69,9 @@ export default class extends Controller {
       marker.setAnimation(null);
       marker.setIcon(this.image)
     })
+    sessionStorage.removeItem('clicked_location_id')
+    sessionStorage.removeItem('selected_marker')
+    sessionStorage.removeItem('hovered_location_id')
   }
 
   scrollToSelectedLocation(){
