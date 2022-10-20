@@ -38,6 +38,15 @@
           <% else %>
         <p class="text-xs text-blue-medium"><%= @phone_number %></p>
         <% end %>
+        <% if @causes.present? %>
+          <div class="my-4">
+            <div class="flex gap-2.5 flex-wrap px-1">
+              <% @causes.each do |cause| %>
+                <span class="text-sm text-center px-1.5 py-1 rounded-lg border border-gray-6 text-gray-3"><%= cause.name %></span>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
