@@ -3,7 +3,6 @@
 
 import { Application } from "@hotwired/stimulus"
 import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"
-import Clipboard from 'stimulus-clipboard'
 
 const application = Application.start()
 const context = require.context("controllers", true, /_controller\.js$/)
@@ -13,8 +12,6 @@ application.load(
     definitionsFromContext(contextComponents)
   )
 )
-
-application.register('clipboard', Clipboard)
 
 import { Tabs, Modal, Toggle, Dropdown } from "tailwindcss-stimulus-components"
 application.register('tabs', Tabs)
