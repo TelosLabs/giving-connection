@@ -4,7 +4,7 @@ import Rails from '@rails/ujs'
 
 export default class extends Controller {
   static get targets() {
-    return ['input', 'customInput', 'form', 'resultCard', 'card']
+    return ['input', 'customInput', 'form']
   }
 
   connect() {
