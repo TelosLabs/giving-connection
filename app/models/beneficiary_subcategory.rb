@@ -13,14 +13,8 @@
 class BeneficiarySubcategory < ApplicationRecord
   belongs_to :beneficiary_group
 
-  def self.most_repeated_in_organizations
-    beneficiary_subcategories_count = {}
-    Organization.all.each do |organization|
-      organization.beneficiary_subcategories.each do |beneficiary_subcategory|
-        beneficiary_subcategories_count[beneficiary_subcategory] = beneficiary_subcategories_count[beneficiary_subcategory].to_i + 1
-      end
-    end
-    arr = beneficiary_subcategories_count.sort_by { |beneficiary_subcategory, count| count }.reverse.first(10)
-    arr.map { |beneficiary_subcategory, count| beneficiary_subcategory }
+  def self.top_10_beneficiary_groups
+    arr = Organization.all.map(&:beneficiary_subcategories).flatten.tally.sort_by { |_beneficiary_subcategory, count| count }.reverse.first(10)
+    arr.map { |beneficiary_subcategory, _count| beneficiary_subcategory }
   end
 end

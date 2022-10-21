@@ -36,56 +36,23 @@ class SearchesController < ApplicationController
   private
 
   def set_causes
-    top_10_causes
+    @top_10_causes = Cause.top_10_causes
     @causes = helpers.take_off_intersection_from_array(@top_10_causes.pluck(:name), Cause.all.pluck(:name))
-  end
-
-  def top_10_causes
-    causes_count = {}
-    Location.all.each do |location|
-      location.causes.each do |cause|
-        causes_count[cause] = causes_count[cause].to_i + 1
-      end
-    end
-    arr = causes_count.sort_by { |cause, count| count }.reverse.first(10)
-    @top_10_causes = arr.map { |cause, count| cause }
   end
 
   def set_services
     @services = {}
-    top_10_services
+    @top_10_services = Service.top_10_services
     Cause.all.each do |cause|
       @services[cause.name] = helpers.take_off_intersection_from_array(@top_10_services.pluck(:name), cause.services.map(&:name))
     end
   end
 
-  def top_10_services
-    services_count = {}
-    Location.all.each do |location|
-      location.services.each do |service|
-        services_count[service] = services_count[service].to_i + 1
-      end
-    end
-    arr = services_count.sort_by { |service, count| count }.reverse.first(10)
-    @top_10_services = arr.map { |service, count| service }
-  end
-
   def set_beneficiary_groups
     @beneficiary_groups = {}
-    top_10_beneficiary_groups
+    @top_10_beneficiary_groups = BeneficiarySubcategory.top_10_beneficiary_groups
     BeneficiaryGroup.all.each do |group|
       @beneficiary_groups[group.name] = helpers.take_off_intersection_from_array(@top_10_beneficiary_groups.pluck(:name), group.beneficiary_subcategories.map(&:name))
     end
-  end
-
-  def top_10_beneficiary_groups
-    beneficiary_groups_count = {}
-    Organization.all.each do |org|
-      org.beneficiary_subcategories.each do |beneficiary_subcategory|
-        beneficiary_groups_count[beneficiary_subcategory] = beneficiary_groups_count[beneficiary_subcategory].to_i + 1
-      end
-    end
-    arr = beneficiary_groups_count.sort_by { |beneficiary_subcategory, count| count }.reverse.first(10)
-    @top_10_beneficiary_groups = arr.map { |beneficiary_subcategory, count| beneficiary_subcategory }
   end
 end
