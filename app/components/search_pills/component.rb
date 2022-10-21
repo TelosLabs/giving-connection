@@ -5,36 +5,7 @@ class SearchPills::Component < ViewComponent::Base
     @beneficiary_subcategories = beneficiary_subcategories
     @params = params
     @tabs_labels = ['Cause', 'Location', 'Services', 'Populations served', 'Hours']
-    @distances = [
-      {
-        kilometers: 3.21,
-        miles: "2 mi"
-      },
-      {
-        kilometers: 8.04,
-        miles: "5 mi"
-      },
-      {
-        kilometers: 24.1402,
-        miles: "15 mi"
-      },
-      {
-        kilometers: 48.2804,
-        miles: "30 mi"
-      },
-      {
-        kilometers: 96.5608,
-        miles: "60 mi"
-      },
-      {
-        kilometers: 289.6824,
-        miles: "180 mi"
-      },
-      {
-        kilometers: 1_000_000,
-        miles: "Any"
-      }
-    ]
+    @radii_in_miles = [2, 5, 15, 30, 60, 180, "Any"]
   end
 
   def all_causes_checked?
@@ -47,5 +18,9 @@ class SearchPills::Component < ViewComponent::Base
 
   def all_beneficiary_subcategories_checked?
     @beneficiary_subcategories.all? { |subcategory| @params.dig(:search, :beneficiary_groups, subcategory.beneficiary_group.name)&.include?(subcategory.name) }
+  end
+
+  def miles_to_km(miles)
+    (miles * 1.609344).round(3) rescue 1_000_000
   end
 end
