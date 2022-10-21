@@ -15,6 +15,17 @@ class Service < ApplicationRecord
   has_many :location_services, dependent: :destroy
   has_many :locations, through: :location_services
 
+  # def self.top_10_services
+  #   services_count = {}
+  #   Location.all.each do |location|
+  #     location.services.each do |service|
+  #       services_count[service] = services_count[service].to_i + 1
+  #     end
+  #   end
+  #   arr = services_count.sort_by { |service, count| count }.reverse.first(10)
+  #   @top_10_services = arr.map { |service, count| service }
+  # end
+
   def self.top_10_services
     arr = Location.all.map(&:services).flatten.tally.sort_by { |_service, count| count }.reverse.first(10)
     arr.map { |service, _count| service }

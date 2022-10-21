@@ -63,12 +63,6 @@ module SearchesHelper
 
   def kilometers_to_miles(kms)
     kilometers = kms.to_f
-    miles = kilometers / 1.6
-  end
-
-  def take_off_intersection_from_array(source_array, target_array)
-    intersection = source_array.intersection(target_array)
-    intersection.each { |item| target_array.delete(item) }
-    target_array
+    kilometers / 1.6
   end
 end
