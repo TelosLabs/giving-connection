@@ -5,7 +5,6 @@ class SearchesController < ApplicationController
   before_action :set_causes, only: [:show]
   before_action :set_services, only: [:show]
   before_action :set_beneficiary_groups, only: [:show]
-  before_action :verify_search_params, only: [:show]
 
   def show
     @search = params['search'].present? ? Search.new(create_params) : Search.new
@@ -19,18 +18,6 @@ class SearchesController < ApplicationController
     params.require(:search).permit(:distance, :city, :state, :lat, :lon,
                                    :open_now, :open_weekends, :keyword,
                                    :zipcode, causes: [], services: {}, beneficiary_groups: {})
-  end
-
-  def verify_search_params
-    @params_applied = params.dig('search', 'causes').present? ||
-                      params.dig('search', 'services').present? ||
-                      params.dig('search', 'beneficiary_groups').present? ||
-                      params.dig('search', 'city').present? ||
-                      params.dig('search', 'zipcode').present? ||
-                      params.dig('search', 'distance').present? ||
-                      params.dig('search', 'open_now').present? ||
-                      params.dig('search', 'open_weekends').present?
-
   end
 
   private

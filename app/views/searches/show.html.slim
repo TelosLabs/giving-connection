@@ -9,11 +9,11 @@
           div class="flex flex-row justify-between w-full p-4 bg-gray-9"
             button class="inline-flex items-center px-3 py-2 text-sm leading-4" type="button" data-action="click->modal#open"
               /! Heroicon name: solid/mail
-              = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative'
-              - params_list = %w(distance city beneficiary_groups services open_now open_weekends zipcode)
+              = inline_svg_tag "advanced-filters.svg", class: 'h-5 w-5 fill-current text-gray-2 -ml-0.5 relative'
+              /- params_list = %w(distance city beneficiary_groups services open_now open_weekends zipcode)
               span class="flex w-3 h-3 mr-2 text-gray-2"
-                - if @params_applied
-                  span class="relative inline-flex w-2 h-2 rounded-full bg-salmon"
+                /- if @params_applied
+                span class="relative hidden w-2 h-2 rounded-full bg-salmon" id="appliedIcon"
               | Advanced Filters
             /! Modal Container
             div class="fixed inset-0 flex items-center justify-center hidden min-h-screen overflow-y-auto animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;")
