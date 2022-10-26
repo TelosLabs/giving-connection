@@ -19,7 +19,7 @@ div class="bg-white rounded-3xl"
 
       div class="px-6 py-8"
         = form.label :services, 'Services', class: 'w-full text-base font-bold text-gray-2'
-        - if selected_pills(Service.top_10_services, "services").present?
+        - if search.services.present?
           div class='flex items-center gap-1'
             span class="relative inline-flex w-2 h-2 rounded-full bg-green-300"
             p class="text-sm text-gray-4" Selected Pills:

@@ -16,6 +16,8 @@ class Service < ApplicationRecord
   has_many :locations, through: :location_services
 
   def self.top_10_services
+    return Service.all.first(10)
+
     arr = Location.all.map(&:services).flatten.tally.sort_by { |_service, count| count }.reverse.first(10)
     arr.map { |service, _count| service }
   end
