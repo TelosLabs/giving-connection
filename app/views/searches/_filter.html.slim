@@ -9,32 +9,32 @@ div class="bg-white rounded-3xl"
       p class="px-6 py-4 text-sm text-gray-4" Add more filters to narrow down your search results.
       div class="px-6 py-8"
         = form.label :causes, 'Causes', class: 'w-full text-base font-bold text-gray-2'
-        - if selected_causes_pills(search, Cause.top_10_causes).present?
+        - if selected_pills(Cause.top_10_causes, "causes").present?
           div class='flex items-center gap-1'
             span class="relative inline-flex w-2 h-2 rounded-full bg-green-300"
             p class="text-sm text-gray-4" Selected Pills:
           p class="flex flex-wrap items-center gap-1 text-sm text-gray-4"
-            = selected_causes_pills(search, Cause.top_10_causes)
+            = selected_pills(Cause.top_10_causes, "causes").join(", ")
         = render SelectMultiple::Component.new(name: 'search[causes]', items: causes, selected: list_of_causes(search, Cause.top_10_causes))
 
       div class="px-6 py-8"
         = form.label :services, 'Services', class: 'w-full text-base font-bold text-gray-2'
-        - if selected_services_pills(search, Service.top_10_services).present?
+        - if selected_pills(Service.top_10_services, "services").present?
           div class='flex items-center gap-1'
             span class="relative inline-flex w-2 h-2 rounded-full bg-green-300"
             p class="text-sm text-gray-4" Selected Pills:
           p class="flex flex-wrap items-center gap-1 text-sm text-gray-4"
-            = selected_services_pills(search, Service.top_10_services)
+            = selected_pills(Service.top_10_services, "services").join(", ")
         = render SelectMultiple::Component.new(name: 'search[services]', items: services, selected: list_of_services(search, Service.top_10_services))
 
       div class="px-6 py-8"
         = form.label :beneficiary_groups, 'Populations Served', class: 'w-full text-base font-bold text-gray-2'
-        - if selected_beneficiary_groups_pills(search, BeneficiarySubcategory.top_10_beneficiary_groups).present?
+        - if selected_pills(BeneficiarySubcategory.top_10_beneficiary_groups, "beneficiary_groups").present?
           div class='flex items-center gap-1'
             span class="relative inline-flex w-2 h-2 rounded-full bg-green-300"
             p class="text-sm text-gray-4" Selected Pills:
           p class="flex flex-wrap items-center gap-1 text-sm text-gray-4"
-            = selected_beneficiary_groups_pills(search, BeneficiarySubcategory.top_10_beneficiary_groups)
+            = selected_pills(BeneficiarySubcategory.top_10_beneficiary_groups, "beneficiary_groups").join(", ")
         = render SelectMultiple::Component.new(name: 'search[beneficiary_groups]',items: beneficiary_groups, selected: list_of_beneficiary_groups(search, BeneficiarySubcategory.top_10_beneficiary_groups))
 
     div class="flex flex-row justify-between w-full px-6 py-5 border-t border-gray-8"
