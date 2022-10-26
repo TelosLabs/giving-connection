@@ -14,7 +14,7 @@ div class="bg-white rounded-3xl"
             span class="relative inline-flex w-2 h-2 rounded-full bg-green-300"
             p class="text-sm text-gray-4" Selected Pills:
           p class="flex flex-wrap items-center gap-1 text-sm text-gray-4"
-            = selected_pills(@top_10_causes, "causes").join(", ")
+            = selected_pills(@top_10_causes, "causes")
         = render SelectMultiple::Component.new(name: 'search[causes]', items: causes, selected: list_of_causes(search, @top_10_causes))
 
       div class="px-6 py-8"
@@ -24,7 +24,7 @@ div class="bg-white rounded-3xl"
             span class="relative inline-flex w-2 h-2 rounded-full bg-green-300"
             p class="text-sm text-gray-4" Selected Pills:
           p class="flex flex-wrap items-center gap-1 text-sm text-gray-4"
-            = selected_pills(@top_10_services, "services").join(", ")
+            = selected_pills(@top_10_services, "services")
         = render SelectMultiple::Component.new(name: 'search[services]', items: services, selected: list_of_services(search, @top_10_services))
 
       div class="px-6 py-8"
@@ -34,7 +34,7 @@ div class="bg-white rounded-3xl"
             span class="relative inline-flex w-2 h-2 rounded-full bg-green-300"
             p class="text-sm text-gray-4" Selected Pills:
           p class="flex flex-wrap items-center gap-1 text-sm text-gray-4"
-            = selected_pills(@top_10_beneficiary_groups , "beneficiary_groups").join(", ")
+            = selected_pills(@top_10_beneficiary_groups , "beneficiary_groups")
         = render SelectMultiple::Component.new(name: 'search[beneficiary_groups]',items: beneficiary_groups, selected: list_of_beneficiary_groups(search, @top_10_beneficiary_groups ))
 
     div class="flex flex-row justify-between w-full px-6 py-5 border-t border-gray-8"

@@ -19,7 +19,7 @@ module SearchesHelper
     tab_pills = tab_pills.map(&:name)
     search = params[:search][type.to_sym]
     search = search.values.flatten if type.include?('services') || type.include?('beneficiary_groups')
-    tab_pills & search
+    (tab_pills & search).join(', ')
   end
 
   def list_of_services(object, top_10_services)
