@@ -12,5 +12,11 @@
 #
 class BeneficiarySubcategory < ApplicationRecord
   belongs_to :beneficiary_group
-  scope :top_10_beneficiary_groups, -> { Organization.all.map(&:beneficiary_subcategories).flatten.tally.sort_by { |_beneficiary_subcategory, count| count }.reverse.first(10).map { |beneficiary_subcategory, _count| beneficiary_subcategory } }
+
+  # scope :top_10_beneficiary_groups, -> { Organization.all.map(&:beneficiary_subcategories).flatten.tally.sort_by { |_beneficiary_subcategory, count| count }.reverse.first(10).map { |beneficiary_subcategory, _count| beneficiary_subcategory } }
+
+  def self.top_10_beneficiary_groups
+    arr = Organization.all.map(&:beneficiary_subcategories).flatten.tally.sort_by { |_beneficiary_subcategory, count| count }.reverse.first(10)
+    arr.map { |beneficiary_subcategory, _count| beneficiary_subcategory }
+  end
 end
