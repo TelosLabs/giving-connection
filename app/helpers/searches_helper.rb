@@ -14,8 +14,6 @@ module SearchesHelper
   end
 
   def build_params_array(type)
-    return '' unless params[:search] && params[:search][type].present?
-
     arr = params[:search][type.to_sym]
     arr = arr.values.flatten if type.include?('services') || type.include?('beneficiary_groups')
     arr
@@ -23,15 +21,13 @@ module SearchesHelper
 
   def selected_pills(tab_pills, type)
     search_params = build_params_array(type)
-    return [] if search_params.blank?
-
     (tab_pills & search_params).join(', ')
   end
 
   def selected_advanced_filters(tab_pills, type)
-    search_params = build_params_array(type)
-    return '' if search_params.blank?
+    return [] unless params[:search] && params[:search][type].present?
 
+    search_params = build_params_array(type)
     search_params - tab_pills
   end
 
