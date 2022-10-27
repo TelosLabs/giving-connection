@@ -14,7 +14,7 @@ div class="bg-white rounded-3xl"
             span class="relative inline-flex w-2 h-2 rounded-full bg-green-300"
             p class="text-sm text-gray-4" Selected Pills:
           p class="flex flex-wrap items-center gap-1 text-sm text-gray-4"
-            = selected_pills(@top_10_causes.map(&:name), "causes")
+            = selected_pills(@top_10_causes.map(&:name), "causes").join(', ')
         = render SelectMultiple::Component.new(name: 'search[causes]', items: causes, selected: selected_advanced_filters(@top_10_causes.map(&:name), "causes"))
 
       div class="px-6 py-8"
@@ -24,7 +24,7 @@ div class="bg-white rounded-3xl"
             span class="relative inline-flex w-2 h-2 rounded-full bg-green-300"
             p class="text-sm text-gray-4" Selected Pills:
           p class="flex flex-wrap items-center gap-1 text-sm text-gray-4"
-            = selected_pills(@top_10_services.map(&:name), "services")
+            = selected_pills(@top_10_services.map(&:name), "services").join(', ')
         = render SelectMultiple::Component.new(name: 'search[services]', items: services, selected: selected_advanced_filters(@top_10_services.map(&:name), "services"))
 
       div class="px-6 py-8"
@@ -34,7 +34,7 @@ div class="bg-white rounded-3xl"
             span class="relative inline-flex w-2 h-2 rounded-full bg-green-300"
             p class="text-sm text-gray-4" Selected Pills:
           p class="flex flex-wrap items-center gap-1 text-sm text-gray-4"
-            = selected_pills(@top_10_beneficiary_groups.map(&:name) , "beneficiary_groups")
+            = selected_pills(@top_10_beneficiary_groups.map(&:name) , "beneficiary_groups").join(', ')
         = render SelectMultiple::Component.new(name: 'search[beneficiary_groups]',items: beneficiary_groups, selected: selected_advanced_filters(@top_10_beneficiary_groups.map(&:name), "beneficiary_groups"))
 
     div class="flex flex-row justify-between w-full px-6 py-5 border-t border-gray-8"
