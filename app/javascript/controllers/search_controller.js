@@ -27,42 +27,6 @@ export default class extends Controller {
     this.managePillsCounterDisplay()
   }
 
-  toggleAllPills(e) {
-    const allButtonName = e.target.getAttribute("name")
-    let pillsArray
-
-    if (allButtonName === "causes_all") {
-      pillsArray = this.causesPillTargets
-    }
-    else if (allButtonName === "services_all") {
-      pillsArray = this.servicesPillTargets
-    }
-    else if (allButtonName === "groups_all") {
-      pillsArray = this.beneficiaryGroupsPillTargets
-    }
-
-    if (this.allPillsAreChecked(pillsArray) && !e.target.checked) {
-      pillsArray.forEach(pill => {
-        pill.checked = false
-        pill.removeAttribute('checked')
-      })
-    }
-    else {
-      pillsArray.filter(pill => pill.checked === false).forEach(uncheckedPill => {
-        uncheckedPill.checked = true
-        uncheckedPill.setAttribute('checked', true)
-      })
-    }
-    this.updatePillsCounter()
-    this.managePillsCounterDisplay()
-    this.submitForm()
-  }
-
-  allPillsAreChecked(pills) {
-    return pills.every(pill => pill.checked)
-  }
-
-
   clearAll() {
     const event = new CustomEvent('selectmultiple:clear', {})
 
@@ -165,5 +129,40 @@ export default class extends Controller {
       allButton.checked = false
       allButton.removeAttribute("checked")
     }
+  }
+
+  toggleAllPills(e) {
+    const allButtonName = e.target.getAttribute("name")
+    let pillsArray
+
+    if (allButtonName === "causes_all") {
+      pillsArray = this.causesPillTargets
+    }
+    else if (allButtonName === "services_all") {
+      pillsArray = this.servicesPillTargets
+    }
+    else if (allButtonName === "groups_all") {
+      pillsArray = this.beneficiaryGroupsPillTargets
+    }
+
+    if (this.allPillsAreChecked(pillsArray) && !e.target.checked) {
+      pillsArray.forEach(pill => {
+        pill.checked = false
+        pill.removeAttribute('checked')
+      })
+    }
+    else {
+      pillsArray.filter(pill => pill.checked === false).forEach(uncheckedPill => {
+        uncheckedPill.checked = true
+        uncheckedPill.setAttribute('checked', true)
+      })
+    }
+    this.updatePillsCounter()
+    this.managePillsCounterDisplay()
+    this.submitForm()
+  }
+
+  allPillsAreChecked(pills) {
+    return pills.every(pill => pill.checked)
   }
 }
