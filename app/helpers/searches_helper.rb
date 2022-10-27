@@ -29,6 +29,15 @@ module SearchesHelper
     list.flatten.compact - top_10_services
   end
 
+  def selected_advanced_filters(tab_pills, type)
+    return [] unless search.present? && search[type].present?
+
+    tab_pills = tab_pills.map(&:name)
+    selected = params[type.to_sym]
+    selected = selected.values.flatten if type.include?('services') || type.include?('beneficiary_groups')
+    selected - tab_pills
+  end
+
   def list_of_causes(object, top_10_causes)
     list = []
     top_10_causes = top_10_causes.map(&:name)
@@ -42,6 +51,7 @@ module SearchesHelper
     list << object.beneficiary_groups&.map(&:last)&.flatten
     list.flatten.compact - top_10_beneficiary_groups
   end
+
 
   def kilometers_to_miles(kms)
     kilometers = kms.to_f
