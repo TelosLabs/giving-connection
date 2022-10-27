@@ -21,7 +21,7 @@ module SearchesHelper
 
   def selected_pills(tab_pills, type)
     search_params = build_params_array(type)
-    tab_pills & search_params
+    search_params & tab_pills
   end
 
   def selected_advanced_filters(tab_pills, type)
