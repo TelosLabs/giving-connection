@@ -13,45 +13,27 @@ module SearchesHelper
     list.flatten.compact
   end
 
-  def selected_pills(tab_pills, type)
+  def build_params_array(type)
     return '' unless params[:search] && params[:search][type].present?
 
-    tab_pills = tab_pills.map(&:name)
-    search = params[:search][type.to_sym]
-    search = search.values.flatten if type.include?('services') || type.include?('beneficiary_groups')
-    return (tab_pills & search).join(', ')
+    arr = params[:search][type.to_sym]
+    arr = arr.values.flatten if type.include?('services') || type.include?('beneficiary_groups')
+    arr
   end
 
-  def list_of_services(object, top_10_services)
-    list = []
-    top_10_services = top_10_services.map(&:name)
-    list << object.services&.map(&:last)&.flatten
-    list.flatten.compact - top_10_services
+  def selected_pills(tab_pills, type)
+    search_params = build_params_array(type)
+    return [] if search_params.blank?
+
+    (tab_pills & search_params).join(', ')
   end
 
   def selected_advanced_filters(tab_pills, type)
-    return [] unless search.present? && search[type].present?
+    search_params = build_params_array(type)
+    return '' if search_params.blank?
 
-    tab_pills = tab_pills.map(&:name)
-    selected = params[type.to_sym]
-    selected = selected.values.flatten if type.include?('services') || type.include?('beneficiary_groups')
-    selected - tab_pills
+    search_params - tab_pills
   end
-
-  def list_of_causes(object, top_10_causes)
-    list = []
-    top_10_causes = top_10_causes.map(&:name)
-    list << object.causes&.flatten
-    list.flatten.compact - top_10_causes
-  end
-
-  def list_of_beneficiary_groups(object, top_10_beneficiary_groups)
-    list = []
-    top_10_beneficiary_groups = top_10_beneficiary_groups.map(&:name)
-    list << object.beneficiary_groups&.map(&:last)&.flatten
-    list.flatten.compact - top_10_beneficiary_groups
-  end
-
 
   def kilometers_to_miles(kms)
     kilometers = kms.to_f
