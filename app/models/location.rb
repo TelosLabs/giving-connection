@@ -29,7 +29,6 @@ class Location < ActiveRecord::Base
 
   scope :active, -> { joins(:organization).where(organization: { active: true }) }
   scope :besides_po_boxes, -> { where(po_box: false) }
-
   scope :top_10_causes, -> { joins(:causes).group(:cause_id).order('count(cause_id) desc').limit(10).pluck(:cause_id).map { |id| Cause.find(id) } }
   scope :top_10_services, -> { joins(:services).group(:service_id).order('count(service_id) desc').limit(10).pluck(:service_id).map { |id| Service.find(id) } }
 
