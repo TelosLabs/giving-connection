@@ -14,7 +14,6 @@ class BeneficiarySubcategory < ApplicationRecord
   belongs_to :beneficiary_group
 
   def self.top_10_beneficiary_groups
-    arr = Organization.all.map(&:beneficiary_subcategories).flatten.tally.sort_by { |_beneficiary_subcategory, count| count }.reverse.first(10)
-    arr.map { |beneficiary_subcategory, _count| beneficiary_subcategory }
+    Organization.joins(:beneficiary_subcategories).group(:beneficiary_subcategory_id).order('count(beneficiary_subcategory_id) desc').limit(10).pluck(:beneficiary_subcategory_id).map { |id| BeneficiarySubcategory.find(id) }
   end
 end

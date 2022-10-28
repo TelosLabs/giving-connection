@@ -14,8 +14,7 @@ class Cause < ApplicationRecord
 
   def self.top_10_causes
     # This comment ws used for testing
-    # return [Cause.first, Cause.second, Cause.third]
-    arr = Location.all.map(&:causes).flatten.tally.sort_by { |_cause, count| count }.reverse.first(10)
-    arr.map { |cause, _count| cause }
+    raise
+    Location.joins(:causes).group(:cause_id).order('count(cause_id) desc').limit(10).pluck(:cause_id).map { |id| Cause.find(id) }
   end
 end

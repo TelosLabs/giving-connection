@@ -25,13 +25,13 @@ class SearchesController < ApplicationController
   private
 
   def set_causes
-    @top_10_causes = Cause.top_10_causes
+    @top_10_causes = Location.top_10_causes
     @causes = Cause.all.pluck(:name) - @top_10_causes.pluck(:name)
   end
 
   def set_services
     @services = {}
-    @top_10_services = Service.top_10_services
+    @top_10_services = Location.top_10_services
     Cause.all.each do |cause|
       @services[cause.name] = cause.services.map(&:name) - @top_10_services.pluck(:name)
     end
@@ -39,7 +39,7 @@ class SearchesController < ApplicationController
 
   def set_beneficiary_groups
     @beneficiary_groups = {}
-    @top_10_beneficiary_groups = BeneficiarySubcategory.top_10_beneficiary_groups
+    @top_10_beneficiary_groups = Location.top_10_beneficiary_groups
     BeneficiaryGroup.all.each do |group|
       @beneficiary_groups[group.name] = group.beneficiary_subcategories.map(&:name) - @top_10_beneficiary_groups.pluck(:name)
     end
