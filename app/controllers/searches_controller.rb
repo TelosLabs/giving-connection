@@ -39,7 +39,7 @@ class SearchesController < ApplicationController
 
   def set_beneficiary_groups
     @beneficiary_groups = {}
-    @top_10_beneficiary_groups = Location.top_10_beneficiary_groups
+    @top_10_beneficiary_groups = Organization.top_10_beneficiary_groups
     BeneficiaryGroup.all.each do |group|
       @beneficiary_groups[group.name] = group.beneficiary_subcategories.map(&:name) - @top_10_beneficiary_groups.pluck(:name)
     end
