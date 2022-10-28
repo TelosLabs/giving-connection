@@ -17,6 +17,7 @@
     "moment": "^2.29.4",
     "postcss": "^8",
     "selectize": "0.12.4",
+    "stimulus-checkbox-select-all": "^5.1.0",
     "stimulus-use": "^0.50.0-2",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "tailwindcss-stimulus-components": "^3.0.4",
