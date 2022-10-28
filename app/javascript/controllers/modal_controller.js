@@ -39,6 +39,7 @@ export default class extends Controller {
   }
 
   open(e) {
+    sleep(1000);
     if (this.preventDefaultActionOpening) {
       e.preventDefault();
     }
