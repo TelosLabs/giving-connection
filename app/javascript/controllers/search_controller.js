@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { useDebounce, useDispatch } from 'stimulus-use'
+import { useDispatch } from 'stimulus-use'
 import Rails from '@rails/ujs'
 
 export default class extends Controller {
@@ -26,7 +26,7 @@ export default class extends Controller {
     useDispatch(this)
     this.updatePillsCounter()
     this.managePillsCounterDisplay()
-    // useDebounce(this, { wait: 5000})
+    // useDebounce(this)
   }
 
   clearAll() {
