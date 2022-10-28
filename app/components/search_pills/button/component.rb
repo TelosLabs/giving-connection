@@ -11,7 +11,7 @@ class SearchPills::Button::Component < ViewComponent::Base
         class: "hidden pill",
         id: SecureRandom.alphanumeric,
         data: {
-          action: "change->search#updatePillsCounter change->search#managePillsCounterDisplay change->search#submitForm",
+          action: "change->search#updatePillsCounter change->search#pillsCounterDisplay"
         }
       }
     )

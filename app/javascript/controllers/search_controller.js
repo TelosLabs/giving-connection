@@ -6,19 +6,13 @@ export default class extends Controller {
   static debounces = ['submitForm']
   static get targets() {
     return [
-      'input',
-      'customInput',
-      'form',
-      'pills',
+      "input",
+      "customInput",
+      "form",
+      "pills",
       "pillsCounter",
       "pillsCounterWrapper",
-      "filtersIcon",
-      "causesPill",
-      "servicesPill",
-      "beneficiaryGroupsPill",
-      "selectAllCausesPill",
-      "selectAllServicesPill",
-      "selectAllBeneficiaryGroupsPill"
+      "filtersIcon"
     ]
   }
 
@@ -27,20 +21,37 @@ export default class extends Controller {
     this.updatePillsCounter()
     this.managePillsCounterDisplay()
     useDebounce(this)
+    this.pillsCounterDisplay()
+  }
+  // Pills
+  clearChecked() {
+    this.pillsTarget.querySelectorAll("input:checked").forEach(input => {
+      input.checked = false
+      input.removeAttribute('checked')
+    })
+    this.updatePillsCounter()
+    this.pillsCounterDisplay()
+    this.formTarget.requestSubmit()
   }
 
-  clearAll() {
-    const event = new CustomEvent('selectmultiple:clear', {})
-
-    this.inputTargets.forEach(input => {
-      this.clearInput(input)
-    })
-    this.customInputTargets.forEach(input => {
-      input.dispatchEvent(event)
-    })
-    Rails.fire(this.formTarget, 'submit')
+  updatePillsCounter() {
+    // selects all checked inputs that are not checkboxAll
+    this.totalChecked = this.pillsTarget.querySelectorAll("input:checked:not([data-checkbox-select-all-target=checkboxAll])").length
+    this.pillsCounterTarget.textContent = this.totalChecked
+    this.formTarget.requestSubmit()
   }
 
+  pillsCounterDisplay() {
+    if (this.totalChecked > 0) {
+      this.pillsCounterWrapperTarget.classList.remove("hidden")
+      this.filtersIconTarget.classList.add("hidden")
+    }
+    else {
+      this.pillsCounterWrapperTarget.classList.add("hidden")
+      this.filtersIconTarget.classList.remove("hidden")
+    }
+  }
+  // Modal
   clearInput(inputElement) {
     console.log(inputElement)
     const inputType = inputElement.type.toLowerCase()
@@ -69,102 +80,20 @@ export default class extends Controller {
     }
   }
 
+  clearAll() {
+    const event = new CustomEvent('selectmultiple:clear', {})
+
+    this.inputTargets.forEach(input => {
+      this.clearInput(input)
+    })
+    this.customInputTargets.forEach(input => {
+      input.dispatchEvent(event)
+    })
+    Rails.fire(this.formTarget, 'submit')
+  }
+
   openSearchAlertModal() {
     console.log('openSearchAlertModal')
     this.dispatch("openSearchAlertModal")
-  }
-
-  submitForm() {
-    this.formTarget.requestSubmit()
-  }
-
-  clearChecked() {
-    this.pillsTarget.querySelectorAll('input[type="checkbox"]:checked').forEach(input => {
-      input.checked = false
-      input.removeAttribute('checked')
-    })
-    this.pillsTarget.querySelectorAll('input[type="radio"]:checked').forEach(input => {
-      input.checked = false
-      input.removeAttribute('checked')
-    })
-    this.updatePillsCounter()
-    this.managePillsCounterDisplay()
-    this.submitForm()
-  }
-
-  updatePillsCounter() {
-    const checks = this.pillsTarget.querySelectorAll('input[type="checkbox"]:checked').length
-    const radio = this.pillsTarget.querySelectorAll('input[type="radio"]:checked').length
-    this.totalChecked = checks + radio
-    this.pillsCounterTarget.textContent = this.totalChecked
-  }
-
-  managePillsCounterDisplay() {
-    if (this.totalChecked > 0) {
-      this.pillsCounterWrapperTarget.classList.remove("hidden")
-      this.pillsCounterWrapperTarget.classList.add("inline-flex")
-      this.filtersIconTarget.classList.add("hidden")
-    }
-    else {
-      this.pillsCounterWrapperTarget.classList.add("hidden")
-      this.pillsCounterWrapperTarget.classList.remove("inline-flex")
-      this.filtersIconTarget.classList.remove("hidden")
-    }
-  }
-
-  //Checks if the selectAllPill of a given panel is checked. If that's the case, then unchecks it.
-  manageAllPillCheck(e) {
-    const filterPillName = e.target.getAttribute("name")
-    let allButton
-
-    if (filterPillName.includes("search[causes]")) {
-      allButton = this.selectAllCausesPillTarget
-    }
-    else if (filterPillName.includes("search[services]")) {
-      allButton = this.selectAllServicesPillTarget
-    }
-    else if (filterPillName.includes("search[beneficiary_groups]")) {
-      allButton = this.selectAllBeneficiaryGroupsPillTarget
-    }
-
-    if (allButton.checked) {
-      allButton.checked = false
-      allButton.removeAttribute("checked")
-    }
-  }
-
-  toggleAllPills(e) {
-    const allButtonName = e.target.getAttribute("name")
-    let pillsArray
-
-    if (allButtonName === "causes_all") {
-      pillsArray = this.causesPillTargets
-    }
-    else if (allButtonName === "services_all") {
-      pillsArray = this.servicesPillTargets
-    }
-    else if (allButtonName === "groups_all") {
-      pillsArray = this.beneficiaryGroupsPillTargets
-    }
-
-    if (this.allPillsAreChecked(pillsArray) && !e.target.checked) {
-      pillsArray.forEach(pill => {
-        pill.checked = false
-        pill.removeAttribute('checked')
-      })
-    }
-    else {
-      pillsArray.filter(pill => pill.checked === false).forEach(uncheckedPill => {
-        uncheckedPill.checked = true
-        uncheckedPill.setAttribute('checked', true)
-      })
-    }
-    this.updatePillsCounter()
-    this.managePillsCounterDisplay()
-    this.submitForm()
-  }
-
-  allPillsAreChecked(pills) {
-    return pills.every(pill => pill.checked)
   }
 }

@@ -6782,6 +6782,11 @@ statuses@2.0.1:
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.5.0.tgz#161c7dac177659fd9811f43771fa99381478628c"
   integrity sha512-OpZ3zP+jT1PI7I8nemJX4AKmAX070ZkYPVWV/AaKTJl+tXCTGyVdC1a4SL8RUQYEwk/f34ZX8UTykN68FwrqAA==
 
+stimulus-checkbox-select-all@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/stimulus-checkbox-select-all/-/stimulus-checkbox-select-all-5.1.0.tgz#44f02a730c29696a1910a555506f8a6fa4d4a1ff"
+  integrity sha512-YXhPEhvEN81+d2nYhEe9ZLxuHTWw+R57q/AOip0T8kpnPCIWM3cezIYFZK5HNNLf2XpkfPCzuM7bQI8b/xkfGg==
+
 stimulus-use@^0.50.0-2:
   version "0.50.0"
   resolved "https://registry.yarnpkg.com/stimulus-use/-/stimulus-use-0.50.0.tgz#0bae92fbb1fd961cbb23569f9edd12ae642ce4a6"
