@@ -29,7 +29,6 @@ class Organization < ApplicationRecord
   validates_with OrganizationValidator
 
   scope :active, -> { where(active: true) }
-  scope :top_10_beneficiary_groups, -> { joins(:beneficiary_subcategories).group(:beneficiary_subcategory_id).order('count(beneficiary_subcategory_id) desc').limit(10).pluck(:beneficiary_subcategory_id).map { |id| BeneficiarySubcategory.find(id) } }
 
   has_many :tags, dependent: :destroy
   has_many :organization_causes, dependent: :destroy
@@ -60,6 +59,15 @@ class Organization < ApplicationRecord
   accepts_nested_attributes_for :locations, allow_destroy: true
   accepts_nested_attributes_for :organization_beneficiaries, allow_destroy: true
   accepts_nested_attributes_for :organization_causes, allow_destroy: true
+
+  def self.top_10_beneficiary_groups
+    joins(:beneficiary_subcategories)
+      .group(:beneficiary_subcategory_id)
+      .order('count(beneficiary_subcategory_id) desc')
+      .limit(10)
+      .pluck(:beneficiary_subcategory_id)
+      .map { |id| BeneficiarySubcategory.find(id) }
+  end
 
   private
 

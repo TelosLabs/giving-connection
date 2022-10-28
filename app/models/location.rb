@@ -29,8 +29,6 @@ class Location < ActiveRecord::Base
 
   scope :active, -> { joins(:organization).where(organization: { active: true }) }
   scope :besides_po_boxes, -> { where(po_box: false) }
-  scope :top_10_causes, -> { joins(:causes).group(:cause_id).order('count(cause_id) desc').limit(10).pluck(:cause_id).map { |id| Cause.find(id) } }
-  scope :top_10_services, -> { joins(:services).group(:service_id).order('count(service_id) desc').limit(10).pluck(:service_id).map { |id| Service.find(id) } }
 
   has_many :office_hours
   has_many :favorite_locations, dependent: :destroy
@@ -77,6 +75,23 @@ class Location < ActiveRecord::Base
     reject_if: :all_blank,
     update_only: true
   )
+
+  def self.top_10_causes
+    joins(:causes)
+      .group(:cause_id)
+      .order('count(cause_id) desc')
+      .limit(10)
+      .pluck(:cause_id)
+      .map { |id| Cause.find(id) }
+  end
+
+  def self.top_10_services
+    joins(:services)
+      .group(:service_id)
+      .order('count(service_id) desc')
+      .limit(10).pluck(:service_id)
+      .map { |id| Service.find(id) }
+  end
 
   def formatted_address
     suite.nil? || suite.empty? ? address : address_with_suite_number
