@@ -10,9 +10,8 @@ class SearchPills::Button::Component < ViewComponent::Base
       {
         class: "hidden pill",
         id: SecureRandom.alphanumeric,
-        onchange: "this.form.requestSubmit()",
         data: {
-          action: "change->search#updatePillsCounter change->search#managePillsCounterDisplay"
+          action: "change->search#updatePillsCounter change->search#managePillsCounterDisplay change->search#submitForm",
         }
       }
     )

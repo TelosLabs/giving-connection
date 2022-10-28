@@ -19,7 +19,7 @@ div class="w-full bg-gray-9"
         div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
           = render SearchPills::Pill::Component.new(name: "causes_all", value: 'All', checked: all_causes_checked?, options: { data: { action: "change->search#toggleAllPills", 'search-target': "selectAllCausesPill" }})
           - @causes.each do |cause|
-            = render SearchPills::Pill::Component.new(name: "search[causes][]", value: cause.name, checked: @params.dig(:search, :causes)&.include?(cause.name), options: { multiple: true, onchange: 'this.form.requestSubmit()', 'data-action': 'change->search#manageAllPillCheck change->search#updatePillsCounter change->search#managePillsCounterDisplay', 'data-search-target': 'causesPill'})
+            = render SearchPills::Pill::Component.new(name: "search[causes][]", value: cause.name, checked: @params.dig(:search, :causes)&.include?(cause.name), options: { multiple: true, 'data-action': 'change->search#submitForm change->search#manageAllPillCheck change->search#updatePillsCounter change->search#managePillsCounterDisplay', 'data-search-target': 'causesPill'})
           = render SearchPills::MoreFiltersButton::Component.new
         / Location
         div class="flex flex-col hidden border-b md:flex-row md:items-center" data-tabs-target="panel"
@@ -34,17 +34,17 @@ div class="w-full bg-gray-9"
         div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
           = render SearchPills::Pill::Component.new(name: "services_all", value: 'All', checked: all_services_checked?, options: { data: { action: "change->search#toggleAllPills", 'search-target': "selectAllServicesPill" }})
           - @services.each do |service|
-            = render SearchPills::Pill::Component.new(name: "search[services][#{service.cause.name}][]", value: service.name, checked: @params.dig('search', 'services', service.cause.name)&.include?(service.name), options: { multiple: true, onchange: 'this.form.requestSubmit()', 'data-action': 'change->search#manageAllPillCheck change->search#updatePillsCounter change->search#managePillsCounterDisplay', 'data-search-target': 'servicesPill'})
+            = render SearchPills::Pill::Component.new(name: "search[services][#{service.cause.name}][]", value: service.name, checked: @params.dig('search', 'services', service.cause.name)&.include?(service.name), options: { multiple: true, 'data-action': 'change->search#submitForm change->search#manageAllPillCheck change->search#updatePillsCounter change->search#managePillsCounterDisplay', 'data-search-target': 'servicesPill'})
           = render SearchPills::MoreFiltersButton::Component.new
         / Populations Served
         div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
           = render SearchPills::Pill::Component.new(name: "groups_all", value: 'All', checked: all_beneficiary_subcategories_checked?, options: { data: { action: "change->search#toggleAllPills", 'search-target': "selectAllBeneficiaryGroupsPill" }})
           - @beneficiary_subcategories.each do |subcategory|
-            = render SearchPills::Pill::Component.new(name: "search[beneficiary_groups][#{subcategory.beneficiary_group.name}][]", value: subcategory.name, checked: @params.dig('search', 'beneficiary_groups', subcategory.beneficiary_group.name)&.include?(subcategory.name), options: { multiple: true, onchange: 'this.form.requestSubmit()', 'data-action': 'change->search#manageAllPillCheck change->search#updatePillsCounter change->search#managePillsCounterDisplay', 'data-search-target': 'beneficiaryGroupsPill'})
+            = render SearchPills::Pill::Component.new(name: "search[beneficiary_groups][#{subcategory.beneficiary_group.name}][]", value: subcategory.name, checked: @params.dig('search', 'beneficiary_groups', subcategory.beneficiary_group.name)&.include?(subcategory.name), options: { multiple: true, 'data-action': 'change->search#manageAllPillCheck change->search#submitForm change->search#updatePillsCounter change->search#managePillsCounterDisplay', 'data-search-target': 'beneficiaryGroupsPill'})
           = render SearchPills::MoreFiltersButton::Component.new
         / Hours
         div class="flex hidden gap-x-2 w-full py-4 px-6 border-l border-b border-r" data-tabs-target="panel"
-          = render SearchPills::Pill::Component.new(name: "search[open_now]", value: true, checked: @params.dig('search', 'open_now') == 'true', options: { onchange: 'this.form.requestSubmit()', 'data-action': 'change->search#updatePillsCounter change->search#managePillsCounterDisplay'}) do
+          = render SearchPills::Pill::Component.new(name: "search[open_now]", value: true, checked: @params.dig('search', 'open_now') == 'true', options: {'data-action': 'change->search#submitForm change->search#updatePillsCounter change->search#managePillsCounterDisplay'}) do
             | Open Now
-          = render SearchPills::Pill::Component.new(name: "search[open_weekends]", value: true, checked: @params.dig('search', 'open_weekends') == 'true', options: { onchange: 'this.form.requestSubmit()', 'data-action': 'change->search#updatePillsCounter change->search#managePillsCounterDisplay'}) do
+          = render SearchPills::Pill::Component.new(name: "search[open_weekends]", value: true, checked: @params.dig('search', 'open_weekends') == 'true', options: {'data-action': 'change->search#submitForm change->search#updatePillsCounter change->search#managePillsCounterDisplay'}) do
             | Open Weekends
