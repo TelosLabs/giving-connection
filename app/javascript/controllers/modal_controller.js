@@ -1,9 +1,9 @@
 import { Controller } from '@hotwired/stimulus';
-import { useDebounce } from 'stimulus-use'
+// import { useDebounce } from 'stimulus-use'
 
 export default class extends Controller {
   static targets = ['container']
-  static debounces = ['open']
+  // static debounces = ['open']
   static values = {
     backdropColor: { type: String, default: 'rgba(0, 0, 0, 0.8)' },
     restoreScroll: { type: Boolean, default: true }
@@ -11,7 +11,7 @@ export default class extends Controller {
 
   connect() {
     // Use debounce to prevent the modal from opening/closing multiple times
-    useDebounce(this, { wait: 1000 });
+    // useDebounce(this, { wait: 1000 });
 
     // The class we should toggle on the container
     this.toggleClass = this.data.get('class') || 'hidden';
@@ -43,6 +43,7 @@ export default class extends Controller {
   }
 
   open(e) {
+    setTimeout(() => {
     if (this.preventDefaultActionOpening) {
       e.preventDefault();
     }
@@ -63,6 +64,7 @@ export default class extends Controller {
       this.background = document.querySelector(`#${this.backgroundId}`);
     }
   }
+  , 1000)}
 
   close() {
     // Unlock the scroll and restore previous scroll position
