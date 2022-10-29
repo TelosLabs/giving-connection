@@ -25,7 +25,7 @@ class SearchesController < ApplicationController
   private
 
   def set_causes
-    @top_10_causes = Location.top_10_causes
+    @top_10_causes = Cause.top_causes(limit: 10)
     @causes = Cause.all.pluck(:name) - @top_10_causes.pluck(:name)
   end
 
