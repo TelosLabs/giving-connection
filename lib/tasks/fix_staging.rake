@@ -1,10 +1,14 @@
 namespace :fix_staging do
   desc 'Delete duplicate causes and services'
   task delete_duplicate_causes_and_services: :environment do
-    delete_duplicate_causes
-    delete_remaining_services
-    delete_remaining_causes
+    unless Rails.env.production?
+      delete_duplicate_causes
+      delete_remaining_services
+      delete_remaining_causes
+    end
   end
+
+  private
 
   def delete_duplicate_causes
     Organizations::Constants::CAUSES_AND_SERVICES.each do |cause, services|
