@@ -3,7 +3,7 @@ div class="flash-#{@type} #{notification[:background]} fixed z-10 inset-x-2 top-
     .flex-shrink-0
       = inline_svg_tag notification[:icon], class:"h-5 w-5 #{notification[:icon_classes]}"
     div class="ml-3"
-      p class="text-sm font-medium #{notification[:text_classes]}"
+      p class="text-base font-medium #{notification[:text_classes]}"
         | #{@message}
     div class="pl-3 ml-auto"
       div class="-mx-1.5 -my-1.5"
