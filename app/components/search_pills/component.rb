@@ -21,6 +21,6 @@ class SearchPills::Component < ViewComponent::Base
   end
 
   def miles_to_km(miles)
-    (miles * 1.609344).round(3) rescue 1_000_000
+    miles == "Any" ? 1_000_000 : (miles * 1.609344).round(3)
   end
 end
