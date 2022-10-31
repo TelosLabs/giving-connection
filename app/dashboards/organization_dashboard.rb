@@ -37,6 +37,8 @@ class OrganizationDashboard < Administrate::BaseDashboard
     phone_number: Field::Text,
     email: Field::Text,
     active: Field::Boolean,
+    verified: Field::Boolean,
+    donation_link: Field::String,
     organization_causes: Field::NestedHasMany
   }.freeze
 
@@ -56,6 +58,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
   SHOW_PAGE_ATTRIBUTES = %i[
     logo
     active
+    verified
     name
     second_name
     ein_number
@@ -72,6 +75,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     tagline_es
     organization_beneficiaries
     tags
+    donation_link
     social_media
     locations
   ].freeze
@@ -82,6 +86,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
   FORM_ATTRIBUTES = %i[
     logo
     active
+    verified
     name
     second_name
     ein_number
@@ -96,6 +101,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     tagline_es
     organization_beneficiaries
     tags
+    donation_link
     organization_causes
     social_media
     locations

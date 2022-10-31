@@ -28,7 +28,7 @@ class Location < ActiveRecord::Base
   belongs_to :organization, optional: true
 
   scope :active, -> { joins(:organization).where(organization: { active: true }) }
-  scope :besides_po_boxes, -> { where(po_box: false) } 
+  scope :besides_po_boxes, -> { where(po_box: false) }
 
   has_many :office_hours
   has_many :favorite_locations, dependent: :destroy
@@ -36,6 +36,7 @@ class Location < ActiveRecord::Base
   has_many :location_services, dependent: :destroy
   has_many :services, through: :location_services
   has_many :causes, through: :organization
+  has_many_attached :images
 
   has_one :phone_number, dependent: :destroy
   has_one :social_media, through: :organization
@@ -76,7 +77,7 @@ class Location < ActiveRecord::Base
   )
 
   def formatted_address
-    suite.nil? || suite.empty? ? address : address_with_suite_number 
+    suite.nil? || suite.empty? ? address : address_with_suite_number
   end
 
   def address_with_suite_number

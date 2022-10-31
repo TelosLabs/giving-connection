@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :organization_cause do
-    cause { nil }
-    organization { nil }
+    cause { create(:cause) }
+    organization { create(:organization) }
   end
 end

@@ -16,4 +16,12 @@ class Service < ApplicationRecord
   has_many :locations, through: :location_services
 
   validates :name, presence: true, uniqueness: true
+
+  def self.top(limit: 10)
+    find(top_services_ids(limit: limit))
+  end
+
+  def self.top_services_ids(limit: 10)
+    LocationService.group(:service_id).order('count(service_id) desc').limit(limit).count.keys
+  end
 end

@@ -1,4 +1,4 @@
-<div class="p-4" data-controller="result-card--component" >
+<div id="<%= "#{@id}" %>" class="p-4 scroll-mt-96" data-controller="result-card--component" >
   <div class="flex flex-row gap-3 mb-3">
     <div class="flex-shrink-0 w-24 my-1">
       <a href="<%= location_path(@id)%>" class="inline-flex items-start p-2 text-sm font-bold text-blue-medium" target="_blank">
@@ -7,12 +7,14 @@
     </div>
     <div class="w-full">
       <div class="flex flex-row items-start justify-between">
-        <a href="<%= location_path(@id)%>" class="inline-flex items-center py-2 text-sm font-bold text-blue-medium"  target="_blank"
-           id="new_favorite_location_<%= @id %>">
-          <h5 class="text-lg font-bold text-black">
+        <div>
+          <a class="text-lg font-bold text-black" href="<%= location_path(@id)%> target="_blank" id="new_favorite_location_<%= @id %>">
             <%= @title %>
-          </h5>
-        </a>
+          </a>
+          <% if @verified %>
+            <%= inline_svg_tag 'verified_nonprofit_check.svg', class: 'w-4 h-4 ml-1 align-text-bottom inline' %>
+          <% end %>
+        </div>
         <% if @current_user.present? %>
           <% if FavoriteLocation.exists?(user_id: @current_user&.id, location_id: @id) %>
             <%= render 'shared/marked', id: @id, user_id: @current_user&.id %>
@@ -20,7 +22,7 @@
             <%= render 'shared/unmarked', id: @id %>
           <% end %>
         <% else %>
-          <%= link_to favorite_locations_path(location_id: @id), method: :post, class: "inline-flex items-center p-2 text-xs text-gray-3" do %>
+          <%= link_to favorite_locations_path(location_id: @id), data: { turbo_method: :post }, class: "inline-flex items-center p-2 text-xs text-gray-3" do %>
             <%= inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4' %>
           <% end %>
         <% end %>

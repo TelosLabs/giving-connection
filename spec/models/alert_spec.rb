@@ -22,5 +22,11 @@
 require 'rails_helper'
 
 RSpec.describe Alert, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context 'Alert model validation test' do
+    subject { create(:alert) }
+
+    it 'ensures alert can be created' do
+      expect(subject).to be_valid
+    end
+  end
 end

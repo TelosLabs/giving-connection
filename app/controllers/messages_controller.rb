@@ -10,13 +10,13 @@ class MessagesController < ApplicationController
 
   def create
     @message = build_message
-
-    if @message.save
+    if verify_recaptcha(model: @message) && @message.save
       flash[:notice] = 'Your message was successfully sent!'
       redirect_to root_path
     else
-      render :new
-      puts search.errors.full_messages
+      flash.now[:error] = 'Something went wrong'
+      @form_to_render = message_params[:form_definition]
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -31,7 +31,8 @@ class MessagesController < ApplicationController
   def message_params
     params.require(:message).permit(
       :name, :email, :phone, :subject, :organization_name,
-      :organization_website, :organization_ein, :content
+      :organization_website, :organization_ein, :profile_admin_name,
+      :profile_admin_email, :content, :form_definition
     )
   end
 end

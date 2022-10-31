@@ -2,10 +2,13 @@
 
 module SelectMultiple
   class Component < ViewComponent::Base
-    def initialize(name:, items: {}, selected: [])
+    def initialize(name:, items: {}, selected: [], options: {}, placeholder: "", required: false)
       @name = name
       @items = items
       @selected = selected
+      @options = options
+      @placeholder = placeholder
+      @required = required
       # TODO: allow options to be passed in
     end
 
@@ -18,8 +21,8 @@ module SelectMultiple
           'search-target': 'customInput',
           'select-multiple-target': 'container',
           'extend-dropdown-target': 'button',
-          'select-multiple-selected-value': @selected
-        }
+          'select-multiple-selected-value': @selected,
+        },
       }
     end
   end

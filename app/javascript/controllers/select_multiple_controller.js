@@ -27,7 +27,6 @@ export default class extends Controller {
 
   clearAll() {
     this.store.clear()
-    console.log(this.store)
     this.updateCheckboxes()
     this.updateBadges()
   }
@@ -45,13 +44,12 @@ export default class extends Controller {
 
   addCheckboxToStore(event) {
     const value = event.currentTarget.dataset.value
+
     if (event.currentTarget.checked) {
       this.store.add(value)
     } else {
       this.store.delete(value)
     }
-    this.inputTarget.value = ''
-    this.search()
   }
 
   updateCheckboxes() {
@@ -62,10 +60,18 @@ export default class extends Controller {
         checkbox.checked = false
       }
     })
+    this.search()
   }
 
   updateBadges() {
     this.badgesContainerTarget.innerHTML = ''
+
+    if (this.store.size == 0 && this.inputTarget.id == 'required') {
+      this.inputTarget.setAttribute('required', true)
+    } else if (this.inputTarget.hasAttribute('required')) {
+      this.inputTarget.removeAttribute('required')
+    }
+
     this.store.forEach(value => {
       const badge = this.badgeTemplateTarget.cloneNode(true)
       const valueTarget = badge.querySelector('span')

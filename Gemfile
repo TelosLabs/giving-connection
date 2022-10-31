@@ -29,6 +29,9 @@ gem 'redis', '~> 4.0'
 # Use Devise for authentication
 gem 'devise'
 
+# User Auth
+gem "recaptcha"
+
 gem 'active_storage_validations'
 gem 'aws-sdk-s3', require: false
 gem 'clockwork'
@@ -47,7 +50,7 @@ gem 'sidekiq'
 gem 'slim-rails'
 gem 'view_component'
 # Use Turbo for rails
-gem 'turbo-rails', '~> 0.8.1'
+gem 'turbo-rails'
 
 # Use administrate admin framework
 gem 'administrate'

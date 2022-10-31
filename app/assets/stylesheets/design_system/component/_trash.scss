@@ -1,0 +1,7 @@
+@import "/settings/variables";
+
+.trash:hover {
+  stroke: $secondary-salmon;
+  width: 1.5rem;
+  height: 1.5rem;
+}
