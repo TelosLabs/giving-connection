@@ -76,23 +76,6 @@ class Location < ActiveRecord::Base
     update_only: true
   )
 
-  def self.top_10_causes
-    joins(:causes)
-      .group(:cause_id)
-      .order('count(cause_id) desc')
-      .limit(10)
-      .pluck(:cause_id)
-      .map { |id| Cause.find(id) }
-  end
-
-  def self.top_10_services
-    joins(:services)
-      .group(:service_id)
-      .order('count(service_id) desc')
-      .limit(10).pluck(:service_id)
-      .map { |id| Service.find(id) }
-  end
-
   def formatted_address
     suite.nil? || suite.empty? ? address : address_with_suite_number
   end

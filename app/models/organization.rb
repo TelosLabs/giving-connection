@@ -60,15 +60,6 @@ class Organization < ApplicationRecord
   accepts_nested_attributes_for :organization_beneficiaries, allow_destroy: true
   accepts_nested_attributes_for :organization_causes, allow_destroy: true
 
-  def self.top_10_beneficiary_groups
-    joins(:beneficiary_subcategories)
-      .group(:beneficiary_subcategory_id)
-      .order('count(beneficiary_subcategory_id) desc')
-      .limit(10)
-      .pluck(:beneficiary_subcategory_id)
-      .map { |id| BeneficiarySubcategory.find(id) }
-  end
-
   private
 
   def attach_logo_and_cover
