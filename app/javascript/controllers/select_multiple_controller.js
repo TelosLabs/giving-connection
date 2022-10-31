@@ -27,7 +27,6 @@ export default class extends Controller {
 
   clearAll() {
     this.store.clear()
-    console.log(this.store)
     this.updateCheckboxes()
     this.updateBadges()
   }
@@ -51,8 +50,6 @@ export default class extends Controller {
     } else {
       this.store.delete(value)
     }
-    this.inputTarget.value = ''
-    this.search()
   }
 
   updateCheckboxes() {
@@ -63,15 +60,16 @@ export default class extends Controller {
         checkbox.checked = false
       }
     })
+    this.search()
   }
 
   updateBadges() {
     this.badgesContainerTarget.innerHTML = ''
 
-    if(this.store.size == 0 && this.inputTarget.id == 'required') {
+    if (this.store.size == 0 && this.inputTarget.id == 'required') {
       this.inputTarget.setAttribute('required', true)
-    }else if(this.inputTarget.hasAttribute('required')) {
-        this.inputTarget.removeAttribute('required')
+    } else if (this.inputTarget.hasAttribute('required')) {
+      this.inputTarget.removeAttribute('required')
     }
 
     this.store.forEach(value => {

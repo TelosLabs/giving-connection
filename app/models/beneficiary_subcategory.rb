@@ -12,4 +12,12 @@
 #
 class BeneficiarySubcategory < ApplicationRecord
   belongs_to :beneficiary_group
+
+  def self.top(limit: 10)
+    find(top_organization_subcategories_ids(limit: limit))
+  end
+
+  def self.top_organization_subcategories_ids(limit: 10)
+    OrganizationBeneficiary.group(:beneficiary_subcategory_id).order('count(beneficiary_subcategory_id) desc').limit(limit).count.keys
+  end
 end

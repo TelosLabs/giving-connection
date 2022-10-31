@@ -50,7 +50,7 @@ gem 'sidekiq'
 gem 'slim-rails'
 gem 'view_component'
 # Use Turbo for rails
-gem 'turbo-rails', '~> 0.8.1'
+gem 'turbo-rails'
 
 # Use administrate admin framework
 gem 'administrate'
