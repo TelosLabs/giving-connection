@@ -19,7 +19,7 @@ export default class extends Controller {
   connect() {
     useDispatch(this)
     this.updatePillsCounter()
-    this.managePillsCounterDisplay()
+    this.pillsCounterDisplay()
     useDebounce(this)
     this.pillsCounterDisplay()
   }
