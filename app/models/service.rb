@@ -15,6 +15,8 @@ class Service < ApplicationRecord
   has_many :location_services, dependent: :destroy
   has_many :locations, through: :location_services
 
+  validates :name, presence: true, uniqueness: true
+
   def self.top(limit: 10)
     find(top_services_ids(limit: limit))
   end
