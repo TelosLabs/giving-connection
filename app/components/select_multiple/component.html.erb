@@ -9,7 +9,7 @@
           <% @items&.sort&.each do |item| %>
             <div class="" data-select-multiple-target="group">
               <div class="flex flex-row items-center">
-                <%= check_box_tag "#{@name}[]", item, false, class: "h-4 w-4 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent",
+                <%= check_box_tag "#{@name}[]", item, false, class: "h-4 w-4 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent modal-checkbox",
                                   data: { 'select-multiple-target': "checkbox", action: 'click->select-multiple#select', value: item } %>
                 <%= label_tag item, item, for: item, class: "text-sm text-black w-full" %>
               </div>
@@ -23,7 +23,7 @@
               </div>
               <% list&.sort&.each do |item| %>
                 <div class="flex flex-row items-center my-2">
-                  <%= check_box_tag "#{@name}[#{group}][]", item, false, class: "h-4 w-4 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent",
+                  <%= check_box_tag "#{@name}[#{group}][]", item, false, class: "h-4 w-4 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent modal-checkbox",
                                     data: { 'select-multiple-target': "checkbox", action: 'click->select-multiple#select', value: item } %>
                   <%= label_tag @name, item, for: item, class: "text-sm text-black w-full" %>
                 </div>

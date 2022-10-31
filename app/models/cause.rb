@@ -11,4 +11,12 @@
 #
 class Cause < ApplicationRecord
   has_many :services
+
+  def self.top(limit: 10)
+    find(top_causes_ids(limit: limit))
+  end
+
+  def self.top_causes_ids(limit: 10)
+    OrganizationCause.group(:cause_id).order('count(cause_id) desc').limit(limit).count.keys
+  end
 end

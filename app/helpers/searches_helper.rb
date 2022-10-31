@@ -13,26 +13,26 @@ module SearchesHelper
     list.flatten.compact
   end
 
-  def list_of_services(object)
-    list = []
-    list << object.services&.map(&:last)&.flatten
-    list.flatten.compact
+  def build_params_array(type)
+    arr = params[:search][type.to_sym]
+    arr = arr.values.flatten if type.include?('services') || type.include?('beneficiary_groups')
+    arr
   end
 
-  def list_of_causes(object)
-    list = []
-    list << object.causes&.flatten
-    list.flatten.compact
+  def selected_pills(tab_pills, type)
+    search_params = build_params_array(type)
+    search_params & tab_pills
   end
 
-  def list_of_beneficiary_groups(object)
-    list = []
-    list << object.beneficiary_groups&.map(&:last)&.flatten
-    list.flatten.compact
+  def selected_advanced_filters(tab_pills, type)
+    return [] unless params[:search] && params[:search][type].present?
+
+    search_params = build_params_array(type)
+    search_params - tab_pills
   end
 
   def kilometers_to_miles(kms)
     kilometers = kms.to_f
-    miles = kilometers / 1.6
+    kilometers / 1.6
   end
 end
