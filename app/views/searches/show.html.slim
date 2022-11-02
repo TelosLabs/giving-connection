@@ -6,21 +6,10 @@
     div class="flex flex-row justify-center w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
       div class="flex flex-row justify-center w-full min-h-full"
         div class="flex flex-col w-full md:border-r max-w-470px border-gray-7"
-          div class="flex flex-row justify-between w-full p-4 bg-gray-9"
-            button class="inline-flex items-center px-3 py-2 text-sm leading-4" type="button" data-action="click->modal#open"
-              /! Heroicon name: solid/mail
-              = inline_svg_tag "advanced-filters.svg", class: 'h-5 w-5 fill-current text-gray-2 -ml-0.5 relative'
-              /- params_list = %w(distance city beneficiary_groups services open_now open_weekends zipcode)
-              span class="flex w-3 h-3 mr-2 text-gray-2"
-                /- if @params_applied
-                span class="relative hidden w-2 h-2 rounded-full bg-salmon" id="appliedIcon"
-              | Advanced Filters
-            /! Modal Container
-            div class="fixed inset-0 flex items-center justify-center hidden min-h-screen overflow-y-auto animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;")
-              /! Modal Inner Container
-              div class="relative w-full max-h-full max-w-375px"
-                /! Modal Card
-                = render partial: 'filter', locals: { form: f, search: @search, services: @services, causes: @causes, beneficiary_groups: @beneficiary_groups }
+          div class="fixed inset-0 flex items-center justify-center hidden min-h-screen overflow-y-auto animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;")
+            div class="relative w-full max-h-full max-w-375px"
+              = render partial: 'filter', locals: { form: f, search: @search, services: @services, causes: @causes, beneficiary_groups: @beneficiary_groups }
+          div class="flex flex-row justify-between w-full p-4 bg-gray-9 md:hidden"
             span class="relative z-0 inline-flex shadow-sm md:hidden rounded-6px"
               / active bg-blue-dark.focus:text-white
               / inactive bg-white text-gray-3
