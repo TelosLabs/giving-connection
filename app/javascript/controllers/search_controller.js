@@ -12,7 +12,8 @@ export default class extends Controller {
       "pills",
       "pillsCounter",
       "pillsCounterWrapper",
-      "filtersIcon"
+      "filtersIcon",
+      "clearAllButton"
     ]
   }
 
@@ -80,7 +81,9 @@ export default class extends Controller {
     }
   }
 
-  clearAll() {
+
+
+  clearAll(e) {
     const event = new CustomEvent('selectmultiple:clear', {})
 
     this.inputTargets.forEach(input => {
@@ -89,7 +92,9 @@ export default class extends Controller {
     this.customInputTargets.forEach(input => {
       input.dispatchEvent(event)
     })
-    Rails.fire(this.formTarget, 'submit')
+    if (e.target == this.clearAllButtonTarget) {
+      Rails.fire(this.formTarget, 'submit')
+    }
   }
 
   openSearchAlertModal() {
