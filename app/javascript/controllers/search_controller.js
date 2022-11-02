@@ -92,9 +92,9 @@ export default class extends Controller {
     this.customInputTargets.forEach(input => {
       input.dispatchEvent(event)
     })
-    if (e.target == this.clearAllButtonTarget) {
-      Rails.fire(this.formTarget, 'submit')
-    }
+    // if (e.target == this.clearAllButtonTarget) {
+    Rails.fire(this.formTarget, 'submit')
+    // }
   }
 
   openSearchAlertModal() {
