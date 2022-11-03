@@ -38,7 +38,6 @@ export default class extends Controller {
         this.PopupIdsHash[node_id] = [ this.mapMarkers.find((marker) => { return marker.id == node_id }), node ]
       }
     })
-    console.log(this.PopupIdsHash);
   }
 
   setSearchResultsListeners() {
@@ -67,14 +66,11 @@ export default class extends Controller {
   }
 
   hidePopup() {
-    let container = document.getElementById('left-popup')
-    container.childNodes.forEach((node) => {
-      node.classList.add('hidden')
-    })
-    this.mapMarkers.forEach((marker) => {
-      marker.setAnimation(null);
-      marker.setIcon(this.image)
-    })
+    for (let key in this.PopupIdsHash) {
+      this.PopupIdsHash[key][0].setIcon(this.image)
+      this.PopupIdsHash[key][0].setAnimation(null);
+      this.PopupIdsHash[key][1].classList.add('hidden')
+    }
     sessionStorage.removeItem('larger_popup')
     sessionStorage.removeItem('selected_marker')
     sessionStorage.removeItem('smaller_popup')
@@ -139,15 +135,10 @@ export default class extends Controller {
 
     let clickedLocation = document.getElementById(sessionStorage.getItem('larger_popup'))
     let selectedMarker = sessionStorage.getItem('selected_marker')
-    if (clickedLocation) {
-      clickedLocation.classList.remove('hidden')
-    }
+    if (clickedLocation) { clickedLocation.classList.remove('hidden') }
     if (selectedMarker) {
-      this.mapMarkers.forEach((marker) => {
-        if (marker.id == selectedMarker) {
-          marker.setIcon(clickedImage)
-        }
-      })
+      let marker = this.mapMarkers.find((marker) => { return marker.id == selectedMarker })
+      marker.setIcon(clickedImage)
     }
     this.buildPopupIdsHash()
   }
@@ -184,6 +175,7 @@ export default class extends Controller {
           marker.setIcon(image)
           marker.setAnimation(null);
         })
+
         container.childNodes.forEach((node) => {
           node.classList.add('hidden')
           let node_id = node.id.replace(/\D/g, '');
