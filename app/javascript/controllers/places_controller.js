@@ -29,6 +29,18 @@ export default class extends Controller {
     window.location.search = window.location.search
 }
 
+  buildPopupIdsHash() {
+    this.PopupIdsHash = {}
+    let container = document.getElementById('left-popup')
+    container.childNodes.forEach((node) => {
+      if (node.id) {
+        let node_id = node.id.replace(/\D/g, '');
+        this.PopupIdsHash[node_id] = [ this.mapMarkers.find((marker) => { return marker.id == node_id }), node ]
+      }
+    })
+    console.log(this.PopupIdsHash);
+  }
+
   setSearchResultsListeners() {
     if (this.searchResultTitles) {
       this.searchResultTitles.forEach((node) => {
@@ -38,26 +50,20 @@ export default class extends Controller {
   }
 
   showPopup(event) {
-    let container = document.getElementById('left-popup')
-    container.childNodes.forEach((node) => {
-      node.classList.add('hidden')
-      let node_id = node.id.replace(/\D/g, '');
-      let event_id = event.target.id.replace(/\D/g, '');
-      if (node_id == event_id) {
-        node.classList.remove('hidden')
-        sessionStorage.setItem('larger_popup', node.id)
+    let event_id = event.target.id.replace(/\D/g, '');
+    this.PopupIdsHash[event_id][0].setIcon(this.clickedimageurlValue)
+    this.PopupIdsHash[event_id][0].setAnimation(google.maps.Animation.BOUNCE);
+    this.PopupIdsHash[event_id][1].classList.remove('hidden')
+    sessionStorage.setItem('larger_popup', this.PopupIdsHash[event_id][1].id)
+    sessionStorage.setItem('selected_marker', this.PopupIdsHash[event_id][0].id)
+
+    for (let key in this.PopupIdsHash) {
+      if (key != event_id) {
+        this.PopupIdsHash[key][0].setIcon(this.image)
+        this.PopupIdsHash[key][0].setAnimation(null);
+        this.PopupIdsHash[key][1].classList.add('hidden')
       }
-      this.mapMarkers.forEach((marker) => {
-        marker.setIcon(this.image)
-        marker.setAnimation(null);
-        if (marker.id == event_id) {
-          marker.setIcon(this.clickedImage)
-          marker.setAnimation(google.maps.Animation.BOUNCE);
-          sessionStorage.setItem('selected_marker', marker.id)
-          sessionStorage.removeItem('smaller_popup')
-        }
-      })
-    })
+    }
   }
 
   hidePopup() {
@@ -143,6 +149,7 @@ export default class extends Controller {
         }
       })
     }
+    this.buildPopupIdsHash()
   }
 
   setMarkers(map, image, clickedImage) {
