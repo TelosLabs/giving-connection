@@ -12,6 +12,8 @@
 class Cause < ApplicationRecord
   has_many :services
 
+  validates :name, presence: true, uniqueness: true
+
   def self.top(limit: 10)
     find(top_causes_ids(limit: limit))
   end
