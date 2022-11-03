@@ -10,6 +10,7 @@ export default class extends Controller {
       "customInput",
       "form",
       "pills",
+      "advancedFilters",
       "pillsCounter",
       "pillsCounterWrapper",
       "filtersIcon",
@@ -26,13 +27,16 @@ export default class extends Controller {
   }
   // Pills
   clearChecked() {
-    this.pillsTarget.querySelectorAll("input:checked").forEach(input => {
+    [
+      ...this.advancedFiltersTarget.querySelectorAll("input:checked"),
+      ...this.pillsTarget.querySelectorAll("input:checked")
+    ].forEach(input => {
       input.checked = false
       input.removeAttribute('checked')
     })
     this.updatePillsCounter()
     this.pillsCounterDisplay()
-    this.formTarget.requestSubmit()
+    //this.formTarget.requestSubmit()
   }
 
   updatePillsCounter() {
