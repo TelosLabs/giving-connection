@@ -6787,11 +6787,6 @@ stimulus-checkbox-select-all@^5.1.0:
   resolved "https://registry.yarnpkg.com/stimulus-checkbox-select-all/-/stimulus-checkbox-select-all-5.1.0.tgz#44f02a730c29696a1910a555506f8a6fa4d4a1ff"
   integrity sha512-YXhPEhvEN81+d2nYhEe9ZLxuHTWw+R57q/AOip0T8kpnPCIWM3cezIYFZK5HNNLf2XpkfPCzuM7bQI8b/xkfGg==
 
-stimulus-clipboard@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/stimulus-clipboard/-/stimulus-clipboard-3.2.0.tgz#d34f9f1d5a233ee9818d7631336fe1c1c5e7c470"
-  integrity sha512-sVW6JK74t/8dET6gcQAPZnyg8TC6jptHVytNRPtWX44I9n7bJzAF+ICJhtsdNcf12oGcWA5lCbZpVzY91Q4k3w==
-
 stimulus-use@^0.50.0-2:
   version "0.50.0"
   resolved "https://registry.yarnpkg.com/stimulus-use/-/stimulus-use-0.50.0.tgz#0bae92fbb1fd961cbb23569f9edd12ae642ce4a6"
