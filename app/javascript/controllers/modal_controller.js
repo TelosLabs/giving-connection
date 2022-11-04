@@ -37,28 +37,31 @@ export default class extends Controller {
   }
 
   open(e) {
+    this.appliedFilters = [...this.containerTarget.querySelectorAll("input:checked")]
+
     setTimeout(() => {
-    if (this.preventDefaultActionOpening) {
-      e.preventDefault();
+      if (this.preventDefaultActionOpening) {
+        e.preventDefault();
+      }
+
+      if (e.target.blur) {
+        e.target.blur();
+      }
+
+      // Lock the scroll and save current scroll position
+      this.lockScroll();
+
+      // Unhide the modal
+      this.containerTarget.classList.remove(this.toggleClass);
+
+      // Insert the background
+      if (!this.data.get("disable-backdrop")) {
+        document.body.insertAdjacentHTML('beforeend', this.backgroundHtml);
+        this.background = document.querySelector(`#${this.backgroundId}`);
+      }
     }
-
-    if (e.target.blur) {
-      e.target.blur();
-    }
-
-    // Lock the scroll and save current scroll position
-    this.lockScroll();
-
-    // Unhide the modal
-    this.containerTarget.classList.remove(this.toggleClass);
-
-    // Insert the background
-    if (!this.data.get("disable-backdrop")) {
-      document.body.insertAdjacentHTML('beforeend', this.backgroundHtml);
-      this.background = document.querySelector(`#${this.backgroundId}`);
-    }
+      , 1000)
   }
-  , 1000)}
 
   close() {
     // Unlock the scroll and restore previous scroll position
@@ -71,9 +74,21 @@ export default class extends Controller {
     if (this.background) { this.background.remove() }
   }
 
+  clearUnappliedFilters() {
+    // gets the difference between checked and applied
+    const unappliedFilters = [...this.containerTarget.querySelectorAll("input:checked")]
+      .filter(input => !this.appliedFilters.includes(input))
+
+    unappliedFilters.forEach(input => {
+      // fires the data-action associated to an uncheck
+      input.click()
+    })
+  }
+
   closeBackground(e) {
     if (this.allowBackgroundClose && e.target === this.containerTarget) {
       this.close(e);
+      this.clearUnappliedFilters()
     }
   }
 
