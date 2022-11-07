@@ -9,6 +9,7 @@ class CausesController < ApplicationController
   def show
     @cause = Cause.find_by(name: params[:name])
     authorize @cause
-    @locations = Location.location_with_cause(@cause)
+    filtered_locations = Location.locations_with_(@cause)
+    @locations_by_services = Location.sort_by_more_services(filtered_locations)
   end
 end
