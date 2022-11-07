@@ -11,8 +11,4 @@
 #
 class Cause < ApplicationRecord
   has_many :services
-
-  def to_param
-    name
-  end
 end
