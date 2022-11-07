@@ -90,7 +90,7 @@ class Location < ActiveRecord::Base
   end
 
   def self.location_with_cause(cause)
-    sort_by_more_services(Location.joins(:causes).where(causes: { id: cause.id }))
+    sort_by_more_services(Location.group(:id).joins(:causes).where(causes: { id: cause.id }))
   end
 
   def self.sort_by_more_services(filtered_locations)
