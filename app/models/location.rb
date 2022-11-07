@@ -90,8 +90,8 @@ class Location < ActiveRecord::Base
     "https://www.google.com/maps/search/#{address}"
   end
 
-  def self.sort_by_more_services(filtered_locations)
-    filtered_locations
+  def self.sort_by_more_services(locations)
+    locations
       .joins(:services)
       .group(:id)
       .order('count(services.id) DESC')
