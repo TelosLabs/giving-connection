@@ -89,6 +89,14 @@ class Location < ActiveRecord::Base
     "https://www.google.com/maps/search/#{address}"
   end
 
+  def self.location_with_cause(cause)
+    sort_by_more_services(Location.joins(:causes).where(causes: { id: cause.id }))
+  end
+
+  def self.sort_by_more_services(filtered_locations)
+    filtered_locations.joins(:services).group(:id).order('count(services.id) DESC')
+  end
+
   private
 
   def lonlat_geo_point
