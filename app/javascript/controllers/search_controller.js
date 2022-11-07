@@ -15,6 +15,7 @@ export default class extends Controller {
       "pillsCounterWrapper",
       "filtersIcon",
       "clearAllButton",
+      "advancedSelectedFilters"
     ]
   }
 
@@ -41,9 +42,11 @@ export default class extends Controller {
   updatePillsCounter() {
     // selects all checked inputs that are not checkboxAll
     this.totalChecked = this.pillsTarget.querySelectorAll("input:checked:not([data-checkbox-select-all-target=checkboxAll])").length
-    this.customInputTargets.forEach(input => {
-      this.totalChecked += parseInt(input.dataset.searchAdvancedValue)
-    })
+    // this.customInputTargets.forEach(input => {
+    //   this.totalChecked += parseInt(input.dataset.searchAdvancedValue)
+    // })
+
+    console.log(this.advancedSelectedFiltersTarget);
     this.pillsCounterTarget.textContent = this.totalChecked
     this.formTarget.requestSubmit()
   }

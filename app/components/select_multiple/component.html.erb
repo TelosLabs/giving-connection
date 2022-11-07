@@ -1,5 +1,5 @@
 <%= content_tag :div, options do %>
-  <div class="flex flex-wrap flex-shrink-0 max-w-full gap-2 py-2 pl-2" data-select-multiple-target="badgesContainer" >
+  <div class="flex flex-wrap flex-shrink-0 max-w-full gap-2 py-2 pl-2" data-select-multiple-target="badgesContainer" data-search-target="advancedSelectedFilters">
   </div>
   <input id="<%= @required ? 'required':'' %>" type="text" data-select-multiple-target="input" class="h-full text-sm align-middle border-0 border-transparent scroll-mt-25 focus:outline-none focus:border-transparent focus:ring-0 rounded-6px pt-3 w-48" data-action="select-multiple#search" placeholder="<%= @placeholder %>">
   <div data-extend-dropdown-target="menu" class="absolute left-0 z-10 hidden w-full mt-2 top-full max-h-52" >
