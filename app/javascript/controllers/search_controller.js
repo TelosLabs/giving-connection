@@ -41,13 +41,13 @@ export default class extends Controller {
 
   updatePillsCounter() {
     // selects all checked inputs that are not checkboxAll
-    this.totalChecked = document.querySelectorAll("input:checked").length;
-    this.pillsCounterTarget.textContent = this.totalChecked - 1
+    this.totalChecked = document.querySelectorAll("input:checked").length - 1;
+    this.pillsCounterTarget.textContent = this.totalChecked
     this.formTarget.requestSubmit()
   }
 
   pillsCounterDisplay() {
-    if (this.totalChecked - 1 > 0) {
+    if (this.totalChecked > 0) {
       this.pillsCounterWrapperTarget.classList.remove("hidden")
       this.filtersIconTarget.classList.add("hidden")
     }
