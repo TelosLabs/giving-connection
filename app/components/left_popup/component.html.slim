@@ -1,4 +1,4 @@
-- results.each do |result|
+- @results.each do |result|
   div class="hidden flex flex-col gap-2 p-7 bg-white rounded-6px" id="loc_#{result.id}_popup"
     div class="flex items-start gap-2"
       = image_tag result.organization.logo, class: "w-25px h-25px rounded-6px"
@@ -16,12 +16,12 @@
         p class="text-xs text-gray-500 mt-2"
           | View
       div class="flex flex-col items-center justify-center"
-        - if user_signed_in?
-          - if !current_user.favorited_locations.include?(result)
+        - if @current_user
+          - if !@current_user.favorited_locations.include?(result)
             = link_to favorite_locations_path(location_id: result.id), class: "flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer", type: "button", method: :post, remote: true, data: { action: "click->places#reloadPage" }do
               = inline_svg_tag 'bookmark_empty_light.svg', class: 'w-4 h-4 cursor-pointer'
           - else
-            = link_to favorite_location_path(current_user.fav_locs.find_by(location_id: result.id)), method: :delete, class: "flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer", remote: true, data: { action: "click->places#reloadPage" } do
+            = link_to favorite_location_path(@current_user.fav_locs.find_by(location_id: result.id)), method: :delete, class: "flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer", remote: true, data: { action: "click->places#reloadPage" } do
               = inline_svg_tag 'bookmark_colored.svg', class: 'w-4 h-4 cursor-pointer'
         - else
           = link_to favorite_locations_path(location_id: result.id), method: :post, class: "flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer" do
