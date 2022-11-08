@@ -58,6 +58,5 @@ div class="flex justify-center"
                 p class="text-sm text-black whitespace-pre-wrap"
                   = location.organization&.mission_statement_en
 
-
 / - if @location.images.attached? true
 /    = render Carousel::Component.new(location: @location)
