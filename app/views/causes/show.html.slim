@@ -57,3 +57,7 @@ div class="flex justify-center"
                   | MISSION - WHAT WE DO
                 p class="text-sm text-black whitespace-pre-wrap"
                   = location.organization&.mission_statement_en
+
+
+/ - if @location.images.attached?
+/    = render Carousel::Component.new(location: @location)
