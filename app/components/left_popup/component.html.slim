@@ -119,7 +119,6 @@
           a href="mailto:#{result.email}" target="_blank"
             = result.email
     - if result.images.attached?
-      div class="border-t border-gray-8"
         = render Carousel::Component.new(location: result, options: "relative h-40 w-64 overflow-hidden rounded-lg")
     - if result.organization.mission_statement_en.present?
       div class="border-t border-gray-8 mb-4"
