@@ -4,6 +4,7 @@
 // that code so it'll be compiled.
 
 import '../stylesheets/application'
+import 'swiper/swiper-bundle.css';
 import Rails from "@rails/ujs"
 import * as Turbo from "@hotwired/turbo"
 import * as ActiveStorage from "@rails/activestorage"
