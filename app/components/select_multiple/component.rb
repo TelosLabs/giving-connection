@@ -9,8 +9,6 @@ module SelectMultiple
       @options = options
       @placeholder = placeholder
       @required = required
-      # raise
-      # TODO: allow options to be passed in
     end
 
     def options
@@ -23,7 +21,6 @@ module SelectMultiple
           'select-multiple-target': 'container',
           'extend-dropdown-target': 'button',
           'select-multiple-selected-value': @selected,
-          'search-advanced-value': @selected.length
         },
       }
     end

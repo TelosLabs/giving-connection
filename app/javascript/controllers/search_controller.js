@@ -14,8 +14,6 @@ export default class extends Controller {
       "pillsCounter",
       "pillsCounterWrapper",
       "filtersIcon",
-      "clearAllButton",
-      "advancedFiltersCheckboxes"
     ]
   }
 
@@ -36,7 +34,6 @@ export default class extends Controller {
 
     this.updatePillsCounter()
     this.pillsCounterDisplay()
-    //this.formTarget.requestSubmit()
   }
 
   updatePillsCounter() {
@@ -96,9 +93,7 @@ export default class extends Controller {
     this.customInputTargets.forEach(input => {
       input.dispatchEvent(event)
     })
-    // if (e.target == this.clearAllButtonTarget) {
     Rails.fire(this.formTarget, 'submit')
-    // }
   }
 
   openSearchAlertModal() {
