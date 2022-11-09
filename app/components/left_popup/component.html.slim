@@ -19,19 +19,6 @@
               = cause.name
     div class="text-left"
       = render WorkingHours::Component.new(result: result)
-
-      - if result.website.present? || result.organization.website.present?
-        p class="text-sm leading-6 font-base text-gray-2"
-          span class="font-bold"
-            ' Website:
-          a href="#{result.decorate.website || result.organization.decorate.website}" target="_blank" class="text-blue-medium"
-            = result.decorate.website || result.organization.decorate.website
-      - if result.email.present?
-        p class="text-sm leading-6 font-base text-gray-2"
-          span class="font-bold"
-            ' Email:
-          a href="mailto:#{result.email}" target="_blank"
-            = result.email
     - if result.images.attached?
         = render Carousel::Component.new(location: result, options: "relative h-40 w-64 overflow-hidden rounded-lg")
     - if result.organization.mission_statement_en.present?
