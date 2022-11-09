@@ -1,3 +1,8 @@
+# frozen_string_literal: true
+
+# search pills view component
+# rubocop:disable Style/ClassAndModuleChildren
+# rubocop:disable Lint/MissingSuper
 class SearchPills::Component < ViewComponent::Base
   def initialize(causes:, services:, beneficiary_subcategories:, params:)
     @causes = causes
@@ -24,3 +29,6 @@ class SearchPills::Component < ViewComponent::Base
     miles == "Any" ? 1_000_000 : (miles * 1.609344).round(3)
   end
 end
+
+# rubocop:enable Style/ClassAndModuleChildren
+# rubocop:enable Lint/MissingSuper
