@@ -56,7 +56,15 @@ export default class extends Controller {
     this.leftMapPopupIds[event_id]["map_left_popup"].classList.remove('hidden')
     sessionStorage.setItem('map_left_popup', this.leftMapPopupIds[event_id]["map_left_popup"].id)
     sessionStorage.setItem('selected_marker', this.leftMapPopupIds[event_id]["marker"].id)
+    this.reset(event_id)
+  }
 
+  hidePopup() {
+    this.resetMarkersAndMapLeftPopup()
+    this.cleanLocalStorage()
+  }
+
+  resetMarkersAndMapLeftPopup(event_id = null) {
     for (let key in this.leftMapPopupIds) {
       if (key != event_id) {
         this.leftMapPopupIds[key]["marker"].setIcon(this.image)
@@ -66,16 +74,12 @@ export default class extends Controller {
     }
   }
 
-  hidePopup() {
-    for (let key in this.leftMapPopupIds) {
-      this.leftMapPopupIds[key]["marker"].setIcon(this.image)
-      this.leftMapPopupIds[key]["marker"].setAnimation(null);
-      this.leftMapPopupIds[key]["map_left_popup"].classList.add('hidden')
-    }
+  cleanLocalStorage() {
     sessionStorage.removeItem('map_left_popup')
     sessionStorage.removeItem('selected_marker')
     sessionStorage.removeItem('marker_infowindow')
   }
+
 
   scrollToSelectedLocation(){
     if(sessionStorage.getItem('marker_infowindow')) {
