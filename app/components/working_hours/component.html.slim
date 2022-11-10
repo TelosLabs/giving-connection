@@ -28,12 +28,12 @@ p class="text-sm leading-6 font-base text-gray-2"
     span class="font-bold"
       ' Sat
     span
-      = display_day_working_hours(@result.day_hours(Time::DAYS_INTO_WEEK[:saturday]))
+      = @result.decorate.display_day_working_hours(@result.day_hours(Time::DAYS_INTO_WEEK[:saturday]))
   p class="ml-12 text-sm leading-6 font-base text-gray-2"
     span class="font-bold"
       ' Sun
     span
-      = display_day_working_hours(@result.day_hours(Time::DAYS_INTO_WEEK[:sunday]))
+      = @result.decorate.display_day_working_hours(@result.day_hours(Time::DAYS_INTO_WEEK[:sunday]))
 - else
   - Location::WEEKDAYS.each do |day_number|
     p class="ml-12 text-sm leading-6 font-base text-gray-2"
@@ -41,17 +41,17 @@ p class="text-sm leading-6 font-base text-gray-2"
         = Date::DAYNAMES[day_number].first(3)
         | &nbsp;
       span
-        = display_day_working_hours(@result.day_hours(day_number))
+        = @result.decorate.display_day_working_hours(@result.day_hours(day_number))
   p class="ml-12 text-sm leading-6 font-base text-gray-2"
     span class="font-bold"
       ' Sat
     span
-      = display_day_working_hours(@result.day_hours(Time::DAYS_INTO_WEEK[:saturday]))
+      = @result.decorate.display_day_working_hours(@result.day_hours(Time::DAYS_INTO_WEEK[:saturday]))
   p class="ml-12 text-sm leading-6 font-base text-gray-2"
     span class="font-bold"
       ' Sun
     span
-      = display_day_working_hours(@result.day_hours(Time::DAYS_INTO_WEEK[:sunday]))
+      = @result.decorate.display_day_working_hours(@result.day_hours(Time::DAYS_INTO_WEEK[:sunday]))
 
 - if @result.website.present? || @result.organization.website.present?
   p class="text-sm leading-6 font-base text-gray-2"
