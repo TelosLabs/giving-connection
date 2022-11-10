@@ -29,7 +29,10 @@ export default class extends Controller {
     window.location.search = window.location.search
 }
 
-  buildHash() {
+  // Left map popup functions start here
+  // It was necessary to create this functions in this controller because the map is created here, and we have access to Markers.
+
+  buildMapMarkersAndLeftPopupHash() {
     this.leftMapPopupIds = {}
     let container = document.getElementById('map-left-popup')
     container.childNodes.forEach((node) => {
@@ -56,7 +59,7 @@ export default class extends Controller {
     this.leftMapPopupIds[event_id]["map_left_popup"].classList.remove('hidden')
     sessionStorage.setItem('map_left_popup', this.leftMapPopupIds[event_id]["map_left_popup"].id)
     sessionStorage.setItem('selected_marker', this.leftMapPopupIds[event_id]["marker"].id)
-    this.reset(event_id)
+    this.resetMarkersAndMapLeftPopup(event_id)
   }
 
   hidePopup() {
@@ -88,6 +91,8 @@ export default class extends Controller {
       card.scrollIntoView({behavior: 'smooth', block: "nearest", inline: "nearest"})
     }
   }
+
+  // Left map popup functions end here
 
   initMap() {
     this.map = new google.maps.Map(this.mapTarget, {
@@ -145,7 +150,7 @@ export default class extends Controller {
       let marker = this.mapMarkers.find((marker) => { return marker.id == selectedMarker })
       marker.setIcon(clickedImage)
     }
-    this.buildHash()
+    this.buildMapMarkersAndLeftPopupHash()
   }
 
   setMarkers(map, image, clickedImage) {
