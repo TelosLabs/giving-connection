@@ -26,6 +26,7 @@ export default class extends Controller {
   }
   // Pills
   clearChecked() {
+    // Unchecks applied advanced filters firing their data-actions, which clear displayed badges (see select_multiple_controller.js:15 and select-multiple component).
     this.advancedFiltersTarget.querySelectorAll("input:checked").forEach(input => input.click())
     this.pillsTarget.querySelectorAll("input:checked").forEach(input => {
       input.checked = false

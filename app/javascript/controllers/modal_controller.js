@@ -37,8 +37,6 @@ export default class extends Controller {
   }
 
   open(e) {
-    this.appliedFilters = [...this.containerTarget.querySelectorAll("input:checked")]
-
     setTimeout(() => {
       if (this.preventDefaultActionOpening) {
         e.preventDefault();
@@ -63,7 +61,10 @@ export default class extends Controller {
       , 1000)
   }
 
-  close() {
+  close(event) {
+    // Stops event bubbling if the modal was closed by a click
+    if (event) event.preventDefault();
+
     // Unlock the scroll and restore previous scroll position
     this.unlockScroll();
 
@@ -75,14 +76,18 @@ export default class extends Controller {
   }
 
   clearUnappliedFilters() {
-    // gets the difference between checked and applied
-    const unappliedFilters = [...this.containerTarget.querySelectorAll("input:checked")]
-      .filter(input => !this.appliedFilters.includes(input))
+    // gets the query string of the url
+    const queryString = window.location.href.split('?')[1];
+    // produces an array of values of the key/value pairs from the query string
+    const values = [...new URLSearchParams(queryString).values()];
 
-    unappliedFilters.forEach(input => {
-      // fires the data-action associated to an uncheck
-      input.click()
-    })
+    // validates if all checked filters are applied (present in the query string of the url)
+    this.containerTarget.querySelectorAll("input:checked").forEach(filter => {
+      if (!values.includes(filter.value)) {
+        // fires data-action that unchecks and removes displayed badges
+        filter.click();
+      }
+    });
   }
 
   closeBackground(e) {
