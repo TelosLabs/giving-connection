@@ -13,7 +13,12 @@ div class="w-full bg-gray-9"
         ul class="flex flex-1 gap-x-6 pl-5 pr-6 text-sm list-none overflow-x-auto overflow-y-hidden bg-blue-pale text-gray-2"
           - @tabs_labels.each do |tab_label|
             li data-action="click->tabs#change" data-tabs-target="tab"
-              a.inline-block.py-4.whitespace-nowrap href="#" = tab_label
+              a class="inline-block py-4 whitespace-nowrap" href="#" = tab_label
+          li data-action="click->modal#open"
+            button class="inline-block py-4 whitespace-nowrap" type="button"
+              | Advanced Filters
+              span class="relative hidden w-2 h-2 rounded-full bg-salmon ml-1 mb-2" id="appliedIcon"
+
       / Panels
       div class="bg-white"
         / Causes

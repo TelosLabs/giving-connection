@@ -9,7 +9,6 @@ module SelectMultiple
       @options = options
       @placeholder = placeholder
       @required = required
-      # TODO: allow options to be passed in
     end
 
     def options
