@@ -47,16 +47,16 @@ export default class extends Controller {
   setSearchResultsListeners() {
     if (this.searchResultTitles) {
       this.searchResultTitles.forEach((node) => {
-        node.addEventListener('click', this.showMapLeftPopup.bind(this))
+        node.addEventListener('click', this.MapLeftPopupBehaviour.bind(this))
       })
     }
   }
 
-  showMapLeftPopup(event) {
+  MapLeftPopupBehaviour(event) {
     let event_id = event.target.id.replace(/\D/g, '');
+    this.leftMapPopupIds[event_id]["map_left_popup"].classList.remove('hidden')
     this.leftMapPopupIds[event_id]["marker"].setIcon(this.clickedimageurlValue)
     this.leftMapPopupIds[event_id]["marker"].setAnimation(google.maps.Animation.BOUNCE);
-    this.leftMapPopupIds[event_id]["map_left_popup"].classList.remove('hidden')
     sessionStorage.setItem('map_left_popup', this.leftMapPopupIds[event_id]["map_left_popup"].id)
     sessionStorage.setItem('selected_marker', this.leftMapPopupIds[event_id]["marker"].id)
     this.resetMarkersAndMapLeftPopup(event_id)
