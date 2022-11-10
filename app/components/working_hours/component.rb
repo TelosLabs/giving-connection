@@ -4,6 +4,8 @@
 # rubocop:disable Lint/MissingSuper
 # rubocop:disable Style/Documentation
 module WorkingHours
+ include LocationsHelper
+
   class WorkingHours::Component < ViewComponent::Base
     def initialize(result:)
       @result = result
