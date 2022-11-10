@@ -35,7 +35,8 @@ export default class extends Controller {
     container.childNodes.forEach((node) => {
       if (node.id) {
         let node_id = node.id.replace(/\D/g, '');
-        this.leftMapPopupIds[node_id] = [ this.mapMarkers.find((marker) => { return marker.id == node_id }), node ]
+        this.leftMapPopupIds[node_id] = { marker: this.mapMarkers.find((marker) => { return marker.id == node_id }), map_left_popup: node }
+        console.log(this.leftMapPopupIds);
       }
     })
   }
@@ -50,26 +51,26 @@ export default class extends Controller {
 
   showMapLeftPopup(event) {
     let event_id = event.target.id.replace(/\D/g, '');
-    this.leftMapPopupIds[event_id][0].setIcon(this.clickedimageurlValue)
-    this.leftMapPopupIds[event_id][0].setAnimation(google.maps.Animation.BOUNCE);
-    this.leftMapPopupIds[event_id][1].classList.remove('hidden')
-    sessionStorage.setItem('map_left_popup', this.leftMapPopupIds[event_id][1].id)
-    sessionStorage.setItem('selected_marker', this.leftMapPopupIds[event_id][0].id)
+    this.leftMapPopupIds[event_id]["marker"].setIcon(this.clickedimageurlValue)
+    this.leftMapPopupIds[event_id]["marker"].setAnimation(google.maps.Animation.BOUNCE);
+    this.leftMapPopupIds[event_id]["map_left_popup"].classList.remove('hidden')
+    sessionStorage.setItem('map_left_popup', this.leftMapPopupIds[event_id]["map_left_popup"].id)
+    sessionStorage.setItem('selected_marker', this.leftMapPopupIds[event_id]["marker"].id)
 
     for (let key in this.leftMapPopupIds) {
       if (key != event_id) {
-        this.leftMapPopupIds[key][0].setIcon(this.image)
-        this.leftMapPopupIds[key][0].setAnimation(null);
-        this.leftMapPopupIds[key][1].classList.add('hidden')
+        this.leftMapPopupIds[key]["marker"].setIcon(this.image)
+        this.leftMapPopupIds[key]["marker"].setAnimation(null);
+        this.leftMapPopupIds[key]["map_left_popup"].classList.add('hidden')
       }
     }
   }
 
   hidePopup() {
     for (let key in this.leftMapPopupIds) {
-      this.leftMapPopupIds[key][0].setIcon(this.image)
-      this.leftMapPopupIds[key][0].setAnimation(null);
-      this.leftMapPopupIds[key][1].classList.add('hidden')
+      this.leftMapPopupIds[key]["marker"].setIcon(this.image)
+      this.leftMapPopupIds[key]["marker"].setAnimation(null);
+      this.leftMapPopupIds[key]["map_left_popup"].classList.add('hidden')
     }
     sessionStorage.removeItem('map_left_popup')
     sessionStorage.removeItem('selected_marker')
