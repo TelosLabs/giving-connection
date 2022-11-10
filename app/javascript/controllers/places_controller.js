@@ -53,7 +53,7 @@ export default class extends Controller {
     this.leftMapPopupIds[event_id][0].setIcon(this.clickedimageurlValue)
     this.leftMapPopupIds[event_id][0].setAnimation(google.maps.Animation.BOUNCE);
     this.leftMapPopupIds[event_id][1].classList.remove('hidden')
-    sessionStorage.setItem('left_popup', this.leftMapPopupIds[event_id][1].id)
+    sessionStorage.setItem('map_left_popup', this.leftMapPopupIds[event_id][1].id)
     sessionStorage.setItem('selected_marker', this.leftMapPopupIds[event_id][0].id)
 
     for (let key in this.leftMapPopupIds) {
@@ -71,7 +71,7 @@ export default class extends Controller {
       this.leftMapPopupIds[key][0].setAnimation(null);
       this.leftMapPopupIds[key][1].classList.add('hidden')
     }
-    sessionStorage.removeItem('left_popup')
+    sessionStorage.removeItem('map_left_popup')
     sessionStorage.removeItem('selected_marker')
     sessionStorage.removeItem('marker_infowindow')
   }
@@ -133,7 +133,7 @@ export default class extends Controller {
       })
     }
 
-    let clickedLocation = document.getElementById(sessionStorage.getItem('left_popup'))
+    let clickedLocation = document.getElementById(sessionStorage.getItem('map_left_popup'))
     let selectedMarker = sessionStorage.getItem('selected_marker')
     if (clickedLocation) { clickedLocation.classList.remove('hidden') }
     if (selectedMarker) {
@@ -182,7 +182,7 @@ export default class extends Controller {
           if (node_id == element_id) {
             node.classList.remove('hidden')
             marker.setIcon(clickedImage)
-            sessionStorage.setItem('left_popup', node.id)
+            sessionStorage.setItem('map_left_popup', node.id)
             sessionStorage.setItem('selected_marker', marker.id)
           }
         })
