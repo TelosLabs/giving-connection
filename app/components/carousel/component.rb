@@ -4,9 +4,9 @@
 # rubocop:disable Style/ClassAndModuleChildren
 # rubocop:disable Lint/MissingSuper
 class Carousel::Component < ViewComponent::Base
-  def initialize(location:, options: 'swiper-container h-40 w-64 md:w-96 md:h-80 overflow-hidden rounded-lg my-3 shadow-2xl')
+  def initialize(location:, options: {})
     @location = location
-    @options = options
+    @options = "swiper-container overflow-hidden rounded-lg my-3 shadow-2xl #{options[:size]}"
   end
 end
 

@@ -61,7 +61,7 @@ div class=""
                 span class="font-normal"
                   = @location.organization.irs_ntee_code
           - if @location.images.attached?
-            = render Carousel::Component.new(location: @location)
+            = render Carousel::Component.new(location: @location, options: { size:  "h-80 w-96" })
 
         - if @location.organization.mission_statement_en.present?
           div class="my-6 border-t border-gray-8"
