@@ -83,6 +83,7 @@ export default class extends Controller {
     sessionStorage.removeItem('marker_infowindow')
   }
 
+  // Left map popup functions end here
 
   scrollToSelectedLocation(){
     if(sessionStorage.getItem('marker_infowindow')) {
@@ -91,8 +92,6 @@ export default class extends Controller {
       card.scrollIntoView({behavior: 'smooth', block: "nearest", inline: "nearest"})
     }
   }
-
-  // Left map popup functions end here
 
   initMap() {
     this.map = new google.maps.Map(this.mapTarget, {
