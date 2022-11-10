@@ -29,13 +29,13 @@ export default class extends Controller {
     window.location.search = window.location.search
 }
 
-  buildPopupIdsHash() {
-    this.PopupIdsHash = {}
-    let container = document.getElementById('left-popup')
+  buildHash() {
+    this.leftMapPopupIds = {}
+    let container = document.getElementById('map-left-popup')
     container.childNodes.forEach((node) => {
       if (node.id) {
         let node_id = node.id.replace(/\D/g, '');
-        this.PopupIdsHash[node_id] = [ this.mapMarkers.find((marker) => { return marker.id == node_id }), node ]
+        this.leftMapPopupIds[node_id] = [ this.mapMarkers.find((marker) => { return marker.id == node_id }), node ]
       }
     })
   }
@@ -43,42 +43,42 @@ export default class extends Controller {
   setSearchResultsListeners() {
     if (this.searchResultTitles) {
       this.searchResultTitles.forEach((node) => {
-        node.addEventListener('click', this.showPopup.bind(this))
+        node.addEventListener('click', this.showMapLeftPopup.bind(this))
       })
     }
   }
 
-  showPopup(event) {
+  showMapLeftPopup(event) {
     let event_id = event.target.id.replace(/\D/g, '');
-    this.PopupIdsHash[event_id][0].setIcon(this.clickedimageurlValue)
-    this.PopupIdsHash[event_id][0].setAnimation(google.maps.Animation.BOUNCE);
-    this.PopupIdsHash[event_id][1].classList.remove('hidden')
-    sessionStorage.setItem('larger_popup', this.PopupIdsHash[event_id][1].id)
-    sessionStorage.setItem('selected_marker', this.PopupIdsHash[event_id][0].id)
+    this.leftMapPopupIds[event_id][0].setIcon(this.clickedimageurlValue)
+    this.leftMapPopupIds[event_id][0].setAnimation(google.maps.Animation.BOUNCE);
+    this.leftMapPopupIds[event_id][1].classList.remove('hidden')
+    sessionStorage.setItem('left_popup', this.leftMapPopupIds[event_id][1].id)
+    sessionStorage.setItem('selected_marker', this.leftMapPopupIds[event_id][0].id)
 
-    for (let key in this.PopupIdsHash) {
+    for (let key in this.leftMapPopupIds) {
       if (key != event_id) {
-        this.PopupIdsHash[key][0].setIcon(this.image)
-        this.PopupIdsHash[key][0].setAnimation(null);
-        this.PopupIdsHash[key][1].classList.add('hidden')
+        this.leftMapPopupIds[key][0].setIcon(this.image)
+        this.leftMapPopupIds[key][0].setAnimation(null);
+        this.leftMapPopupIds[key][1].classList.add('hidden')
       }
     }
   }
 
   hidePopup() {
-    for (let key in this.PopupIdsHash) {
-      this.PopupIdsHash[key][0].setIcon(this.image)
-      this.PopupIdsHash[key][0].setAnimation(null);
-      this.PopupIdsHash[key][1].classList.add('hidden')
+    for (let key in this.leftMapPopupIds) {
+      this.leftMapPopupIds[key][0].setIcon(this.image)
+      this.leftMapPopupIds[key][0].setAnimation(null);
+      this.leftMapPopupIds[key][1].classList.add('hidden')
     }
-    sessionStorage.removeItem('larger_popup')
+    sessionStorage.removeItem('left_popup')
     sessionStorage.removeItem('selected_marker')
-    sessionStorage.removeItem('smaller_popup')
+    sessionStorage.removeItem('marker_infowindow')
   }
 
   scrollToSelectedLocation(){
-    if(sessionStorage.getItem('smaller_popup')) {
-      let id = sessionStorage.getItem('smaller_popup').split('_')[1]
+    if(sessionStorage.getItem('marker_infowindow')) {
+      let id = sessionStorage.getItem('marker_infowindow').split('_')[1]
       let card = document.getElementById(id)
       card.scrollIntoView({behavior: 'smooth', block: "nearest", inline: "nearest"})
     }
@@ -133,20 +133,20 @@ export default class extends Controller {
       })
     }
 
-    let clickedLocation = document.getElementById(sessionStorage.getItem('larger_popup'))
+    let clickedLocation = document.getElementById(sessionStorage.getItem('left_popup'))
     let selectedMarker = sessionStorage.getItem('selected_marker')
     if (clickedLocation) { clickedLocation.classList.remove('hidden') }
     if (selectedMarker) {
       let marker = this.mapMarkers.find((marker) => { return marker.id == selectedMarker })
       marker.setIcon(clickedImage)
     }
-    this.buildPopupIdsHash()
+    this.buildHash()
   }
 
   setMarkers(map, image, clickedImage) {
     // Adds markers to the map.
     let prevInfoWindow = false
-    let pin = document.getElementById(sessionStorage.getItem('smaller_popup'))
+    let pin = document.getElementById(sessionStorage.getItem('marker_infowindow'))
 
     for (let i = 0; i < this.markerTargets.length; i++) {
       const element = this.markerTargets[i];
@@ -170,7 +170,7 @@ export default class extends Controller {
       });
 
       marker.addListener("click", () => {
-        let container = document.getElementById('left-popup')
+        let container = document.getElementById('map-left-popup')
         this.mapMarkers.forEach((marker) => {
           marker.setIcon(image)
           marker.setAnimation(null);
@@ -182,7 +182,7 @@ export default class extends Controller {
           if (node_id == element_id) {
             node.classList.remove('hidden')
             marker.setIcon(clickedImage)
-            sessionStorage.setItem('larger_popup', node.id)
+            sessionStorage.setItem('left_popup', node.id)
             sessionStorage.setItem('selected_marker', marker.id)
           }
         })
@@ -199,7 +199,7 @@ export default class extends Controller {
           map,
           shouldFocus: false,
         });
-        sessionStorage.setItem('smaller_popup', element.id)
+        sessionStorage.setItem('marker_infowindow', element.id)
       })
 
 
@@ -217,7 +217,7 @@ export default class extends Controller {
           shouldFocus: false,
         });
 
-        sessionStorage.setItem('smaller_popup', element.id)
+        sessionStorage.setItem('marker_infowindow', element.id)
         this.scrollToSelectedLocation()
       });
 

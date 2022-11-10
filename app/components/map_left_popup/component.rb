@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-# left popup view component
+# Map left popup view component
 # rubocop:disable Lint/MissingSuper
 # rubocop:disable Style/Documentation
 
-module LeftPopup
+module MapLeftPopup
   class Component < ViewComponent::Base
     def initialize(results:, options: {}, current_user: false)
       @results = results
