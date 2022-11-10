@@ -1,5 +1,5 @@
 <div id="<%= "#{@id}" %>" class="p-4 scroll-mt-96" data-controller="result-card--component">
-  <div class="flex flex-row gap-3 mb-3">
+  <div class="flex flex-row gap-3">
     <div class="flex-shrink-0 w-24 my-1">
       <a class="inline-flex items-start p-2 text-sm font-bold text-blue-medium">
         <%= image_tag @image_url, class: 'object-contain w-full h-20' %>
@@ -27,7 +27,7 @@
           <% end %>
         <% end %>
       </div>
-      <div class="flex flex-col text-xs text-gray-4">
+      <div class="flex flex-col text-xs text-gray-4 pb-0">
         <p id="pointer"><%= link_to @address, "https://www.google.com/maps/search/#{@address}", target: "blank" %></p>
         <% if @website.present? %>
           <%= link_to @website, @website, target: '_blank', class: 'text-blue-medium'%>
@@ -39,7 +39,7 @@
         <p class="text-xs text-blue-medium"><%= @phone_number %></p>
         <% end %>
         <% if @causes.present? %>
-          <div class="my-4">
+          <div class="mt-4">
             <div class="flex gap-2.5 flex-wrap px-1">
               <% @causes.each do |cause| %>
                 <span class="text-sm text-center px-1.5 py-1 rounded-lg border border-gray-6 text-gray-3"><%= cause.name %></span>
