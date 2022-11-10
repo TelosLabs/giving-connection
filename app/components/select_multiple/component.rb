@@ -1,7 +1,4 @@
 # frozen_string_literal: true
-
-# rubocop:disable Style/Documentation
-# rubocop:disable Lint/MissingSuper
 module SelectMultiple
   class Component < ViewComponent::Base
     def initialize(name:, items: {}, selected: [], options: {}, placeholder: "", required: false)
@@ -30,6 +27,3 @@ module SelectMultiple
     end
   end
 end
-
-# rubocop:enable Lint/MissingSuper
-# rubocop:enable Style/Documentation
