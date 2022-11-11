@@ -10,9 +10,10 @@ export default class extends Controller {
       "customInput",
       "form",
       "pills",
+      "advancedFilters",
       "pillsCounter",
       "pillsCounterWrapper",
-      "filtersIcon"
+      "filtersIcon",
     ]
   }
 
@@ -25,18 +26,20 @@ export default class extends Controller {
   }
   // Pills
   clearChecked() {
+    // Unchecks applied advanced filters firing their data-actions, which clear displayed badges (see select_multiple_controller.js:15 and select-multiple component).
+    this.advancedFiltersTarget.querySelectorAll("input:checked").forEach(input => input.click())
     this.pillsTarget.querySelectorAll("input:checked").forEach(input => {
       input.checked = false
       input.removeAttribute('checked')
     })
+
     this.updatePillsCounter()
     this.pillsCounterDisplay()
-    this.formTarget.requestSubmit()
   }
 
   updatePillsCounter() {
     // selects all checked inputs that are not checkboxAll
-    this.totalChecked = this.pillsTarget.querySelectorAll("input:checked:not([data-checkbox-select-all-target=checkboxAll])").length
+    this.totalChecked = document.querySelectorAll("input:checked").length - 1;
     this.pillsCounterTarget.textContent = this.totalChecked
     this.formTarget.requestSubmit()
   }
@@ -80,7 +83,9 @@ export default class extends Controller {
     }
   }
 
-  clearAll() {
+
+
+  clearAll(e) {
     const event = new CustomEvent('selectmultiple:clear', {})
 
     this.inputTargets.forEach(input => {
