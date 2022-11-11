@@ -24,7 +24,7 @@ nav data-controller="navbar--component" class="#{non_sticky_paths ? "" : "sticky
             div class='flex items-center'
               = inline_svg_tag 'heart.svg', size:'9*9', class:'mt-1 fill-current text-red'
         li class="mr-2 mid:mr-7 lg:mr-11 text-sm-underlined-color font-medium border-b-2 border-transparent #{request.env['PATH_INFO'] == "/contact_us" ? "text-seafoam border-seafoam" : ""}"
-          = link_to 'Discovery', discovery_path
+          = link_to 'Discover', discover_path
     ul class='flex items-center'
       - if @signed_in
         li = link_to "My Account", my_account_path, class:"text-base font-bold mr-1 lg:mr-6 border-b-2 border-transparent #{request.env['PATH_INFO'] == "/my_account" ? "text-seafoam border-seafoam" : ""}"
