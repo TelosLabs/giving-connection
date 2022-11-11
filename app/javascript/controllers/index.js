@@ -3,7 +3,6 @@
 
 import { Application } from "@hotwired/stimulus"
 import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"
-// import Swiper from 'swiper/css/bundle';
 import Carousel from 'stimulus-carousel'
 
 
