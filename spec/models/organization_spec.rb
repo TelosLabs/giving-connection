@@ -55,6 +55,5 @@ RSpec.describe Organization, type: :model do
     it { should validate_presence_of(:mission_statement_en) }
     it { should validate_presence_of(:scope_of_work) }
     it { should validate_inclusion_of(:scope_of_work).in_array( Organizations::Constants::SCOPE ) }
-    #it { should validate_logo_content_type }
   end
 end

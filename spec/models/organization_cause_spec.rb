@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe OrganizationCause, type: :model do
-  context 'OrganizationCause model validation test' do
-    subject { create(:organization_cause) }
+  subject { build(:organization_cause) }
 
-    it 'ensures organization_cause can be created' do
-      expect(subject).to be_valid
-    end
+  describe "Associations" do
+    it { should belong_to(:organization) }
+    it { should belong_to(:cause) }
   end
 end
