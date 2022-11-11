@@ -25,9 +25,6 @@ class Location < ActiveRecord::Base
   include Locations::Officeable
   validates_with LocationValidator
 
-  # For tests. Read https://oozou.com/blog/never-skip-a-callback-in-your-tests-21
-  attr_accessor :_skip_creating_geo_point
-
   belongs_to :organization, optional: true
 
   scope :active, -> { joins(:organization).where(organization: { active: true }) }
