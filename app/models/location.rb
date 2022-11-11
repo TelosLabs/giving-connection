@@ -57,7 +57,7 @@ class Location < ActiveRecord::Base
   scope :additional, -> { where(main: false) }
   scope :main, -> { where(main: true) }
 
-  before_validation :lonlat_geo_point, unless: :_skip_creating_geo_point
+  before_validation :lonlat_geo_point
 
   delegate :social_media, to: :organization
 

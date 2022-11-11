@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :location do
-    _skip_creating_geo_point { true }
     name { 'MyString' }
     address { 'MyString' }
     latitude { 1.5 }
