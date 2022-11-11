@@ -6,7 +6,7 @@ export default class extends Controller {
     consumer.subscriptions.create(
       "BookmarkChannel",
       { received: this.received.bind(this) }
-    ) 
+    )
   }
 
   received(data) {
@@ -16,6 +16,10 @@ export default class extends Controller {
     } else {
       document.getElementById(`favorite_location_${data["favorite_location_id"]}`).remove()
       document.getElementById(`new_favorite_location_${data["location_id"]}`).insertAdjacentHTML('afterend', data["unmarked_partial"])
-    }    
+    }
   }
+
+  reloadPage(event) {
+    window.location.search = window.location.search
+}
 }

@@ -9,7 +9,6 @@ module SelectMultiple
       @options = options
       @placeholder = placeholder
       @required = required
-      # TODO: allow options to be passed in
     end
 
     def options
@@ -19,12 +18,12 @@ module SelectMultiple
           controller: 'select-multiple extend-dropdown',
           action: 'click->select-multiple#focus click->extend-dropdown#show click@window->extend-dropdown#hide selectmultiple:clear->select-multiple#clearAll',
           'search-target': 'customInput',
+          form_validation_target: "selectMultiple",
           'select-multiple-target': 'container',
           'extend-dropdown-target': 'button',
           'select-multiple-selected-value': @selected,
         },
       }
     end
-
   end
 end

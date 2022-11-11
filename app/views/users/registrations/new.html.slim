@@ -1,5 +1,5 @@
 .main
-  h2 class="px-12 pb-6 text-2xl font-bold text-center pt-14 md:pt-32 md:mt-2 md:pb-9 text-gray-gray-7"
+  h2 class="px-12 pb-6 text-2xl font-bold text-center pt-14 md:pt-20 md:mt-2 md:pb-9 text-gray-gray-7"
     ' Create an account
     | on Giving Connection
 
@@ -37,7 +37,7 @@
   = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
     .c-form
       = form_group_for f, :name do
-        = f.text_field :name, autofocus: true, autocomplete: "name", class:"c-input"
+        = f.text_field :name, autocomplete: "name", class:"c-input"
       = form_group_for f, :email, label: 'Email Address' do
         = f.email_field :email, autocomplete: "email", class:"c-input"
       = form_group_for f, :password do

@@ -1,57 +1,43 @@
-div class="bg-white rounded-3xl"
-  div class="flex flex-col w-full pb-32"
+div class="bg-white rounded-3xl" data-search-target="advancedFilters"
+  div class="flex flex-col w-full pb-11"
     div class="inline-grid items-center justify-between w-full grid-cols-3 px-6 py-8 pb-5 gap-x-4"
-      h2 class="col-start-2 text-xl font-bold text-center text-gray-2" Filters
-      button class="flex justify-end" role="button" data-action="click->modal#close"
+      h2 class="col-start-2 text-xl font-bold text-center text-gray-2" Advanced Filters
+      button class="flex justify-end" type="button" data-action="click->modal#close click->modal#clearUnappliedFilters"
         = inline_svg_tag "solid_close.svg", class: 'h-4 w-4 fill-current text-gray-2'
 
     div class="flex flex-col w-full overflow-y-auto divide-y divide-gray-8"
+      p class="px-6 py-4 text-sm text-gray-4" Add more filters to narrow down your search results.
       div class="px-6 py-8"
         = form.label :causes, 'Causes', class: 'w-full text-base font-bold text-gray-2'
-        = render SelectMultiple::Component.new(name: 'search[causes]', items: causes, selected: list_of_causes(search))
+        - if search.causes
+          div class='flex items-center gap-1'
+            span class="relative inline-flex w-2 h-2 rounded-full bg-green-300"
+            p class="text-sm text-gray-4" Selected Pills:
+          p class="flex flex-wrap items-center gap-1 text-sm text-gray-4"
+            = selected_pills(@top_10_causes.map(&:name), "causes").join(', ')
+        = render SelectMultiple::Component.new(name: 'search[causes]', items: causes, selected: selected_advanced_filters(@top_10_causes.map(&:name), "causes"))
 
       div class="px-6 py-8"
         = form.label :services, 'Services', class: 'w-full text-base font-bold text-gray-2'
-        = render SelectMultiple::Component.new(name: 'search[services]', items: services, selected: list_of_services(search))
+        - if search.services
+          div class='flex items-center gap-1'
+            span class="relative inline-flex w-2 h-2 rounded-full bg-green-300"
+            p class="text-sm text-gray-4" Selected Pills:
+          p class="flex flex-wrap items-center gap-1 text-sm text-gray-4"
+            = selected_pills(@top_10_services.map(&:name), "services").join(', ')
+        = render SelectMultiple::Component.new(name: 'search[services]', items: services, selected: selected_advanced_filters(@top_10_services.map(&:name), "services"))
 
       div class="px-6 py-8"
         = form.label :beneficiary_groups, 'Populations Served', class: 'w-full text-base font-bold text-gray-2'
-        = render SelectMultiple::Component.new(name: 'search[beneficiary_groups]',items: beneficiary_groups, selected: list_of_beneficiary_groups(search))
-
-      div class="px-6 py-8"
-        p class="text-base font-bold text-gray-2"
-          | Location
-        div class="grid grid-cols-6 gap-6 mt-4"
-          div class="col-span-6"
-            = form.label :state, "State", class: "block text-sm text-gray-3 font-medium"
-            = form.select :state, { Tennessee: "TN" }, {}, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
-
-          div class="col-span-6"
-            = form.label :city, "City", class: "block text-sm text-gray-3 font-medium"
-            = form.select :city, { Nashville: "Nashville" }, {}, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", data: { 'search-target': 'input'}, autocomplete:"off" }
-
-          div class="col-span-3"
-            = form.label :zipcode, "Zip Code", class: "block text-sm text-gray-3 font-medium"
-            = form.text_field :zipcode, { value: "#{ params.dig('search', 'zipcode') }", class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px text-base text-gray-3 border-gray-5 focus:ring-blue-medium focus:border-blue-medium", data: { 'search-target': 'input'}, autocomplete:"off" }
-
-          div class="col-span-3"
-            = form.label :distance, "Distance", class: "block text-sm text-gray-3 font-medium"
-            = form.select :distance, options_for_select({"2 mi": 3.21, "5 mi": 8.04, "15 mi": 24.1402}, "#{ params.dig('search', 'distance') }"), { include_blank: '' }, { selected: nil, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px text-base text-gray-3 border-gray-5 focus:ring-blue-medium focus:border-blue-medium", data: { 'search-target': 'input'}, autocomplete:"off" }
-
-      div class="px-6 py-8"
-        p class="pb-3 text-base font-bold text-gray-2"
-          | Hours
-        div class="flex flex-row justify-between"
-          div class="flex flex-row"
-            = check_box_tag "search[open_now]", true, params.dig('search', 'open_now') == 'true', class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent ", data: { 'search-target': 'input'}
-            = label_tag "search[open_now]", "Open Now", class: "text-sm text-black "
-          div class="flex flex-row"
-            = check_box_tag 'search[open_weekends]', true, params.dig('search', 'open_weekends') == 'true', class: "h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent ", data: { 'search-target': 'input'}
-            = label_tag 'search[open_weekends]', "Open on Weekends", class: "text-sm text-black "
+        - if search.beneficiary_groups
+          div class='flex items-center gap-1'
+            span class="relative inline-flex w-2 h-2 rounded-full bg-green-300"
+            p class="text-sm text-gray-4" Selected Pills:
+          p class="flex flex-wrap items-center gap-1 text-sm text-gray-4"
+            = selected_pills(@top_10_beneficiary_subcategories.map(&:name) , "beneficiary_groups").join(', ')
+        = render SelectMultiple::Component.new(name: 'search[beneficiary_groups]',items: beneficiary_groups, selected: selected_advanced_filters(@top_10_beneficiary_subcategories.map(&:name), "beneficiary_groups"))
 
     div class="flex flex-row justify-between w-full px-6 py-5 border-t border-gray-8"
-      button class="flex justify-center px-4 py-2 text-blue-medium" type="submit" data-action="click->search#clearAll"
-        | Clear All
-      = form.hidden_field :lat, value: ""
-      = form.hidden_field :lon, value: ""
-      = form.submit "Apply filters", class: "uppercase font-bold tracking-wider flex justify-center px-5 py-2.5 text-white rounded-md bg-blue-medium cursor-pointer", data: { action: '', disable_with: false}
+      button class="flex justify-center px-4 py-2 text-blue-medium text-left" type="button" data-action="click->search#clearAll click->modal#close" data-search-target="clearAllButton"
+        | Clear Advanced Filters
+      = form.submit "Apply filters", class: "uppercase font-bold tracking-wider flex justify-center px-5 py-2.5 text-white rounded-md bg-blue-medium cursor-pointer", data: { action: 'click->modal#close click->search#updatePillsCounter click->search#pillsCounterDisplay', disable_with: false}
