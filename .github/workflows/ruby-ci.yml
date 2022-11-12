@@ -23,6 +23,8 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
+    - name: postgis/postgis:latest
+      alias: postgres
       postgres:
         image: postgres:10.8
         ports:
@@ -35,8 +37,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-      mdillon/postgis:
-        image: mdillon/postgis
       redis:
         image: redis
         ports:
@@ -60,7 +60,7 @@ jobs:
           bin/yarn install
       - name: Run tests
         run: |
-          bundle exec rspec --fail-fast --exclude-pattern "**/requests/cfdi_api/timbrar_spec.rb"
+          bundle exec rspec --exclude-pattern "spec/system/*_spec.rb"
 
   security:
     name: Security
