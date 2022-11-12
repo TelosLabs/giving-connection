@@ -23,8 +23,6 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-    - name: postgis/postgis:latest
-      alias: postgres
       postgres:
         image: postgres:10.8
         ports:
