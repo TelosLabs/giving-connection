@@ -19,9 +19,8 @@ export default class extends Controller {
   connect() {
     useDispatch(this)
     this.updatePillsCounter()
-    this.pillsCounterDisplay()
     useDebounce(this)
-    this.pillsCounterDisplay()
+    this.displayPillsCounter()
   }
 
   // Pills
@@ -35,17 +34,16 @@ export default class extends Controller {
     })
 
     this.updatePillsCounter()
-    this.pillsCounterDisplay()
   }
 
-  updatePillsCounter() {
+  countPills() {
     // selects all checked inputs that are not checkboxAll
     this.totalChecked = document.querySelectorAll("input:checked").length - 1;
     this.pillsCounterTarget.textContent = this.totalChecked
     this.formTarget.requestSubmit()
   }
 
-  pillsCounterDisplay() {
+  displayPillsCounter() {
     if (this.totalChecked > 0) {
       this.pillsCounterWrapperTarget.classList.remove("hidden")
       this.filtersIconTarget.classList.add("hidden")
@@ -54,6 +52,11 @@ export default class extends Controller {
       this.pillsCounterWrapperTarget.classList.add("hidden")
       this.filtersIconTarget.classList.remove("hidden")
     }
+  }
+
+  updatePillsCounter() {
+    this.countPills()
+    this.displayPillsCounter()
   }
 
   // Modal
@@ -107,8 +110,7 @@ export default class extends Controller {
     })
 
     if (anyFilterApplied) {
-      this.updatePillsCounter();
-      this.pillsCounterDisplay();
+      this.updatePillsCounter()
     }
   }
 
@@ -122,12 +124,10 @@ export default class extends Controller {
   }
 
   applyAdvancedFilters() {
-    //const values = this.checkedValues()
     const anyNewFilters = [...this.advancedFiltersTarget.querySelectorAll("input:checked")].some(filter => !this.checkedValues().includes(filter.value));
 
     if (anyNewFilters) {
-      this.updatePillsCounter();
-      this.pillsCounterDisplay();
+      this.updatePillsCounter()
     }
   }
 }
