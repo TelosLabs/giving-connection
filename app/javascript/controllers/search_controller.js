@@ -85,10 +85,19 @@ export default class extends Controller {
     }
   }
 
+  checkedValues() {
+    // gets the query string of the url
+    const queryString = window.location.href.split('?')[1];
+    // produces an array of values of the key/value pairs from the query string
+    return [...new URLSearchParams(queryString).values()];
+  }
+
   clearAll() {
     if (this.isModalClean()) return
 
     const event = new CustomEvent('selectmultiple:clear', {})
+
+    const anyFilterApplied = [...this.advancedFiltersTarget.querySelectorAll("input:checked")].some(filter => this.checkedValues().includes(filter.value));
 
     this.inputTargets.forEach(input => {
       this.clearInput(input)
@@ -97,8 +106,10 @@ export default class extends Controller {
       input.dispatchEvent(event)
     })
 
-    this.updatePillsCounter()
-    this.pillsCounterDisplay()
+    if (anyFilterApplied) {
+      this.updatePillsCounter();
+      this.pillsCounterDisplay();
+    }
   }
 
   openSearchAlertModal() {
@@ -111,14 +122,10 @@ export default class extends Controller {
   }
 
   applyAdvancedFilters() {
-    // gets the query string of the url
-    const queryString = window.location.href.split('?')[1];
-    // produces an array of values of the key/value pairs from the query string
-    const values = [...new URLSearchParams(queryString).values()];
-    // sets if there are new filters to apply
-    const newFilters = [...this.advancedFiltersTarget.querySelectorAll("input:checked")].some(filter => !values.includes(filter.value));
+    //const values = this.checkedValues()
+    const anyNewFilters = [...this.advancedFiltersTarget.querySelectorAll("input:checked")].some(filter => !this.checkedValues().includes(filter.value));
 
-    if (newFilters) {
+    if (anyNewFilters) {
       this.updatePillsCounter();
       this.pillsCounterDisplay();
     }
