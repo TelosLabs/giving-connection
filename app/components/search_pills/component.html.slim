@@ -3,7 +3,7 @@ div class="w-full bg-gray-9"
     div data-controller="tabs" data-tabs-active-tab=("border-b-4 border-blue-medium")
       div class="flex"
         / Clear-Counter button
-        span class="flex justify-center items-center w-14 pl-5 py-4 pr-2 text-xs bg-blue-pale"
+        span class="flex justify-center items-center w-14 pl-5 py-3 pr-2 text-xs bg-blue-pale"
           span class="inline-flex hidden items-center px-1 py-0.5 border border-blue-medium rounded-full bg-white" data-search-target="pillsCounterWrapper"
             span data-search-target="pillsCounter" class="mr-0.5"
             button type="button" data-action="search#clearChecked"
@@ -13,9 +13,9 @@ div class="w-full bg-gray-9"
         ul class="flex flex-1 gap-x-6 pl-5 pr-6 text-sm list-none overflow-x-auto overflow-y-hidden bg-blue-pale text-gray-2"
           - @tabs_labels.each do |tab_label|
             li data-action="click->tabs#change" data-tabs-target="tab"
-              a class="inline-block py-4 whitespace-nowrap" href="#" = tab_label
+              a class="inline-block py-3 whitespace-nowrap" href="#" = tab_label
           li data-action="click->modal#open"
-            button class="inline-block py-4 whitespace-nowrap" type="button"
+            button class="inline-block py-3 whitespace-nowrap" type="button"
               | Advanced Filters
               span class="relative hidden w-2 h-2 rounded-full bg-salmon ml-1 mb-2" id="appliedIcon"
 

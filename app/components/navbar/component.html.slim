@@ -11,7 +11,7 @@ nav data-controller="navbar--component" class="#{non_sticky_paths ? "" : "sticky
       = link_to root_path
         = inline_svg_tag 'logo.svg', size:'130*32', class:'mr-2 mid:mr-7 lg:mr-11'
       div class="flex w-full"
-        li class="mr-2 mid:mr-7 lg:mr-11 text-sm-underlined-color font-medium border-b-2 border-transparent #{request.env['PATH_INFO'] == "/searches" ? "text-seafoam border-seafoam" : ""}"
+        li class="mr-2 mid:mr-7 lg:mr-11 text-sm-underlined-color font-medium border-b-2 border-transparent #{request.env['PATH_INFO'] == "/search" ? "text-seafoam border-seafoam" : ""}"
           = link_to 'Search', search_path
         li class="mr-2 mid:mr-7 lg:mr-11 text-sm-underlined-color font-medium border-b-2 border-transparent #{request.env['PATH_INFO'] == "/nonprofit" ? "text-seafoam border-seafoam" : ""}"
           = link_to 'Add a Nonprofit', non_profit_contact_path
