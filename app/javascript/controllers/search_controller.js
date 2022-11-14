@@ -1,6 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
 import { useDebounce, useDispatch } from 'stimulus-use'
-import Rails from '@rails/ujs'
 
 export default class extends Controller {
   static debounces = ['submitForm']
@@ -24,9 +23,10 @@ export default class extends Controller {
     useDebounce(this)
     this.pillsCounterDisplay()
   }
+
   // Pills
-  clearChecked() {
-    // Unchecks applied advanced filters firing their data-actions, 
+  clearCheckedPills() {
+    // Unchecks applied advanced filters firing their data-actions,
     // which clear displayed badges (see select_multiple_controller.js:15 and select-multiple component).
     this.advancedFiltersTarget.querySelectorAll("input:checked").forEach(input => input.click())
     this.pillsTarget.querySelectorAll("input:checked").forEach(input => {
@@ -55,6 +55,7 @@ export default class extends Controller {
       this.filtersIconTarget.classList.remove("hidden")
     }
   }
+
   // Modal
   clearInput(inputElement) {
     console.log(inputElement)
@@ -95,7 +96,7 @@ export default class extends Controller {
     this.customInputTargets.forEach(input => {
       input.dispatchEvent(event)
     })
-    //Rails.fire(this.formTarget, 'submit')
+
     this.updatePillsCounter()
     this.pillsCounterDisplay()
   }
@@ -114,7 +115,6 @@ export default class extends Controller {
     const queryString = window.location.href.split('?')[1];
     // produces an array of values of the key/value pairs from the query string
     const values = [...new URLSearchParams(queryString).values()];
-    console.log(values)
     // sets if there are new filters to apply
     const newFilters = [...this.advancedFiltersTarget.querySelectorAll("input:checked")].some(filter => !values.includes(filter.value));
 
