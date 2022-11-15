@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class SearchPills::Component < ViewComponent::Base
   def initialize(causes:, services:, beneficiary_subcategories:, params:)
     @causes = causes

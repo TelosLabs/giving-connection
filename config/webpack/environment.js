@@ -9,4 +9,10 @@ environment.plugins.prepend('Provide',
   })
 )
 
+environment.plugins.append(
+  'NormalReplace',
+  new webpack.NormalModuleReplacementPlugin(/swiper\/bundle/, 'swiper/swiper-bundle')
+);
+
+
 module.exports = environment

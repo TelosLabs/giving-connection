@@ -1,11 +1,11 @@
 - markers = @results&.map { |l| [l.latitude, l.longitude] }  || []
-= form_with model: @search, url: "", class: 'relative', method: :get, data: { turbo_frame: "search-locations", turbo_action: "replace", controller: 'search search--alerts modal', 'search--alerts-target': 'form', 'search-target': 'form'} do |f|
+= form_with model: @search, url: "", class: 'relative', method: :get, data: { turbo_frame: "search-locations", turbo_action: "replace", controller: 'places search search--alerts modal', 'search--alerts-target': 'form', 'search-target': 'form'} do |f|
   = render SearchBar::Component.new(form: f, search: @search)
   = render SearchPills::Component.new(causes: @top_10_causes, services: @top_10_services, beneficiary_subcategories: @top_10_beneficiary_subcategories, params: params)
   = turbo_frame_tag "search-locations" do
     div class="flex flex-row justify-center w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
       div class="flex flex-row justify-center w-full min-h-full"
-        div class="flex flex-col w-full md:border-r max-w-470px border-gray-7"
+        div class="flex flex-col w-full md:border-r max-w-sm border-gray-7"
           div class="fixed inset-0 flex items-center justify-center hidden min-h-screen overflow-y-auto animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;")
             div class="relative w-full max-h-full max-w-375px"
               = render partial: 'filter', locals: { form: f, search: @search, services: @services, causes: @causes, beneficiary_groups: @beneficiary_groups }
@@ -33,7 +33,7 @@
                   | Create Search Alert
             div class="hidden w-full h-full overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
               - if @results.present?
-                ul class="flex flex-col divide-y divide-gray-8"
+                ul class="flex flex-col divide-y divide-gray-8" id="search-results"
                   - @results.each do |result|
                     li
                       = render ResultCard::Component.new(title: result&.name, \
@@ -41,10 +41,11 @@
                                                       image_url: result&.organization&.logo, \
                                                       id: result&.id, \
                                                       website: result&.decorate&.website || result&.organization&.decorate&.website, \
-                                                      description: result&.organization&.mission_statement_en, \
+                                                      description: "", \
                                                       phone_number: result.phone_number&.number, \
-                                                      current_user: current_user,
-                                                      verified: result.organization.verified?)
+                                                      current_user: current_user, \
+                                                      verified: result.organization.verified?, \
+                                                      causes: result&.causes)
                 - if @pagy.pages > SearchesHelper::MIN_REQUIRED_PAGES
                   div class="h-40 px-4 mt-7"
                     p class="mb-5 text-sm text-gray-3"
@@ -67,7 +68,7 @@
                   - else
                     = link_to "Create an Alert for this Search", user_session_path, class: 'mt-10 text-sm font-bold text-black'
             = render SearchAlert::Component.new(keywords: params.dig('search', 'keyword'), filters: list_of_filters(@search))
-          div class="hidden w-full h-85vh md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
+          div class="hidden w-full h-85vh md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}"
             div# class="w-full h-full" data-places-target="map"
             div class="hidden"
               div class="hidden" data-places-target="latitude"
@@ -84,6 +85,8 @@
                   - else
                     = link_to favorite_locations_path(location_id: result.id), data: {turbo_method: :post }, class: "inline-flex self-end text-xs text-gray-3" do
                       = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
+                  div
+                    = image_tag result.organization.logo, class: "w-full h-10"
                   div
                     a id="pointer"
                       = link_to result.name, location_path(result), target:"_blank", class: "text-small font-bold text-gray-2"
@@ -112,8 +115,10 @@
                       | -&nbsp;
                       = result.decorate.closed_office_hours_display
 
-        div class="relative hidden w-full md:flex" data-controller="places result-card--component" data-places-zoom-value="10" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
-          div# class="absolute inset-0 w-full h-full xs:h-85vh" data-places-target="map"
+        div class="relative hidden w-full md:flex" data-controller="places result-card--component" data-places-zoom-value="10" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}"
+          div class="absolute inset-0 w-full h-full xs:h-85vh" data-places-target="map"
+          div class="absolute rounded-6px overflow-y-auto left-5 w-1/3 h-700px top-5" id="map-left-popup"
+            = render MapLeftPopup::Component.new(results: @results, current_user: current_user)
           div class="hidden"
             div class="hidden" data-places-target="latitude"
             div class="hidden" data-places-target="longitude"

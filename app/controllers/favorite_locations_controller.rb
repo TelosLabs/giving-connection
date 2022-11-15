@@ -16,7 +16,7 @@ class FavoriteLocationsController < ApplicationController
       if params["origin"] == "location_show"
         redirect_to location_path(@location)
       end
-      data = { marked_partial: render_to_string(partial: "shared/marked", locals: { user_id: current_user, id: @location.id }), 
+      data = { marked_partial: render_to_string(partial: "shared/marked", locals: { user_id: current_user, id: @location.id }),
                 location_id: @location.id, method: "create" }
       ActionCable.server.broadcast("everyone", data)
     end
@@ -28,7 +28,7 @@ class FavoriteLocationsController < ApplicationController
       if params["origin"] == "location_show"
         redirect_to location_path(@favorite_location.location)
       end
-      data = { unmarked_partial: render_to_string(partial: "shared/unmarked", locals: { id: @favorite_location.location.id }), 
+      data = { unmarked_partial: render_to_string(partial: "shared/unmarked", locals: { id: @favorite_location.location.id }),
                  location_id: @favorite_location.location.id, favorite_location_id: @favorite_location.id }
       ActionCable.server.broadcast("everyone", data)
     end
@@ -38,7 +38,7 @@ class FavoriteLocationsController < ApplicationController
 
   def set_session_favorite
     unless user_signed_in?
-      session[:selected_location_id] = params[:location_id]
+      session[:marker_infowindow] = params[:location_id]
       session[:fav_loc_id] = params[:location_id]
       redirect_to user_session_path
     end
