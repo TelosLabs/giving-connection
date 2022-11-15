@@ -48,3 +48,18 @@
 .button-label:first-of-type {
   border-left: 1px solid #D3DCE6;
 }
+
+.responsive-columns {
+  grid-template-columns: repeat(auto-fill, min(5.5rem));
+}
+
+li.cause-category {
+  svg > path {
+    transition: fill 150ms;
+    stroke: none;
+  }
+  
+  &:hover svg > path {
+    fill: white;
+  }
+}

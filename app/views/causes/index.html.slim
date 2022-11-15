@@ -1,5 +1,9 @@
 div class="flex justify-center"
-  span class="mb-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white mt-6"
+  h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white mt-6"
     | Causes
 
-= render Causes::Component.new(causes: @causes)
+= render Causes::Component.new( \
+  causes: @causes, \
+  list_options: { class: "grid responsive-columns justify-items-center gap-7 max-w-6xl mt-10 mb-20 px-7 md:gap-y-7 md:gap-x-9"}, \
+  cause_options: { class: "text-sm transition-color duration-150 group-hover:text-blue-medium" }, \
+  icon_options: { class: "w-20 h-20 transition-background duration-150 group-hover:bg-blue-medium" })

@@ -1,5 +1,7 @@
-div class="flex flex-wrap m-10 justify-center"
+= content_tag(:ul, @list_options) do
   - @causes.each do |cause|
-    = link_to discover_show_path(cause) do
-      button class="text-white bg-blue-light p-3 text-xs font-bold rounded-lg m-1"
+    li class="group cause-category"
+      = link_to discover_show_path(cause), cause_options do
+        = content_tag(:span, icon_options) do
+          = inline_svg_tag "causes_categories/#{cause.decorate.svg_file_name}", class: "w-1/2"
         = cause.name
