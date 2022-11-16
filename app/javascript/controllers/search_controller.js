@@ -74,7 +74,6 @@ export default class extends Controller {
 
   // Modal
   clearInput(inputElement) {
-    console.log(inputElement)
     const inputType = inputElement.type.toLowerCase()
     switch (inputType) {
       case 'text':
@@ -128,7 +127,6 @@ export default class extends Controller {
   }
 
   openSearchAlertModal() {
-    console.log('openSearchAlertModal')
     this.dispatch("openSearchAlertModal")
   }
 
