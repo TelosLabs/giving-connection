@@ -1,9 +1,9 @@
-div class="flex justify-center gap-5"
+div class="flex gap-2 justify-evenly"
   div class="flex flex-col items-center justify-center"
     = link_to location_path(@result), class: "flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer border-blue-medium" do
       = inline_svg_tag "arrow_up_right_light.svg", class: "w-4 h-4 text-blue-medium"
     p class="text-xs mt-2 text-blue-medium"
-      | View
+      | View Page
   div class="flex flex-col items-center justify-center"
     - if @current_user
       - if !@current_user.favorited_locations.include?(@result)
