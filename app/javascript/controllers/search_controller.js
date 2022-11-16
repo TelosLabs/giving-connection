@@ -41,6 +41,11 @@ export default class extends Controller {
     element.disabled = false
   }
 
+  disableAdvancedFiltersButton() {
+    this.advancedFiltersButton.disabled = true
+    this.advancedFiltersButton.classList.add("text-gray-400")
+  }
+
   countPills() {
     // selects all checked inputs that are not checkboxAll
     this.totalChecked = document.querySelectorAll("input:checked").length - 1;
@@ -50,8 +55,7 @@ export default class extends Controller {
 
   manegeAdvancedFiltersButton() {
     this.advancedFiltersButton = document.getElementById("advanced-filters-button")
-    this.advancedFiltersButton.disabled = true
-    this.advancedFiltersButton.classList.add("text-gray-400")
+    this.disableAdvancedFiltersButton(this.advancedFiltersButton)
     this.enableAdvancedFiltersButton(this.advancedFiltersButton)
   }
 
