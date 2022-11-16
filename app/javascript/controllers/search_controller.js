@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import { useDebounce, useDispatch } from 'stimulus-use'
 
 export default class extends Controller {
-  static debounces = ['submitForm']
+  static debounces = ['enableAdvancedFiltersButton']
   static get targets() {
     return [
       "input",
@@ -18,8 +18,8 @@ export default class extends Controller {
 
   connect() {
     useDispatch(this)
+    useDebounce(this, { wait: 2700 })
     this.updatePillsCounter()
-    useDebounce(this)
     this.displayPillsCounter()
   }
 
@@ -36,11 +36,23 @@ export default class extends Controller {
     this.updatePillsCounter()
   }
 
+  enableAdvancedFiltersButton(element) {
+    element.classList.remove("text-gray-400")
+    element.disabled = false
+  }
+
   countPills() {
     // selects all checked inputs that are not checkboxAll
     this.totalChecked = document.querySelectorAll("input:checked").length - 1;
     this.pillsCounterTarget.textContent = this.totalChecked
     this.formTarget.requestSubmit()
+  }
+
+  manegeAdvancedFiltersButton() {
+    this.advancedFiltersButton = document.getElementById("advanced-filters-button")
+    this.advancedFiltersButton.disabled = true
+    this.advancedFiltersButton.classList.add("text-gray-400")
+    this.enableAdvancedFiltersButton(this.advancedFiltersButton)
   }
 
   displayPillsCounter() {
@@ -56,11 +68,13 @@ export default class extends Controller {
 
   updatePillsCounter() {
     this.countPills()
+    this.manegeAdvancedFiltersButton()
     this.displayPillsCounter()
   }
 
   // Modal
   clearInput(inputElement) {
+    console.log(inputElement)
     const inputType = inputElement.type.toLowerCase()
     switch (inputType) {
       case 'text':
@@ -114,6 +128,7 @@ export default class extends Controller {
   }
 
   openSearchAlertModal() {
+    console.log('openSearchAlertModal')
     this.dispatch("openSearchAlertModal")
   }
 
