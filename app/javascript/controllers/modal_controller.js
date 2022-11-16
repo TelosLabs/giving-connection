@@ -37,7 +37,7 @@ export default class extends Controller {
   }
 
   open(e) {
-    setTimeout(() => {
+    // disable button until modal is closed
       if (this.preventDefaultActionOpening) {
         e.preventDefault();
       }
@@ -57,8 +57,6 @@ export default class extends Controller {
         document.body.insertAdjacentHTML('beforeend', this.backgroundHtml);
         this.background = document.querySelector(`#${this.backgroundId}`);
       }
-    }
-      , 1000)
   }
 
   close(event) {
