@@ -19,7 +19,7 @@ export default class extends Controller {
   connect() {
     useDispatch(this)
     useDebounce(this, { wait: 2700 })
-    this.firstLoad = true
+    // this.firstLoad = true
     this.updateFiltersState()
   }
 
@@ -34,6 +34,7 @@ export default class extends Controller {
     })
 
     this.updateFiltersState()
+    this.submitForm()
   }
 
   enableAdvancedFiltersButton(element) {
@@ -53,10 +54,10 @@ export default class extends Controller {
   }
 
   submitForm() {
-    if (!this.firstLoad) {
+    // if (!this.firstLoad) {
       this.formTarget.requestSubmit()
-    }
-    this.firstLoad = false
+    // }
+    // this.firstLoad = false
   }
 
   manageAdvancedFiltersButton() {
@@ -84,7 +85,6 @@ export default class extends Controller {
   updateFiltersState() {
     this.updatePillsCounter()
     this.manageAdvancedFiltersButton()
-    this.submitForm()
   }
 
   // Modal
@@ -138,6 +138,7 @@ export default class extends Controller {
 
     if (anyFilterApplied) {
       this.updateFiltersState()
+      this.submitForm()
     }
   }
 
@@ -154,6 +155,7 @@ export default class extends Controller {
 
     if (anyNewFilters) {
       this.updateFiltersState()
+      this.submitForm()
     }
   }
 }

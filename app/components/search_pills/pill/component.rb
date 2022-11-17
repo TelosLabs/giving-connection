@@ -10,7 +10,7 @@ class SearchPills::Pill::Component < ViewComponent::Base
         class: 'hidden pill',
         id: SecureRandom.alphanumeric,
         data: {
-          action: 'change->places#hidePopup change->search#updateFiltersState'
+          action: 'change->places#hidePopup change->search#updateFiltersState change->search#submitForm'
         }
       }
     )
