@@ -20,8 +20,7 @@ export default class extends Controller {
     useDispatch(this)
     useDebounce(this, { wait: 2700 })
     this.firstLoad = true
-    this.updatePillsCounter()
-    this.displayPillsCounter()
+    this.updateFiltersState()
   }
 
   // Pills
@@ -34,7 +33,7 @@ export default class extends Controller {
       input.removeAttribute('checked')
     })
 
-    this.updatePillsCounter()
+    this.updateFiltersState()
   }
 
   enableAdvancedFiltersButton(element) {
@@ -79,9 +78,13 @@ export default class extends Controller {
 
   updatePillsCounter() {
     this.countPills()
-    this.submitForm()
-    this.manegeAdvancedFiltersButton()
     this.displayPillsCounter()
+  }
+
+  updateFiltersState() {
+    this.updatePillsCounter()
+    this.manegeAdvancedFiltersButton()
+    this.submitForm()
   }
 
   // Modal
@@ -134,7 +137,7 @@ export default class extends Controller {
     })
 
     if (anyFilterApplied) {
-      this.updatePillsCounter()
+      this.updateFiltersState()
     }
   }
 
@@ -150,7 +153,7 @@ export default class extends Controller {
     const anyNewFilters = [...this.advancedFiltersTarget.querySelectorAll("input:checked")].some(filter => !this.checkedValues().includes(filter.value));
 
     if (anyNewFilters) {
-      this.updatePillsCounter()
+      this.updateFiltersState()
     }
   }
 }
