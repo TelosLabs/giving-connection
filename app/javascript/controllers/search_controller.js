@@ -19,7 +19,6 @@ export default class extends Controller {
   connect() {
     useDispatch(this)
     useDebounce(this, { wait: 2700 })
-    // this.firstLoad = true
     this.updateFiltersState()
   }
 
@@ -54,10 +53,7 @@ export default class extends Controller {
   }
 
   submitForm() {
-    // if (!this.firstLoad) {
-      this.formTarget.requestSubmit()
-    // }
-    // this.firstLoad = false
+    this.formTarget.requestSubmit()
   }
 
   manageAdvancedFiltersButton() {
