@@ -22,7 +22,6 @@ export default class extends Controller {
     this.firstLoad = true
     this.updatePillsCounter()
     this.displayPillsCounter()
-    console.log("search controller connected");
   }
 
   // Pills
