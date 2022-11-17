@@ -19,8 +19,10 @@ export default class extends Controller {
   connect() {
     useDispatch(this)
     useDebounce(this, { wait: 2700 })
+    this.firstLoad = true
     this.updatePillsCounter()
     this.displayPillsCounter()
+    console.log("search controller connected");
   }
 
   // Pills
@@ -50,7 +52,13 @@ export default class extends Controller {
     // selects all checked inputs that are not checkboxAll
     this.totalChecked = document.querySelectorAll("input:checked").length - 1;
     this.pillsCounterTarget.textContent = this.totalChecked
-    this.formTarget.requestSubmit()
+  }
+
+  submitForm() {
+    if (!this.firstLoad) {
+      this.formTarget.requestSubmit()
+    }
+    this.firstLoad = false
   }
 
   manegeAdvancedFiltersButton() {
@@ -72,6 +80,7 @@ export default class extends Controller {
 
   updatePillsCounter() {
     this.countPills()
+    this.submitForm()
     this.manegeAdvancedFiltersButton()
     this.displayPillsCounter()
   }
