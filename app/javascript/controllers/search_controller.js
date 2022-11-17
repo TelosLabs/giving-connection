@@ -59,7 +59,7 @@ export default class extends Controller {
     this.firstLoad = false
   }
 
-  manegeAdvancedFiltersButton() {
+  manageAdvancedFiltersButton() {
     this.advancedFiltersButton = document.getElementById("advanced-filters-button")
     this.disableAdvancedFiltersButton(this.advancedFiltersButton)
     this.enableAdvancedFiltersButton(this.advancedFiltersButton)
@@ -83,7 +83,7 @@ export default class extends Controller {
 
   updateFiltersState() {
     this.updatePillsCounter()
-    this.manegeAdvancedFiltersButton()
+    this.manageAdvancedFiltersButton()
     this.submitForm()
   }
 
