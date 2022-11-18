@@ -39,7 +39,6 @@ export default class extends Controller {
       if (node.id) {
         let node_id = node.id.replace(/\D/g, '');
         this.leftMapPopupIds[node_id] = { marker: this.mapMarkers.find((marker) => { return marker.id == node_id }), map_left_popup: node }
-        console.log(this.leftMapPopupIds);
       }
     })
   }

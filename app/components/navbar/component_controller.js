@@ -10,6 +10,7 @@ export default class extends Controller {
     this.sideNavBarTarget.classList.add('sidebar-slide-in')
     this.sideNavBarTarget.classList.remove('sidebar-slide-out')
     document.body.classList.add('overflow-hidden')
+    document.getElementById('search-bar').classList.remove('z-10')
   }
 
   collapseSideNavBar() {
@@ -18,6 +19,7 @@ export default class extends Controller {
     document.body.classList.remove('overflow-hidden')
     setTimeout(() => {
       this.sideNavBarTarget.classList.add('hidden')
+      document.getElementById('search-bar').classList.add('z-10')
     }, 500);
   }
 }

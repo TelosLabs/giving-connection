@@ -2,7 +2,6 @@ import { Controller } from "@hotwired/stimulus"
 import { useDebounce, useDispatch } from 'stimulus-use'
 
 export default class extends Controller {
-  static debounces = ['submitForm']
   static get targets() {
     return [
       "input",
@@ -19,9 +18,15 @@ export default class extends Controller {
   connect() {
     useDispatch(this)
     this.updatePillsCounter()
-    useDebounce(this)
-    this.displayPillsCounter()
   }
+
+  initialize() {
+    this.advancedFiltersButton = document.getElementById("advanced-filters-button")
+    document.addEventListener("turbo:frame-load", () => {
+      this.enableAdvancedFiltersButton(this.advancedFiltersButton)
+    })
+  }
+
 
   // Pills
   clearCheckedPills() {
@@ -33,13 +38,27 @@ export default class extends Controller {
       input.removeAttribute('checked')
     })
 
-    this.updatePillsCounter()
+    this.updateFiltersState()
+    this.submitForm()
+  }
+
+  enableAdvancedFiltersButton(element) {
+    element.classList.remove("text-gray-400")
+    element.disabled = false
+  }
+
+  disableAdvancedFiltersButton(element) {
+    element.classList.add("text-gray-400")
+    element.disabled = true
   }
 
   countPills() {
     // selects all checked inputs that are not checkboxAll
     this.totalChecked = document.querySelectorAll("input:checked").length - 1;
     this.pillsCounterTarget.textContent = this.totalChecked
+  }
+
+  submitForm() {
     this.formTarget.requestSubmit()
   }
 
@@ -59,9 +78,13 @@ export default class extends Controller {
     this.displayPillsCounter()
   }
 
+  updateFiltersState() {
+    this.updatePillsCounter()
+    this.disableAdvancedFiltersButton(this.advancedFiltersButton)
+  }
+
   // Modal
   clearInput(inputElement) {
-    console.log(inputElement)
     const inputType = inputElement.type.toLowerCase()
     switch (inputType) {
       case 'text':
@@ -110,12 +133,12 @@ export default class extends Controller {
     })
 
     if (anyFilterApplied) {
-      this.updatePillsCounter()
+      this.updateFiltersState()
+      this.submitForm()
     }
   }
 
   openSearchAlertModal() {
-    console.log('openSearchAlertModal')
     this.dispatch("openSearchAlertModal")
   }
 
@@ -127,7 +150,8 @@ export default class extends Controller {
     const anyNewFilters = [...this.advancedFiltersTarget.querySelectorAll("input:checked")].some(filter => !this.checkedValues().includes(filter.value));
 
     if (anyNewFilters) {
-      this.updatePillsCounter()
+      this.updateFiltersState()
+      this.submitForm()
     }
   }
 }
