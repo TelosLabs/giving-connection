@@ -2,7 +2,6 @@ import { Controller } from "@hotwired/stimulus"
 import { useDebounce, useDispatch } from 'stimulus-use'
 
 export default class extends Controller {
-  static debounces = ['enableAdvancedFiltersButton']
   static get targets() {
     return [
       "input",
@@ -18,9 +17,16 @@ export default class extends Controller {
 
   connect() {
     useDispatch(this)
-    useDebounce(this, { wait: 2700 })
     this.updateFiltersState()
+    this.enableAdvancedFiltersButton()
   }
+
+  initialize() {
+    document.addEventListener("turbo:frame-load", () => {
+      this.enableAdvancedFiltersButton(this.advancedFiltersButton)
+    })
+  }
+
 
   // Pills
   clearCheckedPills() {
@@ -42,6 +48,7 @@ export default class extends Controller {
   }
 
   disableAdvancedFiltersButton() {
+    this.advancedFiltersButton = document.getElementById("advanced-filters-button")
     this.advancedFiltersButton.disabled = true
     this.advancedFiltersButton.classList.add("text-gray-400")
   }
@@ -54,12 +61,6 @@ export default class extends Controller {
 
   submitForm() {
     this.formTarget.requestSubmit()
-  }
-
-  manageAdvancedFiltersButton() {
-    this.advancedFiltersButton = document.getElementById("advanced-filters-button")
-    this.disableAdvancedFiltersButton(this.advancedFiltersButton)
-    this.enableAdvancedFiltersButton(this.advancedFiltersButton)
   }
 
   displayPillsCounter() {
@@ -80,7 +81,7 @@ export default class extends Controller {
 
   updateFiltersState() {
     this.updatePillsCounter()
-    this.manageAdvancedFiltersButton()
+    this.disableAdvancedFiltersButton()
   }
 
   // Modal
