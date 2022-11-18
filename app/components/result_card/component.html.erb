@@ -1,14 +1,14 @@
 <div id="<%= "#{@id}" %>" class="p-4 scroll-mt-96" data-controller="result-card--component">
   <div class="flex flex-row gap-3">
     <div class="flex-shrink-0 w-24 my-1">
-      <a class="inline-flex items-start p-2 text-sm font-bold text-blue-medium">
+      <a class="inline-flex items-start px-2 b-2 text-sm font-bold text-blue-medium">
         <%= image_tag @image_url, class: 'object-contain w-full h-20' %>
       </a>
     </div>
     <div class="w-full">
       <div class="flex flex-row items-start justify-between">
         <div>
-          <a class="text-lg font-bold text-black cursor-pointer" id="new_favorite_location_<%= @id %>">
+          <a class="text-base font-bold text-black cursor-pointer" id="new_favorite_location_<%= @id %>">
             <%= @title %>
           </a>
           <% if @verified %>
