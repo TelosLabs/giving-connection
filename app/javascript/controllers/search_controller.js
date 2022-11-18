@@ -17,11 +17,11 @@ export default class extends Controller {
 
   connect() {
     useDispatch(this)
-    this.updateFiltersState()
-    this.enableAdvancedFiltersButton()
+    this.updatePillsCounter()
   }
 
   initialize() {
+    this.advancedFiltersButton = document.getElementById("advanced-filters-button")
     document.addEventListener("turbo:frame-load", () => {
       this.enableAdvancedFiltersButton(this.advancedFiltersButton)
     })
@@ -47,10 +47,9 @@ export default class extends Controller {
     element.disabled = false
   }
 
-  disableAdvancedFiltersButton() {
-    this.advancedFiltersButton = document.getElementById("advanced-filters-button")
-    this.advancedFiltersButton.disabled = true
-    this.advancedFiltersButton.classList.add("text-gray-400")
+  disableAdvancedFiltersButton(element) {
+    element.classList.add("text-gray-400")
+    element.disabled = true
   }
 
   countPills() {
@@ -81,7 +80,7 @@ export default class extends Controller {
 
   updateFiltersState() {
     this.updatePillsCounter()
-    this.disableAdvancedFiltersButton()
+    this.disableAdvancedFiltersButton(this.advancedFiltersButton)
   }
 
   // Modal
