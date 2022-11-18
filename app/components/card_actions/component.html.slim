@@ -1,10 +1,10 @@
-div class="flex gap-2 justify-evenly px-5"
-  div class="flex flex-col items-center justify-center mr-2 font-bold"
+div class="grid grid-cols-3 justify-center gap-3 lg:grid-cols-5"
+  div class="flex flex-col items-center justify-center font-bold"
     = link_to location_path(@result), class: "flex items-center justify-center w-10 h-10 rounded-full border cursor-pointer border-blue-medium border-5" do
       = inline_svg_tag "arrow_up_right_light.svg", class: "w-4 h-4 text-blue-medium"
     a class="text-xs mt-2 text-blue-medium inline-block" href="#{location_path(@result)}" target="_blank" rel="noopener"
       | View&nbsp;Page
-  div class="flex flex-col items-center justify-center mr-3"
+  div class="flex flex-col items-center justify-center"
     - if @current_user
       - if !@current_user.favorited_locations.include?(@result)
         = link_to favorite_locations_path(location_id: @result.id), class: "flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer", type: "button", method: :post, remote: true, data: { action: "click->places#reloadPage" }do
@@ -18,12 +18,12 @@ div class="flex gap-2 justify-evenly px-5"
       = link_to favorite_locations_path(location_id: @result.id), method: :post, class: "flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer" do
         = inline_svg_tag 'bookmark_empty_light.svg', class: 'w-4 h-4 cursor-pointer'
       = link_to "Save", favorite_locations_path(location_id: @result.id), method: :post, class: "text-xs text-gray-500 mt-2", type: "button"
-  div class="flex flex-col items-center justify-center mr-2"
+  div class="flex flex-col items-center justify-center"
     a type="button" class="flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer" data-controller="copy-to-clipboard" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="https://givingconnection.org/#{location_path(@result)}"
       = inline_svg_tag "share_icon_light.svg", class: "w-4 h-4 cursor-pointer"
     a type="button" class="text-xs text-gray-500 mt-2 cursor-pointer" data-controller="copy-to-clipboard" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="https://givingconnection.org/#{location_path(@result)}"
       | Share
-  div class="flex flex-col items-center justify-center mr-2"
+  div class="flex flex-col items-center justify-center"
     a class="flex items-center justify-center w-10 h-10 rounded-full border-gray-500 border cursor-pointer" href="https://www.google.com/maps/search/#{@result&.formatted_address}" target="_blank"
       = inline_svg_tag "map_light.svg", class: "w-4 h-4 cursor-pointer"
     a class="text-xs text-gray-500 mt-2 cursor-pointer" href="https://www.google.com/maps/search/#{@result&.formatted_address}" target="_blank"
