@@ -14,7 +14,6 @@ export default class extends Controller {
                 </div>`,
       accessToken: 'IGQVJVSWFGR0JfbTd5NVlJbnFnbFctR0MyVGZAhcl9tTVdwYnd1TGZAXS0xnRHh2Qy1PNmdGSHRMS01BemY0RmIzeldvWktzYWNvNEVwcERaMUdPcHQ0Y0ZASdmRtRHBiM1RUSzFCSThQaDYtblk0c244OAZDZD'
     })
-    console.log(userFeed)
     userFeed.run()
   }
 }

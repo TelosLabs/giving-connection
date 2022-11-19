@@ -8,7 +8,10 @@ class SearchPills::Pill::Component < ViewComponent::Base
     @options = options.merge(
       {
         class: 'hidden pill',
-        id: SecureRandom.alphanumeric
+        id: SecureRandom.alphanumeric,
+        data: {
+          action: 'change->places#hidePopup change->search#updateFiltersState change->search#submitForm'
+        }
       }
     )
   end
