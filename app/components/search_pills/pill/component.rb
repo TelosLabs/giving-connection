@@ -10,7 +10,8 @@ class SearchPills::Pill::Component < ViewComponent::Base
         class: 'hidden pill',
         id: SecureRandom.alphanumeric,
         data: {
-          action: 'change->places#hidePopup change->search#updateFiltersState change->search#submitForm'
+          action: "change->places#hidePopup change->search#updateFiltersState change->search#submitForm #{options[:data] ? options[:data][:action] : ''}",
+          checkbox_select_all_target: options[:data] ? options[:data][:checkbox_select_all_target] : ''
         }
       }
     )

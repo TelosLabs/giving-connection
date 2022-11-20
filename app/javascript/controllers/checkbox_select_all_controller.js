@@ -12,7 +12,6 @@ export default class extends CheckboxSelectAll {
     this.checkboxTargets.forEach(checkbox => {
       checkbox.checked = e.target.checked
     })
-    document.querySelector("form").requestSubmit()
   }
 
   refresh() {
