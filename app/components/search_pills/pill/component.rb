@@ -11,6 +11,6 @@ class SearchPills::Pill::Component < ViewComponent::Base
         id: SecureRandom.alphanumeric
       }
     )
-    @options[:data][:action] += ' change->places#hidePopup change->search#updateFiltersState change->search#submitForm'
+    @options[:data][:action] << ' change->places#hidePopup change->search#updateFiltersState change->search#submitForm'
   end
 end
