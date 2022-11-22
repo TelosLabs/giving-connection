@@ -53,13 +53,32 @@
   grid-template-columns: repeat(auto-fill, min(5.5rem));
 }
 
-li.cause-category {
-  svg > path {
+.interactive-btn {
+  .thick-icon path {
+    stroke-width: 0;
     transition: fill 150ms;
-    stroke: none;
+  }
+
+  .icon path {
+    transition: stroke 150ms;
+  }
+
+  .saved > path {
+    fill: salmon;
+    stroke: salmon;
+    transition: fill 150ms, stroke 150ms;
+  }
+
+  &:hover .icon path {
+    stroke: white;
+  }
+
+  &:hover .thick-icon path {
+    fill: white;
   }
   
-  &:hover svg > path {
+  &:hover .saved > path {
     fill: white;
+    stroke: white;
   }
 }

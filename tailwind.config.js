@@ -108,11 +108,18 @@ module.exports = {
         '85vh': '85vh',
         '500px': '500px',
       },
+      padding: {
+        '58%': '58%'
+      },
       borderRadius: {
         '6px': '6px',
       },
       boxShadow: {
         'input': '0px 4px 4px rgba(0, 0, 0, 0.01)',
+      },
+      inset: {
+        '21%': '21%',
+        '28%': '28%'
       },
       zIndex: {
         '-1': '-1',

@@ -1,0 +1,28 @@
+nav class="flex justify-between"
+  // GC profile link
+  = link_to location_path(@location), class: "interactive-btn group grid place-items-center text-blue-medium" do
+    = render CircularIcon::Component.new(svg_name: "non_profit_cards/redirect.svg", \
+                                          wrapper_options: {class: "icon w-10 h-10 border border-blue-medium transition-colors group-hover:bg-blue-medium"}, \
+                                          svg_options: {class: "w-1/2", aria_hidden: true})
+    | View Page
+  // Save
+  = render NonprofitCard::SaveButton::Component.new(user: @user, location: @location, button_styles: button_styles, icon_wrapper_styles: icon_wrapper_styles)
+  // Share
+  button type="button" class=button_styles data-controller="copy-to-clipboard" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="#{location_url(@location)}"
+    = render CircularIcon::Component.new(svg_name: "non_profit_cards/share.svg", \
+                                          wrapper_options: {class: icon_wrapper_styles}, \
+                                          svg_options: {class: "w-1/2", aria_hidden: true})
+    | Share
+  // Maps link
+  = link_to @location.link_to_google_maps, class: button_styles, target: "_blank" do
+    = render CircularIcon::Component.new(svg_name: "non_profit_cards/directions.svg", \
+                                          wrapper_options: {class: icon_wrapper_styles}, \
+                                          svg_options: {class: "w-1/2", aria_hidden: true})
+    | Directions
+  // Nonprofit website
+  - if @location.website
+    = link_to @location.website, class: button_styles, target: "_blank" do
+      = render CircularIcon::Component.new(svg_name: "non_profit_cards/website.svg", \
+                                          wrapper_options: {class: icon_wrapper_styles}, \
+                                          svg_options: {class: "w-1/2", aria_hidden: true})
+      | Website
