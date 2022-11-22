@@ -1,14 +1,14 @@
 - @results.each do |result|
   div class="relative hidden flex flex-col gap-2 p-7 bg-white rounded-6px" id="loc_#{result.id}_popup"
-    div class="flex items-start gap-2"
-      = image_tag result.organization.logo, class: "w-32 h-32 rounded-6px"
+    div class="flex items-start gap-1"
+      = image_tag result.organization.logo, class: "w-1/5 h-1/5 rounded-6px mt-1"
       div class="flex flex-col ml-2"
-        div class="flex items-center"
-          p class="text-lg font-bold"
-            = result.name
+        div
+          a class="font-semibold text-sm lg:text-base cursor-pointer"
+            = result.organization.name
           - if result.organization.verified?
-            = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1 align-text-bottom inline"
-        h3 class="text-gray-500 text-sm"
+            = inline_svg_tag 'verified_nonprofit_check.svg', class: 'w-4 h-4 ml-1 align-text-bottom inline'
+        h3 class="text-gray-500 lg:text-sm text-xs"
           = result.address
       = inline_svg_tag "x-icon.svg", class: "absolute top-3 right-3 w-3 h-3 cursor-pointer", data: { action: "click->places#hidePopup" }
     div class="my-4 border-t border-gray-8"
@@ -23,7 +23,7 @@
     div class="text-left"
       = render WorkingHours::Component.new(result: result)
       - if result.images.attached?
-        = render Carousel::Component.new(location: result, options: { size:  "h-40 w-64" })
+        = render Carousel::Component.new(location: result, options: { class:  "h-40 w-48 mr-1" })
       - if result.organization.mission_statement_en.present?
         div class="border-t border-gray-8 my-4"
         div class="flex flex-col text-left"
