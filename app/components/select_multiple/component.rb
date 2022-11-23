@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 module SelectMultiple
   class Component < ViewComponent::Base
     def initialize(name:, items: {}, selected: [], options: {}, placeholder: "", required: false)
@@ -9,7 +8,6 @@ module SelectMultiple
       @options = options
       @placeholder = placeholder
       @required = required
-      # TODO: allow options to be passed in
     end
 
     def options

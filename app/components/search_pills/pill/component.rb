@@ -1,7 +1,7 @@
 require "securerandom"
 
 class SearchPills::Pill::Component < ViewComponent::Base
-  def initialize(name:, value: , checked:,  options: {})
+  def initialize(name:, value: , checked:,  options: { data: {action: ''}})
     @name = name
     @value = value
     @checked = checked
@@ -11,5 +11,6 @@ class SearchPills::Pill::Component < ViewComponent::Base
         id: SecureRandom.alphanumeric
       }
     )
+    @options[:data][:action] << ' change->places#hidePopup change->search#updateFiltersState change->search#submitForm'
   end
 end

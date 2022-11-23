@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# search bar view component
+# rubocop:disable Lint/MissingSuper
+# rubocop:disable Style/Documentation
 module SearchBar
   class Component < ViewComponent::Base
     def initialize(form:, search:)
@@ -15,3 +18,5 @@ module SearchBar
     end
   end
 end
+# rubocop:enable Lint/MissingSuper
+# rubocop:enable Style/Documentation

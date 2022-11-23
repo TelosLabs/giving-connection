@@ -5,7 +5,6 @@ export default class extends Controller {
 
   connect() {
     this.wrapperClass = this.data.get("wrapperClass") || "nested-fields"
-    // console.log(this.wrapperClass)
   }
 
   add_association(event) {
@@ -19,7 +18,6 @@ export default class extends Controller {
     event.preventDefault()
 
     let wrapper = event.target.closest("." + this.wrapperClass)
-    console.log(wrapper)
     // New records are simply removed from the page
     if (wrapper.dataset.newRecord == "true") {
       wrapper.remove()

@@ -37,30 +37,32 @@ export default class extends Controller {
   }
 
   open(e) {
-    setTimeout(() => {
-    if (this.preventDefaultActionOpening) {
-      e.preventDefault();
-    }
+    // disable button until modal is closed
+      if (this.preventDefaultActionOpening) {
+        e.preventDefault();
+      }
 
-    if (e.target.blur) {
-      e.target.blur();
-    }
+      if (e.target.blur) {
+        e.target.blur();
+      }
 
-    // Lock the scroll and save current scroll position
-    this.lockScroll();
+      // Lock the scroll and save current scroll position
+      this.lockScroll();
 
-    // Unhide the modal
-    this.containerTarget.classList.remove(this.toggleClass);
+      // Unhide the modal
+      this.containerTarget.classList.remove(this.toggleClass);
 
-    // Insert the background
-    if (!this.data.get("disable-backdrop")) {
-      document.body.insertAdjacentHTML('beforeend', this.backgroundHtml);
-      this.background = document.querySelector(`#${this.backgroundId}`);
-    }
+      // Insert the background
+      if (!this.data.get("disable-backdrop")) {
+        document.body.insertAdjacentHTML('beforeend', this.backgroundHtml);
+        this.background = document.querySelector(`#${this.backgroundId}`);
+      }
   }
-  , 1000)}
 
-  close() {
+  close(event) {
+    // Stops event bubbling if the modal was closed by a click
+    if (event) event.preventDefault();
+
     // Unlock the scroll and restore previous scroll position
     this.unlockScroll();
 
@@ -71,9 +73,25 @@ export default class extends Controller {
     if (this.background) { this.background.remove() }
   }
 
+  clearUnappliedFilters() {
+    // gets the query string of the url
+    const queryString = window.location.href.split('?')[1];
+    // produces an array of values of the key/value pairs from the query string
+    const values = [...new URLSearchParams(queryString).values()];
+
+    // validates if all checked filters are applied (present in the query string of the url)
+    this.containerTarget.querySelectorAll("input:checked").forEach(filter => {
+      if (!values.includes(filter.value)) {
+        // fires data-action that unchecks and removes displayed badges
+        filter.click();
+      }
+    });
+  }
+
   closeBackground(e) {
     if (this.allowBackgroundClose && e.target === this.containerTarget) {
       this.close(e);
+      this.clearUnappliedFilters()
     }
   }
 

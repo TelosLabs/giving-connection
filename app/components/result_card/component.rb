@@ -2,7 +2,7 @@
 class ResultCard::Component < ViewComponent::Base
   include ApplicationHelper
 
-  def initialize(title:, address:, image_url:, website:, description:, id:, current_user:, phone_number:, verified: )
+  def initialize(title:, address:, image_url:, website:, description:, id:, current_user:, phone_number:, verified:, causes: [])
     @title = title
     @address = address
     @image_url = image_url
@@ -12,20 +12,7 @@ class ResultCard::Component < ViewComponent::Base
     @current_user = current_user
     @phone_number = phone_number
     @verified = verified
-  end
-
-  def website_url
-    uri = URI(@website)
-
-    if uri.instance_of?(URI::Generic)
-      split = uri.to_s.split('/')
-      if split.size > 1
-        uri = URI::HTTP.build({host: split.shift, path: '/'+split.join('/')})
-      else
-        uri = URI::HTTP.build({host: split.shift.to_s})
-      end
-    end
-    uri.to_s
+    @causes = causes
   end
 
   def formated_description

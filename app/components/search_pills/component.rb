@@ -1,10 +1,11 @@
+# frozen_string_literal: true
 class SearchPills::Component < ViewComponent::Base
   def initialize(causes:, services:, beneficiary_subcategories:, params:)
     @causes = causes
     @services = services
     @beneficiary_subcategories = beneficiary_subcategories
     @params = params
-    @tabs_labels = ['Cause', 'Location', 'Services', 'Populations served', 'Hours']
+    @tabs_labels = ['Causes', 'Location', 'Services', 'Populations Served', 'Hours']
     @radii_in_miles = [2, 5, 15, 30, 60, 180, "Any"]
   end
 

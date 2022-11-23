@@ -18,6 +18,9 @@ module.exports = {
         '28px': '28px',
         '34px': '34px',
       },
+      spacing: {
+        '22.75': '91px',
+      },
       colors: {
         seafoam: {
           DEFAULT: '#9ae2e0'
@@ -107,6 +110,7 @@ module.exports = {
         '400px': '400px',
         '85vh': '85vh',
         '500px': '500px',
+        '700px': '700px',
       },
       padding: {
         '58%': '58%'

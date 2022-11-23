@@ -950,8 +950,8 @@
   "resolved" "https://registry.npmjs.org/@jridgewell/trace-mapping/-/trace-mapping-0.3.14.tgz"
   "version" "0.3.14"
   dependencies:
-    "@jridgewell/resolve-uri" "^3.0.3"
-    "@jridgewell/sourcemap-codec" "^1.4.10"
+    "@jridgewell/resolve-uri" "3.1.0"
+    "@jridgewell/sourcemap-codec" "1.4.14"
 
 "@nathanvda/cocoon@^1.2.14":
   "integrity" "sha512-WcEt2vVp50de2i7rkD4O+96O1iMtMIcTBNGPocrHfcmHDujKOngoLHFF8Ektgoh8PjwFAJMxx8WyGv0BtKTjxQ=="
