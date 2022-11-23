@@ -49,8 +49,14 @@
   border-left: 1px solid #D3DCE6;
 }
 
-.responsive-columns {
-  grid-template-columns: repeat(auto-fill, min(5.5rem));
+.cards-auto-grid {
+  --min-grid-auto-size: 18rem;
+  grid-template-columns: repeat(auto-fill, minmax(var(--min-grid-auto-size), 1fr));
+}
+
+.causes-list-auto-grid {
+  --min-grid-auto-size: 6.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(var(--min-grid-auto-size), 1fr));
 }
 
 .interactive-btn {

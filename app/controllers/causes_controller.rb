@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CausesController < ApplicationController
+  skip_before_action :authenticate_user!
+  
   def index
     @causes = policy_scope(Cause)
     authorize @causes

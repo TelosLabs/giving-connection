@@ -1,62 +1,36 @@
-div class="flex justify-center"
-  h1 class="mb-2 text-3xl leading-normal font-bold tracking-tight text-gray-900 dark:text-white mt-6"
+div class="relative flex justify-center items-center h-72 bg-blue-gradient-3"
+  div class="absolute flex justify-center w-full overflow-hidden" aria-hidden="true"
+    div class="grow"
+      = inline_svg_tag 'new-blur-left.svg', size:'723*288', class: "md:w-full"
+    div class="grow"
+      = inline_svg_tag 'new-blur-right.svg', size:'723*288', class: "md:w-full"
+  span class="absolute top-9 left-5 md:top-24 525px:left-21%" aria-hidden="true"
+    = inline_svg_tag 'simple-star.svg', size: '22*22', class: "fill-current text-blue-dark"
+  span class="absolute top-56 right-16 md:top-14 525px:right-28%" aria-hidden="true"
+    = inline_svg_tag 'simple-star.svg', size: '22*22', class: "fill-current text-blue-dark"
+  span class="absolute top-16 right-6 md:top-52 525px:right-21%" aria-hidden="true"
+    = inline_svg_tag 'simple-heart.svg', size: '22*22', class: "fill-current text-blue-dark"
+
+  h1 class="absolute px-4 text-3xl leading-normal font-bold text-center tracking-wide text-blue-dark dark:text-white"
     = @cause.name
 
-div class="flex justify-center"
-  div class="grid grid-cols-1 md:grid-cols-3 gap-4 m-5"
-    - @locations_by_services.each do |location|
-      div class="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700"
-        div class="flex flex-col flex-wrap justify-center w-full md:gap-4 md:flex-row"
-          div class="w-full bg-white rounded max-w-656px"
-            = image_tag location.organization.cover_photo, class:'w-full h-24 object-fit-cover rounded-t'
-            div class='flex justify-center w-full mx-0 -mt-14 h-75'
-              = image_tag location.organization.logo, class: 'shadow rounded logo-size bg-white'
+section class="w-5/6 max-w-6xl mx-auto mt-8 mb-44 md:mt-20"
+  h2 class="font-sans text-lg tracking-wide text-blue-medium"
+    = link_to 'Discover', discover_path, class: "font-bold underline"
+    span class="mx-1"
+      | /
+    = @cause.name
 
-            div class="p-5 m-5 text-left"
-              div
-                - if location.organization.verified?
-                  div class="flex justify-center items-center mb-2.5"
-                    h5 class="text-lg font-bold text-center mb-1"
-                      = link_to location.name, location_path(location)
-                    = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1"
-                - else
-                  h5 class="text-lg font-bold text-center mb-1"
-                    = link_to location.name, location_path(location)
-                - if current_user.present? && policy(location.organization).update?
-                  p class="text-xs text-center font-base text-blue-500" id="pointer"
-                    = link_to "Edit My Nonprofit Page", edit_organization_path( location.organization)
-                p class="text-xs text-center font-base text-gray-4 mt-3" id="pointer"
-                  = link_to location.formatted_address, "https://www.google.com/maps/search/#{location.address}", target: "blank"
-                p class="text-xs text-center font-base text-gray-4"
-                  = "EIN Number: #{location.organization.ein_number}"
-
-              div class="flex justify-center items-center mt-4 gap-2.5" data-controller="copy-to-clipboard"
-                button type="button" class="flex items-center text-sm gray-2" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="#{request.url}"
-                  = inline_svg_tag 'share_icon.svg', class: " fill-current mr-2"
-                  | Share
-                - if current_user.present?
-                  - if FavoriteLocation.exists?(user_id: current_user&.id, location_id: location.id)
-                    = link_to favorite_location_path(id: FavoriteLocation.find_by(user_id: current_user&.id, location_id: location.id), origin: "location_show"), method: :delete, class: "flex items-center text-sm gray-2" do
-                      = inline_svg_tag "bookmark_colored.svg", class: "w-4 h-4 mr-2"
-                      | Save
-                  - else
-                    = link_to favorite_locations_path(location_id: location.id,origin: "location_show"), method: :post, class: "flex items-center text-sm gray-2" do
-                      = inline_svg_tag "bookmark_empty.svg", class: "w-4 h-4 mr-2"
-                      | Save
-                - else
-                  = link_to favorite_locations_path(location_id: location.id), method: :post, class: "inline-flex items-center p-2 text-sm text-gray-3" do
-                    = inline_svg_tag 'bookmark_empty.svg', class: "w-4 h-4 mr-2"
-                    | Save
-              - if location.causes.present?
-                div class="flex my-8 flex-wrap justify-center"
-                  - location.organization.causes.uniq.each do |cause|
-                    span class="text-sm text-center px-2.5 py-1.5 m-1 rounded-lg border border-gray-6 text-gray-3"
-                      = cause.name
-              div class="flex flex-col text-left"
-                h4 class="text-sm font-bold text-black uppercase"
-                  | MISSION - WHAT WE DO
-                p class="text-sm text-black whitespace-pre-wrap"
-                  = location.organization&.mission_statement_en
-
-/ - if @location.images.attached? true
-/    = render Carousel::Component.new(location: @location)
+  - if @locations_by_services.empty?
+    div class="flex flex-col items-center mt-5"
+      = inline_svg_tag 'empty_state_4.svg', class: "w-80", aria_hidden: true
+      div class="w-60 -mt-5 text-center"
+        h3 class="mb-5 font-bold text-lg leading-6"
+          | We currently don’t have any nonprofits that match this cause. 
+        p class="mb-10 text-sm"
+          | We are constantly adding new nonprofits to our platform, please check back soon! 
+        = link_to "Go Back to Discover", discover_path, class: "text-blue-medium"
+  - else
+    div class="grid cards-auto-grid justify-items-center gap-7 mt-12"
+      - @locations_by_services.each do |location|
+        = render NonprofitCard::Component.new(user: current_user, location: location)
