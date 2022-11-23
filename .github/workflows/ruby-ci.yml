@@ -14,17 +14,16 @@ jobs:
     name: Tests
     env:
       RAILS_ENV: test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ""
+      POSTGRES_DB: postgres
 
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
 
     services:
       postgres:
-        image: postgis/postgis:10-2.5
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: postgres
+        image: postgres:10.8
         ports:
           - 5432:5432
         # needed because the postgres container does not provide a healthcheck
@@ -42,18 +41,17 @@ jobs:
         options: --entrypoint redis-server
 
     steps:
+      - name: Setup PostgreSQL with Postgis
+      - uses: huaxk/postgis-action@v1.0.0
+        with:
+          postgres-version: '10'
+          postgis-version: '2.5'
       - uses: actions/checkout@v2
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
-      - name: Create postgis extension
-        run: |
-          psql -d postgresql://postgres@localhost/postgres -c 'CREATE EXTENSION postgis;'
-        working-directory: ./test/data
-        env:
-          PGPASSWORD: password
       - name: Create DB
         run: |
           bin/rails db:prepare
