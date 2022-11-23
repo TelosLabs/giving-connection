@@ -10,35 +10,29 @@ env:
   REDIS_URL: redis://localhost:6379/0
 
 jobs:
-  tests:
-    name: Tests
-    env:
-      RAILS_ENV: test
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ""
-      POSTGRES_DB: postgres
-
-    if: github.event.pull_request.draft == false
+  postgres:
     runs-on: ubuntu-latest
-
+    container: node:latest
     services:
-      postgres:
-        image: postgres:10.8
-        ports:
-          - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        # tmpfs makes DB faster by using RAM
-        options: >-
-          --mount type=tmpfs,destination=/var/lib/postgresql/data
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
       redis:
         image: redis
         ports:
           - 6379:6379
         options: --entrypoint redis-server
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: postgres_db
+          POSTGRES_PASSWORD: postgres_password
+          POSTGRES_PORT: 5432
+          POSTGRES_USER: postgres_user
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v2
@@ -49,10 +43,10 @@ jobs:
           bundler-cache: true
       - name: Install PostgreSQL client
         run: |
-          sudo apt-get update
-          sudo apt-get install --yes postgresql-client
-      - name: Create postgis extension
-        run: psql -h postgres -d postgres -U postgres -c 'CREATE EXTENSION postgis;'
+          apt-get update
+          apt-get install --yes postgresql-client
+      - name: Query database
+        run: psql -h postgres -d postgres_db -U postgres_user -c 'SELECT 1;'
         env:
           PGPASSWORD: postgres_password
       - name: Create DB
