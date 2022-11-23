@@ -50,8 +50,7 @@ jobs:
           bundler-cache: true
       - name: Set up postgis
         run: |
-          brew services start postgresql
-          psql postgres
+          psql -h /tmp//.s.PGSQL.5432
           \c giving_connection_development;
           CREATE EXTENSION Postgis;
           exit
