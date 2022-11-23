@@ -12,26 +12,25 @@ env:
 jobs:
   tests:
     name: Tests
-    runs-on: ubuntu-latest
+    env:
+      RAILS_ENV: test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ""
+      POSTGRES_DB: postgres
+      BUNDLE_GEMS__CONTRIBSYS__COM: ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
+
     if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
 
     services:
       postgres:
-        image: postgres:latest
-        # service environment variables
-        # `POSTGRES_HOST` is `postgres`
-        env:
-          RAILS_ENV: test
-          POSTGRES_DB: postgres
-          POSTGRES_PASSWORD: ""
-          POSTGRES_PORT: 5432
-          POSTGRES_USER: postgres
-          BUNDLE_GEMS__CONTRIBSYS__COM: ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
+        image: postgres:10.8
         ports:
           - 5432:5432
         # needed because the postgres container does not provide a healthcheck
         # tmpfs makes DB faster by using RAM
         options: >-
+          --mount type=tmpfs,destination=/var/lib/postgresql/data
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
