@@ -12,6 +12,11 @@ env:
 jobs:
   tests:
     name: Tests
+    run: |
+      psql postgres
+      \c giving_connection_development;
+      CREATE EXTENSION Postgis;
+      exit
     env:
       RAILS_ENV: test
       POSTGRES_USER: postgres
