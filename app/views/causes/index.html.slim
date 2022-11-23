@@ -32,7 +32,7 @@ div class="px-6"
       | Causes
 
     nav class="w-full max-w-5xl"
-      = render CausesList::Component.new(causes: @causes, \
+      = render CausesList::Component.new(causes: @causes.sort_by(&:name), \
                                       navigational: true, \
                                       list_options: { class: "grid causes-list-auto-grid justify-items-center gap-y-6"}, \
                                       cause_options: { class: "group interactive-btn w-24 text-sm transition-colors hover:text-blue-medium" }, \
