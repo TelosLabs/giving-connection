@@ -48,12 +48,13 @@ jobs:
         with:
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
-      - name: Create DB
+      - name: Set up postgis
         run: |
           psql postgres
           \c giving_connection_development;
           CREATE EXTENSION Postgis;
           exit
+      - name: Create DB
         run: |
           bin/rails db:prepare
       - name: Install Node packages
