@@ -47,6 +47,14 @@ jobs:
         with:
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client
+      - name: Create postgis extension
+        run: psql -h postgres -d postgres -U postgres -c 'CREATE EXTENSION postgis;'
+        env:
+          PGPASSWORD: postgres_password
       - name: Create DB
         run: |
           bin/rails db:prepare
