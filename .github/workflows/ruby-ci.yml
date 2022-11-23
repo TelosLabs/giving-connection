@@ -48,8 +48,6 @@ jobs:
         with:
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
-        env:
-          BUNDLE_GEMS__CONTRIBSYS__COM: ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
       - name: Create DB
         run: |
           bin/rails db:prepare
@@ -58,7 +56,7 @@ jobs:
           bin/yarn install
       - name: Run tests
         run: |
-          bundle exec rspec --exclude-pattern "spec/system/*_spec.rb"
+          bundle exec rspec --fail-fast
 
   security:
     name: Security
