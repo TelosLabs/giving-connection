@@ -24,7 +24,7 @@ jobs:
         run: |
           apt-get update
           apt-get install --yes postgresql-client
-      - name: Query database
-        run: psql -h postgres -d postgres_db -U postgres_user -c 'SELECT 1;'
+      - name: Create postgis extension
+        run: psql -h postgres -d postgres_db -U postgres_user -c 'CREATE EXTENSION postgis;'
         env:
           PGPASSWORD: postgres_password
