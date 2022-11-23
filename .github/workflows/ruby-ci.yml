@@ -13,7 +13,6 @@ jobs:
   tests:
     name: Tests
     runs-on: ubuntu-latest
-    container: node:latest
     if: github.event.pull_request.draft == false
 
     services:
