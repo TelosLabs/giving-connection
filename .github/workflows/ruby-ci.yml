@@ -10,18 +10,12 @@ env:
   REDIS_URL: redis://localhost:6379/0
 
 jobs:
-  tests:
-    name: Tests
-    env:
-      RAILS_ENV: test
-
-    if: github.event.pull_request.draft == false
+  postgres:
     runs-on: ubuntu-latest
     container: node:latest
-
     services:
       postgres:
-        image: postgres:10.8
+        image: postgres:latest
         env:
           POSTGRES_DB: postgres_db
           POSTGRES_PASSWORD: postgres_password
@@ -34,6 +28,25 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+    steps:
+      - name: Install PostgreSQL client
+        run: |
+          apt-get update
+          apt-get install --yes postgresql-client
+      - name: Query database
+        run: psql -h postgres -d postgres_db -U postgres_user -c 'SELECT 1;'
+        env:
+          PGPASSWORD: postgres_password
+  tests:
+    needs: [postgres]
+    name: Tests
+    env:
+      RAILS_ENV: test
+
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+
+    services:
       redis:
         image: redis
         ports:
@@ -47,14 +60,6 @@ jobs:
         with:
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
-      - name: Install PostgreSQL client
-        run: |
-          apt-get update
-          apt-get install --yes postgresql-client
-      - name: Query database
-        run: psql -h postgres -d postgres_db -U postgres_user -c 'SELECT 1;'
-        env:
-          PGPASSWORD: postgres_password
       - name: Create DB
         run: |
           bin/rails db:prepare
