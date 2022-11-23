@@ -50,8 +50,9 @@ jobs:
           bundler-cache: true
       - name: Create postgis extension
         run: |
-          sudo service postgresql start
-          psql -c 'CREATE EXTENSION postgis;' -U postgres
+          sudo apt-get update
+          sudo apt-get install -y postgis
+          sudo -u postgres psql -c "CREATE EXTENSION postgis;"
       - name: Create DB
         run: |
           bin/rails db:prepare
