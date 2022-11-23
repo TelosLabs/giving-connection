@@ -11,13 +11,6 @@ env:
 
 jobs:
   tests:
-    steps:
-      - name: Set up database
-        run: |
-          psql postgres
-          \c giving_connection_development;
-          CREATE EXTENSION Postgis;
-          exit
     name: Tests
     env:
       RAILS_ENV: test
@@ -56,6 +49,11 @@ jobs:
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
       - name: Create DB
+        run: |
+          psql postgres
+          \c giving_connection_development;
+          CREATE EXTENSION Postgis;
+          exit
         run: |
           bin/rails db:prepare
       - name: Install Node packages
