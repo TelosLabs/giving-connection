@@ -15,7 +15,7 @@ jobs:
     env:
       RAILS_ENV: test
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: "password"
+      POSTGRES_PASSWORD: password
       POSTGRES_DB: postgres
 
     if: github.event.pull_request.draft == false
