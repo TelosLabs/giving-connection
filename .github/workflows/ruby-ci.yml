@@ -30,6 +30,7 @@ jobs:
         # needed because the postgres container does not provide a healthcheck
         # tmpfs makes DB faster by using RAM
         options: >-
+          --mount type=tmpfs,destination=/var/lib/postgresql/data
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
@@ -53,7 +54,7 @@ jobs:
           sudo apt-get install --yes postgresql-client
       - name: Create Postgis extension
         run: |
-          psql -h postgres -d postgres -U postgres -c 'CREATE EXTENSION postgis;'
+          psql -d postgres -U postgres -c 'CREATE EXTENSION postgis;'
         env:
           PGPASSWORD: ""
       - name: Create DB
