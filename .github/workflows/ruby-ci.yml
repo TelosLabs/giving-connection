@@ -11,6 +11,8 @@ env:
 
 jobs:
   postgres:
+    env:
+      RAILS_ENV: test
     runs-on: ubuntu-latest
     container: node:latest
     services:
