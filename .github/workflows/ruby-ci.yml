@@ -48,10 +48,11 @@ jobs:
         with:
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
-      - name: Create postgis extension
+      - name: Start PostgreSQL
         run: |
-          sudo apt-get update
-          sudo apt-get install -y postgis
+          sudo service postgresql start
+      - name: Create Postgis extension
+        run: |
           sudo -u postgres psql -c "CREATE EXTENSION postgis;"
       - name: Create DB
         run: |
