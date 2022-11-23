@@ -50,7 +50,7 @@ jobs:
           bundler-cache: true
       - name: Set up postgis
         run: |
-          psql -c 'create extension postgis;' -U postgres
+          psql postgres -c "CREATE EXTENSION postgis;"
       - name: Create DB
         run: |
           bin/rails db:prepare
