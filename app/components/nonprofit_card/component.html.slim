@@ -1,11 +1,11 @@
-article class="max-w-md rounded text-xs font-medium bg-white shadow-md overflow-hidden"
+article class="max-w-sm rounded text-xs font-medium bg-white shadow-md overflow-hidden"
   h2 class="h-0 w-0 opacity-0" = "#{@location.name} card" 
 
   // Cover
   - if @location.images.length > 1
     = render NonprofitCard::ImagesCarousel::Component.new(images: @location.images,\
-                                                          image_styles: "rounded-t",\
-                                                          slides_window_options: {class: "w-full pb-58%"})
+                                                          image_styles: "rounded-t w-full",\
+                                                          carousel_container_options: {class: "w-full h-fit"})
   - elsif @location.images.length == 1
     img src=url_for(@location.images.first) alt="cover photo" class="w-hull"
   - else

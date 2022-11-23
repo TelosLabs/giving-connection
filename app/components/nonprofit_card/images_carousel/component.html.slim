@@ -1,12 +1,8 @@
-= content_tag(:div, carousel_wrapper_options)
+= content_tag(:div, carousel_container_options)
   = render NonprofitCard::ImagesCarousel::NavButton::Component.new(position: "top-1/2 left-4", direction: :prev, outline: "M15 19l-7-7 7-7")
   
-  = content_tag(:div, slides_window_options)
+  = content_tag(:div, slides_wrapper_options)
     - @images.each do |image|
-      img src=url_for(image) class=@image_styles alt="Slide #{@images.index(image) + 1} of #{@images.length}" data-carousel-item=""
+      img src=url_for(image) class="swiper-slide #{@image_styles}" alt="Slide #{@images.index(image) + 1} of #{@images.length}"
 
   = render NonprofitCard::ImagesCarousel::NavButton::Component.new(position: "top-1/2 right-4", direction: :next, outline: "M9 5l7 7-7 7")
-
-  div class="absolute bottom-3 left-1/2 z-30 space-x-1.5 -translate-x-1/2" aria-label="Carousel indicators"
-    - @images.each do |image|
-      button type="button" class="w-1.5 h-1.5 rounded-full" aria-current="false" aria-label="Slide #{@images.index(image) + 1}" data-carousel-slide-to="#{@images.index(image)}"

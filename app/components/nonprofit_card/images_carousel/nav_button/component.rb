@@ -8,12 +8,7 @@ class NonprofitCard::ImagesCarousel::NavButton::Component < ViewComponent::Base
   def button_options
     {
       type: "button",
-      class: "group absolute #{@position} z-30 -translate-y-1/2 cursor-pointer",
-      "data-carousel-#{@direction}": ""
+      class: "swiper-button-#{@direction} group absolute #{@position} -translate-y-1/2 cursor-pointer no-pseudo-elems"
     }
-  end
-
-  def button_copy
-    @direction == :prev ? "previous slide" : "next slide"
   end
 end
