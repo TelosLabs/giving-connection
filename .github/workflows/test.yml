@@ -1,9 +1,19 @@
 name: PostgreSQL
-on: push
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+env:
+  # Add secret key to Repository secrets
+  RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/test
+  REDIS_URL: redis://localhost:6379/0
+
 jobs:
-  postgres:
+  tests:
+    name: Tests
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
-    container: node:latest
     services:
       postgres:
         image: postgres:latest
@@ -19,12 +29,48 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        options: --entrypoint redis-server
+
     steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          # runs 'bundle install' and caches installed gems automatically
+          bundler-cache: true
       - name: Install PostgreSQL client
         run: |
-          apt-get update
-          apt-get install --yes postgresql-client
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client
       - name: Query database
         run: psql -h postgres -d postgres_db -U postgres_user -c 'SELECT 1;'
         env:
           PGPASSWORD: postgres_password
+      - name: Create DB
+        run: |
+          bin/rails db:prepare
+      - name: Install Node packages
+        run: |
+          bin/yarn install
+      - name: Run tests
+        run: |
+          bundle exec rspec --fail-fast
+  security:
+    name: Security
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Run security checks
+        run: |
+          bundle exec brakeman -w3 -o tmp/brakeman.html
