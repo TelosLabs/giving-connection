@@ -9,9 +9,9 @@ env:
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/test
   REDIS_URL: redis://localhost:6379/0
 
-
 jobs:
-  postgres:
+  tests:
+    name: Tests
     runs-on: ubuntu-latest
     container: node:latest
     if: github.event.pull_request.draft == false
@@ -19,18 +19,30 @@ jobs:
     services:
       postgres:
         image: postgres:latest
+        # service environment variables
+        # `POSTGRES_HOST` is `postgres`
         env:
-          POSTGRES_DB: postgres_db
-          POSTGRES_PASSWORD: postgres_password
+          RAILS_ENV: test
+          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: ""
           POSTGRES_PORT: 5432
-          POSTGRES_USER: postgres_user
+          POSTGRES_USER: postgres
+          BUNDLE_GEMS__CONTRIBSYS__COM: ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
         ports:
           - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        # tmpfs makes DB faster by using RAM
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        options: --entrypoint redis-server
+
     steps:
       - uses: actions/checkout@v2
       - name: Set up Ruby
@@ -40,12 +52,13 @@ jobs:
           bundler-cache: true
       - name: Install PostgreSQL client
         run: |
-          apt-get update
-          apt-get install --yes postgresql-client
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client
       - name: Create Postgis extension
-        run: psql -h postgres -d postgres_db -U postgres_user -c 'CREATE EXTENSION postgis;'
+        run: |
+          psql -h postgres -d postgres -U postgres -c 'CREATE EXTENSION postgis;'
         env:
-          PGPASSWORD: postgres_password
+          PGPASSWORD: ""
       - name: Create DB
         run: |
           bin/rails db:prepare
