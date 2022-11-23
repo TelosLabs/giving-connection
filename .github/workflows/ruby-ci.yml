@@ -6,7 +6,7 @@ on:
 env:
   # Add secret key to Repository secrets
   RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-  DATABASE_URL: postgres://postgres:postgres@localhost:5432/test
+  DATABASE_URL: postgres://postgres_user:postgres_password@postgres:5432/postgres_db
   REDIS_URL: redis://localhost:6379/0
 
 jobs:
