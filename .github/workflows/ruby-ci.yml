@@ -48,9 +48,10 @@ jobs:
         with:
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
-      - name: Create extension postgis
+      - name: Create postgis extension
         run: |
-          psql postgres -c 'CREATE EXTENSION IF NOT EXISTS "postgis";'
+          sudo service postgresql start
+          psql -c 'CREATE EXTENSION postgis;' -U postgres
       - name: Create DB
         run: |
           bin/rails db:prepare
