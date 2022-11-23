@@ -86,7 +86,7 @@
                     = link_to favorite_locations_path(location_id: result.id), data: {turbo_method: :post }, class: "inline-flex self-end text-xs text-gray-3" do
                       = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
                   div
-                    = image_tag result.organization.logo, class: "w-full h-10"
+                    = image_tag result.organization.logo, class: "w-12 h-12"
                   div
                     a id="pointer"
                       = link_to result.name, location_path(result), target:"_blank", class: "text-small font-bold text-gray-2"
@@ -135,7 +135,7 @@
                   = link_to favorite_locations_path(location_id: result.id), data: { turbo_method: :post }, class: "inline-flex self-end text-xs text-gray-3" do
                     = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
                 div
-                  = image_tag result.organization.logo, class: "w-full h-10"
+                  = image_tag result.organization.logo, class: "w-12 h-12"
                 div
                   a id="pointer"
                     = link_to result.name, location_path(result), target:"_blank", class: "text-small font-bold text-gray-2"
