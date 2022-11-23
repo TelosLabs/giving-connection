@@ -54,7 +54,7 @@ jobs:
           sudo apt-get install --yes postgresql-client
       - name: Create Postgis extension
         run: |
-          sudo -u postgres psql -c "CREATE EXTENSION postgis;"
+          psql -h postgres -d postgres -U postgres -c 'CREATE EXTENSION postgis;'
       - name: Create DB
         run: |
           bin/rails db:prepare
