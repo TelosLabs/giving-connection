@@ -14,17 +14,18 @@ jobs:
     name: Tests
     env:
       RAILS_ENV: test
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ""
-      POSTGRES_DB: postgres
 
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
-    container: node:latest
 
     services:
       postgres:
-        image: postgres:10.8
+        image: postgres:latest
+        env:
+          POSTGRES_DB: postgres_db
+          POSTGRES_PASSWORD: postgres_password
+          POSTGRES_PORT: 5432
+          POSTGRES_USER: postgres_user
         ports:
           - 5432:5432
         # needed because the postgres container does not provide a healthcheck
@@ -48,6 +49,15 @@ jobs:
         with:
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
+      - name: Install PostgreSQL client
+        container: node:latest
+        run: |
+          apt-get update
+          apt-get install --yes postgresql-client
+      - name: Create postgis extension
+        run: psql -h postgres -d postgres_db -U postgres_user -c 'SELECT 1;'
+        env:
+          PGPASSWORD: postgres_password
       - name: Create DB
         run: |
           bin/rails db:prepare
