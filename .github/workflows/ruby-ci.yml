@@ -43,11 +43,6 @@ jobs:
         env:
           PGPASSWORD: postgres_password
       - uses: actions/checkout@v2
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          # runs 'bundle install' and caches installed gems automatically
-          bundler-cache: true
       - name: Create DB
         run: |
           bin/rails db:prepare
