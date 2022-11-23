@@ -56,7 +56,7 @@ jobs:
         run: |
           psql -h postgres -d postgres -U postgres -c 'CREATE EXTENSION postgis;'
         env:
-          PGPASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          PGPASSWORD: ""
       - name: Create DB
         run: |
           bin/rails db:prepare
