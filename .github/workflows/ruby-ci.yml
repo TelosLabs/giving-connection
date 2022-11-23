@@ -50,8 +50,8 @@ jobs:
           bundler-cache: true
       - name: Install PostgreSQL client
         run: |
-          apt-get update
-          apt-get install --yes postgresql-client
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client
       - name: Create Postgis extension
         run: |
           sudo -u postgres psql -c "CREATE EXTENSION postgis;"
