@@ -43,8 +43,8 @@ jobs:
           bin/rails db:create
       - name: Install PostgreSQL client
         run: |
-          apt-get update
-          apt-get install --yes postgresql-client
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client
       - name: Query database
         run: psql -h localhost -d test -U postgres -c 'SELECT 1;'
         env:
