@@ -46,7 +46,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes postgresql-client
       - name: Query database
-        run: psql -h localhost -d test -U postgres -c 'SELECT 1;'
+        run: psql -h localhost -d test -U postgres -c 'SELECT * FROM test;'
         env:
           PGPASSWORD: postgres
       - name: Run migrations
