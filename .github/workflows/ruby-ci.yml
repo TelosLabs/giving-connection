@@ -51,7 +51,7 @@ jobs:
         run: |
           bin/rails db:create
       - name: Create postgis extension
-        run: psql -h localhost -d postgres -U postgres -c 'SELECT 1;'
+        run: psql -h localhost -d postgres -U postgres -c 'CREATE EXTENSION postgis;'
         env:
           PGPASSWORD: postgres
       - name: Run migrations
