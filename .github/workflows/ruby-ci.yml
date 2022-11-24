@@ -43,9 +43,21 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client
       - name: Create DB
         run: |
           bin/rails db:create
+      - name: Create postgis extension
+        run: |
+          psql -c "CREATE EXTENSION postgis;" -d postgres
+        env:
+          PGPASSWORD: postgres
+      - name: Run migrations
+        run: |
+          bin/rails db:migrate
       - name: Install Node packages
         run: |
           bin/yarn install
