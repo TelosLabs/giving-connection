@@ -23,7 +23,10 @@ jobs:
 
     services:
       postgres:
-        image: postgres:10.8
+        image: postgis/postgis:10-2.5
+        env:
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: test
         ports:
           - 5432:5432
         # needed because the postgres container does not provide a healthcheck
@@ -47,20 +50,9 @@ jobs:
         with:
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
-      - name: Install PostgreSQL client
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes postgresql-client
       - name: Create DB
         run: |
           bin/rails db:create
-      - name: Create postgis extension
-        run: |
-          psql -h localhost -d test -U postgres -c 'CREATE EXTENSION Postgis;'
-        env:
-          PGPASSWORD: postgres
-        env:
-          PGPASSWORD: postgres
       - name: Run migrations
         run: |
           bin/rails db:migrate
