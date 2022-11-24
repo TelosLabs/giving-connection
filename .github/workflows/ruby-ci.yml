@@ -47,12 +47,16 @@ jobs:
         with:
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
+      - name: Import DB seed data
+        run: psql -d postgres://postgres:postgres@localhost:5432/test -f db/seeds.sql
+        working-directory: ${{ github.workspace }}
+        env:
+          PGPASSWORD: postgres
       - name: Create DB
         run: |
           bin/rails db:create
       - name: Run migrations
         run: |
-          sudo apt-get -yqq install libpq-dev
           bin/rails db:migrate
       - name: Install Node packages
         run: |
