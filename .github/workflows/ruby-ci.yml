@@ -12,7 +12,6 @@ env:
 jobs:
   postgres:
     runs-on: ubuntu-latest
-    container: node:latest
     services:
       postgres:
         image: postgis/postgis:10-2.5
