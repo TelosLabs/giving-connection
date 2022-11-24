@@ -66,6 +66,12 @@ jobs:
       - name: Create DB
         run: |
           bin/rails db:create
+      - name: nstall PostgreSQL client
+        run: |
+          sudo apt-get -yqq install libpq-dev
+      - name: Create postgis extension
+        run: |
+          psql -c 'CREATE EXTENSION postgis;' -U postgres
       - name: Run migrations
         run: |
           bin/rails db:migrate
