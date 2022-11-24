@@ -10,8 +10,14 @@ env:
   REDIS_URL: redis://localhost:6379/0
 
 jobs:
-  postgres:
+  tests:
+    name: Tests
+    env:
+      RAILS_ENV: test
+
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
+
     services:
       postgres:
         image: postgis/postgis:10-2.5
@@ -27,6 +33,40 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        options: --entrypoint redis-server
     steps:
-      env:
-        PGPASSWORD: postgres_password
+      - uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          # runs 'bundle install' and caches installed gems automatically
+          bundler-cache: true
+      - name: Create DB
+        run: |
+          bin/rails db:prepare
+      - name: Install Node packages
+        run: |
+          bin/yarn install
+      - name: Run tests
+        run: |
+          bundle exec rspec --fail-fast
+
+  security:
+    name: Security
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Run security checks
+        run: |
+          bundle exec brakeman -w3 -o tmp/brakeman.html
