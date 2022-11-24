@@ -15,7 +15,7 @@ jobs:
     env:
       RAILS_ENV: test
       POSTGRES_USER: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_DB: test
 
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
@@ -52,7 +52,7 @@ jobs:
           bin/rails db:create
       - name: Create postgis extension
         run: |
-          psql -h localhost -d postgres -U postgres -c '\c test; CREATE EXTENSION Postgis;'
+          psql -h localhost -d test -U postgres -c 'CREATE EXTENSION Postgis;'
         env:
           PGPASSWORD: postgres
       - name: Run migrations
