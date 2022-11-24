@@ -42,11 +42,10 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
       - name: Create DB
         run: |
-          bin/rails db:prepare
+          bin/rails db:create
       - name: Install Node packages
         run: |
           bin/yarn install
