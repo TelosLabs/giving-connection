@@ -41,6 +41,14 @@ jobs:
       - name: Create DB
         run: |
           bin/rails db:create
+      - name: Install PostgreSQL client
+        run: |
+          apt-get update
+          apt-get install --yes postgresql-client
+      - name: Query database
+        run: psql -h localhost -d test -U postgres -c 'SELECT 1;'
+        env:
+          PGPASSWORD: postgres
       - name: Run migrations
         run: |
           bin/rails db:migrate
