@@ -14,22 +14,22 @@ jobs:
     name: Tests
     env:
       RAILS_ENV: test
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ""
-      POSTGRES_DB: test
 
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
 
     services:
       postgres:
-        image: postgres:10.8
+        image: postgis/postgis:10-2.5
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test
         ports:
           - 5432:5432
         # needed because the postgres container does not provide a healthcheck
         # tmpfs makes DB faster by using RAM
         options: >-
-          --mount type=tmpfs,destination=/var/lib/postgresql/data
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
@@ -50,13 +50,6 @@ jobs:
       - name: Create DB
         run: |
           bin/rails db:create
-      - name: Install PostgreSQL client
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes postgresql-client
-      - name: Create postgis extension
-        run: |
-          psql -h localhost -d test -U postgres -c 'CREATE EXTENSION postgis;'
       - name: Run migrations
         run: |
           bin/rails db:migrate
