@@ -40,7 +40,8 @@ jobs:
           bundler-cache: true
       - name: Create DB
         run: |
-          bin/rails db:create db:migrate
+          bundle exec rails db:create
+          bundle exec rails db:migrate
       - name: Install Node packages
         run: |
           bin/yarn install
