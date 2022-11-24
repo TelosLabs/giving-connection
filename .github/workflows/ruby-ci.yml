@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: huaxk/postgis-action@v1
         with:
-          postgresql version: '10.8'
+          postgresql version: '10'
           postgresql db: 'postgres'
           postgresql user: 'postgres'
           postgresql password: ''
