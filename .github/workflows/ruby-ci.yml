@@ -14,42 +14,51 @@ jobs:
     name: Tests
     env:
       RAILS_ENV: test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
 
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
 
     services:
+      postgres:
+        image: postgres:10.8
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        # tmpfs makes DB faster by using RAM
+        options: >-
+          --mount type=tmpfs,destination=/var/lib/postgresql/data
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
       redis:
         image: redis
         ports:
           - 6379:6379
         options: --entrypoint redis-server
+
     steps:
-      - uses: huaxk/postgis-action@v1
-        with:
-          postgresql version: '10'
-          postgresql user: postgres
-          postgresql password: postgres
-          postgresql db: test
-          postgresql host: localhost
-          postgresql port: 5432
       - uses: actions/checkout@v2
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
+          # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
-      # - name: Install PostgreSQL client
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install --yes postgresql-client
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client
       - name: Create DB
         run: |
           bin/rails db:create
-      # - name: Create postgis extension
-      #   run: |
-      #     psql -h localhost -d test -U postgres -c 'CREATE EXTENSION Postgis;'
-      #   env:
-      #     PGPASSWORD: postgres
+      - name: Create postgis extension
+        run: |
+          psql -h localhost -d test -U postgres -c 'CREATE EXTENSION Postgis;'
+        env:
+          PGPASSWORD: postgres
       - name: Run migrations
         run: |
           bin/rails db:migrate
