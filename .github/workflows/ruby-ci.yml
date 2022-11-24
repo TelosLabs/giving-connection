@@ -10,22 +10,6 @@ env:
   REDIS_URL: redis://localhost:6379/0
 
 jobs:
-  rubocop:
-    name: RuboCop
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Setup Ruby and install gems
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-        env:
-          BUNDLE_GEMS__CONTRIBSYS__COM: ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
-      - name: Run RuboCop
-        run: bundle exec rubocop
-
   tests:
     name: Tests
     env:
@@ -66,8 +50,9 @@ jobs:
       - name: Create DB
         run: |
           bin/rails db:create
-      - name: nstall PostgreSQL client
+      - name: Install PostgreSQL client
         run: |
+          sudo apt-get update
           sudo apt-get install --yes postgresql-client
       - name: Create postgis extension
         run: |
