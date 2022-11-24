@@ -32,7 +32,7 @@ jobs:
       RAILS_ENV: test
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ""
-      POSTGRES_DB: postgres
+      POSTGRES_DB: test
 
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
@@ -68,10 +68,10 @@ jobs:
           bin/rails db:create
       - name: nstall PostgreSQL client
         run: |
-          sudo apt-get -yqq install libpq-dev
+          sudo apt-get install --yes postgresql-client
       - name: Create postgis extension
         run: |
-          psql -c 'CREATE EXTENSION postgis;' -U postgres
+          psql -h localhost -d test -U postgres -c 'CREATE EXTENSION postgis;'
       - name: Run migrations
         run: |
           bin/rails db:migrate
