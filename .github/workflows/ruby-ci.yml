@@ -59,6 +59,8 @@ jobs:
           psql -h localhost -d test -U postgres -c 'CREATE EXTENSION Postgis;'
         env:
           PGPASSWORD: postgres
+        env:
+          PGPASSWORD: postgres
       - name: Run migrations
         run: |
           bin/rails db:migrate
