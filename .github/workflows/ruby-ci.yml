@@ -15,7 +15,6 @@ jobs:
     env:
       RAILS_ENV: test
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
 
     if: github.event.pull_request.draft == false
@@ -25,9 +24,7 @@ jobs:
       postgres:
         image: postgis/postgis:10-2.5
         env:
-          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
         ports:
           - 5432:5432
         options: >-
