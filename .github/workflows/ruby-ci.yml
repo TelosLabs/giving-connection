@@ -41,14 +41,14 @@ jobs:
       - name: Create DB
         run: |
           bin/rails db:create
-      - name: Install PostgreSQL client
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes postgresql-client
-      - name: Query database
-        run: psql -h localhost -d test -U postgres -c 'CREATE EXTENSION postgis;'
-        env:
-          PGPASSWORD: postgres
+      # - name: Install PostgreSQL client
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install --yes postgresql-client
+      # - name: Query database
+      #   run: psql -h localhost -d test -U postgres -c 'CREATE EXTENSION postgis;'
+      #   env:
+      #     PGPASSWORD: postgres
       - name: Run migrations
         run: |
           bin/rails db:migrate
