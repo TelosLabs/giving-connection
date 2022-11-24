@@ -32,7 +32,6 @@ jobs:
           postgresql db: 'postgres'
           postgresql user: 'postgres'
           postgresql password: ''
-          postgis version: '2.5'
       - uses: actions/checkout@v2
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
