@@ -24,8 +24,5 @@ jobs:
         run: |
           apt-get update
           apt-get install --yes postgresql-client
-      - name: Create extension postgis
-        run: |
-          psql -h postgres -U postgres_user -d postgres_db -c "CREATE EXTENSION postgis;"
         env:
           PGPASSWORD: postgres_password
