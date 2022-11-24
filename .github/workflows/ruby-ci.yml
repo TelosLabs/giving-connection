@@ -43,10 +43,10 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - name: Install PostgreSQL client
-        run: |
-          sudo apt-get update
-          sudo apt-get install --yes postgresql-client
+      # - name: Install PostgreSQL client
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install --yes postgresql-client
       - name: Create DB
         run: |
           bin/rails db:create
@@ -56,6 +56,14 @@ jobs:
       #   env:
       #     PGPASSWORD: postgres
       - name: Run migrations
+      - uses: huaxk/postgis-action@v1
+        with:
+          postgresql version: '10'
+          postgresql user: postgres
+          postgresql password: postgres
+          postgresql db: test
+          postgresql host: localhost
+          postgresql port: 5432
         run: |
           bin/rails db:migrate
       - name: Install Node packages
