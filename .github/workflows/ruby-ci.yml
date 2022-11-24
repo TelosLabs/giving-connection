@@ -65,7 +65,10 @@ jobs:
           bundler-cache: true
       - name: Create DB
         run: |
-          bin/rails db:prepare
+          bin/rails db:create
+      - name: Run migrations
+        run: |
+          bin/rails db:migrate
       - name: Install Node packages
         run: |
           bin/yarn install
