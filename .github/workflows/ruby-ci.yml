@@ -52,6 +52,7 @@ jobs:
           bin/rails db:create
       - name: Run migrations
         run: |
+          sudo apt-get -yqq install libpq-dev
           bin/rails db:migrate
       - name: Install Node packages
         run: |
