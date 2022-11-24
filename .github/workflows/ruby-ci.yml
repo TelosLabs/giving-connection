@@ -50,6 +50,9 @@ jobs:
       - name: Create DB
         run: |
           bin/rails db:create
+      - name: Enable postgis extension
+        run: |
+          bin/rails db:gis:setup
       - name: Run migrations
         run: |
           bin/rails db:migrate
