@@ -28,13 +28,9 @@ main
         div
           = f.submit "Search", class:"c-button mx-10 mt-6"
   section class="pt-6 text-gray-2 sm:pt-10"
-    div class="flex justify-center"
-      span class="mb-2 text-4xl font-bold tracking-tight text-gray-900 dark:text-white"
-        | Causes
-    //= render Causes::Component.new(causes: Cause.all)
     h2 class="pb-8 text-2xl font-bold text-center uppercase sm:pb-5"
       | How it works
-    div class="flex flex-col mx-auto max-w-7xl lg:flex-row justify-evenly xl:px-16 pb-44 lg:pb-40"
+    div class="flex flex-col mx-auto max-w-7xl lg:flex-row justify-evenly xl:px-16"
       div class="max-w-xs mx-auto text-center mb-9 lg:mb-0"
         div class="flex items-end mb-2 h-36"
           = inline_svg_tag 'search-needs.svg', class:'mx-auto'
@@ -56,24 +52,41 @@ main
           | 3. Receive help
         p class="px-5"
           | Found a nonprofit that meets your needs criteria? Reach out through the contact information provided on their individual profiles.
-    div class="flex flex-col mx-auto md:flex-row max-w-7xl justify-evenly sm:mb-1 525px:pb-20 md:px-8"
-      div class="relative flex flex-col justify-center mb-16 text-center md:mx-0 md:mb-0"
-        div class="max-w-sm py-4 mx-auto"
-          h2 class="px-10 pb-4 text-2xl font-bold text-center"
-            | We want to make living and giving simpler.
-          p class="px-4 pt-3 pb-6 md:pb-10"
-            | We are a nonprofit search tool connecting you with resources in your community.
-          = link_to "Start your search", '#search', class:'c-button inline-block text-white bg-blue-medium'
-        div class="hidden sm:block sm:absolute -top-20 -left-32 -z-1"
-          = inline_svg_tag 'lw-desk-blur-left.svg'
-        div class="right-0 hidden overflow-hidden sm:block sm:absolute -top-40 xl:-right-28 -z-1"
-          = inline_svg_tag 'lw-desk-blur-right.svg'
-        div class="absolute -left-6 -z-1 sm:hidden"
-          = inline_svg_tag 'lw-mob-blur-left.svg', size:'320*428'
-        div class="absolute right-0 overflow-visible -top-40 -z-1 sm:hidden"
-          = inline_svg_tag 'lw-mob-blur-right.svg'
-      div class="flex justify-center px-0"
-        = image_tag 'board-members.png', class:"525px:rounded-xl object-cover h-350px sm:h-full"
+  section class="flex flex-col items-center px-6 overflow-hidden"
+    div class="relative max-w-xl pt-32 mb-14"
+      h2 class="mb-6 text-2xl uppercase text-center font-bold text-gray-2 dark:text-white"
+        | Browse by causes
+      p class="text-center"
+        | Use our discovery feature to find nonprofits serving your community. 
+        | Select a cause below to learn more about organizations in the Nashville area providing critical services within your chosen category. 
+        | Scroll through listings to browse for nonprofits meeting your needs.
+      = inline_svg_tag "browse-causes-green-blur.svg", class: "absolute -left-1/4 top-0 -z-1 w-full", aria_hidden: true
+      = inline_svg_tag "browse-causes-purple-blur.svg", class: "absolute -right-1/4 top-0 -z-1 w-full", aria_hidden: true
+    nav class="w-full max-w-5xl mb-9"
+      = render CausesList::Component.new(causes: Cause.top(limit: 9), \
+                                          navigational: true, \
+                                          list_options: { class: "grid causes-list-auto-grid justify-items-center gap-y-6"}, \
+                                          cause_options: { class: "group interactive-btn w-24 text-sm transition-colors hover:text-blue-medium" }, \
+                                          icon_wrapper_options: { class: "thick-icon w-20 h-20 transition-colors group-hover:bg-blue-medium", aria_hidden: true})
+    = link_to "see more", discover_path, class: "px-10 py-4 rounded-md mb-32 text-white leading-5 uppercase tracking-wider font-bold bg-blue-dark transition-colors hover:bg-blue-medium"
+  section class="flex flex-col mx-auto md:flex-row max-w-7xl justify-evenly sm:mb-1 525px:pb-20 md:px-8"
+    div class="relative flex flex-col justify-center mb-16 text-center md:mx-0 md:mb-0"
+      div class="max-w-sm py-4 mx-auto"
+        h2 class="px-10 pb-4 text-2xl font-bold text-center text-gray-2"
+          | We want to make living and giving simpler.
+        p class="px-4 pt-3 pb-6 md:pb-10"
+          | We are a nonprofit search tool connecting you with resources in your community.
+        = link_to "Start your search", '#search', class:'c-button inline-block text-white bg-blue-medium'
+      div class="hidden sm:block sm:absolute -top-20 -left-32 -z-1"
+        = inline_svg_tag 'lw-desk-blur-left.svg'
+      div class="right-0 hidden overflow-hidden sm:block sm:absolute -top-40 xl:-right-28 -z-1"
+        = inline_svg_tag 'lw-desk-blur-right.svg'
+      div class="absolute -left-6 -z-1 sm:hidden"
+        = inline_svg_tag 'lw-mob-blur-left.svg', size:'320*428'
+      div class="absolute right-0 overflow-visible -top-40 -z-1 sm:hidden"
+        = inline_svg_tag 'lw-mob-blur-right.svg'
+    div class="flex justify-center px-0"
+      = image_tag 'board-members.png', class:"525px:rounded-xl object-cover h-350px sm:h-full"
   section class="relative bg-seafoam"
     div class="relative max-w-md pb-20 mx-auto text-center"
       h2 class="px-5 pt-20 text-2xl font-bold text-center sm:px-0 md:pt-28 text-blue-dark pb-11"
