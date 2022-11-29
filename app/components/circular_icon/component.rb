@@ -7,7 +7,7 @@ class CircularIcon::Component < ViewComponent::Base
 
   def wrapper_options
     {
-      class: "grid place-items-center rounded-full mb-2"
+      class: "grid place-items-center rounded-full"
     }.merge(@wrapper_options) { |duplicate_key, existing_value, new_value| "#{existing_value} #{new_value}" }
   end
 end
