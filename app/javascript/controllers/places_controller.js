@@ -226,7 +226,7 @@ export default class extends Controller {
         });
 
         sessionStorage.setItem('marker_infowindow', element.id)
-        this.scrollToSelectedLocation()
+        // this.scrollToSelectedLocation()
       });
 
       if (pin && pin.id == element.id)  {
