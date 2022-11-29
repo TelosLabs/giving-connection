@@ -1,11 +1,12 @@
 class NonprofitCard::SaveButton::Component < ViewComponent::Base
-  def initialize(user:, location:, button_styles: "", icon_wrapper_styles: "")
+  def initialize(user:, location:, button_styles: "", icon_wrapper_styles: "", action_copy_styles: "")
     @user = user
     @location = location
     @link_args = get_link_args
     # to be consistent with the rest of buttons in the menu
     @button_styles = button_styles
     @icon_wrapper_styles = icon_wrapper_styles
+    @action_copy_styles = action_copy_styles
   end
 
   def get_link_args
