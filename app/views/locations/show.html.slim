@@ -48,10 +48,12 @@ div class=""
               = inline_svg_tag 'bookmark_empty.svg', class: "w-4 h-4 mr-2"
               | Save
         - if @location.causes.present?
-          div class="flex my-8 gap-2.5 flex-wrap px-6"
-            - @location.organization.causes.uniq.each do |cause|
-              span class="text-sm text-center px-2.5 py-1.5 rounded-lg border border-gray-6 text-gray-3"
-                = cause.name
+          div class="mx-6 mt-6"
+            h4 class="text-sm uppercase font-bold text-gray-2" Causes
+            = render CausesList::Component.new(causes: @location.organization.causes.uniq, \
+                                              list_options: { class: "grid causes-list-auto-grid gap-y-4 mb-6 mt-4"}, \
+                                              cause_options: { class: "w-20 text-sm" }, \
+                                              icon_wrapper_options: { class: "w-16 h-16", aria_hidden: true})
         div class="mx-6 text-left"
           = render WorkingHours::Component.new(result: @location)
           - if @location.organization.irs_ntee_code.present?
