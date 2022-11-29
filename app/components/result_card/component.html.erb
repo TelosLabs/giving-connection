@@ -53,13 +53,13 @@
     <% unless @causes.empty? %>
       <section>
         <h2 class="mb-2 text-xs uppercase font-bold font-sans">Causes</h2>
-        <ul class="flex gap-x-2 w-fit">
+        <ul class="flex flex-wrap gap-x-2 w-fit">
           <% @causes.each do |cause| %>
-            <li class="cursor-pointer">
-              <%= render Tooltip::Component.new(copy: cause.name, tooltip_options: {class: "bottom-full left-full w-max py-1 px-3 rounded-sm text-xs text-white bg-gray-2 bg-opacity-90"}) do %>
+            <li>
+              <%= render Tooltip::Component.new(copy: cause.name, tooltip_options: {class: "bottom-full left-3/4 py-1 px-3 mb-2 rounded-sm text-xs text-center text-white bg-gray-2 bg-opacity-90"}) do %>
                 <%= render CircularIcon::Component.new(svg_name: "causes_categories/#{cause.decorate.svg_file_name}",
-                                                    wrapper_options: {class: "labelled-icon w-8 h-8 flex justify-center items-center rounded-full bg-blue-pale"},
-                                                    svg_options: {class: "w-5 h-5", aria_hidden: true}) %>
+                                                       wrapper_options: {class: "labelled-icon w-8 h-8 flex justify-center items-center rounded-full bg-blue-pale"},
+                                                       svg_options: {class: "w-5 h-5", aria_hidden: true}) %>
               <% end %>
             </li>
           <% end %>
