@@ -18,7 +18,7 @@
         h3 class="uppercase text-sm font-bold" causes
         ul class="flex flex-wrap gap-2 mb-4 mt-2"
           - result.organization.causes.uniq.each do |cause|
-            li class="cursor-pointer"
+            li
               = render Tooltip::Component.new(copy: cause.name, tooltip_options: {class: "bottom-full right-1/2 py-1 px-3 mb-2 rounded-sm text-xs text-center text-white transform translate-x-1/2 bg-gray-2 bg-opacity-90"}) do
                 = render CircularIcon::Component.new(svg_name: "causes_categories/#{cause.decorate.svg_file_name}", \
                                                     wrapper_options: {class: "labelled-icon w-8 h-8 flex justify-center items-center rounded-full bg-blue-pale"}, \
