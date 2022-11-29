@@ -28,6 +28,6 @@ article class="max-w-sm rounded text-xs font-medium bg-white shadow-md overflow-
         | causes
       = render CausesList::Component.new( \
         causes: @location.organization.causes.uniq, \
-        list_options: {class: "flex"}, \
+        list_options: {class: "flex flex-wrap gap-3"}, \
         cause_options: {class: "w-16"}, \
         icon_wrapper_options: {class: "w-14 h-14", aria_hidden: true})

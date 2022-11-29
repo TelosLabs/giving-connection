@@ -53,7 +53,7 @@
     <% unless @causes.empty? %>
       <section>
         <h2 class="mb-2 text-xs uppercase font-bold font-sans">Causes</h2>
-        <ul class="flex flex-wrap gap-x-2 w-fit">
+        <ul class="flex flex-wrap gap-2">
           <% @causes.each do |cause| %>
             <li>
               <%= render Tooltip::Component.new(copy: cause.name, tooltip_options: {class: "bottom-full left-3/4 py-1 px-3 mb-2 rounded-sm text-xs text-center text-white bg-gray-2 bg-opacity-90"}) do %>
@@ -66,7 +66,7 @@
         </ul>
       </section>
     <% end %>
-    <a href="<%= location_path(@id)%>" class="inline-flex items-center text-sm font-bold text-blue-medium">
+    <a href="<%= location_path(@id)%>" class="inline-flex items-center ml-4 text-sm font-bold text-blue-medium whitespace-nowrap">
       Go to Page
       <%= inline_svg_tag 'solid_arrow_right.svg', class: 'w-4 h-4 ml-2 text-blue-medium fill-current'%>
     </a>

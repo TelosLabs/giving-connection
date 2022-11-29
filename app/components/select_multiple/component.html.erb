@@ -8,9 +8,14 @@
         <% if @items.is_a?(Array) %>
           <% @items&.sort&.each do |item| %>
             <div class="" data-select-multiple-target="group">
-              <div class="flex flex-row items-center">
-                <%= check_box_tag "#{@name}[]", item, false, class: "h-4 w-4 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent modal-checkbox",
+              <div class="flex gap-x-2 items-center">
+                <%= check_box_tag "#{@name}[]", item, false, class: "h-4 w-4 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent modal-checkbox",
                                   data: { 'select-multiple-target': "checkbox", action: 'click->select-multiple#select', value: item } %>
+                <% if Cause.find_by(name: item) %>
+                  <%= render CircularIcon::Component.new(svg_name: "causes_categories/#{format_cause_name item}",
+                                                        wrapper_options: {class: "w-8 h-8 flex-shrink-0 flex justify-center items-center rounded-full bg-blue-pale", aria_hidden: true},
+                                                        svg_options: {class: "w-5 h-5"}) %>
+                <% end %>
                 <%= label_tag item, item, for: item, class: "text-sm text-black w-full" %>
               </div>
             </div>
