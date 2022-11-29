@@ -128,6 +128,11 @@ module.exports = {
       zIndex: {
         '-1': '-1',
       },
+      gridTemplateColumns: {
+        'auto-fill-5.5': 'repeat(auto-fill, minmax(5.5rem, 1fr))',
+        'auto-fill-6.75': 'repeat(auto-fill, minmax(6.75rem, 1fr))',
+        'auto-fill-18': 'repeat(auto-fill, minmax(18rem, 1fr))',
+      },
     },
   },
   variants: {

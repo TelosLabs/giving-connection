@@ -51,9 +51,9 @@ div class=""
           div class="mx-6 mt-6"
             h4 class="text-sm uppercase font-bold text-gray-2" Causes
             = render CausesList::Component.new(causes: @location.organization.causes.uniq, \
-                                              list_options: { class: "grid causes-list-auto-grid gap-y-4 mb-6 mt-4"}, \
+                                              list_options: { class: "grid grid-cols-auto-fill-5.5 justify-items-center gap-y-4 mb-6 mt-4"}, \
                                               cause_options: { class: "w-20 text-sm" }, \
-                                              icon_wrapper_options: { class: "w-16 h-16", aria_hidden: true})
+                                              icon_wrapper_options: { class: "thick-icon w-16 h-16", aria_hidden: true})
         div class="mx-6 text-left"
           = render WorkingHours::Component.new(result: @location)
           - if @location.organization.irs_ntee_code.present?
