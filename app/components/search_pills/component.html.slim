@@ -5,7 +5,7 @@ div class="w-full bg-gray-9"
         / Clear-Counter button
         span class="flex justify-center items-center w-14 pl-5 py-3 pr-2 text-xs bg-blue-pale"
           span class="inline-flex hidden items-center px-1 py-0.5 border border-blue-medium rounded-full bg-white" data-search-target="pillsCounterWrapper"
-            span data-search-target="pillsCounter" class="mr-0.5"
+            span data-search-target="pillsCounter" class="mr-0.5" id="pills-counter"
             button type="button" data-action="search#clearCheckedPills"
               = inline_svg_tag "x-icon.svg", class: 'h-2 w-2 fill-current stroke-current stroke-1 text-blue-medium ml-1 relative'
           = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative', data: { 'search-target': "filtersIcon" }

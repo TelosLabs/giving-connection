@@ -7,10 +7,18 @@ export default class extends Controller {
 
   connect() {
     this.store = new Set(this.selectedValue || [])
+    this.addAddvancedFiltersToCounter()
     this.updateCheckboxes()
     this.updateBadges()
     this.search()
   }
+
+  addAddvancedFiltersToCounter() {
+    let pillsCounter = document.getElementById('pills-counter')
+    let count = parseInt(pillsCounter.textContent)
+    pillsCounter.textContent = count + parseInt(this.store.size)
+  }
+
 
   select(event) {
     this.addCheckboxToStore(event)

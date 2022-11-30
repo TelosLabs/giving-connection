@@ -17,6 +17,7 @@ export default class extends Controller {
 
   connect() {
     useDispatch(this)
+    this.addAdvancedFilters()
     this.updatePillsCounter()
   }
 
@@ -53,8 +54,7 @@ export default class extends Controller {
   }
 
   countPills() {
-    // selects all checked inputs that are not checkboxAll
-    this.totalChecked = document.querySelectorAll("input:checked").length - 1;
+    this.totalChecked = this.pillsTarget.querySelectorAll("input:checked:not([data-checkbox-select-all-target=checkboxAll])").length
     this.pillsCounterTarget.textContent = this.totalChecked
   }
 
@@ -153,5 +153,9 @@ export default class extends Controller {
       this.updateFiltersState()
       this.submitForm()
     }
+  }
+
+  addAdvancedFilters() {
+    this.totalChecked += this.advancedFiltersTarget.querySelectorAll("input:checked").length
   }
 }
