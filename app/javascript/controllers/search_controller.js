@@ -17,7 +17,6 @@ export default class extends Controller {
 
   connect() {
     useDispatch(this)
-    this.addAdvancedFilters()
     this.updatePillsCounter()
   }
 
@@ -54,7 +53,13 @@ export default class extends Controller {
   }
 
   countPills() {
-    this.totalChecked = this.pillsTarget.querySelectorAll("input:checked:not([data-checkbox-select-all-target=checkboxAll])").length
+    let pills_count = this.pillsTarget.querySelectorAll("input:checked:not([data-checkbox-select-all-target=checkboxAll])").length
+    let advanced_filters_count = this.advancedFiltersTarget.querySelectorAll("input:checked").length
+    if(advanced_filters_count == 0 && sessionStorage.getItem('advanced_filters_count') != null) {
+      advanced_filters_count = sessionStorage.getItem("advanced_filters_count")
+      sessionStorage.removeItem('advanced_filters_count')
+    }
+    this.totalChecked = parseInt(pills_count) + parseInt(advanced_filters_count)
     this.pillsCounterTarget.textContent = this.totalChecked
   }
 
@@ -148,14 +153,10 @@ export default class extends Controller {
 
   applyAdvancedFilters() {
     const anyNewFilters = [...this.advancedFiltersTarget.querySelectorAll("input:checked")].some(filter => !this.checkedValues().includes(filter.value));
-
     if (anyNewFilters) {
       this.updateFiltersState()
+      sessionStorage.setItem('advanced_filters_count', this.advancedFiltersTarget.querySelectorAll("input:checked").length)
       this.submitForm()
     }
-  }
-
-  addAdvancedFilters() {
-    this.totalChecked += this.advancedFiltersTarget.querySelectorAll("input:checked").length
   }
 }
