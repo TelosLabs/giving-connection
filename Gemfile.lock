@@ -610,7 +610,7 @@ DEPENDENCIES
   tzinfo-data
   view_component
   web-console (>= 4.1.0)
-  webdrivers
+  webdrivers (~> 5.2)
   webpacker (~> 5.0)
 
 RUBY VERSION
