@@ -1,9 +1,9 @@
 class NonprofitCard::ImagesCarousel::Component < ViewComponent::Base
-  def initialize(images:, image_styles: "", carousel_container_options: {}, slides_wrapper_options: {})
+  def initialize(images:, image_styles: "",  placeholder_options: {}, carousel_container_options: {})
     @images = images
-    @carousel_container_options = carousel_container_options
-    @slides_wrapper_options = slides_wrapper_options
     @image_styles = image_styles
+    @placeholder_options = placeholder_options
+    @carousel_container_options = carousel_container_options
   end
 
   def carousel_container_options
@@ -17,9 +17,9 @@ class NonprofitCard::ImagesCarousel::Component < ViewComponent::Base
     }.merge(@carousel_container_options) { |duplicate_key, existing_value, new_value| "#{existing_value} #{new_value}" }
   end
 
-  def slides_wrapper_options
+  def placeholder_options
     {
-      class: "swiper-wrapper"
-    }.merge(@slides_wrapper_options) { |duplicate_key, existing_value, new_value| "#{existing_value} #{new_value}" }
+      class: "relative bg-gray-5"
+    }.merge(@placeholder_options) { |duplicate_key, existing_value, new_value| "#{existing_value} #{new_value}" }
   end
 end

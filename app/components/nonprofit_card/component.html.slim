@@ -5,7 +5,8 @@ article class="max-w-sm rounded text-xs font-medium bg-white shadow-md overflow-
   - if @location.images.length > 1
     = render NonprofitCard::ImagesCarousel::Component.new(images: @location.images,\
                                                           image_styles: "rounded-t w-full",\
-                                                          carousel_container_options: {class: "w-full h-fit"})
+                                                          placeholder_options: {class: "h-0 pb-58%"},\
+                                                          carousel_container_options: {class: "absolute inset-0"})
   - elsif @location.images.length == 1
     img src=url_for(@location.images.first) alt="cover photo" class="w-hull"
   - else
