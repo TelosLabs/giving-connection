@@ -49,7 +49,7 @@ jobs:
           ## runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
       - name: Set up Chrome
-        uses: browser-actions/setup-chrome@v1
+        uses: browser-actions/setup-chrome
       - name: Create DB
         run: |
           bin/rails db:create
