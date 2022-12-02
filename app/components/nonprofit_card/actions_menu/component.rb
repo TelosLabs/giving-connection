@@ -13,7 +13,7 @@ class NonprofitCard::ActionsMenu::Component < ViewComponent::Base
   end
 
   def action_copy_styles
-    "absolute bottom-0 right-1/2 w-max transform translate-x-1/2"
+    "absolute bottom-0 right-1/2 w-max text-xs transform translate-x-1/2"
   end
 
   def website_action_params
