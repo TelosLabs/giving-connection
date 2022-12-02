@@ -55,7 +55,7 @@ export default class extends Controller {
   countPills() {
     let pills_count = this.pillsTarget.querySelectorAll("input:checked:not([data-checkbox-select-all-target=checkboxAll])").length
     let advanced_filters_count = this.advancedFiltersTarget.querySelectorAll("input:checked").length
-    if(this.isModalClean() && sessionStorage.getItem("advanced_filters_count") !== null) {
+    if(advanced_filters_count == 0 && sessionStorage.getItem("advanced_filters_count") !== null) {
       advanced_filters_count = sessionStorage.getItem("advanced_filters_count")
       sessionStorage.removeItem('advanced_filters_count')
     }
