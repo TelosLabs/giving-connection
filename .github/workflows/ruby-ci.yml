@@ -59,7 +59,7 @@ jobs:
           bin/yarn install
       - name: Run tests
         run: |
-          bundle exec rspec --fail-fast
+          bundle exec rspec --fail-fast -exclude-pattern "**/system/**/*_spec.rb"
 
   security:
     name: Security
