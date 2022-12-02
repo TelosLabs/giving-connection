@@ -42,12 +42,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Install Chrome
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libappindicator3-1 fonts-liberation
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo dpkg -i google-chrome*.deb
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
