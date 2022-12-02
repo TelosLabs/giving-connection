@@ -24,9 +24,8 @@ nav class="flex justify-between"
                                           svg_options: {class: "w-1/2", aria_hidden: true})
     span class=action_copy_styles Directions
   // Nonprofit website
-  - if @location.website
-    = link_to @location.website, class: button_styles, target: "_blank" do
-      = render CircularIcon::Component.new(svg_name: "non_profit_cards/website.svg", \
-                                          wrapper_options: {class: icon_wrapper_styles}, \
-                                          svg_options: {class: "w-1/2", aria_hidden: true})
-      span class=action_copy_styles Website
+  = link_to website_action_params[:href], class: website_action_params[:button_styles], target: website_action_params[:target] do
+    = render CircularIcon::Component.new(svg_name: "non_profit_cards/website.svg", \
+                                        wrapper_options: {class: website_action_params[:icon_wrapper_styles]}, \
+                                        svg_options: {class: "w-1/2 #{website_action_params[:icon_styles]}", aria_hidden: true})
+    span class=action_copy_styles Website
