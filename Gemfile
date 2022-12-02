@@ -102,18 +102,15 @@ end
 
 group :test do
   # Adds support for Capybara system testing and selenium driver
-  gem "capybara", ">= 3.26"
-  gem "cuprite"
-  gem "simplecov", "~> 0.21.2"
-  gem "rexml", "~> 3.2", ">= 3.2.5"
-  gem "rails-controller-testing", "~> 1.0", ">= 1.0.5"
-  gem "database_cleaner-active_record"
-  gem "rspec-retry"
-  gem "webmock"
-  gem "rspec-sidekiq"
-  gem "shoulda-matchers", "~> 5.0"
-  gem "selenium-webdriver", "~> 4.0"
-  gem "webdrivers", "~> 5.2", require: false
+  gem 'capybara', '>= 3.26'
+  gem 'selenium-webdriver', '~> 4.4'
+  # Easy installation and use of web drivers to run system tests with browsers
+  gem 'rails-controller-testing'
+  gem 'rspec-sidekiq'
+  gem 'shoulda-matchers', '~> 4.0'
+  gem 'simplecov', require: false
+  gem 'timecop'
+  gem 'webdrivers', "~> 5.2", require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
