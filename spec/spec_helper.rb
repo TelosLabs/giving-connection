@@ -2,7 +2,7 @@ require "simplecov"
 # require "webmock/rspec"
 # WebMock.disable_net_connect!(allow_localhost: true)
 require "capybara/rspec"
-require "rspec/retry"
+# require "rspec/retry"
 require "sidekiq/testing"
 SimpleCov.start
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
