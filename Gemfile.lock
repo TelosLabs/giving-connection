@@ -150,7 +150,12 @@ GEM
     coderay (1.1.3)
     concurrent-ruby (1.1.9)
     connection_pool (2.2.5)
+    crack (0.4.5)
+      rexml
     crass (1.0.6)
+    cuprite (0.14.3)
+      capybara (~> 3.0)
+      ferrum (~> 0.13.0)
     database_cleaner-active_record (2.0.1)
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
@@ -203,6 +208,11 @@ GEM
     faraday-net_http_persistent (1.2.0)
     faraday-patron (1.0.0)
     faraday-rack (1.0.0)
+    ferrum (0.13)
+      addressable (~> 2.5)
+      concurrent-ruby (~> 1.1)
+      webrick (~> 1.7)
+      websocket-driver (>= 0.6, < 0.8)
     ffi (1.15.5)
     flay (2.12.1)
       erubis (~> 2.7.0)
@@ -229,6 +239,7 @@ GEM
       guard (~> 2.1)
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
+    hashdiff (1.0.1)
     httparty (0.20.0)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
@@ -427,6 +438,8 @@ GEM
       rspec-expectations (~> 3.10)
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
+    rspec-retry (0.6.2)
+      rspec-core (> 3.3)
     rspec-sidekiq (3.1.0)
       rspec-core (~> 3.0, >= 3.0.0)
       sidekiq (>= 2.4.0)
@@ -472,8 +485,8 @@ GEM
     semantic_range (3.0.0)
     sexp_processor (4.16.0)
     shellany (0.0.1)
-    shoulda-matchers (4.5.1)
-      activesupport (>= 4.2.0)
+    shoulda-matchers (5.2.0)
+      activesupport (>= 5.2.0)
     sidekiq (6.4.0)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
@@ -504,7 +517,6 @@ GEM
       unicode-display_width (~> 1.1, >= 1.1.1)
     thor (1.1.0)
     tilt (2.0.10)
-    timecop (0.9.4)
     turbo-rails (1.3.0)
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
@@ -526,11 +538,16 @@ GEM
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
       selenium-webdriver (~> 4.0)
+    webmock (3.18.1)
+      addressable (>= 2.8.0)
+      crack (>= 0.3.2)
+      hashdiff (>= 0.4.0, < 2.0.0)
     webpacker (5.4.3)
       activesupport (>= 5.2)
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
       semantic_range (>= 2.3.0)
+    webrick (1.7.0)
     websocket (1.2.9)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
@@ -564,6 +581,7 @@ DEPENDENCIES
   city-state
   clockwork
   cocoon
+  cuprite
   database_cleaner-active_record
   database_consistency
   devise
@@ -591,26 +609,28 @@ DEPENDENCIES
   rack-attack
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.4)
-  rails-controller-testing
+  rails-controller-testing (~> 1.0, >= 1.0.5)
   recaptcha
   redis (~> 4.0)
+  rexml (~> 3.2, >= 3.2.5)
   roo (~> 2.8.0)
   rspec-rails (~> 5.0.0)
+  rspec-retry
   rspec-sidekiq
   rubocop
   sass-rails (>= 6)
-  selenium-webdriver (~> 4.4)
-  shoulda-matchers (~> 4.0)
+  selenium-webdriver (~> 4.0)
+  shoulda-matchers (~> 5.0)
   sidekiq
-  simplecov
+  simplecov (~> 0.21.2)
   slim-rails
   spring
-  timecop
   turbo-rails
   tzinfo-data
   view_component
   web-console (>= 4.1.0)
   webdrivers (~> 5.2)
+  webmock
   webpacker (~> 5.0)
 
 RUBY VERSION
