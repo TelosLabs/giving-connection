@@ -23,7 +23,6 @@ default: &default
 
 development:
   <<: *default
-  url: <%= ENV.fetch('DATABASE_URL', '').sub(/^postgres/, "postgis") %>
   database: giving_connection_development
 
   # The specified database role being used to connect to postgres.
