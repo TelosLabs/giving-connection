@@ -1,9 +1,14 @@
 @import "tailwindcss/base.css";
 @import "tailwindcss/components.css";
-// Custom styles here
-
 @import "tailwindcss/utilities.css";
 @import '@yaireo/tagify/src/tagify';
+
+// Custom styles here
+@layer utilities {
+  .disabled-icon path {
+    stroke: #8492A6;
+  }
+}
 
 .scroll-mt-25 {
   scroll-margin-top: 6.25rem;
@@ -65,16 +70,18 @@
     transition: fill 150ms, stroke 150ms;
   }
 
-  &:hover .icon path {
+  &:hover .icon path,
+  &:hover .saved > path {
     stroke: white;
   }
 
-  &:hover .thick-icon path {
-    fill: white;
-  }
-  
+  &:hover .thick-icon path,
   &:hover .saved > path {
     fill: white;
-    stroke: white;
   }
+}
+
+.no-pseudo-elems::after,
+.no-pseudo-elems::before  {
+  display: none;
 }
