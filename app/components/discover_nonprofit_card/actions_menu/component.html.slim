@@ -6,7 +6,7 @@ nav class="flex justify-between"
                                           svg_options: {class: "w-1/2", aria_hidden: true})
     span class=action_copy_styles View Page
   // Save
-  = render DiscoverNonprofitCard::SaveButton::Component.new(user: @user, \
+  = render DiscoverNonprofitCard::ActionsMenu::SaveButton::Component.new(user: @user, \
                                                     location: @location, \
                                                     button_styles: button_styles, \
                                                     icon_wrapper_styles: icon_wrapper_styles, \
