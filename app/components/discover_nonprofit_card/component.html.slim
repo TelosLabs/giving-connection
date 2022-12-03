@@ -3,7 +3,7 @@ article class="max-w-sm rounded text-xs font-medium bg-white shadow-md overflow-
 
   // Cover
   - if @location.images.length > 1
-    = render NonprofitCard::ImagesCarousel::Component.new(images: @location.images,\
+    = render DiscoverNonprofitCard::ImagesCarousel::Component.new(images: @location.images,\
                                                           image_styles: "rounded-t w-full",\
                                                           placeholder_options: {class: "h-0 pb-58%"},\
                                                           carousel_container_options: {class: "absolute inset-0"})
@@ -18,11 +18,11 @@ article class="max-w-sm rounded text-xs font-medium bg-white shadow-md overflow-
     // Card head
     section class="relative pt-4 pb-7 text-gray-4 font-normal"
       h3 class="absolute h-0 w-0 opacity-0" head
-      = render NonprofitCard::Head::Component.new(location: @location)
+      = render DiscoverNonprofitCard::Head::Component.new(location: @location)
     // Actions menu
     section class="pt-6 pb-11 border-t border-gray-8"
       h3 class="h-0 w-0 opacity-0" actions menu
-      = render NonprofitCard::ActionsMenu::Component.new(user: @user, location: @location)
+      = render DiscoverNonprofitCard::ActionsMenu::Component.new(user: @user, location: @location)
     // Causes list
     section class="pt-5 border-t border-gray-8"
       h3 class="mb-4 text-sm font-semibold uppercase"

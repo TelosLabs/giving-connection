@@ -1,9 +1,0 @@
-= content_tag(:div, placeholder_options)
-  = content_tag(:div, carousel_container_options)
-    = render NonprofitCard::ImagesCarousel::NavButton::Component.new(position: "top-1/2 left-4", direction: :prev, outline: "M15 19l-7-7 7-7")
-    
-    div class="swiper-wrapper"
-      - @images.each do |image|
-        img src=url_for(image) class="swiper-slide #{@image_styles}" alt="Slide #{@images.index(image) + 1} of #{@images.length}"
-
-    = render NonprofitCard::ImagesCarousel::NavButton::Component.new(position: "top-1/2 right-4", direction: :next, outline: "M9 5l7 7-7 7")
