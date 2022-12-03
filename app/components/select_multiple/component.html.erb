@@ -12,7 +12,7 @@
                 <%= check_box_tag "#{@name}[]", item, false, class: "h-4 w-4 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent modal-checkbox",
                                   data: { 'select-multiple-target': "checkbox", action: 'click->select-multiple#select', value: item } %>
                 <% if Cause.find_by(name: item) %>
-                  <%= render CircularIcon::Component.new(svg_name: "causes_categories/#{format_cause_name item}",
+                  <%= render CauseIcon::Component.new(svg_name: "causes_categories/#{format_cause_name item}",
                                                         wrapper_options: {class: "w-8 h-8 flex-shrink-0 flex justify-center items-center rounded-full bg-blue-pale", aria_hidden: true},
                                                         svg_options: {class: "w-5 h-5"}) %>
                 <% end %>

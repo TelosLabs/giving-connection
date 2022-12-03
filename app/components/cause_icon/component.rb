@@ -1,4 +1,4 @@
-class CircularIcon::Component < ViewComponent::Base
+class CauseIcon::Component < ViewComponent::Base
   def initialize(svg_name:, wrapper_options: {}, svg_options: {})
     @svg_name = svg_name
     @wrapper_options = wrapper_options

@@ -2,7 +2,7 @@
   - @causes.each do |cause|
     li
       = content_tag(tag, cause_options(cause)) do
-        = render CircularIcon::Component.new(svg_name: "causes_categories/#{cause.decorate.svg_file_name}", \
+        = render CauseIcon::Component.new(svg_name: "causes_categories/#{cause.decorate.svg_file_name}", \
                                              wrapper_options: icon_wrapper_options, \
                                              svg_options: {class: "w-1/2", aria_hidden: true})
         = cause.name
