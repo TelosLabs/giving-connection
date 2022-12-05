@@ -34,6 +34,15 @@ rescue ActiveRecord::PendingMigrationError => e
   puts e.to_s.strip
   exit 1
 end
+
+if ENV["BROWSER_TEST"] == "true"
+  Capybara.javascript_driver = :selenium
+end
+
+Capybara.server_host = "localhost"
+Capybara.server_port = 5001
+Capybara.default_max_wait_time = 5
+
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -74,6 +83,13 @@ RSpec.configure do |config|
   config.include Warden::Test::Helpers
   config.include Warden::Test::Helpers, type: :request
   config.include Devise::Test::ControllerHelpers, type: :controller
+
+  Shoulda::Matchers.configure do |config|
+    config.integrate do |with|
+      with.test_framework :rspec
+      with.library :rails
+    end
+  end
 end
 
 RSpec::Sidekiq.configure do |config|

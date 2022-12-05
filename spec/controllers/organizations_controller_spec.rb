@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe Admin::OrganizationsController, type: :controller do
+  let(:organization) { create(:organization) }
+
   before(:each) do
-    @admin             = create(:admin_user)
-    organization_cause = create(:organization_cause)
-    @organization = organization_cause.organization
+    @admin = create(:admin_user)
     @params       = { name: 'organization', ein_number: 'testing', irs_ntee_code: 'A90',
                       mission_statement_en: 'testing', mission_statement_es: 'pruebas',
                       vision_statement_en: 'testing', vision_statement_es: 'pruebas',
@@ -47,7 +47,7 @@ RSpec.describe Admin::OrganizationsController, type: :controller do
       before { sign_in @admin }
 
       it 'should sucessfully render organizations dashboard show page' do
-        get :show, params: { id: @organization.id }
+        get :show, params: { id: organization.id }
         expect(response).to have_http_status(200)
         expect(response).to render_template(:show)
       end

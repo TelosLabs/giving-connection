@@ -1,6 +1,5 @@
 class DiscoverNonprofitCard::ImagesCarousel::NavButton::Component < ViewComponent::Base
-  def initialize(position: , direction:, outline:)
-    @position = position
+  def initialize(direction:, outline:)
     @direction = direction
     @outline = outline
   end
@@ -8,7 +7,7 @@ class DiscoverNonprofitCard::ImagesCarousel::NavButton::Component < ViewComponen
   def button_options
     {
       type: "button",
-      class: "swiper-button-#{@direction} group absolute #{@position} -translate-y-1/2 cursor-pointer no-pseudo-elems"
+      class: "swiper-button-#{@direction} group absolute -translate-y-1/2 cursor-pointer no-pseudo-elems"
     }
   end
 end

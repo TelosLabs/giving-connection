@@ -8,18 +8,18 @@ class DiscoverNonprofitCard::ImagesCarousel::Component < ViewComponent::Base
 
   def carousel_container_options
     {
-      class: "relative swiper-container bg-gray-5 overflow-hidden",
+      class: "swiper-container",
       # don't override these
       data: {
         controller: "carousel",
         carousel_options_value: '{"navigation": {"nextEl": ".swiper-button-next", "prevEl": ".swiper-button-prev"}}'
       }
-    }.merge(@carousel_container_options) { |duplicate_key, existing_value, new_value| "#{existing_value} #{new_value}" }
+    }.merge(@carousel_container_options) { |_duplicate_key, existing_value, new_value| "#{existing_value} #{new_value}" }
   end
 
   def placeholder_options
     {
-      class: "relative bg-gray-5"
-    }.merge(@placeholder_options) { |duplicate_key, existing_value, new_value| "#{existing_value} #{new_value}" }
+      class: ""
+    }.merge(@placeholder_options) { |_duplicate_key, existing_value, new_value| "#{existing_value} #{new_value}" }
   end
 end

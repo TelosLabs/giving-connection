@@ -37,8 +37,11 @@ FactoryBot.define do
     tagline_es { 'pruebas' }
     website { 'testing' }
     scope_of_work { 'International' }
-    locations { [create(:location)] }
-    creator { create(:admin_user) }
-    causes { [association(:cause)] }
+
+    after(:build) do |organization|
+      organization.locations << create(:location, organization: organization)
+      organization.creator = create(:admin_user)
+      organization.causes << build(:cause)
+    end
   end
 end
