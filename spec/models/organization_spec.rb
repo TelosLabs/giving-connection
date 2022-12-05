@@ -27,19 +27,33 @@
 require 'rails_helper'
 
 RSpec.describe Organization, type: :model do
-  context 'Organization model validation test' do
-    subject { create(:organization) }
+  subject { create(:organization) }
 
-    it 'ensures organizations can be created' do
-      expect(subject).to be_valid
-    end
+  describe "Associations" do
+    it { should have_many(:tags).dependent(:destroy) }
+    it { should have_many(:organization_causes).dependent(:destroy) }
+    it { should have_many(:causes) }
+    it { should have_many(:organization_beneficiaries).dependent(:destroy) }
+    it { should have_many(:organization_admins).dependent(:destroy) }
+    it { should have_many(:beneficiary_subcategories) }
+    it { should have_many(:locations).dependent(:destroy) }
+    it { should have_many(:additional_locations).conditions(main: false) }
+    it { should have_one(:main_location).conditions(main: true) }
+    it { should have_one(:social_media).dependent(:destroy) }
+    it { should have_one_attached(:logo) }
+    it { should have_one_attached(:cover_photo) }
+    it { should belong_to(:creator) }
+  end
 
-    it 'attaches a default logo' do
-      expect(subject.logo.attached?).to eq(true)
-    end
-
-    it 'attaches a default cover photo' do
-      expect(subject.cover_photo.attached?).to eq(true)
-    end
+  describe "Validations" do
+    it { should validate_presence_of(:name) }
+    it { should validate_presence_of(:causes) }
+    it { should validate_presence_of(:ein_number) }
+    it { should validate_uniqueness_of(:ein_number) }
+    it { should validate_presence_of(:irs_ntee_code) }
+    it { should validate_inclusion_of(:irs_ntee_code).in_array( Organizations::Constants::NTEE_CODE ) }
+    it { should validate_presence_of(:mission_statement_en) }
+    it { should validate_presence_of(:scope_of_work) }
+    it { should validate_inclusion_of(:scope_of_work).in_array( Organizations::Constants::SCOPE ) }
   end
 end
