@@ -9,33 +9,33 @@ div class="bg-white rounded-3xl" data-search-target="advancedFilters"
       p class="px-6 py-4 text-sm text-gray-4" Add more filters to narrow down your search results.
       div class="px-6 py-8"
         = form.label :causes, 'Causes', class: 'w-full text-base font-bold text-gray-2'
-        - if search.causes
+        - if selected_("pills", @top_10_causes, search.causes || []).any?
           div class='flex items-center gap-1'
             span class="relative inline-flex w-2 h-2 rounded-full bg-green-300"
             p class="text-sm text-gray-4" Selected Pills:
           p class="flex flex-wrap items-center gap-1 text-sm text-gray-4"
-            = selected_pills(@top_10_causes.map(&:name), "causes").join(', ')
-        = render SelectMultiple::Component.new(name: 'search[causes]', items: causes, selected: selected_advanced_filters(@top_10_causes.map(&:name), "causes"))
+            = selected_("pills", @top_10_causes, search.causes || []).join(', ')
+        = render SelectMultiple::Component.new(name: 'search[causes]', items: causes, selected: selected_("advanced_filters", @top_10_causes, search.causes || []))
 
       div class="px-6 py-8"
         = form.label :services, 'Services', class: 'w-full text-base font-bold text-gray-2'
-        - if search.services
+        - if selected_("pills", @top_10_services, search.services || []).any?
           div class='flex items-center gap-1'
             span class="relative inline-flex w-2 h-2 rounded-full bg-green-300"
             p class="text-sm text-gray-4" Selected Pills:
           p class="flex flex-wrap items-center gap-1 text-sm text-gray-4"
-            = selected_pills(@top_10_services.map(&:name), "services").join(', ')
-        = render SelectMultiple::Component.new(name: 'search[services]', items: services, selected: selected_advanced_filters(@top_10_services.map(&:name), "services"))
+            = selected_pills(@top_10_services, search.services || []).join(', ')
+        = render SelectMultiple::Component.new(name: 'search[services]', items: services, selected: selected_("advanced_filters", @top_10_services, search.services || []))
 
       div class="px-6 py-8"
         = form.label :beneficiary_groups, 'Populations Served', class: 'w-full text-base font-bold text-gray-2'
-        - if search.beneficiary_groups
+        - if selected_("pills", @top_10_beneficiary_subcategories, search.beneficiary_groups || []).any?
           div class='flex items-center gap-1'
             span class="relative inline-flex w-2 h-2 rounded-full bg-green-300"
             p class="text-sm text-gray-4" Selected Pills:
           p class="flex flex-wrap items-center gap-1 text-sm text-gray-4"
-            = selected_pills(@top_10_beneficiary_subcategories.map(&:name) , "beneficiary_groups").join(', ')
-        = render SelectMultiple::Component.new(name: 'search[beneficiary_groups]',items: beneficiary_groups, selected: selected_advanced_filters(@top_10_beneficiary_subcategories.map(&:name), "beneficiary_groups"))
+            = selected_pills(@top_10_beneficiary_subcategories, search.beneficiary_groups || []).join(', ')
+        = render SelectMultiple::Component.new(name: 'search[beneficiary_groups]',items: beneficiary_groups, selected: selected_("advanced_filters", @top_10_beneficiary_subcategories.map, search.beneficiary_groups || []))
 
     div class="flex flex-row justify-between w-full px-6 py-5 border-t border-gray-8"
       // For anchor and button tags stimulus uses the click event as default
