@@ -1,0 +1,32 @@
+article class="max-w-sm rounded text-xs font-medium bg-white shadow-md overflow-hidden"
+  h2 class="h-0 w-0 opacity-0" = "#{@location.name} card"
+
+  // Cover
+  - if @location.images.length > 1
+    = render DiscoverNonprofitCard::ImagesCarousel::Component.new(images: @location.images,\
+                                                          carousel_container_options: {class: "rounded-sm h-52"})
+  - elsif @location.images.length == 1
+    img src=url_for(@location.images.first) alt="cover photo" class="w-hull"
+  - else
+    div class="relative w-full h-52 text-gray-5"
+      img src=url_for(@location.organization.cover_photo) alt="cover photo" class="h-full object-fit-cover"
+
+  // Bottom Part
+  div class="px-5 pb-6"
+    // Card head
+    section class="relative pt-4 pb-7 text-gray-4 font-normal"
+      h3 class="absolute h-0 w-0 opacity-0" head
+      = render DiscoverNonprofitCard::Head::Component.new(location: @location)
+    // Actions menu
+    section class="pt-6 pb-11 border-t border-gray-8"
+      h3 class="h-0 w-0 opacity-0" actions menu
+      = render DiscoverNonprofitCard::ActionsMenu::Component.new(user: @user, location: @location)
+    // Causes list
+    section class="pt-5 border-t border-gray-8"
+      h3 class="mb-4 text-sm font-semibold uppercase"
+        | causes
+      = render CausesList::Component.new( \
+        causes: @location.organization.causes.uniq, \
+        list_options: {class: "flex"}, \
+        cause_options: {class: "w-16"}, \
+        icon_wrapper_options: {class: "w-14 h-14", aria_hidden: true})

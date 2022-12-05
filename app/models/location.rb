@@ -29,6 +29,8 @@ class Location < ActiveRecord::Base
 
   scope :active, -> { joins(:organization).where(organization: { active: true }) }
   scope :besides_po_boxes, -> { where(po_box: false) }
+  # scope :in_nashville, -> { where("ST_DWithin(lonlat, ST_GeographyFromText('SRID=4326;POINT(-86.78125827725053 36.16404968727089)'), 1000000) = true") }
+  scope :locations_with_, ->(cause) { group(:id).joins(:causes).where(causes: { id: cause.id }) }
 
   has_many :office_hours
   has_many :favorite_locations, dependent: :destroy
@@ -86,6 +88,13 @@ class Location < ActiveRecord::Base
 
   def link_to_google_maps
     "https://www.google.com/maps/search/#{address}"
+  end
+
+  def self.sort_by_more_services(locations)
+    locations
+      .joins(:services)
+      .group(:id)
+      .order('count(services.id) DESC')
   end
 
   private

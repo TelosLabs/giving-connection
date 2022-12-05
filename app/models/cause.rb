@@ -16,6 +16,10 @@ class Cause < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
+  def to_param
+    name
+  end
+
   def self.top(limit: 10)
     find(top_causes_ids(limit: limit))
   end

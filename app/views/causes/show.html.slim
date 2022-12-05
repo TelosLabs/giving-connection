@@ -1,0 +1,36 @@
+div class="relative flex justify-center items-center h-72 bg-blue-gradient-3"
+  div class="absolute flex justify-center w-full overflow-hidden" aria-hidden="true"
+    div class="grow"
+      = inline_svg_tag 'new-blur-left.svg', size:'723*288', class: "md:w-full"
+    div class="grow"
+      = inline_svg_tag 'new-blur-right.svg', size:'723*288', class: "md:w-full"
+  span class="absolute top-9 left-5 md:top-24 525px:left-21%" aria-hidden="true"
+    = inline_svg_tag 'simple-star.svg', size: '22*22', class: "fill-current text-blue-dark"
+  span class="absolute top-56 right-16 md:top-14 525px:right-28%" aria-hidden="true"
+    = inline_svg_tag 'simple-star.svg', size: '22*22', class: "fill-current text-blue-dark"
+  span class="absolute top-16 right-6 md:top-52 525px:right-21%" aria-hidden="true"
+    = inline_svg_tag 'simple-heart.svg', size: '22*22', class: "fill-current text-blue-dark"
+
+  h1 class="absolute px-4 text-3xl leading-normal font-bold text-center tracking-wide text-blue-dark dark:text-white"
+    = @cause.name
+
+section class="w-5/6 max-w-6xl mx-auto mt-8 mb-44 md:mt-20"
+  h2 class="font-sans text-lg tracking-wide text-blue-medium"
+    = link_to 'Discover', discover_path, class: "font-bold underline"
+    span class="mx-1"
+      | /
+    = @cause.name
+
+  - if @locations_by_services.empty?
+    div class="flex flex-col items-center mt-5"
+      = inline_svg_tag 'empty_state_4.svg', class: "w-80", aria_hidden: true
+      div class="w-60 -mt-5 text-center"
+        h3 class="mb-5 font-bold text-lg leading-6"
+          | We currently don’t have any nonprofits that match this cause. 
+        p class="mb-10 text-sm"
+          | We are constantly adding new nonprofits to our platform, please check back soon! 
+        = link_to "Go Back to Discover", discover_path, class: "text-blue-medium"
+  - else
+    div class="grid cards-auto-grid justify-items-center gap-7 mt-12"
+      - @locations_by_services.each do |location|
+        = render DiscoverNonprofitCard::Component.new(user: current_user, location: location)
