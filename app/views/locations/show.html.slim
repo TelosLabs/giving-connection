@@ -55,11 +55,12 @@ div class=""
                 ' NTEE Code:
                 span class="font-normal"
                   = @location.organization.irs_ntee_code
-          - if @location.images.attached?
-            div class="pt-4 border-t border-gray-8 mt-6"
-              h4 class="text-sm font-bold text-black uppercase" photos
-              = render DiscoverNonprofitCard::ImagesCarousel::Component.new(images: @location.images, \
-                                                                    carousel_container_options: { class: "rounded-sm h-80" })
+        - if @location.images.attached?
+          div class="pt-4 px-6 border-t border-gray-8 mt-6"
+            h4 class="text-sm font-bold text-black uppercase"
+              | Photos
+            = render DiscoverNonprofitCard::ImagesCarousel::Component.new(images: @location.images, \
+                                                                  carousel_container_options: { class: "rounded-sm h-80" })
 
         - if @location.organization.mission_statement_en.present?
           div class="my-6 border-t border-gray-8"
@@ -82,6 +83,7 @@ div class=""
               | SERVICES - HOW WE DO IT
             p class="text-sm text-black whitespace-pre-wrap"
               = @location.organization&.tagline_en
+
         div class="my-6 border-t border-gray-8 sm:hidden"
         div class="mx-5 sm:hidden"
           h3 class="text-sm font-bold uppercase mb-3.5"
@@ -108,14 +110,12 @@ div class=""
               li class="text-sm font-base text-gray-2"
                 = pop_served.name
           - if @location.social_media.present?
+             div class="border-t border-gray-8 my-7"
              = render SocialMedia::Component.new(social_media: @location.social_media)
           - if @location.organization.donation_link.present?
             div class="border-t border-gray-8 my-7"
             a href=@location.organization.donation_link class="flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200" target="_blank"
               | Donate
-
-        - if @location.images.attached?
-            = render Carousel::Component.new(location: @location)
 
         - if @location.youtube_video_link.present?
           div class="flex flex-col items-center p-5 text-center"
@@ -152,6 +152,7 @@ div class=""
                       | -&nbsp;
                       | #{@location.decorate.closed_office_hours_display}
 
+
     div class="flex-col flex-grow-0 hidden w-full bg-white rounded h-min-content sm:flex md:max-w-402px px-11 md:p-7"
       h3 class="text-sm font-bold uppercase mb-3.5"
         | Causes
@@ -178,27 +179,7 @@ div class=""
             = pop_served.name
       - if @location.social_media.present?
         div class="border-t border-gray-8 my-7"
-        h3 class="text-sm font-bold uppercase"
-          | Social Media
-        div class="flex flex-row gap-5 mt-6"
-          - if @location.social_media&.facebook.present?
-            a href=@location.social_media&.facebook class="text-sm font-base text-gray-2" target="_blank"
-              = inline_svg_tag 'facebook_box.svg', class: "text-salmon fill-current"
-          - if @location.social_media&.linkedin.present?
-            a href=@location.social_media&.linkedin class="text-sm font-base text-gray-2" target="_blank"
-              = inline_svg_tag 'linkedin_box.svg', class: "text-salmon fill-current"
-          - if @location.social_media&.twitter.present?
-            a href=@location.social_media&.twitter class="text-sm font-base text-gray-2" target="_blank"
-              = inline_svg_tag 'twitter_box.svg', class: "text-salmon fill-current"
-          - if @location.social_media&.instagram.present?
-            a href=@location.social_media&.instagram class="text-sm font-base text-gray-2" target="_blank"
-              = inline_svg_tag 'instagram_box.svg', class: "text-salmon fill-current"
-          - if @location.social_media&.youtube.present?
-            a href=@location.social_media&.youtube class="text-sm font-base text-gray-2" target="_blank"
-              = inline_svg_tag 'youtube_box.svg', class: "text-salmon fill-current"
-          - if @location.social_media&.blog.present?
-            a href=@location.social_media&.blog class="text-sm font-base text-gray-2" target="_blank"
-              = inline_svg_tag 'blog_box.svg', class: "text-salmon fill-current"
+        = render SocialMedia::Component.new(social_media: @location.social_media)
       - if @location.organization.donation_link.present?
         div class="border-t border-gray-8 my-7"
         a href=@location.organization.donation_link class="flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200" target="_blank"
