@@ -13,22 +13,9 @@ module SearchesHelper
     list.flatten.compact
   end
 
-  def build_params_array(type)
-    arr = params[:search][type.to_sym]
-    arr = arr.values.flatten if type.include?('services') || type.include?('beneficiary_groups')
-    arr
-  end
-
-  def selected_pills(tab_pills, type)
-    search_params = build_params_array(type)
-    search_params & tab_pills
-  end
-
-  def selected_advanced_filters(tab_pills, type)
-    return [] unless params[:search] && params[:search][type].present?
-
-    search_params = build_params_array(type)
-    search_params - tab_pills
+  def selected_(type, top_ten, search)
+    search = search.values.flatten if search.is_a?(Hash)
+    type == 'pills' ? top_ten.map(&:name) & (search) : search - top_ten.map(&:name)
   end
 
   def kilometers_to_miles(kms)
