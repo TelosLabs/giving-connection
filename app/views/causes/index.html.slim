@@ -27,14 +27,14 @@ div class="px-6"
       = inline_svg_tag "blur-background-3.svg", class: "absolute top-0 right-1/2 -z-1 w-80 transform translate-x-1/2"
     = inline_svg_tag "browse-by-causes.svg", class: "w-full max-w-md -mt-6 md:w-2/5"
 
-  section class="flex flex-col items-center mt-6 mb-28 md:mt-28 md:mb-44"
+  section class="flex flex-col items-center pt-6 mb-28 md:pt-28 md:mb-44" id="causes-section"
     h2 class="mb-10 text-2xl font-bold tracking-tight text-gray-2 dark:text-white md:mb-14"
       | Causes
 
     nav class="w-full max-w-5xl"
       = render CausesList::Component.new(causes: @causes.sort_by(&:name), \
                                       navigational: true, \
-                                      list_options: { class: "grid causes-list-auto-grid justify-items-center gap-y-6"}, \
+                                      list_options: { class: "grid grid-cols-auto-fill-6.75 justify-items-center gap-y-6"}, \
                                       cause_options: { class: "group interactive-btn w-24 text-sm transition-colors hover:text-blue-medium" }, \
                                       icon_wrapper_options: { class: "thick-icon w-20 h-20 transition-colors group-hover:bg-blue-medium", aria_hidden: true})
                                       // cause-icon class for hover

@@ -47,12 +47,7 @@ div class=""
             = link_to favorite_locations_path(location_id: @location.id), method: :post, class: "inline-flex items-center p-2 text-sm text-gray-3" do
               = inline_svg_tag 'bookmark_empty.svg', class: "w-4 h-4 mr-2"
               | Save
-        - if @location.causes.present?
-          div class="flex my-8 gap-2.5 flex-wrap px-6"
-            - @location.organization.causes.uniq.each do |cause|
-              span class="text-sm text-center px-2.5 py-1.5 rounded-lg border border-gray-6 text-gray-3"
-                = cause.name
-        div class="mx-6 text-left"
+        div class="mt-10 mx-6 text-left"
           = render WorkingHours::Component.new(result: @location)
           - if @location.organization.irs_ntee_code.present?
             p class="text-sm leading-6 font-base text-gray-2"
@@ -89,6 +84,16 @@ div class=""
               = @location.organization&.tagline_en
         div class="my-6 border-t border-gray-8 sm:hidden"
         div class="mx-5 sm:hidden"
+          h3 class="text-sm font-bold uppercase mb-3.5"
+            | Causes
+          ul class="flex flex-wrap gap-3"
+            - @location.causes.each do |cause|
+              li
+                = render Tooltip::Component.new(copy: cause.name, tooltip_options: {class: "bottom-full left-3/4 py-1 px-3 mb-2 rounded-sm text-xs text-center text-white bg-gray-2 bg-opacity-90"}) do
+                  = render CauseIcon::Component.new(svg_name: "causes_categories/#{cause.decorate.svg_file_name}", \
+                                                    wrapper_options: {class: "labelled-icon w-8 h-8 flex justify-center items-center rounded-full bg-blue-pale"}, \
+                                                    svg_options: {class: "w-5 h-5", aria_hidden: true})
+          div class="border-t border-gray-8 my-7"
           h3 class="text-sm font-bold uppercase mb-3.5"
             | Services Offered
           ul class="flex flex-col gap-8"
@@ -148,6 +153,16 @@ div class=""
                       | #{@location.decorate.closed_office_hours_display}
 
     div class="flex-col flex-grow-0 hidden w-full bg-white rounded h-min-content sm:flex md:max-w-402px px-11 md:p-7"
+      h3 class="text-sm font-bold uppercase mb-3.5"
+        | Causes
+      ul class="flex flex-wrap gap-3"
+        - @location.causes.each do |cause|
+          li
+            = render Tooltip::Component.new(copy: cause.name, tooltip_options: {class: "bottom-full left-3/4 py-1 px-3 mb-2 rounded-sm text-xs text-center text-white bg-gray-2 bg-opacity-90"}) do
+              = render CauseIcon::Component.new(svg_name: "causes_categories/#{cause.decorate.svg_file_name}", \
+                                                wrapper_options: {class: "labelled-icon w-8 h-8 flex justify-center items-center rounded-full bg-blue-pale"}, \
+                                                svg_options: {class: "w-5 h-5", aria_hidden: true})
+      div class="border-t border-gray-8 my-7"
       h3 class="text-sm font-bold uppercase mb-3.5"
         | Services Offered
       ul class="flex flex-col gap-8"

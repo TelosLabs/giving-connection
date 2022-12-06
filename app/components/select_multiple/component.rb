@@ -24,5 +24,14 @@ module SelectMultiple
         },
       }
     end
+
+    def format_cause_name(name)
+      name.downcase.
+          delete("&").
+          split(" ").
+          join("_").
+          gsub("-", "_") <<
+          ".svg"  
+    end
   end
 end

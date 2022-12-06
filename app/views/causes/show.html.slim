@@ -31,6 +31,6 @@ section class="w-5/6 max-w-6xl mx-auto mt-8 mb-44 md:mt-20"
           | We are constantly adding new nonprofits to our platform, please check back soon! 
         = link_to "Go Back to Discover", discover_path, class: "text-blue-medium"
   - else
-    div class="grid cards-auto-grid justify-items-center gap-7 mt-12"
+    div class="grid grid-cols-auto-fill-18 justify-items-center gap-7 mt-12"
       - @locations_by_services.each do |location|
         = render DiscoverNonprofitCard::Component.new(user: current_user, location: location)
