@@ -226,7 +226,7 @@ export default class extends Controller {
         });
 
         sessionStorage.setItem('marker_infowindow', element.id)
-        this.scrollToSelectedLocation()
+        // Scroll method calling was here, removed so that it doesn't scroll on mouseover.
       });
 
       if (pin && pin.id == element.id)  {
