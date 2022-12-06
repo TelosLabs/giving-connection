@@ -20,6 +20,7 @@
     "stimulus-carousel": "^4.0.0",
     "stimulus-checkbox-select-all": "^5.1.0",
     "stimulus-use": "^0.50.0-2",
+    "swiper": "6.8.4",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
     "tailwindcss-stimulus-components": "^3.0.4",
     "webpack": "^4.46.0",
