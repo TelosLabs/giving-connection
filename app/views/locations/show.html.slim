@@ -88,13 +88,12 @@ div class=""
         div class="mx-5 sm:hidden"
           h3 class="text-sm font-bold uppercase mb-3.5"
             | Causes
-          ul class="flex flex-wrap gap-3"
-            - @location.causes.each do |cause|
-              li
-                = render Tooltip::Component.new(copy: cause.name, tooltip_options: {class: "bottom-full left-3/4 py-1 px-3 mb-2 rounded-sm text-xs text-center text-white bg-gray-2 bg-opacity-90"}) do
-                  = render CauseIcon::Component.new(svg_name: "causes_categories/#{cause.decorate.svg_file_name}", \
-                                                    wrapper_options: {class: "labelled-icon w-8 h-8 flex justify-center items-center rounded-full bg-blue-pale"}, \
-                                                    svg_options: {class: "w-5 h-5", aria_hidden: true})
+          = render CausesList::Component.new( \
+                                          causes: @location.causes.uniq, \
+                                          navigational: true, \
+                                          list_options: { class: "flex flex-wrap gap-3"}, \
+                                          cause_options: { class: "group interactive-btn w-24 text-sm transition-colors hover:text-blue-medium" }, \
+                                          icon_wrapper_options: { class: "thick-icon w-14 h-14 transition-colors group-hover:bg-blue-medium", aria_hidden: true})
           div class="border-t border-gray-8 my-7"
           h3 class="text-sm font-bold uppercase mb-3.5"
             | Services Offered
@@ -156,13 +155,12 @@ div class=""
     div class="flex-col flex-grow-0 hidden w-full bg-white rounded h-min-content sm:flex md:max-w-402px px-11 md:p-7"
       h3 class="text-sm font-bold uppercase mb-3.5"
         | Causes
-      ul class="flex flex-wrap gap-3"
-        - @location.causes.each do |cause|
-          li
-            = render Tooltip::Component.new(copy: cause.name, tooltip_options: {class: "bottom-full left-3/4 py-1 px-3 mb-2 rounded-sm text-xs text-center text-white bg-gray-2 bg-opacity-90"}) do
-              = render CauseIcon::Component.new(svg_name: "causes_categories/#{cause.decorate.svg_file_name}", \
-                                                wrapper_options: {class: "labelled-icon w-8 h-8 flex justify-center items-center rounded-full bg-blue-pale"}, \
-                                                svg_options: {class: "w-5 h-5", aria_hidden: true})
+      = render CausesList::Component.new( \
+                                      causes: @location.causes.uniq, \
+                                      navigational: true, \
+                                      list_options: { class: "flex flex-wrap gap-3"}, \
+                                      cause_options: { class: "group interactive-btn w-24 text-sm transition-colors hover:text-blue-medium" }, \
+                                      icon_wrapper_options: { class: "thick-icon w-14 h-14 transition-colors group-hover:bg-blue-medium", aria_hidden: true})
       div class="border-t border-gray-8 my-7"
       h3 class="text-sm font-bold uppercase mb-3.5"
         | Services Offered

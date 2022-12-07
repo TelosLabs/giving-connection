@@ -11,7 +11,7 @@ class CausesList::Component < ViewComponent::Base
   def cause_options(cause)
     {
       href: @navigational ? discover_show_path(cause) : nil,
-      class: "grid place-items-center text-center font-medium"
+      class: "grid place-items-center text-center"
     }.merge(@cause_options) { |duplicate_key, existing_value, new_value| "#{existing_value} #{new_value}" }
   end
 

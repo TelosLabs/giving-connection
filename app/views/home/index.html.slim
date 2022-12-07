@@ -66,7 +66,7 @@ main
       = render CausesList::Component.new(causes: Cause.top(limit: 9), \
                                           navigational: true, \
                                           list_options: { class: "grid grid-cols-auto-fill-6.75 justify-items-center gap-y-6"}, \
-                                          cause_options: { class: "group interactive-btn w-24 text-sm transition-colors hover:text-blue-medium" }, \
+                                          cause_options: { class: "group interactive-btn w-24 text-sm transition-colors hover:text-blue-medium font-medium" }, \
                                           icon_wrapper_options: { class: "thick-icon w-20 h-20 transition-colors group-hover:bg-blue-medium", aria_hidden: true})
     = link_to "see more", discover_path << "/#causes-section", class: "px-10 py-4 rounded-md mb-32 text-white leading-5 uppercase tracking-wider font-bold bg-blue-dark transition-colors hover:bg-blue-medium"
   section class="flex flex-col mx-auto md:flex-row max-w-7xl justify-evenly sm:mb-1 525px:pb-20 md:px-8"
