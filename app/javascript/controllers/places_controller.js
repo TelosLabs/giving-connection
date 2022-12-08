@@ -11,6 +11,7 @@ export default class extends Controller {
   }
 
   connect() {
+    this.hidePopup()
     if (typeof(google) != "undefined") {
       this.initMap()
     }
