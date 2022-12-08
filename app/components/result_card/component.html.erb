@@ -53,17 +53,13 @@
     <% unless @causes.empty? %>
       <section>
         <h2 class="mb-2 text-xs uppercase font-bold font-sans">Causes</h2>
-        <ul class="flex flex-wrap gap-2">
-          <% @causes.each do |cause| %>
-            <li>
-              <%= render Tooltip::Component.new(copy: cause.name, tooltip_options: {class: "bottom-full left-3/4 py-1 px-3 mb-2 rounded-sm text-xs text-center text-white bg-gray-2 bg-opacity-90"}) do %>
-                <%= render CauseIcon::Component.new(svg_name: "causes_categories/#{cause.decorate.svg_file_name}",
-                                                       wrapper_options: {class: "labelled-icon w-8 h-8 flex justify-center items-center rounded-full bg-blue-pale"},
-                                                       svg_options: {class: "w-5 h-5", aria_hidden: true}) %>
-              <% end %>
-            </li>
-          <% end %>
-        </ul>
+        <%= render CausesList::Component.new( \
+            causes: @causes, \
+            tooltip: true, \
+            tooltip_options: {class: "bottom-full right-1/2 py-1 px-3 mb-2 rounded-sm text-xs text-center text-white transform translate-x-1/2 bg-gray-2 bg-opacity-90"}, \
+            list_options: { class: "flex flex-wrap gap-3 my-2"}, \
+            icon_wrapper_options: { class: "labelled-icon w-8 h-8 flex justify-center items-center rounded-full bg-blue-pale", aria_hidden: true}, \
+            icon_svg_options: {class: "w-5 h-5", aria_hidden: true}) %>
       </section>
     <% end %>
     <a href="<%= location_path(@id)%>" class="inline-flex items-center ml-4 text-sm font-bold text-blue-medium whitespace-nowrap">

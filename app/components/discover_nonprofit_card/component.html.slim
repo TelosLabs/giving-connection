@@ -27,6 +27,7 @@ article class="max-w-sm rounded text-xs font-medium bg-white shadow-md overflow-
         | causes
       = render CausesList::Component.new( \
         causes: @location.organization.causes.uniq, \
-        list_options: {class: "flex flex-wrap gap-3"}, \
-        cause_options: {class: "w-16"}, \
-        icon_wrapper_options: {class: "w-14 h-14", aria_hidden: true})
+        icon_svg_options: {class: "w-1/2", aria_hidden: true}, \
+        list_options: { class: "flex flex-wrap gap-3"}, \
+        cause_options: { class: "group interactive-btn w-24 text-sm transition-colors hover:text-blue-medium font-normal" }, \
+        icon_wrapper_options: { class: "thick-icon w-14 h-14 transition-colors group-hover:bg-blue-medium", aria_hidden: true})

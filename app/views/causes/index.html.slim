@@ -33,8 +33,7 @@ div class="px-6"
 
     nav class="w-full max-w-5xl"
       = render CausesList::Component.new(causes: @causes.sort_by(&:name), \
-                                      navigational: true, \
-                                      list_options: { class: "grid grid-cols-auto-fill-6.75 justify-items-center gap-y-6"}, \
-                                      cause_options: { class: "group interactive-btn w-24 text-sm transition-colors hover:text-blue-medium font-medium" }, \
-                                      icon_wrapper_options: { class: "thick-icon w-20 h-20 transition-colors group-hover:bg-blue-medium", aria_hidden: true})
-                                      // cause-icon class for hover
+        icon_svg_options: {class: "w-1/2", aria_hidden: true}, \
+        list_options: { class: "grid grid-cols-auto-fill-6.75 justify-items-center gap-y-6"}, \
+        cause_options: { class: "group interactive-btn w-24 text-sm transition-colors hover:text-blue-medium font-medium" }, \
+        icon_wrapper_options: { class: "thick-icon w-20 h-20 transition-colors group-hover:bg-blue-medium", aria_hidden: true})
