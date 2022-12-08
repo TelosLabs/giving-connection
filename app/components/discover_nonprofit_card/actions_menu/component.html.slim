@@ -1,6 +1,6 @@
 nav class="flex justify-between"
   // GC profile link
-  = link_to location_path(@location), class: "interactive-btn group relative grid place-items-center pb-4 text-blue-medium" do
+  = link_to location_path(@location), class: "interactive-btn group relative grid place-items-center pb-4 text-blue-medium", target: "_blank" do
     = render CauseIcon::Component.new(svg_name: "non_profit_cards/redirect.svg", \
                                           wrapper_options: {class: "icon w-10 h-10 border border-blue-medium transition-colors group-hover:bg-blue-medium"}, \
                                           svg_options: {class: "w-1/2", aria_hidden: true})

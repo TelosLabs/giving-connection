@@ -1,4 +1,4 @@
-= link_to link_path, {method: @link_args[:method], class: @button_styles} do
+= link_to link_path, method: @link_args[:method], class: @button_styles, data: @link_args[:data] do
   = render CauseIcon::Component.new(svg_name: "non_profit_cards/save.svg", \
                                        wrapper_options: {class: @icon_wrapper_styles}, \
                                        svg_options: {class: "w-1/2 #{saved}" , aria_hidden: true})
