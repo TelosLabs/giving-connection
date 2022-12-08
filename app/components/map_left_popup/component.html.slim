@@ -4,8 +4,8 @@
       = image_tag result.organization.logo, class: "w-1/5 h-1/5 mt-1"
       div class="flex flex-col ml-2"
         div
-          a class="font-semibold text-sm lg:text-base cursor-pointer"
-            = result.organization.name
+          = link_to location_path(result), class: "font-semibold text-sm lg:text-base cursor-pointer" do
+           = result.organization.name
           - if result.organization.verified?
             = inline_svg_tag 'verified_nonprofit_check.svg', class: 'w-4 h-4 ml-1 align-text-bottom inline'
         h4 class="text-gray-500 lg:text-sm text-xs"
