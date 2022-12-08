@@ -10,37 +10,36 @@ class DiscoverNonprofitCard::ActionsMenu::SaveButton::Component < ViewComponent:
   end
 
   def get_link_args
-    # user logged out
     if @user.nil?
       {
         params: {
           location_id: @location
         },
-        method: :post
+        method: :post,
+        data: {}
       }
     # removing saved nonprofit
     elsif FavoriteLocation.exists?(user_id: @user&.id, location_id: @location.id)
       {
         params: {
           id: FavoriteLocation.find_by(user_id: @user.id, location_id: @location.id),
-          origin: "location_show"
         },
-        method: :delete
+        method: :delete,
+        data: { controller: "bookmark-subscription", action: "click->bookmark-subscription#reloadPage" }
       }
     # saving nonprofit
     else
       {
         params: {
           location_id: @location,
-          origin: "location_show"
         },
-        method: :post
+        method: :post,
+        data: { controller: "bookmark-subscription", action: "click->bookmark-subscription#reloadPage" }
       }
     end
   end
 
   def saved
-    # styles for saved icon
     FavoriteLocation.exists?(user_id: @user&.id, location_id: @location.id) ? "saved" : ""
   end
 
