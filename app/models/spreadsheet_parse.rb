@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class SpreadsheetParse
-  FILES_NAME = ['orgs.csv', 'tags.csv', 'beneficiaries.csv', 'locations.csv',
-                'location_services.csv', 'location_office_hours.csv'].freeze
+  FILES_NAME = ['orgs.csv', 'tags.csv', 'beneficiaries.csv', 'causes.csv',
+                'locations.csv', 'location_services.csv', 'location_office_hours.csv'].freeze
 
   def import(spreadsheet)
     file_path = File.open(File.join(Rails.root, 'db', 'uploads'))
@@ -22,6 +22,7 @@ class SpreadsheetParse
       { orgs_csv_file: "#{file_path.path}/orgs.csv",
         tags_csv_file: "#{file_path.path}/tags.csv",
         beneficiaries_csv_file: "#{file_path.path}/beneficiaries.csv",
+        causes_csv_file: "#{file_path.path}/causes.csv",
         locations_csv_file: "#{file_path.path}/locations.csv",
         location_services_csv_file: "#{file_path.path}/location_services.csv",
         location_office_hours_csv_file: "#{file_path.path}/location_office_hours.csv" }
@@ -36,6 +37,7 @@ class SpreadsheetParse
 
           create_tags(csv_file_paths[:tags_csv_file], new_organization, org_row['id'])
           create_organization_beneficiaries(csv_file_paths[:beneficiaries_csv_file], new_organization, org_row['id'])
+          create_organization_causes(csv_file_paths[:causes_csv_file], new_organization, org_row['id'])
           create_locations_location_services_and_office_hours(csv_file_paths[:locations_csv_file],
                                                               csv_file_paths[:location_services_csv_file],
                                                               csv_file_paths[:location_office_hours_csv_file],
@@ -65,6 +67,16 @@ class SpreadsheetParse
     end
   end
 
+  def create_organization_causes(causes_csv_file_path, new_organization, org_id)
+    CSV.foreach(causes_csv_file_path, headers: :first_row) do |cause_row|
+      if cause_row['organization_id'] == org_id
+        cause = Cause.find_by_name(cause_row['name'])
+        new_organization_causes =
+          OrganizationCause.create(cause: cause, organization: new_organization)
+      end
+    end
+  end
+
   def create_locations_location_services_and_office_hours(locations_csv_file_path, location_services_csv_file_path, location_office_hours_csv_file, new_organization, org_id)
     CSV.foreach(locations_csv_file_path, headers: :first_row) do |location_row|
       if location_row['organization_id'] == org_id
@@ -72,7 +84,6 @@ class SpreadsheetParse
 
         create_location_services(location_services_csv_file_path, new_location, location_row['id'])
         create_location_office_hours(location_office_hours_csv_file, new_location, location_row['id']) unless CSV.read(location_office_hours_csv_file).length < 1
-
       end
     end
   end
