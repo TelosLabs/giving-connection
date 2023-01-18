@@ -115,8 +115,7 @@ class SpreadsheetParse
       mission_statement_en: org_row['mission_statement_en'], vision_statement_en: org_row['vision_statement_en'],
       tagline_en: org_row['tagline_en'], mission_statement_es: org_row['mission_statement_es'],
       vision_statement_es: org_row['vision_statement_es'], tagline_es: org_row['tagline_es'],
-      website: org_row['website'], scope_of_work: org_row['scope_of_work'], creator: AdminUser.first,
-      active: org_row['active'] == 'yes' }
+      website: org_row['website'], scope_of_work: org_row['scope_of_work'], creator: AdminUser.first, active: true }
   end
 
   def build_social_media_hash(org_row, new_organization)
