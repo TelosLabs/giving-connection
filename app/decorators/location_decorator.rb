@@ -21,9 +21,9 @@ class LocationDecorator < ApplicationDecorator
   end
 
   def display_day_working_hours(office_hour)
-    return "Closed" if office_hour.closed?
+    return "Closed" if office_hour&.closed?
 
-    "#{office_hour.open_time.strftime("%l %p")}-#{office_hour.close_time.strftime("%l %p")} (CST)"
+    "#{office_hour&.open_time&.strftime("%l %p")}-#{office_hour&.close_time&.strftime("%l %p")} (CST)"
   end
 
   def open_time_for_display

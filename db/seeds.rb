@@ -42,9 +42,6 @@ unless Rails.env.production?
   Rake::Task['populate:seed_beneficiaries_and_beneficiaries_subcategories'].invoke
 
   # Pupulate organizations and locations
-  SpreadsheetParse.new.import("./lib/assets/staging-data-19-01-2022.xlsx")
-
-  # Create organizations and causes association
-  Rake::Task['populate:seed_organizations_causes'].invoke
+  SpreadsheetParse.new.import("./lib/assets/GC_Dummy_Data_for_DB.xlsx")
 
 end
