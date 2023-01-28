@@ -28,7 +28,7 @@ export default class extends Controller {
 
   reloadPage(event) {
     window.location.search = window.location.search
-}
+  }
 
   // Left map popup functions start here
   // It was necessary to create this functions in this controller because the map is created here, and we have access to Markers.
@@ -56,7 +56,7 @@ export default class extends Controller {
     let event_id = event.target.id.replace(/\D/g, '');
     this.leftMapPopupIds[event_id]["map_left_popup"].classList.remove('hidden')
     this.leftMapPopupIds[event_id]["marker"].setIcon(this.clickedimageurlValue)
-    this.leftMapPopupIds[event_id]["marker"].setAnimation(google.maps.Animation.BOUNCE);
+    google.maps.event.trigger(this.leftMapPopupIds[event_id]["marker"], "mouseover");
     sessionStorage.setItem('map_left_popup', this.leftMapPopupIds[event_id]["map_left_popup"].id)
     sessionStorage.setItem('selected_marker', this.leftMapPopupIds[event_id]["marker"].id)
     this.resetMarkersAndMapLeftPopup(event_id)

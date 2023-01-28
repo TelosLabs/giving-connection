@@ -1,5 +1,5 @@
 - markers = @results&.map { |l| [l.latitude, l.longitude] }  || []
-= form_with model: @search, url: "", class: 'relative', method: :get, data: { turbo_frame: "search-locations", turbo_action: "replace", controller: 'places search search--alerts modal', 'search--alerts-target': 'form', 'search-target': 'form'} do |f|
+= form_with model: @search, url: "", class: 'relative', method: :get, data: { turbo_frame: "search-locations", turbo_action: "replace", controller: 'search search--alerts modal', 'search--alerts-target': 'form', 'search-target': 'form'} do |f|
   = render SearchBar::Component.new(form: f, search: @search)
   = render SearchPills::Component.new(causes: @top_10_causes, services: @top_10_services, beneficiary_subcategories: @top_10_beneficiary_subcategories, params: params)
   = turbo_frame_tag "search-locations" do
@@ -68,6 +68,7 @@
                   - else
                     = link_to "Create an Alert for this Search", user_session_path, class: 'mt-10 text-sm font-bold text-black'
             = render SearchAlert::Component.new(keywords: params.dig('search', 'keyword'), filters: list_of_filters(@search))
+          // Mobile map
           div class="hidden w-full h-85vh md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}"
             div class="w-full h-full" data-places-target="map"
             div class="hidden"
@@ -114,7 +115,7 @@
                         ' Closed
                       | -&nbsp;
                       = result.decorate.closed_office_hours_display
-
+        // Desktop map
         div class="relative hidden w-full md:flex" data-controller="places result-card--component" data-places-zoom-value="10" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}"
           div class="absolute inset-0 w-full h-full xs:h-85vh" data-places-target="map"
           div class="rounded-6px overflow-y-auto w-3/4 max-w-xs xl:max-w-356px h-5/5 m-3" id="map-left-popup"
@@ -159,3 +160,4 @@
                       ' Closed
                     | -&nbsp;
                     = result.decorate.closed_office_hours_display
+// TODO DRY map markup
