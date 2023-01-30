@@ -18,7 +18,7 @@ Install hivemind
 > brew install hivemind
 
 Install redis
-> brew install redis
+> brew install redisss
 
 Install gem bundle
 > bundle install
