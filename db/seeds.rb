@@ -41,7 +41,7 @@ unless Rails.env.production?
   # Population served categories and subcategories
   Rake::Task['populate:seed_beneficiaries_and_beneficiaries_subcategories'].invoke
 
-  # Pupulate organizations and locations
+  # Populate organizations and locations
   SpreadsheetParse.new.import("./lib/assets/GC_Dummy_Data_for_DB.xlsx")
 
 end
