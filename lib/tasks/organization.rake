@@ -48,7 +48,7 @@ namespace :organization do
       )
       Rails.logger.info "User #{admin.email}-#{admin.id} succesfully assigned to Organization #{organization.name}-#{organization.id}"
     rescue => ex
-      Rails.logger.info "#{ex} for Organization: #{org_admin[:admin_email]}"
+      Rails.logger.info "#{ex} for Organization: #{org_admin[:org_name]}"
     end
   end
 end
