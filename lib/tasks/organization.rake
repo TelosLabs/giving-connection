@@ -3,7 +3,7 @@ namespace :organization do
   task assign_admin: :environment do
     org_admin_arr = [
       {
-        org_name: 'A Step Ahead of Middle Tennessee',
+        org_name: 'A Step Ahead Foundation of Middle Tennessee Inc.',
         admin_email: 'kristin@astepaheadmiddletn.org'
       },
       {
@@ -12,22 +12,18 @@ namespace :organization do
       },
       {
         org_name: 'ABC Sports Foundation',
-        admin_email: 'info@abcsports.org'
-      },
-      {
-        org_name: 'The Forge Nashville',
-        admin_email: 'erin@theforgenashville.org'
+        admin_email: 'ashley@abcsports.org'
       },
       {
         org_name: 'Exile International',
-        admin_email: 'Taylor@exileinternational.org'
+        admin_email: 'taylor@exileinternational.org'
       },
       {
         org_name: 'Faith Family Medical Center',
         admin_email: 'emaggart@faithmedical.org'
       },
       {
-        org_name: 'Eakin School Parent Teacher Organization',
+        org_name: 'Eakin School Parent Teacher Organization (PTO)',
         admin_email: 'eakinpto@gmail.com'
       }
     ]
@@ -37,8 +33,8 @@ namespace :organization do
       admin = User.find_by(email: org_admin[:admin_email])
       if organization.blank? || admin.blank?
         Rails.logger.info 'An error has ocurred'
-        Rails.logger.info "Organization: #{org_admin[:org_name]} was not found" if admin.blank?
-        Rails.logger.info "User: #{org_admin[:admin_email]} was not found" if organization.blank?
+        Rails.logger.info "Organization: #{org_admin[:org_name]} was not found" if organization.blank?
+        Rails.logger.info "User: #{org_admin[:admin_email]} was not found" if admin.blank?
         next
       end
       OrganizationAdmin.create!(
