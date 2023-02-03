@@ -11,7 +11,7 @@ class OrganizationAdminDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     organization: Field::BelongsTo,
-    user: Field::BelongsTo,
+    user: Field::BelongsTo.with_options(order: 'email'),
     id: Field::Number,
     role: Field::SelectBasic.with_options({
                                             choices: ['admin']
