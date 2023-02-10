@@ -280,35 +280,50 @@ div class="w-full h-full bg-grey-9"
                         = inline_svg_tag 'clock-icon.svg', size:"16*16"
                       span class="capitalize"
                         | edit opening hours
-                    div class="fixed inset-0 flex items-center justify-center hidden md:max-w-xl mx-auto overflow-y-auto animated fadeIn" data-modal-target="container" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" style="z-index: 9999;"
-                      div class="relative w-full max-h-screen"
-                        .m-1.bg-white.rounded.shadow
-                          div class="px-6 pt-8 text-base pb-11"
-                            div class="flex justify-between w-full mb-4"
-                              h6.text-lg.pb-4 aria-level="7"
-                                | Hours
-                              button class='p-2 rounded-xl h-7 text-gray-1 bg-gray-7 hover:bg-gray-6' type="button" data-action="click->modal#close"
-                                span.sr-only Dismiss
-                                = inline_svg_tag 'x-icon.svg', class:'h-3 w-3'
-                            table.schedule-editor class="w-full"
-                              tbody
-                                - Date::DAYNAMES.each_with_index do |day, index|
-                                  = location_form.fields_for :office_hours, location_form.object.office_hours.find_or_initialize_by(day: index) do |sched|
-                                    tr class="flex flex-col md:flex-row justify-between text-base mb-4"
-                                      td class="mr-4 "
-                                        = day
-                                        = sched.hidden_field :day, value: index
-                                      td class="flex flex-col md:flex-row"
-                                        div class="flex items-start mb-2"
-                                          div class="flex flex-col mr-4"
-                                            = sched.label :open_time
-                                            = sched.time_field :open_time, class:"rounded-md p-1"
-                                          div class="flex flex-col"
-                                            = sched.label :close_time
-                                            = sched.time_field :close_time, class:"rounded-md p-1"
-                                        div class="flex flex-row items-center gap-2 md:ml-6"
-                                          = sched.check_box :closed
-                                          = sched.label :closed
+                    // Edit hours modal
+                    div class="fixed inset-0 flex items-center justify-center hidden w-full md:max-w-592px mx-auto animated fadeIn" data-modal-target="container" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" style="z-index: 9999;"
+                      div class="relative w-full max-h-screen px-6 pt-8 pb-11 text-base bg-white rounded shadow"
+                        div class="flex justify-between w-full mb-4"
+                          h6.pb-4.text-lg.font-semibold aria-level="7"
+                            | Hours
+                          button class='p-2 rounded-xl h-7 text-gray-1 bg-gray-7 hover:bg-gray-6' type="button" data-action="click->modal#close"
+                            span.sr-only Dismiss
+                            = inline_svg_tag 'x-icon.svg', class:'h-3 w-3'
+                        p class="mb-6 text-sm text-gray-4"
+                          | Hours must be entered in Central Standard Time (CST).
+                          br
+                          | Please enter times for each day of the week to avoid an error message.
+                        // For horizontal scrolling
+                        div class="w-full my-10 overflow-x-auto"
+                          table class="schedule-editor table-fixed w-full text-left"
+                            tbody
+                              // column headers
+                              tr class="text-left"
+                                th class="w-28 p-3 font-medium"
+                                th class="w-44 font-medium"
+                                  | Open time
+                                th class="w-44 font-medium"
+                                  | Close time
+                                th class="w-20 text-center font-medium"
+                                  | Closed
+                              - Date::DAYNAMES.each_with_index do |day, index|
+                                = location_form.fields_for :office_hours, location_form.object.office_hours.find_or_initialize_by(day: index) do |sched|
+                                  // rows
+                                  tr
+                                    th class="p-3 font-medium" scope="row"
+                                      = day
+                                      = sched.hidden_field :day, value: index
+                                    td
+                                      = sched.label :open_time, class: "sr-only"
+                                      = sched.time_field :open_time, class:"rounded-md p-1"
+                                    td
+                                      = sched.label :close_time, class: "sr-only"
+                                      = sched.time_field :close_time, class:"rounded-md p-1"
+                                    td class="text-center"
+                                      = sched.check_box :closed, class: "rounded-md"
+                                      = sched.label :closed, class: "sr-only"
+                        button type="button" class="block w-1/3 mx-auto px-5 py-2.5 rounded-md bg-blue-medium text-white" data-action="click->modal#close"
+                          | Save
 
                   div class="hidden col-span-3 md:flex"
                   div class="col-span-12 lg:col-span-6 md:col-span-7"
