@@ -13,8 +13,9 @@ module Admin
     def upload; end
 
     def import
-      SpreadsheetParse.new.import(params[:file])
-      redirect_to admin_organizations_path, notice: 'Organizations imported.'
+      results = SpreadsheetParse.new.import(params[:file])
+      flash.now[:notice] = log_results(results)
+      render :upload, status: :unprocessable_entity
     end
 
     def new
@@ -112,7 +113,19 @@ module Admin
             .transform_values { |value| value == '' ? nil : value }
     end
 
-    # See https://administrate-prototype.herokuapp.com/customizing_controller_actions
-    # for more information
+    private
+
+    def log_results(results)
+      logs =
+        "#{results.ids.count} organizations succesfully created. <br>" \
+        "#{results.failed_instances.count} organizations failed: <br>"
+
+      results.failed_instances.each do |failed_organization|
+        logs <<
+          "* #{failed_organization&.name}: " \
+          "#{failed_organization.errors.full_messages.to_sentence} <br>"
+      end
+      logs
+    end
   end
 end

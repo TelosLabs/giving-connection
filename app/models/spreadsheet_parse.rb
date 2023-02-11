@@ -5,9 +5,11 @@ class SpreadsheetParse
                 'locations.csv', 'location_services.csv', 'location_office_hours.csv', 'location_phone_number.csv'].freeze
 
   def import(spreadsheet)
+    @organizations = []
     file_path = File.open(File.join(Rails.root, 'db', 'uploads'))
     csv_file_paths = spreadsheet_to_csv(spreadsheet, file_path)
     create_models(csv_file_paths)
+    import_organizations
   end
 
   def spreadsheet_to_csv(spreadsheet, file_path)
@@ -48,7 +50,7 @@ class SpreadsheetParse
         new_organization, org_row['id']
       )
 
-      new_organization.save
+      @organizations << new_organization
     end
   end
 
@@ -66,7 +68,7 @@ class SpreadsheetParse
     CSV.foreach(beneficiaries_csv_file_path, headers: :first_row) do |beneficiary_row|
       if beneficiary_row['organization_id'] == org_id
         beneficiary_subcategory = BeneficiarySubcategory.find_by_name(beneficiary_row['name'])
-        new_organization.organization_beneficiaries.build(beneficiary_subcategory: beneficiary_subcategory) if beneficiary_subcategory.present?
+        new_organization.organization_beneficiaries.build(beneficiary_subcategory: beneficiary_subcategory)
       end
     end
   end
@@ -75,7 +77,7 @@ class SpreadsheetParse
     CSV.foreach(causes_csv_file_path, headers: :first_row) do |cause_row|
       if cause_row['organization_id'] == org_id
         cause = Cause.find_by_name(cause_row['name'])
-        new_organization.organization_causes.build(cause: cause) if cause.present?
+        new_organization.organization_causes.build(cause: cause)
       end
     end
   end
@@ -95,7 +97,7 @@ class SpreadsheetParse
     CSV.foreach(location_services_csv_file_path, headers: :first_row) do |location_service_row|
       if location_service_row['location_id'] == location_id
         service = Service.find_by_name(location_service_row['name'])
-        new_location.location_services.build(service: service) if service.present?
+        new_location.location_services.build(service: service)
       end
     end
   end
@@ -151,5 +153,13 @@ class SpreadsheetParse
       latitude: location_row['latitude'].present? ? location_row['latitude'].to_f : nil,
       longitude: location_row['longitude'].present? ? location_row['longitude'].to_f : nil,
       email: location_row['email'] }
+  end
+
+  def import_organizations
+    Organization.import(
+      @organizations,
+      recursive: true,
+      track_validation_failures: true
+    )
   end
 end
