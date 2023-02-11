@@ -3,6 +3,6 @@
 
   div class="swiper-wrapper w-full"
     - @images.each do |image|
-      img src=url_for(image) class="swiper-slide #{@image_styles} object-fit-cover" alt="Slide #{@images.index(image) + 1} of #{@images.length}"
+      img src=url_for(image) class="swiper-slide #{@image_styles} object-contain bg-gray-8" alt="Slide #{@images.index(image) + 1} of #{@images.length}"
 
   = render DiscoverNonprofitCard::ImagesCarousel::NavButton::Component.new(direction: :next, outline: "M9 5l7 7-7 7")
