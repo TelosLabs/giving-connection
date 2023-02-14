@@ -15,6 +15,13 @@ export default class extends Controller {
     if (typeof(google) != "undefined") {
       this.initMap()
     }
+    const resultsPanel = document.getElementById("pagy");
+    // Re-builds leftMapPopupIds each time new results appear
+    new MutationObserver(() => {
+      this.searchResultTitles = document.querySelectorAll('[id^="new_favorite"]');
+      this.setSearchResultsListeners();
+      this.buildMapMarkersAndLeftPopupHash();
+    }).observe(resultsPanel, { subtree: true, childList: true });
   }
 
   initialize() {
