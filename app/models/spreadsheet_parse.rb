@@ -9,7 +9,9 @@ class SpreadsheetParse
     file_path = File.open(File.join(Rails.root, 'db', 'uploads'))
     csv_file_paths = spreadsheet_to_csv(spreadsheet, file_path)
     create_models(csv_file_paths)
-    import_organizations
+    results = import_organizations
+    execute_callbacks(results) if results.ids.any?
+    results
   end
 
   def spreadsheet_to_csv(spreadsheet, file_path)
@@ -161,5 +163,12 @@ class SpreadsheetParse
       recursive: true,
       track_validation_failures: true
     )
+  end
+
+  def execute_callbacks(results)
+    results.ids.each do |org_id|
+      org = Organization.find(org_id)
+      org.run_callbacks(:create) { true }
+    end
   end
 end
