@@ -49,6 +49,7 @@ gem 'roo', '~> 2.8.0'
 gem 'sidekiq'
 gem 'slim-rails'
 gem 'view_component'
+gem "activerecord-import"
 # Use Turbo for rails
 gem 'turbo-rails'
 
