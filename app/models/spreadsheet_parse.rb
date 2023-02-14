@@ -137,7 +137,8 @@ class SpreadsheetParse
       mission_statement_en: org_row['mission_statement_en'], vision_statement_en: org_row['vision_statement_en'],
       tagline_en: org_row['tagline_en'], mission_statement_es: org_row['mission_statement_es'],
       vision_statement_es: org_row['vision_statement_es'], tagline_es: org_row['tagline_es'],
-      website: org_row['website'], scope_of_work: org_row['scope_of_work'], creator: AdminUser.first, active: true }
+      website: org_row['website'], scope_of_work: org_row['scope_of_work'], creator: AdminUser.first, active: true,
+      donation_link: org_row['donation_link'] }
   end
 
   def build_social_media_hash(org_row)
@@ -154,7 +155,7 @@ class SpreadsheetParse
       name: location_row['name'],
       latitude: location_row['latitude'].present? ? location_row['latitude'].to_f : nil,
       longitude: location_row['longitude'].present? ? location_row['longitude'].to_f : nil,
-      email: location_row['email'] }
+      email: location_row['email'], youtube_video_link: location_row['youtube_video_link'] }
   end
 
   def import_organizations
