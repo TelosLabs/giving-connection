@@ -65,6 +65,8 @@ GEM
     activerecord (6.1.4.1)
       activemodel (= 6.1.4.1)
       activesupport (= 6.1.4.1)
+    activerecord-import (1.4.1)
+      activerecord (>= 4.2)
     activerecord-postgis-adapter (7.1.1)
       activerecord (~> 6.1)
       rgeo-activerecord (~> 7.0.0)
@@ -148,7 +150,7 @@ GEM
       tzinfo
     cocoon (1.2.15)
     coderay (1.1.3)
-    concurrent-ruby (1.1.9)
+    concurrent-ruby (1.1.10)
     connection_pool (2.2.5)
     crass (1.0.6)
     database_cleaner-active_record (2.0.1)
@@ -213,7 +215,7 @@ GEM
     gitlab (4.17.0)
       httparty (~> 0.18)
       terminal-table (~> 1.5, >= 1.5.1)
-    globalid (1.0.0)
+    globalid (1.0.1)
       activesupport (>= 5.0)
     guard (2.18.0)
       formatador (>= 0.2.4)
@@ -232,7 +234,7 @@ GEM
     httparty (0.21.0)
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
-    i18n (1.10.0)
+    i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     image_processing (1.12.2)
       mini_magick (>= 4.9.5, < 5)
@@ -283,7 +285,7 @@ GEM
     method_source (1.0.0)
     mini_magick (4.11.0)
     mini_mime (1.1.2)
-    minitest (5.15.0)
+    minitest (5.17.0)
     mobility (1.1.3)
       i18n (>= 0.6.10, < 2)
       request_store (~> 1.0)
@@ -343,7 +345,7 @@ GEM
     pundit (2.1.1)
       activesupport (>= 3.0.0)
     racc (1.6.1)
-    rack (2.2.3.1)
+    rack (2.2.6.2)
     rack-attack (6.5.0)
       rack (>= 1.0, < 3)
     rack-mini-profiler (2.3.3)
@@ -506,7 +508,7 @@ GEM
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
       railties (>= 6.0.0)
-    tzinfo (2.0.4)
+    tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     unicode-display_width (1.8.0)
     view_component (2.49.1)
@@ -534,7 +536,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.5.4)
+    zeitwerk (2.6.6)
 
 PLATFORMS
   arm64-darwin-20
@@ -545,6 +547,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_storage_validations
+  activerecord-import
   activerecord-postgis-adapter
   administrate
   administrate-field-active_storage

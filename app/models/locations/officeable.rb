@@ -14,8 +14,8 @@ module Locations
 
     def next_open_office_hours
       return nil if office_hours.all? { |oh| oh.closed? }
-      return today_office_hours if !today_office_hours.closed? && (Time.now < today_office_hours.formatted_open_time)
-      @next = today_office_hours.next_office_hours
+      return today_office_hours if !today_office_hours&.closed? && (Time.now < today_office_hours&.formatted_open_time)
+      @next = today_office_hours&.next_office_hours
       loop do
         break unless @next.closed?
 
@@ -25,11 +25,11 @@ module Locations
     end
 
     def open_now?
-      today_office_hours.open_now?
+      today_office_hours&.open_now?
     end
 
     def open_same_day?(next_open)
-      next_open.day == today_office_hours.day
+      next_open.day == today_office_hours&.day
     end
 
     def next_open_day

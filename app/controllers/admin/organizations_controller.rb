@@ -13,8 +13,9 @@ module Admin
     def upload; end
 
     def import
-      SpreadsheetParse.new.import(params[:file])
-      redirect_to admin_organizations_path, notice: 'Organizations imported.'
+      results = SpreadsheetParse.new.import(params[:file])
+      flash.now[:notice] = log_results(results)
+      render :upload, status: :unprocessable_entity
     end
 
     def new
@@ -99,20 +100,32 @@ module Admin
     end
 
     def resource_params
-      permit = dashboard.permitted_attributes << { social_media_attributes: %i[facebook instagram twitter linkedin
-                                                                               youtube blog id],
+      permit = dashboard.permitted_attributes << { social_media_attributes: %i[facebook instagram twitter linkedin youtube blog id],
                                                    service_attributes: %i[name description id],
                                                    beneficiary_subcategories_id: [],
                                                    services_id: [],
                                                    location_attributes: %i[address latitude longitude website main physical offer_services appointment_only],
                                                    tags_attributes: [],
-                                                   office_hours_attributes: %i[day open_time close_time closed] }
+                                                   office_hours_attributes: %i[day open_time close_time closed],
+                                                   organization_causes_attributes: %i[cause_id] }
       params.require(resource_class.model_name.param_key)
             .permit(permit)
             .transform_values { |value| value == '' ? nil : value }
     end
 
-    # See https://administrate-prototype.herokuapp.com/customizing_controller_actions
-    # for more information
+    private
+
+    def log_results(results)
+      logs =
+        "#{results.ids.count} organizations succesfully created. <br>" \
+        "#{results.failed_instances.count} organizations failed: <br>"
+
+      results.failed_instances.each do |failed_organization|
+        logs <<
+          "* #{failed_organization&.name}: " \
+          "#{failed_organization.errors.full_messages.to_sentence} <br>"
+      end
+      logs
+    end
   end
 end
