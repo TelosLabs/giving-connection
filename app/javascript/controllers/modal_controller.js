@@ -179,6 +179,14 @@ export default class extends Controller {
     this.checkboxesOriginalState = checkboxes.map(
       (checkbox) => checkbox.checked
     );
+
+    const timeboxes = [
+      ...this.containerTarget.querySelectorAll("[type='time']"),
+    ];
+
+    this.timeboxesOriginalState = timeboxes.map(
+      (timebox) => timebox.value
+    );
   }
 
   restoreCheckboxesState() {
@@ -186,9 +194,18 @@ export default class extends Controller {
       ...this.containerTarget.querySelectorAll("[type='checkbox']"),
     ];
 
+    const timeboxes = [
+      ...this.containerTarget.querySelectorAll("[type='time']"),
+    ];
+
     checkboxes.forEach((checkbox) => {
       const originalState = this.checkboxesOriginalState.shift();
       if (checkbox.checked !== originalState) checkbox.checked = originalState;
+    });
+
+    timeboxes.forEach((timebox) => {
+      const originalState = this.timeboxesOriginalState.shift();
+      if (timebox.value !== originalState) timebox.value = originalState;
     });
   }
 }
