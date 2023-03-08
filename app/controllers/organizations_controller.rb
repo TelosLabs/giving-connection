@@ -22,7 +22,6 @@ class OrganizationsController < ApplicationController
     if @organization.update(organization_params)
       update_location_services(params['organization']['locations_attributes']) unless params['organization']['locations_attributes'].empty? || params['organization']['locations_attributes'].nil?
       update_organization_beneficiaries(@organization, params['organization']['beneficiary_subcategories']) unless params['organization']['beneficiary_subcategories'].empty?
-      update_organization_causes(@organization, params['organization']['causes']) unless params['organization']['causes'].nil?
       update_tags(@organization, JSON.parse(params['organization']['tags_attributes'])) unless params['organization']['tags_attributes'].strip.empty?
       redirect_to my_account_path
       flash[:notice] = 'The Organization was successfully updated'
@@ -98,14 +97,6 @@ class OrganizationsController < ApplicationController
     end
   end
 
-  def update_organization_causes(organization, causes)
-    organization.organization_causes.destroy_all
-    causes.each do |cause_hash|
-      cause = Cause.find_by_name(cause_hash)
-      OrganizationCause.create!(organization: organization, cause: cause) if cause
-    end
-  end
-
   def update_location_services(locations_attributes)
     locations_attributes.each do |location|
       @location = Location.find_by_name(location.last['name'])
@@ -134,6 +125,6 @@ class OrganizationsController < ApplicationController
                                            images: []
                                          }],
                   beneficiary_subcategories: [],
-                  causes: [])
+                  cause_ids: [])
   end
 end
