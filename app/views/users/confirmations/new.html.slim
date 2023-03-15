@@ -18,7 +18,7 @@ div class="hidden md:flex" aria-hidden="true"
 
 = form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post, class: "mt-4 mb-12 md:mb-36" }) do |f|
   div class="max-w-xs mx-auto"
-    = render "devise/shared/error_messages", resource: resource
+    = render "users/shared/error_messages", resource: resource
 
     div class="flex flex-col mb-2.5"
       = f.label :email, "Email Address", class: "mb-1.5 text-sm text-gray-3"
