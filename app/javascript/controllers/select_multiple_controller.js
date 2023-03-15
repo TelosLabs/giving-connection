@@ -86,7 +86,7 @@ export default class extends Controller {
     const query = this.inputTarget.value
     const regex = new RegExp('.*' + query.toLowerCase() + '.*', 'gmi')
     this.checkboxTargets.forEach(checkbox => {
-      if (checkbox.value.search(regex) >= 0) {
+      if (checkbox.dataset.value.search(regex) >= 0) {
         checkbox.parentElement.classList.remove('hidden')
       } else {
         checkbox.parentElement.classList.add('hidden')
