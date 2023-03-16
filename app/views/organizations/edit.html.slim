@@ -141,8 +141,9 @@ div class="w-full h-full bg-grey-9"
 
           div class="grid grid-cols-12 gap-6 mt-8"
             div class="col-span-12 lg:col-span-6 md:col-span-7"
-              = f.label :causes, "* Which causes best describe your organization’s work?", class: "block text-sm text-gray-3 font-medium"
-              = render SelectMultiple::Component.new(name: 'organization[causes][]', items: @causes, selected: @organization.causes.pluck(:name),placeholder: 'Write causes', required: true)
+              = label_tag "", "* Which causes best describe your organization’s work?", class: "block text-sm text-gray-3 font-medium"
+              = render SelectMultiple::Component.new(f: f, klass: "Cause", items: @causes, selected: @organization.causes.pluck(:name), placeholder: 'Write causes', required: true)
+
         div class="my-4 border-t mt-6 border-t-blue-pale"
         section class="mt-6 text-gray-2"
           h3 class="text-lg font-medium leading-7 text-blue-medium flex items-center"
@@ -156,15 +157,17 @@ div class="w-full h-full bg-grey-9"
 
           div class="grid grid-cols-12 gap-6 mt-8"
             div class="col-span-12 lg:col-span-6 md:col-span-7" data-controller="options" data-options-options-value=@beneficiaries
-              = f.label :beneficiary_subcategories, "* Which target populations (beneficiaries) does your organization serve?", class: "block text-sm text-gray-3 font-medium"
-              = render SelectMultiple::Component.new(name: 'organization[beneficiary_subcategories]', items: @beneficiary_groups, selected: @organization.beneficiary_subcategories.pluck(:name), placeholder: "Write populations served", required: true)
+              = f.label :beneficiary_subcategories, "Which target populations (beneficiaries) does your organization serve?", class: "block text-sm text-gray-3 font-medium"
+              = render SelectMultiple::Component.new(f: f, klass: "Beneficiary", items: @beneficiary_groups, selected: @organization.beneficiary_subcategories.pluck(:name), placeholder: "Write populations served")
 
             div class="hidden col-span-3 md:flex"
 
             div class="col-span-12 lg:col-span-6 md:col-span-7" data-controller="tags"
               - tags = @organization.tags.pluck(:name).join(', ')
               = f.label :tags_attributes, "Additional keywords to describe my organization’s work.", class: "block text-sm text-gray-3 font-medium"
-              = f.text_field :tags_attributes, { data: { 'tags-target': 'output' }, placeholder:'Write some tags', value: tags, class: "flex flex-wrap tagify-look items-center min-h-46px bg-white text-xs mt-1 w-full px-4 rounded-6px border-gray-5 text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+              p class="text-sm text-gray-4 mt-1"
+                | Adding additional keywords will help users connect with your organization. Keywords will not appear on your nonprofit’s profile, but are useful for improving search results and SEO.
+              = f.text_field :tags_attributes, { data: { 'tags-target': 'output' }, placeholder:'Write some tags', value: tags, class: "flex flex-wrap tagify-look items-center min-h-46px bg-white text-xs mt-1 w-full px-4 rounded-6px border-gray-5 text-gray-3 focus:ring-blue-medium focus:border-blue-medium mt-6" }
 
         div class="my-4 border-t mt-6 border-t-blue-pale"
         section data-controller="nested-form"
@@ -238,7 +241,7 @@ div class="w-full h-full bg-grey-9"
                           = link_to inline_svg_tag('trash.svg', class: 'absolute trash bottom-0 top-2.5 right-2.5'), url_for(controller: :organizations, action: :delete_upload, id: @organization.id, upload_id: image.id), data: { confirm: 'Are you sure?' }
                           = image_tag url_for(image), class: "block object-cover rounded-6px m-2 w-20 h-20 lg:w-40 lg:h-40"
                   p class="text-sm text-gray-4 mt-1"
-                    | For best image quality, please submit horizontal photos in PNG format.
+                    | For best image quality, please submit landscape photos in PNG format.
                   = location_form.file_field :images, multiple: true, class: "block mt-2 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
 
                 div class="hidden col-span-3 md:flex"
@@ -263,16 +266,14 @@ div class="w-full h-full bg-grey-9"
 
                 div class="#{location_form.object.offer_services? ? '' : 'hidden'} col-span-12 lg:col-span-6 md:col-span-7" data-extend-toggle-target="toggleable menu"
                   div class='my-3' data-controller="services" data-services-options-value=@services
-                    = location_form.fields_for :location_services, LocationService.new do |location_service_form|
-                      = location_service_form.fields_for :services do |service_form|
-                        div class="col-span-12 lg:col-span-5 md:col-span-7"
-                          = service_form.label "Services offered at this location", class:"text-sm font-medium leading-4 text-gray-2"
-                          p class="text-sm text-gray-4 mt-1"
-                            | Email
-                            a href="mailto:admin@givingconnection.org"
-                              |  admin@givingconnection.org
-                            |  if you would like to add a service not currently found in the list below.
-                          = render SelectMultiple::Component.new(name: location_service_form.object_name , items: @services, selected: location_form.object.location_services.map{ |location_service| location_service.service.name }, placeholder: "Write services", required: true)
+                    div class="col-span-12 lg:col-span-5 md:col-span-7"
+                      = label_tag "", "Services offered at this location", class:"text-sm font-medium leading-4 text-gray-2"
+                      p class="text-sm text-gray-4 mt-1"
+                        | Email
+                        a href="mailto:admin@givingconnection.org"
+                          |  admin@givingconnection.org
+                        |  if you would like to add a service not currently found in the list below.
+                      = render SelectMultiple::Component.new(f: location_form, klass: "Service", items: @services, selected: location_form.object.location_services.map{ |location_service| location_service.service.name }, placeholder: "Write services", required: true)
 
                   div[data-controller="modal" data-modal-allow-background-close="false"]
                     button type="button" class="flex justify-center px-6 py-3 mx-auto text-base font-medium hover:text-blue-medium text-gray-3" data-action="modal#open modal#readCheckboxesState"
