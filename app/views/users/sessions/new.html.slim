@@ -1,5 +1,5 @@
 .main class="mb-12 md:mb-36 mt-14 md:mt-32"
-  h2 class="pb-6 text-2xl font-bold text-center md:pb-9 text-gray-gray-7"
+  h2 class="pb-6 text-2xl font-bold text-center md:pb-9"
     | Welcome back!
 
   div class="md:hidden"
@@ -25,7 +25,9 @@
         = f.label :password
         = f.password_field :password, autocomplete: "current-password", class:"c-input"
       - if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations'
-        = link_to "Forgot your password?", new_password_path(resource_name), class:'font-bold flex self-end md:self-center'
+        = link_to "Forgot your password?", new_password_path(resource_name), class:'font-bold'
+      - if devise_mapping.confirmable?
+        = link_to "Didn't receive confirmation instructions?", new_user_confirmation_path, class: "font-bold"
       .c-form--action class="mt-12"
         = f.submit "Sign in", class:"c-button"
   

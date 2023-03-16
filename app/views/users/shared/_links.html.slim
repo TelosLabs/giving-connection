@@ -3,8 +3,8 @@
     | Already have an account?&nbsp
     = link_to "Sign in", signin_path, class: 'font-bold'
 - if devise_mapping.registerable? && controller_name != 'registrations'
-  div class="flex justify-center pt-5 text-sm text-center"
-    ' New to Giving Connection?&nbsp
+  div class="flex justify-center mt-1.5 text-sm text-center"
+    | New to Giving Connection?&nbsp
     = link_to "Sign up", signup_path, class: 'font-bold'
 - if devise_mapping.omniauthable?
   - resource_class.omniauth_providers.each do |provider|
