@@ -273,7 +273,7 @@ div class="w-full h-full bg-grey-9"
                         a href="mailto:admin@givingconnection.org"
                           |  admin@givingconnection.org
                         |  if you would like to add a service not currently found in the list below.
-                      = render SelectMultiple::Component.new(f: location_form, klass: "Service", items: @services, selected: location_form.object.location_services.map{ |location_service| location_service.service.name }, placeholder: "Write services", required: true)
+                      = render SelectMultiple::Component.new(f: location_form, klass: "Service", items: @services, selected: location_form.object.location_services.map{ |location_service| location_service.service.name }, placeholder: "Write services")
 
                   div[data-controller="modal" data-modal-allow-background-close="false"]
                     button type="button" class="flex justify-center px-6 py-3 mx-auto text-base font-medium hover:text-blue-medium text-gray-3" data-action="modal#open modal#readCheckboxesState"
