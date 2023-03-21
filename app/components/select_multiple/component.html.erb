@@ -8,8 +8,8 @@
         <% if @items.is_a?(Array) %>
           <% if @klass.present? %>
             <%= @f.collection_check_boxes :cause_ids, Cause.order(:name), :id, :name do |c| %>
-              <%= content_tag :div, data: { 'select-multiple-target': "group" } do %>
-                <%= content_tag :div, class: "flex gap-x-2 items-center" do %>
+              <% content_tag :div, data: { 'select-multiple-target': "group" } do %>
+                <% content_tag :div, class: "flex gap-x-2 items-center" do %>
                   <%= c.check_box(class: "h-4 w-4 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent modal-checkbox",
                                     data: { 'select-multiple-target': "checkbox", action: 'click->select-multiple#select', value: c.text }) %>
                   <% if Cause.find_by(name: c.text) %>
@@ -45,7 +45,7 @@
               </div>
               <% if @klass.present? %>
                 <%= @f.collection_check_boxes ids_array, collection(group), :id, :name do |c| %>
-                  <%= content_tag :div, class: "flex flex-row items-center my-2" do %>
+                  <% content_tag :div, class: "flex flex-row items-center my-2" do %>
                     <%= c.check_box(class: "h-4 w-4 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent modal-checkbox",
                                       data: { 'select-multiple-target': "checkbox", action: 'click->select-multiple#select', value: c.text }) %>
                     <%= c.label(class: "text-sm text-black w-full") %>
