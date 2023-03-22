@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 module SelectMultiple
   class Component < ViewComponent::Base
-    def initialize(name:, items: {}, selected: [], options: {}, placeholder: "", required: false)
+    def initialize(f: "", klass: "", name: "", items: {}, selected: [], options: {}, placeholder: "", required: false)
+      @f = f
+      @klass = klass
       @name = name
       @items = items
       @selected = selected
@@ -31,7 +33,25 @@ module SelectMultiple
           split(" ").
           join("_").
           gsub("-", "_") <<
-          ".svg"  
+          ".svg"
+    end
+
+    def collection(name)
+      case @klass
+      when "Beneficiary"
+        BeneficiaryGroup.find_by(name: name).beneficiary_subcategories
+      when "Service"
+        Cause.find_by(name: name).services
+      end
+    end
+
+    def ids_array
+      case @klass
+      when "Beneficiary"
+        :beneficiary_subcategory_ids
+      when "Service"
+        :service_ids
+      end
     end
   end
 end

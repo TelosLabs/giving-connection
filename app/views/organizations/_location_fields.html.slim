@@ -56,14 +56,12 @@ div class="grid grid-cols-12 gap-6 mt-8 nested-fields" data-action="google-maps-
         | yes
       |, this location will be displayed on the search listings as a pin on the map.
 
-  div class="hidden col-span-12 lg:col-span-6 md:col-span-7" data-toggle-target="toggleable menu"               
+  div class="hidden col-span-12 lg:col-span-6 md:col-span-7" data-toggle-target="toggleable menu"
     div class='mt-3' data-controller="services" data-services-options-value=@services
-      = location_form.fields_for :location_services, LocationService.new do |location_service_form|
-        = location_service_form.fields_for :services, Service.new do |service_form|
-          div class="col-span-12 lg:col-span-6 md:col-span-7"
-            = service_form.label "Services offered on this location", class:"text-sm font-medium leading-4 text-gray-2"
-            = render SelectMultiple::Component.new(name: location_service_form.object_name , items: @services, selected: location_form.object.location_services.map{ |location_service| location_service.service.name }, placeholder: "Write services", required: true)
-  
+      div class="col-span-12 lg:col-span-6 md:col-span-7"
+        = label_tag "", "Services offered on this location", class:"text-sm font-medium leading-4 text-gray-2"
+        = render SelectMultiple::Component.new(f: location_form, klass: "Service", items: @services, selected: location_form.object.location_services.map{ |location_service| location_service.service.name }, placeholder: "Write services")
+
     div class="hidden col-span-3 md:flex"
     div class="col-span-12 lg:col-span-6 md:col-span-7" data-controller="modal" data-modal-allow-background-close="false"
       a class="flex justify-center px-6 py-3 text-base font-medium hover:text-blue-medium text-gray-3" href="#" data-action="click->modal#open"
