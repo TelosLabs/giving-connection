@@ -47,7 +47,8 @@
                                                         phone_number: result.phone_number&.number, \
                                                         current_user: current_user, \
                                                         verified: result.organization.verified?, \
-                                                        causes: result&.causes)
+                                                        causes: result&.causes, \
+                                                        frame_id: "map-left-popup")
                   - if @pagy.pages > SearchesHelper::MIN_REQUIRED_PAGES
                     div class="h-40 px-4 mt-7"
                       p class="mb-5 text-sm text-gray-3"
@@ -120,8 +121,9 @@
         // Desktop map
         div class="relative hidden w-full md:flex" data-controller="places result-card--component" data-places-zoom-value="10" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}"
           div class="absolute inset-0 w-full h-full xs:h-85vh" data-places-target="map"
-          div class="rounded-6px overflow-y-auto w-3/4 max-w-xs xl:max-w-356px h-5/5 m-3" id="map-left-popup"
-            = render MapLeftPopup::Component.new(results: @search.results, current_user: current_user)
+          // Left pop-up
+          turbo-frame class="rounded-6px overflow-y-auto w-3/4 max-w-xs xl:max-w-356px h-5/5 m-3" id="map-left-popup"
+            = render MapLeftPopup::Component.new(result: @search.results.first, current_user: current_user)
           div class="hidden"
             div class="hidden" data-places-target="latitude"
             div class="hidden" data-places-target="longitude"

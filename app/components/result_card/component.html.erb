@@ -5,10 +5,15 @@
     </div>
     <div class="w-full">
       <div class="flex flex-row items-start justify-between">
+        <%# Org name %>
         <div>
-          <a class="text-base font-bold text-black cursor-pointer" id="new_favorite_location_<%= @id %>">
-            <%= @title %>
-          </a>
+          <%= link_to(
+            @title,
+            new_map_popup_path(org_id: @id),
+            class: "text-base font-bold text-black cursor-pointer",
+            id: "new_favorite_location_#{@id}",
+            data: {turbo_frame: @frame_id}
+          )%>
           <% if @verified %>
             <%= inline_svg_tag 'verified_nonprofit_check.svg', class: 'w-4 h-4 ml-1 align-text-bottom inline' %>
           <% end %>

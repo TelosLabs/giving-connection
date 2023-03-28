@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   get '/nonprofit' => 'messages#new', as: :non_profit_contact
   get 'search' => 'searches#show'
   get 'termsofuse' => 'terms_and_conditions#show', as: :terms_of_use
+  resource :map_popup, only: [:new]
 
   resources :users, only: [:update]
   resources :messages, only: %i[create]
@@ -51,9 +52,6 @@ Rails.application.routes.draw do
       get 'delete_upload/:upload_id', action: :delete_upload
     end
   end
-
-  # delete image route for organization
-
 
   resources :favorite_locations, only: %i[create destroy]
   resources :alerts, only: %i[new create update destroy]
