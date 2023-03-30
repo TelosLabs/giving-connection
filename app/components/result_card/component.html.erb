@@ -1,4 +1,4 @@
-<div id="<%= "#{@id}" %>" class="p-6 scroll-mt-96" data-controller="result-card--component">
+<div id="<%= @id %>" class="p-6 scroll-mt-96" data-controller="result-card--component">
   <div class="flex gap-2.5 mb-3">
     <div class="flex-shrink-0 w-24">
       <%= image_tag @image_url, class: 'object-contain w-full h-20' %>
@@ -7,13 +7,12 @@
       <div class="flex flex-row items-start justify-between">
         <%# Org name %>
         <div>
-          <%= link_to(
-            @title,
-            new_map_popup_path(org_id: @id),
-            class: "text-base font-bold text-black cursor-pointer",
-            id: "new_favorite_location_#{@id}",
-            data: {turbo_frame: @frame_id}
-          )%>
+          <span
+          id="new_favorite_location_<%= @id %>"
+          class="text-base font-bold text-black cursor-pointer"
+          data-action="click->places#openPopupAndMarker">
+            <%= @title %>
+          </span>
           <% if @verified %>
             <%= inline_svg_tag 'verified_nonprofit_check.svg', class: 'w-4 h-4 ml-1 align-text-bottom inline' %>
           <% end %>

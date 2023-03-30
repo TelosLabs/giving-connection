@@ -1,4 +1,4 @@
-div class="relative flex flex-col gap-2 p-7 bg-white rounded-6px" id="loc_#{@result.id}_popup"
+div class="relative flex flex-col gap-2 p-7 bg-white rounded-6px" id="loc_#{@result.id}_popup" data-places-target="popup"
   div class="flex items-start gap-1"
     = image_tag @result.organization.logo, class: "w-1/5 h-1/5 mt-1"
     div class="flex flex-col ml-2"
@@ -9,7 +9,8 @@ div class="relative flex flex-col gap-2 p-7 bg-white rounded-6px" id="loc_#{@res
           = inline_svg_tag 'verified_nonprofit_check.svg', class: 'w-4 h-4 ml-1 align-text-bottom inline'
       h4 class="text-gray-500 lg:text-sm text-xs"
         = @result.address
-    = inline_svg_tag "x-icon.svg", class: "absolute top-3 right-3 w-3 h-3 cursor-pointer", data: { action: "click->places#hidePopup" }
+    button type="button" data-action="click->places#hidePopup" class="absolute top-3 right-3" aria-label="close"
+      = inline_svg_tag "x-icon.svg", class: "w-3 h-3", aria_hidden: true
   div class=" pt-4 my-4 border-t border-gray-8"
     = render DiscoverNonprofitCard::ActionsMenu::Component.new(user: @current_user, location: @result)
   div class="text-left pt-4 border-t border-gray-8"

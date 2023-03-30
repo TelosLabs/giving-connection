@@ -3,6 +3,6 @@ class MapPopupsController < ApplicationController
   skip_after_action :verify_authorized
 
   def new
-    @org = Location.find(params[:org_id])
+    @org = Location.find(params[:location_id])
   end
 end
