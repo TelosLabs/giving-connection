@@ -2,7 +2,7 @@
 class ResultCard::Component < ViewComponent::Base
   include ApplicationHelper
 
-  def initialize(title:, address:, image_url:, website:, description:, id:, current_user:, phone_number:, verified:, causes: [], frame_id:)
+  def initialize(title:, address:, image_url:, website:, description:, id:, current_user:, phone_number:, verified:, causes: [])
     @title = title
     @address = address
     @image_url = image_url
@@ -13,7 +13,6 @@ class ResultCard::Component < ViewComponent::Base
     @phone_number = phone_number
     @verified = verified
     @causes = causes
-    @frame_id = frame_id
   end
 
   def formated_description
