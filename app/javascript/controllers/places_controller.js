@@ -1,27 +1,23 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "field", "map", "latitude", "longitude", "marker" ]
+  static targets = [ "field", "map", "latitude", "longitude", "marker", "popup" ]
   static values = {
     imageurl: String,
     clickedimageurl: String,
     zoom: { type: Number, default: 10 },
     latitude: Number,
     longitude: Number,
+    popupUrl: String,
   }
 
   connect() {
-    this.hidePopup()
+    this.resetMarkers();
+    this.cleanLocalStorage();
+
     if (typeof(google) != "undefined") {
       this.initMap()
     }
-    const resultsPanel = document.getElementById("pagy");
-    // Re-builds leftMapPopupIds each time new results appear
-    new MutationObserver(() => {
-      this.searchResultTitles = document.querySelectorAll('[id^="new_favorite"]');
-      this.setSearchResultsListeners();
-      this.buildMapMarkersAndLeftPopupHash();
-    }).observe(resultsPanel, { subtree: true, childList: true });
   }
 
   initialize() {
@@ -29,65 +25,45 @@ export default class extends Controller {
     this.mapMarkers = []
     this.image = this.imageurlValue
     this.clickedImage = this.clickedimageurlValue
-    this.searchResultTitles = document.querySelectorAll('[id^="new_favorite"]');
-    this.setSearchResultsListeners()
   }
 
-  reloadPage(event) {
+  reloadPage() {
     window.location.search = window.location.search
   }
 
   // Left map popup functions start here
   // It was necessary to create this functions in this controller because the map is created here, and we have access to Markers.
 
-  buildMapMarkersAndLeftPopupHash() {
-    this.leftMapPopupIds = {}
-    let container = document.getElementById('map-left-popup')
-    container.childNodes.forEach((node) => {
-      if (node.id) {
-        let node_id = node.id.replace(/\D/g, '');
-        this.leftMapPopupIds[node_id] = { marker: this.mapMarkers.find((marker) => { return marker.id == node_id }), map_left_popup: node }
-      }
-    })
-  }
+  openPopupAndMarker(event) {
+    const event_id = event.target.id.replace(/\D/g, '');
+    const marker = this.mapMarkers.find(marker => marker.id == event_id);
+    // Opens popup
+    const turboFrame = document.getElementById('map-left-popup');
+    turboFrame.setAttribute("src", this.popupUrlValue + event_id);
+    // Opens marker
+    marker.setIcon(this.clickedimageurlValue);
+    google.maps.event.trigger(marker, "mouseover");
 
-  setSearchResultsListeners() {
-    if (this.searchResultTitles) {
-      this.searchResultTitles.forEach((node) => {
-        node.addEventListener('click', this.MapLeftPopupBehaviour.bind(this))
-      })
-    }
-  }
-
-  MapLeftPopupBehaviour(event) {
-    let event_id = event.target.id.replace(/\D/g, '');
-    this.leftMapPopupIds[event_id]["map_left_popup"].classList.remove('hidden')
-    this.leftMapPopupIds[event_id]["marker"].setIcon(this.clickedimageurlValue)
-    google.maps.event.trigger(this.leftMapPopupIds[event_id]["marker"], "mouseover");
-    sessionStorage.setItem('map_left_popup', this.leftMapPopupIds[event_id]["map_left_popup"].id)
-    sessionStorage.setItem('selected_marker', this.leftMapPopupIds[event_id]["marker"].id)
-    this.resetMarkersAndMapLeftPopup(event_id)
+    sessionStorage.setItem('selected_marker', marker.id);
+    this.resetMarkers(event_id);
   }
 
   hidePopup() {
-    this.resetMarkersAndMapLeftPopup()
-    this.cleanLocalStorage()
+    this.popupTarget.classList.add('hidden');
   }
 
-  resetMarkersAndMapLeftPopup(event_id = null) {
-    for (let key in this.leftMapPopupIds) {
-      if (key != event_id) {
-        this.leftMapPopupIds[key]["marker"].setIcon(this.image)
-        this.leftMapPopupIds[key]["marker"].setAnimation(null);
-        this.leftMapPopupIds[key]["map_left_popup"].classList.add('hidden')
+  resetMarkers(event_id = null) {
+    this.mapMarkers.forEach(marker => {
+      if (marker.id !== event_id) {
+        marker.setIcon(this.image);
+        marker.setAnimation(null);
       }
-    }
+    });
   }
 
   cleanLocalStorage() {
-    sessionStorage.removeItem('map_left_popup')
-    sessionStorage.removeItem('selected_marker')
-    sessionStorage.removeItem('marker_infowindow')
+    sessionStorage.removeItem('selected_marker');
+    sessionStorage.removeItem('marker_infowindow');
   }
 
   // Left map popup functions end here
@@ -149,14 +125,13 @@ export default class extends Controller {
       })
     }
 
-    let clickedLocation = document.getElementById(sessionStorage.getItem('map_left_popup'))
-    let selectedMarker = sessionStorage.getItem('selected_marker')
-    if (clickedLocation) { clickedLocation.classList.remove('hidden') }
+    const clickedLocation = this.hasPopupTarget;
+    let selectedMarker = sessionStorage.getItem('selected_marker');
+    if (clickedLocation) this.popupTarget.classList.remove('hidden');
     if (selectedMarker) {
-      let marker = this.mapMarkers.find((marker) => { return marker.id == selectedMarker })
-      marker.setIcon(clickedImage)
+      let marker = this.mapMarkers.find((marker) => { return marker.id == selectedMarker });
+      marker.setIcon(clickedImage);
     }
-    this.buildMapMarkersAndLeftPopupHash()
   }
 
   setMarkers(map, image, clickedImage) {
@@ -186,22 +161,18 @@ export default class extends Controller {
       });
 
       marker.addListener("click", () => {
-        let container = document.getElementById('map-left-popup')
         this.mapMarkers.forEach((marker) => {
           marker.setIcon(image)
           marker.setAnimation(null);
         })
 
-        container.childNodes.forEach((node) => {
-          node.classList.add('hidden')
-          let node_id = node.id.replace(/\D/g, '');
-          if (node_id == element_id) {
-            node.classList.remove('hidden')
-            marker.setIcon(clickedImage)
-            sessionStorage.setItem('map_left_popup', node.id)
-            sessionStorage.setItem('selected_marker', marker.id)
-          }
-        })
+        // Opens popup(url is provided only on desktop)
+        if (this.hasPopupUrlValue) {
+          const turboFrame = document.getElementById('map-left-popup');
+          turboFrame.setAttribute("src", this.popupUrlValue + element_id);
+        }
+        marker.setIcon(clickedImage);
+        sessionStorage.setItem('selected_marker', marker.id);
 
         if( prevInfoWindow ) {
           prevInfoWindow.close()
