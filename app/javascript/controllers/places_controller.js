@@ -166,9 +166,11 @@ export default class extends Controller {
           marker.setAnimation(null);
         })
 
-        // Opens popup with marker info
-        const turboFrame = document.getElementById('map-left-popup');
-        turboFrame.setAttribute("src", this.popupUrlValue + element_id);
+        // Opens popup(url is provided only on desktop)
+        if (this.hasPopupUrlValue) {
+          const turboFrame = document.getElementById('map-left-popup');
+          turboFrame.setAttribute("src", this.popupUrlValue + element_id);
+        }
         marker.setIcon(clickedImage);
         sessionStorage.setItem('selected_marker', marker.id);
 
