@@ -7,12 +7,14 @@
       <div class="flex flex-row items-start justify-between">
         <%# Org name %>
         <div>
-          <span
-          id="new_favorite_location_<%= @id %>"
-          class="text-base font-bold text-black cursor-pointer"
-          data-action="click->places#openPopupAndMarker">
+          <%= link_to(
+            new_map_popup_path(location_id: @id), 
+            class: "text-base font-bold text-black cursor-pointer",
+            id: "new_favorite_location_#{@id}",
+            data: {turbo_frame: "map-left-popup"}
+          ) do %>
             <%= @title %>
-          </span>
+          <% end %>
           <% if @verified %>
             <%= inline_svg_tag 'verified_nonprofit_check.svg', class: 'w-4 h-4 ml-1 align-text-bottom inline' %>
           <% end %>
