@@ -12,11 +12,14 @@ export default class extends Controller {
   }
 
   connect() {
-    this.resetMarkers();
-    this.cleanLocalStorage();
-
-    if (typeof(google) != "undefined") {
-      this.initMap()
+    if (document.documentElement.hasAttribute("data-turbo-preview")) {
+      return
+    } else {
+      this.resetMarkers();
+      this.cleanLocalStorage();
+      if (typeof(google) != "undefined") {
+       this.initMap()
+      }
     }
   }
 
