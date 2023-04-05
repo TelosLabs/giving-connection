@@ -15,6 +15,11 @@ export default class extends Controller {
     this.resetMarkers();
     this.cleanLocalStorage();
 
+    new MutationObserver(() => {
+      const cardTitles = document.querySelectorAll('[id^="new_favorite"]');
+      this.setTitleListeners(cardTitles);
+    }).observe(document.getElementById("pagy"), { subtree: true, childList: true });
+
     if (typeof(google) != "undefined") {
       this.initMap()
     }
@@ -25,6 +30,8 @@ export default class extends Controller {
     this.mapMarkers = []
     this.image = this.imageurlValue
     this.clickedImage = this.clickedimageurlValue
+    const cardTitles = document.querySelectorAll('[id^="new_favorite"]');
+    this.setTitleListeners(cardTitles);
   }
 
   reloadPage() {
@@ -34,13 +41,10 @@ export default class extends Controller {
   // Left map popup functions start here
   // It was necessary to create this functions in this controller because the map is created here, and we have access to Markers.
 
-  openPopupAndMarker(event) {
+  openMarker(event) {
     const event_id = event.target.id.replace(/\D/g, '');
     const marker = this.mapMarkers.find(marker => marker.id == event_id);
-    // Opens popup
-    const turboFrame = document.getElementById('map-left-popup');
-    turboFrame.setAttribute("src", this.popupUrlValue + event_id);
-    // Opens marker
+
     marker.setIcon(this.clickedimageurlValue);
     google.maps.event.trigger(marker, "mouseover");
 
@@ -64,6 +68,12 @@ export default class extends Controller {
   cleanLocalStorage() {
     sessionStorage.removeItem('selected_marker');
     sessionStorage.removeItem('marker_infowindow');
+  }
+
+  setTitleListeners(cardTitles) {
+    cardTitles.forEach((title) => {
+      title.addEventListener('click', this.openMarker.bind(this))
+    })
   }
 
   // Left map popup functions end here
