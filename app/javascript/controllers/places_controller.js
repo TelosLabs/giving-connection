@@ -24,10 +24,14 @@ export default class extends Controller {
   }
 
   initialize() {
-    this.markersArray = []
-    this.mapMarkers = []
-    this.image = this.imageurlValue
-    this.clickedImage = this.clickedimageurlValue
+    if (document.documentElement.hasAttribute("data-turbo-preview")) {
+      return
+    } else {
+      this.markersArray = []
+      this.mapMarkers = []
+      this.image = this.imageurlValue
+      this.clickedImage = this.clickedimageurlValue
+    }
   }
 
   reloadPage() {
