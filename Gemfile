@@ -50,6 +50,7 @@ gem 'sidekiq'
 gem 'slim-rails'
 gem 'view_component'
 gem "activerecord-import"
+gem 'scout_apm'
 # Use Turbo for rails
 gem 'turbo-rails'
 
