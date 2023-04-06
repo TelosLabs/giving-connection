@@ -15,14 +15,14 @@ export default class extends Controller {
     this.resetMarkers();
     this.cleanLocalStorage();
 
+    if (typeof(google) != "undefined") {
+      this.initMap()
+    }
+
     new MutationObserver(() => {
       const cardTitles = document.querySelectorAll('[id^="new_favorite"]');
       this.setTitleListeners(cardTitles);
     }).observe(document.getElementById("pagy"), { subtree: true, childList: true });
-
-    if (typeof(google) != "undefined") {
-      this.initMap()
-    }
   }
 
   initialize() {

@@ -1,8 +1,6 @@
-- markers = @results&.map { |l| [l.latitude, l.longitude] }  || []
-
 = form_with(\
   model: @search, \
-  url: "", \
+  url: search_path, \
   class: 'relative', \
   method: :get, \
   data: { \
@@ -12,17 +10,29 @@
     'search--alerts-target': 'form', \
     'search-target': 'form'}) do |f|
   = render SearchBar::Component.new(form: f, search: @search)
+  = turbo_frame_tag "search-pills", src: search_path
 
-  div class="md:flex"
-    // Search result cards
-    = turbo_frame_tag "pagy", src: search_path, class: "w-1/4" do
-      div class="flex justify-center items-center h-full"
-        | Loading...
-      //div class="flex flex-col w-full bg-white md:h-85vh md:overflow-y-auto" data-controller="modal"
-    //Map
-    = turbo_frame_tag "search-map", src: search_path, class: "w-3/4"
-      div class="relative md:flex" data-controller="places result-card--component" data-action="google-maps-callback@window->places#initMap" data-places-zoom-value="10" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}" data-places-popup-url-value="/map_popup/new?location_id="
-        div class="inset-0 w-full h-full xs:h-85vh bg-gray-6" data-places-target="map"
-        div class="hidden"
-          div class="hidden" data-places-target="latitude"
-          div class="hidden" data-places-target="longitude"
+  = turbo_frame_tag "search-locations", src: search_path do
+    div class="flex flex-row justify-center w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
+      div class="flex flex-row justify-center w-full min-h-full"
+        div class="flex flex-col w-full md:border-r max-w-sm border-gray-7"
+          div class="fixed inset-0 flex items-center justify-center hidden min-h-screen overflow-y-auto animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;")
+            div class="relative w-full max-h-full max-w-375px"
+          div class="flex flex-row justify-between w-full p-4 bg-gray-9 md:hidden"
+            span class="relative z-0 inline-flex shadow-sm md:hidden rounded-6px"
+              / active bg-blue-dark.focus:text-white
+              / inactive bg-white text-gray-3
+              button class="relative inline-flex items-center px-5 py-1 text-sm border rounded-l-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="0"
+                | List
+              button class="relative inline-flex items-center px-5 py-1 -ml-px text-sm border rounded-r-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="1"
+                | Map
+          // Search result cards
+          div class="flex flex-col w-full bg-white md:h-85vh md:overflow-y-auto"
+            div class="flex justify-center items-center h-full"
+              | Loading...
+        //Map
+        div class="relative w-full md:flex" data-controller="places result-card--component" data-action="google-maps-callback@window->places#initMap" data-places-zoom-value="10" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}" data-places-popup-url-value="/map_popup/new?location_id="
+          div class="absolute inset-0 w-full h-full xs:h-85vh" data-places-target="map"
+          div class="hidden"
+            div class="hidden" data-places-target="latitude"
+            div class="hidden" data-places-target="longitude"
