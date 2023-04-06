@@ -1,0 +1,28 @@
+- markers = @results&.map { |l| [l.latitude, l.longitude] }  || []
+
+= form_with(\
+  model: @search, \
+  url: "", \
+  class: 'relative', \
+  method: :get, \
+  data: { \
+    turbo_frame: "search-locations", \
+    turbo_action: "replace", \
+    controller: 'search search--alerts modal', \
+    'search--alerts-target': 'form', \
+    'search-target': 'form'}) do |f|
+  = render SearchBar::Component.new(form: f, search: @search)
+
+  div class="md:flex"
+    // Search result cards
+    = turbo_frame_tag "pagy", src: search_path, class: "w-1/4" do
+      div class="flex justify-center items-center h-full"
+        | Loading...
+      //div class="flex flex-col w-full bg-white md:h-85vh md:overflow-y-auto" data-controller="modal"
+    //Map
+    = turbo_frame_tag "search-map", src: search_path, class: "w-3/4"
+      div class="relative md:flex" data-controller="places result-card--component" data-action="google-maps-callback@window->places#initMap" data-places-zoom-value="10" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}" data-places-popup-url-value="/map_popup/new?location_id="
+        div class="inset-0 w-full h-full xs:h-85vh bg-gray-6" data-places-target="map"
+        div class="hidden"
+          div class="hidden" data-places-target="latitude"
+          div class="hidden" data-places-target="longitude"
