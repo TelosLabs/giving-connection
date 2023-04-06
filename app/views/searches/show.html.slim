@@ -44,7 +44,7 @@
                   = link_to user_session_path, class: 'inline-flex items-center px-3 py-2 text-xs text-gray-3' do
                     = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
                     | Create Search Alert
-              div class="hidden w-full h-full overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
+              div class="w-full h-full overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
                 - if @results.present?
                   ul class="flex flex-col divide-y divide-gray-8" id="search-results"
                     - @results.each do |result|
@@ -129,7 +129,7 @@
                       | -&nbsp;
                       = result.decorate.closed_office_hours_display
         // Desktop map
-        div class="relative w-full md:flex" data-controller="places result-card--component" data-action="google-maps-callback@window->places#initMap" data-places-zoom-value="10" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}" data-places-popup-url-value="/map_popup/new?location_id="
+        div class="relative hidden w-full md:flex" data-controller="places result-card--component" data-action="google-maps-callback@window->places#initMap" data-places-zoom-value="10" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}" data-places-popup-url-value="/map_popup/new?location_id="
           div class="absolute inset-0 w-full h-full xs:h-85vh" data-places-target="map"
           // Left pop-up
           = turbo_frame_tag("map-left-popup", class: "rounded-6px overflow-y-auto w-3/4 max-w-xs xl:max-w-356px h-5/5 m-3")
