@@ -18,11 +18,14 @@ export default class extends Controller {
     if (typeof(google) != "undefined") {
       this.initMap()
     }
+    const pagyFrame = document.getElementById("pagy")
 
-    new MutationObserver(() => {
-      const cardTitles = document.querySelectorAll('[id^="new_favorite"]');
-      this.setTitleListeners(cardTitles);
-    }).observe(document.getElementById("pagy"), { subtree: true, childList: true });
+    if (pagyFrame){
+      new MutationObserver(() => {
+        const cardTitles = document.querySelectorAll('[id^="new_favorite"]');
+        this.setTitleListeners(cardTitles);
+      }).observe(pagyFrame, { subtree: true, childList: true });
+    }
   }
 
   initialize() {
