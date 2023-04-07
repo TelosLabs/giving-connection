@@ -51,6 +51,7 @@ gem 'slim-rails'
 gem 'view_component'
 gem "activerecord-import"
 gem 'scout_apm'
+gem 'rollbar'
 # Use Turbo for rails
 gem 'turbo-rails'
 
