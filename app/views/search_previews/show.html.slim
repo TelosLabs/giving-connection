@@ -23,8 +23,9 @@
                   = inline_svg_tag "x-icon.svg", class: 'h-2 w-2 fill-current stroke-current stroke-1 text-blue-medium ml-1 relative'
               = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative', data: { 'search-target': "filtersIcon" }
             / Tabs
+            - tabs_labels = ['Causes', 'Location', 'Services', 'Populations Served', 'Hours']
             ul class="flex flex-1 gap-x-6 pl-5 pr-6 text-sm list-none overflow-x-auto overflow-y-hidden bg-blue-pale text-gray-2"
-              - @tabs_labels.each do |tab_label|
+              - tabs_labels.each do |tab_label|
                 li
                   a class="inline-block py-3 whitespace-nowrap" href="#" = tab_label
               li
