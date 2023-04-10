@@ -27,11 +27,11 @@ class LocationDecorator < ApplicationDecorator
   end
 
   def open_time_for_display
-    object.office_hours.find_by(day: Time::DAYS_INTO_WEEK[:monday]).formatted_open_time&.strftime("%l:%M %p")
+    object.office_hours.find_by(day: Time::DAYS_INTO_WEEK[:monday])&.formatted_open_time&.strftime("%l:%M %p")
   end
 
   def close_time_for_display
-    object.office_hours.find_by(day: Time::DAYS_INTO_WEEK[:monday]).formatted_close_time&.strftime("%l:%M %p")
+    object.office_hours.find_by(day: Time::DAYS_INTO_WEEK[:monday])&.formatted_close_time&.strftime("%l:%M %p")
   end
 
   def street
