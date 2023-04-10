@@ -403,6 +403,7 @@ GEM
     rgeo-activerecord (7.0.1)
       activerecord (>= 5.0)
       rgeo (>= 1.0.0)
+    rollbar (3.4.0)
     roo (2.8.3)
       nokogiri (~> 1)
       rubyzip (>= 1.3.0, < 3.0.0)
@@ -462,6 +463,8 @@ GEM
     sawyer (0.8.2)
       addressable (>= 2.3.5)
       faraday (> 0.8, < 2.0)
+    scout_apm (5.3.3)
+      parser
     selectize-rails (0.12.6)
     selenium-webdriver (4.6.1)
       childprocess (>= 0.5, < 5.0)
@@ -594,11 +597,13 @@ DEPENDENCIES
   rails-controller-testing
   recaptcha
   redis (~> 4.0)
+  rollbar
   roo (~> 2.8.0)
   rspec-rails (~> 5.0.0)
   rspec-sidekiq
   rubocop
   sass-rails (>= 6)
+  scout_apm
   selenium-webdriver (~> 4.4)
   shoulda-matchers (~> 4.0)
   sidekiq
