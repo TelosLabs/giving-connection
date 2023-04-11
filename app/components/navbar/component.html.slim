@@ -12,7 +12,7 @@ nav data-controller="navbar--component" class="#{non_sticky_paths ? "" : "sticky
         = inline_svg_tag 'logo.svg', size:'130*32', class:'mr-2 mid:mr-7 lg:mr-11'
       div class="flex w-full"
         li class="mr-2 mid:mr-7 lg:mr-11 text-sm-underlined-color font-medium border-b-2 border-transparent #{request.env['PATH_INFO'].include?("/search") ? "text-seafoam border-seafoam" : ""}"
-          = link_to 'Search', search_preview_path
+          = link_to 'Search', search_path
         li class="mr-2 mid:mr-7 lg:mr-11 text-sm-underlined-color font-medium border-b-2 border-transparent #{request.env['PATH_INFO'] == "/nonprofit" ? "text-seafoam border-seafoam" : ""}"
           = link_to 'Add a Nonprofit', non_profit_contact_path
         li class="mr-2 mid:mr-7 lg:mr-11 text-sm-underlined-color font-medium border-b-2 border-transparent #{request.env['PATH_INFO'] == "/about_us" ? "text-seafoam border-seafoam" : ""}"
@@ -40,7 +40,7 @@ nav data-controller="navbar--component" class="#{non_sticky_paths ? "" : "sticky
       ul class='flex flex-col text-2xl font-bold text-center gap-9 text-gray-3'
         - if @signed_in
           li = link_to "My Account", my_account_path
-        li = link_to "Search", search_preview_path
+        li = link_to "Search", search_path
         li = link_to "Add a Nonprofit", non_profit_contact_path
         li = link_to "About Us", about_us_path
         li = link_to 'Discover', discover_path
