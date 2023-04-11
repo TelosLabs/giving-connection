@@ -8,10 +8,10 @@
         <%# Org name %>
         <div>
           <%= link_to(
-            new_map_popup_path(location_id: @id), 
+            @turbo_frame[:src] || "javascript:void(0)", 
             class: "text-base font-bold text-black cursor-pointer",
             id: "new_favorite_location_#{@id}",
-            data: {turbo_frame: "map-left-popup"}
+            data: {turbo_frame: @turbo_frame[:id]}
           ) do %>
             <%= @title %>
           <% end %>
