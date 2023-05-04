@@ -1,19 +1,22 @@
-.main
-  - if current_page?(non_profit_contact_path) || @form_to_render == "add_nonprofit"
-    h2 class="pb-4 text-2xl font-bold text-center pt-6 md:pt-16 md:mt-2 md:pb-9 text-gray-3"
+.main.flex.flex-col.items-center
+  h1 class="pb-4 text-2xl font-bold text-center pt-6 md:pt-16 md:mt-2 md:pb-9 text-gray-3"
+    | Temporarly unavailable
+
+  //- if current_page?(non_profit_contact_path) || @form_to_render == "add_nonprofit"
+    //h2 class="pb-4 text-2xl font-bold text-center pt-6 md:pt-16 md:mt-2 md:pb-9 text-gray-3"
       | Add or Claim a Nonprofit
 
-    p class="max-w-2xl px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
+    //p class="max-w-2xl px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
       | Giving Connection is a platform designed to connect people with nonprofits in their communities.
-    p class="max-w-2xl px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
+    //p class="max-w-2xl px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
       |  In order to create a nonprofit profile that is listed in Giving Connection's search results, a representative from your nonprofit should fill out the following form.
-    p class="max-w-2xl px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
+    //p class="max-w-2xl px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
       |  After we verify the nonprofit organization, we will contact the representative listed below to set up an account. You should expect to hear back from us within 1-2 weeks.
-  - else
-    h2 class="pb-4 text-2xl font-bold text-center pt-6 md:pt-16 md:mt-2 md:pb-9 text-gray-3"
+  //- else
+    //h2 class="pb-4 text-2xl font-bold text-center pt-6 md:pt-16 md:mt-2 md:pb-9 text-gray-3"
       | Get in Touch
 
-    p class="max-w-lg px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
+    //p class="max-w-lg px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
       | Send us a message and we’ll get back to you as soon as we can.
 
   div class="md:hidden -z-1"
@@ -27,8 +30,10 @@
       = inline_svg_tag 'desk-blur-left-contact.svg', size:"523*419"
     div class="absolute top-0 inset-x-1/2 -z-1"
       = inline_svg_tag 'desk-blur-right-contact.svg', size:"258*248"
+  
+  = inline_svg_tag "empty_state_2.svg", class: "w-4/5 max-w-xs h-auto mt-20"
 
-  = form_with model: @message, method: :post, data: { controller: 'contact-form'} do |f|
+  //= form_with model: @message, method: :post, data: { controller: 'contact-form'} do |f|
     .c-form class="gap-6 pb-11 md:pb-36"
       - if @message.errors.any?
           div class="w-full"
