@@ -48,7 +48,7 @@
               div class="w-full h-full overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
                 - if @results.present?
                   ul class="flex flex-col divide-y divide-gray-8" id="search-results"
-                    - @results.each do |result|
+                    - @results.includes(:organization).each do |result|
                       li
                         = render ResultCard::Component.new(title: result&.name, \
                                                         address: result&.formatted_address, \
@@ -59,7 +59,8 @@
                                                         phone_number: result.phone_number&.number, \
                                                         current_user: current_user, \
                                                         verified: result.organization.verified?, \
-                                                        causes: result&.causes)
+                                                        causes: result&.causes, \
+                                                        turbo_frame: {id: "map-left-popup", src: new_map_popup_path(location_id: result&.id)})
                   - if @pagy.pages > SearchesHelper::MIN_REQUIRED_PAGES
                     div class="h-40 px-4 mt-7"
                       p class="mb-5 text-sm text-gray-3"

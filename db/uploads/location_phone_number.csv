@@ -1,40 +1,40 @@
 "scope_of_work","irs_ntee_code","causes","beneficiaries","services","boolean","day","hours"
-"International","A: Arts, Culture & Humanities","Advocacy, Human & Civil Rights","Adults","Children's Rights","yes","Monday","05:00"
+"International","A: Arts, Culture & Humanities","Advocacy","Adults","Children's Rights","yes","Monday","05:00"
 "National","A01: Alliances & Advocacy","Animals","Children & Youth","Disabled Persons' Rights","no","Tuesday","06:00"
 "Regional","A02: Management & Technical Assistance","Arts & Culture","Individuals Under 21","Employee & Workers' Rights",,"Wednesday","07:00"
-,"A03: Professional Societies & Associations","Clothing & Living Essentials ","Indigenous Peoples","Ethnic & Racial Minority Rights",,"Thursday","08:00"
+,"A03: Professional Societies & Associations","Clothing & Living Essentials","Indigenous Peoples","Ethnic & Racial Minority Rights",,"Thursday","08:00"
 ,"A05: Research Institutes & Public Policy Analysis","Community & Economic Development","Multiracial People","Immigrant Rights",,"Friday","09:00"
 ,"A11: Single Organization Support","Children & Family Services","People of African Descent","Individual & Civil Liberties",,"Saturday","10:00"
-,"A12: Fund Raising & Fund Distribution","Disability Services & Advocates","People of Asian Descent","International Human Rights",,"Sunday","11:00"
+,"A12: Fund Raising & Fund Distribution","Disability Services","People of Asian Descent","International Human Rights",,"Sunday","11:00"
 ,"A19: Support N.E.C.","Disaster Relief & Preparedness","People of European Descent","LGBTQ+ Rights",,,"12:00"
-,"A20: Arts & Culture","Drug & Alcohol Treatment ","People of Latin American Descent","Patients' Rights",,,"13:00"
+,"A20: Arts & Culture","Drug & Alcohol Treatment","People of Latin American Descent","Patients' Rights",,,"13:00"
 ,"A23: Cultural & Ethnic Awareness","Education","People of Middle Eastern Descent","Reproductive Rights",,,"14:00"
 ,"A24: Folk Arts","Emergency & Safety","People of all Racial Minority Groups","Seniors' Rights",,,"15:00"
 ,"A25: Arts Education","Employment","Caregivers","Social Justice Rights",,,"16:00"
 ,"A26: Arts & Humanities Councils & Agencies","Environment","Families","Voter Education & Registration",,,"17:00"
 ,"A27: Community Celebrations","Faith-Based","Non-Adults","Women's Rights",,,"18:00"
-,"A30: Media & Communications","Inmate & Formerly Incarcerated ","Parents","Animal Protection & Welfare",,,"19:00"
-,"A31: Film & Video","Housing & Homelessness ","Widows & Widowers","Animal Services",,,"20:00"
+,"A30: Media & Communications","Inmate & Formerly Incarcerated","Parents","Animal Protection & Welfare",,,"19:00"
+,"A31: Film & Video","Housing & Homelessness","Widows & Widowers","Animal Services",,,"20:00"
 ,"A32: Television","Hunger & Food Security","Heterosexuals","Animal Shelters",,,"21:00"
-,"A33: Printing & Publishing","Immigrant & Refugee ","Intersex People","Service & Emotional Support Animals",,,"22:00"
+,"A33: Printing & Publishing","Immigrant & Refugee","Intersex People","Service & Emotional Support Animals",,,"22:00"
 ,"A34: Radio","International","LGBTQ+ People","Veterinary Services",,,"23:00"
 ,"A40: Visual Arts","Justice & Legal Services","Men & Boys","Art Education",,,"24:00"
 ,"A50: Museums","LGBTQ+","Women & Girls","Art Therapy Services",,,
-,"A51: Art Museums","Health ","People with Developmental Disabilities","Cultural Awareness",,,
+,"A51: Art Museums","Health","People with Developmental Disabilities","Cultural Awareness",,,
 ,"A52: Children's Museums","Media & Broadcasting","People with Diseases & Illnesses","Music & Performing Arts Programs",,,
-,"<html>A53: Folk Arts Museums<i>(Draft Code - not for internal IRS use)</i></html>","Mental Health ","People with Mental Health Issues","Visual Arts Programs",,,
+,"<html>A53: Folk Arts Museums<i>(Draft Code - not for internal IRS use)</i></html>","Mental Health","People with Mental Health Issues","Visual Arts Programs",,,
 ,"A54: History Museums","Philanthropy","People with Physical Disabilities","Writing Workshops",,,
 ,"A56: Natural History & Natural Science Museums","Race & Ethnicity","People with Substance Abuse Issues","Clothing Collection",,,
 ,"A57: Science & Technology Museums","Research & Public Policy","Pregnant People","Furniture Collection/Distribution",,,
-,"A60: Performing Arts","Science","Baha'is","Living Essentials (Toiletries, Baby Supplies, Electronics, etc.) Collection/Distribution",,,
+,"A60: Performing Arts","Science & Technology","Baha'is","Living Essentials (Toiletries, Baby Supplies, Electronics, etc.) Collection/Distribution",,,
 ,"A61: Performing Arts Centers","Social Sciences","Buddhists","Professional Clothing Collection/Distribution",,,
 ,"A62: Dance","Human & Social Services","Christians","Prom Dress Collection/Distribution",,,
 ,"A63: Ballet","Seniors","Confucists","School Supply Collection/Distribution",,,
 ,"A65: Theater","Sports & Recreation","Hindus","Thrift Shops",,,
 ,"A68: Music","Transportation","Interfaith Groups","Toy Collection/Distribution",,,
-,"A69: Symphony Orchestras","Veteran Services ","Jewish People","Business & Industry Development",,,
-,"A6A: Opera","Women's Rights","Muslims","Community Coalitions",,,
-,"A6B: Singing & Choral Groups","Youth Development","Secular Groups","Community Service Clubs",,,
+,"A69: Symphony Orchestras","Veteran & Military","Jewish People","Business & Industry Development",,,
+,"A6A: Opera","Youth Development","Muslims","Community Coalitions",,,
+,"A6B: Singing & Choral Groups",,"Secular Groups","Community Service Clubs",,,
 ,"A6C: Bands & Ensembles",,"Shintos","Economic Development",,,
 ,"A6E: Performing Arts Schools",,"Sikhs","Adoption Services",,,
 ,"A70: Humanities",,"Tribal & Indigenous Religious Groups","Child Day Care",,,
@@ -45,7 +45,7 @@
 ,"A99: Arts, Culture & Humanities N.E.C.",,"Incarcerated People","Parenting Classes & Education",,,
 ,"B: Education",,"Nomadic People","Pregnancy Centers",,,
 ,"B01: Alliances & Advocacy",,"People Struggling with Homelessness","Adult Day Care",,,
-,"B02: Management & Technical Assistance",,"Victims & Oppressed People ","Centers for Blind & Visually Impaired People",,,
+,"B02: Management & Technical Assistance",,"Victims & Oppressed People","Centers for Blind & Visually Impaired People",,,
 ,"B03: Professional Societies & Associations",,"Academics","Centers for Deaf & Hearing Impaired People",,,
 ,"B05: Research Institutes & Public Policy Analysis",,"Activists","Centers for People with Developmental Disabilities",,,
 ,"B11: Single Organization Support",,"Artists & Performers","Developmental Disability Services",,,
