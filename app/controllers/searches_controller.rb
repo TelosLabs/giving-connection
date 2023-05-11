@@ -4,7 +4,7 @@ class SearchesController < ApplicationController
   skip_before_action :authenticate_user!
 
   def show
-    if params['not_initial'].present?
+    if params['not_preview'].present?
       set_search_pills_data
       @search = params['search'].present? ? Search.new(create_params) : Search.new
       @search.save
@@ -12,7 +12,6 @@ class SearchesController < ApplicationController
       puts @search.errors.full_messages if @search.results.any?
     else
       @search = Search.new
-      @search.save
       render '_preview', locals: { src: set_turbo_frame_src }
     end
     authorize @search
@@ -20,7 +19,7 @@ class SearchesController < ApplicationController
 
   def create_params
     params.require(:search).permit(:distance, :city, :state, :lat, :lon,
-                                   :open_now, :open_weekends, :keyword, :not_initial,
+                                   :open_now, :open_weekends, :keyword, :not_preview,
                                    :zipcode, causes: [], services: {}, beneficiary_groups: {})
   end
 
@@ -28,9 +27,9 @@ class SearchesController < ApplicationController
 
   def set_turbo_frame_src
     if params['search'].present?
-      search_path(search: create_params, not_initial: true)
+      search_path(search: create_params, not_preview: true)
     else
-      search_path(not_initial: true)
+      search_path(not_preview: true)
     end
   end
 
