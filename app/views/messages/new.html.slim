@@ -1,7 +1,7 @@
 .main.flex.flex-col.items-center
   / h1 class="pb-4 text-2xl font-bold text-center pt-6 md:pt-16 md:mt-2 md:pb-9 text-gray-3"
   /   | Temporarily unavailable
-
+  
   - if current_page?(non_profit_contact_path) || @form_to_render == "add_nonprofit"
     h2 class="pb-4 text-2xl font-bold text-center pt-6 md:pt-16 md:mt-2 md:pb-9 text-gray-3"
       | Add or Claim a Nonprofit
@@ -80,6 +80,6 @@
         = f.label :content, "*Message"
         = f.text_area :content, class:"c-input h-40", data: { 'contact-form-target': 'message'}
       div class="w-full"
-        = recaptcha_tags
+        = recaptcha_tags noscript: false
       div class="mt-3"
         = f.submit "Send message", class:"c-button"
