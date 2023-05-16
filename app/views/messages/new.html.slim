@@ -80,6 +80,6 @@
         = f.label :content, "*Message"
         = f.text_area :content, class:"c-input h-40", data: { 'contact-form-target': 'message'}
       div class="w-full"
-        = recaptcha_tags noscript: false
+        = recaptcha_tags
       div class="mt-3"
         = f.submit "Send message", class:"c-button"
