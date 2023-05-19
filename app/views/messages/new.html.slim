@@ -79,6 +79,8 @@
       div class="w-full"
         = f.label :content, "*Message"
         = f.text_area :content, class:"c-input h-40", data: { 'contact-form-target': 'message'}
+      // Honeypot
+      = invisible_captcha :street, :message
       div class="w-full"
         = recaptcha_tags noscript: false
       div class="mt-3"
