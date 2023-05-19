@@ -11,8 +11,10 @@
     'search--alerts-target': 'form', \
     'search-target': 'form'}) do |f|
   = render SearchBar::Component.new(form: f, search: @search)
-  = render SearchPills::Component.new(causes: @top_10_causes, services: @top_10_services, beneficiary_subcategories: @top_10_beneficiary_subcategories, params: params)
+  = turbo_frame_tag "search-pills" do
+    = render SearchPills::Component.new(causes: @top_10_causes, services: @top_10_services, beneficiary_subcategories: @top_10_beneficiary_subcategories, params: params)
   = turbo_frame_tag "search-locations" do
+    = hidden_field :not_preview, nil,  value: true
     div class="flex flex-row justify-center w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
       div class="flex flex-row justify-center w-full min-h-full"
         div class="flex flex-col w-full md:border-r max-w-sm border-gray-7"
@@ -43,7 +45,7 @@
                   = link_to user_session_path, class: 'inline-flex items-center px-3 py-2 text-xs text-gray-3' do
                     = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
                     | Create Search Alert
-              div class="hidden w-full h-full overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
+              div class="w-full h-full overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
                 - if @results.present?
                   ul class="flex flex-col divide-y divide-gray-8" id="search-results"
                     - @results.includes(:organization).each do |result|
