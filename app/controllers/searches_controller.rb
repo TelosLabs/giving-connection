@@ -2,42 +2,27 @@
 
 class SearchesController < ApplicationController
   skip_before_action :authenticate_user!
+  before_action only: [:show] do
+    set_causes
+    set_services
+    set_beneficiary_groups
+  end
 
   def show
-    if params['not_preview'].present?
-      set_search_pills_data
-      @search = params['search'].present? ? Search.new(create_params) : Search.new
-      @search.save
-      @pagy, @results = pagy(@search.results)
-      puts @search.errors.full_messages if @search.results.any?
-    else
-      @search = Search.new
-      render '_preview', locals: { src: set_turbo_frame_src }
-    end
+    @search = params['search'].present? ? Search.new(create_params) : Search.new
+    @search.save
+    @pagy, @results = pagy(@search.results)
+    puts @search.errors.full_messages if @search.results.any?
     authorize @search
   end
 
   def create_params
     params.require(:search).permit(:distance, :city, :state, :lat, :lon,
-                                   :open_now, :open_weekends, :keyword, :not_preview,
+                                   :open_now, :open_weekends, :keyword,
                                    :zipcode, causes: [], services: {}, beneficiary_groups: {})
   end
 
   private
-
-  def set_turbo_frame_src
-    if params['search'].present?
-      search_path(search: create_params, not_preview: true)
-    else
-      search_path(not_preview: true)
-    end
-  end
-
-  def set_search_pills_data
-    set_causes
-    set_services
-    set_beneficiary_groups
-  end
 
   def set_causes
     @top_10_causes = Cause.top(limit: 10)
