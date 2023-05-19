@@ -47,18 +47,19 @@
                 - if @results.present?
                   ul class="flex flex-col divide-y divide-gray-8" id="search-results"
                     - @results.includes(:organization).each do |result|
-                      li
-                        = render ResultCard::Component.new(title: result&.name, \
-                                                        address: result&.formatted_address, \
-                                                        image_url: result&.organization&.logo, \
-                                                        id: result&.id, \
-                                                        website: result&.decorate&.website || result&.organization&.decorate&.website, \
-                                                        description: "", \
-                                                        phone_number: result.phone_number&.number, \
-                                                        current_user: current_user, \
-                                                        verified: result.organization.verified?, \
-                                                        causes: result&.causes, \
-                                                        turbo_frame: {id: "map-left-popup", src: new_map_popup_path(location_id: result&.id)})
+                      = cache result do
+                        li
+                          = render ResultCard::Component.new(title: result&.name, \
+                                                          address: result&.formatted_address, \
+                                                          image_url: result&.organization&.logo, \
+                                                          id: result&.id, \
+                                                          website: result&.decorate&.website || result&.organization&.decorate&.website, \
+                                                          description: "", \
+                                                          phone_number: result.phone_number&.number, \
+                                                          current_user: current_user, \
+                                                          verified: result.organization.verified?, \
+                                                          causes: result&.causes, \
+                                                          turbo_frame: {id: "map-left-popup", src: new_map_popup_path(location_id: result&.id)})
                   - if @pagy.pages > SearchesHelper::MIN_REQUIRED_PAGES
                     div class="h-40 px-4 mt-7"
                       p class="mb-5 text-sm text-gray-3"
@@ -88,16 +89,67 @@
               div class="hidden" data-places-target="latitude"
               div class="hidden" data-places-target="longitude"
               - @search.results.besides_po_boxes&.each do |result|
-                div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}" data-po_box="#{result.po_box}" id="loc_#{result.id}" data-controller="pin" data-pin-target="pin"
+                = cache result do
+                  div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}" data-po_box="#{result.po_box}" id="loc_#{result.id}" data-controller="pin" data-pin-target="pin"
+                    - if user_signed_in?
+                      - if !current_user.favorited_locations.include?(result)
+                        = link_to favorite_locations_path(location_id: result.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", remote: true, data: { action: "click->pin#reloadPage", turbo_method: :post } do
+                          = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
+                      - else
+                        = link_to favorite_location_path(current_user.fav_locs.find_by(location_id: result.id)), remote: true, data: { action: "click->pin#reloadPage", turbo_method: :delete }, class: "inline-flex self-end text-xs text-gray-3" do
+                          = inline_svg_tag 'bookmark_colored.svg', class: 'w-4 h-4'
+                    - else
+                      = link_to favorite_locations_path(location_id: result.id), data: {turbo_method: :post }, class: "inline-flex self-end text-xs text-gray-3" do
+                        = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
+                    div
+                      = image_tag result.organization.logo, class: "w-3/5 h-3/5 m-auto"
+                    div
+                      a id="pointer"
+                        = link_to result.name, location_path(result), target:"_blank", class: "text-small font-bold text-gray-2"
+                      - if result.organization.verified?
+                        = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1 align-text-bottom inline"
+                    p class="text-xs text-gray-4" id="pointer"
+                      = link_to result.address, result.link_to_google_maps, target: "blank"
+                    p class="text-xs text-blue-medium"
+                      = link_to result.organization.decorate.website, result.organization.decorate.website, target: "_blank"
+                    - if device == "mobile" && result.phone_number
+                      a.text-xs.text-blue-medium[href="tel:#{result.phone_number&.number}"]
+                        = "call: #{result.phone_number&.number}"
+                    - else
+                      p class="text-xs text-blue-medium"
+                        = result.phone_number&.number
+                    p class="text-xs font-medium text-gray-2"
+                      - if result.appointment_only?
+                        span class="text-states-error"
+                          ' Appointment only
+                      - elsif result.open_now?
+                        span class="text-green-fountain"
+                          ' Open Now
+                      - else
+                        span class="text-states-error"
+                          ' Closed
+                        | -&nbsp;
+                        = result.decorate.closed_office_hours_display
+        // Desktop map
+        div class="relative hidden w-full md:flex" data-controller="places result-card--component" data-action="google-maps-callback@window->places#initMap" data-places-zoom-value="10" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}" data-places-popup-url-value="/map_popup/new?location_id="
+          div class="absolute inset-0 w-full h-full xs:h-85vh" data-places-target="map"
+          // Left pop-up
+          = turbo_frame_tag("map-left-popup", class: "rounded-6px overflow-y-auto w-3/4 max-w-xs xl:max-w-356px h-5/5 m-3")
+          div class="hidden"
+            div class="hidden" data-places-target="latitude"
+            div class="hidden" data-places-target="longitude"
+            - @search.results.besides_po_boxes&.each do |result|
+              = cache result do
+                div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}" id="loc_#{result.id}" data-controller="pin" data-pin-target="pin"
                   - if user_signed_in?
                     - if !current_user.favorited_locations.include?(result)
                       = link_to favorite_locations_path(location_id: result.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", remote: true, data: { action: "click->pin#reloadPage", turbo_method: :post } do
                         = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
                     - else
-                      = link_to favorite_location_path(current_user.fav_locs.find_by(location_id: result.id)), remote: true, data: { action: "click->pin#reloadPage", turbo_method: :delete }, class: "inline-flex self-end text-xs text-gray-3" do
+                      = link_to favorite_location_path(current_user.fav_locs.find_by(location_id: result.id)), class: "inline-flex self-end text-xs text-gray-3", remote: true, data: { action: "click->pin#reloadPage", turbo_method: :delete } do
                         = inline_svg_tag 'bookmark_colored.svg', class: 'w-4 h-4'
                   - else
-                    = link_to favorite_locations_path(location_id: result.id), data: {turbo_method: :post }, class: "inline-flex self-end text-xs text-gray-3" do
+                    = link_to favorite_locations_path(location_id: result.id), data: { turbo_method: :post }, class: "inline-flex self-end text-xs text-gray-3" do
                       = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
                   div
                     = image_tag result.organization.logo, class: "w-3/5 h-3/5 m-auto"
@@ -107,15 +159,11 @@
                     - if result.organization.verified?
                       = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1 align-text-bottom inline"
                   p class="text-xs text-gray-4" id="pointer"
-                    = link_to result.address, result.link_to_google_maps, target: "blank"
+                    = link_to result.formatted_address, result.link_to_google_maps, target: "blank"
                   p class="text-xs text-blue-medium"
                     = link_to result.organization.decorate.website, result.organization.decorate.website, target: "_blank"
-                  - if device == "mobile" && result.phone_number
-                    a.text-xs.text-blue-medium[href="tel:#{result.phone_number&.number}"]
-                      = "call: #{result.phone_number&.number}"
-                  - else
-                    p class="text-xs text-blue-medium"
-                      = result.phone_number&.number
+                  p class="text-xs text-gray-4"
+                    | #{result.phone_number&.number}
                   p class="text-xs font-medium text-gray-2"
                     - if result.appointment_only?
                       span class="text-states-error"
@@ -128,49 +176,4 @@
                         ' Closed
                       | -&nbsp;
                       = result.decorate.closed_office_hours_display
-        // Desktop map
-        div class="relative hidden w-full md:flex" data-controller="places result-card--component" data-action="google-maps-callback@window->places#initMap" data-places-zoom-value="10" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}" data-places-popup-url-value="/map_popup/new?location_id="
-          div class="absolute inset-0 w-full h-full xs:h-85vh" data-places-target="map"
-          // Left pop-up
-          = turbo_frame_tag("map-left-popup", class: "rounded-6px overflow-y-auto w-3/4 max-w-xs xl:max-w-356px h-5/5 m-3")
-          div class="hidden"
-            div class="hidden" data-places-target="latitude"
-            div class="hidden" data-places-target="longitude"
-            - @search.results.besides_po_boxes&.each do |result|
-              div class="flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{result.latitude}" data-longitude="#{result.longitude}" id="loc_#{result.id}" data-controller="pin" data-pin-target="pin"
-                - if user_signed_in?
-                  - if !current_user.favorited_locations.include?(result)
-                    = link_to favorite_locations_path(location_id: result.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", remote: true, data: { action: "click->pin#reloadPage", turbo_method: :post } do
-                      = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
-                  - else
-                    = link_to favorite_location_path(current_user.fav_locs.find_by(location_id: result.id)), class: "inline-flex self-end text-xs text-gray-3", remote: true, data: { action: "click->pin#reloadPage", turbo_method: :delete } do
-                      = inline_svg_tag 'bookmark_colored.svg', class: 'w-4 h-4'
-                - else
-                  = link_to favorite_locations_path(location_id: result.id), data: { turbo_method: :post }, class: "inline-flex self-end text-xs text-gray-3" do
-                    = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
-                div
-                  = image_tag result.organization.logo, class: "w-3/5 h-3/5 m-auto"
-                div
-                  a id="pointer"
-                    = link_to result.name, location_path(result), target:"_blank", class: "text-small font-bold text-gray-2"
-                  - if result.organization.verified?
-                    = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1 align-text-bottom inline"
-                p class="text-xs text-gray-4" id="pointer"
-                  = link_to result.formatted_address, result.link_to_google_maps, target: "blank"
-                p class="text-xs text-blue-medium"
-                  = link_to result.organization.decorate.website, result.organization.decorate.website, target: "_blank"
-                p class="text-xs text-gray-4"
-                  | #{result.phone_number&.number}
-                p class="text-xs font-medium text-gray-2"
-                  - if result.appointment_only?
-                    span class="text-states-error"
-                      ' Appointment only
-                  - elsif result.open_now?
-                    span class="text-green-fountain"
-                      ' Open Now
-                  - else
-                    span class="text-states-error"
-                      ' Closed
-                    | -&nbsp;
-                    = result.decorate.closed_office_hours_display
 // TODO DRY map markup
