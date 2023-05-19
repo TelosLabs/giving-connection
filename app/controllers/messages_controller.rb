@@ -3,6 +3,7 @@
 class MessagesController < ApplicationController
   skip_after_action :verify_authorized
   skip_before_action :authenticate_user!
+  invisible_captcha only: [:create], honeypot: :street
 
   def new
     @message = Message.new
