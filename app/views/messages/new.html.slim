@@ -1,7 +1,4 @@
 .main.flex.flex-col.items-center
-  / h1 class="pb-4 text-2xl font-bold text-center pt-6 md:pt-16 md:mt-2 md:pb-9 text-gray-3"
-  /   | Temporarily unavailable
-  
   - if current_page?(non_profit_contact_path) || @form_to_render == "add_nonprofit"
     h2 class="pb-4 text-2xl font-bold text-center pt-6 md:pt-16 md:mt-2 md:pb-9 text-gray-3"
       | Add or Claim a Nonprofit
@@ -30,8 +27,6 @@
       = inline_svg_tag 'desk-blur-left-contact.svg', size:"523*419"
     div class="absolute top-0 inset-x-1/2 -z-1"
       = inline_svg_tag 'desk-blur-right-contact.svg', size:"258*248"
-  
-  /= inline_svg_tag "empty_state_2.svg", class: "w-4/5 max-w-xs h-auto mt-20"
 
   = form_with model: @message, method: :post, data: { controller: 'contact-form'} do |f|
     .c-form class="gap-6 pb-11 md:pb-36"
