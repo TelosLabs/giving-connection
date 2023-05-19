@@ -21,8 +21,8 @@ export default class extends Controller {
   }
 
   initialize() {
-    this.advancedFiltersButton = document.getElementById("advanced-filters-button")
     document.addEventListener("turbo:frame-load", () => {
+      this.advancedFiltersButton = document.getElementById("advanced-filters-button")
       this.enableAdvancedFiltersButton(this.advancedFiltersButton)
     })
   }

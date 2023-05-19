@@ -26,6 +26,14 @@ export default class extends Controller {
     if (typeof(google) != "undefined") {
       this.initMap()
     }
+    const pagyFrame = document.getElementById("pagy")
+
+    if (pagyFrame){
+      new MutationObserver(() => {
+        const cardTitles = document.querySelectorAll('[id^="new_favorite"]');
+        this.setTitleListeners(cardTitles);
+      }).observe(pagyFrame, { subtree: true, childList: true });
+    }
   }
 
   initialize() {
