@@ -31,6 +31,7 @@ gem 'devise'
 
 # User Auth
 gem "recaptcha"
+gem "invisible_captcha"
 
 gem 'active_storage_validations'
 gem 'aws-sdk-s3', require: false
@@ -51,6 +52,7 @@ gem 'slim-rails'
 gem 'view_component'
 gem "activerecord-import"
 gem 'scout_apm'
+gem 'rollbar'
 # Use Turbo for rails
 gem 'turbo-rails'
 

@@ -46,7 +46,7 @@ Rails.application.configure do
   # config.action_cable.mount_path = nil
   # config.action_cable.url = 'wss://example.com/cable'
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
-  config.action_cable.allowed_request_origins = Rails.application.credentials.dig(Rails.env.to_sym)[:app_host] 
+  config.action_cable.allowed_request_origins = Rails.application.credentials.dig(Rails.env.to_sym)[:app_host]
 
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
@@ -60,7 +60,7 @@ Rails.application.configure do
   config.log_tags = [:request_id]
 
   # Use a different cache store in production.
-  # config.cache_store = :mem_cache_store
+  config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] }
 
   config.action_mailer.perform_caching = false
 

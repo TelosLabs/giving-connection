@@ -15,13 +15,24 @@ export default class extends Controller {
     this.resetMarkers();
     this.cleanLocalStorage();
 
-    new MutationObserver(() => {
-      const cardTitles = document.querySelectorAll('[id^="new_favorite"]');
-      this.setTitleListeners(cardTitles);
-    }).observe(document.getElementById("pagy"), { subtree: true, childList: true });
+    const sidebar = document.getElementById("pagy");
+    if (sidebar) {
+      new MutationObserver(() => {
+        const cardTitles = document.querySelectorAll('[id^="new_favorite"]');
+        this.setTitleListeners(cardTitles);
+      }).observe(sidebar, { subtree: true, childList: true });
+    }
 
     if (typeof(google) != "undefined") {
       this.initMap()
+    }
+    const pagyFrame = document.getElementById("pagy")
+
+    if (pagyFrame){
+      new MutationObserver(() => {
+        const cardTitles = document.querySelectorAll('[id^="new_favorite"]');
+        this.setTitleListeners(cardTitles);
+      }).observe(pagyFrame, { subtree: true, childList: true });
     }
   }
 

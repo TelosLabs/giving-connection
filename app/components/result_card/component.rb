@@ -2,7 +2,7 @@
 class ResultCard::Component < ViewComponent::Base
   include ApplicationHelper
 
-  def initialize(title:, address:, image_url:, website:, description:, id:, current_user:, phone_number:, verified:, causes: [])
+  def initialize(title:, address:, image_url:, website:, description:, id:, current_user:, phone_number:, verified:, causes: [], turbo_frame: {})
     @title = title
     @address = address
     @image_url = image_url
@@ -13,6 +13,8 @@ class ResultCard::Component < ViewComponent::Base
     @phone_number = phone_number
     @verified = verified
     @causes = causes
+    # If not targeting a turbo-frame, don't provide this parameter
+    @turbo_frame = turbo_frame
   end
 
   def formated_description

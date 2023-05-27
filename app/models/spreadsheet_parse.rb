@@ -111,11 +111,11 @@ class SpreadsheetParse
       close_time = office_hour_row['close_time']
       closed = office_hour_row['closed'] == 'yes'
 
-      if office_hour_row['location_id'] == location_id && day.present? && open_time && close_time.present?
+      if office_hour_row['location_id'] == location_id && day.present?
         new_location.office_hours.build(
           day: Date::DAYNAMES.index(day),
-          open_time: Time.now.change({ hour: open_time }).in_time_zone('Eastern Time (US & Canada)'),
-          close_time: Time.now.change({ hour: close_time }).in_time_zone('Eastern Time (US & Canada)'),
+          open_time: open_time,
+          close_time: close_time,
           closed: closed
         )
       end
@@ -137,7 +137,8 @@ class SpreadsheetParse
       mission_statement_en: org_row['mission_statement_en'], vision_statement_en: org_row['vision_statement_en'],
       tagline_en: org_row['tagline_en'], mission_statement_es: org_row['mission_statement_es'],
       vision_statement_es: org_row['vision_statement_es'], tagline_es: org_row['tagline_es'],
-      website: org_row['website'], scope_of_work: org_row['scope_of_work'], creator: AdminUser.first, active: true,
+      website: org_row['website'], scope_of_work: org_row['scope_of_work'], creator: AdminUser.first,
+      active: org_row['active'] == 'yes',
       donation_link: org_row['donation_link'] }
   end
 
