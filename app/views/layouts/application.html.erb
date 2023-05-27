@@ -3,6 +3,11 @@
   <head>
     <title>Giving Connection</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <% if request.fullpath.include? "/search" %>
+      <meta name="turbo-cache-control" content="no-preview">
+    <% end %>
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
