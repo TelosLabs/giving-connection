@@ -48,7 +48,7 @@
               div class="w-full h-full overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
                 - if @results.present?
                   ul class="flex flex-col divide-y divide-gray-8" id="search-results"
-                    - @results.includes(:organization).each do |result|
+                    - @results.each do |result|
                       li
                         = render ResultCard::Component.new(title: result&.name, \
                                                         address: result&.formatted_address, \

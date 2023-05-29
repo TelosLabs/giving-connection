@@ -8,7 +8,7 @@ class SearchesController < ApplicationController
       set_search_pills_data
       @search = params['search'].present? ? Search.new(create_params) : Search.new
       @search.save
-      @pagy, @results = pagy(@search.results)
+      @pagy, @results = pagy(@search.results.includes(:phone_number, :causes, organization: {logo_attachment: :blob}))
       puts @search.errors.full_messages if @search.results.any?
     else
       @search = Search.new
@@ -47,7 +47,7 @@ class SearchesController < ApplicationController
   def set_services
     @services = {}
     @top_10_services = Service.top(limit: 10)
-    Cause.all.each do |cause|
+    Cause.all.includes(:services).each do |cause|
       @services[cause.name] = cause.services.map(&:name) - @top_10_services.pluck(:name)
     end
   end
@@ -55,7 +55,7 @@ class SearchesController < ApplicationController
   def set_beneficiary_groups
     @beneficiary_groups = {}
     @top_10_beneficiary_subcategories = BeneficiarySubcategory.top(limit: 10)
-    BeneficiaryGroup.all.each do |group|
+    BeneficiaryGroup.all.includes(:beneficiary_subcategories).each do |group|
       @beneficiary_groups[group.name] = group.beneficiary_subcategories.map(&:name) - @top_10_beneficiary_subcategories.pluck(:name)
     end
   end
