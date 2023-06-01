@@ -24,6 +24,7 @@ Rails.application.routes.draw do
         post :import
       end
     end
+    resource :export_locations, only: :new
   end
 
   devise_for :admin_users
