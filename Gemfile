@@ -35,6 +35,7 @@ gem "invisible_captcha"
 
 gem 'active_storage_validations'
 gem 'aws-sdk-s3', require: false
+gem "caxlsx"
 gem 'clockwork'
 gem 'cocoon'
 gem 'draper'
