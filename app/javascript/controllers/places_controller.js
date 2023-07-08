@@ -209,9 +209,8 @@ export default class extends Controller {
         });
         sessionStorage.setItem('marker_infowindow', element.id)
       })
-
-
-      marker.addListener("mouseover", this.debounce(function () {
+      // Open infowindows eventlisteners registration
+      marker.addListener("mouseover", this.debounce(function() {
         if (prevInfoWindow) {
           prevInfoWindow.close()
         }
@@ -226,11 +225,10 @@ export default class extends Controller {
         });
 
         sessionStorage.setItem('marker_infowindow', element.id)
-        infowindow.content.src = "/infowindow/new?frame_id=" + element.id
-      }, 200));
+      }, 250));
 
-      marker.addListener("mouseout", function () {
-        clearTimeout(this.timerId);
+      marker.addListener("mouseout", function() {
+        clearTimeout(this.scheduledFuncId);
       });
 
       if (pin && pin.id == element.id) {
@@ -283,14 +281,12 @@ export default class extends Controller {
   }
 
   debounce(func, delay) {
-    this.timerId;
+    this.scheduledFuncId;
 
-    return function(...args) {
-      clearTimeout(this.timerId);
-
-      this.timerId = setTimeout(() => {
-        func.apply(this, args);
-      }, delay);
+    return function () {
+      // Scheduled function executes just once
+      clearTimeout(this.scheduledFuncId);
+      this.scheduledFuncId = setTimeout(func, delay);
     };
   }
 }
