@@ -211,7 +211,7 @@ export default class extends Controller {
       })
 
 
-      marker.addListener("mouseover", () => {
+      marker.addListener("mouseover", this.debounce(function () {
         if (prevInfoWindow) {
           prevInfoWindow.close()
         }
@@ -227,6 +227,10 @@ export default class extends Controller {
 
         sessionStorage.setItem('marker_infowindow', element.id)
         infowindow.content.src = "/infowindow/new?frame_id=" + element.id
+      }, 200));
+
+      marker.addListener("mouseout", function () {
+        clearTimeout(this.timerId);
       });
 
       if (pin && pin.id == element.id) {
@@ -276,5 +280,17 @@ export default class extends Controller {
       this.markersArray[i].setMap(null);
     }
     this.markersArray.length = 0;
+  }
+
+  debounce(func, delay) {
+    this.timerId;
+
+    return function(...args) {
+      clearTimeout(this.timerId);
+
+      this.timerId = setTimeout(() => {
+        func.apply(this, args);
+      }, delay);
+    };
   }
 }
