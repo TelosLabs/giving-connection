@@ -4,7 +4,7 @@
 # rubocop:disable Lint/MissingSuper
 # rubocop:disable Style/Documentation
 module SearchBar
-  class Component < ViewComponent::Base
+  class Component < ApplicationViewComponent
     def initialize(form:, search:)
       @form = form
       @search = search

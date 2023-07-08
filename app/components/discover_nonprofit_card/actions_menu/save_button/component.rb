@@ -1,4 +1,4 @@
-class DiscoverNonprofitCard::ActionsMenu::SaveButton::Component < ViewComponent::Base
+class DiscoverNonprofitCard::ActionsMenu::SaveButton::Component < ApplicationViewComponent
   def initialize(user:, location:, button_styles: "", icon_wrapper_styles: "", action_copy_styles: "")
     @user = user
     @location = location

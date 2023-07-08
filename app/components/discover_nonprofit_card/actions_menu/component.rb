@@ -1,4 +1,4 @@
-class DiscoverNonprofitCard::ActionsMenu::Component < ViewComponent::Base
+class DiscoverNonprofitCard::ActionsMenu::Component < ApplicationViewComponent
   def initialize(user:, location:)
     @user = user
     @location = location

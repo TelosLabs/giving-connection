@@ -1,4 +1,4 @@
-class DiscoverNonprofitCard::Head::Component < ViewComponent::Base
+class DiscoverNonprofitCard::Head::Component < ApplicationViewComponent
   def initialize(location:)
     @location = location
   end

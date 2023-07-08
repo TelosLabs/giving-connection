@@ -4,7 +4,7 @@
 # rubocop:disable Lint/MissingSuper
 
 # View Component to display flash alerts
-class Alert::Component < ViewComponent::Base
+class Alert::Component < ApplicationViewComponent
   def initialize(type:, message:)
     @type = type
     @message = message
