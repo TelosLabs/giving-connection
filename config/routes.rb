@@ -64,5 +64,6 @@ Rails.application.routes.draw do
   resource :faqs, only: %i[show]
   resource :donate, only: %i[show]
   resource :privacy_policy, only: %i[show]
+  resource :infowindow, only: :new
   root to: 'home#index'
 end
