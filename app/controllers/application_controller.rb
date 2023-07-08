@@ -28,7 +28,8 @@ class ApplicationController < ActionController::Base
   end
 
   def store_user_location!
-    store_location_for(:user, request.fullpath)
+    location = request.headers["Turbo-Frame"].present? ? my_account_path : request.fullpath
+    store_location_for(:user, location)
   end
 
   def after_sign_in_path_for(resource_or_scope)
