@@ -8,6 +8,8 @@
       <meta name="turbo-cache-control" content="no-preview">
     <% end %>
 
+    <%= yield(:head) %>
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
