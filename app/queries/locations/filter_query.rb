@@ -121,7 +121,7 @@ module Locations
           day: Time.now.wday,
           closed: false,
         }).where(
-          "? BETWEEN timezone('CST', open_time) AND timezone('CST', close_time)", Time.now
+          "? BETWEEN timezone('CST', open_time) AND timezone('CST', close_time)", Time.zone.now
         )
       end
 
