@@ -1,4 +1,4 @@
-class CausesList::Component < ViewComponent::Base
+class CausesList::Component < ApplicationViewComponent
   def initialize(causes:, tooltip: false, list_options: {}, cause_options: {}, icon_wrapper_options: {}, tooltip_options: {}, icon_svg_options: {})
     @causes = causes
     @list_options = list_options

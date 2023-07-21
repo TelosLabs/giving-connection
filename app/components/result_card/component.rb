@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-class ResultCard::Component < ViewComponent::Base
+class ResultCard::Component < ApplicationViewComponent
   include ApplicationHelper
 
   def initialize(title:, address:, image_url:, website:, description:, id:, current_user:, phone_number:, verified:, causes: [], turbo_frame: {})

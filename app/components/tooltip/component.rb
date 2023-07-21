@@ -1,6 +1,6 @@
 require 'securerandom'
 
-class Tooltip::Component < ViewComponent::Base
+class Tooltip::Component < ApplicationViewComponent
   def initialize(copy:, tooltip_options: {}, wrapper_options: {})
     @copy = copy
     @tooltip_options = tooltip_options

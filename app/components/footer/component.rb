@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module Footer
-  class Component < ViewComponent::Base; end
+  class Component < ApplicationViewComponent; end
 end

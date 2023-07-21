@@ -3,7 +3,7 @@
 # navbar view component
 # rubocop:disable Style/ClassAndModuleChildren
 # rubocop:disable Lint/MissingSuper
-class Navbar::Component < ViewComponent::Base
+class Navbar::Component < ApplicationViewComponent
   def initialize(signed_in:)
     @signed_in = signed_in
   end

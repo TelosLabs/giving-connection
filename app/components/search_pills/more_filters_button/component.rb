@@ -1,2 +1,2 @@
-class SearchPills::MoreFiltersButton::Component < ViewComponent::Base
+class SearchPills::MoreFiltersButton::Component < ApplicationViewComponent
 end
