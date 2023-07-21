@@ -118,7 +118,7 @@ module Locations
         return scope if open_now.nil?
 
         scope.joins(:office_hours).where(office_hours: {
-          day: Time.now.wday,
+          day: Time.zone.now.wday,
           closed: false,
         }).where(
           "? BETWEEN timezone('CST', open_time) AND timezone('CST', close_time)", Time.zone.now
