@@ -10,11 +10,13 @@ class ServiceDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
+    cause: Field::BelongsTo,
+    location_services: Field::HasMany,
+    locations: Field::HasMany,
     id: Field::Number,
     name: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    cause: Field::BelongsTo
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -31,6 +33,7 @@ class ServiceDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
     name
+    cause
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -38,6 +41,7 @@ class ServiceDashboard < Administrate::BaseDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
     name
+    cause
   ].freeze
 
   # COLLECTION_FILTERS
