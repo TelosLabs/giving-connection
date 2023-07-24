@@ -1,0 +1,49 @@
+- if @user_signed_in
+  - if !@current_user.favorited_locations.include?(@location)
+    = link_to favorite_locations_path(location_id: @location.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", remote: true, data: { action: "click->pin#reloadPage", turbo_method: :post } do
+      = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
+  - else
+    = link_to favorite_location_path(@current_user.fav_locs.find_by(location_id: @location.id)), class: "inline-flex self-end text-xs text-gray-3", remote: true, data: { action: "click->pin#reloadPage", turbo_method: :delete } do
+      = inline_svg_tag 'bookmark_colored.svg', class: 'w-4 h-4'
+- else
+  = link_to favorite_locations_path(location_id: @location.id), data: { turbo_method: :post }, class: "inline-flex self-end text-xs text-gray-3" do
+    = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
+
+/ // Bookmark
+/ = link_to(**bookmark_options) do
+/   span.sr-only Bookmark
+/   = inline_svg_tag(bookmark_icon, class: 'w-4 h-4', aria_hidden: true)
+
+// Logo
+div
+  = image_tag @location.organization.logo, class: "w-3/5 h-3/5 m-auto"
+
+// Name
+div
+  a id="pointer"
+    = link_to @location.name, location_path(@location), target:"_blank", class: "text-small font-bold text-gray-2"
+  - if @location.organization.verified?
+    = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1 align-text-bottom inline"
+
+// Address, website, phone, and availability
+p class="text-xs text-gray-4" id="pointer"
+  = link_to @location.formatted_address, @location.link_to_google_maps, target: "blank"
+
+p class="text-xs text-blue-medium"
+  = link_to @location.organization.decorate.website, @location.organization.decorate.website, target: "_blank"
+
+p class="text-xs text-gray-4"
+  | #{@location.phone_number&.number}
+
+p class="text-xs font-medium text-gray-2"
+  - if @location.appointment_only?
+    span class="text-states-error"
+      ' Appointment only
+  - elsif @location.open_now?
+    span class="text-green-fountain"
+      ' Open Now
+  - else
+    span class="text-states-error"
+      ' Closed
+    | -&nbsp;
+    = @location.decorate.closed_office_hours_display

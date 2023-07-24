@@ -160,8 +160,8 @@ export default class extends Controller {
     let prevInfoWindow = false
     let pin = document.getElementById(sessionStorage.getItem('marker_infowindow'))
 
-    for (let i = 0; i < this.markerTargets.length; i++) {
-      const element = this.markerTargets[i];
+    this.markerTargets.forEach((markerTarget) => {
+      const element = markerTarget;
       const latitudeTarget = Number(element.dataset.latitude)
       const longitudeTarget = Number(element.dataset.longitude)
       const element_id = element.id.replace(/\D/g, '');
@@ -177,7 +177,7 @@ export default class extends Controller {
       this.mapMarkers.push(marker)
 
       const infowindow = new google.maps.InfoWindow({
-        content: this.markerTargets[i],
+        content: markerTarget,
         maxWidth: 210,
       });
 
@@ -195,7 +195,7 @@ export default class extends Controller {
         marker.setIcon(clickedImage);
         sessionStorage.setItem('selected_marker', marker.id);
 
-        if( prevInfoWindow ) {
+        if (prevInfoWindow) {
           prevInfoWindow.close()
         }
         marker.setAnimation(null);
@@ -209,10 +209,9 @@ export default class extends Controller {
         });
         sessionStorage.setItem('marker_infowindow', element.id)
       })
-
-
-      marker.addListener("mouseover", () => {
-        if( prevInfoWindow ) {
+      // Open infowindows eventlisteners registration
+      marker.addListener("mouseover", this.debounce(function() {
+        if (prevInfoWindow) {
           prevInfoWindow.close()
         }
         marker.setAnimation(null);
@@ -226,10 +225,13 @@ export default class extends Controller {
         });
 
         sessionStorage.setItem('marker_infowindow', element.id)
-        // Scroll method calling was here, removed so that it doesn't scroll on mouseover.
+      }, 250));
+
+      marker.addListener("mouseout", function() {
+        clearTimeout(this.scheduledFuncId);
       });
 
-      if (pin && pin.id == element.id)  {
+      if (pin && pin.id == element.id) {
         prevInfoWindow = infowindow
         infowindow.open({
           anchor: marker,
@@ -238,7 +240,7 @@ export default class extends Controller {
         });
         this.scrollToSelectedLocation()
       }
-    }
+    });
   }
 
 
@@ -276,5 +278,15 @@ export default class extends Controller {
       this.markersArray[i].setMap(null);
     }
     this.markersArray.length = 0;
+  }
+
+  debounce(func, delay) {
+    this.scheduledFuncId;
+
+    return function () {
+      // Scheduled function executes just once
+      clearTimeout(this.scheduledFuncId);
+      this.scheduledFuncId = setTimeout(func, delay);
+    };
   }
 }

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class BioCard::Component < ViewComponent::Base
+class BioCard::Component < ApplicationViewComponent
   renders_one :biography
 
   def initialize(name: '', job_title: '', img_url: '')

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 module SelectMultiple
-  class Component < ViewComponent::Base
+  class Component < ApplicationViewComponent
     def initialize(f: "", klass: "", name: "", items: {}, selected: [], options: {}, placeholder: "", required: false)
       @f = f
       @klass = klass

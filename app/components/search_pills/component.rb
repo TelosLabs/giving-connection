@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-class SearchPills::Component < ViewComponent::Base
+class SearchPills::Component < ApplicationViewComponent
   def initialize(causes:, services:, beneficiary_subcategories:, params:)
     @causes = causes
     @services = services

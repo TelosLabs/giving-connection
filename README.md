@@ -63,9 +63,7 @@ Inside of postgres command line:
 
 ### Populate database
 
-> rake populate:seed_causes_and_services
-
-> rake populate:seed_beneficiaries_and_beneficiaries_subcategories
+> rails db:seed
 
 ### Run server
 

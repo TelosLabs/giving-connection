@@ -1,4 +1,4 @@
-class DiscoverNonprofitCard::ImagesCarousel::NavButton::Component < ViewComponent::Base
+class DiscoverNonprofitCard::ImagesCarousel::NavButton::Component < ApplicationViewComponent
   def initialize(direction:, outline:)
     @direction = direction
     @outline = outline

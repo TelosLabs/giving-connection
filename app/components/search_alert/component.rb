@@ -3,7 +3,7 @@
 # Search alert modal view component
 # rubocop:disable Style/ClassAndModuleChildren
 # rubocop:disable Lint/MissingSuper
-class SearchAlert::Component < ViewComponent::Base
+class SearchAlert::Component < ApplicationViewComponent
   def initialize(keywords: nil, filters: nil, edit: false, alert_id: nil)
     @keywords = keywords
     @filters = filters.join(', ')
