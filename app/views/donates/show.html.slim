@@ -1,15 +1,15 @@
 div class="bg-white main"
 
   /* Banner */
-  div class="relative bg-blue-gradient-3 h-72"
-    div class="flex flew-row justify-around h-72 overflow-hidden"
+  div class="relative bg-blue-gradient-3 h-60"
+    div class="flex flew-row justify-around h-60 overflow-hidden"
       div
         = inline_svg_tag 'new-blur-left.svg', size:'723*288'
       div
         = inline_svg_tag 'new-blur-right.svg', size:'723*288'
-    div class="max-w-md mx-auto text-center absolute top-0 left-0 right-0"
-      h2 class="px-5 pt-20 text-3xl font-bold text-center leading-10 sm:px-0 md:pt-28 text-blue-dark pb-11"
-        | We believe giving is the most important verb in life
+    div class="flex flex-col items-center justify-center h-full absolute top-0 left-0 right-0"
+      h2 class="px-5 text-3xl font-bold text-center leading-10 text-blue-dark"
+        | We believe giving is the most<br>important verb in life
 
     div class="absolute top-20 left-80 fill-current text-blue-dark hidden lg:block"
       = inline_svg_tag 'simple-star.svg', size: '22*22'

@@ -1,14 +1,14 @@
 div class="flex flex-col text-gray-2"
   /* Banner */
-  div class="relative bg-seafoam h-72"
-    div class="flex justify-around overflow-hidden flew-row h-72"
+  div class="relative bg-seafoam h-60"
+    div class="flex justify-around overflow-hidden flew-row h-60"
       div
         = inline_svg_tag 'new-blur-left.svg', size:'723*288'
       div
         = inline_svg_tag 'new-blur-right.svg', size:'723*288'
-    div class="absolute top-0 left-0 right-0 max-w-md mx-auto text-center"
-      h2 class="px-5 pt-20 text-3xl font-bold leading-10 text-center sm:px-0 md:pt-28 text-blue-dark pb-11"
-        | Start with change in your community
+    div class="flex flex-col items-center justify-center h-full absolute top-0 left-0 right-0"
+      h2 class="px-5 text-3xl font-bold text-center leading-10 text-blue-dark"
+        | Start with change in your<br>community
 
     div class="absolute hidden fill-current top-20 left-80 text-blue-dark lg:block"
       = inline_svg_tag 'simple-star.svg', size: '22*22'

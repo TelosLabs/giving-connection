@@ -1,19 +1,23 @@
-div class="relative flex justify-center items-center h-72 bg-seafoam"
-  div class="absolute flex justify-center w-full overflow-hidden" aria-hidden="true"
-    div class="grow"
-      = inline_svg_tag 'new-blur-left.svg', size:'723*288', class: "md:w-full"
-    div class="grow"
-      = inline_svg_tag 'new-blur-right.svg', size:'723*288', class: "md:w-full"
-  span class="absolute top-9 left-5 md:top-24 525px:left-21%" aria-hidden="true"
-    = inline_svg_tag 'simple-star.svg', size: '22*22', class: "fill-current text-blue-dark"
-  span class="absolute top-56 right-16 md:top-52 525px:right-21%" aria-hidden="true"
-    = inline_svg_tag 'simple-star.svg', size: '22*22', class: "fill-current text-blue-dark"
-  span class="absolute top-16 right-6 md:top-14 525px:right-28%" aria-hidden="true"
-    = inline_svg_tag 'simple-heart.svg', size: '22*22', class: "fill-current text-blue-dark"
+div class="flex flex-col text-gray-2"
+  /* Banner */
+  div class="relative bg-seafoam h-60"
+    div class="flex justify-around overflow-hidden flew-row h-60"
+      div
+        = inline_svg_tag 'new-blur-left.svg', size:'723*288'
+      div
+        = inline_svg_tag 'new-blur-right.svg', size:'723*288'
+    div class="flex flex-col items-center justify-center h-full absolute top-0 left-0 right-0"
+      h2 class="px-5 text-3xl font-bold text-center leading-10 text-blue-dark"
+        | Discover your network<br>of change
 
-  h1 class="absolute px-14 text-3xl leading-normal font-bold text-center tracking-wide text-blue-dark dark:text-white"
-    | Discover your network 
-    br of change
+    div class="absolute hidden fill-current top-20 left-80 text-blue-dark lg:block"
+      = inline_svg_tag 'simple-star.svg', size: '22*22'
+
+    div class="absolute hidden fill-current top-12 right-96 text-blue-dark lg:block"
+      = inline_svg_tag 'simple-heart.svg', size: '22*22'
+
+    div class="absolute hidden fill-current bottom-12 right-64 text-blue-dark lg:block"
+      = inline_svg_tag 'simple-star.svg', size: '22*22'
 
 div class="px-6"
   section class="relative flex flex-col items-center text-center text-gray-2 md:flex-row md:justify-center md:mt-14"
