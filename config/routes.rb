@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     resources :admin_users
     resources :users
     resources :social_medias, only: %i[new create edit update]
-    resources :services, only: %i[new create edit update]
+    resources :services, except: %i[destroy]
     resources :causes, only: %i[new create edit update]
     resources :categories, only: %i[new create edit update]
     resources :locations, except: %i[index]
