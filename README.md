@@ -70,3 +70,11 @@ Inside of postgres command line:
 > redis-server
 
 > rails s or hivemind
+
+### Troubleshooting 
+
+If you get the following error on local
+
+>PG::UndefinedFunction: ERROR: function pg_search_dmetaphone(text) does not exist
+
+Try performing a database reset. Do not use ´rails db:reset´ but run ´rails db:drop´ ´rails db:create´, ´rails db:migrate´ and ´rails db:seed´ instead. 
