@@ -6,4 +6,4 @@
 
 ### References
 
-[Notion ticket](url)
+[ClickUp ticket](url)
