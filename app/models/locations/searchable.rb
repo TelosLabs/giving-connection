@@ -23,8 +23,9 @@ module Locations
                       using: {
                         tsearch: { prefix: true, any_word: true, dictionary: 'english', normalization: 4 },
                         dmetaphone: {},
-                        trigram: {}
-                      }
+                        trigram: { threshold: 0.5, word_similarity: true }
+                      },
+                      ranked_by: ":tsearch + (0.75 * :trigram)"
     end
   end
 end
