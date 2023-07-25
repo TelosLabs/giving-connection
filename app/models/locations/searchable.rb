@@ -21,9 +21,7 @@ module Locations
                         social_media: %i[facebook instagram twitter linkedin youtube blog]
                       },
                       using: {
-                        tsearch: { prefix: true, any_word: true },
-                        dmetaphone: {},
-                        trigram: {}
+                        tsearch: { prefix: true, dictionary: 'english' }
                       }
     end
   end
