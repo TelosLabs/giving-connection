@@ -154,4 +154,18 @@ export default class extends Controller {
       this.submitForm()
     }
   }
+
+  toggleRadioButton(event) {
+    let button = event.target
+    if (button.classList.contains("selected-button")) {
+      button.checked = false
+      button.classList.remove("selected-button")
+    } else {
+      button.checked = true
+      button.classList.add("selected-button")
+    }
+    this.updateFiltersState()
+    this.submitForm()
+    return
+  }
 }
