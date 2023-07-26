@@ -549,6 +549,37 @@ div class="flex flex-col text-gray-2"
           a data-read-more-target="readMoreButton" data-action="read-more#toggleVisibility" class="font-bold text-blue-medium cursor-pointer" Read More
         end
       end      
+
+    div class="w-full max-w-4xl pb-12 mb-16 border-b border-blue-gradient-2 last:border-b-0"
+      = render BioCard::Component.new(\
+        name: "Astha Bhandari",
+        job_title: "Web Development Fellow",
+        img_url: "astha.jpeg",
+      ) do |c|
+        - c.biography do
+          p class="mb-3 text-gray-2"
+            | Astha Bhandari is joining us through Stanford University's Haas Center for Public Service for an internship as our Web Development Fellow. She was 
+            | awarded a stipend for students specifically pursuing CS + Social Good. She will be focused on improving our platform's user experience as well as 
+            | developing new features to increase our impact.
+            span data-read-more-target="dots" class=""...
+          p data-read-more-target="collapsableText" class="hidden mb-3"
+            | Astha is a freshman at Stanford University in Palo Alto, California and is planning to study Symbolic Systems. She is passionate about utilizing technology 
+            | to uplift underserved communities, create ethics in tech, and change the current climate of social platforms. She is an active member of the Women in Computer 
+            | Science (WiCS) club at Stanford, and is a WiCS Fellow as well. 
+            br
+            br
+            | Astha was born in Nepal and raised around the world. She attended high school in North Carolina where she formed her own clubs centered around undoing human 
+            | rights injustices worldwide. She loves coming up with innovative solutions to all problems, big or small, facing our society today. In her free time, you can find 
+            | Astha cuddling with her dog watching another comedic action movie (something she does best). She also enjoys reading, spending time with her family, hiking, and 
+            | learning to play piano. 
+            br 
+            br 
+            | Astha believes that technology is the way of the future, there is no going around it. She wants to embrace the good that technology has to offer while realizing 
+            | there are many aspects that can be improved. Astha wants to help build a better future for upcoming generations by making the world a little more ethical, 
+            | one line of code at a time. 
+          a data-read-more-target="readMoreButton" data-action="read-more#toggleVisibility" class="font-bold text-blue-medium cursor-pointer" Read More
+        end
+      end     
     // Youtube Video
     div class="w-full max-w-4xl pb-12 mb-16 h-full"
       iframe src="https://www.youtube.com/embed/H62FCqZ1cAg?rel=0" class="w-full h-64 md:h-500px" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
