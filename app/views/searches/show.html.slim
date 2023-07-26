@@ -50,7 +50,8 @@
                   ul class="flex flex-col divide-y divide-gray-8" id="search-results"
                     - @results.each do |result|
                       li
-                        = render ResultCard::Component.new(title: result&.name, \
+                        = render ResultCard::Component.new(location: result, \
+                                                        title: result&.name, \
                                                         address: result&.formatted_address, \
                                                         image_url: result&.organization&.logo, \
                                                         id: result&.id, \

@@ -2,7 +2,8 @@
 class ResultCard::Component < ApplicationViewComponent
   include ApplicationHelper
 
-  def initialize(title:, address:, image_url:, website:, description:, id:, current_user:, phone_number:, verified:, causes: [], turbo_frame: {})
+  def initialize(location:, title:, address:, image_url:, website:, description:, id:, current_user:, phone_number:, verified:, causes: [], turbo_frame: {})
+    @location = location
     @title = title
     @address = address
     @image_url = image_url

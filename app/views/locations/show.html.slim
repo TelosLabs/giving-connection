@@ -25,10 +25,12 @@ div class=""
           - if current_user.present? && policy(@location.organization).update?
             p class="text-xs text-center font-base text-blue-500" id="pointer"
               = link_to "Edit My Nonprofit Page", edit_organization_path( @location.organization)
-          p class="text-xs text-center font-base text-gray-4 mt-3" id="pointer"
-            = link_to @location.formatted_address, "https://www.google.com/maps/search/#{@location.address}", target: "blank"
-          p class="text-xs text-center font-base text-gray-4"
-            = "EIN Number: #{@location.organization.ein_number}"
+          div class="mt-3"
+            - if @location.public_address?
+              p class="text-xs text-center font-base text-gray-4" id="pointer"
+                = link_to @location.formatted_address, @location.link_to_google_maps, target: "blank"
+            p class="text-xs text-center font-base text-gray-4"
+              = "EIN Number: #{@location.organization.ein_number}"
 
         div class="flex justify-center items-center mt-4 gap-2.5" data-controller="copy-to-clipboard"
           button type="button" class="flex items-center text-sm gray-2" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="#{request.url}"

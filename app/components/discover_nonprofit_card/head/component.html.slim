@@ -9,6 +9,7 @@ div class="flex gap-x-5"
         span aria-hidden="true" class="ml-1"
           = inline_svg_tag('verified_nonprofit_check.svg')
     // maps and phone
-    = link_to(@location.formatted_address, @location.link_to_google_maps, class: "w-3/4", target: "blank")
+    - if @location.public_address?
+      = link_to(@location.formatted_address, @location.link_to_google_maps, class: "w-3/4", target: "blank")
     - if @location.phone_number
       a href="tel:#{@location.phone_number.number}" = @location.phone_number.number

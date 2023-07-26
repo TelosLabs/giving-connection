@@ -26,8 +26,9 @@ div
     = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1 align-text-bottom inline"
 
 // Address, website, phone, and availability
-p class="text-xs text-gray-4" id="pointer"
-  = link_to @location.formatted_address, @location.link_to_google_maps, target: "blank"
+- if @location.public_address?
+  p class="text-xs text-gray-4" id="pointer"
+    = link_to @location.formatted_address, @location.link_to_google_maps, target: "blank"
 
 p class="text-xs text-blue-medium"
   = link_to @location.organization.decorate.website, @location.organization.decorate.website, target: "_blank"

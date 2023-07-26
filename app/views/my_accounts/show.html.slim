@@ -65,7 +65,8 @@ div class="w-full h-full bg-white"
               ul class="flex flex-col divide-y divide-gray-8"
                 - @saved_pages.each do |page|
                   li
-                    = render ResultCard::Component.new(title: page.name,\
+                    = render ResultCard::Component.new(location: page,\
+                                                      title: page.name,\
                                                       address: page.address,\
                                                       image_url: page.organization.logo,\
                                                       id: page.id,\
