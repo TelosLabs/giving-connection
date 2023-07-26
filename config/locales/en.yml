@@ -44,4 +44,5 @@ en:
         organization_beneficiaries: Populations Served
       location:
         po_box: Is the address a PO BOX?
+        public_address: Do you want this address shown publicly?
         suite: Suite Number

@@ -31,6 +31,7 @@ class LocationDashboard < Administrate::BaseDashboard
     appointment_only: Field::Boolean,
     services: Field::HasMany,
     po_box: Field::Boolean,
+    public_address: Field::Boolean,
     suite: Field::String
   }.freeze
 
@@ -56,6 +57,7 @@ class LocationDashboard < Administrate::BaseDashboard
     name
     services
     po_box
+    public_address
     latitude
     longitude
     email
@@ -83,6 +85,7 @@ class LocationDashboard < Administrate::BaseDashboard
     email
     phone_number
     po_box
+    public_address
     address
     suite
     latitude
