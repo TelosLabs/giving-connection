@@ -32,8 +32,8 @@
         <% end %>
       </div>
       <div class="text-xs text-gray-4 pb-0">
-        <% if @location.public_address? %>
-          <p id="pointer"><%= link_to @address, @location.link_to_google_maps, target: "blank" %></p>
+        <% if @public_address %>
+          <p id="pointer"><%= link_to @address, @link_to_google_maps, target: "blank" %></p>
         <% end %>
         <% if @website.present? %>
           <%= link_to @website, @website, target: '_blank', class: 'text-blue-medium'%>
