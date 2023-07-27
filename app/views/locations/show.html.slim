@@ -8,7 +8,7 @@ div class=""
       div class='flex justify-center w-full mx-0 -mt-14 h-75'
         = image_tag @location.organization.logo, class: 'shadow rounded logo-size bg-white'
 
-      div class="pt-5 md:px-11 md:text-left"
+      div class="pt-5 pb-16 md:px-11 md:text-left"
         div
           - if @location.organization.verified?
             div class="flex justify-center items-center mb-2.5"
@@ -123,36 +123,37 @@ div class=""
           div class="flex flex-col items-center p-5 text-center"
             iframe class="w-full h-400px" src="https://www.youtube.com/embed/#{@youtube_video_id}?"
 
-        div class="border-t border-gray-8 my-7"
-        h4 class="px-6 text-sm font-bold text-black uppercase"
-          | Map
-        div class="w-full mt-4 mb-16 h-400px md:px-6" data-tabs-target="panel" data-controller="places" data-places-latitude-value="#{@location.latitude}" data-places-longitude-value="#{@location.longitude}" data-places-zoom-value="10" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
-          div class="w-full h-full" data-places-target="map"
-          div class="hidden"
-              div class="flex flex-col items-center gap-2 p-5 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{@location.latitude}" data-longitude="#{@location.longitude}"
-                div
-                  a class="text-small font-bold text-gray-2"
-                    | #{@location.organization.name}
-                  - if @location.organization.verified?
-                    = inline_svg_tag 'verified_nonprofit_check.svg', class: "align-text-bottom inline w-4 h-4 ml-1"
-                p class="text-xs text-gray-4"
-                  | #{@location.address}
-                p class="text-xs text-gray-4"
-                  | #{@location.organization.decorate.website}
-                p class="text-xs text-gray-4"
-                  | #{@location.phone_number&.number}
-                  p class="text-xs font-medium text-gray-2"
-                    - if @location.appointment_only?
-                      span class="text-states-error"
-                        ' Appointment only
-                    - elsif @location.open_now?
-                      span class="text-green-fountain"
-                        ' Open Now
-                    - else
-                      span class="text-states-error"
-                        ' Closed
-                      | -&nbsp;
-                      | #{@location.decorate.closed_office_hours_display}
+        - if @location.public_address?
+          div class="border-t border-gray-8 my-7"
+          h4 class="px-6 text-sm font-bold text-black uppercase"
+            | Map
+          div class="w-full mt-4 h-400px md:px-6" data-tabs-target="panel" data-controller="places" data-places-latitude-value="#{@location.latitude}" data-places-longitude-value="#{@location.longitude}" data-places-zoom-value="10" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}"
+            div class="w-full h-full" data-places-target="map"
+            div class="hidden"
+                div class="flex flex-col items-center gap-2 p-5 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{@location.latitude}" data-longitude="#{@location.longitude}"
+                  div
+                    a class="text-small font-bold text-gray-2"
+                      | #{@location.organization.name}
+                    - if @location.organization.verified?
+                      = inline_svg_tag 'verified_nonprofit_check.svg', class: "align-text-bottom inline w-4 h-4 ml-1"
+                  p class="text-xs text-gray-4"
+                    | #{@location.address}
+                  p class="text-xs text-gray-4"
+                    | #{@location.organization.decorate.website}
+                  p class="text-xs text-gray-4"
+                    | #{@location.phone_number&.number}
+                    p class="text-xs font-medium text-gray-2"
+                      - if @location.appointment_only?
+                        span class="text-states-error"
+                          ' Appointment only
+                      - elsif @location.open_now?
+                        span class="text-green-fountain"
+                          ' Open Now
+                      - else
+                        span class="text-states-error"
+                          ' Closed
+                        | -&nbsp;
+                        | #{@location.decorate.closed_office_hours_display}
 
 
     div class="flex-col flex-grow-0 hidden w-full bg-white rounded h-min-content sm:flex md:max-w-402px px-11 md:p-7"
