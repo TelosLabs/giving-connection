@@ -26,11 +26,11 @@ section class="w-5/6 max-w-6xl mx-auto mt-8 mb-44 md:mt-20"
       = inline_svg_tag 'empty_state_4.svg', class: "w-80", aria_hidden: true
       div class="w-60 -mt-5 text-center"
         h3 class="mb-5 font-bold text-lg leading-6"
-          | We currently don’t have any nonprofits that match this cause. 
+          | We currently don’t have any nonprofits that match this cause.
         p class="mb-10 text-sm"
-          | We are constantly adding new nonprofits to our platform, please check back soon! 
+          | We are constantly adding new nonprofits to our platform, please check back soon!
         = link_to "Go Back to Discover", discover_path, class: "text-blue-medium"
   - else
-    div class="grid grid-cols-auto-fill-18 justify-items-center gap-7 mt-12"
+    div class="grid grid-cols-auto-fill-18 justify-items-stretch gap-7 mt-12"
       - @locations_by_services.each do |location|
         = render DiscoverNonprofitCard::Component.new(user: current_user, location: location)
