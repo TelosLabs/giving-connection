@@ -15,13 +15,13 @@ module Locations
                         causes: { name: 'B' },
                         services: { name: 'C' },
                         tags: { name: 'D' },
-                        organization: %i[name second_name scope_of_work website ein_number irs_ntee_code
-                                         mission_statement_en vision_statement_en tagline_en
-                                         mission_statement_es vision_statement_es tagline_es],
+                        organization: { name: 'A', second_name: nil, scope_of_work: nil, website: nil, ein_number: nil, irs_ntee_code: nil,
+                                        mission_statement_en: nil, vision_statement_en: nil, tagline_en: nil,
+                                        mission_statement_es: nil, vision_statement_es: nil, tagline_es: nil },
                         social_media: %i[facebook instagram twitter linkedin youtube blog]
                       },
                       using: {
-                        tsearch: { prefix: true, dictionary: 'english' }
+                        tsearch: { dictionary: 'english' }
                       }
     end
   end
