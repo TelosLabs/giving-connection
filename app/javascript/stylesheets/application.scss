@@ -54,6 +54,27 @@
   border-left: 1px solid #D3DCE6;
 }
 
+.interactive-btn {
+  .thick-icon path {
+    stroke-width: 0;
+    transition: fill 150ms;
+  }
+
+  .icon path {
+    transition: stroke 150ms;
+  }
+
+  &:hover .icon path,
+  &:hover .saved > path {
+    stroke: white;
+  }
+
+  &:hover .thick-icon path,
+  &:hover .saved > path {
+    fill: white;
+  }
+}
+
 .no-pseudo-elems::after,
 .no-pseudo-elems::before  {
   display: none;
