@@ -1,8 +1,10 @@
 <div id="<%= @id %>" class="p-6 scroll-mt-96" data-controller="result-card--component">
   <div class="flex gap-2.5 mb-3">
+
     <div class="flex-shrink-0 w-24">
       <%= image_tag @image_url, class: 'object-contain w-full h-20' %>
     </div>
+
     <div class="w-full">
       <div class="flex flex-row items-start justify-between">
         <%# Org name %>
@@ -23,18 +25,10 @@
             <%= inline_svg_tag 'verified_nonprofit_check.svg', class: 'w-4 h-4 ml-1 align-text-bottom inline' %>
           <% end %>
         </div>
-        <% if @current_user.present? %>
-          <% if FavoriteLocation.exists?(user_id: @current_user&.id, location_id: @id) %>
-            <%= render 'shared/marked', id: @id, user_id: @current_user&.id %>
-          <% else %>
-            <%= render 'shared/unmarked', id: @id %>
-          <% end %>
-        <% else %>
-          <%= link_to favorite_locations_path(location_id: @id), data: { turbo_method: :post }, class: "inline-flex items-center p-2 text-xs text-gray-3" do %>
-            <%= inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4' %>
-          <% end %>
-        <% end %>
+
+        <%= render SaveButton::Component.new(user: @current_user, location: Location.find(@id), simplified: true) %>
       </div>
+
       <div class="text-xs text-gray-4 pb-0">
         <% if @public_address %>
           <p id="pointer"><%= link_to @address, @link_to_google_maps, target: "blank" %></p>

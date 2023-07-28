@@ -1,18 +1,6 @@
-- if @user_signed_in
-  - if !@current_user.favorited_locations.include?(@location)
-    = link_to favorite_locations_path(location_id: @location.id), class: "inline-flex self-end text-xs text-gray-3", type: "button", remote: true, data: { action: "click->pin#reloadPage", turbo_method: :post } do
-      = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
-  - else
-    = link_to favorite_location_path(@current_user.fav_locs.find_by(location_id: @location.id)), class: "inline-flex self-end text-xs text-gray-3", remote: true, data: { action: "click->pin#reloadPage", turbo_method: :delete } do
-      = inline_svg_tag 'bookmark_colored.svg', class: 'w-4 h-4'
-- else
-  = link_to favorite_locations_path(location_id: @location.id), data: { turbo_method: :post }, class: "inline-flex self-end text-xs text-gray-3" do
-    = inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4'
-
-/ // Bookmark
-/ = link_to(**bookmark_options) do
-/   span.sr-only Bookmark
-/   = inline_svg_tag(bookmark_icon, class: 'w-4 h-4', aria_hidden: true)
+// Save btn
+span class="ml-auto"
+  = render SaveButton::Component.new(user: @current_user, location: @location, simplified: true)
 
 // Logo
 div

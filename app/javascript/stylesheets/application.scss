@@ -40,7 +40,7 @@
     border-radius: 6px;
   }
 
-  tagify__tag__removeBtn {
+  .tagify__tag__removeBtn {
     @apply text-base;
   }
 }
@@ -62,12 +62,6 @@
 
   .icon path {
     transition: stroke 150ms;
-  }
-
-  .saved > path {
-    fill: salmon;
-    stroke: salmon;
-    transition: fill 150ms, stroke 150ms;
   }
 
   &:hover .icon path,

@@ -11,27 +11,17 @@ class FavoriteLocationsController < ApplicationController
 
   def create
     @location = Location.find(params[:location_id])
-    new_favorite_location = FavoriteLocation.new(location: @location, user: current_user)
-    if new_favorite_location.save
-      if params["origin"] == "location_show"
-        redirect_to location_path(@location)
-      end
-      data = { marked_partial: render_to_string(partial: "shared/marked", locals: { user_id: current_user, id: @location.id }),
-                location_id: @location.id, method: "create" }
-      ActionCable.server.broadcast("everyone", data)
-    end
+    @new_favorite_location = FavoriteLocation.new(location: @location, user: current_user)
+
+    respond_to_request if @new_favorite_location.save
   end
 
   def destroy
     @favorite_location = current_user.fav_locs.find(params[:id])
-    if @favorite_location.destroy
-      if params["origin"] == "location_show"
-        redirect_to location_path(@favorite_location.location)
-      end
-      data = { unmarked_partial: render_to_string(partial: "shared/unmarked", locals: { id: @favorite_location.location.id }),
-                 location_id: @favorite_location.location.id, favorite_location_id: @favorite_location.id }
-      ActionCable.server.broadcast("everyone", data)
-    end
+    @user = @favorite_location.user
+    @location = @favorite_location.location
+
+    respond_to_request if @favorite_location.destroy
   end
 
   private
@@ -41,6 +31,13 @@ class FavoriteLocationsController < ApplicationController
       session[:marker_infowindow] = params[:location_id]
       session[:fav_loc_id] = params[:location_id]
       redirect_to user_session_path
+    end
+  end
+
+  def respond_to_request
+    respond_to do |format|
+      format.turbo_stream
+      format.html { redirect_to my_account_path }
     end
   end
 end

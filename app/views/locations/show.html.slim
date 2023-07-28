@@ -36,19 +36,11 @@ div class=""
           button type="button" class="flex items-center text-sm gray-2" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="#{request.url}"
             = inline_svg_tag 'share_icon.svg', class: " fill-current mr-2"
             | Share
-          - if current_user.present?
-            - if FavoriteLocation.exists?(user_id: current_user&.id, location_id: @location.id)
-              = link_to favorite_location_path(id: FavoriteLocation.find_by(user_id: current_user&.id, location_id: @location.id), origin: "location_show"), method: :delete, class: "flex items-center text-sm gray-2" do
-                = inline_svg_tag "bookmark_colored.svg", class: "w-4 h-4 mr-2"
-                | Save
-            - else
-              = link_to favorite_locations_path(location_id: @location.id,origin: "location_show"), method: :post, class: "flex items-center text-sm gray-2" do
-                = inline_svg_tag "bookmark_empty.svg", class: "w-4 h-4 mr-2"
-                | Save
-          - else
-            = link_to favorite_locations_path(location_id: @location.id), method: :post, class: "inline-flex items-center p-2 text-sm text-gray-3" do
-              = inline_svg_tag 'bookmark_empty.svg', class: "w-4 h-4 mr-2"
-              | Save
+          
+          span class="inline-flex items-center gap-x-2"
+            = render SaveButton::Component.new(user: current_user, location: @location, simplified: true)
+            span class="text-sm" aria-hidden="true" Save
+
         div class="mt-10 mx-6 text-left"
           = render WorkingHours::Component.new(result: @location)
           - if @location.organization.irs_ntee_code.present?

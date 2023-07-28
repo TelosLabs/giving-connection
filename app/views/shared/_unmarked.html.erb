@@ -1,4 +1,0 @@
-<%= link_to favorite_locations_path(location_id: id), class: "inline-flex self-end items-center p-2 text-xs text-gray-3", remote: true, data: { turbo_method: :post, controller: "bookmark-subscription", action: "click->bookmark-subscription#reloadPage" },
-  id: dom_id(Location.find(id)) do %>
-  <%= inline_svg_tag 'bookmark_empty.svg', class: 'w-4 h-4' %>
-<% end %>

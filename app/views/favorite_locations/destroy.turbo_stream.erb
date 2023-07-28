@@ -1,0 +1,7 @@
+<%= turbo_stream.replace_all(".save-location-#{@location.id}-btn__simplified") do %>
+  <%= render SaveButton::Component.new(user: @user, location: @location, simplified: true) %>
+<% end %>
+
+<%= turbo_stream.replace_all(".save-location-#{@location.id}-btn") do %>
+  <%= render SaveButton::Component.new(user: @user, location: @location) %>
+<% end %>
