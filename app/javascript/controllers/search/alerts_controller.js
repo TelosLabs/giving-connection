@@ -17,7 +17,7 @@ export default class extends Controller {
       data: formData,
       dataType: 'script',
       success: function(data) {
-        let alert = `<div class="flash-success bg-blue-50 fixed z-10 inset-x-2 top-24 rounded-md p-4 max-w-ms mx-auto" data-alert--component-target="notification" data-controller="alert--component">
+        let alert = `<div class="flash-success bg-blue-50 fixed z-40 inset-x-2 top-24 rounded-md p-4 max-w-ms mx-auto" data-alert--component-target="notification" data-controller="alert--component">
                       <div class="flex items-center">
                         <div class="flex-shrink-0">
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="h-5 w-5 text-blue-400">
@@ -37,11 +37,11 @@ export default class extends Controller {
                         </div>
                       </div>
                     </div>`
-        document.body.insertAdjacentHTML("afterbegin", alert)
+        document.getElementById('main-navbar').insertAdjacentHTML("afterend", alert)
       }
     })
   }
-  
+
   editForm() {
     let formData = $(this.editFormTarget).serialize()
     Rails.ajax({
@@ -50,7 +50,7 @@ export default class extends Controller {
       data: formData,
       dataType: 'script',
       success: function(data) {
-        let alert = `<div class="flash-success bg-blue-50 fixed z-10 inset-x-2 top-24 rounded-md p-4 max-w-ms mx-auto" data-alert--component-target="notification" data-controller="alert--component">
+        let alert = `<div class="flash-success bg-blue-50 fixed z-40 inset-x-2 top-24 rounded-md p-4 max-w-ms mx-auto" data-alert--component-target="notification" data-controller="alert--component">
                       <div class="flex items-center">
                         <div class="flex-shrink-0">
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="h-5 w-5 text-blue-400">
@@ -70,7 +70,7 @@ export default class extends Controller {
                         </div>
                       </div>
                     </div>`
-        document.body.insertAdjacentHTML("afterbegin", alert)
+        document.getElementById('main-navbar').insertAdjacentHTML("afterend", alert)
       }
     })
   }
