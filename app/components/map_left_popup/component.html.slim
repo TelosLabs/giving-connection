@@ -7,9 +7,9 @@ div class="relative flex flex-col gap-2 p-7 bg-white rounded-6px" id="loc_#{@res
           = @result.organization.name
         - if @result.organization.verified?
           = inline_svg_tag 'verified_nonprofit_check.svg', class: 'w-4 h-4 ml-1 align-text-bottom inline'
-          
-      p class="text-gray-500 lg:text-sm text-xs" id="pointer"
-        = link_to @result.address, @result.link_to_google_maps, target: "blank"
+      - if @result.public_address?
+        p class="text-gray-500 lg:text-sm text-xs" id="pointer"
+          = link_to @result.formatted_address, @result.link_to_google_maps, target: "blank"
 
     button type="button" data-action="click->places#hidePopup" class="absolute top-3 right-3" aria-label="close"
       = inline_svg_tag "x-icon.svg", class: "w-3 h-3", aria_hidden: true

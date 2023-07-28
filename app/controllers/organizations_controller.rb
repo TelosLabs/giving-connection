@@ -92,7 +92,7 @@ class OrganizationsController < ApplicationController
                   :vision_statement_es, :tagline_en, :tagline_es, :email, :phone_number, :active, :verified, :donation_link,
                   social_media_attributes: %i[facebook instagram twitter linkedin youtube blog id],
                   tags_attributes: [],
-                  locations_attributes: [:id, :name, :address, :latitude, :longitude, :website, :po_box, :youtube_video_link,
+                  locations_attributes: [:id, :name, :address, :latitude, :longitude, :website, :po_box, :public_address, :youtube_video_link,
                                          :main, :physical, :offer_services, :appointment_only, :email, :_destroy,
                                          { phone_number_attributes: [:number],
                                            office_hours_attributes: %i[id day open_time close_time closed],

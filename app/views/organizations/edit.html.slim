@@ -202,9 +202,20 @@ div class="w-full h-full bg-grey-9"
                   = location_form.hidden_field :latitude, data: { 'places-target': "latitude" }, id: "places-latitude"
                   = location_form.hidden_field :longitude, data: { 'places-target': "longitude" }, id: "places-longitude"
 
-                  div class="flex items-center mt-3"
+                  div class="flex items-center mt-4"
                     = location_form.check_box :po_box, class: "h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent", checked: location_form.object.po_box
                     = location_form.label :po_box, "This address is a PO Box", class: "text-sm text-black"
+
+                  div class="mt-4"
+                    p class="text-sm font-medium leading-4 text-gray-2"
+                      | Do you want this address shown publicly?
+                    div class='flex items-center gap-12 mt-3'
+                      div class="flex items-center gap-2"
+                        = location_form.radio_button :public_address, 1, class: "focus:ring-0 focus:ring-transparent", checked: location_form.object.public_address
+                        = location_form.label :public_address_yes, "Yes", class: "text-sm text-black"
+                      div class="flex items-center gap-2"
+                        = location_form.radio_button :public_address, 0, class: "focus:ring-0 focus:ring-transparent", checked: !location_form.object.public_address
+                        = location_form.label :public_address_no, "No", class: "text-sm text-black"
 
                   div class="mt-6"
                     div data-places-target="map" style="height:400px;"class="w-full h-full"

@@ -67,12 +67,14 @@ div class="w-full h-full bg-white"
                   li
                     = render ResultCard::Component.new(title: page.name,\
                                                       address: page.address,\
+                                                      public_address: page.public_address?,\
+                                                      link_to_google_maps: page.link_to_google_maps,\
                                                       image_url: page.organization.logo,\
                                                       id: page.id,\
                                                       website: page.decorate.website || page.organization.decorate.website,\
-                                                      description: page.organization.mission_statement_en,
-                                                      current_user: current_user,
-                                                      phone_number: page.phone_number&.number,
+                                                      description: page.organization.mission_statement_en,\
+                                                      current_user: current_user,\
+                                                      phone_number: page.phone_number&.number,\
                                                       verified: page.organization.verified?)
             - else
               div class="flex justify-center w-full my-16"

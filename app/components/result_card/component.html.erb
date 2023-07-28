@@ -8,7 +8,7 @@
         <%# Org name %>
         <div>
           <%= link_to(
-            @turbo_frame[:src] || "javascript:void(0)", 
+            @turbo_frame[:src] || "javascript:void(0)",
             class: "text-base font-bold text-black cursor-pointer",
             id: "new_favorite_location_#{@id}",
             data: {turbo_frame: @turbo_frame[:id]}
@@ -32,7 +32,9 @@
         <% end %>
       </div>
       <div class="text-xs text-gray-4 pb-0">
-        <p id="pointer"><%= link_to @address, "https://www.google.com/maps/search/#{@address}", target: "blank" %></p>
+        <% if @public_address %>
+          <p id="pointer"><%= link_to @address, @link_to_google_maps, target: "blank" %></p>
+        <% end %>
         <% if @website.present? %>
           <%= link_to @website, @website, target: '_blank', class: 'text-blue-medium'%>
         <% end %>

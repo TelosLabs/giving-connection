@@ -50,16 +50,18 @@
                   ul class="flex flex-col divide-y divide-gray-8" id="search-results"
                     - @results.each do |result|
                       li
-                        = render ResultCard::Component.new(title: result&.name, \
-                                                        address: result&.formatted_address, \
-                                                        image_url: result&.organization&.logo, \
-                                                        id: result&.id, \
-                                                        website: result&.decorate&.website || result&.organization&.decorate&.website, \
-                                                        description: "", \
-                                                        phone_number: result.phone_number&.number, \
-                                                        current_user: current_user, \
-                                                        verified: result.organization.verified?, \
-                                                        causes: result&.causes, \
+                        = render ResultCard::Component.new(title: result&.name,\
+                                                        address: result&.formatted_address,\
+                                                        public_address: result.public_address?,\
+                                                        link_to_google_maps: result.link_to_google_maps,\
+                                                        image_url: result&.organization&.logo,\
+                                                        id: result&.id,\
+                                                        website: result&.decorate&.website || result&.organization&.decorate&.website,\
+                                                        description: "",\
+                                                        phone_number: result.phone_number&.number,\
+                                                        current_user: current_user,\
+                                                        verified: result.organization.verified?,\
+                                                        causes: result&.causes,\
                                                         turbo_frame: {id: "map-left-popup", src: new_map_popup_path(location_id: result&.id)})
                   - if @pagy.pages > SearchesHelper::MIN_REQUIRED_PAGES
                     div class="h-40 px-4 mt-7"
@@ -90,7 +92,7 @@
             div class="hidden"
               div class="hidden" data-places-target="latitude"
               div class="hidden" data-places-target="longitude"
-              - @search.results.besides_po_boxes&.each do |result|
+              - @search.results.public_address.besides_po_boxes&.each do |result|
                 = cache result do
                   - turbo_frame_id = "loc_#{result.id}"
 
@@ -118,7 +120,7 @@
           div class="hidden"
             div class="hidden" data-places-target="latitude"
             div class="hidden" data-places-target="longitude"
-            - @search.results.besides_po_boxes&.each do |result|
+            - @search.results.public_address.besides_po_boxes&.each do |result|
               = cache result do
                 - turbo_frame_id = "loc_#{result.id}"
 
