@@ -117,12 +117,8 @@ module Locations
       def opened_now(scope, open_now)
         return scope if open_now.nil?
 
-        scope.joins(:office_hours).where(office_hours: {
-          day: Time.now.wday,
-          closed: false,
-        }).where(
-          '? BETWEEN open_time AND close_time', Time.now
-        )
+        filtered = scope.select(&:open_now?) # use instance method to filter locations
+        Location.where(id: filtered.map(&:id)) # convert array to collection
       end
 
       def opened_on_weekends(scope, open_on_weekends)
