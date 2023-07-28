@@ -31,7 +31,7 @@
     <% field.beneficiary_types.each do |beneficiary| %>
       <h3 style="font-weight: bold;font-size: 16px;" ><%= beneficiary.name %></h3>
       <% beneficiary.beneficiary_subcategories.each do |subcategory| %>
-        <%= check_box_tag "organization[beneficiary_subcategories_id][]", subcategory.id %>
+        <%= check_box_tag "organization[beneficiary_subcategories_id][]", subcategory.id, params.dig(:organization, :beneficiary_subcategories_id)&.include?(subcategory.id.to_s) %>
         <%= subcategory.name  %>
        <% end %>
     <% end %>
