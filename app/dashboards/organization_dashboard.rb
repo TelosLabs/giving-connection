@@ -123,6 +123,6 @@ class OrganizationDashboard < Administrate::BaseDashboard
   # across all pages of the admin dashboard.
   #
   def display_resource(organization)
-    organization.name.titleize
+    organization.name&.titleize
   end
 end

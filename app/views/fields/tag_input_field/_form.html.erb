@@ -7,7 +7,7 @@
   <div class="field-unit__field">
     <div data-controller="tags">
       <% values = field.data.map { |tag| tag.name }.join(', ') %>
-      <input placeholder='write some tags' data-tags-target="output" 
+      <input placeholder='write some tags' data-tags-target="output"
         value="<%= values %>"  name='tags_attributes' id='tags_attributes' >
     </div>
   </div>
@@ -16,8 +16,9 @@
 
 <div class="field-unit__field">
   <div data-controller="tags">
-    <input placeholder='write some tags' data-tags-target="output" 
-    name='tags_attributes' id='tags_attributes' >
+    <% values = JSON.parse(params.dig(:tags_attributes)).map { |tag| tag["value"] }.join(', ') if params.dig(:tags_attributes).present?  %>
+    <input placeholder='write some tags' data-tags-target="output"
+      value="<%= values %>"  name='tags_attributes' id='tags_attributes' >
   </div>
 </div>
 
