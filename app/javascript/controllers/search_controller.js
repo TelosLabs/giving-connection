@@ -18,6 +18,7 @@ export default class extends Controller {
   connect() {
     useDispatch(this)
     this.updatePillsCounter()
+    this.updateRadioButtonsClass()
   }
 
   initialize() {
@@ -80,7 +81,19 @@ export default class extends Controller {
 
   updateFiltersState() {
     this.updatePillsCounter()
-    this.disableAdvancedFiltersButton(this.advancedFiltersButton)
+    if(this.advancedFiltersButton) {
+      this.disableAdvancedFiltersButton(this.advancedFiltersButton)
+    }
+  }
+
+  updateRadioButtonsClass() {
+    const buttons = document.querySelectorAll('input[name="search[distance]"]')    
+    const buttons_array = [...buttons]
+    buttons_array.forEach(button => {
+      if (button.checked) {
+        button.classList.add("selected-button")
+      }
+    })
   }
 
   // Modal
@@ -153,5 +166,18 @@ export default class extends Controller {
       this.updateFiltersState()
       this.submitForm()
     }
+  }
+
+  toggleRadioButton(event) {
+    let button = event.target
+    if (button.classList.contains("selected-button")) {
+      button.checked = false
+      button.classList.remove("selected-button")
+    } else {
+      button.checked = true
+      button.classList.add("selected-button")
+    }
+    this.updateFiltersState()
+    this.submitForm()
   }
 }
