@@ -8,6 +8,6 @@ class CauseIcon::Component < ApplicationViewComponent
   def wrapper_options
     {
       class: "grid place-items-center rounded-full"
-    }.merge(@wrapper_options) { |duplicate_key, existing_value, new_value| "#{existing_value} #{new_value}" }
+    }.merge(@wrapper_options) { |_, existing_value, new_value| "#{existing_value} #{new_value}" }
   end
 end

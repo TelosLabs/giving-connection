@@ -40,7 +40,7 @@
     border-radius: 6px;
   }
 
-  tagify__tag__removeBtn {
+  .tagify__tag__removeBtn {
     @apply text-base;
   }
 }
@@ -52,33 +52,6 @@
 
 .button-label:first-of-type {
   border-left: 1px solid #D3DCE6;
-}
-
-.interactive-btn {
-  .thick-icon path {
-    stroke-width: 0;
-    transition: fill 150ms;
-  }
-
-  .icon path {
-    transition: stroke 150ms;
-  }
-
-  .saved > path {
-    fill: salmon;
-    stroke: salmon;
-    transition: fill 150ms, stroke 150ms;
-  }
-
-  &:hover .icon path,
-  &:hover .saved > path {
-    stroke: white;
-  }
-
-  &:hover .thick-icon path,
-  &:hover .saved > path {
-    fill: white;
-  }
 }
 
 .no-pseudo-elems::after,
