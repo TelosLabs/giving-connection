@@ -17,6 +17,7 @@ class AlertsController < ApplicationController
       create_alert_services(new_alert, params['search']['services']) unless params['search']['services'].nil?
       create_alert_beneficiaries(new_alert, params['search']['beneficiary_groups']) unless params['search']['beneficiary_groups'].nil?
       create_alert_causes(new_alert, params['search']['causes']) unless params['search']['causes'].nil?
+      render json: { data: 'OK', status: 200 }
     end
     update_alert_search_results(new_alert)
     authorize new_alert
