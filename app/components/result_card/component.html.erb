@@ -40,7 +40,7 @@
           <p id="pointer"><%= link_to @address, @link_to_google_maps, target: "blank" %></p>
         <% end %>
         <% if @website.present? %>
-          <%= link_to @website, @website, target: '_blank', class: 'text-blue-medium'%>
+          <%= link_to @website_for_display, @website, target: '_blank', class: 'text-blue-medium'%>
         <% end %>
         <% if device == "mobile" && @phone_number.present? %>
         <a class="text-xs text-blue-medium" href="tel:<%= @phone_number %>">

@@ -19,9 +19,16 @@ class ResultCard::Component < ApplicationViewComponent
     @causes = causes
     # If not targeting a turbo-frame, don't provide this parameter
     @turbo_frame = turbo_frame
+    @website_for_display = website_for_display
   end
 
   def formated_description
     @description.length <= 280 ? @description : "#{@description[0..280]} (...)"
+  end
+
+  def website_for_display
+    return @website if @website.length < 40
+
+    @website.truncate(40)
   end
 end
