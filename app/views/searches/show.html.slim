@@ -37,8 +37,12 @@
                   | #{pluralize(@pagy.count, 'result')} found
 
                 - if user_signed_in?
-                  button class="inline-flex items-center px-3 py-2 text-xs text-gray-3" type="button" data-action="click->modal#open"
-                    /! Heroicon name: solid/mail
+                  = button_tag(\
+                    class: "inline-flex items-center px-3 py-2 text-xs text-gray-3",\
+                    disabled: params.dig('search', 'keyword').blank? && list_of_filters(@search).empty?,\
+                    type: "button",\
+                    data: { action: "click->modal#open"}\
+                  ) do
                     = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
                     | Create Search Alert
                 - else
