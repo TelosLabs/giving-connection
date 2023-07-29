@@ -27,7 +27,7 @@ class ResultCard::Component < ApplicationViewComponent
   end
 
   def website_for_display
-    return @website if @website.length < 40
+    return @website if @website.blank? || @website&.length&.<(40)
 
     @website.truncate(40)
   end
