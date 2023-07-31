@@ -165,7 +165,10 @@ div class="w-full h-full bg-grey-9"
             div class="hidden col-span-3 md:flex"
 
             div class="col-span-12 lg:col-span-6 md:col-span-7" data-controller="tags"
-              - tags = @organization.tags.pluck(:name).join(', ')
+              - if params.dig(:organization, :tags_attributes).present?
+                - tags = JSON.parse(params.dig(:organization, :tags_attributes)).map { |tag| tag["value"] }.join(', ')
+              - else
+                - tags = @organization.tags.pluck(:name).join(', ')
               = f.label :tags_attributes, "Additional keywords to describe my organization’s work.", class: "block text-sm text-gray-3 font-medium"
               p class="text-sm text-gray-4 mt-1"
                 | Adding additional keywords will help users connect with your organization. Keywords will not appear on your nonprofit’s profile, but are useful for improving search results and SEO.
