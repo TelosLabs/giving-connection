@@ -24,7 +24,7 @@ export default class extends Controller {
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                           </svg>
                         </div><div class="ml-3">
-                          <p class="text-sm font-medium text-blue-800">Alert created successfully!</p>
+                          <p class="text-sm font-medium text-blue-800">Alert created successfully! Go to My Account to view or edit.</p>
                         </div><div class="pl-3 ml-auto">
                           <div class="-mx-1.5 -my-1.5">
                             <button class="inline-flex rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 p-1.5 bg-blue-50 text-blue-500 hover:bg-blue-100 focus:ring-offset-blue-50 focus:ring-blue-600" data-action="alert--component#closeAlert" type="button">
