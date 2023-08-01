@@ -42,7 +42,7 @@ div class=""
             span class="text-sm" aria-hidden="true" Save
 
         div class="mt-10 mx-6 text-left"
-          = render WorkingHours::Component.new(result: @location)
+          = render WorkingHours::Component.new(result: @location, device: device)
           - if @location.organization.irs_ntee_code.present?
             p class="text-sm leading-6 font-base text-gray-2"
               span class="font-bold"
@@ -133,7 +133,10 @@ div class=""
                   p class="text-xs text-gray-4"
                     | #{@location.organization.decorate.website}
                   p class="text-xs text-gray-4"
-                    | #{@location.phone_number&.number}
+                    - if device == "mobile" && @location.phone_number&.number.present?
+                      = link_to(@location.phone_number&.number, "tel: #{@location.phone_number&.number}", class: "text-blue-medium")
+                    - else
+                      | #{@location.phone_number&.number}
                     p class="text-xs font-medium text-gray-2"
                       - if @location.appointment_only?
                         span class="text-states-error"
