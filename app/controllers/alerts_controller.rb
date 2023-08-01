@@ -38,7 +38,7 @@ class AlertsController < ApplicationController
     @alert = Alert.find(params[:id])
     @alert.destroy
     authorize @alert
-    flash[:success] = "The alert was successfully deleted."
+    flash[:notice] = "The alert was successfully deleted."
     redirect_to my_account_path
   end
 
