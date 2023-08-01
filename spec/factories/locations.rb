@@ -9,5 +9,6 @@ FactoryBot.define do
     physical { true }
     offer_services { true }
     appointment_only { true }
+    always_open { false }
   end
 end

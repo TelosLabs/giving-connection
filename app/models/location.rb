@@ -51,8 +51,10 @@ class Location < ActiveRecord::Base
   validates :lonlat, presence: true
   validates :main, inclusion: { in: [true, false] }
   validates :physical, inclusion: { in: [true, false] }
-  validates :offer_services, inclusion: { in: [ true, false ] }
+  validates :offer_services, inclusion: { in: [true, false] }
   validates :appointment_only, inclusion: { in: [true, false] }
+  validates :always_open, inclusion: { in: [true, false] }
+  validate :non_standard_office_hours
 
   scope :additional, -> { where(main: false) }
   scope :main, -> { where(main: true) }
@@ -102,5 +104,11 @@ class Location < ActiveRecord::Base
 
   def lonlat_geo_point
     self.lonlat = Geo.point(longitude, latitude)
+  end
+
+  def non_standard_office_hours
+    return unless appointment_only? == always_open?
+
+    errors.add :name, 'Cannot be both by appointment and always open'
   end
 end
