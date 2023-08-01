@@ -107,8 +107,8 @@ class Location < ActiveRecord::Base
   end
 
   def non_standard_office_hours
-    return unless appointment_only? == always_open?
+    return unless appointment_only? && always_open?
 
-    errors.add :name, 'Cannot be both by appointment and always open'
+    errors.add :non_standard_office_hours, 'Cannot be both by appointment and always open'
   end
 end
