@@ -26,7 +26,7 @@ module Locations
     end
 
     def open_now?
-      today_office_hours&.open_now?
+      always_open? || today_office_hours&.open_now?
     end
 
     def open_same_day?(next_open)

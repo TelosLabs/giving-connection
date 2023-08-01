@@ -29,6 +29,7 @@ class LocationDashboard < Administrate::BaseDashboard
     office_hours: Field::NestedHasMany,
     location_services: Field::NestedHasMany,
     appointment_only: Field::Boolean,
+    always_open: Field::Boolean,
     services: Field::HasMany,
     po_box: Field::Boolean,
     public_address: Field::Boolean,
@@ -46,6 +47,7 @@ class LocationDashboard < Administrate::BaseDashboard
     address
     main
     appointment_only
+    always_open
     organization
   ].freeze
 
@@ -69,6 +71,7 @@ class LocationDashboard < Administrate::BaseDashboard
     suite
     phone_number
     appointment_only
+    always_open
     office_hours
   ].freeze
 
@@ -82,6 +85,7 @@ class LocationDashboard < Administrate::BaseDashboard
     images
     physical
     appointment_only
+    always_open
     email
     phone_number
     po_box

@@ -152,6 +152,7 @@ class SpreadsheetParse
     { address: location_row['address'], website: location_row['website'],
       main: location_row['main'] == 'yes', physical: location_row['physical'] == 'yes',
       appointment_only: location_row['appointment_only'] == 'yes',
+      always_open: location_row['always_open'] == 'yes',
       offer_services: location_row['offer_services'] == 'yes',
       name: location_row['name'],
       latitude: location_row['latitude'].present? ? location_row['latitude'].to_f : nil,
