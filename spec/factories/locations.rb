@@ -8,6 +8,6 @@ FactoryBot.define do
     main { true }
     physical { true }
     offer_services { true }
-    appointment_only { true }
+    non_standard_office_hours { 1 }
   end
 end

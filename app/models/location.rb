@@ -54,7 +54,7 @@ class Location < ActiveRecord::Base
   validates :main, inclusion: { in: [true, false] }
   validates :physical, inclusion: { in: [true, false] }
   validates :offer_services, inclusion: { in: [ true, false ] }
-  validates :appointment_only, inclusion: { in: [true, false] }
+  validates :non_standard_office_hours, inclusion: { in: non_standard_office_hours.keys }
 
   scope :additional, -> { where(main: false) }
   scope :main, -> { where(main: true) }
