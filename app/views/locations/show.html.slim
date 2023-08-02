@@ -134,7 +134,7 @@ div class=""
                     | #{@location.organization.decorate.website}
                   p class="text-xs text-gray-4"
                     - if device == "mobile" && @location.phone_number&.number.present?
-                      = link_to(@location.phone_number&.number, "tel: #{@location.phone_number&.number}", class: "text-blue-medium")
+                      = link_to("call: #{@location.phone_number&.number}", "tel: #{@location.phone_number&.number}", class: "text-blue-medium")
                     - else
                       | #{@location.phone_number&.number}
                     p class="text-xs font-medium text-gray-2"
