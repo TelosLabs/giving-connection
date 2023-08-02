@@ -25,6 +25,8 @@ class Location < ActiveRecord::Base
   include Locations::Officeable
   validates_with LocationValidator
 
+  enum non_standard_office_hours: { always_open: 0, appointment_only: 1, no_set_business_hours: 2 }
+
   belongs_to :organization, optional: true
 
   scope :active, -> { joins(:organization).where(organization: { active: true }) }
