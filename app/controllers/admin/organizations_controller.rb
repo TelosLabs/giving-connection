@@ -104,7 +104,7 @@ module Admin
                                                    service_attributes: %i[name description id],
                                                    beneficiary_subcategories_id: [],
                                                    services_id: [],
-                                                   location_attributes: %i[address latitude longitude website main physical offer_services appointment_only],
+                                                   location_attributes: %i[address latitude longitude website main physical offer_services non_standard_office_hours],
                                                    tags_attributes: [],
                                                    office_hours_attributes: %i[day open_time close_time closed] }
       params.require(resource_class.model_name.param_key)

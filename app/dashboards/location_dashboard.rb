@@ -28,7 +28,7 @@ class LocationDashboard < Administrate::BaseDashboard
     phone_number: Field::HasOne,
     office_hours: Field::NestedHasMany,
     location_services: Field::NestedHasMany,
-    appointment_only: Field::Boolean,
+    non_standard_office_hours: Field::Select.with_options(searchable: false, collection: -> (field) { field.resource.class.send(field.attribute.to_s.pluralize).keys }),
     services: Field::HasMany,
     po_box: Field::Boolean,
     public_address: Field::Boolean,
@@ -45,7 +45,7 @@ class LocationDashboard < Administrate::BaseDashboard
     name
     address
     main
-    appointment_only
+    non_standard_office_hours
     organization
   ].freeze
 
@@ -68,7 +68,7 @@ class LocationDashboard < Administrate::BaseDashboard
     address
     suite
     phone_number
-    appointment_only
+    non_standard_office_hours
     office_hours
   ].freeze
 
@@ -81,7 +81,7 @@ class LocationDashboard < Administrate::BaseDashboard
     youtube_video_link
     images
     physical
-    appointment_only
+    non_standard_office_hours
     email
     phone_number
     po_box
