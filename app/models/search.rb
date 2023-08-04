@@ -31,7 +31,7 @@ class Search
       lat: lat.presence&.to_f, lon: lon.presence&.to_f
     }
 
-    @results = Locations::FilterQuery.call(filters, Location.active)
-    @results = keyword.present? ? Locations::KeywordQuery.call({ keyword: keyword }, @results) : @results
+    @results = keyword.present? ? Locations::KeywordQuery.call({ keyword: keyword }) : Location.active
+    @results = Locations::FilterQuery.call(filters, @results)
   end
 end
