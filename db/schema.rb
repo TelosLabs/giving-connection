@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_26_001911) do
+ActiveRecord::Schema.define(version: 2023_08_04_232930) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -167,7 +167,6 @@ ActiveRecord::Schema.define(version: 2023_07_26_001911) do
     t.geography "lonlat", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}, null: false
     t.string "website"
     t.boolean "main", default: false, null: false
-    t.boolean "physical"
     t.boolean "offer_services"
     t.bigint "organization_id"
     t.datetime "created_at", precision: 6, null: false
