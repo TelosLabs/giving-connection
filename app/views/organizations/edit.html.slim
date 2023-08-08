@@ -161,7 +161,9 @@ div class="w-full h-full bg-grey-9"
             div class="col-span-12 lg:col-span-6 md:col-span-7" data-controller="options" data-options-options-value=@beneficiaries
               = f.label :beneficiary_subcategories, "Which target populations (beneficiaries) does your organization serve?", class: "block text-sm text-gray-3 font-medium"
               = render SelectMultiple::Component.new(f: f, klass: "Beneficiary", items: @beneficiary_groups, selected: @organization.beneficiary_subcategories.pluck(:name), placeholder: "Write populations served")
-
+              p class="text-sm text-gray-4 mt-1"
+                | Selections should only be made if your organization specifically serves that group through your programs. If your organization generally serves all populations, check the box 
+                | “We generally serve all populations” at the bottom of the options. This will then appear on your organizations profile under Populations Served.
             div class="hidden col-span-3 md:flex"
 
             div class="col-span-12 lg:col-span-6 md:col-span-7" data-controller="tags"
@@ -181,7 +183,8 @@ div class="w-full h-full bg-grey-9"
               = inline_svg_tag 'office.svg', class: "w-4 h-4 mr-1"
               | Main Location
             p class="text-sm leading-5 text-gray-4"
-              | This is the mailing address and main location for your organization.
+              | This is the mailing address and main location for your organization. This address will appear under the organization’s name throughout the platform and users will be able to click the 
+              | address for directions. If it is a physical address, it will appear as a pin on the map.
 
             template[data-nested-form-target="template" class="hidden"]
               = f.fields_for :locations, Location.new, child_index: 'NEW_RECORD' do |location|
