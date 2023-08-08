@@ -28,7 +28,7 @@ class UsersController < ApplicationController
 
   def flash_message
     flash[:sucess] = if email_change
-                       I18n.t('devise.confirmations.send_instructions')
+                       "Your information has been updated + #{I18n.t('devise.confirmations.send_instructions')}"
                      else
                        'Your information has been updated'
                      end
