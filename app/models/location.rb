@@ -11,7 +11,6 @@
 #  lonlat           :geography        not null, point, 4326
 #  website          :string
 #  main             :boolean          default(FALSE), not null
-#  physical         :boolean
 #  offer_services   :boolean
 #  organization_id  :bigint
 #  created_at       :datetime         not null
@@ -52,7 +51,6 @@ class Location < ActiveRecord::Base
   validates :longitude, presence: true
   validates :lonlat, presence: true
   validates :main, inclusion: { in: [true, false] }
-  validates :physical, inclusion: { in: [true, false] }
   validates :offer_services, inclusion: { in: [ true, false ] }
   validates :non_standard_office_hours, inclusion: { in: non_standard_office_hours.keys }
 
