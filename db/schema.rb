@@ -178,7 +178,6 @@ ActiveRecord::Schema.define(version: 2023_08_04_232930) do
     t.string "suite"
     t.string "youtube_video_link"
     t.boolean "public_address", default: true, null: false
-    t.boolean "always_open", default: true, null: false
     t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
     t.index ["organization_id"], name: "index_locations_on_organization_id"
   end
