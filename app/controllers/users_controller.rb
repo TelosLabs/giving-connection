@@ -5,11 +5,11 @@ class UsersController < ApplicationController
   before_action :not_password_change
 
   def update
-    user = current_user
+    @user = current_user
 
     if not_password_change
       save_params = update_params
-    elsif !user.valid_password?(old_password_params[:old_password])
+    elsif !@user.valid_password?(old_password_params[:old_password])
       flash[:alert] = 'Old password is incorrect'
       render 'my_accounts/show'
       return
@@ -17,7 +17,7 @@ class UsersController < ApplicationController
       save_params = password_params
     end
 
-    flash[:alert] = user.errors.full_messages.to_sentence unless user.update(save_params)
+    flash[:alert] = @user.errors.full_messages.to_sentence unless @user.update(save_params)
     sign_in(current_user, bypass: true)
 
     flash_message
@@ -35,7 +35,7 @@ class UsersController < ApplicationController
   end
 
   def email_change
-    update_params[:email].present?
+    @user.email != params[:user][:email]
   end
 
   def not_password_change
