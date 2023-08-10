@@ -171,7 +171,6 @@ ActiveRecord::Schema.define(version: 2023_08_10_020732) do
     t.bigint "organization_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "appointment_only", default: false
     t.string "name", null: false
     t.string "email"
     t.boolean "po_box", default: false
@@ -179,6 +178,7 @@ ActiveRecord::Schema.define(version: 2023_08_10_020732) do
     t.string "youtube_video_link"
     t.boolean "public_address", default: true, null: false
     t.integer "non_standard_office_hours"
+    t.boolean "appointment_only"
     t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
     t.index ["organization_id"], name: "index_locations_on_organization_id"
   end
