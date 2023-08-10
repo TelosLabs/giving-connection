@@ -23,7 +23,7 @@ class Location < ActiveRecord::Base
   include Locations::Searchable
   include Locations::Officeable
 
-  enum non_standard_office_hours: { always_open: 0, appointment_only: 1, no_set_business_hours: 2 }
+  enum non_standard_office_hours: { appointment_only: 1, always_open: 2, no_set_business_hours: 3 }
 
   belongs_to :organization, optional: true
 
@@ -52,7 +52,7 @@ class Location < ActiveRecord::Base
   validates :lonlat, presence: true
   validates :main, inclusion: { in: [true, false] }
   validates :offer_services, inclusion: { in: [ true, false ] }
-  validates :non_standard_office_hours, inclusion: { in: non_standard_office_hours.keys }
+  validates :non_standard_office_hours, inclusion: { in: non_standard_office_hours.keys}, allow_blank: true
 
   scope :additional, -> { where(main: false) }
   scope :main, -> { where(main: true) }
