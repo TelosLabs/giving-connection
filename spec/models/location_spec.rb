@@ -25,9 +25,12 @@ RSpec.describe Location, type: :model do
     it { should validate_inclusion_of(:main).in_array([true, false]) }
     it { should validate_inclusion_of(:offer_services).in_array([true, false]) }
 
-    it 'is not a valid non standard office hours' do
+    it 'validates non standard office hours' do
       expect{ build(:location, non_standard_office_hours: :always_closed)}.to raise_error(ArgumentError).with_message(/is not a valid non_standard_office_hours/)
     end
 
+    it 'can create a location without non standard office hours' do
+      expect(build(:location, non_standard_office_hours: nil, organization: organization)).to be_valid
+    end
   end
 end
