@@ -40,3 +40,5 @@ yarn-debug.log*
 .yarn-integrity
 
 database_consistency*
+
+.DS_Store
