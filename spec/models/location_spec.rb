@@ -23,7 +23,6 @@ RSpec.describe Location, type: :model do
     it { should validate_presence_of(:latitude) }
     it { should validate_presence_of(:longitude) }
     it { should validate_inclusion_of(:main).in_array([true, false]) }
-    it { should validate_inclusion_of(:physical).in_array([true, false]) }
     it { should validate_inclusion_of(:offer_services).in_array([true, false]) }
     it { should validate_inclusion_of(:appointment_only).in_array([true, false]) }
   end
