@@ -36,10 +36,14 @@ div class=""
           button type="button" class="flex items-center text-sm gray-2" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="#{request.url}"
             = inline_svg_tag 'share_icon.svg', class: " fill-current mr-2"
             | Share
-          
+
           span class="inline-flex items-center gap-x-2"
             = render SaveButton::Component.new(user: current_user, location: @location, simplified: true)
             span class="text-sm" aria-hidden="true" Save
+
+        - if @location.organization.national?
+          div class="mt-10 px-6"
+            = render "shared/nationwide_designation"
 
         div class="mt-10 mx-6 text-left"
           = render WorkingHours::Component.new(result: @location)
