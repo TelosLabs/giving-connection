@@ -42,7 +42,7 @@ div class=""
             span class="text-sm" aria-hidden="true" Save
 
         div class="mt-10 mx-6 text-left"
-          = render WorkingHours::Component.new(result: @location, device: device)
+          = render WorkingHours::Component.new(result: @location)
           - if @location.organization.irs_ntee_code.present?
             p class="text-sm leading-6 font-base text-gray-2"
               span class="font-bold"

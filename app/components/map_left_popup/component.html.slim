@@ -27,7 +27,7 @@ div class="relative flex flex-col gap-2 p-7 bg-white rounded-6px" id="loc_#{@res
         icon_svg_options: {class: "w-5 h-5", aria_hidden: true})
 
     div class="pt-4 border-t border-gray-8"
-      = render WorkingHours::Component.new(result: @result, device: @device)
+      = render WorkingHours::Component.new(result: @result)
     - if @result.images.attached?
       div class="pt-4 border-t border-gray-8 mt-4"
         h3 class="text-sm font-bold text-black uppercase" photos
