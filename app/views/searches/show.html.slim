@@ -31,16 +31,21 @@
                 | Map
           // Search result cards
           = turbo_frame_tag "pagy" do
-            div class="flex flex-col w-full bg-white md:h-85vh md:overflow-y-auto" data-controller="modal"
+            div class="flex flex-col w-full bg-white md:h-85vh md:overflow-y-auto"
               div class="flex flex-row items-center justify-between w-full p-4 bg-white border-b border-gray-8"
                 span class="text-xs text-gray-3"
                   | #{pluralize(@pagy.count, 'result')} found
-                = button_tag(\
+                //= button_tag(\
                   class: "inline-flex items-center px-3 py-2 text-xs text-gray-3",\
                   disabled: params.dig('search', 'keyword').blank? && list_of_filters(@search).empty?,\
                   type: "button",\
                   data: { action: "click->modal#open"}\
-                ) do
+                //) do
+                  = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
+                  | Create Search Alert
+
+                // Enviar filters como query params (string)
+                = link_to new_alert_path(filters: params.to_s), class: "c-dropdown-menu", data: { turbo_frame: "modal" } do
                   = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
                   | Create Search Alert
 
@@ -83,7 +88,7 @@
                         | Create an Alert for this Search
                     - else
                       = link_to "Create an Alert for this Search", user_session_path, class: 'mt-10 text-sm font-bold text-black'
-              = render SearchAlert::Component.new(keywords: params.dig('search', 'keyword'), filters: list_of_filters(@search))
+              //= render SearchAlert::Component.new(keywords: params.dig('search', 'keyword'), filters: list_of_filters(@search))
           // Mobile map
           div class="hidden w-full h-85vh md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}"
             div class="w-full h-full" data-places-target="map"

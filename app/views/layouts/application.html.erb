@@ -39,6 +39,8 @@
       <% flash.each do |type, message| %>
         <%= render Alert::Component.new(type: type, message: message) %>
       <% end %>
+      <%= turbo_frame_tag "modal" %>
+
       <%= yield %>
     </main>
     <%= render Footer::Component.new() %>

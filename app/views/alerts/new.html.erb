@@ -1,4 +1,14 @@
-<h1>Create Search Alert for:</h1>
+<%= render Modal::Component.new() do |modal| %>
+	<%# Contruir un form con scope de @alert fuera del view component %>
+	<%# Cambiar el view component a un partial que tenga los fields de alert y search %>
+	<%= render SearchAlert::Component.new(alert: @alert) %>
+<% end %>
+
+
+
+<%
+=begin%>
+ <h1>Create Search Alert for:</h1>
 
 <p>
 	keyword: <%= @alert_params['keyword'] %>
@@ -25,4 +35,6 @@
 	<%= f.hidden_field :open_now, value: @alert_params['open_now'] %>
 	<%= f.hidden_field :open_weekends, value: @alert_params['open_weekends'] %>
 	<%= f.submit %>
-<% end %>
+<% end %> 
+<%
+=end%>

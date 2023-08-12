@@ -6,7 +6,7 @@
 class SearchAlert::Component < ApplicationViewComponent
   def initialize(keywords: nil, filters: nil, user_signed_in: false, edit: false, alert_id: nil)
     @keywords = keywords
-    @filters = filters.join(', ')
+    @filters = filters&.join(', ')
     @user_signed_in = user_signed_in
     @edit = edit
     @alert_id = alert_id

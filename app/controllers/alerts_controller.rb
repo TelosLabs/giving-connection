@@ -3,10 +3,17 @@
 class AlertsController < ApplicationController
   include Pundit
 
+  skip_before_action :authenticate_user!, only: [:create]
+  skip_after_action :verify_authorized
+
   def new
     @alert = Alert.new
-    @alert_params = params['alert_params']
-    authorize @alert
+    # Recibir filters como params
+    # "{\"search\"=>#<ActionController::Parameters {\"keyword\"=>\"\", \"causes\"=>[\"Arts & Culture\"]} permitted: false>, \"not_preview\"=>[\"true\"], \"controller\"=>\"searches\", \"action\"=>\"show\"}"
+
+
+    # @alert_params = params['alert_params']
+    #authorize @alert
   end
 
   def create
