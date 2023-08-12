@@ -133,10 +133,8 @@ div class=""
                   p class="text-xs text-gray-4"
                     | #{@location.organization.decorate.website}
                   p class="text-xs text-gray-4"
-                    - if device == "mobile" && @location.phone_number&.number.present?
+                    - if @location.phone_number&.number.present?
                       = link_to("call: #{@location.phone_number&.number}", "tel: #{@location.phone_number&.number}", class: "text-blue-medium")
-                    - else
-                      | #{@location.phone_number&.number}
                     p class="text-xs font-medium text-gray-2"
                       - if @location.appointment_only?
                         span class="text-states-error"

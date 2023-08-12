@@ -5,10 +5,8 @@ p class="text-sm leading-6 font-base text-gray-2"
     span class="font-bold"
       ' Phone:
     span
-      - if @device == "mobile" && @result.phone_number&.number.present?
+      - if @result.phone_number&.number.present?
         = link_to(@result.phone_number&.number, "tel: #{@result.phone_number&.number}", class: "text-blue-medium") 
-      - else
-        = @result.phone_number&.number
 p class="text-sm leading-6 font-base text-gray-2"
   span class="font-bold"
     ' Hours:
