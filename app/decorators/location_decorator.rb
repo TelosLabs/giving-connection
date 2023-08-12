@@ -43,9 +43,10 @@ class LocationDecorator < ApplicationDecorator
   end
 
   def non_standard_office_hours_for_display
-    return if object.non_standard_office_hours.empty? || object.always_open?
+    return if object.non_standard_office_hours.empty?
 
     return 'By Appointment Only' if object.appointment_only?
     return 'No Set Business Hours - Call to Inquire' if object.no_set_business_hours?
+    return 'Always Open' if object.always_open?
   end
 end

@@ -25,8 +25,8 @@ p class="text-xs text-gray-4"
   | #{@location.phone_number&.number}
 
 p class="text-xs font-medium text-gray-2"
-  - if @location.no_set_business_hours? || @location.appointment_only?
-    span class="text-states-error"
+  - if @location.non_standard_office_hours.present?
+    span class="#{@location.always_open? ? 'text-green-fountain' : 'text-states-error'}"
       = @location.decorate.non_standard_office_hours_for_display
   - elsif @location.open_now?
     span class="text-green-fountain"

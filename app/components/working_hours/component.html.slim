@@ -9,8 +9,8 @@ p class="text-sm leading-6 font-base text-gray-2"
 p class="text-sm leading-6 font-base text-gray-2"
   span class="font-bold"
     ' Hours:
-  - if @result.no_set_business_hours? || @result.appointment_only?
-    span class="text-states-error"
+  - if @result.non_standard_office_hours.present?
+    span class="#{@result.always_open? ? 'text-green-fountain' : 'text-states-error'}"
       = @result.decorate.non_standard_office_hours_for_display
   - elsif @result.open_now?
     span class="text-green-fountain"
