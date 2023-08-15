@@ -21,8 +21,9 @@ div
 p class="text-xs text-blue-medium"
   = link_to @location.organization.decorate.website, @location.organization.decorate.website, target: "_blank"
 
-p class="text-xs text-gray-4"
-  | #{@location.phone_number&.number}
+p class="text-xs text-blue-medium"
+  - if @location.phone_number
+    a href="tel:#{@location.phone_number.number}" = @location.phone_number.number
 
 p class="text-xs font-medium text-gray-2"
   - if @location.appointment_only?
