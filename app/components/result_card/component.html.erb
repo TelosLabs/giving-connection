@@ -34,13 +34,10 @@
           <p id="pointer"><%= link_to @address, @link_to_google_maps, target: "blank" %></p>
         <% end %>
         <% if @website.present? %>
-          <%= link_to @website_for_display, @website, target: '_blank', class: 'text-blue-medium'%>
+          <p><%= link_to @website_for_display, @website, target: '_blank', class: 'text-blue-medium'%></p>
         <% end %>
-        <% if device == "mobile" && @phone_number.present? %>
-        <a class="text-xs text-blue-medium" href="tel:<%= @phone_number %>">
-          <%= "call: #{@phone_number}" %></a>
-          <% else %>
-        <p class="text-xs text-blue-medium"><%= @phone_number %></p>
+        <% if @phone_number.present? %>
+        <%= link_to "Call: #{@phone_number}", "tel:#{@phone_number}", class: 'text-blue-medium' %>
         <% end %>
       </div>
     </div>
