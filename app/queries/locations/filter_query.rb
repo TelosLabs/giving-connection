@@ -54,10 +54,10 @@ module Locations
         return scope if causes.blank? || scope.empty?
 
         Location.joins(organization: { organization_causes: :cause })
-          .where("locations.id IN (?)", scope.ids)
-          .where("causes.name IN (?)", causes)
-          .group("locations.id")
-          .having('count(locations.id) >= ?', causes.size)
+                .where('locations.id IN (?)', scope.ids)
+                .where('causes.name IN (?)', causes)
+                .group('locations.id')
+                .having('count(locations.id) >= ?', causes.size) # multiple filters add up with AND behavior
       end
 
       def by_service(scope, services)
@@ -72,10 +72,10 @@ module Locations
         end
 
         Location.joins(location_services: { service: :cause })
-          .where("locations.id IN (?)", scope.ids)
-          .where("(causes.name, services.name) IN (#{complex_query.join(",")})")
-          .group("locations.id")
-          .having('count(locations.id) >= ?', complex_query.size)
+                .where('locations.id IN (?)', scope.ids)
+                .where("(causes.name, services.name) IN (#{complex_query.join(',')})")
+                .group('locations.id')
+                .having('count(locations.id) >= ?', complex_query.size) # multiple filters add up with AND behavior
       end
 
       def by_beneficiary_groups_served(scope, beneficiary_groups_filters)
@@ -90,10 +90,10 @@ module Locations
         end
 
         Location.joins(organization: { organization_beneficiaries: { beneficiary_subcategory: :beneficiary_group } })
-          .where("locations.id IN (?)", scope.ids)
-          .where("(beneficiary_groups.name, beneficiary_subcategories.name) IN (#{complex_query.join(",")})")
-          .group("locations.id")
-          .having('count(locations.id) >= ?', complex_query.size)
+                .where('locations.id IN (?)', scope.ids)
+                .where("(beneficiary_groups.name, beneficiary_subcategories.name) IN (#{complex_query.join(',')})")
+                .group('locations.id')
+                .having('count(locations.id) >= ?', complex_query.size) # multiple filters add up with AND behavior
       end
 
       def starting_coordinates(lat, lon)
