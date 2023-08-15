@@ -44,4 +44,9 @@ unless Rails.env.production?
   # Populate organizations and locations
   SpreadsheetParse.new.import("./lib/assets/GC_Dummy_Data_for_DB.xlsx")
 
+  # Phone Number
+  PhoneNumber.find_or_create_by!(location: Location.first) do |phone|
+    phone.number = "222-333-4444"
+    main = false
+  end
 end

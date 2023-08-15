@@ -20,7 +20,6 @@ class LocationDashboard < Administrate::BaseDashboard
     lonlat: Field::String.with_options(searchable: false),
     email: Field::String,
     main: Field::Boolean,
-    physical: Field::Boolean,
     offer_services: Field::Boolean,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -63,7 +62,6 @@ class LocationDashboard < Administrate::BaseDashboard
     email
     main
     images
-    physical
     offer_services
     address
     suite
@@ -80,7 +78,6 @@ class LocationDashboard < Administrate::BaseDashboard
     main
     youtube_video_link
     images
-    physical
     appointment_only
     email
     phone_number

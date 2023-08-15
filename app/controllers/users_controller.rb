@@ -5,11 +5,11 @@ class UsersController < ApplicationController
   before_action :not_password_change
 
   def update
-    user = current_user
+    @user = current_user
 
     if not_password_change
       save_params = update_params
-    elsif !user.valid_password?(old_password_params[:old_password])
+    elsif !@user.valid_password?(old_password_params[:old_password])
       flash[:alert] = 'Old password is incorrect'
       render 'my_accounts/show'
       return
@@ -17,15 +17,26 @@ class UsersController < ApplicationController
       save_params = password_params
     end
 
-    unless user.update(save_params)
-      flash[:alert] = user.errors.full_messages.to_sentence
-    end
-    sign_in(current_user, :bypass => true)
-    flash[:success] = "Your information has been updated"
+    flash[:alert] = @user.errors.full_messages.to_sentence unless @user.update(save_params)
+    sign_in(current_user, bypass: true)
+
+    flash_message
     redirect_to my_account_path
   end
 
   private
+
+  def flash_message
+    flash[:sucess] = if email_change
+                       "Your information has been updated. #{I18n.t('devise.confirmations.send_instructions')}"
+                     else
+                       'Your information has been updated'
+                     end
+  end
+
+  def email_change
+    @user.email != params[:user][:email]
+  end
 
   def not_password_change
     password_params[:password].blank? &&

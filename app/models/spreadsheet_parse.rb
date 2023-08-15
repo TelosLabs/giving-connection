@@ -150,7 +150,7 @@ class SpreadsheetParse
 
   def build_location_hash(location_row)
     { address: location_row['address'], website: location_row['website'],
-      main: location_row['main'] == 'yes', physical: location_row['physical'] == 'yes',
+      main: location_row['main'] == 'yes',
       appointment_only: location_row['appointment_only'] == 'yes',
       offer_services: location_row['offer_services'] == 'yes',
       name: location_row['name'],
