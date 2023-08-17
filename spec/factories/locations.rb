@@ -7,6 +7,6 @@ FactoryBot.define do
     lonlat { Geo.point(1.5, 1.5) }
     main { true }
     offer_services { true }
-    appointment_only { true }
+    non_standard_office_hours { 1 }
   end
 end

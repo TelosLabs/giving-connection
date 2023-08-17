@@ -14,7 +14,7 @@ class LocationDashboard < Administrate::BaseDashboard
     name: Field::String,
     id: Field::Number,
     youtube_video_link: Field::String,
-    images: Field::ActiveStorage.with_options( multiple: true ),
+    images: Field::ActiveStorage.with_options(multiple: true),
     latitude: HiddenField,
     longitude: HiddenField,
     lonlat: Field::String.with_options(searchable: false),
@@ -27,7 +27,8 @@ class LocationDashboard < Administrate::BaseDashboard
     phone_number: Field::HasOne,
     office_hours: Field::NestedHasMany,
     location_services: Field::NestedHasMany,
-    appointment_only: Field::Boolean,
+    non_standard_office_hours: Field::Select.with_options(collection: [['None', ''], ['By appointment only', 'appointment_only'], ['Always open', 'always_open'],
+                                                                       ['No set business hours - Call to Inquire', 'no_set_business_hours']]),
     services: Field::HasMany,
     po_box: Field::Boolean,
     public_address: Field::Boolean,
@@ -44,7 +45,7 @@ class LocationDashboard < Administrate::BaseDashboard
     name
     address
     main
-    appointment_only
+    non_standard_office_hours
     organization
   ].freeze
 
@@ -66,7 +67,7 @@ class LocationDashboard < Administrate::BaseDashboard
     address
     suite
     phone_number
-    appointment_only
+    non_standard_office_hours
     office_hours
   ].freeze
 
@@ -78,7 +79,7 @@ class LocationDashboard < Administrate::BaseDashboard
     main
     youtube_video_link
     images
-    appointment_only
+    non_standard_office_hours
     email
     phone_number
     po_box
