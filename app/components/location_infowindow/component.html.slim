@@ -21,13 +21,14 @@ div
 p class="text-xs text-blue-medium"
   = link_to @location.organization.decorate.website, @location.organization.decorate.website, target: "_blank"
 
-p class="text-xs text-gray-4"
-  | #{@location.phone_number&.number}
+p class="text-xs text-blue-medium"
+  - if @location.phone_number
+    a href="tel:#{@location.phone_number.number}" = @location.phone_number.number
 
 p class="text-xs font-medium text-gray-2"
-  - if @location.appointment_only?
-    span class="text-states-error"
-      ' Appointment only
+  - if @location.non_standard_office_hours.present?
+    span class="#{@location.always_open? ? 'text-green-fountain' : 'text-states-error'}"
+      = @location.decorate.non_standard_office_hours_for_display
   - elsif @location.open_now?
     span class="text-green-fountain"
       ' Open Now

@@ -22,7 +22,8 @@
 class Location < ActiveRecord::Base
   include Locations::Searchable
   include Locations::Officeable
-  validates_with LocationValidator
+
+  enum non_standard_office_hours: { appointment_only: 1, always_open: 2, no_set_business_hours: 3 }
 
   belongs_to :organization, optional: true
 
@@ -43,6 +44,7 @@ class Location < ActiveRecord::Base
   has_one :phone_number, dependent: :destroy
   has_one :social_media, through: :organization
 
+  validates_with LocationValidator
   validates :name, presence: true
   validates :address, presence: true
   validates :latitude, presence: true
@@ -50,7 +52,7 @@ class Location < ActiveRecord::Base
   validates :lonlat, presence: true
   validates :main, inclusion: { in: [true, false] }
   validates :offer_services, inclusion: { in: [ true, false ] }
-  validates :appointment_only, inclusion: { in: [true, false] }
+  validates :non_standard_office_hours, inclusion: { in: non_standard_office_hours.keys}, allow_blank: true
 
   scope :additional, -> { where(main: false) }
   scope :main, -> { where(main: true) }
@@ -61,7 +63,7 @@ class Location < ActiveRecord::Base
 
   accepts_nested_attributes_for(
     :office_hours,
-    reject_if: :all_blank,
+    reject_if: :blank_office_hours,
     allow_destroy: true
   )
 
@@ -100,5 +102,9 @@ class Location < ActiveRecord::Base
 
   def lonlat_geo_point
     self.lonlat = Geo.point(longitude, latitude)
+  end
+
+  def blank_office_hours(attributes)
+    attributes['open_time'].blank? && attributes['close_time'].blank?
   end
 end

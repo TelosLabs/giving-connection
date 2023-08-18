@@ -12,7 +12,7 @@ class LocationValidator < ActiveModel::Validator
   private
 
   def complete_office_hours
-    return true if record.appointment_only?
+    return true if record.non_standard_office_hours.present?
 
     record.organization.errors.add(:base, 'Office hours data is required for the 7 days of the week') unless Time::DAYS_INTO_WEEK.values.sort == record.office_hours.map(&:day).sort
   end
