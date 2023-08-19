@@ -3,7 +3,6 @@
   scope: :alert, \
 	url: alerts_path, \
   class: "inline-block overflow-hidden text-sm text-left align-bottom transition-all transform bg-white rounded-lg max-w-356px sm:align-middle", \
-  data: { controller: "search--alerts", turbo_frame: '_top' }, \
 	method: :post) do |form|
     - filters = local_assigns[:filters]
 

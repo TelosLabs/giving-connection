@@ -28,7 +28,8 @@ class ApplicationController < ActionController::Base
   end
 
   def store_user_location!
-    store_location_for(:user, request.fullpath)
+    location = request.headers["Turbo-Frame"].present? ? request.referer : request.fullpath
+    store_location_for(:user, location)
   end
 
   def after_sign_in_path_for(resource_or_scope)
@@ -41,7 +42,6 @@ class ApplicationController < ActionController::Base
       FavoriteLocation.create(location_id: session[:fav_loc_id], user: current_user)
       session.delete(:fav_loc_id)
 
-    # Approach 2, crear el Alert after signin
     elsif session[:alert_params]
       new_alert = Alert.new(session[:alert_params])
       new_alert.user = current_user
@@ -49,6 +49,8 @@ class ApplicationController < ActionController::Base
         flash[:notice] = 'Alert created successfully! Go to My Account to view or edit.'
         session.delete(:alert_params)
       end
+      search_results = AlertSearchResults.new(new_alert).call
+      new_alert.update(search_results: search_results.pluck(:id))
     end
   end
 

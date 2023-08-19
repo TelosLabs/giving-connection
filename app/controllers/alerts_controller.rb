@@ -3,12 +3,9 @@
 class AlertsController < ApplicationController
   include Pundit
 
-  # Approach 2, crear el Alert after signin
   skip_before_action :authenticate_user!
-
   skip_after_action :verify_authorized
 
-  # Approach 2, crear el Alert after signin
   before_action :set_session_alert, only: [:create]
 
   def new
@@ -65,15 +62,13 @@ class AlertsController < ApplicationController
 
   def update_alert_search_results(alert)
     search_results = AlertSearchResults.new(alert).call
-    search_results_ids = search_results.pluck(:id)
-    alert.update(search_results: search_results_ids)
+    alert.update(search_results: search_results.pluck(:id))
   end
 
-  # Approach 2, crear el Alert after signin
   def set_session_alert
-    unless user_signed_in?
-      session[:alert_params] = alert_params
-      redirect_to user_session_path
-    end
+    return if user_signed_in?
+
+    session[:alert_params] = alert_params
+    redirect_to user_session_path
   end
 end
