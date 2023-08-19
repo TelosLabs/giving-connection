@@ -5,6 +5,10 @@ module SearchesHelper
 
   def parse_filters(object)
     filters = {}
+    filters[:keywords] = object.keyword
+    filters[:distance] = object.distance
+    filters[:open_now] = object.open_now.present?
+    filters[:open_weekends] = object.open_weekends.present?
     filters[:beneficiary_groups] = object.beneficiary_groups&.map(&:last)&.flatten
     filters[:services] = object.services&.map(&:last)&.flatten
     filters[:causes] = object.causes&.flatten

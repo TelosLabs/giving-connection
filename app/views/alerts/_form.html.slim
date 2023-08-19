@@ -5,15 +5,10 @@
   class: "inline-block overflow-hidden text-sm text-left align-bottom transition-all transform bg-white rounded-lg max-w-356px sm:align-middle", \
 	method: :post) do |form|
     - filters = local_assigns[:filters]
-
-    / Habitilar los siguientes attributos
-    / = form.hidden_field :keyword, value: filters[:keyword]
-    / = form.hidden_field :distance, value: filters[:distance]
-    / = form.hidden_field :city, value: filters[:city]
-    / = form.hidden_field :state, value: filters[:state]
-    / = form.hidden_field :open_now, value: filters[:open_now]
-    / = form.hidden_field :open_weekends, value: filters[:open_weekends]
-
+    = form.hidden_field :keyword, value: filters[:keywords]
+    = form.hidden_field :distance, value: filters[:distance]
+    = form.hidden_field :open_now, value: filters[:open_now]
+    = form.hidden_field :open_weekends, value: filters[:open_weekends]
     - filters_ids_arr = filters_ids(filters)
     = form.select :cause_ids, options_for_select(filters_ids_arr[:causes], selected: filters_ids_arr[:causes]), {}, multiple: true, style: "display: none;"
     = form.select :service_ids, options_for_select(filters_ids_arr[:services], selected: filters_ids_arr[:services]), {}, multiple: true, style: "display: none;"
@@ -27,10 +22,10 @@
         div class='mt-3 text-left text-black'
           div class='pb-4'
             p class='font-bold' Keywords
-            p class="capitalize" #{local_assigns[:keywords]}
+            p class="capitalize" #{filters[:keywords]}
           div
             p class='font-bold' Filters
-            p #{local_assigns[:filters_list]&.join(',')}
+            p #{local_assigns[:filters_list]&.join(', ')}
       hr
       div class='pt-4 pb-4 font-normal text-left'
         label class='text-base'

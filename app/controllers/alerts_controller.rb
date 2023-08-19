@@ -49,10 +49,11 @@ class AlertsController < ApplicationController
   private
 
   def alert_params
-    params.require(:alert).permit(:filters, :distance, :city, :state,
-                                  :open_weekends, :keyword, :frequency,
-                                  cause_ids: [], service_ids: [],
-                                  beneficiary_subcategory_ids: [])
+    params.require(:alert)
+          .permit(:filters, :distance, :open_now,
+                  :open_weekends, :keyword, :frequency,
+                  cause_ids: [], service_ids: [],
+                  beneficiary_subcategory_ids: [])
   end
 
   def clean_open_weekends(new_alert)
