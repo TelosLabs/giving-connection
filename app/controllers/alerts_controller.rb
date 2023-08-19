@@ -12,10 +12,12 @@ class AlertsController < ApplicationController
     @alert = Alert.new
     @filters = params[:filters]
     @filters_list = params[:filters_list]
+    authorize @alert
   end
 
   def create
     new_alert = Alert.new(alert_params)
+    authorize new_alert
     new_alert.user = current_user
     new_alert = clean_open_weekends(new_alert)
     if new_alert.save
@@ -23,7 +25,6 @@ class AlertsController < ApplicationController
       redirect_to request.referer
     end
     update_alert_search_results(new_alert)
-    authorize new_alert
   end
 
   def edit
@@ -33,8 +34,11 @@ class AlertsController < ApplicationController
 
   def update
     @alert = Alert.find(params[:id])
-    @alert.update(alert_params)
     authorize @alert
+    return unless @alert.update(alert_params)
+
+    flash[:notice] = 'Alert updated!'
+    redirect_to request.referer
   end
 
   def destroy

@@ -4,14 +4,16 @@
   class: "inline-block overflow-hidden text-sm text-left align-bottom transition-all transform bg-white rounded-lg max-w-356px sm:align-middle", \
 	method: local_assigns[:method]) do |form|
     - filters = local_assigns[:filters]
-    = form.hidden_field :keyword, value: filters[:keywords]
-    = form.hidden_field :distance, value: filters[:distance]
-    = form.hidden_field :open_now, value: filters[:open_now]
-    = form.hidden_field :open_weekends, value: filters[:open_weekends]
-    - filters_ids_arr = filters_ids(filters)
-    = form.select :cause_ids, options_for_select(filters_ids_arr[:causes], selected: filters_ids_arr[:causes]), {}, multiple: true, style: "display: none;"
-    = form.select :service_ids, options_for_select(filters_ids_arr[:services], selected: filters_ids_arr[:services]), {}, multiple: true, style: "display: none;"
-    = form.select :beneficiary_subcategory_ids, options_for_select(filters_ids_arr[:beneficiary_groups], selected: filters_ids_arr[:beneficiary_groups]), {}, multiple: true, style: "display: none;"
+    - alert = local_assigns[:alert]
+    = form.hidden_field :keyword, value: alert&.persisted? ? alert.keyword : filters[:keywords]
+    = form.hidden_field :distance, value: alert&.persisted? ? alert.distance : filters[:distance]
+    = form.hidden_field :open_now, value: alert&.persisted? ? alert.open_now : filters[:open_now]
+    = form.hidden_field :open_weekends, value: alert&.persisted? ? alert.open_weekends : filters[:open_weekends]
+    - unless alert&.persisted?
+      - filters_ids_arr = filters_ids(filters)
+      = form.select :cause_ids, options_for_select(filters_ids_arr[:causes], selected: filters_ids_arr[:causes]), {}, multiple: true, style: "display: none;"
+      = form.select :service_ids, options_for_select(filters_ids_arr[:services], selected: filters_ids_arr[:services]), {}, multiple: true, style: "display: none;"
+      = form.select :beneficiary_subcategory_ids, options_for_select(filters_ids_arr[:beneficiary_groups], selected: filters_ids_arr[:beneficiary_groups]), {}, multiple: true, style: "display: none;"
 
     div class='px-1 text-center'
       div class='pt-5 pb-4'
@@ -21,10 +23,10 @@
         div class='mt-3 text-left text-black'
           div class='pb-4'
             p class='font-bold' Keywords
-            p class="capitalize" #{filters[:keywords]}
+            p class="capitalize" = filters&.dig(:keywords) || alert&.keyword
           div
             p class='font-bold' Filters
-            p #{local_assigns[:filters_list]&.join(', ')}
+            p = local_assigns[:filters_list]&.join(', ') || list_all_filters(alert)&.join(', ')
       hr
       div class='pt-4 pb-4 font-normal text-left'
         label class='text-base'
@@ -48,4 +50,4 @@
       p You’ll receive an email when a newly
       p published organization matches your search.
     div class='mt-5'
-      = form.submit 'Create Alert', class:'c-button'
+      = form.submit alert&.persisted? ? 'SAVE' : 'Create Alert', class:'c-button'
