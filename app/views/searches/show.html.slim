@@ -38,7 +38,6 @@
                   = link_to( \
                       new_alert_path( \
                         filters: parse_filters(@search), \
-                        keywords: params.dig('search', 'keyword'), \
                         filters_list: list_of_filters(@search)), \
                       class: "inline-flex items-center px-3 py-2 text-xs text-gray-3", \
                       data: { turbo_frame: "modal" } ) do

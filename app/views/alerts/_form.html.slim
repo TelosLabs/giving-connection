@@ -1,9 +1,8 @@
-/ Hacer el form dynamico para que funcione con updates
 = form_with(\
   scope: :alert, \
-	url: alerts_path, \
+	url: local_assigns[:url], \
   class: "inline-block overflow-hidden text-sm text-left align-bottom transition-all transform bg-white rounded-lg max-w-356px sm:align-middle", \
-	method: :post) do |form|
+	method: local_assigns[:method]) do |form|
     - filters = local_assigns[:filters]
     = form.hidden_field :keyword, value: filters[:keywords]
     = form.hidden_field :distance, value: filters[:distance]
@@ -46,9 +45,7 @@
               label.ml-3 for='monthly'
                 | Monthly
     div class='px-4 py-5 font-normal rounded-md text-gray-2 bg-gray-9'
-      p
-        | You’ll receive an email when a newly
-      p
-        | published organization matches your search.
+      p You’ll receive an email when a newly
+      p published organization matches your search.
     div class='mt-5'
       = form.submit 'Create Alert', class:'c-button'

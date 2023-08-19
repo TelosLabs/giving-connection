@@ -11,7 +11,6 @@ class AlertsController < ApplicationController
   def new
     @alert = Alert.new
     @filters = params[:filters]
-    @keywords = params[:keywords]
     @filters_list = params[:filters_list]
   end
 

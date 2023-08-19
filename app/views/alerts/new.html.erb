@@ -1,9 +1,9 @@
-<%# Mover el component a un partial %>
-<%= render Modal::Component.new() do %>
+<%= render "shared/main_modal" do %>
 	<%= render(
 		"alerts/form",
+		url: alerts_path,
+		method: :post,
 		filters: @filters,
-		keywords: @keywords,
 		filters_list: @filters_list
 	) %>
 <% end %>
