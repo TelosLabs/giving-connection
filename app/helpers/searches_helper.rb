@@ -3,6 +3,14 @@
 module SearchesHelper
   MIN_REQUIRED_PAGES = 1
 
+  def parse_filters(object)
+    filters = {}
+    filters[:beneficiary_groups] = object.beneficiary_groups&.map(&:last)&.flatten
+    filters[:services] = object.services&.map(&:last)&.flatten
+    filters[:causes] = object.causes&.flatten
+    filters
+  end
+
   def list_of_filters(object)
     list = []
     list << object.beneficiary_groups&.map(&:last)&.flatten

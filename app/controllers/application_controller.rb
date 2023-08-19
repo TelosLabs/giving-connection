@@ -40,6 +40,15 @@ class ApplicationController < ActionController::Base
     if session[:fav_loc_id].present?
       FavoriteLocation.create(location_id: session[:fav_loc_id], user: current_user)
       session.delete(:fav_loc_id)
+
+    # Approach 2, crear el Alert after signin
+    elsif session[:alert_params]
+      new_alert = Alert.new(session[:alert_params])
+      new_alert.user = current_user
+      if new_alert.save
+        flash[:notice] = 'Alert created successfully! Go to My Account to view or edit.'
+        session.delete(:alert_params)
+      end
     end
   end
 

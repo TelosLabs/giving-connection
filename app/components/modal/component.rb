@@ -3,10 +3,6 @@ class Modal::Component < ApplicationViewComponent
     @options = options
   end
 
-  renders_one :footer
-
-  attr_reader :results
-
   def options
     merge_hashes(
       {
