@@ -290,9 +290,9 @@ div class="w-full h-full bg-grey-9"
                         |  if you would like to add a service not currently found in the list below.
                       = render SelectMultiple::Component.new(f: location_form, klass: "Service", items: @services, selected: location_form.object.location_services.map{ |location_service| location_service.service.name }, placeholder: "Write services")
 
-                  div class="col-span-12 lg:col-span-6 md:col-span-7 text-sm font-medium leading-4 text-gray-2" 
-                    | Hours of operation
-                  p class="text-sm text-gray-4 mt-1"
+                  div class="col-span-12 lg:col-span-6 md:col-span-7 text-sm font-medium leading-4 text-gray-2 mt-4"
+                    | Hours of Operation
+                  p class="text-sm text-gray-4 mt-2 mb-4"
                     | Please specify your organization's standard operating hours by clicking "Edit Opening Hours" below. If your organization does not have standard operating hours,  you can check one of the checkboxes below to indicate if your organization is 1) Always Open, 2) By Appointment Only, or 3) No Set Business Hours - Call to Inquire.  Only one selection can be made. This selection will appear in the Hours of Operation section  throughout the platform.
                   div[data-controller="modal" data-modal-allow-background-close="false"]
                     button type="button" class="flex justify-center px-6 py-3 mx-auto text-base font-medium hover:text-blue-medium text-gray-3" data-action="modal#open modal#readCheckboxesState"
