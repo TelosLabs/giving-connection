@@ -42,6 +42,12 @@
           <% else %>
         <p class="text-xs text-blue-medium"><%= @phone_number %></p>
         <% end %>
+        <%# Designations %>
+        <% if @nationwide %>
+          <div class="mt-3">
+            <%= render "shared/nationwide_designation" %>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

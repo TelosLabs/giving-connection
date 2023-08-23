@@ -22,10 +22,15 @@ div class=""
               = @location.name
             p class="text-xs text-center font-base text-gray-4"
               = "This nonprofit has not yet verified the listed information."
+
           - if current_user.present? && policy(@location.organization).update?
             p class="text-xs text-center font-base text-blue-500" id="pointer"
               = link_to "Edit My Nonprofit Page", edit_organization_path( @location.organization)
-          div class="mt-3"
+          // Designations
+          - if @location.organization.nationwide?
+            div class="flex justify-center items-center mt-4"
+              = render "shared/nationwide_designation"
+          div class="mt-4"
             - if @location.public_address?
               p class="text-xs text-center font-base text-gray-4" id="pointer"
                 = link_to @location.formatted_address, @location.link_to_google_maps, target: "blank"
@@ -40,10 +45,6 @@ div class=""
           span class="inline-flex items-center gap-x-2"
             = render SaveButton::Component.new(user: current_user, location: @location, simplified: true)
             span class="text-sm" aria-hidden="true" Save
-
-        - if @location.organization.national?
-          div class="mt-10 px-6"
-            = render "shared/nationwide_designation"
 
         div class="mt-10 mx-6 text-left"
           = render WorkingHours::Component.new(result: @location)
