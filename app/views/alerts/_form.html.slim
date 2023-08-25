@@ -5,12 +5,12 @@
 	method: local_assigns[:method]) do |form|
     - filters = local_assigns[:filters]
     - alert = local_assigns[:alert]
-    = form.hidden_field :keyword, value: alert&.persisted? ? alert.keyword : filters[:keywords]
-    = form.hidden_field :distance, value: alert&.persisted? ? alert.distance : filters[:distance]
-    = form.hidden_field :open_now, value: alert&.persisted? ? alert.open_now : filters[:open_now]
-    = form.hidden_field :open_weekends, value: alert&.persisted? ? alert.open_weekends : filters[:open_weekends]
     - unless alert&.persisted?
       - filters_ids_arr = filters_ids(filters)
+      = form.hidden_field :keyword, value: filters[:keywords]
+      = form.hidden_field :distance, value: filters[:distance]
+      = form.hidden_field :open_now, value: filters[:open_now]
+      = form.hidden_field :open_weekends, value: filters[:open_weekends]
       = form.select :cause_ids, options_for_select(filters_ids_arr[:causes], selected: filters_ids_arr[:causes]), {}, multiple: true, style: "display: none;"
       = form.select :service_ids, options_for_select(filters_ids_arr[:services], selected: filters_ids_arr[:services]), {}, multiple: true, style: "display: none;"
       = form.select :beneficiary_subcategory_ids, options_for_select(filters_ids_arr[:beneficiary_groups], selected: filters_ids_arr[:beneficiary_groups]), {}, multiple: true, style: "display: none;"

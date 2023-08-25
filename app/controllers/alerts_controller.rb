@@ -38,7 +38,6 @@ class AlertsController < ApplicationController
     return unless @alert.update(alert_params)
 
     flash[:notice] = 'Alert updated!'
-    binding.pry
     redirect_to my_account_path
   end
 
@@ -47,7 +46,6 @@ class AlertsController < ApplicationController
     @alert.destroy
     authorize @alert
     flash[:notice] = 'The alert was successfully deleted.'
-    binding.pry
     redirect_to my_account_path
   end
 
