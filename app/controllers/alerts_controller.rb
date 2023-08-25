@@ -4,9 +4,8 @@ class AlertsController < ApplicationController
   include Pundit
 
   skip_before_action :authenticate_user!
-  skip_after_action :verify_authorized
 
-  before_action :set_session_alert, only: [:create]
+  before_action :set_session_alert_params, only: [:create]
 
   def new
     @alert = Alert.new
@@ -69,7 +68,7 @@ class AlertsController < ApplicationController
     alert.update(search_results: search_results.pluck(:id))
   end
 
-  def set_session_alert
+  def set_session_alert_params
     return if user_signed_in?
 
     session[:alert_params] = alert_params
