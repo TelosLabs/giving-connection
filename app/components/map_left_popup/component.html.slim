@@ -12,7 +12,7 @@ div class="relative flex flex-col gap-2 p-7 bg-white rounded-6px" id="loc_#{@res
           = link_to @result.formatted_address, @result.link_to_google_maps, target: "blank"
       // Designations
       - if @result.organization.nationwide?
-        div class="mt-3"
+        div class="mt-2"
           = render "shared/nationwide_designation"
     button type="button" data-action="click->places#hidePopup" class="absolute top-3 right-3" aria-label="close"
       = inline_svg_tag "x-icon.svg", class: "w-3 h-3", aria_hidden: true

@@ -28,7 +28,7 @@ div class=""
               = link_to "Edit My Nonprofit Page", edit_organization_path( @location.organization)
           // Designations
           - if @location.organization.nationwide?
-            div class="flex justify-center items-center mt-4"
+            div class="flex justify-center items-center mt-3"
               = render "shared/nationwide_designation"
           div class="mt-4"
             - if @location.public_address?
