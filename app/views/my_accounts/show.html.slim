@@ -75,7 +75,8 @@ div class="w-full h-full bg-white"
                                                       description: page.organization.mission_statement_en,\
                                                       current_user: current_user,\
                                                       phone_number: page.phone_number&.number,\
-                                                      verified: page.organization.verified?)
+                                                      verified: page.organization.verified?,\
+                                                      nationwide: page.organization.nationwide?)
             - else
               div class="flex justify-center w-full my-16"
                 = inline_svg_tag 'empty_state_1.svg', size:'298*153'

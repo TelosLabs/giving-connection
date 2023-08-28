@@ -60,6 +60,10 @@ class Organization < ApplicationRecord
   accepts_nested_attributes_for :organization_beneficiaries, allow_destroy: true
   accepts_nested_attributes_for :organization_causes, allow_destroy: true
 
+  def nationwide?
+    scope_of_work == 'National'
+  end
+
   private
 
   def attach_logo_and_cover
