@@ -92,11 +92,11 @@ div class="w-full h-full bg-white"
           div class="flex flex-col w-full h-full md:overflow-y-auto"
             - if @alerts.present?
               ul class="flex flex-col divide-y divide-gray-8"
-                - @alerts.each do |alert|
+                - @alerts.each_with_index do |alert, index|
                   li class="flex flex-col w-full py-10"
                     div class="flex flex-row justify-between w-full"
                       span class="text-lg font-bold text-black capitalize"
-                        | #{alert.keyword}
+                        | #{alert.decorate.title(index)}
                       = link_to "Edit", edit_alert_path(alert), class: "text-blue-medium", data: { turbo_frame: "modal" }
                     div class="flex flex-row text-sm font-normal text-gray-2"
                       | #{list_filter_variables(alert).join(', ')}
