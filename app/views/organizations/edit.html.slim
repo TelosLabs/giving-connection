@@ -350,7 +350,7 @@ div class="w-full h-full bg-grey-9"
                     div class="flex flex-col mt-3"
                       div
                         = location_form.radio_button :non_standard_office_hours, :always_open, class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent ", checked: location_form.object.always_open?
-                        = location_form.label :non_standard_office_hours, "Always open", class: "text-sm text-black", value: :always_open
+                        = location_form.label :non_standard_office_hours, "Always Open", class: "text-sm text-black", value: :always_open
                       div
                         = location_form.radio_button :non_standard_office_hours, :appointment_only, class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent ", checked: location_form.object.appointment_only?
                         = location_form.label :non_standard_office_hours, "By Appointment Only", class: "text-sm text-black", value: :appointment_only
