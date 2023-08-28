@@ -11,9 +11,13 @@
       = form.hidden_field :distance, value: filters[:distance]
       = form.hidden_field :open_now, value: filters[:open_now]
       = form.hidden_field :open_weekends, value: filters[:open_weekends]
-      = form.select :cause_ids, options_for_select(filters_ids_arr[:causes], selected: filters_ids_arr[:causes]), {}, multiple: true, style: "display: none;"
-      = form.select :service_ids, options_for_select(filters_ids_arr[:services], selected: filters_ids_arr[:services]), {}, multiple: true, style: "display: none;"
-      = form.select :beneficiary_subcategory_ids, options_for_select(filters_ids_arr[:beneficiary_groups], selected: filters_ids_arr[:beneficiary_groups]), {}, multiple: true, style: "display: none;"
+
+      - filters_ids_arr[:causes].each do |cause_id|
+        = form.hidden_field :cause_ids, multiple: true, value: cause_id
+      - filters_ids_arr[:services].each do |service_id|
+          = form.hidden_field :service_ids, multiple: true, value: service_id
+      - filters_ids_arr[:beneficiary_groups].each do |beneficiary_group_id|
+          = form.hidden_field :beneficiary_subcategory_ids, multiple: true, value: beneficiary_group_id
 
     div class='px-1 text-center'
       div class='pt-5 pb-4'
