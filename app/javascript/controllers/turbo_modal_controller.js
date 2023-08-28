@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["modal"]
+  static targets = ["modal", "form"]
 
   connect() {
     console.log("turbo-modal connected")
@@ -35,7 +35,7 @@ export default class extends Controller {
   // hide modal when clicking outside of modal
   // action: "click@window->turbo-modal#closeBackground"
   closeBackground(e) {
-    if (e && this.modalTarget.contains(e.target)) {
+    if (e && this.formTarget.contains(e.target)) {
       return
     }
     this.hideModal()
