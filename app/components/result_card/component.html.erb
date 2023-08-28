@@ -39,6 +39,12 @@
         <% if @phone_number.present? %>
         <%= link_to "Call: #{@phone_number}", "tel:#{@phone_number}", class: 'text-blue-medium' %>
         <% end %>
+        <%# Designations %>
+        <% if @nationwide %>
+          <div class="mt-2">
+            <%= render "shared/nationwide_designation" %>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
