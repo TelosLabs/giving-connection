@@ -13,7 +13,7 @@ module AlertsHelper
     list = []
     list << list_filter_variables(object)
     list << 'Open Now' if object.open_now.present?
-    list << 'Open On Weekends' if object.open_weekends.present?
+    list << 'Open on Weekends' if object.open_weekends.present?
     list << "#{kilometers_to_miles(object.distance).to_i} mi" if object.distance.present?
     list.flatten.compact
   end
