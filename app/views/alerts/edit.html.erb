@@ -2,8 +2,8 @@
 	<%= render(
 		"alerts/form",
 		alert: @alert,
-		url: alerts_path,
-		method: :post,
+		url: alert_path(@alert),
+		method: :patch,
 		filters: @filters,
 		filters_list: @filters_list
 	) %>

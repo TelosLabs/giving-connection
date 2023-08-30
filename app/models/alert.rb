@@ -22,14 +22,21 @@
 class Alert < ApplicationRecord
   belongs_to :user
   has_many :alert_services, dependent: :destroy
+  has_many :services, through: :alert_services
   has_many :alert_beneficiaries, dependent: :destroy
+  has_many :beneficiary_subcategories, through: :alert_beneficiaries
   has_many :alert_causes, dependent: :destroy
+  has_many :causes, through: :alert_causes
 
   validates :frequency, presence: true, inclusion: { in: %w[daily weekly monthly] }
 
   scope :due_for_today, -> { where(next_alert: Date.today) }
 
   after_create_commit :schedule_next_alert
+
+  accepts_nested_attributes_for :alert_services, allow_destroy: true
+  accepts_nested_attributes_for :alert_beneficiaries, allow_destroy: true
+  accepts_nested_attributes_for :alert_causes, allow_destroy: true
 
   private
 

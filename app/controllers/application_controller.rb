@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
   end
 
   def store_user_location!
-    location = request.headers["Turbo-Frame"].present? ? my_account_path : request.fullpath
+    location = request.headers["Turbo-Frame"].present? ? request.referer : request.fullpath
     store_location_for(:user, location)
   end
 
@@ -41,6 +41,16 @@ class ApplicationController < ActionController::Base
     if session[:fav_loc_id].present?
       FavoriteLocation.create(location_id: session[:fav_loc_id], user: current_user)
       session.delete(:fav_loc_id)
+
+    elsif session[:alert_params]
+      new_alert = Alert.new(session[:alert_params])
+      new_alert.user = current_user
+      if new_alert.save
+        flash[:notice] = 'Alert created successfully! Go to My Account to view or edit.'
+        session.delete(:alert_params)
+      end
+      search_results = AlertSearchResults.new(new_alert).call
+      new_alert.update(search_results: search_results.pluck(:id))
     end
   end
 
