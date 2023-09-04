@@ -25,6 +25,8 @@
 /public/assets
 .byebug_history
 
+dump.rdb
+
 # Ignore test-related files
 /coverage/
 /spec/examples.txt
