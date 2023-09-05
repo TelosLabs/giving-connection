@@ -105,6 +105,8 @@ class Location < ActiveRecord::Base
   end
 
   def blank_office_hours(attributes)
-    attributes['open_time'].blank? && attributes['close_time'].blank?
+    attributes['open_time'].blank? &&
+      attributes['close_time'].blank? &&
+      attributes['closed'].blank?
   end
 end
