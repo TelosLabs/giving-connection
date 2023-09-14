@@ -48,7 +48,7 @@ gem 'pg_search'
 gem 'pundit'
 gem 'rack-attack'
 gem 'roo', '~> 2.8.0'
-gem "sidekiq", "<7"
+gem "sidekiq", "<8"
 gem 'slim-rails'
 gem 'view_component'
 gem "activerecord-import"
