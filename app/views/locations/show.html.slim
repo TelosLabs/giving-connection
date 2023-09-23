@@ -27,9 +27,13 @@ div class=""
             p class="text-xs text-center font-base text-blue-500" id="pointer"
               = link_to "Edit My Nonprofit Page", edit_organization_path( @location.organization)
           // Designations
-          - if @location.organization.nationwide?
-            div class="flex justify-center items-center mt-3"
-              = render "shared/nationwide_designation"
+          - if @location.organization.any_designation?
+            div class="flex justify-center items-center flex-wrap gap-2 mt-3"
+              - if @location.organization.nationwide?
+                = render "shared/designation_tag", copy: "Nationwide"
+              - if @location.organization.volunteer_availability?
+                = render "shared/designation_tag", copy: "Volunteer"
+
           div class="mt-4"
             - if @location.public_address?
               p class="text-xs text-center font-base text-gray-4" id="pointer"
