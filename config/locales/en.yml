@@ -42,6 +42,7 @@ en:
         tagline_es: Servicios - Como Lo Hacemos
         tags: Keywords / Tags
         organization_beneficiaries: Populations Served
+        volunteer_availability: Do you have open opportunities available?
       location:
         po_box: Is the address a PO BOX?
         public_address: Do you want this address shown publicly?
