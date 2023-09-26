@@ -53,7 +53,7 @@ export default class extends Controller {
   // It was necessary to create this functions in this controller because the map is created here, and we have access to Markers.
 
   openMarker(event) {
-    const event_id = event.target.id.replace(/\D/g, '');
+    const event_id = event.currentTarget.id.replace(/\D/g, '');
     const marker = this.mapMarkers.find(marker => marker.id == event_id);
 
     marker.setIcon(this.clickedimageurlValue);
