@@ -64,6 +64,10 @@ class Organization < ApplicationRecord
     scope_of_work == 'National'
   end
 
+  def any_designation?
+    nationwide? || volunteer_availability
+  end
+
   private
 
   def attach_logo_and_cover
