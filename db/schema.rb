@@ -256,7 +256,7 @@ ActiveRecord::Schema.define(version: 2023_09_22_225804) do
     t.boolean "active", default: true
     t.boolean "verified", default: false
     t.string "donation_link"
-    t.boolean "volunteer_availability", default: false
+    t.boolean "volunteer_availability", default: false, null: false
     t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
     t.index ["ein_number"], name: "index_organizations_on_ein_number", unique: true
     t.index ["mission_statement_en"], name: "index_organizations_on_mission_statement_en"

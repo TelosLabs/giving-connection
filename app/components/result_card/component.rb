@@ -33,4 +33,8 @@ class ResultCard::Component < ApplicationViewComponent
 
     @website.truncate(40)
   end
+
+  def any_designation?
+    @nationwide || @volunteer
+  end
 end
