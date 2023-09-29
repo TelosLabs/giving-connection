@@ -3,7 +3,6 @@ module LocationsHelper
     if device == 'mobile' || turbo_frame[:src].blank?
       link_to(
         location_path(id),
-        class: 'text-base font-bold text-black cursor-pointer',
         target: '_blank'
       ) do
         image_tag image_url, class: 'object-contain w-full h-20'
@@ -11,7 +10,6 @@ module LocationsHelper
     else
       link_to(
         turbo_frame[:src],
-        class: 'text-base font-bold text-black cursor-pointer',
         id: "new_favorite_location_logo#{id}",
         data: { turbo_frame: turbo_frame[:id] }
       ) do
