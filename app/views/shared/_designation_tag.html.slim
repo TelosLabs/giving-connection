@@ -1,2 +1,13 @@
-div class="w-fit px-2 py-1 border rounded-lg bg-gray-8 text-gray-4 text-xs"
-  = local_assigns[:copy]
+- tooltip_id = "#{local_assigns[:copy].underscore}_tooltip_#{SecureRandom.hex(8)}"
+div class="relative"
+  span class="block labelled-icon w-fit px-2 py-1 border rounded-lg bg-gray-8 text-gray-4 text-xs" aria-labelledby="#{tooltip_id}"
+    = local_assigns[:copy]
+  span class="absolute hidden bottom-full right-1/2 py-1 px-3 mb-2 rounded-lg text-xs text-center text-white transform translate-x-1/2 bg-gray-2 bg-opacity-90" role="tooltip" id="#{tooltip_id}"
+    - if local_assigns[:copy] == "Volunteer"
+      span Volunteer
+      br
+      span class="whitespace-nowrap" opportunities available.
+    - else
+      span Services
+      br
+      span class="whitespace-nowrap" offered nationwide.
