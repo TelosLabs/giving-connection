@@ -1,5 +1,6 @@
 div class="flex gap-x-5"
-  = image_tag(@location.organization.logo, class: "flex-shrink-0 self-center w-20 h-20 rounded object-contain", alt: "logo")
+  = link_to( location_path(@location.id), class: "flex-shrink-0 self-center rounded ", target: '_blank' ) do
+    = image_tag @location.organization.logo, class: "w-20 h-20 object-contain", alt: "logo"
   div class="flex flex-col"
     // name and verified icon
     div class="flex justify-between items-start mb-1.5"
