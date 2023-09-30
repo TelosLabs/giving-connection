@@ -11,7 +11,7 @@
   = render SearchBar::Component.new(form: f, search: @search)
   = turbo_frame_tag "search-pills", src: local_assigns[:src] do
     div class="w-full bg-gray-9"
-      div data-search-target="pills"
+      div
         div data-tabs-active-tab=("border-b-4 border-blue-medium")
           div class="flex pb-14 bg-white border-b"
             / Clear-Counter button

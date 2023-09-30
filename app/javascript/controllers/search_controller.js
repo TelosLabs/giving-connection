@@ -7,7 +7,7 @@ export default class extends Controller {
       "input",
       "customInput",
       "form",
-      "pills",
+      "pill",
       "advancedFilters",
       "pillsCounter",
       "pillsCounterWrapper",
@@ -34,10 +34,10 @@ export default class extends Controller {
     // Unchecks applied advanced filters firing their data-actions,
     // which clear displayed badges (see select_multiple_controller.js:15 and select-multiple component).
     this.advancedFiltersTarget.querySelectorAll("input:checked").forEach(input => input.click())
-    this.pillsTarget.querySelectorAll("input:checked").forEach(input => {
-      input.checked = false
-      input.removeAttribute('checked')
-    })
+    this.pillTargets.forEach(input => {
+      input.checked = false;
+      input.removeAttribute('checked');
+    });
 
     this.updateFiltersState()
     this.submitForm()
@@ -54,17 +54,17 @@ export default class extends Controller {
   }
 
   countPills() {
-    // selects all checked inputs that are not checkboxAll
-    this.totalChecked = document.querySelectorAll("input:checked").length - 1;
-    this.pillsCounterTarget.textContent = this.totalChecked
+    const checkedPills = this.pillTargets.filter(pill => pill.checked);
+    this.pillsCounterTarget.textContent = checkedPills.length;
+    return checkedPills.length;
   }
 
   submitForm() {
     this.formTarget.requestSubmit()
   }
 
-  displayPillsCounter() {
-    if (this.totalChecked > 0) {
+  displayPillsCounter(checkedPillsCount) {
+    if (checkedPillsCount > 0) {
       this.pillsCounterWrapperTarget.classList.remove("hidden")
       this.filtersIconTarget.classList.add("hidden")
     }
@@ -75,8 +75,7 @@ export default class extends Controller {
   }
 
   updatePillsCounter() {
-    this.countPills()
-    this.displayPillsCounter()
+    this.displayPillsCounter(this.countPills());
   }
 
   updateFiltersState() {

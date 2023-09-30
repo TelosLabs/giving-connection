@@ -8,9 +8,12 @@ class SearchPills::Pill::Component < ApplicationViewComponent
     @options = options.merge(
       {
         class: 'hidden pill',
-        id: SecureRandom.alphanumeric
+        id: SecureRandom.alphanumeric,
+        data: {
+          search_target: "pill",
+          action: "change->places#hidePopup change->search#updateFiltersState change->search#submitForm"
+        }
       }
     )
-    @options[:data][:action] << ' change->places#hidePopup change->search#updateFiltersState change->search#submitForm'
   end
 end
