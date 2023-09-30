@@ -6777,11 +6777,6 @@ stimulus-carousel@^4.0.0:
   dependencies:
     swiper "^7.4.1"
 
-stimulus-checkbox-select-all@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.npmjs.org/stimulus-checkbox-select-all/-/stimulus-checkbox-select-all-5.1.0.tgz"
-  integrity sha512-YXhPEhvEN81+d2nYhEe9ZLxuHTWw+R57q/AOip0T8kpnPCIWM3cezIYFZK5HNNLf2XpkfPCzuM7bQI8b/xkfGg==
-
 stimulus-use@^0.50.0-2:
   version "0.50.0-2"
   resolved "https://registry.npmjs.org/stimulus-use/-/stimulus-use-0.50.0-2.tgz"
