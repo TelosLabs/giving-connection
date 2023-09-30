@@ -1,56 +1,52 @@
 div class="w-full bg-gray-9"
-  div data-search-target="pills"
-    div data-controller="tabs" data-tabs-active-tab=("border-b-4 border-blue-medium")
-      div class="flex"
-        / Clear-Counter button
-        span class="flex justify-center items-center w-14 pl-5 py-3 pr-2 text-xs bg-blue-pale"
-          span class="inline-flex hidden items-center px-1 py-0.5 border border-blue-medium rounded-full bg-white" data-search-target="pillsCounterWrapper"
-            span data-search-target="pillsCounter" class="mr-0.5"
-            button type="button" data-action="search#clearCheckedPills"
-              = inline_svg_tag "x-icon.svg", class: 'h-2 w-2 fill-current stroke-current stroke-1 text-blue-medium ml-1 relative'
-          = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative', data: { 'search-target': "filtersIcon" }
-        / Tabs
-        ul class="flex flex-1 gap-x-6 pl-5 pr-6 text-sm list-none overflow-x-auto overflow-y-hidden bg-blue-pale text-gray-2"
-          - @tabs_labels.each do |tab_label|
-            li data-action="click->tabs#change" data-tabs-target="tab"
-              a class="inline-block py-3 whitespace-nowrap" href="#" = tab_label
-          li data-action="click->modal#open"
-            button class="inline-block py-3 whitespace-nowrap" type="button" id="advanced-filters-button"
-              | Advanced Filters
-              span class="relative hidden w-2 h-2 rounded-full bg-salmon ml-1 mb-2" id="appliedIcon"
+  div data-controller="tabs" data-tabs-active-tab=("border-b-4 border-blue-medium")
+    div class="flex"
+      / Clear-Counter button
+      span class="flex justify-center items-center w-14 pl-5 py-3 pr-2 text-xs bg-blue-pale"
+        span class="inline-flex hidden items-center px-1 py-0.5 border border-blue-medium rounded-full bg-white" data-search-target="pillsCounterWrapper"
+          span data-search-target="pillsCounter" class="mr-0.5"
+          button type="button" data-action="search#clearCheckedPills"
+            = inline_svg_tag "x-icon.svg", class: 'h-2 w-2 fill-current stroke-current stroke-1 text-blue-medium ml-1 relative'
+        = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative', data: { 'search-target': "filtersIcon" }
+      / Tabs
+      ul class="flex flex-1 gap-x-6 pl-5 pr-6 text-sm list-none overflow-x-auto overflow-y-hidden bg-blue-pale text-gray-2"
+        - @tabs_labels.each do |tab_label|
+          li data-action="click->tabs#change" data-tabs-target="tab"
+            a class="inline-block py-3 whitespace-nowrap" href="#" = tab_label
+        li data-action="click->modal#open"
+          button class="inline-block py-3 whitespace-nowrap" type="button" id="advanced-filters-button"
+            | Advanced Filters
+            span class="relative hidden w-2 h-2 rounded-full bg-salmon ml-1 mb-2" id="appliedIcon"
 
-      / Panels
-      div class="bg-white"
-        / Causes
-        div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-controller="checkbox-select-all" data-tabs-target="panel"
-          = render SearchPills::Pill::Component.new(name: "causes_all", value: 'All', checked: all_causes_checked?, options: { data: { checkbox_select_all_target: "checkboxAll", action: "change->checkbox-select-all#toggle" }})
-          - @causes.each do |cause|
-            = render SearchPills::Pill::Component.new(name: "search[causes][]", value: cause.name, checked: @params.dig(:search, :causes)&.include?(cause.name), options: { multiple: true, data: { action: "change->checkbox-select-all#refresh", checkbox_select_all_target: "checkbox"}})
-          = render SearchPills::MoreFiltersButton::Component.new
-        / Location
-        div class="flex flex-col hidden border-b md:flex-row md:items-center" data-tabs-target="panel"
-          div class="py-4 pl-6 text-gray-2 text-sm"
-            span class="inline-flex items-center"
-              = inline_svg_tag "location-dot.svg", class: "h-3 w-3 fill-current text-blue-medium mr-1"
-              | Nashville
-          div class="flex w-full md:w-auto md:py-3.5 md:pl-7"
-            - @radii_in_miles.each do |radius|
-              = render SearchPills::Button::Component.new(name: "search[distance]", value: miles_to_km(radius), checked: @params.dig(:search, :distance) == miles_to_km(radius).to_s, copy: radius == "Any" ? radius : "#{radius} mi")
-        / Services
-        div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-controller="checkbox-select-all" data-tabs-target="panel"
-          = render SearchPills::Pill::Component.new(name: "services_all", value: 'All', checked: all_services_checked?, options: { data: { checkbox_select_all_target: "checkboxAll", action: "change->checkbox-select-all#toggle" }})
-          - @services.each do |service|
-            = render SearchPills::Pill::Component.new(name: "search[services][#{service.cause.name}][]", value: service.name, checked: @params.dig('search', 'services', service.cause.name)&.include?(service.name), options: { multiple: true, data: { action: 'change->checkbox-select-all#refresh', checkbox_select_all_target: 'checkbox'}})
-          = render SearchPills::MoreFiltersButton::Component.new
-        / Populations Served
-        div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-controller="checkbox-select-all" data-tabs-target="panel"
-          = render SearchPills::Pill::Component.new(name: "groups_all", value: 'All', checked: all_beneficiary_subcategories_checked?, options: { data: { checkbox_select_all_target: "checkboxAll", action: "change->checkbox-select-all#toggle" }})
-          - @beneficiary_subcategories.each do |subcategory|
-            = render SearchPills::Pill::Component.new(name: "search[beneficiary_groups][#{subcategory.beneficiary_group.name}][]", value: subcategory.name, checked: @params.dig('search', 'beneficiary_groups', subcategory.beneficiary_group.name)&.include?(subcategory.name), options: { multiple: true, data: { action: 'change->checkbox-select-all#refresh', checkbox_select_all_target: 'checkbox'}})
-          = render SearchPills::MoreFiltersButton::Component.new
-        / Hours
-        div class="flex hidden gap-x-2 w-full py-4 px-6 border-l border-b border-r" data-tabs-target="panel"
-          = render SearchPills::Pill::Component.new(name: "search[open_now]", value: true, checked: @params.dig('search', 'open_now') == 'true') do
-            | Open Now
-          = render SearchPills::Pill::Component.new(name: "search[open_weekends]", value: true, checked: @params.dig('search', 'open_weekends') == 'true') do
-            | Open Weekends
+    / Panels
+    div class="bg-white"
+      / Causes
+      div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
+        - @causes.each do |cause|
+          = render SearchPills::Pill::Component.new(name: "search[causes][]", value: cause.name, checked: @params.dig(:search, :causes)&.include?(cause.name), options: { multiple: true })
+        = render SearchPills::MoreFiltersButton::Component.new
+      / Location
+      div class="flex flex-col hidden border-b md:flex-row md:items-center" data-tabs-target="panel"
+        div class="py-4 pl-6 text-gray-2 text-sm"
+          span class="inline-flex items-center"
+            = inline_svg_tag "location-dot.svg", class: "h-3 w-3 fill-current text-blue-medium mr-1"
+            | Nashville
+        div class="flex w-full md:w-auto md:py-3.5 md:pl-7"
+          - @radii_in_miles.each do |radius|
+            = render SearchPills::Button::Component.new(name: "search[distance]", value: miles_to_km(radius), checked: @params.dig(:search, :distance) == miles_to_km(radius).to_s, copy: radius == "Any" ? radius : "#{radius} mi")
+      / Services
+      div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
+        - @services.each do |service|
+          = render SearchPills::Pill::Component.new(name: "search[services][#{service.cause.name}][]", value: service.name, checked: @params.dig('search', 'services', service.cause.name)&.include?(service.name), options: { multiple: true })
+        = render SearchPills::MoreFiltersButton::Component.new
+      / Populations Served
+      div class="flex flex-wrap gap-x-2 gap-y-3 hidden max-h-28 py-4 px-6 border-l border-b border-r overflow-y-auto" data-tabs-target="panel"
+        - @beneficiary_subcategories.each do |subcategory|
+          = render SearchPills::Pill::Component.new(name: "search[beneficiary_groups][#{subcategory.beneficiary_group.name}][]", value: subcategory.name, checked: @params.dig('search', 'beneficiary_groups', subcategory.beneficiary_group.name)&.include?(subcategory.name), options: { multiple: true })
+        = render SearchPills::MoreFiltersButton::Component.new
+      / Hours
+      div class="flex hidden gap-x-2 w-full py-4 px-6 border-l border-b border-r" data-tabs-target="panel"
+        = render SearchPills::Pill::Component.new(name: "search[open_now]", value: true, checked: @params.dig('search', 'open_now') == 'true') do
+          | Open Now
+        = render SearchPills::Pill::Component.new(name: "search[open_weekends]", value: true, checked: @params.dig('search', 'open_weekends') == 'true') do
+          | Open Weekends
