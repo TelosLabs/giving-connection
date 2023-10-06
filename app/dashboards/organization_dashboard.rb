@@ -39,6 +39,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     active: Field::Boolean,
     verified: Field::Boolean,
     donation_link: Field::String,
+    volunteer_link: Field::String,
     volunteer_availability: Field::Boolean,
     organization_causes: Field::NestedHasMany
   }.freeze
@@ -77,6 +78,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     organization_beneficiaries
     tags
     donation_link
+    volunteer_link
     volunteer_availability
     social_media
     locations
@@ -105,6 +107,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     tags
     donation_link
     volunteer_availability
+    volunteer_link
     organization_causes
     social_media
     locations
