@@ -9,8 +9,13 @@ class ApplicationDecorator < Draper::Decorator
   #   end
 
   def website
-    return nil if object.website.blank?
-    uri = URI(object.website)
+    object.decorate.url(object.website)
+  end
+
+  def url(raw_url)
+    return nil if raw_url.blank?
+
+    uri = URI(raw_url)
     if uri.instance_of?(URI::Generic)
       split = uri.to_s.split('/')
       if split.size > 1

@@ -32,4 +32,9 @@ module LocationsHelper
       end
     end
   end
+
+  def has_donation_or_volunteer_link?(location)
+    location.organization.donation_link.present? ||
+      (location.organization.volunteer_availability? && location.organization.volunteer_link.present?)
+  end
 end

@@ -8,6 +8,10 @@
   .disabled-icon path {
     fill: #D3DCE6;
   }
+
+  .centered-flex {
+    @apply flex items-center justify-center;
+  }
 }
 
 .scroll-mt-25 {

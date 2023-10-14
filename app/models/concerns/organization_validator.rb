@@ -8,6 +8,8 @@ class OrganizationValidator < ActiveModel::Validator
     single_main_location
     at_least_one_main_location
     valid_website_url
+    valid_donation_url
+    valid_volunteer_url
   end
 
   private
@@ -21,10 +23,22 @@ class OrganizationValidator < ActiveModel::Validator
   end
 
   def valid_website_url
-    return true if record.website.blank?
-    url = URI.parse(record.website) rescue false
-    unless url.kind_of?(URI::HTTP) || url.kind_of?(URI::HTTPS) || url.kind_of?(URI::Generic) 
-      record.errors.add(:website, 'URL incorrect format')
+    valid_url(record.website, :website)
+  end
+
+  def valid_donation_url
+    valid_url(record.donation_link, :donation_link)
+  end
+
+  def valid_volunteer_url
+    valid_url(record.volunteer_link, :volunteer_link)
+  end
+
+  def valid_url(raw_url, attribute)
+    return true if raw_url.blank?
+    url = URI.parse(raw_url) rescue false
+    unless url.kind_of?(URI::HTTP) || url.kind_of?(URI::HTTPS) || url.kind_of?(URI::Generic)
+      record.errors.add(attribute, 'URL incorrect format')
     end
   end
 end
