@@ -662,15 +662,83 @@ module Organizations
                 "Z99: Unknown"].freeze
 
     BENEFICIARIES = {
-      "Age" => ["Adults", "Children & Youth", "Individuals Under 21", "Seniors"],
-      "Ethnic & Racial Groups" => ["Indigenous Peoples", "Multiracial People", "People of African Descent", "People of Asian Descent", "People of European Descent", "People of Latin American Descent", "People of Middle Eastern Descent", "People of all Racial Minority Groups"],
-      "Family Relationships " => ["Caregivers", "Families", "Non-Adults", "Parents", "Widows & Widowers"],
-      "Gender & Sexual Identity" => ["Heterosexuals", "Intersex People", "LGBTQ+ People", "Men & Boys", "Women & Girls"],
-      "Health" => ["People with Developmental Disabilities", "People with Diseases & Illnesses", "People with Mental Health Issues", "People with Physical Disabilities", "People with Substance Abuse Issues", "Pregnant People"],
-      "Religious Groups" => ["Baha'is", "Buddhists", "Christians", "Confucists", "Hindus", "Interfaith Groups", "Jewish People", "Muslims", "Secular Groups", "Shintos", "Sikhs", "Tribal & Indigenous Religious Groups"],
-      "Social & Economic Status" => ["At-Risk Youth", "Economically Disadvantaged People", "Formerly Incarcerated People", "Immigrants & Migrants", "Incarcerated People", "Nomadic People", "People Struggling with Homelessness", "Victims & Oppressed People"],
-      "Work & Status Occupations" => ["Academics", "Activists", "Artists & Performers", "Domestic Workers", "Emergency Responders", "Farmers", "Military Personnel", "Retired People", "Self Employed People", "Sex Workers", "Unemployed People", "Veterans"]
-      }.freeze
+      "Age" => [
+        "Adults",
+        "Children & Youth",
+        "Individuals Under 21",
+        "Seniors"
+      ],
+      "Ethnic & Racial Groups" => [
+        "Indigenous Peoples",
+        "Multiracial People",
+        "People of African Descent",
+        "People of Asian Descent",
+        "People of European Descent",
+        "People of Latin American Descent",
+        "People of Middle Eastern Descent",
+        "People of all Racial Minority Groups"
+      ],
+      "Family Relationships " => [
+        "Caregivers",
+        "Families",
+        "Non-Adults",
+        "Parents",
+        "Widows & Widowers"
+      ],
+      "Gender & Sexual Identity" => [
+        "Heterosexuals",
+        "Intersex People",
+        "LGBTQ+ People",
+        "Men & Boys",
+        "Women & Girls"
+      ],
+      "Health" => [
+        "People with Developmental Disabilities",
+        "People with Diseases & Illnesses",
+        "People with Mental Health Issues",
+        "People with Physical Disabilities",
+        "People with Substance Abuse Issues",
+        "Pregnant People"
+      ],
+      "Religious Groups" => [
+        "Baha'is",
+        "Buddhists",
+        "Christians",
+        "Confucists",
+        "Hindus",
+        "Interfaith Groups",
+        "Jewish People",
+        "Muslims",
+        "Secular Groups",
+        "Shintos",
+        "Sikhs",
+        "Tribal & Indigenous Religious Groups"
+      ],
+      "Social & Economic Status" => [
+        "At-Risk Youth",
+        "Economically Disadvantaged People",
+        "Formerly Incarcerated People",
+        "Immigrants & Migrants",
+        "Incarcerated People",
+        "Nomadic People",
+        "People Struggling with Homelessness",
+        "Victims & Oppressed People"
+      ],
+      "Work & Status Occupations" => [
+        "Academics",
+        "Activists",
+        "Artists & Performers",
+        "Domestic Workers",
+        "Emergency Responders",
+        "Farmers",
+        "Military Personnel",
+        "Retired People",
+        "Self Employed People",
+        "Sex Workers",
+        "Unemployed People",
+        "Veterans"
+      ]
+    }.freeze
 
 
     CAUSES_AND_SERVICES = {
