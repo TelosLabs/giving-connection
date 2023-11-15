@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_10_06_165935) do
+ActiveRecord::Schema.define(version: 2023_11_15_211830) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -258,6 +258,7 @@ ActiveRecord::Schema.define(version: 2023_10_06_165935) do
     t.string "donation_link"
     t.boolean "volunteer_availability", default: false, null: false
     t.string "volunteer_link"
+    t.boolean "general_population_serving", default: false, null: false
     t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
     t.index ["ein_number"], name: "index_organizations_on_ein_number", unique: true
     t.index ["mission_statement_en"], name: "index_organizations_on_mission_statement_en"
