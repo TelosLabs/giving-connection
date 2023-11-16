@@ -41,7 +41,8 @@ class OrganizationDashboard < Administrate::BaseDashboard
     donation_link: Field::String,
     volunteer_link: Field::String,
     volunteer_availability: Field::Boolean,
-    organization_causes: Field::NestedHasMany
+    organization_causes: Field::NestedHasMany,
+    general_population_serving: Field::Boolean
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -76,6 +77,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     vision_statement_es
     tagline_es
     organization_beneficiaries
+    general_population_serving
     tags
     donation_link
     volunteer_link
@@ -104,6 +106,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     vision_statement_es
     tagline_es
     organization_beneficiaries
+    general_population_serving
     tags
     donation_link
     volunteer_availability

@@ -186,7 +186,11 @@ div class="w-full h-full bg-grey-9"
               = render SelectMultiple::Component.new(f: f, klass: "Beneficiary", items: @beneficiary_groups, selected: @organization.beneficiary_subcategories.pluck(:name), placeholder: "Write populations served")
               p class="text-sm text-gray-4 mt-1"
                 | Selections should only be made if your organization specifically serves that group through your programs. If your organization generally serves all populations, check the box 
-                | “We generally serve all populations” at the bottom of the options. This will then appear on your organizations profile under Populations Served.
+                | “We generally serve all populations” below. This will then appear on your organizations profile under Populations Served.
+              div class="flex items-center gap-x-2 mt-3.5"
+                = f.check_box :general_population_serving, class: "h-4 w-4 rounded-md text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent"
+                = f.label :general_population_serving, class: "text-sm text-black"
+
             div class="hidden col-span-3 md:flex"
 
             div class="col-span-12 lg:col-span-6 md:col-span-7" data-controller="tags"
