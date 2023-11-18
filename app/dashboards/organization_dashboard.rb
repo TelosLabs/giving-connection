@@ -42,7 +42,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     volunteer_link: Field::String,
     volunteer_availability: Field::Boolean,
     organization_causes: Field::NestedHasMany,
-    general_population_serving: Field::Boolean
+    general_population_serving: ToggleCheckField
   }.freeze
 
   # COLLECTION_ATTRIBUTES
