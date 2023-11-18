@@ -2,10 +2,15 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static targets = ["generalPopulationCheckbox", "specificPopulationsContainer"];
-  static classes = ["disabled"];
+  static classes = ["disabled"]; // Only for user's organization form
 
   connect() {
-    this.clearSelectedPopulations();
+    if (this.hasDisabledClass) {
+      this.clearSelectedPopulations();
+    }
+    else {
+      this.clearSelectedPopulationsAdminPanel();
+    }
   }
 
   clearSelectedPopulations() {
@@ -22,6 +27,17 @@ export default class extends Controller {
     }
     else {
       this.specificPopulationsContainerTarget.classList.remove(this.disabledClass);
+    }
+  }
+
+  clearSelectedPopulationsAdminPanel() {
+    if (this.generalPopulationCheckboxTarget.checked) {
+      const selectedPopulations = this.populations.filter(population => population.checked);
+      selectedPopulations.forEach(input => input.checked = false);
+      this.populations.forEach(input => input.setAttribute("disabled", true));
+    }
+    else {
+      this.populations.forEach(input => input.removeAttribute("disabled"));
     }
   }
 

@@ -2,39 +2,28 @@
   <%= f.label field.attribute %>
 </div>
 
-<% if params['action'] == 'edit' %>
+<div class="field-unit__field" data-general-population-target="specificPopulationsContainer">
+  <% field.beneficiary_types.each do |beneficiary| %>
+    <fieldset class="mb-5">
+      <legend class="font-bold mb-4"><%= beneficiary.name %></legend>
+    
+      <div class="flex flex-wrap gap-4">
+        <% beneficiary.beneficiary_subcategories.each do |subcategory| %>
+          <% org_serves_population = params['action'] == 'edit' ?
+            Organization.unscoped.find(params['id']).beneficiary_subcategories.exists?(subcategory.id) :
+            params.dig(:organization, :beneficiary_subcategories_id)&.include?(subcategory.id.to_s) %>
+          
+          <%# Population %>
+          <span class="flex items-center gap-x-1.5">
+            <input type="checkbox" name="organization[beneficiary_subcategories_id][]" value="<%= subcategory.id %>"
+            id="population-<%= subcategory.id %>" class="admin-panel-population m-0" <%= "checked" if org_serves_population %>>
 
-  <div class="field-unit__field">
-    <% field.beneficiary_types.each do |beneficiary| %>
-      <h3 style="font-weight: bold;font-size: 16px;"><%= beneficiary.name %></h3>
-      <% beneficiary.beneficiary_subcategories.each do |subcategory| %>
-
-        <% if Organization.unscoped.find(params['id']).beneficiary_subcategories.exists?(subcategory.id)  %>
-
-          <%= check_box_tag "organization[beneficiary_subcategories_id][]", subcategory.id, checked: true %>
-          <%= subcategory.name  %>
-
-        <% else %>
-
-          <%= check_box_tag "organization[beneficiary_subcategories_id][]", subcategory.id %>
-          <%= subcategory.name  %>
-
+            <label for="population-<%= subcategory.id %>" class="font-normal">
+              <%= subcategory.name %>
+            </label>
+          </span>
         <% end %>
-
-       <% end %>
-    <% end %>
-  </div>
-
-<% else %>
-
-  <div class="field-unit__field">
-    <% field.beneficiary_types.each do |beneficiary| %>
-      <h3 style="font-weight: bold;font-size: 16px;" ><%= beneficiary.name %></h3>
-      <% beneficiary.beneficiary_subcategories.each do |subcategory| %>
-        <%= check_box_tag "organization[beneficiary_subcategories_id][]", subcategory.id, params.dig(:organization, :beneficiary_subcategories_id)&.include?(subcategory.id.to_s) %>
-        <%= subcategory.name  %>
-       <% end %>
-    <% end %>
-  </div>
-
-<% end %>
+      </div>
+    </fieldset>
+  <% end %>
+</div>

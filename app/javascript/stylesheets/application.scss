@@ -113,3 +113,9 @@ button:disabled {
     transform: rotate(360deg);
   }
 }
+
+/* Admin panel populations */
+
+input.admin-panel-population:disabled + label {
+  color: #8492A6;
+}
