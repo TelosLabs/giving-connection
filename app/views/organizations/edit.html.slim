@@ -186,6 +186,7 @@ div class="w-full h-full bg-grey-9"
               p class="text-sm text-gray-4 mt-2 mb-5"
                 | Selections should only be made if your organization specifically serves that group through your programs. If your organization generally serves all populations, check the box 
                 | “We generally serve all populations” below. This will then appear on your organizations profile under Populations Served.
+                |  If you select the check box below for all populations served, then the field for specific populations served will be disabled.
               = render SelectMultiple::Component.new(f: f, klass: "Beneficiary", items: @beneficiary_groups, selected: @organization.beneficiary_subcategories.pluck(:name), placeholder: "Write populations served", options: { data: { general_population_target: "specificPopulationsContainer" } })
               div class="flex items-center gap-x-2 mt-3.5"
                 = f.check_box :general_population_serving, class: "h-4 w-4 rounded-md text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent", data: { general_population_target: "generalPopulationCheckbox", action: "change->general-population#clearSelectedPopulations" }
