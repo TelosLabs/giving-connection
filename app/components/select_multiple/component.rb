@@ -22,9 +22,15 @@ module SelectMultiple
           form_validation_target: "selectMultiple",
           'select-multiple-target': 'container',
           'extend-dropdown-target': 'button',
-          'select-multiple-selected-value': @selected,
-        },
-      }
+          'select-multiple-selected-value': @selected
+        }
+      }.merge(@options) do |key, first_value, repeated_value|
+        if key == :data
+          first_value.merge(repeated_value) { |_, old_value, new_value| "#{new_value} #{old_value}" }
+        elsif key == :class
+          "#{new_value} #{old_value}"
+        end
+      end
     end
 
     def format_cause_name(name)

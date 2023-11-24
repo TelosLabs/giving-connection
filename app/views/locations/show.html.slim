@@ -108,10 +108,13 @@ div class=""
           div class="border-t border-gray-8 my-7"
           h3 class="text-sm font-bold uppercase mb-3.5"
             | Populations Served
-          ul class="flex flex-col gap-8"
-            - @location.organization.beneficiary_subcategories.sort_by { |obj| obj.name }.each do |pop_served|
-              li class="text-sm font-base text-gray-2"
-                = pop_served.name
+          - if @location.organization.beneficiary_subcategories.any?
+            ul class="flex flex-col gap-8"
+              - @location.organization.beneficiary_subcategories.sort_by { |obj| obj.name }.each do |pop_served|
+                li class="text-sm font-base text-gray-2"
+                  = pop_served.name
+          - elsif @location.organization.general_population_serving
+            p We generally serve all populations
           - if @location.social_media.present?
              div class="border-t border-gray-8 my-7"
              = render SocialMedia::Component.new(social_media: @location.social_media)
@@ -180,10 +183,13 @@ div class=""
       div class="border-t border-gray-8 my-7"
       h3 class="text-sm font-bold uppercase mb-3.5"
         | Populations Served
-      ul class="flex flex-col gap-8"
-        - @location.organization.beneficiary_subcategories.sort_by { |obj| obj.name }.each do |pop_served|
-          li class="text-sm font-base text-gray-2"
-            = pop_served.name
+      - if @location.organization.beneficiary_subcategories.any?
+        ul class="flex flex-col gap-8"
+          - @location.organization.beneficiary_subcategories.sort_by { |obj| obj.name }.each do |pop_served|
+            li class="text-sm font-base text-gray-2"
+              = pop_served.name
+      - elsif @location.organization.general_population_serving
+        p We generally serve all populations
       - if @location.social_media.present?
         div class="border-t border-gray-8 my-7"
         = render SocialMedia::Component.new(social_media: @location.social_media)

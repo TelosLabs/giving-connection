@@ -49,7 +49,7 @@ module Admin
       organization_resource_params = resource_params.except('beneficiary_subcategories_id')
       requested_resource.creator = current_admin_user
       if requested_resource.update(organization_resource_params)
-        update_organization_beneficiaries(requested_resource, resource_params['beneficiary_subcategories_id']) unless resource_params['beneficiary_subcategories_id'].nil?
+        requested_resource.update(beneficiary_subcategory_ids: resource_params['beneficiary_subcategories_id'])
         update_tags(requested_resource, JSON.parse(params['tags_attributes'])) unless params['tags_attributes'].strip.empty?
         redirect_to([namespace, requested_resource], notice: translate_with_resource('update.success'))
       else
@@ -62,20 +62,6 @@ module Admin
       beneficiaries_sub_ids.each do |beneficiary_sub_id|
         beneficiary_subcategory = BeneficiarySubcategory.find(beneficiary_sub_id)
         OrganizationBeneficiary.create!(organization: organization, beneficiary_subcategory: beneficiary_subcategory)
-      end
-    end
-
-    def update_organization_beneficiaries(organization, beneficiaries_sub_ids)
-      to_create = beneficiaries_sub_ids - organization.beneficiary_subcategories.ids
-      to_delete = organization.beneficiary_subcategories.ids - beneficiaries_sub_ids
-
-      delete_organization_beneficiaries(organization, to_delete)
-      create_organization_beneficiaries(organization, to_create)
-    end
-
-    def delete_organization_beneficiaries(organization, beneficiaries_sub_ids)
-      beneficiaries_sub_ids.each do |beneficiary_sub_id|
-        organization.organization_beneficiaries.find_by(beneficiary_subcategory_id: beneficiary_sub_id).delete
       end
     end
 
