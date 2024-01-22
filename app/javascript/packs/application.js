@@ -22,3 +22,15 @@ window.initMap = function (...args) {
   event.args = args
   window.dispatchEvent(event)
 }
+
+document.addEventListener("turbo:load", function (event) {
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'AW-11382454124');
+  gtag('event', 'conversion', { 'send_to': 'AW-11382454124/o0V1CIzO2O8YEOzuybMq' });
+}, false);

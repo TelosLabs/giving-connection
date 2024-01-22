@@ -9,7 +9,7 @@
     controller: 'search modal', \
     'search-target': 'form'}) do |f|
   = render SearchBar::Component.new(form: f, search: @search)
-  = turbo_frame_tag "search-pills", src: local_assigns[:src] do
+  = turbo_frame_tag "search-pills", src: search_path() do
     div class="w-full bg-gray-9"
       div
         div data-tabs-active-tab=("border-b-4 border-blue-medium")
@@ -33,7 +33,7 @@
                   | Advanced Filters
                   span class="relative hidden w-2 h-2 rounded-full bg-salmon ml-1 mb-2" id="appliedIcon"
 
-  = turbo_frame_tag "search-locations", src: local_assigns[:src] do
+  = turbo_frame_tag "search-locations", src: search_path() do
     div class="md:flex w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
       div class="w-full md:border-r max-w-sm border-gray-7"
         div class="fixed inset-0 flex items-center justify-center hidden min-h-screen overflow-y-auto animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;")

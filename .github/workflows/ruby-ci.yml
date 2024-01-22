@@ -56,7 +56,7 @@ jobs:
           bin/rails db:prepare
       - name: Install Node packages
         run: |
-          bin/yarn install
+          bin/yarn install --ignore-engines
       - name: Run tests
         run: |
           bundle exec rspec --fail-fast -exclude-pattern ./spec/system/admin_organization_system_spec.rb
