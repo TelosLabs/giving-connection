@@ -1,6 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 import { useDebounce, useDispatch } from 'stimulus-use'
 
+// TODO: Refactor controller
 export default class extends Controller {
   static targets = [
     "keywordInput",
