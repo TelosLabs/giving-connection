@@ -1,21 +1,25 @@
 import { Controller } from "@hotwired/stimulus"
 import { useDebounce, useDispatch } from 'stimulus-use'
 
+// TODO: Refactor controller
 export default class extends Controller {
-  static get targets() {
-    return [
-      "input",
-      "customInput",
-      "form",
-      "pill",
-      "advancedFilters",
-      "pillsCounter",
-      "pillsCounterWrapper",
-      "filtersIcon",
-    ]
-  }
+  static targets = [
+    "keywordInput",
+    "clearKeywordButton",
+    "input",
+    "customInput",
+    "form",
+    "pill",
+    "advancedFilters",
+    "pillsCounter",
+    "pillsCounterWrapper",
+    "filtersIcon"
+  ]
+
+  static debounces = ["displayClearKeywordButton"]
 
   connect() {
+    useDebounce(this, { wait: 250 });
     useDispatch(this)
     this.updatePillsCounter()
     this.updateRadioButtonsClass()
@@ -28,6 +32,31 @@ export default class extends Controller {
     })
   }
 
+  // Keyword
+
+  displayClearKeywordButton() {
+    const classListAction = this.keywordInputTarget.value ? "remove" : "add";
+    this.clearKeywordButtonTarget.classList[classListAction]("hidden");
+  }
+
+  clearKeywordInput() {
+    const inputValue = this.keywordInputTarget.value;
+
+    if (!inputValue) return;
+
+    this.keywordInputTarget.value = "";
+    this.clearKeywordButtonTarget.classList.add("hidden");
+
+    if (this.keywordParamEqualsInputValue(inputValue)) {
+      this.submitForm();
+    }
+  }
+
+  keywordParamEqualsInputValue(inputValue) {
+    const url = new URL(window.location.href);
+    const keywordParam = url.searchParams.get("search[keyword]");
+    return keywordParam === inputValue;
+  }
 
   // Pills
   clearCheckedPills() {
@@ -80,13 +109,13 @@ export default class extends Controller {
 
   updateFiltersState() {
     this.updatePillsCounter()
-    if(this.advancedFiltersButton) {
+    if (this.advancedFiltersButton) {
       this.disableAdvancedFiltersButton(this.advancedFiltersButton)
     }
   }
 
   updateRadioButtonsClass() {
-    const buttons = document.querySelectorAll('input[name="search[distance]"]')    
+    const buttons = document.querySelectorAll('input[name="search[distance]"]')
     const buttons_array = [...buttons]
     buttons_array.forEach(button => {
       if (button.checked) {
