@@ -1,11 +1,35 @@
-<div id="search-bar" class="inset-x-0 z-20 px-6 py-4 sticky bg-gradient-to-r from-blue-gradient-2 to-blue-gradient-1 top-20 md:top-22.75">
-  <div class="flex flex-row items-center justify-center md:gap-5">
-    <div class="relative w-full max-w-xl h-46px">
-      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-        <%= inline_svg_tag "solid_search.svg", class: 'h-4 w-4 fill-current text-gray-2' %>
-      </div>
-      <%= @form.search_field :keyword, value: "#{ params.dig('search', 'keyword') }", class: 'block pl-8 h-46px w-full py-3.5 px-4 rounded-6px text-base text-gray-3 focus:outline-none', placeholder: 'Try “Mental Health Nonprofits”'%>
-    </div>
-    <%= @form.submit 'Search', class: 'invisible w-0 md:w-36 p-0 md:visible md:flex cursor-pointer uppercase flex-row justify-center items-center bg-seafoam md:py-4 md:px-10 rounded-6px text-blue-dark text-base font-bold focus:outline-none mx-2'%>
+<div id="search-bar" class="sticky inset-x-0 z-20 flex items-center justify-center px-6 py-4 
+bg-gradient-to-r from-blue-gradient-2 to-blue-gradient-1 top-20 md:top-22.75 md:gap-5">
+  <%# Keyword input %>
+  <div class="relative w-full max-w-xl">
+    <span class="absolute inset-y-0 left-0 flex items-center px-3 pointer-events-none">
+      <%= inline_svg_tag "solid_search.svg", class: 'h-4 w-4 fill-current text-gray-2' %>
+    </span>
+
+    <%= @form.search_field(
+      :keyword,
+      value: "#{ params.dig('search', 'keyword') }",
+      class: "block px-10 h-46px w-full py-3.5 px-4 rounded-6px text-base text-gray-3 focus:outline-none",
+      id: "search-keyword-input",
+      placeholder: "Try \"Mental Health Nonprofits\"",
+      data: {
+        action: "input->search#displayClearKeywordButton",
+        search_target: "keywordInput"
+      }
+    ) %>
+
+    <button
+    type="button"
+    class="absolute inset-y-0 right-0 px-3 <%= "hidden" unless params.dig('search', 'keyword').present? %>"
+    data-search-target="clearKeywordButton"
+    data-action="click->search#clearKeywordInput">
+      <%= inline_svg_tag "x-icon.svg", class: "w-3.5 h-3.5 icon", aria_hidden: true %>
+    </button>
   </div>
+
+  <%# Search Button %>
+  <%= @form.submit(
+    'Search',
+    class: "invisible w-0 p-0 rounded-md text-blue-dark font-bold uppercase bg-seafoam md:py-4 md:px-10 md:w-36 md:visible focus:outline-none"
+  )%>
 </div>

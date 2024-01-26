@@ -79,6 +79,10 @@
   }
 }
 
+svg.icon path {
+  fill: #3C4858;
+}
+
 button:disabled {
   color: #C2CEDB;
   cursor: default;
@@ -92,6 +96,28 @@ button:disabled {
 .no-pseudo-elems::before  {
   display: none;
 }
+
+/* Reset */
+
+input#search-keyword-input {
+  /* IE and Edge */
+  &::-ms-clear,
+  &::-ms-reveal {
+    display: none;
+    width : 0;
+    height: 0;
+  }
+
+  /* Chrome and Safari */
+  &::-webkit-search-decoration,
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-results-button,
+  &::-webkit-search-results-decoration {
+    display: none;
+  }
+}
+
+/* Animations */
 
 .spinner {
   width: 50px;
