@@ -27,12 +27,7 @@ div class=""
             p class="text-xs text-center font-base text-blue-500" id="pointer"
               = link_to "Edit My Nonprofit Page", edit_organization_path( @location.organization)
           // Designations
-          - if @location.organization.any_designation?
-            div class="flex justify-center items-center flex-wrap gap-2 mt-3"
-              - if @location.organization.nationwide?
-                = render "shared/designation_tag", copy: "Nationwide"
-              - if @location.organization.volunteer_availability?
-                = render "shared/designation_tag", copy: "Volunteer"
+          = render DesignationTag::Component.new(@location.organization, container_options: { class: "justify-center items-center" })
 
           div class="mt-4"
             - if @location.public_address?

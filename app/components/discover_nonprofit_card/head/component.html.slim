@@ -15,9 +15,4 @@ div class="flex gap-x-5"
     - if @location.phone_number
       a href="tel:#{@location.phone_number.number}" = @location.phone_number.number
     // Designations
-    - if @location.organization.any_designation?
-      div class="flex flex-wrap gap-2 mt-2"
-        - if @location.organization.nationwide?
-          = render "shared/designation_tag", copy: "Nationwide"
-        - if @location.organization.volunteer_availability?
-          = render "shared/designation_tag", copy: "Volunteer"
+    = render DesignationTag::Component.new(@location.organization)
