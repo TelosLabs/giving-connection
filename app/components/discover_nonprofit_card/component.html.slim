@@ -17,6 +17,11 @@ article class="rounded text-xs font-medium bg-white shadow-md overflow-hidden"
     section class="relative pt-4 pb-7 text-gray-4 font-normal"
       h3 class="absolute h-0 w-0 opacity-0" head
       = render DiscoverNonprofitCard::Head::Component.new(location: @location)
+    // Donate/Volunteer buttons
+    - if has_donation_or_volunteer_link?(@location)
+      section class="w-full relative"
+        h3 class="sr-only" altruistic menu
+        = render "locations/donate_volunteer_buttons", location: @location, container_styles: "flex gap-x-4 w-full pt-5 pb-3 border-t border-gray-8 text-base"
     // Actions menu
     section class="pt-6 pb-11 border-t border-gray-8"
       h3 class="h-0 w-0 opacity-0" actions menu

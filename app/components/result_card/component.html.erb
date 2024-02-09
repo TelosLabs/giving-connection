@@ -29,16 +29,7 @@
         <%= link_to "Call: #{@phone_number}", "tel:#{@phone_number}", class: 'text-blue-medium' %>
         <% end %>
         <%# Designations %>
-        <% if any_designation? %>
-          <div class="flex flex-wrap gap-2 mt-2">
-            <% if @nationwide %>
-              <%= render "shared/designation_tag", copy: "Nationwide" %>
-            <% end %>
-            <% if @volunteer %>
-              <%= render "shared/designation_tag", copy: "Volunteer" %>
-            <% end %>
-          </div>
-        <% end %>
+        <%= render DesignationTag::Component.new(Location.find(@id).organization) %>
       </div>
     </div>
   </div>

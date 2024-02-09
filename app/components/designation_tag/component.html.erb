@@ -1,0 +1,22 @@
+<% if designation_map.any? %>
+  <%= content_tag(:div, container_setup) do %>
+    <% designation_map.each do |designation_name, designation_desc| %>
+      <% tooltip_id = SecureRandom.hex(8) %>
+
+      <div class="relative text-xs text-center">
+        <%# Pill %>
+        <span class="block labelled-icon w-fit px-2 py-1 border rounded-lg bg-gray-8 text-gray-4" aria-labelledby="<%= tooltip_id %>">
+          <%= designation_name %>
+        </span>
+
+        <%# Hover over %>
+        <span
+        role="tooltip"
+        id="<%= tooltip_id %>"
+        class="absolute hidden bottom-full right-1/2 py-1 px-3 mb-2 rounded-lg text-white transform translate-x-1/2 bg-gray-2 bg-opacity-90">
+          <%= designation_desc %>
+        </span>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>
