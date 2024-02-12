@@ -19,10 +19,10 @@ class DesignationTag::Component < ApplicationViewComponent
 
   def build_designation_map
     @designation_map = {}
+    designation_copies = organization.decorate.designation_copies
 
     if ["National", "International"].include? organization.scope_of_work
-      designation_map[organization.scope_of_work] =
-        "Services offered #{organization.decorate.scope_of_work}"
+      designation_map[designation_copies[:tag_copy]] = "Services offered #{designation_copies[:desc_copy]}"
     end
 
     if organization.volunteer_availability
