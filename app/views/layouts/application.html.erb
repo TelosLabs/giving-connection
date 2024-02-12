@@ -39,9 +39,10 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <%= render Navbar::Component.new(signed_in: user_signed_in?) %>
     <main class="main">
-      <% flash.each do |type, message| %>
-        <%= render Alert::Component.new(type: type, message: message) %>
-      <% end %>
+      <div id="flash-messages">
+        <%= render "shared/flash_messages" %>
+      </div>
+
       <%= turbo_frame_tag "modal" %>
 
       <%= yield %>

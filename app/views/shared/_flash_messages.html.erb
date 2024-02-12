@@ -1,0 +1,3 @@
+<% flash.each do |type, message| %>
+  <%= render Alert::Component.new(type: type, message: message) %>
+<% end %>
