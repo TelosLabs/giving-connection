@@ -2,7 +2,7 @@ class DesignationTag::Component < ApplicationViewComponent
   attr_reader :organization, :container_options, :designation_map
 
   def initialize(organization, container_options: {})
-    @organization = organization.decorate
+    @organization = organization
     @container_options = container_options
     build_designation_map
   end
@@ -20,9 +20,9 @@ class DesignationTag::Component < ApplicationViewComponent
   def build_designation_map
     @designation_map = {}
 
-    if ["nationwide", "internationally"].include? organization.scope_of_work
-      designation_map[organization.scope_of_work.capitalize] =
-        "Services offered #{organization.scope_of_work}"
+    if ["National", "International"].include? organization.scope_of_work
+      designation_map[organization.scope_of_work] =
+        "Services offered #{organization.decorate.scope_of_work}"
     end
 
     if organization.volunteer_availability
