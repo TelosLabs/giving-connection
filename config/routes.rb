@@ -35,15 +35,18 @@ Rails.application.routes.draw do
     get 'signin' => 'devise/sessions#new'
   end
 
-  get 'contact' => 'messages#new'
-  get '/nonprofit' => 'messages#new', as: :non_profit_contact
+  get '/contact' => 'contacts#new'
+  post '/contact' => 'contacts#create', as: :create_contact
+
+  get '/nonprofit' => 'nonprofits#new'
+  post '/nonprofit' => 'nonprofits#create', as: :create_nonprofit_contact
+
   get 'search' => 'searches#show'
   get 'termsofuse' => 'terms_and_conditions#show', as: :terms_of_use
   resource :map_popup, only: [:new]
   resource :search_preview, only: [:show]
 
   resources :users, only: [:update]
-  resources :messages, only: %i[create]
   resources :reset_password, only: %i[new]
 
   resources :locations, only: %i[index new show destroy]
