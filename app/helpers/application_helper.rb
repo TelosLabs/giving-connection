@@ -10,7 +10,8 @@ module ApplicationHelper
     return "desktop"
   end
 
+  # recaptcha gem doesn't work well with Turbo
   def turbo_disabled_urls
-    [nonprofit_url, contact_url]
+    [new_nonprofit_request_url, new_contact_message_url]
   end
 end

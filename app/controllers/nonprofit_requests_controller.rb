@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class NonprofitsController < ApplicationController
+class NonprofitRequestsController < ApplicationController
   skip_after_action :verify_authorized
   skip_before_action :authenticate_user!
   invisible_captcha only: [:create], honeypot: :street

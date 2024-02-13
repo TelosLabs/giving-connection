@@ -35,11 +35,11 @@ Rails.application.routes.draw do
     get 'signin' => 'devise/sessions#new'
   end
 
-  get '/contact' => 'contacts#new'
-  post '/contact' => 'contacts#create', as: :create_contact
+  get '/contact' => 'contact_messages#new', as: :new_contact_message
+  post '/contact' => 'contact_messages#create', as: :create_contact_message
 
-  get '/nonprofit' => 'nonprofits#new'
-  post '/nonprofit' => 'nonprofits#create', as: :create_nonprofit_contact
+  get '/nonprofit' => 'nonprofit_requests#new', as: :new_nonprofit_request
+  post '/nonprofit' => 'nonprofit_requests#create', as: :create_nonprofit_request
 
   get 'search' => 'searches#show'
   get 'termsofuse' => 'terms_and_conditions#show', as: :terms_of_use
