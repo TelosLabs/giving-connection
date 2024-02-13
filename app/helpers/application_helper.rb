@@ -9,4 +9,8 @@ module ApplicationHelper
     return "mobile" if agent =~ /Mobile/
     return "desktop"
   end
+
+  def turbo_disabled_urls
+    [nonprofit_url, contact_url]
+  end
 end

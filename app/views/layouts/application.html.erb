@@ -34,7 +34,11 @@
     <script src="https://www.googletagmanager.com/gtag/js?id=AW-11382454124" data-turbo-track="reload" async></script>
   </head>
 
-  <body class="bg-gray-9">
+  <body
+  class="bg-gray-9"
+  data-controller="disable-turbo"
+  data-disable-turbo-target-urls-value="<%= turbo_disabled_urls %>"
+  data-action="turbo:click@document->disable-turbo#disableTurboForTargetUrls">
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<%= Rails.application.credentials.dig(Rails.env.to_sym)[:google_tag_key] %>"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <%= render Navbar::Component.new(signed_in: user_signed_in?) %>
