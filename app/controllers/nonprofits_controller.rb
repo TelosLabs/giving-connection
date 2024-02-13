@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MessagesController < ApplicationController
+class NonprofitsController < ApplicationController
   skip_after_action :verify_authorized
   skip_before_action :authenticate_user!
   invisible_captcha only: [:create], honeypot: :street
@@ -16,7 +16,6 @@ class MessagesController < ApplicationController
       redirect_to root_path
     else
       flash.now[:error] = 'Something went wrong'
-      @form_to_render = message_params[:form_definition]
       render :new, status: :unprocessable_entity
     end
   end
@@ -33,7 +32,7 @@ class MessagesController < ApplicationController
     params.require(:message).permit(
       :name, :email, :phone, :subject, :organization_name,
       :organization_website, :organization_ein, :profile_admin_name,
-      :profile_admin_email, :content, :form_definition
+      :profile_admin_email, :content
     )
   end
 end
