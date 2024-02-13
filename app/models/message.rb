@@ -20,5 +20,5 @@ class Message < ActiveRecord::Base
   attr_accessor :form_definition
 
   validates :name, presence: true
-  validates :email, presence: true
+  validates :email, format: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 end
