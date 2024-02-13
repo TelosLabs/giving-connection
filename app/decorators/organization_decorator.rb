@@ -9,11 +9,23 @@ class OrganizationDecorator < ApplicationDecorator
     object.decorate.url(object.volunteer_link)
   end
 
-  def scope_of_work
-    {
-      "National" => "nationwide",
-      "International" => "internationally",
-      "Regional" => "locally"
-    }[object.scope_of_work]
+  def designation_copies
+    case object.scope_of_work
+    when "National"
+      {
+        tag_copy: "Nationwide",
+        desc_copy: "nationwide"
+      }
+    when "International"
+      {
+        tag_copy: "International",
+        desc_copy: "internationally"
+      }
+    when "Regional"
+      {
+        tag_copy: "Regional",
+        desc_copy: "locally"
+      }
+    end
   end
 end
