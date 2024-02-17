@@ -31,7 +31,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { confirmations: 'confirmations' }
 
   devise_scope :user do
-    get 'signup' => 'devise/registrations#new'
+    # get 'signup' => 'devise/registrations#new'
     get 'signin' => 'devise/sessions#new'
   end
 

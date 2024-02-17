@@ -29,7 +29,7 @@ nav id="main-navbar" data-controller="navbar--component" class="#{non_sticky_pat
         li = link_to "My Account", my_account_path, class:"text-base font-bold mr-1 lg:mr-6 border-b-2 border-transparent #{request.env['PATH_INFO'] == "/my_account" ? "text-seafoam border-seafoam" : ""}"
       - else
         li = link_to "Sign in", signin_path, class:'text-base font-bold mr-2 mid:mr-4 lg:mr-6'
-        li = link_to "Create Account", signup_path, class:'c-button py-2.5 px-5 text-white bg-blue-medium'
+        //li = link_to "Create Account", "#", class:'c-button py-2.5 px-5 text-white bg-blue-medium'
 
   .sidebar class='fixed top-0 bottom-0 left-0 right-0 z-10 hidden h-screen overflow-y-hidden bg-gray-9' data-navbar--component-target="sideNavBar"
     section class="pt-8 pb-4 px-7 #{ @signed_in ? 'h-4/5' : 'h-3/4' }"
@@ -50,4 +50,4 @@ nav id="main-navbar" data-controller="navbar--component" class="#{non_sticky_pat
         = link_to "Log out", destroy_user_session_path, method: :delete, class:'pb-8 text-2xl font-bold text-gray-3'
       - else
         = link_to "Sign in", signin_path, class:'text-2xl font-bold text-gray-3 mb-6'
-        = link_to "Create Account", signup_path, class:'c-button py-2.5 px-5 text-white bg-blue-medium'
+        // = link_to "Create Account", "#", class:'c-button py-2.5 px-5 text-white bg-blue-medium'
