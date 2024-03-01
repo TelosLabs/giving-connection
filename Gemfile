@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.0.2'
+ruby '3.1.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.4'
@@ -30,12 +30,13 @@ gem 'redis', '~> 4.0'
 gem 'devise'
 
 # User Auth
-gem "recaptcha"
-gem "invisible_captcha"
+gem 'invisible_captcha'
+gem 'recaptcha'
 
+gem 'activerecord-import'
 gem 'active_storage_validations'
 gem 'aws-sdk-s3', require: false
-gem "caxlsx"
+gem 'caxlsx'
 gem 'clockwork'
 gem 'cocoon'
 gem 'draper'
@@ -47,13 +48,12 @@ gem 'pagy'
 gem 'pg_search'
 gem 'pundit'
 gem 'rack-attack'
+gem 'rollbar'
 gem 'roo', '~> 2.8.0'
-gem "sidekiq", "<7"
+gem 'scout_apm'
+gem 'sidekiq', '<7'
 gem 'slim-rails'
 gem 'view_component'
-gem "activerecord-import"
-gem 'scout_apm'
-gem 'rollbar'
 # Use Turbo for rails
 gem 'turbo-rails'
 
@@ -116,7 +116,7 @@ group :test do
   gem 'shoulda-matchers', '~> 4.0'
   gem 'simplecov', require: false
   gem 'timecop'
-  gem 'webdrivers', "~> 5.2", require: false
+  gem 'webdrivers', '~> 5.2', require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
