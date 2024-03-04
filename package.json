@@ -17,6 +17,7 @@
     "moment": "^2.29.4",
     "postcss": "^8",
     "selectize": "0.12.4",
+    "stimulus-autocomplete": "^3.1.0",
     "stimulus-carousel": "^4.0.0",
     "stimulus-use": "^0.50.0-2",
     "swiper": "6.8.4",

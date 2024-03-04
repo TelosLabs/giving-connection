@@ -7,7 +7,7 @@ class AutocompletesController < ApplicationController
   skip_after_action :verify_authorized
 
   def show
-    suggestions = Locations::KeywordQuery.call({ keyword: params[:query] }).pluck(:name)
-    render json: suggestions
+    @suggestions = %w[1 s orange apple banana]
+    render layout: false
   end
 end
