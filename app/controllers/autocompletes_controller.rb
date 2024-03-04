@@ -7,7 +7,7 @@ class AutocompletesController < ApplicationController
   skip_after_action :verify_authorized
 
   def show
-    @suggestions = %w[1 s orange apple banana]
+    @suggestions = Tag.suggestions(params[:q])
     render layout: false
   end
 end
