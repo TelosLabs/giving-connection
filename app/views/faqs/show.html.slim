@@ -1,6 +1,6 @@
 div class="main"
 
-  div class="flex flex-col mt-14 md:mt-28 mx-auto px-6 md:flex-row max-w-7xl justify-evenly md:items-end lg:px-16"
+  div class="flex flex-col px-6 mx-auto mt-14 md:mt-28 md:flex-row max-w-7xl justify-evenly md:items-end lg:px-16"
     div class="relative flex flex-col justify-center mb-8 text-center md:mx-0 md:mb-8"
       div class="max-w-sm mx-auto"
         h2 class="pb-8 text-2xl font-bold text-center"
@@ -18,14 +18,14 @@ div class="main"
 
       div class="absolute -left-6 -z-1 md:hidden"
         = inline_svg_tag 'faq-mob-blur-left.svg', size:'320*428'
-      div class="absolute -right-6 overflow-visible -top-40 -z-1 md:hidden"
+      div class="absolute overflow-visible -right-6 -top-40 -z-1 md:hidden"
         = inline_svg_tag 'faq-mob-blur-right.svg'
 
     div class="flex justify-center px-0"
       = image_tag 'pablita-looking-for.svg', class:"object-cover h-full"
 
 
-  section class='flex flex-col max-w-xl gap-6 md:mt-6 px-5 pt-6 pb-24 mx-auto divide-y divide-gray-7 text-gray-2'
+  section class='flex flex-col max-w-xl gap-6 px-5 pt-6 pb-24 mx-auto divide-y md:mt-6 divide-gray-7 text-gray-2'
     = render Accordion::Component.new(title: "How can I get help right away?",
                                       description: "If you are having a medical or life threatening emergency, call 911. If you are in need of immediate crisis services, \
                                       please visit or call the resources listed below.<br/> <br/> \
@@ -93,3 +93,5 @@ div class="main"
                                       description: "You must be the listed representative in order to delete a nonprofit page. To unpublish a nonprofit listing, email \
                                       <a class='underline text-blue-medium' href='mailto:info@givingconnection.reg'>info@givingconnection.org</a> \
                                       or go to the “Contact Us” link below to send us a message requesting that we unpublish your nonprofit page.")
+    = render Accordion::Component.new(title: "What does the green check mark mean?",
+                                      description: "The green check mark next to a nonprofit’s name indicates that the information listed has been reviewed and verified by that nonprofit. When reviewing a nonprofit profile without a green check mark, users should visit the nonprofit’s website to verify the listed information.")
