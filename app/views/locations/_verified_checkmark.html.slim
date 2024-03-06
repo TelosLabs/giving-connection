@@ -1,0 +1,7 @@
+div data-controller="popover"
+  span data-action="mouseenter->popover#show mouseleave->popover#hide" data-popover-target="popover"
+    = inline_svg_tag 'verified_nonprofit_check.svg', class: "h-4 ml-1"
+  template data-popover-target="content"
+    div data-popover-target="card" class="absolute #{local_assigns[:position].presence || "" } z-10 px-3 py-1 mx-1 text-xs text-center text-white rounded-sm bg-gray-2 bg-opacity-90"
+      p
+        = "Information verified by nonprofit." 

@@ -14,13 +14,7 @@ div class=""
             div class="flex justify-center items-center mb-2.5"
               h5 class="mb-1 text-lg font-bold text-center"
                 = @location.name
-              div data-controller="popover"
-                span data-action="mouseenter->popover#show mouseleave->popover#hide" data-popover-target="popover"
-                  = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1"
-                template data-popover-target="content"
-                  div data-popover-target="card" class="absolute px-3 py-1 mx-1 text-xs text-center text-white rounded-sm bg-gray-2 bg-opacity-90"
-                    p
-                      = "Information verified by nonprofit."
+              = render partial: "locations/verified_checkmark"
             p class="text-xs text-center font-base text-gray-4"
               = "This nonprofit has verified the listed information."
           - else
@@ -139,7 +133,7 @@ div class=""
                     a class="font-bold text-small text-gray-2"
                       | #{@location.organization.name}
                     - if @location.organization.verified?
-                      = inline_svg_tag 'verified_nonprofit_check.svg', class: "align-text-bottom inline w-4 h-4 ml-1"
+                      = render partial: "locations/verified_checkmark", locals: { position: "right-0" }
                   p class="text-xs text-gray-4"
                     | #{@location.address}
                   p class="text-xs text-gray-4"

@@ -7,11 +7,11 @@ div
   = image_tag @location.organization.logo, class: "w-3/5 h-3/5 m-auto"
 
 // Name
-div
+div class="flex items-center gap-1"
   a id="pointer"
     = link_to @location.name, location_path(@location), target:"_blank", class: "text-small font-bold text-gray-2"
   - if @location.organization.verified?
-    = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1 align-text-bottom inline"
+  = render partial: "locations/verified_checkmark", locals: { position: "right-0" }
 
 // Address, website, phone, and availability
 - if @location.public_address?
