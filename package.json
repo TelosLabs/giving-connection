@@ -18,6 +18,7 @@
     "postcss": "^8",
     "selectize": "0.12.4",
     "stimulus-carousel": "^4.0.0",
+    "stimulus-popover": "^6.2.0",
     "stimulus-use": "^0.50.0-2",
     "swiper": "6.8.4",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat",
