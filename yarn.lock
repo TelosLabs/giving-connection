@@ -6906,11 +6906,6 @@ stimulus-carousel@^4.0.0:
   dependencies:
     swiper "^7.4.1"
 
-stimulus-popover@^6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/stimulus-popover/-/stimulus-popover-6.2.0.tgz#67bcf725d9077f213869905e7b5c80212a92d802"
-  integrity sha512-QJqGXA842qS9s+c0Si6JUKDHDZVnkClvgZPfl2KbHcT6G9BMrEK+21na00SVNpWmmzdc6E1qQrq/oVY7gGaf3w==
-
 stimulus-use@^0.50.0-2:
   version "0.50.0-2"
   resolved "https://registry.npmjs.org/stimulus-use/-/stimulus-use-0.50.0-2.tgz"
