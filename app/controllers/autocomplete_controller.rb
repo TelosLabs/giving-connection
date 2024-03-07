@@ -1,4 +1,4 @@
-class AutocompletesController < ApplicationController
+class AutocompleteController < ApplicationController
   skip_before_action :authenticate_user!
 
   include Pundit
@@ -6,7 +6,7 @@ class AutocompletesController < ApplicationController
   skip_after_action :verify_policy_scoped
   skip_after_action :verify_authorized
 
-  def show
+  def index
     @suggestions = Tag.suggestions(params[:q])
     render layout: false
   end

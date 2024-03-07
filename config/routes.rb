@@ -69,7 +69,7 @@ Rails.application.routes.draw do
   resource :donate, only: %i[show]
   resource :privacy_policy, only: %i[show]
   resource :infowindow, only: :new
-  resource :autocomplete, only: %i[show]
+  resources :autocomplete, only: %i[index]
 
   root to: 'home#index'
 end
