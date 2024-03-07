@@ -8,7 +8,7 @@
     <div class="w-full">
       <div class="flex flex-row items-start justify-between">
         <%# Org name %>
-        <div class="flex items-center">
+        <div class="flex items-start">
           <%= helpers.title_link(@turbo_frame, @id, @title) %>
           <% if @verified %>
             <%= render partial: "locations/verified_checkmark" %>
