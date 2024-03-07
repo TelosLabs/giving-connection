@@ -22,7 +22,7 @@ main
       | Search for listings of nonprofit organizations based on your needs.
     = form_with model: @search, url: search_path, method: :get do |f|
       .c-form class="py-0 mx-auto sm:px-3 sm:flex-col sm:justify-center sm:max-w-4xl"
-        div class="relative w-full sm:max-w-xl mb-7 sm:mb-0" data-controller="autocomplete" data-autocomplete-url-value="/autocomplete" role="combobox"
+        div class="relative w-full sm:max-w-xl mb-7 sm:mb-0" data-controller="autocomplete" data-autocomplete-url-value=autocomplete_index_path role="combobox"
           = f.text_field :keyword, autocomplete: "search", class:"c-input pl-10 m-0 w-full", placeholder: "Try \"Mental Health Nonprofits\"", data: { "autocomplete-target": "input" }
           ul class="absolute w-full px-1 bg-white rounded-sm" data-autocomplete-target="results" role="listbox"
           = inline_svg_tag 'search-icon.svg', class:"absolute top-1/3 left-4"
