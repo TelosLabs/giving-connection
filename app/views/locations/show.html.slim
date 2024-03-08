@@ -12,19 +12,19 @@ div class=""
         div
           - if @location.organization.verified?
             div class="flex justify-center items-center mb-2.5"
-              h5 class="text-lg font-bold text-center mb-1"
+              h5 class="flex mb-1 text-lg font-bold text-center"
                 = @location.name
-              = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1"
+              = render "shared/popover", wrapper_icon: "verified_nonprofit_check.svg", copy: "Information verified by nonprofit."
             p class="text-xs text-center font-base text-gray-4"
               = "This nonprofit has verified the listed information."
           - else
-            h5 class="text-lg font-bold text-center mb-1"
+            h5 class="mb-1 text-lg font-bold text-center"
               = @location.name
             p class="text-xs text-center font-base text-gray-4"
               = "This nonprofit has not yet verified the listed information."
 
           - if current_user.present? && policy(@location.organization).update?
-            p class="text-xs text-center font-base text-blue-500" id="pointer"
+            p class="text-xs text-center text-blue-500 font-base" id="pointer"
               = link_to "Edit My Nonprofit Page", edit_organization_path( @location.organization)
           // Designations
           = render DesignationTag::Component.new(@location.organization, container_options: { class: "justify-center items-center" })
@@ -45,7 +45,7 @@ div class=""
             = render SaveButton::Component.new(user: current_user, location: @location, simplified: true)
             span class="text-sm" aria-hidden="true" Save
 
-        div class="mt-10 mx-6 text-left"
+        div class="mx-6 mt-10 text-left"
           = render WorkingHours::Component.new(result: @location)
           - if @location.organization.irs_ntee_code.present?
             p class="text-sm leading-6 font-base text-gray-2"
@@ -54,7 +54,7 @@ div class=""
                 span class="font-normal"
                   = @location.organization.irs_ntee_code
         - if @location.images.attached?
-          div class="pt-4 px-6 border-t border-gray-8 mt-6"
+          div class="px-6 pt-4 mt-6 border-t border-gray-8"
             h4 class="text-sm font-bold text-black uppercase"
               | Photos
             = render DiscoverNonprofitCard::ImagesCarousel::Component.new(images: @location.images, \
@@ -130,10 +130,10 @@ div class=""
             div class="hidden"
                 div class="flex flex-col items-center gap-2 p-5 text-center bg-white rounded-6px" data-places-target="marker" data-latitude="#{@location.latitude}" data-longitude="#{@location.longitude}"
                   div
-                    a class="text-small font-bold text-gray-2"
+                    a class="font-bold text-small text-gray-2"
                       | #{@location.organization.name}
                     - if @location.organization.verified?
-                      = inline_svg_tag 'verified_nonprofit_check.svg', class: "align-text-bottom inline w-4 h-4 ml-1"
+                      = render partial: "shared/popover", locals: { position: "right-0", wrapper_icon: "verified_nonprofit_check.svg", copy: "Information verified by nonprofit." }
                   p class="text-xs text-gray-4"
                     | #{@location.address}
                   p class="text-xs text-gray-4"

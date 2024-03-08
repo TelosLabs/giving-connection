@@ -8,17 +8,17 @@
     <div class="w-full">
       <div class="flex flex-row items-start justify-between">
         <%# Org name %>
-        <div>
+        <div class="flex items-start">
           <%= helpers.title_link(@turbo_frame, @id, @title) %>
           <% if @verified %>
-            <%= inline_svg_tag 'verified_nonprofit_check.svg', class: 'w-4 h-4 ml-1 align-text-bottom inline' %>
+            <%= render "shared/popover", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg" %>
           <% end %>
         </div>
 
         <%= render SaveButton::Component.new(user: @current_user, location: Location.find(@id), simplified: true) %>
       </div>
 
-      <div class="text-xs text-gray-4 pb-0">
+      <div class="pb-0 text-xs text-gray-4">
         <% if @public_address %>
           <p id="pointer"><%= link_to @address, @link_to_google_maps, target: "blank" %></p>
         <% end %>
@@ -43,10 +43,10 @@
       <%= formated_description %>
     </p>
   </div>
-  <div class="flex justify-between items-center">
+  <div class="flex items-center justify-between">
     <% unless @causes.empty? %>
       <section>
-        <h2 class="mb-2 text-xs uppercase font-bold font-sans">Causes</h2>
+        <h2 class="mb-2 font-sans text-xs font-bold uppercase">Causes</h2>
         <%= render CausesList::Component.new( \
             causes: @causes, \
             tooltip: true, \
