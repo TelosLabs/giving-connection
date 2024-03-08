@@ -53,11 +53,17 @@ export default class extends Controller {
   }
 
   updateCheckboxes() {
+    const changeEvent = new Event("change", { bubbles: true })
+
     this.checkboxTargets.forEach(checkbox => {
       if (this.store.has(checkbox.dataset.value)) {
         checkbox.checked = true
       } else {
         checkbox.checked = false
+      }
+
+      if (checkbox.checked !== checkbox.defaultChecked) {
+        checkbox.dispatchEvent(changeEvent)
       }
     })
     this.search()

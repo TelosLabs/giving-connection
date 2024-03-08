@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [ "links", "template" ]
+  static targets = ["links", "template"]
 
   connect() {
     this.wrapperClass = this.data.get("wrapperClass") || "nested-fields"
@@ -12,6 +12,7 @@ export default class extends Controller {
 
     var content = this.templateTarget.innerHTML.replace(/NEW_RECORD/g, new Date().getTime())
     this.linksTarget.insertAdjacentHTML('beforebegin', content)
+    this.dispatch("domupdate", { detail: { newInputAdded: true } })
   }
 
   remove_association(event) {
@@ -21,10 +22,15 @@ export default class extends Controller {
     // New records are simply removed from the page
     if (wrapper.dataset.newRecord == "true") {
       wrapper.remove()
-
+      this.dispatch("domupdate")
+    }
     // Existing records are hidden and flagged for deletion
-    } else {
-      wrapper.querySelector("input[name*='_destroy']").value = 1
+    else {
+      const deletionFlag = wrapper.querySelector("input[name*='_destroy']")
+      const inputEvent = new Event("input", { bubbles: true })
+
+      deletionFlag.value = 1
+      deletionFlag.dispatchEvent(inputEvent)
       wrapper.style.display = 'none'
     }
   }
