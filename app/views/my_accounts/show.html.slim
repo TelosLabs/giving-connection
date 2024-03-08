@@ -96,7 +96,7 @@ div class="w-full h-full bg-white"
                     div class="flex flex-row justify-between w-full"
                       span class="text-lg font-bold text-black capitalize"
                         | #{alert.decorate.title(index)}
-                      = link_to "Edit", edit_alert_path(alert), class: "text-blue-medium", data: { turbo_frame: "modal" }
+                      = link_to "Edit", edit_alert_path(alert), class: "text-blue-medium", data: { turbo_stream: true }
                     div class="flex flex-row text-sm font-normal text-gray-2"
                       | #{list_all_filters(alert).join(', ')}
             - else

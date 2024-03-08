@@ -1,0 +1,12 @@
+<%= turbo_stream.update "main-modal-container" do %>
+	<%= render "shared/main_modal" do %>
+		<%= render(
+			"alerts/form",
+			alert: @alert,
+			url: alert_path(@alert),
+			method: :patch,
+			filters: @filters,
+			filters_list: @filters_list
+		) %>
+	<% end %>
+<% end %>
