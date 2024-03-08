@@ -12,9 +12,9 @@ div class=""
         div
           - if @location.organization.verified?
             div class="flex justify-center items-center mb-2.5"
-              h5 class="mb-1 text-lg font-bold text-center"
+              h5 class="flex mb-1 text-lg font-bold text-center"
                 = @location.name
-              = render partial: "locations/verified_checkmark"
+              = render "shared/popover", wrapper_icon: "verified_nonprofit_check.svg", copy: "Information verified by nonprofit."
             p class="text-xs text-center font-base text-gray-4"
               = "This nonprofit has verified the listed information."
           - else
@@ -133,7 +133,7 @@ div class=""
                     a class="font-bold text-small text-gray-2"
                       | #{@location.organization.name}
                     - if @location.organization.verified?
-                      = render partial: "locations/verified_checkmark", locals: { position: "right-0" }
+                      = render partial: "shared/popover", locals: { position: "right-0", wrapper_icon: "verified_nonprofit_check.svg", copy: "Information verified by nonprofit." }
                   p class="text-xs text-gray-4"
                     | #{@location.address}
                   p class="text-xs text-gray-4"

@@ -6,7 +6,7 @@ div class="relative flex flex-col gap-2 bg-white p-7 rounded-6px" id="loc_#{@res
         = link_to location_path(@result), class: "font-semibold text-sm lg:text-base cursor-pointer", target: "_blank" do
           = @result.organization.name
         - if @result.organization.verified?
-          = render partial: "locations/verified_checkmark", locals: { position: "right-0" }
+          = render partial: "shared/popover", locals: { position: "right-0", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg" }
       - if @result.public_address?
         p class="text-xs text-gray-500 lg:text-sm" id="pointer"
           = link_to @result.formatted_address, @result.link_to_google_maps, target: "blank"
