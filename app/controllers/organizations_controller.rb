@@ -12,6 +12,8 @@ class OrganizationsController < ApplicationController
 
   def edit
     @organization = Organization.find(params[:id])
+    @form_presenter = OrganizationFormPresenter.new
+
     authorize @organization
     set_form_data
   end
