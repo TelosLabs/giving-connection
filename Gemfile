@@ -57,6 +57,8 @@ gem 'view_component'
 # Use Turbo for rails
 gem 'turbo-rails'
 
+gem 'net-imap', require: false
+gem 'net-pop', require: false
 gem 'net-smtp', require: false
 
 # Use administrate admin framework
