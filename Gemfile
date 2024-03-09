@@ -57,6 +57,10 @@ gem 'view_component'
 # Use Turbo for rails
 gem 'turbo-rails'
 
+gem 'net-imap', require: false
+gem 'net-pop', require: false
+gem 'net-smtp', require: false
+
 # Use administrate admin framework
 gem 'administrate'
 gem 'administrate-field-active_storage'
@@ -65,7 +69,7 @@ gem 'administrate-field-select', '~> 2.0', require: 'administrate/field/select_b
 gem 'image_processing'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '>= 1.4.4', require: false
+gem 'bootsnap', require: false
 gem 'city-state'
 gem 'pronto'
 gem 'pronto-flay', require: false
