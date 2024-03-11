@@ -27,6 +27,8 @@
 class Organization < ApplicationRecord
   include Organizations::Constants
   validates_with OrganizationValidator
+  include PgSearch::Model
+  multisearchable against: [:name]
 
   scope :active, -> { where(active: true) }
 

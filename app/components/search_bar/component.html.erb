@@ -1,7 +1,7 @@
 <div id="search-bar" class="sticky inset-x-0 z-20 flex items-center justify-center px-6 py-4 
 bg-gradient-to-r from-blue-gradient-2 to-blue-gradient-1 top-20 md:top-22.75 md:gap-5">
   <%# Keyword input %>
-  <div class="relative w-full max-w-xl" data-controller="autocomplete" data-autocomplete-url-value="<%= autocomplete_index_path %>" role="combobox">
+  <div class="relative w-full max-w-xl" data-controller="autocomplete" data-autocomplete-url-value="<%= autocomplete_index_path %>" role="combobox" data-autocomplete-min-length-value="2">
     <span class="absolute inset-y-0 left-0 flex items-center px-3 pointer-events-none">
       <%= inline_svg_tag "solid_search.svg", class: 'h-4 w-4 fill-current text-gray-2' %>
     </span>
