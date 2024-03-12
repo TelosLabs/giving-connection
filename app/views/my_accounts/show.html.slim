@@ -120,7 +120,7 @@ div class="w-full h-full bg-white"
                       span class="flex items-center text-base font-medium text-grey-2"
                         | #{organization.name}
                         - if organization.verified?
-                          = inline_svg_tag 'verified_nonprofit_check.svg', class: "w-4 h-4 ml-1 mt-1"
+                          = render "shared/popover", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg"
                       = link_to "Edit", edit_organization_path(organization), class:"text-blue-medium"
 
             - else
