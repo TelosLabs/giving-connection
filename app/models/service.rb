@@ -11,6 +11,9 @@
 #  updated_at :datetime         not null
 #
 class Service < ApplicationRecord
+  include PgSearch::Model
+  multisearchable against: :name
+
   belongs_to :cause
   has_many :location_services, dependent: :destroy
   has_many :locations, through: :location_services

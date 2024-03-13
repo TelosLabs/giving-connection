@@ -10,6 +10,8 @@
 #  updated_at :datetime         not null
 #
 class Cause < ApplicationRecord
+  include PgSearch::Model
+  multisearchable against: :name
   has_many :organization_causes, dependent: :destroy
   has_many :organizations, through: :organization_causes
   has_many :services

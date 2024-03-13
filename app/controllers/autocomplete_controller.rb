@@ -7,7 +7,10 @@ class AutocompleteController < ApplicationController
   skip_after_action :verify_authorized
 
   def index
-    @suggestions = Tag.suggestions(params[:q])
+    @suggestions = PgSearch.multisearch(params[:q]).map do |record|
+      record.searchable.name
+    end.uniq
+
     render layout: false
   end
 end

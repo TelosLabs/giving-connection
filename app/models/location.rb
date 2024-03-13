@@ -22,13 +22,15 @@
 class Location < ActiveRecord::Base
   include Locations::Searchable
   include Locations::Officeable
+  include PgSearch::Model
+  multisearchable against: [:name]
 
   enum non_standard_office_hours: { appointment_only: 1, always_open: 2, no_set_business_hours: 3 }
 
   belongs_to :organization, optional: true
 
   scope :active, -> { joins(:organization).where(organization: { active: true }) }
-  scope :public_address, -> {where(public_address: true)}
+  scope :public_address, -> { where(public_address: true) }
   scope :besides_po_boxes, -> { where(po_box: false) }
   # scope :in_nashville, -> { where("ST_DWithin(lonlat, ST_GeographyFromText('SRID=4326;POINT(-86.78125827725053 36.16404968727089)'), 1000000) = true") }
   scope :locations_with_, ->(cause) { group(:id).joins(:causes).where(causes: { id: cause.id }) }
@@ -51,8 +53,8 @@ class Location < ActiveRecord::Base
   validates :longitude, presence: true
   validates :lonlat, presence: true
   validates :main, inclusion: { in: [true, false] }
-  validates :offer_services, inclusion: { in: [ true, false ] }
-  validates :non_standard_office_hours, inclusion: { in: non_standard_office_hours.keys}, allow_blank: true
+  validates :offer_services, inclusion: { in: [true, false] }
+  validates :non_standard_office_hours, inclusion: { in: non_standard_office_hours.keys }, allow_blank: true
 
   scope :additional, -> { where(main: false) }
   scope :main, -> { where(main: true) }
@@ -84,7 +86,7 @@ class Location < ActiveRecord::Base
   end
 
   def address_with_suite_number
-    address.split(",").insert(1, suite).join(", ")
+    address.split(',').insert(1, suite).join(', ')
   end
 
   def link_to_google_maps

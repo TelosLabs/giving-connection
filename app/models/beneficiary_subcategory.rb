@@ -11,6 +11,9 @@
 #  updated_at           :datetime         not null
 #
 class BeneficiarySubcategory < ApplicationRecord
+  include PgSearch::Model
+  multisearchable against: :name
+
   belongs_to :beneficiary_group
 
   def self.top(limit: 10)
