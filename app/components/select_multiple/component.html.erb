@@ -1,7 +1,16 @@
 <%= content_tag :div, options do %>
   <div class="flex flex-wrap flex-shrink-0 max-w-full gap-2 p-2" data-select-multiple-target="badgesContainer">
   </div>
-  <input id="<%= @required ? 'required':'' %>" type="text" data-select-multiple-target="input" class="w-48 h-full pt-3 text-sm align-middle border-0 border-transparent scroll-mt-25 focus:outline-none focus:border-transparent focus:ring-0 rounded-6px" data-action="select-multiple#search" placeholder="<%= @placeholder %>">
+
+  <input
+  id="<%= @required ? 'required':'' %>"
+  type="text"
+  data-select-multiple-target="input"
+  data-detect-form-changes-target="utilityInput"
+  class="w-48 h-full pt-3 text-sm align-middle border-0 border-transparent scroll-mt-25 focus:outline-none focus:border-transparent focus:ring-0 rounded-6px"
+  data-action="select-multiple#search"
+  placeholder="<%= @placeholder %>">
+
   <div data-search-target="advancedFiltersCheckboxes" data-extend-dropdown-target="menu" class="absolute left-0 z-10 hidden w-full mt-2 top-full max-h-52" >
     <div class="p-5 overflow-y-auto bg-white border rounded border-gray-5 max-h-52">
       <div class="flex flex-col gap-y-2">
