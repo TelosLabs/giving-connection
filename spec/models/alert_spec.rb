@@ -25,14 +25,14 @@ RSpec.describe Alert, type: :model do
   subject { create(:alert) }
 
   describe "associations" do
-    it { should belong_to(:user) }
-    it { should have_many(:alert_services).dependent(:destroy) }
-    it { should have_many(:alert_beneficiaries).dependent(:destroy) }
-    it { should have_many(:alert_causes).dependent(:destroy) }
+    it { is_expected.to belong_to(:user) }
+    it { is_expected.to have_many(:alert_services).dependent(:destroy) }
+    it { is_expected.to have_many(:alert_beneficiaries).dependent(:destroy) }
+    it { is_expected.to have_many(:alert_causes).dependent(:destroy) }
   end
 
   describe "validations" do
-    it { should validate_presence_of(:frequency) }
-    it { should validate_inclusion_of(:frequency).in_array( %w[daily weekly monthly] ) }
+    it { is_expected.to validate_presence_of(:frequency) }
+    it { is_expected.to validate_inclusion_of(:frequency).in_array(%w[daily weekly monthly]) }
   end
 end
