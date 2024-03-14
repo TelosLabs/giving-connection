@@ -45,7 +45,7 @@ class OfficeHour < ActiveRecord::Base
   private
 
   def closed_or_does_not_offers_service?
-    self.closed? || !self.location.offer_services
+    closed? || !location.offer_services
   end
 
   def clean_time
@@ -54,7 +54,7 @@ class OfficeHour < ActiveRecord::Base
   end
 
   def closed_if_does_not_offers_service
-    unless self.location.offer_services
+    unless location.offer_services
       self.closed = true
     end
   end

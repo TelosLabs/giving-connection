@@ -11,6 +11,6 @@
 #
 FactoryBot.define do
   factory :cause do
-    name { 'MyString' }
+    name { "MyString" }
   end
 end

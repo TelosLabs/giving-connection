@@ -11,7 +11,7 @@ class AddPgSearchDmetaphoneSupportFunctions < ActiveRecord::Migration[6.1]
 
   def down
     say_with_time("Dropping support functions for pg_search :dmetaphone") do
-      execute <<~'SQL'.squish
+      execute <<~SQL.squish
         DROP FUNCTION pg_search_dmetaphone(text);
       SQL
     end

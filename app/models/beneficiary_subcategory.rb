@@ -21,6 +21,6 @@ class BeneficiarySubcategory < ApplicationRecord
   end
 
   def self.top_organization_subcategories_ids(limit: 10)
-    OrganizationBeneficiary.group(:beneficiary_subcategory_id).order('count(beneficiary_subcategory_id) desc').limit(limit).count.keys
+    OrganizationBeneficiary.group(:beneficiary_subcategory_id).order("count(beneficiary_subcategory_id) desc").limit(limit).count.keys
   end
 end

@@ -6,7 +6,7 @@ class CauseDecorator < ApplicationDecorator
       .delete("&")
       .split(" ")
       .join("_")
-      .gsub("-", "_") <<
+      .tr("-", "_") <<
       ".svg"
   end
 end

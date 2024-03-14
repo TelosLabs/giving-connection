@@ -17,11 +17,11 @@ class Alerts::SendSavedSearchesAlertEmailsJob < ActiveJob::Base
 
   def update_next_alert
     case @alert.frequency
-    when 'daily'
+    when "daily"
       @alert.update!(next_alert: 1.day.from_now)
-    when 'weekly'
+    when "weekly"
       @alert.update!(next_alert: 1.week.from_now)
-    when 'monthly'
+    when "monthly"
       @alert.update!(next_alert: 1.month.from_now)
     end
   end

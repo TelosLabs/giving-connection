@@ -10,7 +10,8 @@ module Admin
     #   send_foo_updated_email(requested_resource)
     # end
 
-    def upload; end
+    def upload
+    end
 
     def import
       results = SpreadsheetParse.new.import(params[:file])
@@ -32,26 +33,26 @@ module Admin
     end
 
     def create
-      organization_resource_params = resource_params.except('beneficiary_subcategories_id') # .except('services_id')
+      organization_resource_params = resource_params.except("beneficiary_subcategories_id") # .except('services_id')
       resource = resource_class.new(organization_resource_params)
       resource.creator = current_admin_user
       authorize_resource(resource)
       if resource.save
-        create_organization_beneficiaries(resource, resource_params['beneficiary_subcategories_id']) unless resource_params['beneficiary_subcategories_id'].nil?
-        create_tags(resource, JSON.parse(params['tags_attributes'])) unless params['tags_attributes'].strip.empty?
-        redirect_to([namespace, resource], notice: translate_with_resource('create.success'))
+        create_organization_beneficiaries(resource, resource_params["beneficiary_subcategories_id"]) unless resource_params["beneficiary_subcategories_id"].nil?
+        create_tags(resource, JSON.parse(params["tags_attributes"])) unless params["tags_attributes"].strip.empty?
+        redirect_to([namespace, resource], notice: translate_with_resource("create.success"))
       else
         render :new, locals: {page: Administrate::Page::Form.new(dashboard, resource)}, status: :unprocessable_entity
       end
     end
 
     def update
-      organization_resource_params = resource_params.except('beneficiary_subcategories_id')
+      organization_resource_params = resource_params.except("beneficiary_subcategories_id")
       requested_resource.creator = current_admin_user
       if requested_resource.update(organization_resource_params)
-        requested_resource.update(beneficiary_subcategory_ids: resource_params['beneficiary_subcategories_id'])
-        update_tags(requested_resource, JSON.parse(params['tags_attributes'])) unless params['tags_attributes'].strip.empty?
-        redirect_to([namespace, requested_resource], notice: translate_with_resource('update.success'))
+        requested_resource.update!(beneficiary_subcategory_ids: resource_params["beneficiary_subcategories_id"])
+        update_tags(requested_resource, JSON.parse(params["tags_attributes"])) unless params["tags_attributes"].strip.empty?
+        redirect_to([namespace, requested_resource], notice: translate_with_resource("update.success"))
       else
         render :edit, locals: {page: Administrate::Page::Form.new(dashboard, requested_resource)},
           status: :unprocessable_entity
@@ -67,7 +68,7 @@ module Admin
 
     def create_tags(organization, tags)
       tags.each do |tag_hash|
-        Tag.create!(organization: organization, name: tag_hash['value'])
+        Tag.create!(organization: organization, name: tag_hash["value"])
       end
     end
 
@@ -95,7 +96,7 @@ module Admin
                                                    office_hours_attributes: %i[day open_time close_time closed]}
       params.require(resource_class.model_name.param_key)
         .permit(permit)
-        .transform_values { |value| value == '' ? nil : value }
+        .transform_values { |value| (value == "") ? nil : value }
     end
 
     private

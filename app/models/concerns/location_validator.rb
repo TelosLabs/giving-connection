@@ -14,13 +14,17 @@ class LocationValidator < ActiveModel::Validator
   def complete_office_hours
     return true if record.non_standard_office_hours.present?
 
-    record.organization.errors.add(:base, 'Office hours data is required for the 7 days of the week') unless Time::DAYS_INTO_WEEK.values.sort == record.office_hours.map(&:day).sort
+    record.organization.errors.add(:base, "Office hours data is required for the 7 days of the week") unless Time::DAYS_INTO_WEEK.values.sort == record.office_hours.map(&:day).sort
   end
 
   def valid_website_url
     return true if record.website.blank?
-    url = URI.parse(record.website) rescue false
-    return true if url.kind_of?(URI::HTTP) || url.kind_of?(URI::HTTPS) || url.kind_of?(URI::Generic)
-    record.organization.errors.add(:base, 'Website url incorrect format')
+    url = begin
+      URI.parse(record.website)
+    rescue
+      false
+    end
+    return true if url.is_a?(URI::HTTP) || url.is_a?(URI::HTTPS) || url.is_a?(URI::Generic)
+    record.organization.errors.add(:base, "Website url incorrect format")
   end
 end

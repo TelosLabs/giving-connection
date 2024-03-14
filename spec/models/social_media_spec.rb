@@ -15,13 +15,13 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe SocialMedia, type: :model do
-  context 'Social Media model validation test' do
+  context "Social Media model validation test" do
     subject { create(:social_media) }
 
-    it 'ensures social media can be created' do
+    it "ensures social media can be created" do
       expect(subject).to be_valid
     end
   end

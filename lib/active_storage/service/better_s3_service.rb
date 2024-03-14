@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'aws-sdk-s3'
-require 'active_storage/service/s3_service'
-require 'active_support/core_ext/numeric/bytes'
+require "aws-sdk-s3"
+require "active_storage/service/s3_service"
+require "active_support/core_ext/numeric/bytes"
 
 module ActiveStorage
   class Service::BetterS3Service < Service::S3Service

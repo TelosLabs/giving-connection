@@ -11,6 +11,6 @@
 #
 FactoryBot.define do
   factory :beneficiary_group do
-    name { 'Age' }
+    name { "Age" }
   end
 end

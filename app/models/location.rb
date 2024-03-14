@@ -82,11 +82,11 @@ class Location < ActiveRecord::Base
   )
 
   def formatted_address
-    suite.nil? || suite.empty? ? address : address_with_suite_number
+    suite.blank? ? address : address_with_suite_number
   end
 
   def address_with_suite_number
-    address.split(',').insert(1, suite).join(', ')
+    address.split(",").insert(1, suite).join(", ")
   end
 
   def link_to_google_maps
@@ -97,7 +97,7 @@ class Location < ActiveRecord::Base
     locations
       .joins(:services)
       .group(:id)
-      .order('count(services.id) DESC')
+      .order("count(services.id) DESC")
   end
 
   private
@@ -107,8 +107,8 @@ class Location < ActiveRecord::Base
   end
 
   def blank_office_hours(attributes)
-    attributes['open_time'].blank? &&
-      attributes['close_time'].blank? &&
-      attributes['closed'].blank?
+    attributes["open_time"].blank? &&
+      attributes["close_time"].blank? &&
+      attributes["closed"].blank?
   end
 end

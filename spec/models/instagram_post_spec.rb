@@ -1,14 +1,14 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe InstagramPost, type: :model do
   describe "validations" do
     subject { create(:instagram_post) }
 
-    it { should validate_presence_of(:external_id) }
-    it { should validate_presence_of(:post_url) }
-    it { should validate_presence_of(:media_url) }
-    it { should validate_presence_of(:media_type) }
-    it { should validate_presence_of(:creation_date) }
+    it { is_expected.to validate_presence_of(:external_id) }
+    it { is_expected.to validate_presence_of(:post_url) }
+    it { is_expected.to validate_presence_of(:media_url) }
+    it { is_expected.to validate_presence_of(:media_type) }
+    it { is_expected.to validate_presence_of(:creation_date) }
   end
 
   describe "scopes" do

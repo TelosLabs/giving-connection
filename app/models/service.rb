@@ -25,6 +25,6 @@ class Service < ApplicationRecord
   end
 
   def self.top_services_ids(limit: 10)
-    LocationService.group(:service_id).order('count(service_id) desc').limit(limit).count.keys
+    LocationService.group(:service_id).order("count(service_id) desc").limit(limit).count.keys
   end
 end

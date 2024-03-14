@@ -6,11 +6,11 @@ class MessageMailer < ApplicationMailer
 
   def default_response(message)
     @message = message
-    mail to: @message.email, subject: 'We received your message!'
+    mail to: @message.email, subject: "We received your message!"
   end
 
   def admins_notification(message)
     @message = message
-    mail subject: 'Contact notification'
+    mail subject: "Contact notification"
   end
 end

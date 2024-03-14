@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'administrate/base_dashboard'
+require "administrate/base_dashboard"
 
 class LocationDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -27,8 +27,8 @@ class LocationDashboard < Administrate::BaseDashboard
     phone_number: Field::HasOne,
     office_hours: Field::NestedHasMany,
     location_services: Field::NestedHasMany,
-    non_standard_office_hours: Field::Select.with_options(collection: [['None', ''], ['By appointment only', 'appointment_only'], ['Always open', 'always_open'],
-      ['No set business hours - Call to Inquire', 'no_set_business_hours']]),
+    non_standard_office_hours: Field::Select.with_options(collection: [["None", ""], ["By appointment only", "appointment_only"], ["Always open", "always_open"],
+      ["No set business hours - Call to Inquire", "no_set_business_hours"]]),
     services: Field::HasMany,
     po_box: Field::Boolean,
     public_address: Field::Boolean,

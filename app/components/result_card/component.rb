@@ -24,7 +24,7 @@ class ResultCard::Component < ApplicationViewComponent
   end
 
   def formated_description
-    @description.length <= 280 ? @description : "#{@description[0..280]} (...)"
+    (@description.length <= 280) ? @description : "#{@description[0..280]} (...)"
   end
 
   def website_for_display

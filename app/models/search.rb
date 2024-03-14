@@ -3,8 +3,8 @@
 class Search
   include ActiveModel::Model
 
-  KEYWORD_SEARCH_TYPE = 'keyword'
-  FILTER_SEARCH_TYPE = 'filter'
+  KEYWORD_SEARCH_TYPE = "keyword"
+  FILTER_SEARCH_TYPE = "filter"
 
   attr_accessor :keyword, :results, :distance, :city, :state, :zipcode,
     :beneficiary_groups, :services, :causes, :open_now, :open_weekends,

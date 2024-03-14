@@ -12,8 +12,8 @@ module SearchBar
 
     def options
       {
-        class: '',
-        type: ''
+        class: "",
+        type: ""
       }
     end
   end

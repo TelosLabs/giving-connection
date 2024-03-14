@@ -1,10 +1,10 @@
 namespace :location do
-  desc 'map appointment_only values into non_standard_office_hours column'
+  desc "map appointment_only values into non_standard_office_hours column"
   task appointment_only_to_non_standard_office_hours: :environment do
     not_updated_locations = []
     updated_locations = 0
 
-    Location.all.each do |location|
+    Location.all.find_each do |location|
       if location.update non_standard_office_hours: location.appointment_only ? 1 : nil
         updated_locations += 1
       else

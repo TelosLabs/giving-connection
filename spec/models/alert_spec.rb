@@ -19,7 +19,7 @@
 #  updated_at         :datetime         not null
 #  next_alert         :date
 #
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Alert, type: :model do
   subject { create(:alert) }

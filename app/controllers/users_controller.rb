@@ -10,8 +10,8 @@ class UsersController < ApplicationController
     if not_password_change
       save_params = update_params
     elsif !@user.valid_password?(old_password_params[:old_password])
-      flash[:alert] = 'Old password is incorrect'
-      render 'my_accounts/show'
+      flash[:alert] = "Old password is incorrect"
+      render "my_accounts/show"
       return
     else
       save_params = password_params
@@ -28,9 +28,9 @@ class UsersController < ApplicationController
 
   def flash_message
     flash[:sucess] = if email_change
-      "Your information has been updated. #{I18n.t('devise.confirmations.send_instructions')}"
+      "Your information has been updated. #{I18n.t("devise.confirmations.send_instructions")}"
     else
-      'Your information has been updated'
+      "Your information has been updated"
     end
   end
 

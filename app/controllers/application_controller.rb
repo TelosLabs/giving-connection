@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
       new_alert = Alert.new(session[:alert_params])
       new_alert.user = current_user
       if new_alert.save
-        flash[:notice] = 'Alert created successfully! Go to My Account to view or edit.'
+        flash[:notice] = "Alert created successfully! Go to My Account to view or edit."
         session.delete(:alert_params)
       end
       search_results = AlertSearchResults.new(new_alert).call
@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
   end
 
   def user_not_authorized
-    flash[:error] = 'You are not allowed to perform this action'
+    flash[:error] = "You are not allowed to perform this action"
     redirect_to root_path
   end
 end

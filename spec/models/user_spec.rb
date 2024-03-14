@@ -26,17 +26,17 @@
 #  updated_at             :datetime         not null
 #  name                   :string
 #
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe User, type: :model do
   describe "associations" do
     subject { create(:user) }
 
-    it { should have_many(:organizations) }
-    it { should have_many(:alerts) }
-    it { should have_many(:fav_locs).class_name("FavoriteLocation") }
-    it { should have_many(:favorited_locations).through(:fav_locs).source(:location) }
-    it { should have_many(:organization_admin) }
-    it { should have_many(:administrated_organizations).through(:organization_admin).source(:organization) }
+    it { is_expected.to have_many(:organizations) }
+    it { is_expected.to have_many(:alerts) }
+    it { is_expected.to have_many(:fav_locs).class_name("FavoriteLocation") }
+    it { is_expected.to have_many(:favorited_locations).through(:fav_locs).source(:location) }
+    it { is_expected.to have_many(:organization_admin) }
+    it { is_expected.to have_many(:administrated_organizations).through(:organization_admin).source(:organization) }
   end
 end

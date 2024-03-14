@@ -6,11 +6,11 @@ class SearchesController < ApplicationController
   def show
     unless request.referrer&.include? search_url
       @search = Search.new
-      render '_preview'
+      render "_preview"
     end
 
     set_search_pills_data
-    @search = params['search'].present? ? Search.new(create_params) : Search.new
+    @search = params["search"].present? ? Search.new(create_params) : Search.new
     @search.save
     @pagy, @results = pagy(@search.results)
     puts @search.errors.full_messages if @search.results.any?

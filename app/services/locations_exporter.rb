@@ -17,7 +17,7 @@ class LocationsExporter < ApplicationService
       end
     end
 
-    file_path = Rails.root.join('tmp', 'nonprofits-data.xlsx')
+    file_path = Rails.root.join("tmp/nonprofits-data.xlsx")
     package.serialize(file_path)
 
     file_path

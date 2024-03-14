@@ -12,10 +12,10 @@ class NonprofitRequestsController < ApplicationController
   def create
     @message = build_message
     if verify_recaptcha(model: @message) && @message.save
-      flash[:notice] = 'Your message was successfully sent!'
+      flash[:notice] = "Your message was successfully sent!"
       redirect_to root_path
     else
-      flash.now[:error] = 'Something went wrong'
+      flash.now[:error] = "Something went wrong"
       render :new, status: :unprocessable_entity
     end
   end

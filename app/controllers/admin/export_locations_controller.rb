@@ -6,8 +6,8 @@ module Admin
 
       send_file(
         file_path,
-        filename: 'nonprofits-data.xlsx',
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        filename: "nonprofits-data.xlsx",
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         disposition: "attachment"
       )
     end
