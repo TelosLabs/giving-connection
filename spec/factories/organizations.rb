@@ -26,17 +26,13 @@
 
 FactoryBot.define do
   factory :organization do
-    name { 'organization' }
-    ein_number { 'testing' }
-    irs_ntee_code { 'A90: Arts Services' }
-    mission_statement_en { 'testing' }
-    mission_statement_es { 'pruebas' }
-    vision_statement_en { 'testing' }
-    vision_statement_es { 'pruebas' }
-    tagline_en { 'testing' }
-    tagline_es { 'pruebas' }
-    website { 'testing' }
-    scope_of_work { 'International' }
+    name { "organization" }
+    ein_number { "testing" }
+    irs_ntee_code { "A90: Arts Services" }
+    mission_statement_en { "testing" }
+    vision_statement_en { "testing" }
+    website { "testing" }
+    scope_of_work { "International" }
 
     after(:build) do |organization|
       organization.locations << create(:location, organization: organization)
