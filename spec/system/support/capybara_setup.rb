@@ -12,7 +12,7 @@ Capybara.default_normalize_ws = true
 
 # Where to store system tests artifacts (e.g. screenshots, downloaded files, etc.).
 # It could be useful to be able to configure this path from the outside (e.g., on CI).
-Capybara.save_path = ENV.fetch('CAPYBARA_ARTIFACTS', './tmp/capybara')
+Capybara.save_path = ENV.fetch("CAPYBARA_ARTIFACTS", "./tmp/capybara")
 
 Capybara.singleton_class.prepend(Module.new do
   attr_accessor :last_used_session
@@ -28,7 +28,7 @@ end)
 # Use test_id attribute to locate elements in system tests like so:
 # In markup: <button data-test-id="my_button">Click me</button>
 # In test: find(:test_id, 'my_button').click
-Capybara.test_id = 'test_id'
+Capybara.test_id = "data-test-id"
 
 Capybara.add_selector(:test_id) do
   xpath do |locator|
