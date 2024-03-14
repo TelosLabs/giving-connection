@@ -7,11 +7,11 @@ RSpec.describe Admin::OrganizationsController, type: :controller do
 
   before(:each) do
     @admin = create(:admin_user)
-    @params       = { name: 'organization', ein_number: 'testing', irs_ntee_code: 'A90',
-                      mission_statement_en: 'testing', mission_statement_es: 'pruebas',
-                      vision_statement_en: 'testing', vision_statement_es: 'pruebas',
-                      tagline_en: 'testing', tagline_es: 'pruebas',
-                      website: 'testing', scope_of_work: 'International' }
+    @params = {name: 'organization', ein_number: 'testing', irs_ntee_code: 'A90',
+               mission_statement_en: 'testing', mission_statement_es: 'pruebas',
+               vision_statement_en: 'testing', vision_statement_es: 'pruebas',
+               tagline_en: 'testing', tagline_es: 'pruebas',
+               website: 'testing', scope_of_work: 'International'}
   end
 
   describe 'GET #index' do
@@ -47,7 +47,7 @@ RSpec.describe Admin::OrganizationsController, type: :controller do
       before { sign_in @admin }
 
       it 'should sucessfully render organizations dashboard show page' do
-        get :show, params: { id: organization.id }
+        get :show, params: {id: organization.id}
         expect(response).to have_http_status(200)
         expect(response).to render_template(:show)
       end

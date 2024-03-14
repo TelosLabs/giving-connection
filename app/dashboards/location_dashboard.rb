@@ -28,7 +28,7 @@ class LocationDashboard < Administrate::BaseDashboard
     office_hours: Field::NestedHasMany,
     location_services: Field::NestedHasMany,
     non_standard_office_hours: Field::Select.with_options(collection: [['None', ''], ['By appointment only', 'appointment_only'], ['Always open', 'always_open'],
-                                                                       ['No set business hours - Call to Inquire', 'no_set_business_hours']]),
+      ['No set business hours - Call to Inquire', 'no_set_business_hours']]),
     services: Field::HasMany,
     po_box: Field::Boolean,
     public_address: Field::Boolean,

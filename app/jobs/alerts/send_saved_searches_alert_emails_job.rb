@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Alerts::SendSavedSearchesAlertEmailsJob < ActiveJob::Base
-
   def perform(alert_id)
     @alert = Alert.find(alert_id)
     if @alert.next_alert == Date.today

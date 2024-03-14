@@ -7,8 +7,8 @@ class Search
   FILTER_SEARCH_TYPE = 'filter'
 
   attr_accessor :keyword, :results, :distance, :city, :state, :zipcode,
-                :beneficiary_groups, :services, :causes, :open_now, :open_weekends,
-                :lat, :lon
+    :beneficiary_groups, :services, :causes, :open_now, :open_weekends,
+    :lat, :lon
 
   def save
     raise ActiveRecord::RecordInvalid unless valid?
@@ -21,7 +21,7 @@ class Search
 
   def execute_search
     filters = {
-      address: { city: city.presence, state: state.presence, zipcode: zipcode.presence },
+      address: {city: city.presence, state: state.presence, zipcode: zipcode.presence},
       open_now: ActiveModel::Type::Boolean.new.cast(open_now),
       open_weekends: ActiveModel::Type::Boolean.new.cast(open_weekends),
       beneficiary_groups: beneficiary_groups,
@@ -32,6 +32,6 @@ class Search
     }
 
     @results = Location.where(id: Locations::FilterQuery.call(filters, Location.active).pluck(:id))
-    @results = keyword.present? ? Locations::KeywordQuery.call({ keyword: keyword }, @results) : @results
+    @results = keyword.present? ? Locations::KeywordQuery.call({keyword: keyword}, @results) : @results
   end
 end

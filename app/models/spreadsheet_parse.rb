@@ -2,7 +2,7 @@
 
 class SpreadsheetParse
   FILES_NAME = ['orgs.csv', 'tags.csv', 'beneficiaries.csv', 'causes.csv',
-                'locations.csv', 'location_services.csv', 'location_office_hours.csv', 'location_phone_number.csv'].freeze
+    'locations.csv', 'location_services.csv', 'location_office_hours.csv', 'location_phone_number.csv'].freeze
 
   def import(spreadsheet)
     @organizations = []
@@ -23,14 +23,14 @@ class SpreadsheetParse
     end
 
     paths =
-      { orgs_csv_file: "#{file_path.path}/orgs.csv",
-        tags_csv_file: "#{file_path.path}/tags.csv",
-        beneficiaries_csv_file: "#{file_path.path}/beneficiaries.csv",
-        causes_csv_file: "#{file_path.path}/causes.csv",
-        locations_csv_file: "#{file_path.path}/locations.csv",
-        location_services_csv_file: "#{file_path.path}/location_services.csv",
-        location_office_hours_csv_file: "#{file_path.path}/location_office_hours.csv",
-        location_phone_number_csv_file: "#{file_path.path}/location_phone_number.csv" }
+      {orgs_csv_file: "#{file_path.path}/orgs.csv",
+       tags_csv_file: "#{file_path.path}/tags.csv",
+       beneficiaries_csv_file: "#{file_path.path}/beneficiaries.csv",
+       causes_csv_file: "#{file_path.path}/causes.csv",
+       locations_csv_file: "#{file_path.path}/locations.csv",
+       location_services_csv_file: "#{file_path.path}/location_services.csv",
+       location_office_hours_csv_file: "#{file_path.path}/location_office_hours.csv",
+       location_phone_number_csv_file: "#{file_path.path}/location_phone_number.csv"}
   end
 
   def create_models(csv_file_paths)
@@ -133,30 +133,30 @@ class SpreadsheetParse
   end
 
   def build_organization_hash(org_row)
-    { name: org_row['name'], ein_number: org_row['ein_number'], irs_ntee_code: org_row['irs_ntee_code'],
-      mission_statement_en: org_row['mission_statement_en'], vision_statement_en: org_row['vision_statement_en'],
-      tagline_en: org_row['tagline_en'], mission_statement_es: org_row['mission_statement_es'],
-      vision_statement_es: org_row['vision_statement_es'], tagline_es: org_row['tagline_es'],
-      website: org_row['website'], scope_of_work: org_row['scope_of_work'], creator: AdminUser.first,
-      active: org_row['active'] == 'yes',
-      donation_link: org_row['donation_link'] }
+    {name: org_row['name'], ein_number: org_row['ein_number'], irs_ntee_code: org_row['irs_ntee_code'],
+     mission_statement_en: org_row['mission_statement_en'], vision_statement_en: org_row['vision_statement_en'],
+     tagline_en: org_row['tagline_en'], mission_statement_es: org_row['mission_statement_es'],
+     vision_statement_es: org_row['vision_statement_es'], tagline_es: org_row['tagline_es'],
+     website: org_row['website'], scope_of_work: org_row['scope_of_work'], creator: AdminUser.first,
+     active: org_row['active'] == 'yes',
+     donation_link: org_row['donation_link']}
   end
 
   def build_social_media_hash(org_row)
-    { facebook: org_row['facebook'], instagram: org_row['instagram'],
-      twitter: org_row['twitter'], linkedin: org_row['linkedin'], youtube: org_row['youtube'],
-      blog: org_row['blog'] }
+    {facebook: org_row['facebook'], instagram: org_row['instagram'],
+     twitter: org_row['twitter'], linkedin: org_row['linkedin'], youtube: org_row['youtube'],
+     blog: org_row['blog']}
   end
 
   def build_location_hash(location_row)
-    { address: location_row['address'], website: location_row['website'],
-      main: location_row['main'] == 'yes',
-      non_standard_office_hours: location_row['non_standard_office_hours'].presence || nil,
-      offer_services: location_row['offer_services'] == 'yes',
-      name: location_row['name'],
-      latitude: location_row['latitude'].present? ? location_row['latitude'].to_f : nil,
-      longitude: location_row['longitude'].present? ? location_row['longitude'].to_f : nil,
-      email: location_row['email'], youtube_video_link: location_row['youtube_video_link'] }
+    {address: location_row['address'], website: location_row['website'],
+     main: location_row['main'] == 'yes',
+     non_standard_office_hours: location_row['non_standard_office_hours'].presence || nil,
+     offer_services: location_row['offer_services'] == 'yes',
+     name: location_row['name'],
+     latitude: location_row['latitude'].present? ? location_row['latitude'].to_f : nil,
+     longitude: location_row['longitude'].present? ? location_row['longitude'].to_f : nil,
+     email: location_row['email'], youtube_video_link: location_row['youtube_video_link']}
   end
 
   def import_organizations

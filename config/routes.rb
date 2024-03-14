@@ -28,7 +28,7 @@ Rails.application.routes.draw do
   end
 
   devise_for :admin_users
-  devise_for :users, controllers: { confirmations: 'confirmations' }
+  devise_for :users, controllers: {confirmations: 'confirmations'}
 
   devise_scope :user do
     get 'signup' => 'devise/registrations#new'

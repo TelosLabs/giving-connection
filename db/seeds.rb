@@ -2,7 +2,7 @@
 
 unless Rails.env.production?
 
-  #Delete old records
+  # Delete old records
   Organization.destroy_all
   Service.destroy_all
   Cause.destroy_all

@@ -49,11 +49,11 @@ class Organization < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   validates :organization_causes, presence: true
   validates :ein_number, presence: true, uniqueness: true
-  validates :irs_ntee_code, presence: true, inclusion: { in: Organizations::Constants::NTEE_CODE }
+  validates :irs_ntee_code, presence: true, inclusion: {in: Organizations::Constants::NTEE_CODE}
   validates :mission_statement_en, presence: true
-  validates :scope_of_work, presence: true, inclusion: { in: Organizations::Constants::SCOPE }
+  validates :scope_of_work, presence: true, inclusion: {in: Organizations::Constants::SCOPE}
   validates :logo, content_type: ['image/png', 'image/jpg', 'image/jpeg'],
-                   size: { less_than: 5.megabytes, message: 'File too large. Must be less than 5MB in size' }
+    size: {less_than: 5.megabytes, message: 'File too large. Must be less than 5MB in size'}
 
   after_create :attach_logo_and_cover
 

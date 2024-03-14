@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe OfficeHour, type: :model do
-  let( :location ) { create(:location) }
-  let( :office_hour ) { create(:office_hour, location: location) }
+  let(:location) { create(:location) }
+  let(:office_hour) { create(:office_hour, location: location) }
   subject { create(:office_hour) }
 
   describe "associations" do

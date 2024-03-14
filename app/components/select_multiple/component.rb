@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module SelectMultiple
   class Component < ApplicationViewComponent
     def initialize(f: "", klass: "", name: "", items: {}, selected: [], options: {}, placeholder: "", required: false)
@@ -34,12 +35,12 @@ module SelectMultiple
     end
 
     def format_cause_name(name)
-      name.downcase.
-          delete("&").
-          split(" ").
-          join("_").
-          gsub("-", "_") <<
-          ".svg"
+      name.downcase
+        .delete("&")
+        .split(" ")
+        .join("_")
+        .gsub("-", "_") <<
+        ".svg"
     end
 
     def collection(name)

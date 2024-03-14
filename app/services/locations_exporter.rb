@@ -1,5 +1,4 @@
 class LocationsExporter < ApplicationService
-
   def initialize(locations, link_pattern)
     @locations = locations
     @link_pattern = link_pattern

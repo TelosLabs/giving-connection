@@ -41,7 +41,7 @@ module Admin
         create_tags(resource, JSON.parse(params['tags_attributes'])) unless params['tags_attributes'].strip.empty?
         redirect_to([namespace, resource], notice: translate_with_resource('create.success'))
       else
-        render :new, locals: { page: Administrate::Page::Form.new(dashboard, resource) }, status: :unprocessable_entity
+        render :new, locals: {page: Administrate::Page::Form.new(dashboard, resource)}, status: :unprocessable_entity
       end
     end
 
@@ -53,8 +53,8 @@ module Admin
         update_tags(requested_resource, JSON.parse(params['tags_attributes'])) unless params['tags_attributes'].strip.empty?
         redirect_to([namespace, requested_resource], notice: translate_with_resource('update.success'))
       else
-        render :edit, locals: { page: Administrate::Page::Form.new(dashboard, requested_resource) },
-                      status: :unprocessable_entity
+        render :edit, locals: {page: Administrate::Page::Form.new(dashboard, requested_resource)},
+          status: :unprocessable_entity
       end
     end
 
@@ -86,16 +86,16 @@ module Admin
     end
 
     def resource_params
-      permit = dashboard.permitted_attributes << { social_media_attributes: %i[facebook instagram twitter linkedin youtube blog id],
+      permit = dashboard.permitted_attributes << {social_media_attributes: %i[facebook instagram twitter linkedin youtube blog id],
                                                    service_attributes: %i[name description id],
                                                    beneficiary_subcategories_id: [],
                                                    services_id: [],
                                                    location_attributes: %i[address latitude longitude website main offer_services non_standard_office_hours],
                                                    tags_attributes: [],
-                                                   office_hours_attributes: %i[day open_time close_time closed] }
+                                                   office_hours_attributes: %i[day open_time close_time closed]}
       params.require(resource_class.model_name.param_key)
-            .permit(permit)
-            .transform_values { |value| value == '' ? nil : value }
+        .permit(permit)
+        .transform_values { |value| value == '' ? nil : value }
     end
 
     private

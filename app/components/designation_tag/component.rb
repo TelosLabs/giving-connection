@@ -9,7 +9,7 @@ class DesignationTag::Component < ApplicationViewComponent
 
   def container_setup
     setup = {class: "flex flex-wrap gap-2 mt-2"}
-    
+
     setup.merge(container_options) do |_key, prev_value, new_value|
       "#{prev_value}  #{new_value}"
     end

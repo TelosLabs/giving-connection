@@ -1,6 +1,5 @@
 class SavedSearchAlertMailerPreview < ActionMailer::Preview
   def send_alert
-
     alert = Alert.new(
       id: 2,
       user_id: 2,

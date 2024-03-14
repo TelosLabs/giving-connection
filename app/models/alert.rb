@@ -28,7 +28,7 @@ class Alert < ApplicationRecord
   has_many :alert_causes, dependent: :destroy
   has_many :causes, through: :alert_causes
 
-  validates :frequency, presence: true, inclusion: { in: %w[daily weekly monthly] }
+  validates :frequency, presence: true, inclusion: {in: %w[daily weekly monthly]}
 
   scope :due_for_today, -> { where(next_alert: Date.today) }
 
@@ -41,13 +41,13 @@ class Alert < ApplicationRecord
   private
 
   def schedule_next_alert
-   case frequency
-   when 'daily'
-     self.update_column(:next_alert, Date.today + 1.day)
-   when 'weekly'
-     self.update_column(:next_alert, Date.today + 1.week)
-   when 'monthly'
-     self.update_column(:next_alert, Date.today + 1.month)
-   end
+    case frequency
+    when 'daily'
+      self.update_column(:next_alert, Date.today + 1.day)
+    when 'weekly'
+      self.update_column(:next_alert, Date.today + 1.week)
+    when 'monthly'
+      self.update_column(:next_alert, Date.today + 1.month)
+    end
   end
 end

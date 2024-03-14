@@ -2,7 +2,7 @@
 
 class MessageMailer < ApplicationMailer
   default to: -> { AdminUser.pluck(:email) },
-          from: Rails.application.credentials.dig(:mailer, :from)
+    from: Rails.application.credentials.dig(:mailer, :from)
 
   def default_response(message)
     @message = message

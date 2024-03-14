@@ -4,7 +4,7 @@ class CreateTags < ActiveRecord::Migration[6.1]
       t.string :name
       t.references :organization, null: false, foreign_key: true
       t.index :name
-      
+
       t.timestamps
     end
   end

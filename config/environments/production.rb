@@ -48,7 +48,6 @@ Rails.application.configure do
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
   config.action_cable.allowed_request_origins = Rails.application.credentials.dig(Rails.env.to_sym)[:app_host]
 
-
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = false
 
@@ -60,7 +59,7 @@ Rails.application.configure do
   config.log_tags = [:request_id]
 
   # Use a different cache store in production.
-  config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] }
+  config.cache_store = :redis_cache_store, {url: ENV['REDIS_URL']}
 
   config.action_mailer.perform_caching = false
 
@@ -156,7 +155,7 @@ Rails.application.configure do
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
   config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.delivery_method     = :smtp
-  config.action_mailer.default_url_options = { host: Rails.application.credentials.dig(Rails.env.to_sym)[:host] }
-  config.action_mailer.asset_host          = { host: Rails.application.credentials.dig(Rails.env.to_sym)[:host] }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.default_url_options = {host: Rails.application.credentials.dig(Rails.env.to_sym)[:host]}
+  config.action_mailer.asset_host = {host: Rails.application.credentials.dig(Rails.env.to_sym)[:host]}
 end

@@ -4,12 +4,12 @@ require 'active_support/core_ext/integer/time'
 
 Rails.application.configure do
   config.after_initialize do
-    Bullet.enable        = false
-    Bullet.alert         = false
+    Bullet.enable = false
+    Bullet.alert = false
     Bullet.bullet_logger = false
-    Bullet.console       = false
-    Bullet.rails_logger  = false
-    Bullet.add_footer    = false
+    Bullet.console = false
+    Bullet.rails_logger = false
+    Bullet.add_footer = false
   end
 
   # Settings specified here will take precedence over those in config/application.rb.
@@ -49,9 +49,9 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  config.action_mailer.default_url_options = { host: 'localhost', port: 5000 }
+  config.action_mailer.default_url_options = {host: 'localhost', port: 5000}
 
-  config.action_mailer.delivery_method     = :letter_opener
+  config.action_mailer.delivery_method = :letter_opener
 
   config.action_mailer.default charset: 'utf-8'
 

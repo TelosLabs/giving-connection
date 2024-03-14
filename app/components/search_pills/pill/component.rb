@@ -1,7 +1,7 @@
 require "securerandom"
 
 class SearchPills::Pill::Component < ApplicationViewComponent
-  def initialize(name:, value: , checked:,  options: { data: {action: ''}})
+  def initialize(name:, value:, checked:, options: {data: {action: ''}})
     @name = name
     @value = value
     @checked = checked

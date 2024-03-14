@@ -1,5 +1,5 @@
 class DiscoverNonprofitCard::ImagesCarousel::Component < ApplicationViewComponent
-  def initialize(images:, image_styles: "",  placeholder_options: {}, carousel_container_options: {})
+  def initialize(images:, image_styles: "", placeholder_options: {}, carousel_container_options: {})
     @images = images
     @image_styles = image_styles
     @placeholder_options = placeholder_options

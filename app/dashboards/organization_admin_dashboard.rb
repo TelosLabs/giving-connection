@@ -14,8 +14,8 @@ class OrganizationAdminDashboard < Administrate::BaseDashboard
     user: Field::BelongsTo.with_options(order: 'email'),
     id: Field::Number,
     role: Field::SelectBasic.with_options({
-                                            choices: ['admin']
-                                          }),
+      choices: ['admin']
+    }),
     created_at: Field::DateTime,
     updated_at: Field::DateTime
   }.freeze

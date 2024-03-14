@@ -55,6 +55,5 @@ module Locations
     def day_hours(day)
       office_hours.find_by(day: day)
     end
-
   end
 end
