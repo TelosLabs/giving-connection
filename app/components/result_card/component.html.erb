@@ -11,7 +11,7 @@
         <div class="flex items-start">
           <%= helpers.title_link(@turbo_frame, @id, @title) %>
           <% if @verified %>
-            <%= render "shared/popover", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg" %>
+            <%= render "shared/popover", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg", position: "right-0" %>
           <% end %>
         </div>
 
