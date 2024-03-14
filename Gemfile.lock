@@ -135,6 +135,11 @@ GEM
     bullet (7.0.7)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
+    bundle-audit (0.1.0)
+      bundler-audit
+    bundler-audit (0.9.1)
+      bundler (>= 1.2.0, < 3)
+      thor (~> 1.0)
     byebug (11.1.3)
     capybara (3.36.0)
       addressable
@@ -164,10 +169,6 @@ GEM
     cuprite (0.15)
       capybara (~> 3.0)
       ferrum (~> 0.14.0)
-    database_cleaner-active_record (2.0.1)
-      activerecord (>= 5.a)
-      database_cleaner-core (~> 2.0.0)
-    database_cleaner-core (2.0.1)
     database_consistency (1.1.7)
       activerecord (>= 3.2)
     datetime_picker_rails (0.0.7)
@@ -229,9 +230,9 @@ GEM
       ruby_parser (~> 3.0)
       sexp_processor (~> 4.0)
     formatador (0.3.0)
-    gitlab (4.17.0)
-      httparty (~> 0.18)
-      terminal-table (~> 1.5, >= 1.5.1)
+    gitlab (4.19.0)
+      httparty (~> 0.20)
+      terminal-table (>= 1.5.1)
     globalid (1.0.1)
       activesupport (>= 5.0)
     guard (2.18.0)
@@ -287,10 +288,12 @@ GEM
       faraday (< 2)
       json (>= 1.8)
       rexml
+    language_server-protocol (3.17.0.3)
     launchy (2.5.0)
       addressable (~> 2.7)
     letter_opener (1.7.0)
       launchy (~> 2.2)
+    lint_roller (1.1.0)
     listen (3.7.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -345,20 +348,21 @@ GEM
     orm_adapter (0.5.0)
     pagy (5.6.5)
     parallel (1.21.0)
-    parser (3.0.3.2)
+    parser (3.3.0.5)
       ast (~> 2.4.1)
+      racc
     path_expander (1.1.0)
     pg (1.2.3)
     pg_search (2.3.5)
       activerecord (>= 5.2)
       activesupport (>= 5.2)
-    pronto (0.11.0)
-      gitlab (~> 4.4, >= 4.4.0)
-      httparty (>= 0.13.7)
-      octokit (~> 4.7, >= 4.7.0)
+    pronto (0.11.2)
+      gitlab (>= 4.4.0, < 5.0)
+      httparty (>= 0.13.7, < 1.0)
+      octokit (>= 4.7.0, < 8.0)
       rainbow (>= 2.2, < 4.0)
-      rexml (~> 3.2)
-      rugged (>= 0.23.0, < 1.1.0)
+      rexml (>= 3.2.5, < 4.0)
+      rugged (>= 0.23.0, < 2.0)
       thor (>= 0.20.3, < 2.0)
     pronto-flay (0.11.1)
       flay (~> 2.8)
@@ -463,17 +467,35 @@ GEM
       rspec-core (~> 3.0, >= 3.0.0)
       sidekiq (>= 2.4.0)
     rspec-support (3.10.3)
-    rubocop (1.23.0)
+    rubocop (1.62.1)
+      json (~> 2.3)
+      language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
-      parser (>= 3.0.0.0)
+      parser (>= 3.3.0.2)
       rainbow (>= 2.2.2, < 4.0)
       regexp_parser (>= 1.8, < 3.0)
-      rexml
-      rubocop-ast (>= 1.12.0, < 2.0)
+      rexml (>= 3.2.5, < 4.0)
+      rubocop-ast (>= 1.31.1, < 2.0)
       ruby-progressbar (~> 1.7)
-      unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.14.0)
-      parser (>= 3.0.1.1)
+      unicode-display_width (>= 2.4.0, < 3.0)
+    rubocop-ast (1.31.2)
+      parser (>= 3.3.0.4)
+    rubocop-capybara (2.20.0)
+      rubocop (~> 1.41)
+    rubocop-factory_bot (2.25.1)
+      rubocop (~> 1.41)
+    rubocop-performance (1.20.2)
+      rubocop (>= 1.48.1, < 2.0)
+      rubocop-ast (>= 1.30.0, < 2.0)
+    rubocop-rails (2.23.1)
+      activesupport (>= 4.2.0)
+      rack (>= 1.1)
+      rubocop (>= 1.33.0, < 2.0)
+      rubocop-ast (>= 1.30.0, < 2.0)
+    rubocop-rspec (2.27.1)
+      rubocop (~> 1.40)
+      rubocop-capybara (~> 2.17)
+      rubocop-factory_bot (~> 2.22)
     ruby-progressbar (1.11.0)
     ruby-vips (2.1.4)
       ffi (~> 1.12)
@@ -495,7 +517,7 @@ GEM
     sawyer (0.8.2)
       addressable (>= 2.3.5)
       faraday (> 0.8, < 2.0)
-    scout_apm (5.3.3)
+    scout_apm (5.3.7)
       parser
     selectize-rails (0.12.6)
     selenium-webdriver (4.6.1)
@@ -533,10 +555,25 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
+    standard (1.35.1)
+      language_server-protocol (~> 3.17.0.2)
+      lint_roller (~> 1.0)
+      rubocop (~> 1.62.0)
+      standard-custom (~> 1.0.0)
+      standard-performance (~> 1.3)
+    standard-custom (1.0.2)
+      lint_roller (~> 1.0)
+      rubocop (~> 1.50)
+    standard-performance (1.3.1)
+      lint_roller (~> 1.1)
+      rubocop-performance (~> 1.20.2)
+    standard-rails (1.0.2)
+      lint_roller (~> 1.0)
+      rubocop-rails (~> 2.23.1)
     strscan (3.0.1)
     temple (0.8.2)
-    terminal-table (1.8.0)
-      unicode-display_width (~> 1.1, >= 1.1.1)
+    terminal-table (3.0.2)
+      unicode-display_width (>= 1.1.1, < 3)
     thor (1.1.0)
     tilt (2.0.10)
     timecop (0.9.5)
@@ -547,7 +584,7 @@ GEM
       railties (>= 6.0.0)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
-    unicode-display_width (1.8.0)
+    unicode-display_width (2.5.0)
     uniform_notifier (1.16.0)
     view_component (2.49.1)
       activesupport (>= 5.0.0, < 8.0)
@@ -600,6 +637,7 @@ DEPENDENCIES
   bootsnap
   brakeman
   bullet
+  bundle-audit
   byebug
   capybara (>= 3.26)
   caxlsx
@@ -607,7 +645,6 @@ DEPENDENCIES
   clockwork
   cocoon
   cuprite
-  database_cleaner-active_record
   database_consistency
   devise
   draper
@@ -645,7 +682,8 @@ DEPENDENCIES
   roo (~> 2.8.0)
   rspec-rails (~> 5.0.0)
   rspec-sidekiq
-  rubocop
+  rubocop-rails (~> 2)!
+  rubocop-rspec (~> 2)!
   sass-rails (>= 6)
   scout_apm
   shoulda-matchers (~> 4.0)
@@ -653,6 +691,8 @@ DEPENDENCIES
   simplecov
   slim-rails
   spring
+  standard (~> 1)!
+  standard-rails (~> 1.0, >= 1.0.2)!
   timecop
   turbo-rails
   tzinfo-data

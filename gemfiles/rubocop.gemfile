@@ -1,0 +1,7 @@
+source 'https://rubygems.org' do
+  # gem 'rubocop-i18n', '~> 3', require: false
+  gem 'rubocop-rails', '~> 2'
+  gem 'rubocop-rspec', '~> 2'
+  gem 'standard', '~> 1'
+  gem 'standard-rails', '~> 1.0', '>= 1.0.2'
+end

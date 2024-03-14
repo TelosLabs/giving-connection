@@ -82,16 +82,16 @@ gem 'activerecord-postgis-adapter'
 gem 'koala'
 
 group :development, :test do
+  eval_gemfile 'gemfiles/rubocop.gemfile'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'database_cleaner-active_record'
   gem 'factory_bot_rails'
   gem 'pry-rails'
   gem 'rspec-rails', '~> 5.0.0'
-  gem 'rubocop', require: false
 end
 
 group :development do
+  gem 'bundle-audit'
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 4.1.0'
   # Display performance information such as SQL time and flame graphs for each request in your browser.
