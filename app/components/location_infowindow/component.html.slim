@@ -11,7 +11,7 @@ div class="flex items-center gap-1"
   a id="pointer"
     = link_to @location.name, location_path(@location), target:"_blank", class: "text-small font-bold text-gray-2"
   - if @location.organization.verified?
-    = render partial: "shared/popover", locals: {position: "left-0", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg"}
+    = render partial: "shared/popover", locals: {position: "right-0", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg"}
 
 // Address, website, phone, and availability
 - if @location.public_address?
