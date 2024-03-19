@@ -8,7 +8,7 @@ class AutocompleteController < ApplicationController
 
   def index
     @suggestions = PgSearch.multisearch(params[:q]).map do |record|
-      record.searchable.name
+      record.searchable.name.downcase
     end.uniq
 
     render layout: false
