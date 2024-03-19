@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module SelectMultiple
   class Component < ApplicationViewComponent
     def initialize(f: "", klass: "", name: "", items: {}, selected: [], options: {}, placeholder: "", required: false)
@@ -14,15 +15,15 @@ module SelectMultiple
 
     def options
       {
-        class: 'relative flex flex-wrap w-full mt-1 text-base border cursor-text min-h-46px rounded-6px text-gray-3',
+        class: "relative flex flex-wrap w-full mt-1 text-base border cursor-text min-h-46px rounded-6px text-gray-3",
         data: {
-          controller: 'select-multiple extend-dropdown',
-          action: 'click->select-multiple#focus click->extend-dropdown#show click@window->extend-dropdown#hide selectmultiple:clear->select-multiple#clearAll',
-          'search-target': 'customInput',
+          controller: "select-multiple extend-dropdown",
+          action: "click->select-multiple#focus click->extend-dropdown#show click@window->extend-dropdown#hide selectmultiple:clear->select-multiple#clearAll",
+          "search-target": "customInput",
           form_validation_target: "selectMultiple",
-          'select-multiple-target': 'container',
-          'extend-dropdown-target': 'button',
-          'select-multiple-selected-value': @selected
+          "select-multiple-target": "container",
+          "extend-dropdown-target": "button",
+          "select-multiple-selected-value": @selected
         }
       }.merge(@options) do |key, first_value, repeated_value|
         if key == :data
@@ -34,12 +35,12 @@ module SelectMultiple
     end
 
     def format_cause_name(name)
-      name.downcase.
-          delete("&").
-          split(" ").
-          join("_").
-          gsub("-", "_") <<
-          ".svg"
+      name.downcase
+        .delete("&")
+        .split(" ")
+        .join("_")
+        .tr("-", "_") <<
+        ".svg"
     end
 
     def collection(name)

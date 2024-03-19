@@ -40,7 +40,7 @@ module Locations
     def consistent_weekdays_hours?
       week_office_hours = office_hours.where(day: WEEKDAYS)
       return false if week_office_hours.empty?
-      base = week_office_hours.first.open_time&.strftime('%H:%M:%S')
+      base = week_office_hours.first.open_time&.strftime("%H:%M:%S")
       open_time_consistency = week_office_hours.all? do |oh|
         oh.open_time&.strftime("%H:%M:%S") == base
       end
@@ -55,6 +55,5 @@ module Locations
     def day_hours(day)
       office_hours.find_by(day: day)
     end
-
   end
 end

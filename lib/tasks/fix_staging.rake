@@ -1,5 +1,5 @@
 namespace :fix_staging do
-  desc 'Delete duplicate causes and services'
+  desc "Delete duplicate causes and services"
   task delete_duplicate_causes_and_services: :environment do
     unless Rails.env.production?
       delete_duplicate_causes
@@ -12,7 +12,7 @@ namespace :fix_staging do
 
   def delete_duplicate_causes
     Organizations::Constants::CAUSES_AND_SERVICES.each do |cause, services|
-      similar_causes = Cause.where('name LIKE ?', "#{cause}%")
+      similar_causes = Cause.where("name LIKE ?", "#{cause}%")
 
       puts "There are #{similar_causes.count} with name like #{cause}"
       Rails.logger.info "There are #{similar_causes.count} with name like #{cause}"

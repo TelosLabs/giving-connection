@@ -18,15 +18,15 @@ module Locations
         scope = by_service(scope, params[:services])
         scope = by_beneficiary_groups_served(scope, params[:beneficiary_groups])
         scope = opened_now(scope, params[:open_now])
-        scope = opened_on_weekends(scope, params[:open_weekends])
+        opened_on_weekends(scope, params[:open_weekends])
       end
 
       def geo_near(scope, coords, distance)
         return scope if distance.blank? || distance.zero? || scope.empty?
 
         scope.where(
-          'ST_DWithin(lonlat, :point, :distance)',
-          { point: coords, distance: distance * 1000 } # wants meters not kms
+          "ST_DWithin(lonlat, :point, :distance)",
+          {point: coords, distance: distance * 1000} # wants meters not kms
         )
       end
 
@@ -36,7 +36,7 @@ module Locations
         address_params[:state_name] = CS.states(:us)[address_params[:state].to_sym]
 
         scope = scope.where(
-          'address ILIKE ANY ( array[?] )',
+          "address ILIKE ANY ( array[?] )",
           ["%#{address_params[:state_name]}%", "%#{address_params[:state]}%"]
         )
         address_params[:state] = nil
@@ -45,7 +45,7 @@ module Locations
         return scope if address_params.values.all?(&:blank?)
 
         scope.where(
-          'address ILIKE ALL ( array[?] )',
+          "address ILIKE ALL ( array[?] )",
           parameterize_address_filters(address_params)
         )
       end
@@ -53,11 +53,11 @@ module Locations
       def by_cause(scope, causes)
         return scope if causes.blank? || scope.empty?
 
-        Location.joins(organization: { organization_causes: :cause })
-                .where('locations.id IN (?)', scope.ids)
-                .where('causes.name IN (?)', causes)
-                .group('locations.id')
-                .having('count(locations.id) >= ?', causes.size) # multiple filters add up with AND behavior
+        Location.joins(organization: {organization_causes: :cause})
+          .where("locations.id IN (?)", scope.ids)
+          .where("causes.name IN (?)", causes)
+          .group("locations.id")
+          .having("count(locations.id) >= ?", causes.size) # multiple filters add up with AND behavior
       end
 
       def by_service(scope, services)
@@ -65,17 +65,17 @@ module Locations
         complex_query = []
         services.each do |cause, services_list|
           services_list.each do |ser|
-            cause = cause&.gsub("'","''")
-            ser = ser&.gsub("'","''")
+            cause = cause&.gsub("'", "''")
+            ser = ser&.gsub("'", "''")
             complex_query << "('#{cause}', '#{ser}')"
           end
         end
 
-        Location.joins(location_services: { service: :cause })
-                .where('locations.id IN (?)', scope.ids)
-                .where("(causes.name, services.name) IN (#{complex_query.join(',')})")
-                .group('locations.id')
-                .having('count(locations.id) >= ?', complex_query.size) # multiple filters add up with AND behavior
+        Location.joins(location_services: {service: :cause})
+          .where("locations.id IN (?)", scope.ids)
+          .where("(causes.name, services.name) IN (#{complex_query.join(",")})")
+          .group("locations.id")
+          .having("count(locations.id) >= ?", complex_query.size) # multiple filters add up with AND behavior
       end
 
       def by_beneficiary_groups_served(scope, beneficiary_groups_filters)
@@ -84,16 +84,16 @@ module Locations
         complex_query = []
         beneficiary_groups_filters.each do |group, subcategory|
           subcategory.each do |sub|
-            group = group&.gsub("'","''")
+            group = group&.gsub("'", "''")
             complex_query << "('#{group}', '#{sub}')"
           end
         end
 
-        Location.joins(organization: { organization_beneficiaries: { beneficiary_subcategory: :beneficiary_group } })
-                .where('locations.id IN (?)', scope.ids)
-                .where("(beneficiary_groups.name, beneficiary_subcategories.name) IN (#{complex_query.join(',')})")
-                .group('locations.id')
-                .having('count(locations.id) >= ?', complex_query.size) # multiple filters add up with AND behavior
+        Location.joins(organization: {organization_beneficiaries: {beneficiary_subcategory: :beneficiary_group}})
+          .where("locations.id IN (?)", scope.ids)
+          .where("(beneficiary_groups.name, beneficiary_subcategories.name) IN (#{complex_query.join(",")})")
+          .group("locations.id")
+          .having("count(locations.id) >= ?", complex_query.size) # multiple filters add up with AND behavior
       end
 
       def starting_coordinates(lat, lon)

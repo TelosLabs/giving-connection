@@ -20,7 +20,7 @@ class OfficeHour < ActiveRecord::Base
   belongs_to :location, touch: true
 
   validates :day, presence: true, inclusion: 0..6
-  validates :open_time, presence: true, unless:  :closed_or_does_not_offers_service?
+  validates :open_time, presence: true, unless: :closed_or_does_not_offers_service?
   validates :close_time, presence: true, unless: :closed_or_does_not_offers_service?
 
   before_validation :closed_if_does_not_offers_service
@@ -33,30 +33,29 @@ class OfficeHour < ActiveRecord::Base
   def formatted_open_time
     return nil unless open_time
     now = Date.current
-    open_time.change({ year: now.year, month: now.month, day: now.day })
+    open_time.change({year: now.year, month: now.month, day: now.day})
   end
 
   def formatted_close_time
     return nil unless close_time
     now = Date.current
-    close_time.change({ year: now.year, month: now.month, day: now.day })
+    close_time.change({year: now.year, month: now.month, day: now.day})
   end
 
   private
 
   def closed_or_does_not_offers_service?
-    self.closed? || !self.location.offer_services
+    closed? || !location.offer_services
   end
 
   def clean_time
     self.open_time = nil
-    self.close_time = nil  
+    self.close_time = nil
   end
 
   def closed_if_does_not_offers_service
-    unless self.location.offer_services
+    unless location.offer_services
       self.closed = true
     end
   end
-
 end

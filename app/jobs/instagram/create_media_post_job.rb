@@ -11,7 +11,7 @@ class Instagram::CreateMediaPostJob < ApplicationJob
   private
 
   def create_instagram_post
-    instagram_post = InstagramPost.find_or_initialize_by(external_id: @post['id'])
+    instagram_post = InstagramPost.find_or_initialize_by(external_id: @post["id"])
     instagram_post.assign_attributes(post_attributes)
     instagram_post.save!
     Rails.logger.info "Successfully saved Instagram Post with id #{instagram_post.id}"
@@ -19,11 +19,11 @@ class Instagram::CreateMediaPostJob < ApplicationJob
 
   def post_attributes
     {
-      external_id: @post['id'].to_i,
-      media_url: @post['media_url'],
-      post_url: @post['permalink'],
-      media_type: @post['media_type'].downcase,
-      creation_date: @post['timestamp'].to_date,
+      external_id: @post["id"].to_i,
+      media_url: @post["media_url"],
+      post_url: @post["permalink"],
+      media_type: @post["media_type"].downcase,
+      creation_date: @post["timestamp"].to_date,
       updated_at: DateTime.current
     }
   end

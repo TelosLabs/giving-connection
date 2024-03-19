@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'administrate/base_dashboard'
+require "administrate/base_dashboard"
 
 class OrganizationAdminDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
@@ -11,11 +11,11 @@ class OrganizationAdminDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     organization: Field::BelongsTo,
-    user: Field::BelongsTo.with_options(order: 'email'),
+    user: Field::BelongsTo.with_options(order: "email"),
     id: Field::Number,
     role: Field::SelectBasic.with_options({
-                                            choices: ['admin']
-                                          }),
+      choices: ["admin"]
+    }),
     created_at: Field::DateTime,
     updated_at: Field::DateTime
   }.freeze

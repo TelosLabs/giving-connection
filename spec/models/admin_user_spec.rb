@@ -21,13 +21,13 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe AdminUser, type: :model do
-  context 'AdminUser model validation test' do
+  context "AdminUser model validation test" do
     subject { create(:admin_user) }
 
-    it 'ensures admin_user can be created' do
+    it "ensures admin_user can be created" do
       expect(subject).to be_valid
     end
   end

@@ -17,11 +17,11 @@ class ApplicationDecorator < Draper::Decorator
 
     uri = URI(raw_url)
     if uri.instance_of?(URI::Generic)
-      split = uri.to_s.split('/')
-      if split.size > 1
-        uri = URI::HTTP.build({host: split.shift, path: '/'+split.join('/')})
+      split = uri.to_s.split("/")
+      uri = if split.size > 1
+        URI::HTTP.build({host: split.shift, path: "/" + split.join("/")})
       else
-        uri = URI::HTTP.build({host: split.shift.to_s})
+        URI::HTTP.build({host: split.shift.to_s})
       end
     end
     uri.to_s

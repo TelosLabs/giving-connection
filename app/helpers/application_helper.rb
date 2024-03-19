@@ -5,9 +5,9 @@ module ApplicationHelper
 
   def device
     agent = request.user_agent
-    return "tablet" if agent =~ /(tablet|ipad)|(android(?!.*mobile))/i
-    return "mobile" if agent =~ /Mobile/
-    return "desktop"
+    return "tablet" if /(tablet|ipad)|(android(?!.*mobile))/i.match?(agent)
+    return "mobile" if /Mobile/.match?(agent)
+    "desktop"
   end
 
   # recaptcha gem doesn't work well with Turbo

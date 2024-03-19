@@ -22,13 +22,13 @@ class OrganizationsController < ApplicationController
     @organization = Organization.find(params[:id])
     authorize @organization
     if @organization.update(organization_params)
-      update_tags(@organization, JSON.parse(params['organization']['tags_attributes'])) unless params['organization']['tags_attributes'].strip.empty?
+      update_tags(@organization, JSON.parse(params["organization"]["tags_attributes"])) unless params["organization"]["tags_attributes"].strip.empty?
       redirect_to my_account_path
-      flash[:notice] = 'The Organization was successfully updated'
+      flash[:notice] = "The Organization was successfully updated"
     else
       set_form_data
-      flash.now[:alert] = 'The Organization was not updated'
-      render 'edit', status: :unprocessable_entity
+      flash.now[:alert] = "The Organization was not updated"
+      render "edit", status: :unprocessable_entity
     end
   end
 
@@ -37,7 +37,7 @@ class OrganizationsController < ApplicationController
     authorize @organization
     @attachment = ActiveStorage::Attachment.find(params[:upload_id])
     @attachment.purge
-    redirect_to edit_organization_path(@organization, anchor: 'location-specific-fields')
+    redirect_to edit_organization_path(@organization, anchor: "location-specific-fields")
   end
 
   def set_form_data
@@ -52,7 +52,7 @@ class OrganizationsController < ApplicationController
     Cause.all.each do |cause|
       @services[cause.name] = cause.services.map(&:name)
     end
-    if (@services.is_a?(Hash))
+    if @services.is_a?(Hash)
       @services
     end
   end
@@ -62,14 +62,14 @@ class OrganizationsController < ApplicationController
     BeneficiaryGroup.all.each do |group|
       @beneficiary_groups[group.name] = group.beneficiary_subcategories.map(&:name)
     end
-    if (@beneficiary_groups.is_a?(Hash))
+    if @beneficiary_groups.is_a?(Hash)
       @beneficiary_groups
     end
   end
 
   def create_tags(organization, tags)
     tags.each do |tag_hash|
-      Tag.create!(organization: organization, name: tag_hash['value'])
+      Tag.create!(organization: organization, name: tag_hash["value"])
     end
   end
 

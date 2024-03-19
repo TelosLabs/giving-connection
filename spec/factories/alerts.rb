@@ -21,13 +21,6 @@
 #
 FactoryBot.define do
   factory :alert do
-    user { association(:user) }
-    distance { 'MyString' }
-    city { 'MyString' }
-    state { 'MyString' }
-    services { 'MyString' }
-    open_now { 'MyString' }
-    open_weekends { 'MyString' }
-    keyword { 'MyString' }
+    user
   end
 end

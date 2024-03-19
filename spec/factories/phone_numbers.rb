@@ -13,7 +13,7 @@
 #
 FactoryBot.define do
   factory :phone_number do
-    number { 'MyString' }
+    number { "MyString" }
     main { false }
     location { association(:location) }
   end

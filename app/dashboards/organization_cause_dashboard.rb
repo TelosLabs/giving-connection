@@ -12,7 +12,7 @@ class OrganizationCauseDashboard < Administrate::BaseDashboard
     organization: Field::BelongsTo,
     id: Field::Number,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

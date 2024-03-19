@@ -12,7 +12,7 @@
 #
 FactoryBot.define do
   factory :service do
-    name { 'MyString' }
+    name { "MyString" }
     cause { association(:cause) }
   end
 end

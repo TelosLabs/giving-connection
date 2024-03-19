@@ -9,7 +9,7 @@ class Navbar::Component < ApplicationViewComponent
   end
 
   def non_sticky_paths
-    request.env['PATH_INFO'] == "/searches" || request.env['PATH_INFO'] == "/my_account"
+    request.env["PATH_INFO"] == "/searches" || request.env["PATH_INFO"] == "/my_account"
   end
 end
 

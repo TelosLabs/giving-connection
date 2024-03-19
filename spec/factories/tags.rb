@@ -12,7 +12,7 @@
 #
 FactoryBot.define do
   factory :tag do
-    name { 'Special Care' }
+    name { "Special Care" }
     organization { association :organization }
   end
 end

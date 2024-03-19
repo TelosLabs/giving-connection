@@ -28,6 +28,6 @@ class LocationsController < ApplicationController
   def you_toube_id(youtube_video_link)
     regex = /(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
     match = regex.match(youtube_video_link)
-    match && !match[1].blank? ? match[1] : nil
+    (match && !match[1].blank?) ? match[1] : nil
   end
 end

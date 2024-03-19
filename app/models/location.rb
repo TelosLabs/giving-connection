@@ -25,15 +25,15 @@ class Location < ActiveRecord::Base
   include PgSearch::Model
   multisearchable against: [:name]
 
-  enum non_standard_office_hours: { appointment_only: 1, always_open: 2, no_set_business_hours: 3 }
+  enum non_standard_office_hours: {appointment_only: 1, always_open: 2, no_set_business_hours: 3}
 
   belongs_to :organization, optional: true
 
-  scope :active, -> { joins(:organization).where(organization: { active: true }) }
+  scope :active, -> { joins(:organization).where(organization: {active: true}) }
   scope :public_address, -> { where(public_address: true) }
   scope :besides_po_boxes, -> { where(po_box: false) }
   # scope :in_nashville, -> { where("ST_DWithin(lonlat, ST_GeographyFromText('SRID=4326;POINT(-86.78125827725053 36.16404968727089)'), 1000000) = true") }
-  scope :locations_with_, ->(cause) { group(:id).joins(:causes).where(causes: { id: cause.id }) }
+  scope :locations_with_, ->(cause) { group(:id).joins(:causes).where(causes: {id: cause.id}) }
 
   has_many :office_hours
   has_many :favorite_locations, dependent: :destroy
@@ -52,9 +52,9 @@ class Location < ActiveRecord::Base
   validates :latitude, presence: true
   validates :longitude, presence: true
   validates :lonlat, presence: true
-  validates :main, inclusion: { in: [true, false] }
-  validates :offer_services, inclusion: { in: [true, false] }
-  validates :non_standard_office_hours, inclusion: { in: non_standard_office_hours.keys }, allow_blank: true
+  validates :main, inclusion: {in: [true, false]}
+  validates :offer_services, inclusion: {in: [true, false]}
+  validates :non_standard_office_hours, inclusion: {in: non_standard_office_hours.keys}, allow_blank: true
 
   scope :additional, -> { where(main: false) }
   scope :main, -> { where(main: true) }
@@ -82,11 +82,11 @@ class Location < ActiveRecord::Base
   )
 
   def formatted_address
-    suite.nil? || suite.empty? ? address : address_with_suite_number
+    suite.blank? ? address : address_with_suite_number
   end
 
   def address_with_suite_number
-    address.split(',').insert(1, suite).join(', ')
+    address.split(",").insert(1, suite).join(", ")
   end
 
   def link_to_google_maps
@@ -97,7 +97,7 @@ class Location < ActiveRecord::Base
     locations
       .joins(:services)
       .group(:id)
-      .order('count(services.id) DESC')
+      .order("count(services.id) DESC")
   end
 
   private
@@ -107,8 +107,8 @@ class Location < ActiveRecord::Base
   end
 
   def blank_office_hours(attributes)
-    attributes['open_time'].blank? &&
-      attributes['close_time'].blank? &&
-      attributes['closed'].blank?
+    attributes["open_time"].blank? &&
+      attributes["close_time"].blank? &&
+      attributes["closed"].blank?
   end
 end

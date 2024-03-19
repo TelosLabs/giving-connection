@@ -24,6 +24,5 @@ module Admin
     def scoped_resource
       resource_class.unscoped
     end
-
   end
 end

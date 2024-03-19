@@ -20,7 +20,7 @@ class AlertsController < ApplicationController
     new_alert.user = current_user
     new_alert = clean_open_weekends(new_alert)
     if new_alert.save
-      flash[:notice] = 'Alert created successfully! Go to My Account to view or edit.'
+      flash[:notice] = "Alert created successfully! Go to My Account to view or edit."
       redirect_to request.referer
     end
     update_alert_search_results(new_alert)
@@ -36,7 +36,7 @@ class AlertsController < ApplicationController
     authorize @alert
     return unless @alert.update(alert_params)
 
-    flash[:notice] = 'Alert updated!'
+    flash[:notice] = "Alert updated!"
     redirect_to my_account_path
   end
 
@@ -44,7 +44,7 @@ class AlertsController < ApplicationController
     @alert = Alert.find(params[:id])
     @alert.destroy
     authorize @alert
-    flash[:notice] = 'The alert was successfully deleted.'
+    flash[:notice] = "The alert was successfully deleted."
     redirect_to my_account_path
   end
 
@@ -52,10 +52,10 @@ class AlertsController < ApplicationController
 
   def alert_params
     params.require(:alert)
-          .permit(:filters, :distance, :open_now,
-                  :open_weekends, :keyword, :frequency,
-                  cause_ids: [], service_ids: [],
-                  beneficiary_subcategory_ids: [])
+      .permit(:filters, :distance, :open_now,
+        :open_weekends, :keyword, :frequency,
+        cause_ids: [], service_ids: [],
+        beneficiary_subcategory_ids: [])
   end
 
   def clean_open_weekends(new_alert)

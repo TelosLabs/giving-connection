@@ -12,7 +12,7 @@ class AlertPolicy < ApplicationPolicy
   end
 
   def create?
-   new?
+    new?
   end
 
   def edit?
@@ -20,11 +20,10 @@ class AlertPolicy < ApplicationPolicy
   end
 
   def update?
-   edit?
+    edit?
   end
 
   def destroy?
     true
   end
-
 end

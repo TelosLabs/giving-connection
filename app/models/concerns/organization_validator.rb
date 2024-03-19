@@ -15,11 +15,11 @@ class OrganizationValidator < ActiveModel::Validator
   private
 
   def single_main_location
-    record.errors.add(:base, 'Only one main location is required') if record.locations.select(&:main?).size > 1
+    record.errors.add(:base, "Only one main location is required") if record.locations.select(&:main?).size > 1
   end
 
   def at_least_one_main_location
-    record.errors.add(:base, 'At least one main location is required') if record.locations.select(&:main?).empty?
+    record.errors.add(:base, "At least one main location is required") if record.locations.select(&:main?).empty?
   end
 
   def valid_website_url
@@ -36,9 +36,13 @@ class OrganizationValidator < ActiveModel::Validator
 
   def valid_url(raw_url, attribute)
     return true if raw_url.blank?
-    url = URI.parse(raw_url) rescue false
-    unless url.kind_of?(URI::HTTP) || url.kind_of?(URI::HTTPS) || url.kind_of?(URI::Generic)
-      record.errors.add(attribute, 'URL incorrect format')
+    url = begin
+      URI.parse(raw_url)
+    rescue
+      false
+    end
+    unless url.is_a?(URI::HTTP) || url.is_a?(URI::HTTPS) || url.is_a?(URI::Generic)
+      record.errors.add(attribute, "URL incorrect format")
     end
   end
 end

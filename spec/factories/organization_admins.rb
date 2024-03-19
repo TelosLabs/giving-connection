@@ -15,6 +15,6 @@ FactoryBot.define do
   factory :organization_admin do
     organization { association(:organization) }
     user { association(:user) }
-    role { 'MyString' }
+    role { "MyString" }
   end
 end

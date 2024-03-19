@@ -6,5 +6,6 @@ class TermsAndConditionsController < ApplicationController
   skip_after_action :verify_policy_scoped
   skip_after_action :verify_authorized
 
-  def show; end
+  def show
+  end
 end

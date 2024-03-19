@@ -30,11 +30,11 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :omniauthable
   devise :database_authenticatable, :registerable, :recoverable,
-         :rememberable, :validatable, :confirmable, :lockable, :trackable
+    :rememberable, :validatable, :confirmable, :lockable, :trackable
 
   has_many :organizations, as: :creator
   has_many :alerts
-  has_many :fav_locs, class_name: 'FavoriteLocation'
+  has_many :fav_locs, class_name: "FavoriteLocation"
   has_many :favorited_locations, through: :fav_locs, source: :location
   has_many :organization_admin
   has_many :administrated_organizations, through: :organization_admin, source: :organization

@@ -10,13 +10,13 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe Tag, type: :model do
-  context 'Tag model validation test' do
+  context "Tag model validation test" do
     subject { create(:tag) }
 
-    it 'ensures tags can be created' do
+    it "ensures tags can be created" do
       expect(subject).to be_valid
     end
   end

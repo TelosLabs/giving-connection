@@ -2,7 +2,7 @@
 
 unless Rails.env.production?
 
-  #Delete old records
+  # Delete old records
   Organization.destroy_all
   Service.destroy_all
   Cause.destroy_all
@@ -19,9 +19,9 @@ unless Rails.env.production?
   # Admin users
   unless AdminUser.find_by(email: "admin@example.com")
     AdminUser.create!(
-      email: 'admin@example.com',
-      password: 'testing',
-      password_confirmation: 'testing'
+      email: "admin@example.com",
+      password: "testing",
+      password_confirmation: "testing"
     )
   end
 
@@ -29,17 +29,17 @@ unless Rails.env.production?
   unless User.find_by(email: "user@example.com")
     User.create!(
       name: "test user",
-      email: 'user@example.com',
-      password: 'testing',
-      password_confirmation: 'testing'
+      email: "user@example.com",
+      password: "testing",
+      password_confirmation: "testing"
     )
   end
 
   # Causes and Services
-  Rake::Task['populate:seed_causes_and_services'].invoke
+  Rake::Task["populate:seed_causes_and_services"].invoke
 
   # Population served categories and subcategories
-  Rake::Task['populate:seed_beneficiaries_and_beneficiaries_subcategories'].invoke
+  Rake::Task["populate:seed_beneficiaries_and_beneficiaries_subcategories"].invoke
 
   # Populate organizations and locations
   SpreadsheetParse.new.import("./lib/assets/GC_Dummy_Data_for_DB.xlsx")

@@ -27,6 +27,6 @@ class Cause < ApplicationRecord
   end
 
   def self.top_causes_ids(limit: 10)
-    OrganizationCause.group(:cause_id).order('count(cause_id) desc').limit(limit).count.keys
+    OrganizationCause.group(:cause_id).order("count(cause_id) desc").limit(limit).count.keys
   end
 end
