@@ -1,15 +1,54 @@
 name: RubyCI
 on:
+  push:
+    branches:
+      - main
+      - develop
   pull_request:
+    branches:
+      - main
+      - develop
     types: [opened, synchronize, reopened, ready_for_review]
 
 env:
-  # Add secret key to Repository secrets
   RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
   DATABASE_URL: postgres://postgres:postgres@localhost:5432/test
   REDIS_URL: redis://localhost:6379/0
-
+ 
 jobs:
+  rubocop: 
+    name: Rubocop
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Run Rubocop
+        run: |
+          bundle exec rubocop
+
+  security:
+    name: Security
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Run brakeman
+        run: |
+          bundle exec brakeman -w3
+      - name: Run bundler-audit
+        run: |
+          bundle exec bundle-audit check --update
+
   tests:
     name: Tests
     env:
@@ -59,20 +98,5 @@ jobs:
           bin/yarn install --ignore-engines
       - name: Run tests
         run: |
-          bundle exec rspec --fail-fast -exclude-pattern ./spec/system/admin_organization_system_spec.rb
+          bundle exec rspec --fail-fast
 
-  security:
-    name: Security
-    if: github.event.pull_request.draft == false
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup Ruby and install gems
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      - name: Run security checks
-        run: |
-          bundle exec brakeman -w3 -o tmp/brakeman.html
