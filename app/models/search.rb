@@ -5,6 +5,7 @@ class Search
 
   KEYWORD_SEARCH_TYPE = "keyword"
   FILTER_SEARCH_TYPE = "filter"
+  DEFAULT_CITY = "Nashville"
 
   attr_accessor :keyword, :results, :distance, :city, :state, :zipcode,
     :beneficiary_groups, :services, :causes, :open_now, :open_weekends,
