@@ -1,6 +1,7 @@
 class Navbar::Component < ApplicationViewComponent
   def initialize(signed_in:, current_location:)
     @current_location = current_location
+    @locations = Search::AVAILABLE_CITIES
     @signed_in = signed_in
   end
 
