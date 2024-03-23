@@ -10,16 +10,20 @@ export default class extends Controller {
   static targets = [ "currentLocation" ]
 
   connect() {
-    this.currentCity = this.currentLocationTarget.innerText
+    this.latitude = document.cookie.split('; ').find(row => row.startsWith('latitude=')).split('=')[1]
+    this.longitude = document.cookie.split('; ').find(row => row.startsWith('longitude=')).split('=')[1]
+    this.currentCity = document.cookie.split('; ').find(row => row.startsWith('city=')).split('=')[1]
   }
 
   async success(position) {
-    let city;
     const coordinates = position.coords;
     document.cookie = `latitude=${coordinates.latitude}`;
     document.cookie = `longitude=${coordinates.longitude}`;
-    city = await this.findNearestCity(coordinates)
-    this.updateNavbarLocation(city);
+    this.latitude = coordinates.latitude
+    this.longitude = coordinates.longitude
+    this.currentCity = await this.findNearestCity(coordinates)
+    this.rememberLocation()
+    this.updateNavbarLocation();
   }
 
   async findNearestCity(coordinates) {
@@ -28,8 +32,8 @@ export default class extends Controller {
     const coords= { lat: coordinates.latitude, lng: coordinates.longitude }
     response = await geocoder.geocode({ location: coords })
     if (response.results[0]) {
-      this.currentCity = response.results[0].address_components[3].long_name
-      document.cookie = `city=${this.currentCity}`;
+      
+     return response.results[0].address_components[3].long_name
     } else {
       console.warning('No location found');
     }
@@ -43,7 +47,19 @@ export default class extends Controller {
     navigator.geolocation.getCurrentPosition(this.success.bind(this), this.error, options);
   }
 
+  rememberLocation() {
+    document.cookie = `latitude=${this.latitude}`
+    document.cookie = `longitude=${this.longitude}`
+    document.cookie = `city=${this.currentCity}`
+  }
+
   updateNavbarLocation() {
-    this.currentLocationTarget.innerText = this.currentCity 
+    this.currentLocationTarget.innerText = this.currentCity
+  }
+
+  updateLocation(event) {
+    this.currentCity = event.target.innerText
+    this.rememberLocation()
+    this.updateNavbarLocation()
   }
 }
