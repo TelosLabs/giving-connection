@@ -57,7 +57,6 @@ namespace :populate do
           address: "Anywhere within US",
           latitude: random_lat,
           longitude: random_lng,
-          physical: true,
           offer_services: false
         )
       end

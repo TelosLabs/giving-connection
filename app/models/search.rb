@@ -22,18 +22,28 @@ class Search
   end
 
   def execute_search
-    filters = {
+    @results = Location.where(id: Locations::FilterQuery.call(filters, Location.active).pluck(:id))
+    @results = keyword.present? ? Locations::KeywordQuery.call({keyword: keyword}, @results) : @results
+  end
+
+  private
+
+  def filters
+    {
       address: {city: city.presence, state: state.presence, zipcode: zipcode.presence},
       open_now: ActiveModel::Type::Boolean.new.cast(open_now),
       open_weekends: ActiveModel::Type::Boolean.new.cast(open_weekends),
       beneficiary_groups: beneficiary_groups,
       services: services,
-      causes: causes,
-      distance: distance.presence&.to_i,
-      lat: lat.presence&.to_f, lon: lon.presence&.to_f
+      causes: causes
     }
+  end
 
-    @results = Location.where(id: Locations::FilterQuery.call(filters, Location.active).pluck(:id))
-    @results = keyword.present? ? Locations::KeywordQuery.call({keyword: keyword}, @results) : @results
+  def geo_filters
+    {
+      distance: distance.presence&.to_i,
+      lat: lat.presence&.to_f,
+      lon: lon.presence&.to_f
+    }
   end
 end
