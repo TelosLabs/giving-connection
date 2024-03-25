@@ -54,8 +54,10 @@ export default class extends Controller {
     document.cookie = `city=${this.currentCity}`
   }
 
-  updateNavbar() {
-    this.currentLocationTarget.innerText = this.currentCity
+  updateCity() {
+    for (let target of this.currentLocationTargets) {
+      target.innerText = this.currentCity
+    }
   }
 
   updateLocation(event) {
@@ -72,7 +74,7 @@ export default class extends Controller {
   }
 
   updateDOM() {
-    this.updateNavbar()
+    this.updateCity()
     this.updateForm()
   }
 

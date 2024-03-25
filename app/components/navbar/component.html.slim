@@ -27,7 +27,7 @@ nav id="main-navbar" data-controller="navbar--component" class="#{non_sticky_pat
         li class="relative flex items-center inline-block mr-2 font-medium cursor-pointer w-36 " data-controller="dropdown" data-action="click@window->dropdown#hide touchstart@window->dropdown#hide keydown.up->dropdown#previousItem keydown.down->dropdown#nextItem keydown.esc->dropdown#hide" 
           button data-action="text-sm-underlined-color dropdown#toggle:stop" class="flex items-center border-b-2 text-seafoam border-seafoam"
             = inline_svg_tag "location-dot.svg", size:"9*9", class:"h-7 mr-3 fill-current"
-            p data-geolocation-target="currentLocation" class=""
+            p data-geolocation-target="currentLocation"
               = @current_location
           div data-dropdown-target="menu" class="absolute right-0 z-10 flex hidden w-screen mt-5 top-4 max-w-max"
             ul class="overflow-hidden text-sm bg-white border rounded shadow-lg w-42"
