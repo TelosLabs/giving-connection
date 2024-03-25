@@ -7,12 +7,12 @@ import { Controller } from "@hotwired/stimulus";
   };
 
 export default class extends Controller { 
-  static targets = [ "currentLocation" ]
+  static targets = [ "currentLocation", "formLatitude", "formLongitude" ]
 
   connect() {
-    this.latitude = document.cookie.split('; ').find(row => row.startsWith('latitude=')).split('=')[1]
-    this.longitude = document.cookie.split('; ').find(row => row.startsWith('longitude=')).split('=')[1]
-    this.currentCity = document.cookie.split('; ').find(row => row.startsWith('city=')).split('=')[1]
+    this.latitude = this.findInCookie("latitude")
+    this.longitude = this.findInCookie("longitude")
+    this.currentCity = this.findInCookie("city")
   }
 
   async success(position) {
@@ -24,6 +24,7 @@ export default class extends Controller {
     this.currentCity = await this.findNearestCity(coordinates)
     this.rememberLocation()
     this.updateNavbarLocation();
+    this.updateForm()
   }
 
   async findNearestCity(coordinates) {
@@ -32,7 +33,6 @@ export default class extends Controller {
     const coords= { lat: coordinates.latitude, lng: coordinates.longitude }
     response = await geocoder.geocode({ location: coords })
     if (response.results[0]) {
-      
      return response.results[0].address_components[3].long_name
     } else {
       console.warning('No location found');
@@ -61,5 +61,15 @@ export default class extends Controller {
     this.currentCity = event.target.innerText
     this.rememberLocation()
     this.updateNavbarLocation()
+    this.updateForm()
+  }
+
+  updateForm() {
+    this.formLongitudeTarget.value = this.longitude
+    this.formLatitudeTarget.value = this.latitude
+  }
+
+  findInCookie(key) {
+    document.cookie?.split('; ')?.find(row => row.startsWith(`${key}=`))?.split('=')[1] || null
   }
 }
