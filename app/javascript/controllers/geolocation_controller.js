@@ -6,6 +6,10 @@ import { Controller } from "@hotwired/stimulus";
     maximumAge: 0
   };
 
+  const CITIES = {
+    "Nashville" : { latitude: 36.1627, longitude: -86.7816 },
+    "Atlantic City" : { latitude: 39.3643, longitude: -74.4229 },
+  }
 export default class extends Controller { 
   static targets = [ "currentLocation", "formLatitude", "formLongitude" ]
 
@@ -15,16 +19,21 @@ export default class extends Controller {
     this.currentCity = this.findInCookie("city")
   }
 
+  async getCurrentPosition() {
+    navigator.geolocation.getCurrentPosition(this.success.bind(this), this.error, options);
+  }
+
   async success(position) {
     const coordinates = position.coords;
-    document.cookie = `latitude=${coordinates.latitude}`;
-    document.cookie = `longitude=${coordinates.longitude}`;
     this.latitude = coordinates.latitude
     this.longitude = coordinates.longitude
     this.currentCity = await this.findNearestCity(coordinates)
     this.rememberLocation()
-    this.updateNavbarLocation();
-    this.updateForm()
+    this.updateDOM()
+  }
+
+  error(err) {
+    console.warn(`ERROR(${err.code}): ${err.message}`)
   }
 
   async findNearestCity(coordinates) {
@@ -39,34 +48,32 @@ export default class extends Controller {
     }
   }
 
-  error(err) {
-    console.warn(`ERROR(${err.code}): ${err.message}`)
-  }
-
-  async getCurrentPosition() {
-    navigator.geolocation.getCurrentPosition(this.success.bind(this), this.error, options);
-  }
-
   rememberLocation() {
     document.cookie = `latitude=${this.latitude}`
     document.cookie = `longitude=${this.longitude}`
     document.cookie = `city=${this.currentCity}`
   }
 
-  updateNavbarLocation() {
+  updateNavbar() {
     this.currentLocationTarget.innerText = this.currentCity
   }
 
   updateLocation(event) {
     this.currentCity = event.target.innerText
+    this.latitude = CITIES[this.currentCity].latitude
+    this.longitude = CITIES[this.currentCity].longitude
     this.rememberLocation()
-    this.updateNavbarLocation()
-    this.updateForm()
+    this.updateDOM()
   }
 
   updateForm() {
     this.formLongitudeTarget.value = this.longitude
     this.formLatitudeTarget.value = this.latitude
+  }
+
+  updateDOM() {
+    this.updateNavbar()
+    this.updateForm()
   }
 
   findInCookie(key) {
