@@ -7,8 +7,8 @@ import { Controller } from "@hotwired/stimulus";
   };
 
   const CITIES = {
-    "Nashville" : { latitude: 36.1627, longitude: -86.7816 },
-    "Atlantic City" : { latitude: 39.3643, longitude: -74.4229 },
+    "Nashville" : { latitude: 36.16404968727089, longitude: -86.78125827725053 },
+    "Atlantic City" : { latitude: 39.3625, longitude: -74.425 },
   }
 export default class extends Controller { 
   static targets = [ "currentLocation", "formLatitude", "formLongitude" ]

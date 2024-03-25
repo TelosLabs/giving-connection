@@ -41,7 +41,7 @@
   data-action="turbo:click@document->disable-turbo#disableTurboForTargetUrls">
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=<%= Rails.application.credentials.dig(Rails.env.to_sym)[:google_tag_key] %>"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <%= render Navbar::Component.new(signed_in: user_signed_in?, current_location: current_location) %>
+    <%= render Navbar::Component.new(signed_in: user_signed_in?, current_location: @current_location) %>
     <main class="main">
       <div id="flash-messages">
         <%= render "shared/flash_messages" %>

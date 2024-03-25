@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  include Locationable
   before_action :store_user_location!, if: :storable_location?
 
   include Pagy::Backend
@@ -58,9 +59,4 @@ class ApplicationController < ActionController::Base
     flash[:error] = "You are not allowed to perform this action"
     redirect_to root_path
   end
-
-  def current_location
-    cookies[:city] || Search::DEFAULT_CITY
-  end
-  helper_method :current_location
 end

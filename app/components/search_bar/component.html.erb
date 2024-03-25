@@ -18,8 +18,8 @@ bg-gradient-to-r from-blue-gradient-2 to-blue-gradient-1 top-20 md:top-22.75 md:
       }
     ) %>
 
-    <%= @form.hidden_field :lat, value: Locations::GeolocationQuery::DEFAULT_LOCATION[:latitude], data: { geolocation_target:  "formLatitude" }  %>
-    <%= @form.hidden_field :lon, value: Locations::GeolocationQuery::DEFAULT_LOCATION[:longitude], data: { geolocation_target:  "formLongitude" }  %>
+    <%= @form.hidden_field :lat, value: @current_location[:latitude], data: { geolocation_target:  "formLatitude" }  %>
+    <%= @form.hidden_field :lon, value: @current_location[:longitude], data: { geolocation_target:  "formLongitude" }  %>
 
     <button
     type="button"

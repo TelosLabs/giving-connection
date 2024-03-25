@@ -31,7 +31,7 @@ div class="w-full bg-gray-9"
           span class="inline-flex items-center"
             = inline_svg_tag "location-dot.svg", class: "h-3 w-3 fill-current text-blue-medium mr-1"
             p data-geolocation-target="currentLocation"
-              = @current_location
+              = @current_location[:city]
         div class="flex w-full md:w-auto md:py-3.5 md:pl-7"
           - @radii_in_miles.each do |radius|
             = render SearchPills::Button::Component.new(name: "search[distance]", value: miles_to_km(radius), checked: @params.dig(:search, :distance) == miles_to_km(radius).to_s, copy: radius == "Any" ? radius : "#{radius} mi")

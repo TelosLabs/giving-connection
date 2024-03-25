@@ -2,11 +2,6 @@
 
 module Locations
   class FilterQuery
-    DEFAULT_LOCATION = {
-      latitude: 36.16404968727089,
-      longitude: -86.78125827725053
-    }.freeze
-
     attr_reader :locations
 
     class << self
