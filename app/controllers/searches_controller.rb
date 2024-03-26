@@ -4,10 +4,7 @@ class SearchesController < ApplicationController
   skip_before_action :authenticate_user!
 
   def show
-    unless request.referrer&.include? search_url
-      @search = Search.new
-      render "_preview"
-    end
+    render "_preview" and return if params["search"].blank?
 
     set_search_pills_data
     @search = params["search"].present? ? Search.new(create_params) : Search.new
