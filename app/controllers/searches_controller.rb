@@ -4,13 +4,19 @@ class SearchesController < ApplicationController
   skip_before_action :authenticate_user!
 
   def show
+    @current_location = current_location
+
     if !request.referrer&.include?(search_url) && params["search"].blank?
-      @search = Search.new
       render "_preview"
     end
 
     set_search_pills_data
-    @search = params["search"].present? ? Search.new(create_params) : Search.new
+    @search = params["search"].present? ? Search.new(create_params) : Search.new(
+      city: @current_location[:city],
+      state: @current_location[:state],
+      lat: @current_location[:latitude],
+      lon: @current_location[:longitude]
+    )
     @search.save
     @pagy, @results = pagy(@search.results)
     puts @search.errors.full_messages if @search.results.any?
