@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
+import { useCookies } from "./mixins/useCookies";
 
   const options = {
     enableHighAccuracy: true,
@@ -14,9 +15,10 @@ export default class extends Controller {
   static targets = [ "currentLocation", "formLatitude", "formLongitude" ]
 
   connect() {
-    this.latitude = this.findInCookie("latitude")
-    this.longitude = this.findInCookie("longitude")
-    this.currentCity = this.findInCookie("city")
+    useCookies(this)
+    this.latitude = this.getCookie("latitude")
+    this.longitude = this.getCookie("longitude")
+    this.currentCity = this.getCookie("city")
   }
 
   async getCurrentPosition() {
@@ -29,7 +31,7 @@ export default class extends Controller {
     this.longitude = coordinates.longitude
     this.currentCity = await this.findNearestCity(coordinates)
     this.rememberLocation()
-    this.updateDOM()
+    this.updateCityAndForm()
   }
 
   error(err) {
@@ -49,15 +51,9 @@ export default class extends Controller {
   }
 
   rememberLocation() {
-    document.cookie = `latitude=${this.latitude}`
-    document.cookie = `longitude=${this.longitude}`
-    document.cookie = `city=${this.currentCity}`
-  }
-
-  updateCity() {
-    for (let target of this.currentLocationTargets) {
-      target.innerText = this.currentCity
-    }
+    this.setCookie("latitude", this.latitude)
+    this.setCookie("longitude", this.longitude)
+    this.setCookie("city", this.currentCity)
   }
 
   updateLocation(event) {
@@ -65,20 +61,12 @@ export default class extends Controller {
     this.latitude = CITIES[this.currentCity].latitude
     this.longitude = CITIES[this.currentCity].longitude
     this.rememberLocation()
-    this.updateDOM()
+    this.updateCityAndForm()
   }
 
-  updateForm() {
-    this.formLongitudeTarget.value = this.longitude
-    this.formLatitudeTarget.value = this.latitude
-  }
-
-  updateDOM() {
-    this.updateCity()
-    this.updateForm()
-  }
-
-  findInCookie(key) {
-    document.cookie?.split('; ')?.find(row => row.startsWith(`${key}=`))?.split('=')[1] || null
+  updateCityAndForm() {
+    this.currentLocationTargets.forEach(target => target.innerText = this.currentCity);
+    this.formLongitudeTarget.value = this.longitude;
+    this.formLatitudeTarget.value = this.latitude;
   }
 }
