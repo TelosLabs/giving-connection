@@ -5,8 +5,6 @@ class Search
 
   KEYWORD_SEARCH_TYPE = "keyword"
   FILTER_SEARCH_TYPE = "filter"
-  DEFAULT_CITY = "Nashville"
-  AVAILABLE_CITIES = ["Nashville", "Atlantic City"].freeze
 
   attr_accessor :keyword, :results, :distance, :city, :state, :zipcode,
     :beneficiary_groups, :services, :causes, :open_now, :open_weekends,
@@ -22,7 +20,8 @@ class Search
   end
 
   def execute_search
-    @results = Location.where(id: Locations::FilterQuery.call(filters, Location.active).pluck(:id))
+    @results = Locations::GeolocationQuery.call(geo_filters)
+    @results = Location.where(id: Locations::FilterQuery.call(filters, @results).ids)
     @results = keyword.present? ? Locations::KeywordQuery.call({keyword: keyword}, @results) : @results
   end
 

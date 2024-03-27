@@ -18,13 +18,13 @@ class SearchesController < ApplicationController
     authorize @search
   end
 
+  private
+
   def create_params
     params.require(:search).permit(:distance, :city, :state, :lat, :lon,
       :open_now, :open_weekends, :keyword,
       :zipcode, causes: [], services: {}, beneficiary_groups: {})
   end
-
-  private
 
   def set_search_pills_data
     set_causes
