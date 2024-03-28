@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { useCookies } from "./mixins/useCookies"
 
 export default class extends Controller {
   static targets = [ "field", "map", "latitude", "longitude", "marker", "popup" ]
@@ -12,6 +13,7 @@ export default class extends Controller {
   }
 
   connect() {
+    useCookies(this)
     this.resetMarkers();
     this.cleanLocalStorage();
 
@@ -99,7 +101,10 @@ export default class extends Controller {
 
   initMap() {
     this.map = new google.maps.Map(this.mapTarget, {
-      center: new google.maps.LatLng(this.latitudeValue || Number(this.latitudeTarget.value) || 36.16404968727089, this.longitudeValue || Number(this.longitudeTarget.value) || -86.78125827725053),
+      center: new google.maps.LatLng(
+        this.getCookie("latitude") || this.latitudeValue || Number(this.latitudeTarget.value) || 36.16404968727089,
+        this.getCookie("longitude") || this.longitudeValue || Number(this.longitudeTarget.value) || -86.78125827725053
+        ),
       zoom: (this.zoomValue || 10),
       mapTypeControl: true,
       mapTypeControlOptions: {

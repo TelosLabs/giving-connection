@@ -25,7 +25,7 @@ nav id="main-navbar" data-controller="navbar--component" class="#{non_sticky_pat
             div class='flex items-center'
               = inline_svg_tag 'heart.svg', size:'9*9', class:'mt-1 fill-current text-red'
         li class="relative flex items-center inline-block mr-2 font-medium cursor-pointer w-36 " data-controller="dropdown" data-action="click@window->dropdown#hide touchstart@window->dropdown#hide keydown.up->dropdown#previousItem keydown.down->dropdown#nextItem keydown.esc->dropdown#hide" 
-          button data-action="text-sm-underlined-color dropdown#toggle:stop" class="flex items-center border-b-2 text-seafoam border-seafoam"
+          button data-action="dropdown#toggle:stop" class="flex items-center border-b-2 text-sm-underlined-color text-seafoam border-seafoam"
             = inline_svg_tag "location-dot.svg", size:"9*9", class:"h-7 mr-3 fill-current"
             p data-geolocation-target="currentLocation"
               = @current_location[:city]
@@ -34,7 +34,7 @@ nav id="main-navbar" data-controller="navbar--component" class="#{non_sticky_pat
               - @locations.each do |location|
                 li  class="block px-4 py-2 text-gray-3 hover:bg-seafoam" data-action="click->geolocation#updateLocation"
                   = location
-              span class="flex items-center block px-4 py-2 font-medium text-gray-3 border-gray-5 hover:bg-seafoam focus:bg-seafoam" data-action="click->geolocation#getCurrentPosition"
+              li class="flex items-center block px-4 py-1 font-medium text-gray-3 border-gray-5 hover:bg-seafoam focus:bg-seafoam" data-action="click->geolocation#getCurrentPosition"
                 = inline_svg_tag "my-location.svg", size:"12*12", class:"h-7 mr-2 fill-current text-gray-3"
                 | Search near me
     ul class='flex items-center'
