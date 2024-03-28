@@ -14,6 +14,7 @@ module Locationable
 
   def set_location
     @current_location = current_location
+    @locations = self.class::AVAILABLE_CITIES
   end
 
   private
