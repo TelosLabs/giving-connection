@@ -4,9 +4,8 @@ class SearchesController < ApplicationController
   skip_before_action :authenticate_user!
 
   def show
-    @current_location = current_location
-
     if !request.referrer&.include?(search_url) && params["search"].blank?
+      @search = Search.new
       render "_preview"
     end
 
