@@ -16,7 +16,7 @@
 
   = render "users/shared/links"
 
-  = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+  = form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }) do |f|
     .c-form
       .c-form--group 
         = f.label :email, "Email Address"
