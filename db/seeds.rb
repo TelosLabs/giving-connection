@@ -50,8 +50,8 @@ unless Rails.env.production?
     main = false
   end
   # Create random location around cities in US
-  Rake::Task['populate:random_locations'].invoke
+  Rake::Task["populate:random_locations"].invoke
 
   # Create organizations and causes association
-  Rake::Task['populate:seed_organizations_causes'].invoke
+  Rake::Task["populate:seed_organizations_causes"].invoke
 end

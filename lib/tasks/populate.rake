@@ -21,7 +21,7 @@ namespace :populate do
 
   desc "Seed organizations and causes association"
   task seed_organizations_causes: :environment do
-    Organization.all.each do |organization|
+    Organization.all.find_each do |organization|
       OrganizationCause.create!(organization: organization, cause: Cause.all.sample)
       organization.update!(active: true)
     end
