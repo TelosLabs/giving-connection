@@ -14,7 +14,7 @@
     div class="absolute top-0 right-0 pt-20 pr-20 -z-1 lg:pr-52 xl:pr-96"
       = inline_svg_tag 'desk-green-blur-login.svg'
 
-  = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+  = form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }) do |f|
     .c-form
       .c-form--group 
         = f.label :email, "Email Address"
