@@ -23,6 +23,8 @@ export default class extends Controller {
     useDispatch(this)
     this.updatePillsCounter()
     this.updateRadioButtonsClass()
+
+    window.addEventListener('locationUpdated', this.handleLocationUpdate.bind(this));
   }
 
   initialize() {
@@ -207,5 +209,13 @@ export default class extends Controller {
     }
     this.updateFiltersState()
     this.submitForm()
+  }
+
+  handleLocationUpdate(event) {
+    this.submitForm();
+  }
+
+  disconnect() {
+    window.removeEventListener('locationUpdated', this.handleLocationUpdate.bind(this));
   }
 }

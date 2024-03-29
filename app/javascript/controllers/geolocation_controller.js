@@ -68,5 +68,11 @@ export default class extends Controller {
     this.currentLocationTargets.forEach(target => target.innerText = this.currentCity);
     this.formLongitudeTarget.value = this.longitude;
     this.formLatitudeTarget.value = this.latitude;
+
+    // Dispatch a custom event indicating the location has ch
+    const event = new CustomEvent('locationUpdated', {
+      detail: { latitude: this.latitude, longitude: this.longitude }
+    });
+    window.dispatchEvent(event);
   }
 }
