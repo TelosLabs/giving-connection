@@ -18,11 +18,11 @@
     .c-form
       .c-form--group 
         = f.label :email, "Email Address"
-        = f.email_field :email, autofocus: true, autocomplete: "email", class:"c-input rounded-md"
+        = f.email_field :email, autofocus: true, autocomplete: "email", class:"c-input rounded-md", data: { test_id: "admin_login_email_input"}
       .c-form--group class="mb-3"
         = f.label :password
-        = f.password_field :password, autocomplete: "current-password", class:"c-input rounded-md"
+        = f.password_field :password, autocomplete: "current-password", class:"c-input rounded-md", data: { test_id: "admin_login_password_input"}
       - if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations'
         = link_to "Forgot your password?", new_password_path(resource_name), class:'font-bold flex self-end md:self-center'
       .c-form--action class="mt-12"
-        = f.submit "Sign in", class:"c-button"
+        = f.submit "Sign in", class:"c-button", data: { test_id: "admin_login_submit_btn"}
