@@ -109,8 +109,10 @@ export default class extends Controller {
     })
 
     function success (position) {
-       document.getElementById('search_lat').value = position.coords.latitude;
-       document.getElementById('search_lon').value = position.coords.longitude;
+      if (document.getElementById('search_lat') && document.getElementById('search_lon')) {
+        document.getElementById('search_lat').value = position.coords.latitude;
+        document.getElementById('search_lon').value = position.coords.longitude;
+      }
      }
 
     if(!navigator.geolocation) {
