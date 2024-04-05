@@ -160,6 +160,8 @@ export default class extends Controller {
   }
 
   displayAppliedIcon() {
+    if (this.appliedIcon === null) { return }
+
     if (this.modalCheckboxes.some((check) => check.checked === true)) {
       this.appliedIcon.classList.remove("hidden");
       this.appliedIcon.classList.add("inline-block");

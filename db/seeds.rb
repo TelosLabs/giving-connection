@@ -34,6 +34,7 @@ unless Rails.env.production?
       password_confirmation: "testing"
     )
   end
+  User.first.confirm
 
   # Causes and Services
   Rake::Task["populate:seed_causes_and_services"].invoke
@@ -43,6 +44,9 @@ unless Rails.env.production?
 
   # Populate organizations and locations
   SpreadsheetParse.new.import("./lib/assets/GC_Dummy_Data_for_DB.xlsx")
+
+  # Create Organization Admin
+  OrganizationAdmin.find_or_create_by!(organization: Organization.first, user: User.first)
 
   # Phone Number
   PhoneNumber.find_or_create_by!(location: Location.first) do |phone|

@@ -1,22 +1,20 @@
 <div data-controller="main-modal" data-action="turbo:submit-end->main-modal#closeAfterSubmit">
   <%# Backdrop %>
-  <div aria-hidden="true" class="fixed z-40 inset-0 bg-gray-500 bg-opacity-75 opacity-100" data-main-modal-target="backdrop"></div>
-
+  <div aria-hidden="true" class="fixed inset-0 z-40 bg-gray-500 bg-opacity-75 opacity-100" data-main-modal-target="backdrop"></div>
   <%# Dialog %>
   <div
   role="dialog"
   aria-modal="true"
-  class="fixed positioned-center z-40 w-11/12 max-w-sm pt-9 px-4 pb-4 rounded-lg overflow-y-auto bg-white md:px-8 md:pb-8"
+  class="overflow-y-auto fixed z-40 px-4 pt-9 pb-4 w-11/12 max-w-sm bg-white rounded-lg positioned-center md:px-8 md:pb-8"
   data-main-modal-target="dialog">
     <%# Close %>
     <button
     type="button"
     data-action="click->main-modal#close"
-    class="absolute top-2 right-2 p-2 rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+      class="absolute top-2 right-2 p-2 text-gray-400 rounded-md hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
       <span class="sr-only">Close</span>
-      <%= inline_svg_tag "x-icon", class: "w-3.5 h-3.5", aria_hidden: true %>
+      <%= inline_svg_tag "x-icon.svg", class: "w-3.5 h-3.5", aria_hidden: true %>
     </button>
-
     <%= yield %>
   </div>
 </div>

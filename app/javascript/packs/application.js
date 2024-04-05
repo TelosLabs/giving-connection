@@ -17,10 +17,12 @@ ActiveStorage.start()
 import "controllers"
 
 window.initMap = function (...args) {
-  const event = document.createEvent("Events")
-  event.initEvent("google-maps-callback", true, true)
-  event.args = args
-  window.dispatchEvent(event)
+  const event = new CustomEvent("google-maps-callback", {
+    detail: args,
+    bubbles: true,
+    cancelable: true
+  });
+  window.dispatchEvent(event);
 }
 
 document.addEventListener("turbo:load", function (event) {
