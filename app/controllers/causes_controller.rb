@@ -18,8 +18,11 @@ class CausesController < ApplicationController
       lon: @current_location[:longitude],
       causes: [@cause.name]
     )
-    @search.save
-    Rails.logger.error @search.errors.full_messages if @search.results.any?
-    @locations_by_services = Location.sort_by_more_services(@search.results)
+    @locations_by_services = if @search.save
+      Location.sort_by_more_services(@search.results)
+    else
+      filtered_locations = Location.locations_with_(@cause)
+      Location.sort_by_more_services(filtered_locations)
+    end
   end
 end
