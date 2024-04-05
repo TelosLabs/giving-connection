@@ -66,10 +66,12 @@ export default class extends Controller {
 
   updateCityAndForm() {
     this.currentLocationTargets.forEach(target => target.innerText = this.currentCity);
-    this.formLongitudeTarget.value = this.longitude;
-    this.formLatitudeTarget.value = this.latitude;
+    if (this.hasFormLatitudeTarget && this.hasFormLongitudeTarget) {
+      this.formLongitudeTarget.value = this.longitude;
+      this.formLatitudeTarget.value = this.latitude;
+    }
 
-    // Dispatch a custom event indicating the location has ch
+    // Dispatch a custom event indicating the location has changed
     const event = new CustomEvent('locationUpdated', {
       detail: { latitude: this.latitude, longitude: this.longitude }
     });
