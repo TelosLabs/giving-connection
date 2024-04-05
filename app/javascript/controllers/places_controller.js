@@ -113,19 +113,6 @@ export default class extends Controller {
       }
     })
 
-    function success (position) {
-      if (document.getElementById('search_lat') && document.getElementById('search_lon')) {
-        document.getElementById('search_lat').value = position.coords.latitude;
-        document.getElementById('search_lon').value = position.coords.longitude;
-      }
-     }
-
-    if(!navigator.geolocation) {
-       console.log('Geolocation is not supported by your browser');
-     } else {
-       navigator.geolocation.getCurrentPosition(success);
-     }
-
     const image = this.imageurlValue
     const clickedImage = this.clickedimageurlValue
 
