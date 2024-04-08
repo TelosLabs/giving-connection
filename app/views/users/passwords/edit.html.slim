@@ -1,8 +1,8 @@
 .main
-  h2 class="pb-10 text-2xl font-bold text-center pt-14 md:pt-32 md:mt-2 text-gray-gray-7"
+  h2 class="pt-14 pb-10 text-2xl font-bold text-center md:pt-32 md:mt-2 text-gray-gray-7"
     | Create a new Password
 
-  div class="max-w-md px-4 mx-auto mb-5 text-sm text-center text-black pb-7 sm:text-lg sm:pb-12"
+  div class="px-4 pb-7 mx-auto mb-5 max-w-md text-sm text-center text-black sm:text-lg sm:pb-12"
     | Please create a new password
 
   = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f|
@@ -13,4 +13,4 @@
       = form_group_for f, :password_confirmation do
         = f.password_field :password_confirmation, autocomplete: "new-password", class: "c-input", placeholder: "Confirm your password"
       .c-form--action
-        = f.submit "Reset password", class:"c-button"
+        = f.submit "Reset password", class:"c-button", data: { turbo: false }
