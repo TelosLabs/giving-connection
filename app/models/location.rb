@@ -32,8 +32,10 @@ class Location < ActiveRecord::Base
   scope :active, -> { joins(:organization).where(organization: {active: true}) }
   scope :public_address, -> { where(public_address: true) }
   scope :besides_po_boxes, -> { where(po_box: false) }
-  # scope :in_nashville, -> { where("ST_DWithin(lonlat, ST_GeographyFromText('SRID=4326;POINT(-86.78125827725053 36.16404968727089)'), 1000000) = true") }
   scope :locations_with_, ->(cause) { group(:id).joins(:causes).where(causes: {id: cause.id}) }
+  scope :national, -> { joins(:organization).where(organization: {scope_of_work: "National"}) }
+  scope :international, -> { joins(:organization).where(organization: {scope_of_work: "International"}) }
+  scope :national_and_international, -> { national.or(international) }
 
   has_many :office_hours
   has_many :favorite_locations, dependent: :destroy

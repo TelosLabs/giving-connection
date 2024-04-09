@@ -20,8 +20,14 @@ class Search
   end
 
   def execute_search
+    # Geolocation search
     @results = Locations::GeolocationQuery.call(geo_filters)
-    @results = Location.where(id: Locations::FilterQuery.call(filters, @results).ids)
+    # Merge with national or international locations
+    national_or_international_locations = Location.national_and_international.ids
+    @results = Location.where(id: @results.ids + national_or_international_locations).distinct
+
+    # Filter and keyword search
+    @results = Location.joins(:organization).where(id: Locations::FilterQuery.call(filters, @results).ids)
     @results = keyword.present? ? Locations::KeywordQuery.call({keyword: keyword}, @results) : @results
   end
 
