@@ -21,8 +21,10 @@ export default class extends Controller {
   connect() {
     useDebounce(this, { wait: 250 });
     useDispatch(this)
-    this.updatePillsCounter()
-    this.updateRadioButtonsClass()
+    if (this.hasPillTarget) {
+      this.updatePillsCounter()
+      this.updateRadioButtonsClass()
+    }
 
     window.addEventListener('locationUpdated', this.handleLocationUpdate.bind(this));
   }
