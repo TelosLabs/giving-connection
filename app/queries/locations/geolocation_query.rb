@@ -4,14 +4,13 @@ module Locations
       latitude: 36.16404968727089,
       longitude: -86.78125827725053
     }.freeze
-    DEFAULT_DISTANCE = 20 # km
+    DEFAULT_DISTANCE = 80 # km
 
     attr_reader :locations
 
     class << self
       def call(params = {}, locations = Location.active)
         scope = locations
-        Rails.logger.debug { "GeolocationQuery params: #{params}" }
         geo_near(scope, starting_coordinates(params[:lat], params[:lon]), params[:distance])
       end
 

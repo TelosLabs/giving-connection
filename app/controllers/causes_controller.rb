@@ -10,7 +10,6 @@ class CausesController < ApplicationController
 
   def show
     @cause = Cause.find_by(name: params[:name])
-    authorize @cause
     @search = Search.new(
       city: @current_location[:city],
       state: @current_location[:state],
@@ -19,10 +18,12 @@ class CausesController < ApplicationController
       causes: [@cause.name]
     )
     @locations_by_services = if @search.save
-      Location.sort_by_more_services(@search.results)
+      @search.results
     else
-      filtered_locations = Location.locations_with_(@cause)
+      filtered_locations = Location.locations_with(@cause)
       Location.sort_by_more_services(filtered_locations)
     end
+
+    authorize @cause
   end
 end
