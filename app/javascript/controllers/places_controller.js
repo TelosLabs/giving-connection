@@ -105,7 +105,7 @@ export default class extends Controller {
         this.getCookie("latitude") || this.latitudeValue || Number(this.latitudeTarget.value) || 36.16404968727089,
         this.getCookie("longitude") || this.longitudeValue || Number(this.longitudeTarget.value) || -86.78125827725053
         ),
-      zoom: (this.zoomValue || 10),
+      zoom: this.zoomLevel(),
       mapTypeControl: true,
       mapTypeControlOptions: {
         style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
@@ -282,5 +282,13 @@ export default class extends Controller {
       clearTimeout(this.scheduledFuncId);
       this.scheduledFuncId = setTimeout(func, delay);
     };
+  }
+
+  zoomLevel() {
+    if (this.getCookie("city") == "Search all") {
+      return 3;
+    } else {
+      return this.zoomValue || 10;
+    }
   }
 }

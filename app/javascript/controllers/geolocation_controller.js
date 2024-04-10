@@ -10,6 +10,7 @@ import { useCookies } from "./mixins/useCookies";
   const CITIES = {
     "Nashville" : { latitude: 36.16404968727089, longitude: -86.78125827725053 },
     "Atlantic City" : { latitude: 39.3625, longitude: -74.425 },
+    "Search all": { latitude: 37.0902, longitude: -95.7129 }
   }
 export default class extends Controller { 
   static targets = [ "currentLocation", "formLatitude", "formLongitude" ]
