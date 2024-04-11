@@ -459,6 +459,6 @@
                   = f.check_box :verified, class: "h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent", checked: @organization.verified
                   = f.label :verified, "Check to verify", class: "text-sm"
 
-      = f.submit 'Save', class: 'mx-auto mt-12 flex cursor-pointer uppercase flex-row justify-center items-center bg-seafoam py-4 px-10 rounded-6px text-blue-dark text-base font-bold focus:outline-none', data: { action: "click->form-validation#addEmptyRequiredStyles" }
+      = f.submit 'Save', class: 'mx-auto mt-12 flex cursor-pointer uppercase flex-row justify-center items-center bg-seafoam py-4 px-10 rounded-6px text-blue-dark text-base font-bold focus:outline-none', data: { action: "click->form-validation#addEmptyRequiredStyles click->halt-navigation-on-change#startSaving" }
   // unsaved changes modal
   = render "organizations/unsaved_changes_modal_template"  
