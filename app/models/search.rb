@@ -20,8 +20,7 @@ class Search
   end
 
   def execute_search
-    @results = Location.active
-    @results = geolocation_query if city != "Search all"
+    @results = (city == "Search all") ? Location.active : geolocation_query
 
     # Filter and keyword search
     @results = Location.joins(:organization).where(id: Locations::FilterQuery.call(filters, @results).ids)
@@ -31,8 +30,7 @@ class Search
   private
 
   def geolocation_query
-    # Geolocation search
-    Locations::GeolocationQuery.call(geo_filters)
+    @results = Locations::GeolocationQuery.call(geo_filters)
     # Merge with national or international locations
     national_or_international_locations = Location.national_and_international.ids
     Location.where(id: @results.ids + national_or_international_locations).distinct
