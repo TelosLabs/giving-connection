@@ -34,10 +34,22 @@ FactoryBot.define do
     website { "testing" }
     scope_of_work { "International" }
 
-    after(:build) do |organization|
-      organization.locations << create(:location, organization: organization)
-      organization.creator = create(:admin_user)
-      organization.causes << build(:cause)
+    trait :with_services do
+      after(:build) do |organization|
+        organization.locations << create(:location, organization: organization)
+        organization.creator = create(:admin_user)
+        organization.causes << build(:cause)
+      end
+    end
+
+
+    trait :without_services do
+      after(:build) do |organization|
+        organization.locations << create(:location, organization: organization, offer_services: false)
+        organization.creator = create(:admin_user)
+        organization.causes << build(:cause)
+      end
+
     end
   end
 end

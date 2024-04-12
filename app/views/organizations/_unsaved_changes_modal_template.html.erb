@@ -1,12 +1,11 @@
 <template data-halt-navigation-on-change-target="modalTemplate">
   <%= render "shared/main_modal" do %>
-    <article>
+    <article data-test-id="unsaved_changes_modal" >
       <header class="mt-1 mb-10 text-center">
         <h1 class="mb-2 text-lg font-bold sm:text-xl">You made changes without saving</h1>
         <p class="text-gray-4">Would you like to return to this page to save?</p>
       </header>
-
-      <div class="flex items-center gap-x-4">
+      <div class="flex gap-x-4 items-center">
         <%= link_to(
           "Leave",
           "javascript:void(0)",
@@ -14,11 +13,12 @@
           class: "w-full py-2 px-5 rounded-lg border text-center font-medium border-blue-medium text-blue-medium transition-colors hover:bg-blue-pale",
           data: {turbo: false} # scapes `turbo:before-visit` event
         ) %>
-
         <button
         type="button"
-        class="w-full py-2 px-5 rounded-lg font-medium text-white bg-blue-medium transition-color hover:bg-blue-dark"
-        data-action="click->main-modal#close">
+        class="px-5 py-2 w-full font-medium text-white rounded-lg bg-blue-medium transition-color hover:bg-blue-dark"
+        data-action="click->main-modal#close"
+          data-test-id="unsave_changes_modal_return_to_page_btn"
+          >
           Return
         </button>
       </div>

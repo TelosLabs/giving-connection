@@ -1,5 +1,5 @@
 = content_tag(:div, class: "w-full h-full bg-grey-9", data: @form_presenter&.change_detection_form_container_setup) do
-  div class="flex flex-col px-5 py-12 mx-auto max-w-6xl bg-white md:px-28 md:my-7"
+  div class="flex flex-col px-5 py-12 mx-auto max-w-6xl bg-white md:px-28 md:my-7" data-test-id="edit_organization_form"
     h1 class="mb-5 text-2xl font-bold text-center sm:text-left text-gray-3"
       | Edit Page
 
@@ -27,7 +27,7 @@
         div class="grid grid-cols-12 gap-6 mt-8" data-controller="toggle"
           div class="col-span-12 lg:col-span-6 md:col-span-7"
             = f.label :name, "* Organization Name", class: "block text-sm text-gray-3 font-medium"
-            = f.text_field :name, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+            = f.text_field :name, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", data: { test_id: "organization_name_input" }}
 
             div class="flex items-center mt-3"
               = check_box_tag :other_name_check, true, false, class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent ", data: { action: "toggle#toggle" }
@@ -459,6 +459,6 @@
                   = f.check_box :verified, class: "h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent", checked: @organization.verified
                   = f.label :verified, "Check to verify", class: "text-sm"
 
-      = f.submit 'Save', class: 'mx-auto mt-12 flex cursor-pointer uppercase flex-row justify-center items-center bg-seafoam py-4 px-10 rounded-6px text-blue-dark text-base font-bold focus:outline-none', data: { action: "click->form-validation#addEmptyRequiredStyles click->halt-navigation-on-change#startSaving" }
+      = f.submit 'Save', class: 'mx-auto mt-12 flex cursor-pointer uppercase flex-row justify-center items-center bg-seafoam py-4 px-10 rounded-6px text-blue-dark text-base font-bold focus:outline-none', data: { test_id: "edit_my_organization_submit_btn", action: "click->form-validation#addEmptyRequiredStyles click->halt-navigation-on-change#startSaving" }
   // unsaved changes modal
   = render "organizations/unsaved_changes_modal_template"  

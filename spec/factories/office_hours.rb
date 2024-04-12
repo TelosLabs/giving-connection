@@ -7,3 +7,4 @@ FactoryBot.define do
     location { association :location }
   end
 end
+ 

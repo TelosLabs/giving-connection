@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe Admin::OrganizationsController, type: :controller do
-  let(:organization) { create(:organization) }
+  let(:organization) { create(:organization, :with_services) }
 
   before do
     @admin = create(:admin_user)

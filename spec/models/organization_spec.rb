@@ -27,7 +27,7 @@
 require "rails_helper"
 
 RSpec.describe Organization, type: :model do
-  subject { create(:organization) }
+  subject { create(:organization, :with_services) }
 
   describe "Associations" do
     it { is_expected.to have_many(:tags).dependent(:destroy) }
