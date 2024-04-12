@@ -6,6 +6,7 @@ class OrganizationFormPresenter
       detect_form_changes_input_types_value: "input, textarea, select",
       halt_navigation_on_change_modal_container_id_value: "main-modal-container",
       halt_navigation_on_change_discard_option_id_value: "discard-changes-option",
+      halt_navigation_on_change_is_saving_value: false,
       action: "turbo:before-visit@document->halt-navigation-on-change#displayModalOnChange"
     }
   end
