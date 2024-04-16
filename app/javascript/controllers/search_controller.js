@@ -209,8 +209,6 @@ export default class extends Controller {
       button.checked = true
       button.classList.add("selected-button")
     }
-    this.updateFiltersState()
-    this.submitForm()
   }
 
   handleLocationUpdate(event) {
