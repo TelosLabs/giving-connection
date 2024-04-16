@@ -1,21 +1,30 @@
 <div id="search-bar" class="flex sticky inset-x-0 top-20 z-20 justify-center items-center px-6 py-4 bg-gradient-to-r from-blue-gradient-2 to-blue-gradient-1 md:top-22.75 md:gap-5">
   <%# Keyword input %>
   <div class="flex relative items-center w-full max-w-xl divide-x">
-    <div class="flex items-center w-full">
-      <span class="flex absolute items-center ml-2 pointer-events-none">
-        <%= inline_svg_tag "solid_search.svg", class: 'h-4 w-4 fill-current text-gray-2' %>
-      </span>
-      <%= @form.search_field(
-        :keyword,
-        value: "#{ params.dig('search', 'keyword') }",
-        class: "rounded-l-md border-none block px-10 h-46px w-full py-3.5 px-4 text-base text-gray-3 focus:outline-none",
-        id: "search-keyword-input",
-        placeholder: "Try \"Mental Health Nonprofits\"",
-        data: {
-          action: "input->search#displayClearKeywordButton",
-          search_target: "keywordInput",
-        }
-      ) %>
+    <div class="flex w-full h-46px">
+      <div class="flex items-center w-full">
+        <span class="flex absolute items-center ml-2 pointer-events-none">
+          <%= inline_svg_tag "solid_search.svg", class: 'h-4 w-4 fill-current text-gray-2' %>
+        </span>
+        <%= @form.search_field(
+          :keyword,
+          value: "#{ params.dig('search', 'keyword') }",
+          class: "rounded-l-md border-none block px-10 h-46px w-full py-3.5 px-4 text-base text-gray-3 focus:outline-none",
+          id: "search-keyword-input",
+          placeholder: "Try \"Mental Health Nonprofits\"",
+          data: {
+            action: "input->search#displayClearKeywordButton",
+            search_target: "keywordInput",
+          }
+        ) %>
+      </div>
+      <button
+        type="button"
+        class="relative inset-y-0 right-0 px-3 bg-white h-full <%= "hidden" unless params.dig('search', 'keyword').present? %>"
+        data-search-target="clearKeywordButton"
+        data-action="click->search#clearKeywordInput">
+        <%= inline_svg_tag "x-icon.svg", class: "w-3.5 h-3.5 icon", aria_hidden: true %>
+      </button>
     </div>
     <div class="flex m-0 w-52 font-medium bg-white rounded-r-md cursor-pointer h-46px"
       data-controller="dropdown" 
@@ -42,13 +51,6 @@
     </div>
     <%= @form.hidden_field :lat, value: @current_location[:latitude], data: { geolocation_target:  "formLatitude" }  %>
     <%= @form.hidden_field :lon, value: @current_location[:longitude], data: { geolocation_target:  "formLongitude" }  %>
-    <button
-    type="button"
-    class="absolute inset-y-0 right-0 px-3 <%= "hidden" unless params.dig('search', 'keyword').present? %>"
-    data-search-target="clearKeywordButton"
-    data-action="click->search#clearKeywordInput">
-      <%= inline_svg_tag "x-icon.svg", class: "w-3.5 h-3.5 icon", aria_hidden: true %>
-    </button>
   </div>
   <%# Search Button %>
   <%= @form.submit(
