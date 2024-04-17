@@ -12,15 +12,6 @@
   }
 
   &--mobile {
-    &::after {
-      content: "";
-      flex: 1;
-    }
-
-    &__menu {
-      flex: 1;
-    }
-
     @media (min-width: 768px) {
       display: none;
       flex: none;

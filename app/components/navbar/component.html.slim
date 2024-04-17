@@ -1,10 +1,25 @@
 nav id="main-navbar" data-controller="navbar--component" class="#{non_sticky_paths ? "" : "sticky top-0 z-30"}"
-  .navbar.navbar--mobile class="h-20"
-    .navbar--mobile__menu class="flex items-center"
-      button data-action="click->navbar--component#openSideNavBar"
-        = inline_svg_tag 'menu.svg', size:'24*24'
-    = link_to root_path
-      = inline_svg_tag 'logo.svg', size:'130*32'
+  .navbar.navbar--mobile class="flex justify-between items-center w-full h-20"
+    div class="flex items-center"
+      .navbar--mobile__menu class="flex items-center"
+        button data-action="click->navbar--component#openSideNavBar"
+          = inline_svg_tag 'menu.svg', size:'24*24'
+      = link_to root_path, class: "ml-6"
+        = inline_svg_tag 'logo.svg', size:'130*32'
+    div class="inline-block flex relative items-center ml-4 font-medium cursor-pointer sm:" data-controller="dropdown" data-action="click@window->dropdown#hide touchstart@window->dropdown#hide keydown.up->dropdown#previousItem keydown.down->dropdown#nextItem keydown.esc->dropdown#hide" 
+        button data-action="dropdown#toggle:stop" class="flex justify-end items-center border-b-2 text-sm-underlined-color text-seafoam border-seafoam"
+          = inline_svg_tag "location-dot.svg", size:"9*9", class:"h-7 mr-3 fill-current"
+          p data-geolocation-target="currentLocation"
+            = @current_location[:city]
+        div data-dropdown-target="menu" class="flex hidden absolute right-0 top-4 z-10 mt-5 w-screen max-w-max"
+          ul class="overflow-hidden text-sm bg-white rounded border shadow-lg w-42"
+            - @locations.each do |location|
+              li  class="block px-4 py-2 text-gray-3 hover:bg-seafoam" data-action="click->geolocation#updateLocation"
+                = location
+            li class="block flex items-center px-4 py-1 font-medium text-gray-3 border-gray-5 hover:bg-seafoam focus:bg-seafoam" data-action="click->geolocation#getCurrentPosition"
+              = inline_svg_tag "my-location.svg", size:"12*12", class:"h-7 mr-2 fill-current text-gray-3"
+              | Search near me
+    
   .navbar.navbar--desktop
     ul class="flex items-center"
       = link_to root_path
