@@ -1,24 +1,39 @@
 nav id="main-navbar" data-controller="navbar--component" class="#{non_sticky_paths ? "" : "sticky top-0 z-30"}"
-  .navbar.navbar--mobile class="h-20"
-    .navbar--mobile__menu class="flex items-center"
-      button data-action="click->navbar--component#openSideNavBar"
-        = inline_svg_tag 'menu.svg', size:'24*24'
-    = link_to root_path
-      = inline_svg_tag 'logo.svg', size:'130*32'
+  .navbar.navbar--mobile class="flex justify-between items-center w-full h-20"
+    div class="flex items-center"
+      .navbar--mobile__menu class="flex items-center"
+        button data-action="click->navbar--component#openSideNavBar"
+          = inline_svg_tag 'menu.svg', size:'24*24'
+      = link_to root_path, class: "ml-6"
+        = inline_svg_tag 'logo.svg', size:'130*32'
+    div class="inline-block flex relative items-center ml-4 font-medium cursor-pointer sm:" data-controller="dropdown" data-action="click@window->dropdown#hide touchstart@window->dropdown#hide keydown.up->dropdown#previousItem keydown.down->dropdown#nextItem keydown.esc->dropdown#hide" 
+        button data-action="dropdown#toggle:stop" class="flex justify-end items-center border-b-2 text-sm-underlined-color text-seafoam border-seafoam"
+          = inline_svg_tag "location-dot.svg", size:"9*9", class:"h-7 mr-3 fill-current"
+          p data-geolocation-target="currentLocation"
+            = @current_location[:city]
+        div data-dropdown-target="menu" class="flex hidden absolute right-0 top-4 z-10 mt-5 w-screen max-w-max"
+          ul class="overflow-hidden text-sm bg-white rounded border shadow-lg w-42"
+            - @locations.each do |location|
+              li  class="block px-4 py-2 text-gray-3 hover:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#updateLocation" data-dropdown-target="menuItem" 
+                = location
+            li class="block flex items-center px-4 py-1 font-medium text-gray-3 border-gray-5 hover:bg-seafoam focus:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#getCurrentPosition" data-dropdown-target="menuItem" 
+              = inline_svg_tag "my-location.svg", size:"12*12", class:"h-7 mr-2 fill-current text-gray-3"
+              | Search near me
+    
   .navbar.navbar--desktop
     ul class="flex items-center"
       = link_to root_path
         = inline_svg_tag 'logo.svg', size:'130*32', class:'mr-2 mid:mr-7 lg:mr-11'
       div class="flex w-full"
-        li class="mr-2 mid:mr-7 lg:mr-11 text-sm-underlined-color font-medium border-b-2 border-transparent #{request.env['PATH_INFO'].include?("/search") ? "text-seafoam border-seafoam" : ""}"
+        li class="mr-1 mid:mr-5 lg:mr-9 text-sm-underlined-color font-medium border-b-2 border-transparent #{request.env['PATH_INFO'].include?("/search") ? "text-seafoam border-seafoam" : ""}"
           = link_to 'Search', search_path
-        li class="mr-2 mid:mr-7 lg:mr-11 text-sm-underlined-color font-medium border-b-2 border-transparent #{request.env['PATH_INFO'] == "/nonprofit" ? "text-seafoam border-seafoam" : ""}"
+        li class="mr-1 mid:mr-5 lg:mr-9 text-sm-underlined-color font-medium border-b-2 border-transparent #{request.env['PATH_INFO'] == "/nonprofit" ? "text-seafoam border-seafoam" : ""}"
           = link_to 'Add a Nonprofit', new_nonprofit_request_path
-        li class="mr-2 mid:mr-7 lg:mr-11 text-sm-underlined-color font-medium border-b-2 border-transparent #{request.env['PATH_INFO'] == "/about_us" ? "text-seafoam border-seafoam" : ""}"
+        li class="mr-1 mid:mr-5 lg:mr-9 text-sm-underlined-color font-medium border-b-2 border-transparent #{request.env['PATH_INFO'] == "/about_us" ? "text-seafoam border-seafoam" : ""}"
           = link_to 'About Us', about_us_path
-        li class="mr-2 mid:mr-7 lg:mr-11 text-sm-underlined-color font-medium border-b-2 border-transparent #{request.env['PATH_INFO'].include?("/discover") ? "text-seafoam border-seafoam" : ""}"
+        li class="mr-1 mid:mr-5 lg:mr-9 text-sm-underlined-color font-medium border-b-2 border-transparent #{request.env['PATH_INFO'].include?("/discover") ? "text-seafoam border-seafoam" : ""}"
           = link_to 'Discover', discover_path
-        li class="mr-2 mid:mr-7 lg:mr-11 text-sm-underlined-color font-medium border-b-2 border-transparent #{request.env['PATH_INFO']  == "/donate" ? "text-seafoam border-seafoam" : ""}"
+        li class="mr-1 mid:mr-5 lg:mr-9 text-sm-underlined-color font-medium border-b-2 border-transparent #{request.env['PATH_INFO']  == "/donate" ? "text-seafoam border-seafoam" : ""}"
           = link_to donate_path, class:"flex" do
             div class='mr-2'
               | Donate
@@ -26,17 +41,30 @@ nav id="main-navbar" data-controller="navbar--component" class="#{non_sticky_pat
               = inline_svg_tag 'heart.svg', size:'9*9', class:'mt-1 fill-current text-red'
     ul class='flex items-center'
       - if @signed_in
-        li = link_to "My Account", my_account_path, class:"text-base font-bold mr-1 lg:mr-6 border-b-2 border-transparent #{request.env['PATH_INFO'] == "/my_account" ? "text-seafoam border-seafoam" : ""}"
+        li = link_to "My Account", my_account_path, class:"text-base font-bold mr-1 lg:mr-6 border-b-2 border-transparent md:text-sm #{request.env['PATH_INFO'] == "/my_account" ? "text-seafoam border-seafoam" : ""}"
       - else
         li = link_to "Sign in", signin_path, class:'text-base font-bold mr-2 mid:mr-4 lg:mr-6'
         li = link_to "Create Account", signup_path, class:'c-button py-2.5 px-5 text-white bg-blue-medium'
+      li class="inline-block flex relative items-center mx-2 w-36 font-medium cursor-pointer md:w-28" data-controller="dropdown" data-action="click@window->dropdown#hide touchstart@window->dropdown#hide keydown.up->dropdown#previousItem keydown.down->dropdown#nextItem keydown.esc->dropdown#hide" 
+        button data-action="dropdown#toggle:stop" class="flex items-center border-b-2 text-sm-underlined-color text-seafoam border-seafoam"
+          = inline_svg_tag "location-dot.svg", size:"9*9", class:"h-7 mr-3 fill-current"
+          p data-geolocation-target="currentLocation"
+            = @current_location[:city]
+        div data-dropdown-target="menu" class="flex hidden absolute right-0 top-4 z-10 mt-5 w-screen max-w-max"
+          ul class="overflow-hidden text-sm bg-white rounded border shadow-lg w-42"
+            - @locations.each do |location|
+              li  class="block px-4 py-2 text-gray-3 hover:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#updateLocation" data-dropdown-target="menuItem" 
+                = location
+            li class="block flex items-center px-4 py-1 font-medium text-gray-3 border-gray-5 hover:bg-seafoam focus:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#getCurrentPosition" data-dropdown-target="menuItem"
+              = inline_svg_tag "my-location.svg", size:"12*12", class:"h-7 mr-2 fill-current text-gray-3"
+              | Search near me
 
-  .sidebar class='fixed top-0 bottom-0 left-0 right-0 z-10 hidden h-screen overflow-y-hidden bg-gray-9' data-navbar--component-target="sideNavBar"
+  .sidebar class='hidden overflow-y-hidden fixed top-0 right-0 bottom-0 left-0 z-10 h-screen bg-gray-9' data-navbar--component-target="sideNavBar"
     section class="pt-8 pb-4 px-7 #{ @signed_in ? 'h-4/5' : 'h-3/4' }"
       div class='flex justify-end pb-6'
         button class='p-2.5' data-action="navbar--component#collapseSideNavBar"
           = inline_svg_tag 'x-icon.svg', size:'12*12', class:"fill-current text-gray-1"
-      ul class='flex flex-col text-2xl font-bold text-center gap-9 text-gray-3'
+      ul class='flex flex-col gap-9 text-2xl font-bold text-center text-gray-3'
         - if @signed_in
           li = link_to "My Account", my_account_path
         li = link_to "Search", search_path

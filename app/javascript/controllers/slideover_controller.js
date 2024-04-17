@@ -1,4 +1,4 @@
-import Dropdown from './dropdown_controller.js'
+import Dropdown from './custom_dropdown_controller.js'
 
 export default class extends Dropdown {
   static targets = ['menu', 'overlay']

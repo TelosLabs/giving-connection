@@ -8,14 +8,14 @@
     turbo_action: "replace", \
     controller: 'search modal', \
     'search-target': 'form'}) do |f|
-  = render SearchBar::Component.new(form: f, search: @search)
+  = render SearchBar::Component.new(form: f, search: @search, current_location: @current_location, locations: @locations)
   = turbo_frame_tag "search-pills", src: search_path() do
     div class="w-full bg-gray-9"
       div
         div data-tabs-active-tab=("border-b-4 border-blue-medium")
-          div class="flex pb-14 bg-white border-b"
+          div class="flex bg-white border-b pb-14"
             / Clear-Counter button
-            span class="flex justify-center items-center w-14 pl-5 py-3 pr-2 text-xs bg-blue-pale"
+            span class="flex items-center justify-center py-3 pl-5 pr-2 text-xs w-14 bg-blue-pale"
               span class="inline-flex hidden items-center px-1 py-0.5 border border-blue-medium rounded-full bg-white" data-search-target="pillsCounterWrapper"
                 span class="mr-0.5" data-search-target="pillsCounter"
                 button type="button"
@@ -23,7 +23,7 @@
               = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative', data: { 'search-target': "filtersIcon" }
             / Tabs
             - tabs_labels = ['Causes', 'Location', 'Services', 'Populations Served', 'Hours']
-            ul class="flex flex-1 gap-x-6 pl-5 pr-6 text-sm list-none overflow-x-auto overflow-y-hidden bg-blue-pale text-gray-2"
+            ul class="flex flex-1 pl-5 pr-6 overflow-x-auto overflow-y-hidden text-sm list-none gap-x-6 bg-blue-pale text-gray-2"
               - tabs_labels.each do |tab_label|
                 li
                   span class="inline-block py-3 whitespace-nowrap"
@@ -31,11 +31,11 @@
               li
                 button class="inline-block py-3 whitespace-nowrap" type="button" id="advanced-filters-button" disabled="true"
                   | Advanced Filters
-                  span class="relative hidden w-2 h-2 rounded-full bg-salmon ml-1 mb-2" id="appliedIcon"
+                  span class="relative hidden w-2 h-2 mb-2 ml-1 rounded-full bg-salmon" id="appliedIcon"
 
   = turbo_frame_tag "search-locations", src: search_path() do
-    div class="md:flex w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
-      div class="w-full md:border-r max-w-sm border-gray-7"
+    div class="w-full md:flex md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
+      div class="w-full max-w-sm md:border-r border-gray-7"
         div class="fixed inset-0 flex items-center justify-center hidden min-h-screen overflow-y-auto animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;")
           div class="relative w-full max-h-full max-w-375px"
         div class="flex flex-row justify-between w-full p-4 bg-gray-9 md:hidden"
@@ -48,22 +48,22 @@
               | Map
         // Search result cards (mobile)
         div class="flex flex-col w-full bg-white md:h-85vh md:overflow-y-auto md:hidden" data-tabs-target="panel"
-          div class="flex justify-center items-center h-full"
+          div class="flex items-center justify-center h-full"
             div class="spinner"
         // Search result cards
         div class="hidden w-full bg-white md:h-85vh md:flex md:flex-col md:overflow-y-auto"
-          div class="flex justify-center items-center h-full"
+          div class="flex items-center justify-center h-full"
             div class="spinner"
 
       //Map mobile
-      div class="md:hidden relative w-full"
+      div class="relative w-full md:hidden"
         div data-tabs-target="panel" data-controller="places result-card--component" data-action="google-maps-callback@window->places#initMap" data-places-zoom-value="10" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}" data-places-popup-url-value="/map_popup/new?location_id="
           div class="absolute inset-0 w-full h-full xs:h-85vh" data-places-target="map"
           div class="hidden"
             div class="hidden" data-places-target="latitude"
             div class="hidden" data-places-target="longitude"
       //Map desktop
-      div class="hidden md:block relative w-full"
+      div class="relative hidden w-full md:block"
         div data-controller="places result-card--component" data-action="google-maps-callback@window->places#initMap" data-places-zoom-value="10" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}" data-places-popup-url-value="/map_popup/new?location_id="
           div class="absolute inset-0 w-full h-full xs:h-85vh" data-places-target="map"
           div class="hidden"

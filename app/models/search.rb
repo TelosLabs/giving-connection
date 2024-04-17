@@ -20,18 +20,38 @@ class Search
   end
 
   def execute_search
-    filters = {
+    @results = (city == "Search all") ? Location.active : geolocation_query
+
+    # Filter and keyword search
+    @results = Location.joins(:organization).where(id: Locations::FilterQuery.call(filters, @results).ids)
+    @results = keyword.present? ? Locations::KeywordQuery.call({keyword: keyword}, @results) : @results
+  end
+
+  private
+
+  def geolocation_query
+    @results = Locations::GeolocationQuery.call(geo_filters)
+    # Merge with national or international locations
+    national_or_international_locations = Location.national_and_international.ids
+    Location.where(id: @results.ids + national_or_international_locations).distinct
+  end
+
+  def filters
+    {
       address: {city: city.presence, state: state.presence, zipcode: zipcode.presence},
       open_now: ActiveModel::Type::Boolean.new.cast(open_now),
       open_weekends: ActiveModel::Type::Boolean.new.cast(open_weekends),
       beneficiary_groups: beneficiary_groups,
       services: services,
-      causes: causes,
-      distance: distance.presence&.to_i,
-      lat: lat.presence&.to_f, lon: lon.presence&.to_f
+      causes: causes
     }
+  end
 
-    @results = Location.where(id: Locations::FilterQuery.call(filters, Location.active).pluck(:id))
-    @results = keyword.present? ? Locations::KeywordQuery.call({keyword: keyword}, @results) : @results
+  def geo_filters
+    {
+      distance: distance.presence&.to_i,
+      lat: lat.presence&.to_f,
+      lon: lon.presence&.to_f
+    }
   end
 end

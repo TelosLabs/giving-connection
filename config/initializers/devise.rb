@@ -277,8 +277,8 @@ Devise.setup do |config|
   #
 
   # ==> Configure responses to match Hotwire/Turbo behavior.
-  config.responder.error_status = :unprocessable_entity
-  config.responder.redirect_status = :see_other
+  # config.responder.error_status = :unprocessable_entity
+  # config.responder.redirect_status = :see_other
 
   # ==> Mountable engine configurations
   # When using Devise inside an engine, let's call it `MyEngine`, and this engine

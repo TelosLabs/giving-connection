@@ -9,13 +9,13 @@
     turbo_action: "replace", \
     controller: 'search modal', \
     'search-target': 'form'}) do |f|
-  = render SearchBar::Component.new(form: f, search: @search)
+  = render SearchBar::Component.new(form: f, search: @search, current_location: @current_location, locations: @locations)
   = turbo_frame_tag "search-pills" do
-    = render SearchPills::Component.new(causes: @top_10_causes, services: @top_10_services, beneficiary_subcategories: @top_10_beneficiary_subcategories, params: params)
+    = render SearchPills::Component.new(causes: @top_10_causes, services: @top_10_services, beneficiary_subcategories: @top_10_beneficiary_subcategories, params: params, current_location: @current_location)
   = turbo_frame_tag "search-locations" do
     div class="flex flex-row justify-center w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
       div class="flex flex-row justify-center w-full min-h-full"
-        div class="flex flex-col w-full md:border-r max-w-sm border-gray-7"
+        div class="flex flex-col w-full max-w-sm md:border-r border-gray-7"
           div class="fixed inset-0 flex items-center justify-center hidden min-h-screen overflow-y-auto animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;")
             div class="relative w-full max-h-full max-w-375px"
               = render partial: 'filter', locals: { form: f, search: @search, services: @services, causes: @causes, beneficiary_groups: @beneficiary_groups }

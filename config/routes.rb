@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 Rails.application.routes.draw do
   require "sidekiq/web"
   mount Sidekiq::Web => "/sidekiq"
@@ -72,4 +70,8 @@ Rails.application.routes.draw do
   resources :autocomplete, only: %i[index]
 
   root to: "home#index"
+
+  # Custom routes for city-based search
+  get "/atlantic_city", to: "cities#show", city: "Atlantic City", as: :atlantic_city
+  get "/nashville", to: "cities#show", city: "Nashville", as: :nashville
 end

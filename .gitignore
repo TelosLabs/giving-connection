@@ -44,3 +44,6 @@ yarn-debug.log*
 database_consistency*
 
 .DS_Store
+
+# Ignore asdf version files
+/.tool-versions

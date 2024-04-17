@@ -21,8 +21,12 @@ export default class extends Controller {
   connect() {
     useDebounce(this, { wait: 250 });
     useDispatch(this)
-    this.updatePillsCounter()
-    this.updateRadioButtonsClass()
+    if (this.hasPillTarget) {
+      this.updatePillsCounter()
+      this.updateRadioButtonsClass()
+    }
+
+    window.addEventListener('locationUpdated', this.handleLocationUpdate.bind(this));
   }
 
   initialize() {
@@ -205,7 +209,13 @@ export default class extends Controller {
       button.checked = true
       button.classList.add("selected-button")
     }
-    this.updateFiltersState()
-    this.submitForm()
+  }
+
+  handleLocationUpdate(event) {
+    this.submitForm();
+  }
+
+  disconnect() {
+    window.removeEventListener('locationUpdated', this.handleLocationUpdate.bind(this));
   }
 }

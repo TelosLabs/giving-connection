@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { useCookies } from "./mixins/useCookies"
 
 export default class extends Controller {
   static targets = [ "field", "map", "latitude", "longitude", "marker", "popup" ]
@@ -12,6 +13,7 @@ export default class extends Controller {
   }
 
   connect() {
+    useCookies(this)
     this.resetMarkers();
     this.cleanLocalStorage();
 
@@ -99,27 +101,17 @@ export default class extends Controller {
 
   initMap() {
     this.map = new google.maps.Map(this.mapTarget, {
-      center: new google.maps.LatLng(this.latitudeValue || Number(this.latitudeTarget.value) || 36.16404968727089, this.longitudeValue || Number(this.longitudeTarget.value) || -86.78125827725053),
-      zoom: (this.zoomValue || 10),
+      center: new google.maps.LatLng(
+        this.getCookie("latitude") || this.latitudeValue || Number(this.latitudeTarget.value) || 36.16404968727089,
+        this.getCookie("longitude") || this.longitudeValue || Number(this.longitudeTarget.value) || -86.78125827725053
+        ),
+      zoom: this.zoomLevel(),
       mapTypeControl: true,
       mapTypeControlOptions: {
         style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
         position: google.maps.ControlPosition.TOP_CENTER
       }
     })
-
-    function success (position) {
-      if (document.getElementById('search_lat') && document.getElementById('search_lon')) {
-        document.getElementById('search_lat').value = position.coords.latitude;
-        document.getElementById('search_lon').value = position.coords.longitude;
-      }
-     }
-
-    if(!navigator.geolocation) {
-       console.log('Geolocation is not supported by your browser');
-     } else {
-       navigator.geolocation.getCurrentPosition(success);
-     }
 
     const image = this.imageurlValue
     const clickedImage = this.clickedimageurlValue
@@ -290,5 +282,13 @@ export default class extends Controller {
       clearTimeout(this.scheduledFuncId);
       this.scheduledFuncId = setTimeout(func, delay);
     };
+  }
+
+  zoomLevel() {
+    if (this.getCookie("city") == "Search all") {
+      return 3;
+    } else {
+      return this.zoomValue || 10;
+    }
   }
 }
