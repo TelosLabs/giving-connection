@@ -34,9 +34,9 @@ main
             div data-dropdown-target="menu" class="flex absolute right-0 top-11 z-10 w-52"
               ul class="overflow-hidden w-full text-sm bg-white rounded border shadow-lg"
                 - @locations.each do |location|
-                  li  class="block px-4 py-2 text-gray-3 hover:bg-seafoam" data-action="click->geolocation#updateLocation"
+                  li  class="block px-4 py-2 text-gray-3 hover:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#updateLocation" data-dropdown-target="menuItem"
                     = location
-                li class="block flex items-center px-4 py-1 font-medium text-gray-3 border-gray-5 hover:bg-seafoam focus:bg-seafoam" data-action="click->geolocation#getCurrentPosition"
+                li class="block flex items-center px-4 py-1 font-medium text-gray-3 border-gray-5 hover:bg-seafoam focus:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#updateLocation" data-dropdown-target="menuItem"
                   = inline_svg_tag "my-location.svg", size:"12*12", class:"h-7 mr-2 fill-current text-gray-3"
                   | Search near me
         div
@@ -50,7 +50,7 @@ main
     div class="flex flex-col justify-evenly mx-auto max-w-7xl lg:flex-row xl:px-16"
       div class="mx-auto mb-9 max-w-xs text-center lg:mb-0"
         div class="flex items-end mb-2 h-36"
-          = inline_svg_tag 'search-needs.svg', class:'mx-auto'
+          = inline_svg_tag 'search-needs.svg', class:'mx-auto' 
         h5 class="pb-3 font-bold uppercase md:pb-1"
           | 1. Search for your needs
         p.px-8

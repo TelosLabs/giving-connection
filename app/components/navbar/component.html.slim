@@ -14,9 +14,9 @@ nav id="main-navbar" data-controller="navbar--component" class="#{non_sticky_pat
         div data-dropdown-target="menu" class="flex hidden absolute right-0 top-4 z-10 mt-5 w-screen max-w-max"
           ul class="overflow-hidden text-sm bg-white rounded border shadow-lg w-42"
             - @locations.each do |location|
-              li  class="block px-4 py-2 text-gray-3 hover:bg-seafoam" data-action="click->geolocation#updateLocation"
+              li  class="block px-4 py-2 text-gray-3 hover:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#updateLocation" data-dropdown-target="menuItem" 
                 = location
-            li class="block flex items-center px-4 py-1 font-medium text-gray-3 border-gray-5 hover:bg-seafoam focus:bg-seafoam" data-action="click->geolocation#getCurrentPosition"
+            li class="block flex items-center px-4 py-1 font-medium text-gray-3 border-gray-5 hover:bg-seafoam focus:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#getCurrentPosition" data-dropdown-target="menuItem" 
               = inline_svg_tag "my-location.svg", size:"12*12", class:"h-7 mr-2 fill-current text-gray-3"
               | Search near me
     
@@ -53,9 +53,9 @@ nav id="main-navbar" data-controller="navbar--component" class="#{non_sticky_pat
         div data-dropdown-target="menu" class="flex hidden absolute right-0 top-4 z-10 mt-5 w-screen max-w-max"
           ul class="overflow-hidden text-sm bg-white rounded border shadow-lg w-42"
             - @locations.each do |location|
-              li  class="block px-4 py-2 text-gray-3 hover:bg-seafoam" data-action="click->geolocation#updateLocation"
+              li  class="block px-4 py-2 text-gray-3 hover:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#updateLocation" data-dropdown-target="menuItem" 
                 = location
-            li class="block flex items-center px-4 py-1 font-medium text-gray-3 border-gray-5 hover:bg-seafoam focus:bg-seafoam" data-action="click->geolocation#getCurrentPosition"
+            li class="block flex items-center px-4 py-1 font-medium text-gray-3 border-gray-5 hover:bg-seafoam focus:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#getCurrentPosition" data-dropdown-target="menuItem"
               = inline_svg_tag "my-location.svg", size:"12*12", class:"h-7 mr-2 fill-current text-gray-3"
               | Search near me
 
