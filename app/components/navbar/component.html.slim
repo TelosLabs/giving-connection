@@ -45,7 +45,7 @@ nav id="main-navbar" data-controller="navbar--component" class="#{non_sticky_pat
       - else
         li = link_to "Sign in", signin_path, class:'text-base font-bold mr-2 mid:mr-4 lg:mr-6'
         li = link_to "Create Account", signup_path, class:'c-button py-2.5 px-5 text-white bg-blue-medium'
-      li class="inline-block flex relative items-center mx-2 w-36 font-medium cursor-pointer md:w-28" data-controller="dropdown" data-action="click@window->dropdown#hide touchstart@window->dropdown#hide keydown.up->dropdown#previousItem keydown.down->dropdown#nextItem keydown.esc->dropdown#hide" 
+      li class="inline-block flex relative items-center mx-2 w-28 font-medium cursor-pointer lg:w-36" data-controller="dropdown" data-action="click@window->dropdown#hide touchstart@window->dropdown#hide keydown.up->dropdown#previousItem keydown.down->dropdown#nextItem keydown.esc->dropdown#hide" 
         button data-action="dropdown#toggle:stop" class="flex items-center border-b-2 text-sm-underlined-color text-seafoam border-seafoam"
           = inline_svg_tag "location-dot.svg", size:"9*9", class:"h-7 mr-3 fill-current"
           p data-geolocation-target="currentLocation"
