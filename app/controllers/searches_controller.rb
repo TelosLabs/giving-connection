@@ -10,12 +10,7 @@ class SearchesController < ApplicationController
     end
 
     set_search_pills_data
-    @search = params["search"].present? ? Search.new(create_params) : Search.new(
-      city: @current_location[:city],
-      state: @current_location[:state],
-      lat: @current_location[:latitude],
-      lon: @current_location[:longitude]
-    )
+    @search = params["search"].present? ? Search.new(create_params.merge(location_params)) : Search.new(location_params)
     @search.save
     @pagy, @results = pagy(@search.results)
     puts @search.errors.full_messages if @search.results.any?
@@ -29,6 +24,15 @@ class SearchesController < ApplicationController
     params.require(:search).permit(:distance, :city, :state, :lat, :lon,
       :open_now, :open_weekends, :keyword,
       :zipcode, causes: [], services: {}, beneficiary_groups: {})
+  end
+
+  def location_params
+    {
+      city: @current_location[:city],
+      state: @current_location[:state],
+      lat: @current_location[:latitude],
+      lon: @current_location[:longitude]
+    }
   end
 
   def set_search_pills_data
