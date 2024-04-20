@@ -30,7 +30,7 @@ main
             button type="button" class="flex items-center pl-2 md:w-52 border-l-gray" data-action="dropdown#toggle:stop"
               = inline_svg_tag "location-dot.svg", size:"9*9", class:"h-7 mr-2 fill-current"
               p data-geolocation-target="currentLocation"
-                = @current_location[:city]
+                = @current_location[:city]&.presence || "Location not found"
             div data-dropdown-target="menu" class="flex absolute right-0 top-11 z-10 w-52"
               ul class="overflow-hidden w-full text-sm bg-white rounded border shadow-lg"
                 - @locations.each do |location|
