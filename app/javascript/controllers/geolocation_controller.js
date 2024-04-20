@@ -36,7 +36,11 @@ export default class extends Controller {
   }
 
   error(err) {
-    console.warn(`ERROR(${err.code}): ${err.message}`)
+    if (err.code === 1) {
+      // User denied access to location services
+      console.warn(`ERROR(${err.code}): ${err.message}`)
+      window.alert('Please enable location services to use this feature. Visit your browser settings to enable location services.') 
+    }
   }
 
   async findNearestCity(coordinates) {

@@ -9,7 +9,7 @@ nav id="main-navbar" data-controller="navbar--component" class="#{non_sticky_pat
         button data-action="dropdown#toggle:stop" class="flex justify-end items-center text-xs border-b-2 md:text-sm md:text-sm-underlined-color text-seafoam border-seafoam"
           = inline_svg_tag "location-dot.svg", size:"9*9", class:"h-7 mr-1 fill-current"
           p data-geolocation-target="currentLocation"
-            = @current_location[:city]
+            = @current_location[:city]&.presence || "Location not found"
         div data-dropdown-target="menu" class="flex hidden absolute right-0 top-4 z-10 mt-5 w-screen max-w-max"
           ul class="overflow-hidden text-sm bg-white rounded border shadow-lg w-42"
             - @locations.each do |location|
@@ -48,7 +48,7 @@ nav id="main-navbar" data-controller="navbar--component" class="#{non_sticky_pat
         button data-action="dropdown#toggle:stop" class="flex items-center text-xs border-b-2 md:text-sm md:text-sm-underlined-color text-seafoam border-seafoam"
           = inline_svg_tag "location-dot.svg", size:"9*9", class:"h-7 mr-3 fill-current"
           p data-geolocation-target="currentLocation"
-            = @current_location[:city]
+            = @current_location[:city]&.presence || "Location not found"
         div data-dropdown-target="menu" class="flex hidden absolute right-0 top-4 z-10 mt-5 w-screen max-w-max"
           ul class="overflow-hidden text-sm bg-white rounded border shadow-lg w-42"
             - @locations.each do |location|
