@@ -17,13 +17,13 @@ class LocationDecorator < ApplicationDecorator
   def working_hours
     return "Closed" if open_time_for_display.nil? && close_time_for_display.nil?
 
-    "#{open_time_for_display} - #{close_time_for_display} (CST)"
+    "#{open_time_for_display} - #{close_time_for_display}"
   end
 
   def display_day_working_hours(office_hour)
     return "Closed" if office_hour&.closed?
 
-    "#{office_hour&.open_time&.strftime("%l:%M %p")} - #{office_hour&.close_time&.strftime("%l:%M %p")} (CST)"
+    "#{office_hour&.open_time&.strftime("%l:%M %p")} - #{office_hour&.close_time&.strftime("%l:%M %p")}"
   end
 
   def open_time_for_display
