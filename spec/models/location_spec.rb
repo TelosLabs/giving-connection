@@ -1,6 +1,8 @@
 require "rails_helper"
+require "active_support/testing/time_helpers"
 
 RSpec.describe Location, type: :model do
+  include ActiveSupport::Testing::TimeHelpers
   let(:organization) { create(:organization) }
 
   subject { create(:location, organization: organization) }
@@ -32,6 +34,34 @@ RSpec.describe Location, type: :model do
 
     it "can create a location without non standard office hours" do
       expect(build(:location, non_standard_office_hours: nil, organization: organization)).to be_valid
+    end
+  end
+
+  describe "methods" do
+    before do
+      subject.non_standard_office_hours = nil
+
+      [0, 1, 2, 3, 4].each do |day|
+        create(:office_hour, location: subject, day: day, open_time: "08:00", close_time: "17:00")
+      end
+    end
+
+    describe "#open_now?" do
+      it "is expected to return true if location is open now" do
+        travel_to Time.zone.parse("1970-01-01 08:00:30") do
+          expect(subject.open_now?).to eq(true)
+        end
+      end
+
+      it "is expected to return false if location is closed now" do
+        travel_to Time.zone.parse("1970-01-01 07:59:59") do
+          expect(subject.open_now?).to eq(false)
+        end
+      end
+
+     # TODO: Time zone sensitive test
+      # it "is sensitive to the location's time zone" do
+      # end
     end
   end
 end

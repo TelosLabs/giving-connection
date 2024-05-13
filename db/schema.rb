@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_15_211830) do
+ActiveRecord::Schema.define(version: 2024_05_10_220249) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -178,6 +178,7 @@ ActiveRecord::Schema.define(version: 2023_11_15_211830) do
     t.string "youtube_video_link"
     t.boolean "public_address", default: true, null: false
     t.integer "non_standard_office_hours"
+    t.string "time_zone"
     t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
     t.index ["organization_id"], name: "index_locations_on_organization_id"
   end

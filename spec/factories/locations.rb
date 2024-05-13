@@ -8,5 +8,9 @@ FactoryBot.define do
     main { true }
     offer_services { true }
     non_standard_office_hours { 1 }
+
+    trait :always_open do
+      non_standard_office_hours { 2 }
+    end
   end
 end
