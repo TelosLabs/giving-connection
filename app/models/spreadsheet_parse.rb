@@ -156,6 +156,7 @@ class SpreadsheetParse
      name: location_row["name"],
      latitude: location_row["latitude"].present? ? location_row["latitude"].to_f : nil,
      longitude: location_row["longitude"].present? ? location_row["longitude"].to_f : nil,
+     time_zone: location_row["time_zone"].presence,
      email: location_row["email"], youtube_video_link: location_row["youtube_video_link"]}
   end
 
