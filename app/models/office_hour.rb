@@ -26,23 +26,47 @@ class OfficeHour < ActiveRecord::Base
   before_validation :closed_if_does_not_offers_service
   before_validation :clean_time, if: :closed?
 
+  delegate :time_zone, to: :location, allow_nil: true
+
   def day_name
     Date::DAYNAMES[day]
   end
 
+  def open_time
+    super&.in_time_zone(time_zone)
+  end
+
+  def close_time
+    super&.in_time_zone(time_zone)
+  end
+
   def formatted_open_time
     return nil unless open_time
-    now = Date.current
+    now = current_time_in_zone
     open_time.change({year: now.year, month: now.month, day: now.day})
   end
 
   def formatted_close_time
     return nil unless close_time
-    now = Date.current
+
+    now = current_time_in_zone
     close_time.change({year: now.year, month: now.month, day: now.day})
   end
 
+  def time_zone
+    Rails.logger.info "Retrieving time zone for office hour"
+    location&.time_zone || default_time_zone
+  end
+
   private
+
+  def current_time_in_zone
+    ActiveSupport::TimeZone[time_zone].now
+  end
+
+  def default_time_zone
+    ActiveSupport::TimeZone["Eastern Time (US & Canada)"]&.name
+  end
 
   def closed_or_does_not_offers_service?
     closed? || !location.offer_services

@@ -24,9 +24,9 @@ namespace :location do
 
     Location.all.find_each do |location|
       geoname_timezone = Timezone.lookup(location.latitude, location.longitude)
-      timezone = ActiveSupport::TimeZone::MAPPING.key(geoname_timezone)
+      timezone = ActiveSupport::TimeZone::MAPPING.key(geoname_timezone) || "Eastern Time (US & Canada)"
 
-      if location.update time_zone: timezone.name
+      if location.update time_zone: timezone
         updated_locations += 1
       else
         not_updated_locations << location.id
