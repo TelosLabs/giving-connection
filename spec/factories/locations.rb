@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :location do
     organization
-    name { "MyString" }
+    name { Faker::Company.name }
     address { "MyString" }
     latitude { 1.5 }
     longitude { 1.5 }
