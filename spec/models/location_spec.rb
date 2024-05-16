@@ -3,9 +3,6 @@ require "active_support/testing/time_helpers"
 
 RSpec.describe Location, type: :model do
   include ActiveSupport::Testing::TimeHelpers
-  let(:organization) { create(:organization) }
-
-  subject { create(:location, organization: organization) }
 
   describe "associations" do
     it { is_expected.to belong_to(:organization).optional }
@@ -33,35 +30,37 @@ RSpec.describe Location, type: :model do
     end
 
     it "can create a location without non standard office hours" do
-      expect(build(:location, non_standard_office_hours: nil, organization: organization)).to be_valid
+      expect(build(:location, :with_office_hours, non_standard_office_hours: nil)).to be_valid
+    end
+
+    describe "LocationValidator" do
+      let(:location) { build(:location) }
+
+      it "validates complete office hours" do
+        expect { location.validate! }.to raise_error(ActiveRecord::RecordInvalid).with_message(/Office hours data is required for the 7 days of the week/)
+      end
+
+      it "validates time zone" do
+        expect { location.validate! }.to raise_error(ActiveRecord::RecordInvalid).with_message(/Time zone is required for locations that offer services./)
+      end
     end
   end
 
   describe "methods" do
-    before do
-      subject.non_standard_office_hours = nil
-
-      [0, 1, 2, 3, 4].each do |day|
-        create(:office_hour, location: subject, day: day, open_time: "08:00", close_time: "17:00")
-      end
-    end
+    let(:location) { create(:location, :with_office_hours) }
 
     describe "#open_now?" do
       it "is expected to return true if location is open now" do
         travel_to Time.zone.parse("1970-01-01 08:00:30") do
-          expect(subject.open_now?).to eq(true)
+          expect(location.open_now?).to eq(true)
         end
       end
 
       it "is expected to return false if location is closed now" do
         travel_to Time.zone.parse("1970-01-01 07:59:59") do
-          expect(subject.open_now?).to eq(false)
+          expect(location.open_now?).to eq(false)
         end
       end
-
-     # TODO: Time zone sensitive test
-      # it "is sensitive to the location's time zone" do
-      # end
     end
   end
 end

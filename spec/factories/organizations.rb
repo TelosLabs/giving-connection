@@ -33,10 +33,10 @@ FactoryBot.define do
     vision_statement_en { "testing" }
     website { "testing" }
     scope_of_work { "International" }
+    creator { create(:admin_user) }
 
     after(:build) do |organization|
-      organization.locations << create(:location, organization: organization)
-      organization.creator = create(:admin_user)
+      organization.locations << create(:location, :appointment_only, organization: organization)
       organization.causes << build(:cause)
     end
   end

@@ -4,6 +4,6 @@ FactoryBot.define do
     day { rand(6) }
     open_time { "09:00" }
     close_time { "17:00" }
-    location { association :location }
+    location
   end
 end

@@ -15,7 +15,7 @@ class LocationValidator < ActiveModel::Validator
   def complete_office_hours
     return true if record.non_standard_office_hours.present?
 
-    record.organization.errors.add(:base, "Office hours data is required for the 7 days of the week") unless Time::DAYS_INTO_WEEK.values.sort == record.office_hours.map(&:day).sort
+    record.errors.add(:base, "Office hours data is required for the 7 days of the week") unless Time::DAYS_INTO_WEEK.values.sort == record.office_hours.map(&:day).sort
   end
 
   def valid_website_url
@@ -26,20 +26,16 @@ class LocationValidator < ActiveModel::Validator
       false
     end
     return true if url.is_a?(URI::HTTP) || url.is_a?(URI::HTTPS) || url.is_a?(URI::Generic)
-    record.organization.errors.add(:base, "Website url incorrect format")
+    record.organization&.errors&.add(:base, "Website url incorrect format")
   end
 
   def time_zone_present
     return true if record.time_zone.present?
 
-    record.organization.errors.add(:base, "Time zone is required for locations that offer services and have a pin on the map.")
+    record.errors.add(:base, "Time zone is required for locations that offer services.")
   end
 
   def time_zone_applicable?
-    record.offer_services? && record.non_standard_office_hours.blank? && geolocation_present?
-  end
-
-  def geolocation_present?
-    record.latitude.present? && record.longitude.present?
+    record.offer_services? && record.non_standard_office_hours.blank?
   end
 end

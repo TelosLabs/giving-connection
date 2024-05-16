@@ -54,7 +54,6 @@ class OfficeHour < ActiveRecord::Base
   end
 
   def time_zone
-    Rails.logger.info "Retrieving time zone for office hour"
     location&.time_zone || default_time_zone
   end
 
