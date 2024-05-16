@@ -12,7 +12,7 @@
 #
 FactoryBot.define do
   factory :favorite_location do
-    user { association(:user) }
-    location { association(:location) }
+    user
+    location { create(:location, :appointment_only) }
   end
 end

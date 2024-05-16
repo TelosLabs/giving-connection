@@ -15,6 +15,6 @@ FactoryBot.define do
   factory :phone_number do
     number { "MyString" }
     main { false }
-    location { association(:location) }
+    location { create(:location, :appointment_only) }
   end
 end
