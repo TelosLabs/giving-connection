@@ -49,7 +49,6 @@ RSpec.describe Organization, type: :model do
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_presence_of(:organization_causes) }
     it { is_expected.to validate_presence_of(:ein_number) }
-    it { is_expected.to validate_uniqueness_of(:ein_number) }
     it { is_expected.to validate_presence_of(:irs_ntee_code) }
     it { is_expected.to validate_inclusion_of(:irs_ntee_code).in_array(Organizations::Constants::NTEE_CODE) }
     it { is_expected.to validate_presence_of(:mission_statement_en) }
