@@ -1,89 +1,87 @@
 <%= content_tag :div, options do %>
-  <div class="flex flex-wrap flex-shrink-0 max-w-full gap-2 p-2" data-select-multiple-target="badgesContainer">
+  <div class="flex flex-wrap flex-shrink-0 gap-2 p-2 max-w-full" data-select-multiple-target="badgesContainer">
   </div>
-
   <input
   id="<%= @required ? 'required':'' %>"
   type="text"
   data-select-multiple-target="input"
   data-detect-form-changes-target="utilityInput"
-  class="w-48 h-full pt-3 text-sm align-middle border-0 border-transparent scroll-mt-25 focus:outline-none focus:border-transparent focus:ring-0 rounded-6px"
+  class="pt-3 w-48 h-full text-sm align-middle border-0 border-transparent scroll-mt-25 focus:outline-none focus:border-transparent focus:ring-0 rounded-6px"
   data-action="select-multiple#search"
   placeholder="<%= @placeholder %>">
-
-  <div data-search-target="advancedFiltersCheckboxes" data-extend-dropdown-target="menu" class="absolute left-0 z-10 hidden w-full mt-2 top-full max-h-52" >
-    <div class="p-5 overflow-y-auto bg-white border rounded border-gray-5 max-h-52">
-      <div class="flex flex-col gap-y-2">
-        <% if @items.is_a?(Array) %>
-          <% if @klass.present? %>
-            <%= @f.collection_check_boxes :cause_ids, Cause.order(:name), :id, :name do |c| %>
-              <% content_tag :div, data: { 'select-multiple-target': "group" } do %>
-                <% content_tag :div, class: "flex gap-x-2 items-center" do %>
-                  <%= c.check_box(class: "h-4 w-4 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent modal-checkbox",
+    <div data-search-target="advancedFiltersCheckboxes" data-extend-dropdown-target="menu" class="hidden absolute left-0 top-full z-10 mt-2 w-full max-h-52" >
+      <div class="overflow-y-auto p-5 max-h-52 bg-white rounded border border-gray-5">
+        <div class="flex flex-col gap-y-2">
+          <% if @items.is_a?(Array) %>
+            <% if @klass.present? %>
+              <%= @f.collection_check_boxes :cause_ids, Cause.order(:name), :id, :name do |c| %>
+                <% content_tag :div, data: { 'select-multiple-target': "group" } do %>
+                  <% content_tag :div, class: "flex gap-x-2 items-center" do %>
+                    <%= c.check_box(class: "h-4 w-4 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent modal-checkbox",
                                     data: { 'select-multiple-target': "checkbox", action: 'click->select-multiple#select', value: c.text }) %>
-                  <% if Cause.find_by(name: c.text) %>
-                    <%= render CauseIcon::Component.new(svg_name: "causes_categories/#{format_cause_name c.text}",
+                    <% if Cause.find_by(name: c.text) %>
+                      <%= render CauseIcon::Component.new(svg_name: "causes_categories/#{format_cause_name c.text}",
                                                           wrapper_options: {class: "w-8 h-8 flex-shrink-0 flex justify-center items-center rounded-full bg-blue-pale", aria_hidden: true},
                                                           svg_options: {class: "w-5 h-5"}) %>
-                  <% end %>
-                  <%= c.label(class: "text-sm text-black w-full") %>
-                <% end %>
-              <% end %>
-            <% end %>
-          <% else %>
-            <% @items&.sort&.each do |item| %>
-              <div class="" data-select-multiple-target="group">
-                <div class="flex items-center gap-x-2">
-                  <%= check_box_tag "#{@name}[]", item, false, class: "h-4 w-4 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent modal-checkbox",
-                                    data: { 'select-multiple-target': "checkbox", action: 'click->select-multiple#select', value: item } %>
-                  <% if Cause.find_by(name: item) %>
-                    <%= render CauseIcon::Component.new(svg_name: "causes_categories/#{format_cause_name item}",
-                                                          wrapper_options: {class: "w-8 h-8 flex-shrink-0 flex justify-center items-center rounded-full bg-blue-pale", aria_hidden: true},
-                                                          svg_options: {class: "w-5 h-5"}) %>
-                  <% end %>
-                  <%= label_tag item, item, for: item, class: "text-sm text-black w-full" %>
-                </div>
-              </div>
-            <% end %>
-          <% end %>
-        <% elsif @items.is_a?(Hash) %>
-          <% @items&.sort&.each do |group, list|%>
-            <div class="mb-6" data-select-multiple-target="group">
-              <div class="pl-6 my-2 text-sm font-bold text-black">
-                <%= group %>
-              </div>
-              <% if @klass.present? %>
-                <%= @f.collection_check_boxes ids_array, collection(group), :id, :name do |c| %>
-                  <% content_tag :div, class: "flex flex-row items-center my-2" do %>
-                    <%= c.check_box(class: "h-4 w-4 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent modal-checkbox",
-                                      data: { 'select-multiple-target': "checkbox", action: 'click->select-multiple#select', value: c.text }) %>
+                    <% end %>
                     <%= c.label(class: "text-sm text-black w-full") %>
                   <% end %>
                 <% end %>
-              <% else %>
-                <% list&.sort&.each do |item| %>
-                  <div class="flex flex-row items-center my-2">
-                    <%= check_box_tag "#{@name}[#{group}][]", item, false, class: "h-4 w-4 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent modal-checkbox",
-                                      data: { 'select-multiple-target': "checkbox", action: 'click->select-multiple#select', value: item } %>
-                    <%= label_tag @name, item, for: item, class: "text-sm text-black w-full" %>
-                  </div>
-                <% end %>
               <% end %>
-            </div>
+            <% else %>
+              <% @items&.sort&.each do |item| %>
+                <div class="" data-select-multiple-target="group">
+                  <div class="flex gap-x-2 items-center">
+                    <%= check_box_tag "#{@name}[]", item, false, class: "h-4 w-4 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent modal-checkbox",
+                                    data: { "search-target": "pill", 'select-multiple-target': "checkbox", action: 'click->select-multiple#select', value: item } %>
+                    <% if Cause.find_by(name: item) %>
+                      <%= render CauseIcon::Component.new(svg_name: "causes_categories/#{format_cause_name item}",
+                                                          wrapper_options: {class: "w-8 h-8 flex-shrink-0 flex justify-center items-center rounded-full bg-blue-pale", aria_hidden: true},
+                                                          svg_options: {class: "w-5 h-5"}) %>
+                    <% end %>
+                    <%= label_tag item, item, for: item, class: "text-sm text-black w-full" %>
+                  </div>
+                </div>
+              <% end %>
+            <% end %>
+          <% elsif @items.is_a?(Hash) %>
+            <% @items&.sort&.each do |group, list|%>
+              <div class="mb-6" data-select-multiple-target="group">
+                <div class="pl-6 my-2 text-sm font-bold text-black">
+                  <%= group %>
+                </div>
+                <% if @klass.present? %>
+                  <%= @f.collection_check_boxes ids_array, collection(group), :id, :name do |c| %>
+                    <% content_tag :div, class: "flex flex-row items-center my-2" do %>
+                      <%= c.check_box(class: "h-4 w-4 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent modal-checkbox",
+                                      data: { "search-target": "pill", 'select-multiple-target': "checkbox", action: 'click->select-multiple#select', value: c.text }) %>
+                      <%= c.label(class: "text-sm text-black w-full") %>
+                    <% end %>
+                  <% end %>
+                <% else %>
+                  <% list&.sort&.each do |item| %>
+                    <div class="flex flex-row items-center my-2">
+                      <%= check_box_tag "#{@name}[#{group}][]", item, false, class: "h-4 w-4 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent modal-checkbox",
+                                      data: { "search-target": "pill", 'select-multiple-target': "checkbox", action: 'click->select-multiple#select', value: item } %>
+                      <%= label_tag @name, item, for: item, class: "text-sm text-black w-full" %>
+                    </div>
+                  <% end %>
+                <% end %>
+              </div>
+            <% end %>
           <% end %>
-        <% end %>
+        </div>
       </div>
     </div>
-  </div>
-  <%# Badge Template %>
-  <span class="hidden bg-blue-medium py-1.5 pl-2 pr-1 min-h-7 inline-flex items-center text-xs text-white rounded-6px" data-select-multiple-target="badgeTemplate">
-    <span>
+    <%# Badge Template %>
+    <span class="inline-flex hidden items-center py-1.5 pr-1 pl-2 text-xs text-white bg-blue-medium min-h-7 rounded-6px" data-select-multiple-target="badgeTemplate">
+      <span>
+      </span>
+      <button type="button" data-action='click->select-multiple#remove' class="inline-flex flex-shrink-0 justify-center items-center ml-0.5 w-4 h-4 text-indigo-400 rounded-full hover:bg-indigo-200 hover:text-indigo-500 focus:outline-none focus:bg-indigo-500 focus:text-white">
+        <span class="sr-only">Remove large option</span>
+        <svg class="w-2 h-2 text-white" stroke="currentColor" fill="none" viewBox="0 0 8 8">
+          <path stroke-linecap="round" stroke-width="1.5" d="M1 1l6 6m0-6L1 7" />
+        </svg>
+      </button>
     </span>
-    <button type="button" data-action='click->select-multiple#remove' class="flex-shrink-0 ml-0.5 h-4 w-4 rounded-full inline-flex items-center justify-center text-indigo-400 hover:bg-indigo-200 hover:text-indigo-500 focus:outline-none focus:bg-indigo-500 focus:text-white">
-      <span class="sr-only">Remove large option</span>
-      <svg class="w-2 h-2 text-white" stroke="currentColor" fill="none" viewBox="0 0 8 8">
-        <path stroke-linecap="round" stroke-width="1.5" d="M1 1l6 6m0-6L1 7" />
-      </svg>
-    </button>
-  </span>
-<% end %>
+  <% end %>
