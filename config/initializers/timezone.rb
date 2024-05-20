@@ -1,3 +1,3 @@
 Timezone::Lookup.config(:geonames) do |c|
-  c.username = "givingconnection"
+  c.username = Rails.application.credentials.geonames[:username]
 end
