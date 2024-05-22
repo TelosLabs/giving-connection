@@ -99,6 +99,11 @@ module Admin
         .transform_values { |value| (value == "") ? nil : value }
     end
 
+    def check_ein
+      exists = Organization.find_by(ein_number: params[:ein_number]).present?
+      render json: {exists: exists}
+    end
+
     private
 
     def log_results(results)

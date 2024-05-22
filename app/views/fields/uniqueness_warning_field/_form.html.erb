@@ -1,0 +1,23 @@
+<div class="field-unit__label">
+  <%= f.label field.attribute %>
+</div>
+<div class="field-unit__field">
+  <%= f.text_field field.attribute, id: "organization_ein" %>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const nameInput = document.querySelector('#organization_ein');
+    nameInput.addEventListener('blur', function() {
+      const enteredEIN = this.value;
+      fetch(`/admin/organizations/check_ein?ein_number=${enteredEIN}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.exists) {
+            if (!confirm('There is already an organization with that EIN. Are you sure you want to use it?')) {
+              nameInput.value = ''; // Clear the input if not confirmed
+            }
+          }
+        });
+    });
+  });
+</script>
