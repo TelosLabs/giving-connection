@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       collection do
         get :upload
         post :import
+        get :check_ein
       end
     end
     resource :export_locations, only: :new
