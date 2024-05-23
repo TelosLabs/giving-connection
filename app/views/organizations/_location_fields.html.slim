@@ -87,7 +87,7 @@ div class="grid grid-cols-12 gap-6 mt-8 nested-fields" data-new-record="true" da
                   span.sr-only Dismiss
                   = inline_svg_tag 'x-icon.svg', class:'h-3 w-3'
               = location_form.label :time_zone, "Time Zone", class: "block text-sm text-gray-3 font-medium mb-1"
-              = location_form.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, {}, default: "Eastern Time (US & Canada)", class: "block h-46px mb-3 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
+              = location_form.select :time_zone, ActiveSupport::TimeZone.us_zones, { class: "block h-46px mb-3 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"}
               table class="w-full text-left table-fixed schedule-editor"
                 tbody
                   - Date::DAYNAMES.each_with_index do |day, index|

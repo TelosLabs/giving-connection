@@ -57,7 +57,7 @@ class Location < ActiveRecord::Base
   validates :main, inclusion: {in: [true, false]}
   validates :offer_services, inclusion: {in: [true, false]}
   validates :non_standard_office_hours, inclusion: {in: non_standard_office_hours.keys}, allow_blank: true
-  validates :time_zone, inclusion: {in: ActiveSupport::TimeZone.all.map(&:name)}, allow_blank: true
+  validates :time_zone, inclusion: {in: ActiveSupport::TimeZone.us_zones.map(&:name)}, allow_blank: true
 
   scope :additional, -> { where(main: false) }
   scope :main, -> { where(main: true) }
