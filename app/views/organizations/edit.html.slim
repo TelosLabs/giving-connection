@@ -342,7 +342,7 @@
                         // For horizontal scrolling
                         div class="flex flex-col gap-y-1 items-start"
                           = location_form.label :time_zone, "Time Zone"
-                          = location_form.select :time_zone, ActiveSupport::TimeZone.us_zones, {}, class: "w-full rounded-md"
+                          = location_form.select :time_zone, ActiveSupport::TimeZone.us_zones, { selected: "(GMT-05:00) Eastern Time (US & Canada)"} , class: "w-full rounded-md"
                           table class="w-full text-left table-fixed schedule-editor"
                             tbody
                               // column headers
