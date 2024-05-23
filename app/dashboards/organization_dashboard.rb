@@ -13,7 +13,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     id: Field::Number,
     name: Field::String,
     second_name: Field::String,
-    ein_number: Field::String,
+    ein_number: UniquenessWarningField,
     irs_ntee_code: Field::SelectBasic.with_options({
       choices: Organization::NTEE_CODE
     }),

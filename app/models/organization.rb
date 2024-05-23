@@ -48,7 +48,7 @@ class Organization < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
   validates :organization_causes, presence: true
-  validates :ein_number, presence: true, uniqueness: true
+  validates :ein_number, presence: true
   validates :irs_ntee_code, presence: true, inclusion: {in: Organizations::Constants::NTEE_CODE}
   validates :mission_statement_en, presence: true
   validates :scope_of_work, presence: true, inclusion: {in: Organizations::Constants::SCOPE}
