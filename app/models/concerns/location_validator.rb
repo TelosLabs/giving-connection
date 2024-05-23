@@ -15,7 +15,9 @@ class LocationValidator < ActiveModel::Validator
   def complete_office_hours
     return true if record.non_standard_office_hours.present? || record.offer_services == false
 
-    record.errors.add(:base, "Office hours data is required for the 7 days of the week") unless Time::DAYS_INTO_WEEK.values.sort == record.office_hours.map(&:day).sort
+    unless Time::DAYS_INTO_WEEK.values.sort == record.office_hours.map(&:day).sort
+      record.errors.add(:base, "Office hours data is required for the 7 days of the week")
+    end
   end
 
   def valid_website_url
