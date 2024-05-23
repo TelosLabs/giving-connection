@@ -340,9 +340,9 @@
                         p class="mb-6 text-sm text-gray-4"
                           | Please enter times for each day of the week to avoid an error message.
                         // For horizontal scrolling
-                        div class="overflow-x-auto my-10 w-full"
-                          = location_form.label :time_zone, "Time Zone", class: "block text-sm text-gray-3 font-medium mb-1"
-                          = location_form.select :time_zone, ActiveSupport::TimeZone.us_zones, { class: "block h-46px mb-3 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"}
+                        div class="flex flex-col gap-y-1 items-start"
+                          = location_form.label :time_zone, "Time Zone"
+                          = location_form.select :time_zone, ActiveSupport::TimeZone.us_zones, {}, class: "w-full rounded-md"
                           table class="w-full text-left table-fixed schedule-editor"
                             tbody
                               // column headers
