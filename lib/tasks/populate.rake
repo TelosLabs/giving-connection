@@ -33,11 +33,12 @@ namespace :populate do
     sheet = wb.sheet(0)
     cities = sheet.parse(place_name: "place_name", latitude: "latitude", longitude: "longitude", clean: true)
 
-    cities.each do |city|
+    Organization.find_each do |org|
       2.times do
+        city = cities.sample
         random_coords = RandomCoordinatesGenerator.call(central_lat: city[:latitude].to_f, central_lng: city[:longitude].to_f, max_radius: 1000)
         Location.create!(
-          organization_id: Organization.all.sample.id,
+          organization_id: org.id,
           name: Faker::Company.name,
           address: city[:place_name],
           latitude: random_coords[:lat],
