@@ -6,15 +6,18 @@ class LocationValidator < ActiveModel::Validator
   def validate(record)
     @record = record
     complete_office_hours
+    time_zone_present if time_zone_applicable?
     valid_website_url
   end
 
   private
 
   def complete_office_hours
-    return true if record.non_standard_office_hours.present?
+    return true if record.non_standard_office_hours.present? || record.offer_services == false
 
-    record.organization.errors.add(:base, "Office hours data is required for the 7 days of the week") unless Time::DAYS_INTO_WEEK.values.sort == record.office_hours.map(&:day).sort
+    unless Time::DAYS_INTO_WEEK.values.sort == record.office_hours.map(&:day).sort
+      record.errors.add(:base, "Office hours data is required for the 7 days of the week")
+    end
   end
 
   def valid_website_url
@@ -25,6 +28,16 @@ class LocationValidator < ActiveModel::Validator
       false
     end
     return true if url.is_a?(URI::HTTP) || url.is_a?(URI::HTTPS) || url.is_a?(URI::Generic)
-    record.organization.errors.add(:base, "Website url incorrect format")
+    record.organization&.errors&.add(:base, "Website url incorrect format")
+  end
+
+  def time_zone_present
+    return true if record.time_zone.present?
+
+    record.errors.add(:base, "Time zone is required for locations that offer services.")
+  end
+
+  def time_zone_applicable?
+    record.offer_services? && record.non_standard_office_hours.blank?
   end
 end

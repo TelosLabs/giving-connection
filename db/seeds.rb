@@ -15,6 +15,7 @@ unless Rails.env.production?
   PhoneNumber.destroy_all
   SocialMedia.destroy_all
   Tag.destroy_all
+  User.destroy_all
 
   # Admin users
   unless AdminUser.find_by(email: "admin@example.com")

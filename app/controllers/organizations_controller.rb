@@ -124,6 +124,7 @@ class OrganizationsController < ApplicationController
         :youtube_video_link,
         :main,
         :offer_services,
+        :time_zone,
         :non_standard_office_hours,
         :email,
         :_destroy,

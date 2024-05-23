@@ -11,6 +11,6 @@
 #
 FactoryBot.define do
   factory :cause do
-    name { "MyString" }
+    name { Faker::Company.bs }
   end
 end

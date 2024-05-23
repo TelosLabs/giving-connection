@@ -16,7 +16,9 @@ class OfficeHoursValidator < ActiveModel::Validator
     return true if record.location.appointment_only?
     return true if record.location.no_set_business_hours?
 
-    if record&.open_time&.>= record&.close_time
+    if record.open_time.nil? || record.close_time.nil?
+      record.errors.add(:base, "Open time and close time must both be present")
+    elsif record.open_time >= record.close_time
       record.location.organization.errors.add(:base, "Closing time must be after opening time")
     end
   end

@@ -1,10 +1,10 @@
 require "rails_helper"
 
 RSpec.describe OfficeHour, type: :model do
-  let(:location) { create(:location) }
-  let(:office_hour) { create(:office_hour, location: location) }
+  let(:location) { create(:location, :with_office_hours) }
+  let(:office_hour) { build(:office_hour, location: location) }
 
-  subject { create(:office_hour) }
+  subject { office_hour }
 
   describe "associations" do
     it "is expected to belong to location" do

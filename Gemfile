@@ -74,6 +74,7 @@ gem "city-state"
 gem "pronto"
 gem "pronto-flay", require: false
 gem "pronto-rubocop", require: false
+gem "timezone", "~> 1.0" #  Timezone lookup based on geolocation
 
 # Geolocation
 gem "activerecord-postgis-adapter"
