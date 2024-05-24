@@ -21,6 +21,7 @@ class LocationDashboard < Administrate::BaseDashboard
     email: Field::String,
     main: Field::Boolean,
     offer_services: Field::Boolean,
+    time_zone: Field::Select.with_options(include_blank: true, collection: ActiveSupport::TimeZone.us_zones.map(&:name)),
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
     address: AddressField,
@@ -64,6 +65,7 @@ class LocationDashboard < Administrate::BaseDashboard
     main
     images
     offer_services
+    time_zone
     address
     suite
     phone_number
@@ -80,6 +82,7 @@ class LocationDashboard < Administrate::BaseDashboard
     youtube_video_link
     images
     non_standard_office_hours
+    time_zone
     email
     phone_number
     po_box
