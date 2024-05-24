@@ -4,6 +4,6 @@
 <div class="field-unit__field"
   data-controller="uniqueness-warning"
   data-uniqueness-warning-url-value="<%= check_ein_admin_organizations_path %>"
-  data-action="uniqueness-warning:click:outside->uniqueness-warning#checkUniqueness">
+  data-action="change->uniqueness-warning#checkUniqueness">
   <%= f.text_field field.attribute, id: "organization_ein", data: { uniqueness_warning_target: "input" } %>
 </div>
