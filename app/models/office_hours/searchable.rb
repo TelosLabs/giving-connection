@@ -6,7 +6,7 @@ module OfficeHours
 
     def open_now?
       return false if closed?
-      Time.now.between?(formatted_open_time.to_time, formatted_close_time.to_time)
+      current_time_in_zone.between?(formatted_open_time.to_time, formatted_close_time.to_time)
     end
 
     def next_office_hours
@@ -14,5 +14,9 @@ module OfficeHours
       (check_day < 6) ? check_day += 1 : check_day = 0
       OfficeHour.find_by(location_id: location_id, day: check_day)
     end
+  end
+
+  def current_time_in_zone
+    time_zone.now
   end
 end

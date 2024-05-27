@@ -54,17 +54,17 @@ class OfficeHour < ActiveRecord::Base
   end
 
   def time_zone
-    location&.time_zone || default_time_zone
+    ActiveSupport::TimeZone[location&.time_zone] || default_time_zone
   end
 
   private
 
   def current_time_in_zone
-    ActiveSupport::TimeZone[time_zone].now
+    time_zone.now
   end
 
   def default_time_zone
-    ActiveSupport::TimeZone["Eastern Time (US & Canada)"]&.name
+    ActiveSupport::TimeZone["Eastern Time (US & Canada)"]
   end
 
   def closed_or_does_not_offers_service?
