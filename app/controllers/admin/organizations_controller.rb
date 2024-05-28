@@ -100,8 +100,7 @@ module Admin
     end
 
     def check_ein
-      exists = Organization.find_by(ein_number: params[:ein_number]).present?
-      render json: {exists: exists}
+      render json: EinChecker.new(params[:ein_number]).call
     end
 
     private
