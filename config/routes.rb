@@ -51,6 +51,7 @@ Rails.application.routes.draw do
   resources :locations, only: %i[index new show destroy]
 
   resources :organizations, only: %i[edit update] do
+    get :check_ein, on: :collection
     resources :locations, only: %i[index new create]
     member do
       get "delete_upload/:upload_id", action: :delete_upload

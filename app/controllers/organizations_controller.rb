@@ -87,6 +87,11 @@ class OrganizationsController < ApplicationController
     end
   end
 
+  def check_ein
+    render json: EinChecker.new(params[:ein_number]).call
+    skip_authorization
+  end
+
   def organization_params
     params.require(:organization).permit(
       :name,
