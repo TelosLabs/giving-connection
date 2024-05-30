@@ -54,7 +54,8 @@ class OfficeHour < ActiveRecord::Base
   end
 
   def time_zone
-    ActiveSupport::TimeZone[location&.time_zone] || default_time_zone
+    location_time_zone = location&.time_zone.presence || ""
+    ActiveSupport::TimeZone[location_time_zone] || default_time_zone
   end
 
   private
