@@ -1,138 +1,138 @@
 div class="bg-white main"
 
   /* Banner */
-  div class="relative bg-blue-gradient-3 h-60"
-    div class="flex flew-row justify-around h-60 overflow-hidden"
+  div class="relative h-60 bg-blue-gradient-3"
+    div class="flex overflow-hidden justify-around h-60 flew-row"
       div
         = inline_svg_tag 'new-blur-left.svg', size:'723*288'
       div
         = inline_svg_tag 'new-blur-right.svg', size:'723*288'
-    div class="flex flex-col items-center justify-center h-full absolute top-0 left-0 right-0"
-      h2 class="px-5 text-3xl font-bold text-center leading-10 text-blue-dark"
+    div class="flex absolute top-0 right-0 left-0 flex-col justify-center items-center h-full"
+      h2 class="px-5 text-3xl font-bold leading-10 text-center text-blue-dark"
         | We believe giving is the most<br>important verb in life
 
-    div class="absolute top-20 left-80 fill-current text-blue-dark hidden lg:block"
+    div class="hidden absolute top-20 left-80 fill-current text-blue-dark lg:block"
       = inline_svg_tag 'simple-star.svg', size: '22*22'
 
-    div class="absolute top-12 right-96 fill-current text-blue-dark hidden lg:block"
+    div class="hidden absolute top-12 right-96 fill-current text-blue-dark lg:block"
       = inline_svg_tag 'simple-star.svg', size: '22*22'
 
-    div class="absolute bottom-12 right-64 fill-current text-blue-dark hidden lg:block"
+    div class="hidden absolute bottom-12 right-64 fill-current text-blue-dark lg:block"
       = inline_svg_tag 'simple-heart.svg', size: '22*22'
 
   /* Donate Now */
-  div class="flex flex-col lg:flex-row justify-between mx-auto max-w-5xl pt-12 lg:pt-20 px-6 lg:px-14"
+  div class="flex flex-col justify-between px-6 pt-12 mx-auto max-w-5xl lg:flex-row lg:pt-20 lg:px-14"
     div class="flex justify-center mb-12 lg:mb-0"
       = inline_svg_tag 'lady-sitting.svg', size: '410*218'
-    div class="flex flex-col relative text-center mb-16 lg:mb-0"
+    div class="flex relative flex-col mb-16 text-center lg:mb-0"
       div class="flex justify-center"
         = inline_svg_tag 'blur-background-1.svg', size: '511*369', class: "transform xl:scale-150"
-      div class="absolute top-0 left-0 right-0"
-        h2 class="text-2xl font-bold text-gray-2 mb-6"
+      div class="absolute top-0 right-0 left-0"
+        h2 class="mb-6 text-2xl font-bold text-gray-2"
           | Donate Now
-        p class="max-w-400px text-gray-2 mx-auto mb-8"
+        p class="mx-auto mb-8 max-w-400px text-gray-2"
           ' Your donation allows us to continue developing our nonprofit search platform.
           ' We truly could not do this without your help. The overwhelming support we received
           ' from our community has given us the foundational grounding and energized motivation
           ' to continue our momentum towards meaningful change.
-        = link_to "Donate", "https://givebutter.com/givingconnectionhackathon", target: "_blank", class:'c-button inline-block my-1 text-primary-dark-blue bg-secondary-seafoam'
+        = link_to "Donate", "https://givebutter.com/aclaunch", target: "_blank", class:'c-button inline-block my-1 text-primary-dark-blue bg-secondary-seafoam'
 
   /* Donate Online */
-  div class="relative py-10 text-center md:pt-20 bg-gradient-to-l from-blue-gradient-1 to-blue-gradient-2"
-    h2 class="pb-10 font-bold text-white uppercase text-2xl md:pb-20" id="donate-online" Donate Online
+  div class="relative py-10 text-center bg-gradient-to-l md:pt-20 from-blue-gradient-1 to-blue-gradient-2"
+    h2 class="pb-10 text-2xl font-bold text-white uppercase md:pb-20" id="donate-online" Donate Online
     div class="flex px-6 mx-auto max-w-656px min-h-1150px md:min-h-800px"
       iframe src="https://givebutter.com/embed/c/givingconnectiondonatenow" class="w-full"
 
-    div class="absolute top-20 left-80 fill-current text-white hidden lg:block"
+    div class="hidden absolute top-20 left-80 text-white fill-current lg:block"
       = inline_svg_tag 'simple-heart.svg', size: '22*22'
 
-    div class="absolute bottom-60 left-60 fill-current text-white hidden lg:block"
+    div class="hidden absolute bottom-60 left-60 text-white fill-current lg:block"
       = inline_svg_tag 'simple-star.svg', size: '22*22'
 
-    div class="absolute bottom-1/2 left-3/4 fill-current text-white hidden lg:block"
+    div class="hidden absolute bottom-1/2 left-3/4 text-white fill-current lg:block"
       = inline_svg_tag 'simple-star.svg', size: '22*22'
 
   /* Other ways to give */
-  div class="flex flex-col items-center justify-center max-w-5xl mx-auto px-6 lg:px-14"
+  div class="flex flex-col justify-center items-center px-6 mx-auto max-w-5xl lg:px-14"
     div class="relative"
       div
         = inline_svg_tag 'blur-background-2.svg', size: '280*193', class: "xl:transform xl:scale-150"
-      div class="absolute left-0 right-0 top-1/2 text-center"
+      div class="absolute right-0 left-0 top-1/2 text-center"
         h2 class="text-2xl font-bold text-gray-2"
           | OTHER WAYS TO GIVE
 
-    div class="w-full flex flex-col lg:flex-row items-center justify-between mb-28"
+    div class="flex flex-col justify-between items-center mb-28 w-full lg:flex-row"
       div class="mb-6 lg:mb-0"
         = inline_svg_tag 'pablita.svg', size: '343*193', class: "xl:transform xl:scale-150"
       div class="flex flex-col items-start text-left"
-        h2 class="text-2xl font-bold text-blue-dark mb-6"
+        h2 class="mb-6 text-2xl font-bold text-blue-dark"
           | Donate using Paypal
-        p class="max-w-353px text-gray-2 mb-9"
+        p class="mb-9 max-w-353px text-gray-2"
           ' Your support and contributions will enable us to meet our goals
           ' and improve conditions. Your generous donation will fund our mission.
         = link_to "Donate now", "https://www.paypal.com/us/fundraiser/charity/4363348", target: "_blank", class:'c-button c-button--no-center inline-block my-1 text-primary-dark-blue bg-secondary-seafoam mb-9'
         = image_tag  "paypal-cards.png", size:"169x21"
 
-    div class="flex w-full flex-col lg:flex-row items-center justify-between mb-28"
+    div class="flex flex-col justify-between items-center mb-28 w-full lg:flex-row"
       div class="mb-6 lg:mb-0 lg:hidden"
         = inline_svg_tag 'pablita-2.svg', size: '334*188'
       div class="flex flex-col items-start text-left"
-        h2 class="text-2xl font-bold text-blue-dark mb-6"
+        h2 class="mb-6 text-2xl font-bold text-blue-dark"
           | Donate by Mail
         div class="max-w-454px"
-          p class="text-gray-2 mb-6"
+          p class="mb-6 text-gray-2"
             ' We greatly appreciate your support!
           p class="text-gray-2"
             ' Please make checks payable to:
-          p class="text-gray-2 mb-6"
+          p class="mb-6 text-gray-2"
             ' "Giving Connection Inc" and mail to the address below:
 
-          p class="text-gray-2 font-bold"
+          p class="font-bold text-gray-2"
             | 304 Nantucket Drive
-          p class="text-gray-2 font-bold mb-6"
+          p class="mb-6 font-bold text-gray-2"
             | Cape May, NJ 08204
 
-        p class="max-w-353px text-gray-2 mb-6"
+        p class="mb-6 max-w-353px text-gray-2"
           ' Remember to include your name, email address,
           ' and phone number. Once received, we will email
           ' you confirmation of receipt.
       div class="hidden lg:block"
         = inline_svg_tag 'pablita-2.svg', size: '334*188', class: "xl:transform xl:scale-150"
 
-    div class="flex w-full flex-col lg:flex-row items-center justify-between mb-28"
+    div class="flex flex-col justify-between items-center mb-28 w-full lg:flex-row"
       div
         = inline_svg_tag 'corp-matching-illo.svg', size: '327*248', class: "xl:transform xl:scale-150"
-      div class="flex flex-col max-w-353px items-start text-left"
-        h2 class="text-2xl font-bold text-blue-dark mb-6"
+      div class="flex flex-col items-start text-left max-w-353px"
+        h2 class="mb-6 text-2xl font-bold text-blue-dark"
           | Corporate Matching
-        p class="text-gray-2 mb-6"
+        p class="mb-6 text-gray-2"
           ' Don't forget to see if your employer participates
           ' in corporate matching!
         p class="text-gray-2"
           ' When you search, make sure you look for "Giving Connection Inc"
           ' in New Jersey
-        p class="text-gray-2 font-bold"
+        p class="font-bold text-gray-2"
           ' EIN: 86-3459449.
 
-    div class="flex w-full flex-col lg:flex-row items-center justify-between mb-28"
+    div class="flex flex-col justify-between items-center mb-28 w-full lg:flex-row"
       div class="mb-6 lg:0 lg:hidden"
         = inline_svg_tag 'pablita-3.svg', size: '371*223'
 
   /* Follow Instagram */
-  div class="text-center items-center justify-center relative bg-blue-pale pt-16 pb-28 px-6 lg:py-28"
+  div class="relative justify-center items-center px-6 pt-16 pb-28 text-center bg-blue-pale lg:py-28"
     h2 class="text-2xl font-bold text-blue-dark"
       ' Follow our updates on Instagram
-    a href="https://www.instagram.com/givingconnection/" target="_blank" class="text-2xl font-bold text-blue-dark mb-14"
+    a href="https://www.instagram.com/givingconnection/" target="_blank" class="mb-14 text-2xl font-bold text-blue-dark"
       ' @givingconnection
     - if @posts.present?
-      div class="grid grid-cols-3 gap-1 max-w-max m-auto mt-10"
+      div class="grid grid-cols-3 gap-1 m-auto mt-10 max-w-max"
         - @posts.each do |post|
           = link_to "#{post.post_url}", target:"_blank" do
             - if ["image", "carousel_album"].include?(post.media_type)
-              div class="col overflow-hidden" style='max-height:180px; max-width:180px; aspect-ratio:1/1;'
+              div class="overflow-hidden col" style='max-height:180px; max-width:180px; aspect-ratio:1/1;'
                 = image_tag "#{post.media_url}", class: "overflow-hidden object-cover"
             - elsif post.media_type == "video"
-              div class="col overflow-hidden flex justify-items-center" style='max-height:180px; max-width:180px; aspect-ratio:1/1;'
+              div class="flex overflow-hidden justify-items-center col" style='max-height:180px; max-width:180px; aspect-ratio:1/1;'
                 = video_tag "#{post.media_url}", autoplay: :autoplay, loop: :loop, muted: :muted, class: "overflow-hidden object-cover"
 
     div
