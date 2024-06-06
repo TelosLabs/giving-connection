@@ -1,20 +1,21 @@
 class TimeZoneConverter < ApplicationService
-  def initialize(time_zone, est_time_zone = "Eastern Time (US & Canada)")
-    @time_zone = time_zone.is_a?(ActiveSupport::TimeZone) ? time_zone : ActiveSupport::TimeZone[time_zone]
-    @est_time_zone = ActiveSupport::TimeZone[est_time_zone]
+  def initialize(local_time_zone, utc_time_zone = "UTC")
+    @local_time_zone = local_time_zone.is_a?(ActiveSupport::TimeZone) ? local_time_zone : ActiveSupport::TimeZone[local_time_zone]
+    @utc_time_zone = ActiveSupport::TimeZone[utc_time_zone]
   end
 
-  def from_time_zone_to_est(time_str)
+  def to_utc(time_str)
+    raise ArgumentError, "Invalid time string" unless time_str.is_a?(String) && time_str.match?(/\d{2}:\d{2}:\d{2}/)
     return nil if time_str.blank?
 
-    local_time = @time_zone.parse(time_str)
-    local_time.in_time_zone(@est_time_zone)
+    local_time = @local_time_zone.parse(time_str)
+    local_time.in_time_zone(@utc_time_zone)
   end
 
-  def from_est_to_time_zone(time_str)
+  def from_utc_to_local_time_zone(time_str)
     return nil if time_str.blank?
 
-    est_time = @est_time_zone.parse(time_str)
-    est_time.in_time_zone(@time_zone)
+    utc_time = @utc_time_zone.parse(time_str)
+    utc_time.in_time_zone(@local_time_zone)
   end
 end
