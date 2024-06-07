@@ -14,7 +14,7 @@ FactoryBot.define do
       time_zone { "Eastern Time (US & Canada)" }
       after(:build) do |location|
         (0..6).each do |day|
-          location.office_hours.build(day: day, open_time: "08:00", close_time: "17:00") # Ensure these attributes match your OfficeHour model
+          location.office_hours.build(day: day, open_time: "08:00", close_time: "17:00")
         end
       end
     end

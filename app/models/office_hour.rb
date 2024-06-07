@@ -15,6 +15,7 @@
 #
 class OfficeHour < ActiveRecord::Base
   include OfficeHours::Searchable
+  include TimeZoneConvertible
   validates_with OfficeHoursValidator
 
   belongs_to :location, touch: true
@@ -26,18 +27,8 @@ class OfficeHour < ActiveRecord::Base
   before_validation :closed_if_does_not_offers_service
   before_validation :clean_time, if: :closed?
 
-  delegate :time_zone, to: :location, allow_nil: true
-
   def day_name
     Date::DAYNAMES[day]
-  end
-
-  def open_time
-    super&.in_time_zone(time_zone)
-  end
-
-  def close_time
-    super&.in_time_zone(time_zone)
   end
 
   def formatted_open_time

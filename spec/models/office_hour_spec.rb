@@ -36,20 +36,21 @@ RSpec.describe OfficeHour, type: :model do
     end
   end
 
-  xdescribe "callbacks" do
+  describe "callbacks" do
     let(:location) { create(:location, :with_office_hours, time_zone: "Pacific Time (US & Canada)") }
     let(:oh) { build(:office_hour, location: location, open_time: "12:00", close_time: "16:00") }
 
-    subject { oh }
+    describe "#convert_times_to_utc" do
+      it "converts the time from location's time zone to UTC before saving" do
+        subject { oh }
 
-    it "converts the time zone from the location to EST before saving" do
-      expect(oh).to receive(:convert_time_to_est)
-      oh.save!
+        oh.save!
 
-      expect(oh.open_time.zone).to eql("EST")
-      expect(oh.close_time.zone).to eql("EST")
-      expect(oh.open_time.hour).to eql(15)
-      expect(oh.close_time.hour).to eql(19)
+        expect(oh.open_time.zone).to eql("UTC")
+        expect(oh.close_time.zone).to eql("UTC")
+        expect(oh.open_time.hour).to eql(19)
+        expect(oh.close_time.hour).to eql(23)
+      end
     end
   end
 end
