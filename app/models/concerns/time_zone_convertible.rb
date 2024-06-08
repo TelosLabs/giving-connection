@@ -22,4 +22,9 @@ module TimeZoneConvertible
     self.open_time = converted_open_time
     self.close_time = converted_close_time
   end
+
+  def in_local_time(time)
+    converter = TimeZoneConverter.new(time_zone)
+    converter.to_local(time.strftime("%H:%M:%S"))
+  end
 end

@@ -12,7 +12,7 @@ class TimeZoneConverter < ApplicationService
     local_time.in_time_zone(@utc_time_zone)
   end
 
-  def from_utc_to_local_time_zone(time_str)
+  def to_local(time_str)
     return nil if time_str.blank?
 
     utc_time = @utc_time_zone.parse(time_str)

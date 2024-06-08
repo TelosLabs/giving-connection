@@ -35,6 +35,7 @@ class OfficeHour < ActiveRecord::Base
     return nil unless open_time
     now = current_time_in_zone
     open_time.change({year: now.year, month: now.month, day: now.day})
+    in_local_time(open_time)
   end
 
   def formatted_close_time
@@ -42,6 +43,7 @@ class OfficeHour < ActiveRecord::Base
 
     now = current_time_in_zone
     close_time.change({year: now.year, month: now.month, day: now.day})
+    in_local_time(close_time)
   end
 
   def time_zone

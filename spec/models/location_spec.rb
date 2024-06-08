@@ -51,13 +51,13 @@ RSpec.describe Location, type: :model do
 
     describe "#open_now?" do
       it "is expected to return true if location is open now" do
-        travel_to Time.zone.parse("1970-01-01 08:00:30") do
+        travel_to Time.find_zone(location.time_zone).parse("1970-01-01 10:00:00") do
           expect(location.open_now?).to eq(true)
         end
       end
 
       it "is expected to return false if location is closed now" do
-        travel_to Time.zone.parse("1970-01-01 07:59:59") do
+        travel_to Time.find_zone(location.time_zone).parse("1970-01-01 02:00:00") do
           expect(location.open_now?).to eq(false)
         end
       end

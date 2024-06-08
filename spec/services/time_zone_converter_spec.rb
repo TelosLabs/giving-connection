@@ -12,7 +12,7 @@ RSpec.describe TimeZoneConverter, type: :service do
       expect(utc_time.zone).to eq("UTC")
       expect(utc_time.hour).to eq(20)
 
-      original_time = converter.from_utc_to_local_time_zone(utc_time.strftime("%H:%M:%S"))
+      original_time = converter.to_local(utc_time.strftime("%H:%M:%S"))
 
       expect(original_time.zone).to eq("PDT")
       expect(original_time.hour).to eq(13)
