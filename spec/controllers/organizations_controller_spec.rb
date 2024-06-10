@@ -23,7 +23,7 @@ RSpec.describe Admin::OrganizationsController, type: :controller do
 
       it "responses with 302 status code" do
         get :new
-        expect(response).to have_http_status(302)
+        expect(response).to have_http_status(:found)
       end
     end
 
@@ -37,7 +37,7 @@ RSpec.describe Admin::OrganizationsController, type: :controller do
 
       it "responses with 200 status code" do
         get :new
-        expect(response).to have_http_status(200)
+        expect(response).to have_http_status(:ok)
       end
     end
   end
@@ -48,13 +48,13 @@ RSpec.describe Admin::OrganizationsController, type: :controller do
 
       it "should sucessfully render organizations dashboard show page" do
         get :show, params: {id: organization.id}
-        expect(response).to have_http_status(200)
+        expect(response).to have_http_status(:ok)
         expect(response).to render_template(:show)
       end
 
       it "responses with 200 status code" do
         get :new
-        expect(response).to have_http_status(200)
+        expect(response).to have_http_status(:ok)
       end
     end
   end
@@ -68,7 +68,7 @@ RSpec.describe Admin::OrganizationsController, type: :controller do
 
       it "responses with 302 status code" do
         get :new
-        expect(response).to have_http_status(302)
+        expect(response).to have_http_status(:found)
       end
     end
 
@@ -82,7 +82,7 @@ RSpec.describe Admin::OrganizationsController, type: :controller do
 
       it "responses with 200 status code" do
         get :new
-        expect(response).to have_http_status(200)
+        expect(response).to have_http_status(:ok)
       end
     end
   end
