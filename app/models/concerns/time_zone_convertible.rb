@@ -2,7 +2,7 @@ module TimeZoneConvertible
   extend ActiveSupport::Concern
 
   included do
-    before_save :convert_times_to_utc
+    before_save :convert_times_to_utc, if: :open_and_close_times_present?
   end
 
   def convert_times_to_utc
@@ -26,5 +26,11 @@ module TimeZoneConvertible
   def in_local_time(time)
     converter = TimeZoneConverter.new(time_zone)
     converter.to_local(time.strftime("%H:%M:%S"))
+  end
+
+  private
+
+  def open_and_close_times_present?
+    open_time.present? && close_time.present?
   end
 end

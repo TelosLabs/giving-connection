@@ -21,8 +21,8 @@ class OfficeHour < ActiveRecord::Base
   belongs_to :location, touch: true
 
   validates :day, presence: true, inclusion: 0..6
-  validates :open_time, presence: true, unless: :closed_or_does_not_offers_service?
-  validates :close_time, presence: true, unless: :closed_or_does_not_offers_service?
+  validates :open_time, presence: true, unless: :office_hours_not_applicable?
+  validates :close_time, presence: true, unless: :office_hours_not_applicable?
 
   before_validation :closed_if_does_not_offers_service
   before_validation :clean_time, if: :closed?
@@ -61,8 +61,8 @@ class OfficeHour < ActiveRecord::Base
     ActiveSupport::TimeZone["Eastern Time (US & Canada)"]
   end
 
-  def closed_or_does_not_offers_service?
-    closed? || !location.offer_services
+  def office_hours_not_applicable?
+    closed? || !location.offer_services || location.non_standard_office_hours.present?
   end
 
   def clean_time
