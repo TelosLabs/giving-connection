@@ -15,35 +15,27 @@
 #
 class OfficeHour < ActiveRecord::Base
   include OfficeHours::Searchable
+  include TimeZoneConvertible
   validates_with OfficeHoursValidator
 
   belongs_to :location, touch: true
 
   validates :day, presence: true, inclusion: 0..6
-  validates :open_time, presence: true, unless: :closed_or_does_not_offers_service?
-  validates :close_time, presence: true, unless: :closed_or_does_not_offers_service?
+  validates :open_time, presence: true, unless: :office_hours_not_applicable?
+  validates :close_time, presence: true, unless: :office_hours_not_applicable?
 
   before_validation :closed_if_does_not_offers_service
   before_validation :clean_time, if: :closed?
 
-  delegate :time_zone, to: :location, allow_nil: true
-
   def day_name
     Date::DAYNAMES[day]
-  end
-
-  def open_time
-    super&.in_time_zone(time_zone)
-  end
-
-  def close_time
-    super&.in_time_zone(time_zone)
   end
 
   def formatted_open_time
     return nil unless open_time
     now = current_time_in_zone
     open_time.change({year: now.year, month: now.month, day: now.day})
+    in_local_time(open_time)
   end
 
   def formatted_close_time
@@ -51,6 +43,7 @@ class OfficeHour < ActiveRecord::Base
 
     now = current_time_in_zone
     close_time.change({year: now.year, month: now.month, day: now.day})
+    in_local_time(close_time)
   end
 
   def time_zone
@@ -68,8 +61,8 @@ class OfficeHour < ActiveRecord::Base
     ActiveSupport::TimeZone["Eastern Time (US & Canada)"]
   end
 
-  def closed_or_does_not_offers_service?
-    closed? || !location.offer_services
+  def office_hours_not_applicable?
+    closed? || !location.offer_services || location.non_standard_office_hours.present?
   end
 
   def clean_time

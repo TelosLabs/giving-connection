@@ -6,7 +6,7 @@ class LocationValidator < ActiveModel::Validator
   def validate(record)
     @record = record
     complete_office_hours
-    time_zone_present if time_zone_applicable?
+    complete_time_zone
     valid_website_url
   end
 
@@ -31,13 +31,10 @@ class LocationValidator < ActiveModel::Validator
     record.organization&.errors&.add(:base, "Website url incorrect format")
   end
 
-  def time_zone_present
+  def complete_time_zone
+    return true if record.non_standard_office_hours.present? || record.offer_services == false
     return true if record.time_zone.present?
 
     record.errors.add(:base, "Time zone is required for locations that offer services.")
-  end
-
-  def time_zone_applicable?
-    record.offer_services? && record.non_standard_office_hours.blank?
   end
 end

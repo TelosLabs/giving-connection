@@ -10,28 +10,32 @@ class LocationDecorator < ApplicationDecorator
     if object.open_same_day?(next_opened_day)
       "Opens at #{next_opened_day.open_time&.strftime("%l:%M %p")}"
     else
-      "Opens on #{object.next_open_day} at #{next_opened_day.open_time&.strftime("%l:%M %p")}"
+      "Opens on #{object.next_open_day} at #{next_opened_day.formatted_open_time&.strftime("%l:%M %p")} (#{next_opened_day.formatted_open_time.zone})"
     end
   end
 
   def working_hours
     return "Closed" if open_time_for_display.nil? && close_time_for_display.nil?
 
-    "#{open_time_for_display} - #{close_time_for_display}"
+    "#{open_time_for_display} - #{close_time_for_display} (#{monday_office_hours&.formatted_open_time&.zone})"
   end
 
   def display_day_working_hours(office_hour)
     return "Closed" if office_hour&.closed?
 
-    "#{office_hour&.open_time&.strftime("%l:%M %p")} - #{office_hour&.close_time&.strftime("%l:%M %p")}"
+    "#{office_hour&.formatted_open_time&.strftime("%l:%M %p")} - #{office_hour&.formatted_close_time&.strftime("%l:%M %p")}  (#{office_hour&.formatted_open_time&.zone})"
+  end
+
+  def monday_office_hours
+    object.office_hours.find_by(day: Time::DAYS_INTO_WEEK[:monday])
   end
 
   def open_time_for_display
-    object.office_hours.find_by(day: Time::DAYS_INTO_WEEK[:monday])&.formatted_open_time&.strftime("%l:%M %p")
+    monday_office_hours&.formatted_open_time&.strftime("%l:%M %p")
   end
 
   def close_time_for_display
-    object.office_hours.find_by(day: Time::DAYS_INTO_WEEK[:monday])&.formatted_close_time&.strftime("%l:%M %p")
+    monday_office_hours&.formatted_close_time&.strftime("%l:%M %p")
   end
 
   def street
