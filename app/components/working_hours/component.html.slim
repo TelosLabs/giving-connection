@@ -16,11 +16,14 @@ p class="text-sm leading-6 font-base text-gray-2"
   - elsif @result.open_now?
     span class="text-green-fountain"
       | Open
+  - elsif @result.offer_services == false
+    span class="text-states-error"
+      | This location does not offer services
   - else
     span class="text-states-error"
       | Closed
 
-- unless @result.always_open? || @result.no_set_business_hours? 
+- unless @result.always_open? || @result.no_set_business_hours? || @result.offer_services == false
   - if @result.consistent_weekdays_hours?
     p class="ml-12 text-sm leading-6 font-base text-gray-2"
       span class="font-bold"
