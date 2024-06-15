@@ -37,4 +37,27 @@ namespace :location do
     Rails.logger.info "List of locations that couldn't be updated: #{not_updated_locations}" if not_updated_locations.present?
     Rails.logger.info "Not updated locations total: #{not_updated_locations.size}" if not_updated_locations.present?
   end
+
+  desc "change times to UTC"
+  task convert_times_to_utc: :environment do
+    not_updated_locations = []
+    updated_locations = 0
+
+    Location.with_office_hours.find_each do |location|
+      location.office_hours.each do |office_hour|
+        if office_hour.open_time.present? && office_hour.close_time.present?
+          office_hour.convert_times_to_utc
+          if office_hour.save
+            updated_locations += 1
+          else
+            not_updated_locations << office_hour.id
+          end
+        end
+      end
+    end
+
+    Rails.logger.info "Updated locations total: #{updated_locations}"
+    Rails.logger.info "List of locations that couldn't be updated: #{not_updated_locations}" if not_updated_locations.present?
+    Rails.logger.info "Not updated locations total: #{not_updated_locations.size}" if not_updated_locations.present?
+  end
 end

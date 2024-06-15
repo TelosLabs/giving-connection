@@ -36,6 +36,7 @@ class Location < ActiveRecord::Base
   scope :national, -> { joins(:organization).where(organization: {scope_of_work: "National"}) }
   scope :international, -> { joins(:organization).where(organization: {scope_of_work: "International"}) }
   scope :national_and_international, -> { national.or(international) }
+  scope :with_office_hours, -> { joins(:office_hours).where(offer_services: true, non_standard_office_hours: nil).distinct }
 
   has_many :office_hours
   has_many :favorite_locations, dependent: :destroy
