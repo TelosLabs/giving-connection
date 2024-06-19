@@ -124,16 +124,17 @@ div class="bg-white main"
       ' Follow our updates on Instagram
     a href="https://www.instagram.com/givingconnection/" target="_blank" class="mb-14 text-2xl font-bold text-blue-dark"
       ' @givingconnection
-    - if @posts.present?
-      div class="grid grid-cols-3 gap-1 m-auto mt-10 max-w-max"
-        - @posts.each do |post|
-          = link_to "#{post.post_url}", target:"_blank" do
-            - if ["image", "carousel_album"].include?(post.media_type)
-              div class="overflow-hidden col" style='max-height:180px; max-width:180px; aspect-ratio:1/1;'
-                = image_tag "#{post.media_url}", class: "overflow-hidden object-cover"
-            - elsif post.media_type == "video"
-              div class="flex overflow-hidden justify-items-center col" style='max-height:180px; max-width:180px; aspect-ratio:1/1;'
-                = video_tag "#{post.media_url}", autoplay: :autoplay, loop: :loop, muted: :muted, class: "overflow-hidden object-cover"
+    // Temporarily removed until fix
+    / - if @posts.present?
+    /   div class="grid grid-cols-3 gap-1 m-auto mt-10 max-w-max"
+    /     - @posts.each do |post|
+    /       = link_to "#{post.post_url}", target:"_blank" do
+    /         - if ["image", "carousel_album"].include?(post.media_type)
+    /           div class="overflow-hidden col" style='max-height:180px; max-width:180px; aspect-ratio:1/1;'
+    /             = image_tag "#{post.media_url}", class: "overflow-hidden object-cover"
+    /         - elsif post.media_type == "video"
+    /           div class="flex overflow-hidden justify-items-center col" style='max-height:180px; max-width:180px; aspect-ratio:1/1;'
+    /             = video_tag "#{post.media_url}", autoplay: :autoplay, loop: :loop, muted: :muted, class: "overflow-hidden object-cover"
 
     div
       = inline_svg_tag 'sticker-heart.svg', size: '39*39', class:"absolute top-20 left-80 hidden lg:block"
