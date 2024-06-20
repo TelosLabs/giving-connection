@@ -311,7 +311,7 @@ GEM
     method_source (1.1.0)
     mini_magick (4.11.0)
     mini_mime (1.1.5)
-    minitest (5.23.1)
+    minitest (5.24.0)
     mobility (1.1.3)
       i18n (>= 0.6.10, < 2)
       request_store (~> 1.0)
@@ -556,6 +556,8 @@ GEM
       railties (>= 3.1)
       slim (>= 3.0, < 6.0, != 5.0.0)
     spring (4.2.1)
+    spring-commands-rspec (1.0.4)
+      spring (>= 0.9.1)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -624,7 +626,7 @@ GEM
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.6.15)
+    zeitwerk (2.6.16)
 
 PLATFORMS
   arm64-darwin-20
@@ -704,6 +706,7 @@ DEPENDENCIES
   simplecov
   slim-rails
   spring
+  spring-commands-rspec
   standard (~> 1)!
   standard-rails (~> 1.0, >= 1.0.2)!
   test-prof (~> 1.0)
