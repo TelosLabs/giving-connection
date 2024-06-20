@@ -4,9 +4,9 @@ main
       div class="hidden md:block md:pl-4 lg:pl-0"
         = inline_svg_tag 'megaphone.svg', size: '65*70'
       div class="pr-10 pl-8 md:px-0 md:ml-8 text-gray-1"
-        div class="mb-1.5 text-sm font-bold md:text-base"
+        div class="mb-1.5 text-sm font-bold whitespace-nowrap md:text-base"
           | We officially launched in Nashville & Atlantic City!
-        div class="text-xs leading-5 md:leading-6 md:text-sm md:pr-2"
+        div class="text-xs leading-5 whitespace-nowrap md:leading-6 md:text-sm md:pr-2"
           | RSVP 
           a href="https://forms.gle/uXDmmbCjPGPXWwEJ6" target='_blank' class="text-blue-medium"
             | here 
@@ -20,8 +20,10 @@ main
           br
           | Our 
           a href="http://www.givebutter.com/aclaunch" target='_blank'  class="text-blue-medium"
-            | 4th Annual Virtual Fundraising Campaing 
-          | is happening NOW! Support local nonprofits and help us shine a light on good in Atlantic City.
+            | 4th Annual Virtual Fundraising Campaign  
+          | is happening NOW! Support local nonprofits and help us shine
+          br
+          | a light on good in Atlantic City.
       div class="flex absolute inset-y-0 right-0 items-start pt-1 pr-1 sm:pt-1.5 sm:pr-5 sm:items-start"
         button class="flex p-2 rounded-md hover:bg-gray" type="button" data-action="banner#closeBanner"
           span.sr-only Dismiss
