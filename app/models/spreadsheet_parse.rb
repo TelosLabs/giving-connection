@@ -5,10 +5,7 @@ class SpreadsheetParse
   def import(spreadsheet)
     file_path = File.open(Rails.root.join("db/uploads").to_s)
     csv_file_paths = csv_file_paths(spreadsheet, file_path)
-    organizations = create_models(csv_file_paths)
-    results = import_organizations(organizations)
-    execute_callbacks(results) if results.ids.any?
-    results
+    create_models(csv_file_paths)
   end
 
   def csv_file_paths(spreadsheet, file_path)
@@ -17,7 +14,7 @@ class SpreadsheetParse
     end
   end
 
-  def create_models(csv_file_paths, organizations = [])
+  def create_models(csv_file_paths)
     CSV.foreach(csv_file_paths[:orgs_csv_file], headers: :first_row) do |org_row|
       next if organization_already_exists?(org_row["name"])
       new_organization = Organization.new(build_organization_hash(org_row))
@@ -25,9 +22,9 @@ class SpreadsheetParse
       next unless new_organization
       new_organization.build_social_media(build_social_media_hash(org_row))
       new_organization = create_organization_associated_records(csv_file_paths, new_organization, org_row["id"])
-      organizations << new_organization
+      res = Organization.import([new_organization], recursive: true, track_validation_failures: true)
+      execute_callbacks(res) if res.ids.any?
     end
-    organizations
   end
 
   def organization_already_exists?(org_name)
@@ -61,9 +58,6 @@ class SpreadsheetParse
         end
       end
     end
-  end
-
-  def create_locations(csv_file_paths, new_organization, org_id)
   end
 
   def create_locations_location_services_office_hours_and_phone_numbers(locations_csv_file_path, location_services_csv_file_path, location_office_hours_csv_file, location_phone_number_csv_file, new_organization, org_id)

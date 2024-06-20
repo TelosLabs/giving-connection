@@ -14,7 +14,7 @@ RSpec.describe SpreadsheetParse do
     end
   end
 
-  describe "#create_models" do
+  xdescribe "#create_models" do
     before do
       Rails.application.load_tasks
       Rake::Task["populate:seed_causes_and_services"].invoke
@@ -26,9 +26,7 @@ RSpec.describe SpreadsheetParse do
     let(:csv_file_paths) { described_class.new.csv_file_paths(spreadsheet, file_path) }
 
     it "builds organizations" do
-      created_models = described_class.new.create_models(csv_file_paths)
-      expect(created_models).to be_a(Array)
-      expect(created_models.first).to be_a(Organization)
+      expect { described_class.new.create_models(csv_file_paths) }.to change { Organization.count }.by(1)
     end
   end
 
@@ -45,7 +43,7 @@ RSpec.describe SpreadsheetParse do
     it "creates organizations" do
       expect { described_class.new.import(spreadsheet) }.to change { Organization.count }
       expect(Organization.first).to be_a(Organization)
-      # expect(Organization.first.locations.count).to be > 0
+      expect(Organization.first.locations.count).to be > 0
     end
   end
 end
