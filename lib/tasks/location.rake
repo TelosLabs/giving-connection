@@ -60,4 +60,32 @@ namespace :location do
     Rails.logger.info "List of locations that couldn't be updated: #{not_updated_office_hours}" if not_updated_office_hours.present?
     Rails.logger.info "Not updated locations total: #{not_updated_office_hours.size}" if not_updated_office_hours.present?
   end
+
+  desc "revert changes to times"
+  task revert_times_to_local: :environment do
+    not_updated_office_hours = []
+    updated_office_hours = 0
+
+    Location.with_office_hours.find_each do |location|
+      location.office_hours.each do |office_hour|
+        if office_hour.open_time.present? && office_hour.close_time.present?
+          open_time_utc = office_hour.open_time
+          close_time_utc = office_hour.close_time
+
+          open_time_est = open_time_utc.in_time_zone(location.time_zone)
+          close_time_est = close_time_utc.in_time_zone(location.time_zone)
+
+          if office_hour.update! open_time: open_time_est + 12.hours, close_time: close_time_est + 12.hours
+            updated_office_hours += 1
+          else
+            not_updated_office_hours << office_hour.id
+          end
+        end
+      end
+    end
+
+    Rails.logger.info "Updated locations total: #{updated_office_hours}"
+    Rails.logger.info "List of locations that couldn't be updated: #{not_updated_office_hours}" if not_updated_office_hours.present?
+    Rails.logger.info "Not updated locations total: #{not_updated_office_hours.size}" if not_updated_office_hours.present?
+  end
 end
