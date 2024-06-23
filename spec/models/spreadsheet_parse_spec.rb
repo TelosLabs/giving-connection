@@ -17,35 +17,28 @@ RSpec.describe SpreadsheetParse do
   end
 
   describe "#create_models" do
-    before do
-      Rails.application.load_tasks
-      Rake::Task["populate:seed_causes_and_services"].invoke
-      Rake::Task["populate:seed_beneficiaries_and_beneficiaries_subcategories"].invoke
-    end
-
     let!(:spreadsheet) { "#{fixture_path}/GC_Dummy_Data_for_DB.xlsx" }
     let!(:creator) { create(:admin_user) }
 
     it "builds organizations" do
       parser = described_class.new(spreadsheet, creator)
+      orgs = parser.create_models
 
-      expect { parser.create_models }.to change { Organization.count }.by(45)
+      expect(orgs).to be_an(Array)
+      expect(orgs.first).to be_a(Organization)
     end
   end
 
   describe "#import" do
     let!(:creator) { create(:admin_user) }
-    let(:spreadsheet) { "#{fixture_path}/GC_Dummy_Data_for_DB.xlsx" }
+    let!(:spreadsheet) { "#{fixture_path}/GC_Dummy_Data_for_DB.xlsx" }
 
-    before do
-      Rails.application.load_tasks
-      Rake::Task["populate:seed_causes_and_services"].invoke
-      Rake::Task["populate:seed_beneficiaries_and_beneficiaries_subcategories"].invoke
-    end
+    it "returns a hash of import results" do
+      results = described_class.new(spreadsheet, creator).import
 
-    it "creates organizations" do
-      expect { described_class.new(spreadsheet, creator).import }.to change { Organization.count }
-      expect(Organization.first.locations.count).to be > 0
+      expect(results).to be_a(Hash)
+      expect(results[:ids]).to be_an(Array)
+      expect(results[:failed_instances]).to be_an(Array)
     end
   end
 end

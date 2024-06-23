@@ -44,7 +44,7 @@ unless Rails.env.production?
   Rake::Task["populate:seed_beneficiaries_and_beneficiaries_subcategories"].invoke
 
   # Populate organizations and locations
-  SpreadsheetParse.new.import("./lib/assets/GC_Dummy_Data_for_DB.xlsx")
+  SpreadsheetParse.new("./lib/assets/GC_Dummy_Data_for_DB.xlsx", AdminUser.first).import
 
   # Create Organization Admin
   OrganizationAdmin.find_or_create_by!(organization: Organization.first, user: User.first)

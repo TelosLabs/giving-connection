@@ -23,10 +23,23 @@ class SpreadsheetParse
   end
 
   def import
-    create_models
+    total_import_results = {ids: [], failed_instances: []}
+    organizations = create_models
+
+    organizations.each do |org|
+      org_import_result = Organization.import([org], recursive: true, track_validation_failures: true)
+      if org_import_result&.ids&.any?
+        org.run_callbacks(:create) { true }
+        total_import_results[:ids] << org_import_result.ids.first
+      else
+        total_import_results[:failed_instances] += org_import_result&.failed_instances
+      end
+    end
+    total_import_results
   end
 
   def create_models
+    organizations = []
     CSV.foreach(@csv_file_paths[:orgs_csv_file], headers: :first_row) do |org_row|
       next if organization_already_exists?(org_row["name"])
       new_organization = Organization.new(build_organization_hash(org_row))
@@ -34,9 +47,9 @@ class SpreadsheetParse
       next unless new_organization
       new_organization.build_social_media(build_social_media_hash(org_row))
       new_organization = create_organization_associated_records(@csv_file_paths, new_organization, org_row["id"])
-      res = Organization.import([new_organization], recursive: true, track_validation_failures: true)
-      execute_callbacks(res) if res.ids.any?
+      organizations << new_organization
     end
+    organizations
   end
 
   def organization_already_exists?(org_name)
@@ -146,20 +159,5 @@ class SpreadsheetParse
      longitude: location_row["longitude"].present? ? location_row["longitude"].to_f : nil,
      time_zone: location_row["time_zone"].presence,
      email: location_row["email"], youtube_video_link: location_row["youtube_video_link"]}
-  end
-
-  def import_organizations(organizations = [])
-    Organization.import(
-      organizations,
-      recursive: true,
-      track_validation_failures: true
-    )
-  end
-
-  def execute_callbacks(results)
-    results.ids.each do |org_id|
-      org = Organization.find(org_id)
-      org.run_callbacks(:create) { true }
-    end
   end
 end

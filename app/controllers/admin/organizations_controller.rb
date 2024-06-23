@@ -107,16 +107,8 @@ module Admin
     private
 
     def log_results(results)
-      logs =
-        "#{results.ids.count} organizations succesfully created. <br>" \
-        "#{results.failed_instances.count} organizations failed: <br>"
-
-      results.failed_instances.each do |failed_organization|
-        logs <<
-          "* #{failed_organization&.name}: " \
-          "#{failed_organization.errors.full_messages.to_sentence} <br>"
-      end
-      logs
+      "#{results[:ids].size} organizations succesfully created. <br>" \
+      "#{results[:failed_instances].size} organizations failed: <br>"
     end
   end
 end
