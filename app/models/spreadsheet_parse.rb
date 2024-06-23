@@ -2,26 +2,38 @@ class SpreadsheetParse
   ASSOCIATION_NAMES = ["orgs", "tags", "beneficiaries", "causes",
     "locations", "location_services", "location_office_hours", "location_phone_number"].freeze
 
-  def import(spreadsheet)
-    file_path = File.open(Rails.root.join("db/uploads").to_s)
-    csv_file_paths = csv_file_paths(spreadsheet, file_path)
-    create_models(csv_file_paths)
+  def initialize(spreadsheet, creator)
+    @spreadsheet = spreadsheet
+    @creator = creator
+    @file_path = File.open(Rails.root.join("db/uploads").to_s)
+    @csv_file_paths = csv_file_paths
   end
 
-  def csv_file_paths(spreadsheet, file_path)
+  def csv_file_paths
+    data_spreadsheet = Roo::Spreadsheet.open(@spreadsheet)
+
+    ASSOCIATION_NAMES.each_with_index do |association_name, sheet|
+      data_spreadsheet.default_sheet = data_spreadsheet.sheets[sheet]
+      data_spreadsheet.to_csv("#{@file_path.path}/#{association_name}.csv")
+    end
+
     ASSOCIATION_NAMES.each_with_object({}) do |file_name, hash|
-      hash[:"#{file_name}_csv_file"] = "#{file_path.path}/#{file_name}.csv"
+      hash[:"#{file_name}_csv_file"] = "#{@file_path.path}/#{file_name}.csv"
     end
   end
 
-  def create_models(csv_file_paths)
-    CSV.foreach(csv_file_paths[:orgs_csv_file], headers: :first_row) do |org_row|
+  def import
+    create_models
+  end
+
+  def create_models
+    CSV.foreach(@csv_file_paths[:orgs_csv_file], headers: :first_row) do |org_row|
       next if organization_already_exists?(org_row["name"])
       new_organization = Organization.new(build_organization_hash(org_row))
 
       next unless new_organization
       new_organization.build_social_media(build_social_media_hash(org_row))
-      new_organization = create_organization_associated_records(csv_file_paths, new_organization, org_row["id"])
+      new_organization = create_organization_associated_records(@csv_file_paths, new_organization, org_row["id"])
       res = Organization.import([new_organization], recursive: true, track_validation_failures: true)
       execute_callbacks(res) if res.ids.any?
     end
@@ -113,7 +125,7 @@ class SpreadsheetParse
      mission_statement_en: org_row["mission_statement_en"], vision_statement_en: org_row["vision_statement_en"],
      tagline_en: org_row["tagline_en"], mission_statement_es: org_row["mission_statement_es"],
      vision_statement_es: org_row["vision_statement_es"], tagline_es: org_row["tagline_es"],
-     website: org_row["website"], scope_of_work: org_row["scope_of_work"], creator: AdminUser.first,
+     website: org_row["website"], scope_of_work: org_row["scope_of_work"], creator: @creator,
      active: org_row["active"] == "yes",
      donation_link: org_row["donation_link"]}
   end
