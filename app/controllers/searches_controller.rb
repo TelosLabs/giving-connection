@@ -43,7 +43,7 @@ class SearchesController < ApplicationController
 
   def set_causes
     @top_10_causes = Cause.top(limit: 10)
-    @causes = Cause.all.pluck(:name) - @top_10_causes.pluck(:name)
+    @causes = Cause.all.pluck(:name)
   end
 
   def set_services

@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { useDebounce, useDispatch } from 'stimulus-use'
+import filterStore from "../utils/filterStore"
 
 // TODO: Refactor controller
 export default class extends Controller {
@@ -27,6 +28,7 @@ export default class extends Controller {
     }
 
     window.addEventListener('locationUpdated', this.handleLocationUpdate.bind(this));
+    // window.addEventListener('filters-changed', this.handleFiltersChanged.bind(this));
   }
 
   initialize() {
@@ -74,6 +76,7 @@ export default class extends Controller {
 
     this.updateFiltersState()
     this.submitForm()
+    filterStore.clearFilters();
   }
 
   enableAdvancedFiltersButton(element) {
@@ -111,7 +114,7 @@ export default class extends Controller {
     this.displayPillsCounter(this.countPills());
   }
 
-  updateFiltersState() {
+  updateFiltersState(event) {
     this.updatePillsCounter()
     if (this.advancedFiltersButton) {
       this.disableAdvancedFiltersButton(this.advancedFiltersButton)
@@ -213,6 +216,21 @@ export default class extends Controller {
 
   handleLocationUpdate(event) {
     this.submitForm();
+  }
+
+  toggleFilter(event) {
+    const filter = event.target.value;
+    if(filterStore.filters.has(filter)) {
+      filterStore.removeFilter(filter);
+    } else {
+      filterStore.addFilter(filter);
+    }
+  }
+
+  handleFiltersChanged(event) {
+    console.log("Filters changed")
+    // this.updateFiltersState();
+    this.toggleFilter(event)
   }
 
   disconnect() {
