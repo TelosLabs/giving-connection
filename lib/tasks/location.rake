@@ -75,7 +75,7 @@ namespace :location do
           open_time_est = open_time_utc.in_time_zone(location.time_zone)
           close_time_est = close_time_utc.in_time_zone(location.time_zone)
 
-          if office_hour.update! open_time: open_time_est + 12.hours, close_time: close_time_est + 12.hours
+          if office_hour.update open_time: open_time_est + 12.hours, close_time: close_time_est + 12.hours
             updated_office_hours += 1
           else
             not_updated_office_hours << office_hour.id
