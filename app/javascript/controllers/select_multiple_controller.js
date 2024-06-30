@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import filterStore from "../utils/filterStore"
 
 export default class extends Controller {
 
@@ -6,7 +7,7 @@ export default class extends Controller {
   static values = { selected: Array }
 
   connect() {
-    this.store = new Set(this.selectedValue || [])
+    this.store = filterStore.filters
     this.updateCheckboxes()
     this.updateBadges()
     this.search()
@@ -19,14 +20,14 @@ export default class extends Controller {
 
   remove(event) {
     const value = event.currentTarget.parentElement.getAttribute('data-value')
-    this.store.delete(value)
+    filterStore.removeFilter(value)
 
     this.updateCheckboxes()
     this.updateBadges()
   }
 
   clearAll() {
-    this.store.clear()
+    filterStore.clearFilters()
     this.updateCheckboxes()
     this.updateBadges()
   }
@@ -46,9 +47,9 @@ export default class extends Controller {
     const value = event.currentTarget.dataset.value
 
     if (event.currentTarget.checked) {
-      this.store.add(value)
+      filterStore.addFilter(value)
     } else {
-      this.store.delete(value)
+      filterStore.removeFilter(value)
     }
   }
 
@@ -79,13 +80,18 @@ export default class extends Controller {
     }
 
     this.store.forEach(value => {
-      const badge = this.badgeTemplateTarget.cloneNode(true)
-      const valueTarget = badge.querySelector('span')
-      valueTarget.innerHTML = value
-      badge.classList.remove('hidden')
-      badge.setAttribute('data-value', value)
-      this.badgesContainerTarget.appendChild(badge)
-    })
+        const badge = this.badgeTemplateTarget.cloneNode(true);
+        const valueTarget = badge.querySelector('span');
+        valueTarget.innerHTML = value;
+        badge.classList.remove('hidden');
+        badge.setAttribute('data-value', value);
+
+        // Find the group container for the badge
+        const group = this.groupTargets.find(group => group.querySelector(`[data-value="${value}"]`));
+        if (group) {
+          this.badgesContainerTarget.appendChild(badge);
+        }
+    });
   }
 
   search(event) {

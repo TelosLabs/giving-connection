@@ -50,7 +50,7 @@ class SearchesController < ApplicationController
     @services = {}
     @top_10_services = Service.top(limit: 10)
     Cause.all.each do |cause|
-      @services[cause.name] = cause.services.map(&:name) - @top_10_services.pluck(:name)
+      @services[cause.name] = cause.services.map(&:name)
     end
   end
 
@@ -58,7 +58,7 @@ class SearchesController < ApplicationController
     @beneficiary_groups = {}
     @top_10_beneficiary_subcategories = BeneficiarySubcategory.top(limit: 10)
     BeneficiaryGroup.all.each do |group|
-      @beneficiary_groups[group.name] = group.beneficiary_subcategories.map(&:name) - @top_10_beneficiary_subcategories.pluck(:name)
+      @beneficiary_groups[group.name] = group.beneficiary_subcategories.map(&:name)
     end
   end
 end

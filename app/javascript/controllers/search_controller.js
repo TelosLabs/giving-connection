@@ -19,23 +19,24 @@ export default class extends Controller {
 
   static debounces = ["displayClearKeywordButton"]
 
-  connect() {
-    useDebounce(this, { wait: 250 });
-    useDispatch(this)
-    if (this.hasPillTarget) {
-      this.updatePillsCounter()
-      this.updateRadioButtonsClass()
-    }
-
-    window.addEventListener('locationUpdated', this.handleLocationUpdate.bind(this));
-    // window.addEventListener('filters-changed', this.handleFiltersChanged.bind(this));
-  }
-
   initialize() {
     document.addEventListener("turbo:frame-load", () => {
       this.advancedFiltersButton = document.getElementById("advanced-filters-button")
       this.enableAdvancedFiltersButton(this.advancedFiltersButton)
     })
+  }
+  
+  connect() {
+    useDebounce(this, { wait: 250 });
+    useDispatch(this)
+    filterStore.setInitialFilters(this.checkedPills())
+    if (filterStore.getFilters().length > 0) {
+      this.updatePillsCounter()
+      this.updateRadioButtonsClass()
+    }
+    
+    window.addEventListener('location-updated', this.handleLocationUpdate.bind(this));
+    window.addEventListener('filters-changed', this.handleFiltersChanged.bind(this));
   }
 
   // Keyword
@@ -74,9 +75,28 @@ export default class extends Controller {
       input.removeAttribute('checked');
     });
 
+    filterStore.clearFilters();
     this.updateFiltersState()
     this.submitForm()
-    filterStore.clearFilters();
+  }
+
+  checkedPills() {
+    return this.pillTargets
+    .filter(pill => pill.checked)
+    .map(pill => pill.value);
+  }
+
+  updateCheckboxesFromFilterStore() {
+    const filters = filterStore.getFilters();
+
+    // Update checkboxes based on filters in the filterStore
+    this.pillTargets.forEach(pill => {
+      if (filters.includes(pill.value)) {
+        pill.checked = true;
+      } else {
+        pill.checked = false;
+      }
+    });
   }
 
   enableAdvancedFiltersButton(element) {
@@ -89,17 +109,11 @@ export default class extends Controller {
     element.disabled = true
   }
 
-  countPills() {
-    const checkedPills = this.pillTargets.filter(pill => pill.checked);
-    this.pillsCounterTarget.textContent = checkedPills.length;
-    return checkedPills.length;
-  }
-
   submitForm() {
     this.formTarget.requestSubmit()
   }
 
-  displayPillsCounter(checkedPillsCount) {
+ togglePillsCounter(checkedPillsCount) {
     if (checkedPillsCount > 0) {
       this.pillsCounterWrapperTarget.classList.remove("hidden")
       this.filtersIconTarget.classList.add("hidden")
@@ -111,7 +125,9 @@ export default class extends Controller {
   }
 
   updatePillsCounter() {
-    this.displayPillsCounter(this.countPills());
+    let count = filterStore.getFilters().length;
+    this.pillsCounterTarget.textContent = count;
+    this.togglePillsCounter(count);
   }
 
   updateFiltersState(event) {
@@ -171,7 +187,7 @@ export default class extends Controller {
 
     const event = new CustomEvent('selectmultiple:clear', {})
 
-    const anyFilterApplied = [...this.advancedFiltersTarget.querySelectorAll("input:checked")].some(filter => this.checkedValues().includes(filter.value));
+    const anyFilterApplied = filterStore.getFilters().length > 0
 
     this.inputTargets.forEach(input => {
       this.clearInput(input)
@@ -195,12 +211,12 @@ export default class extends Controller {
   }
 
   applyAdvancedFilters() {
-    const anyNewFilters = [...this.advancedFiltersTarget.querySelectorAll("input:checked")].some(filter => !this.checkedValues().includes(filter.value));
+    // const anyNewFilters = [...this.advancedFiltersTarget.querySelectorAll("input:checked")].some(filter => !this.checkedValues().includes(filter.value));
 
-    if (anyNewFilters) {
+    // if (anyNewFilters) {
       this.updateFiltersState()
       this.submitForm()
-    }
+    // }
   }
 
   toggleRadioButton(event) {
@@ -228,12 +244,14 @@ export default class extends Controller {
   }
 
   handleFiltersChanged(event) {
-    console.log("Filters changed")
-    // this.updateFiltersState();
-    this.toggleFilter(event)
+    this.updateFiltersState();
+    this.updateCheckboxesFromFilterStore();
+    this.updateRadioButtonsClass();
+    this.updatePillsCounter();
   }
 
   disconnect() {
-    window.removeEventListener('locationUpdated', this.handleLocationUpdate.bind(this));
+    window.removeEventListener('location-updated', this.handleLocationUpdate.bind(this));
+    window.removeEventListener('filters-changed', this.handleFiltersChanged.bind(this));
   }
 }
