@@ -243,6 +243,27 @@ export default class extends Controller {
     }
   }
 
+  toggleDistanceFilter(event) {
+    const selectedValue = event.target.value;
+    const filter = { distance: selectedValue };
+    filterStore.getFilters().forEach(filter => {
+      if (filter.distance) {
+        filterStore.removeFilter(filter);
+      }
+    });
+    filterStore.addFilter(filter);
+
+    const buttons = document.querySelectorAll('input[name="search[distance]"]');
+    buttons.forEach(button => {
+      if (button.value === selectedValue) {
+        button.checked = true;
+      } else {
+        button.checked = false;
+      }
+    });
+
+  }
+
   handleFiltersChanged(event) {
     this.updateFiltersState();
     this.updateCheckboxesFromFilterStore();
