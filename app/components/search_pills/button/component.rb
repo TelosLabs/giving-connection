@@ -12,7 +12,7 @@ class SearchPills::Button::Component < ApplicationViewComponent
         id: SecureRandom.alphanumeric,
         data: {
           search_target: "pill",
-          action: "click->search#toggleRadioButton change->search#submitForm"
+          action: "change->search#submitForm change->search#toggleDistanceFilter"
         }
       }
     )
