@@ -48,3 +48,6 @@ en:
         po_box: Is the address a PO BOX?
         public_address: Do you want this address shown publicly?
         suite: Suite Number
+      office_hour:
+        local_open_time: Opening Time
+        local_close_time: Closing Time
