@@ -8,9 +8,9 @@ module Locations
       def call(params = {}, locations = Location.active)
         scope = locations
         # scope = by_address(scope, params[:address])
-        scope = by_cause(scope, params[:causes])
-        scope = by_service(scope, params[:services])
-        scope = by_beneficiary_groups_served(scope, params[:beneficiary_groups])
+        scope = by_cause(scope, params[:causes]&.uniq)
+        scope = by_service(scope, params[:services]&.uniq)
+        scope = by_beneficiary_groups_served(scope, params[:beneficiary_groups]&.uniq)
         scope = opened_now(scope, params[:open_now])
         opened_on_weekends(scope, params[:open_weekends])
       end
