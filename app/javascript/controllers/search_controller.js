@@ -83,7 +83,7 @@ export default class extends Controller {
   checkedPills() {
     return this.pillTargets
     .filter(pill => pill.checked)
-    .map(pill => pill.value);
+    .map(pill => pill.value === "true" ? pill.name : pill.value);
   }
 
   updateCheckboxesFromFilterStore() {
@@ -93,7 +93,10 @@ export default class extends Controller {
     this.pillTargets.forEach(pill => {
       if (filters.includes(pill.value)) {
         pill.checked = true;
-      } else {
+      } else if (pill.value === "true" && filters.includes(pill.name)) {
+        pill.checked = true
+      }
+      else {
         pill.checked = false;
       }
     });
@@ -235,7 +238,7 @@ export default class extends Controller {
   }
 
   toggleFilter(event) {
-    const filter = event.target.value;
+    const filter = event.target.value === "true" ? event.target.name : event.target.value;
     if(filterStore.filters.has(filter)) {
       filterStore.removeFilter(filter);
     } else {
@@ -243,26 +246,26 @@ export default class extends Controller {
     }
   }
 
-  toggleDistanceFilter(event) {
-    const selectedValue = event.target.value;
-    const filter = { distance: selectedValue };
-    filterStore.getFilters().forEach(filter => {
-      if (filter.distance) {
-        filterStore.removeFilter(filter);
-      }
-    });
-    filterStore.addFilter(filter);
+  // toggleDistanceFilter(event) {
+  //   const selectedValue = event.target.value;
+  //   const filter = { distance: selectedValue };
+  //   filterStore.getFilters().forEach(filter => {
+  //     if (filter.distance) {
+  //       filterStore.removeFilter(filter);
+  //     }
+  //   });
+  //   filterStore.addFilter(filter);
 
-    const buttons = document.querySelectorAll('input[name="search[distance]"]');
-    buttons.forEach(button => {
-      if (button.value === selectedValue) {
-        button.checked = true;
-      } else {
-        button.checked = false;
-      }
-    });
+  //   const buttons = document.querySelectorAll('input[name="search[distance]"]');
+  //   buttons.forEach(button => {
+  //     if (button.value === selectedValue) {
+  //       button.checked = true;
+  //     } else {
+  //       button.checked = false;
+  //     }
+  //   });
 
-  }
+  // }
 
   handleFiltersChanged(event) {
     this.updateFiltersState();
