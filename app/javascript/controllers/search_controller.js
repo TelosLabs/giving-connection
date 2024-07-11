@@ -30,6 +30,8 @@ export default class extends Controller {
   connect() {
     useDebounce(this, { wait: 250 });
     useDispatch(this)
+    filterStore.clearFilters();
+    this.updateRadioButtonsClass();
     filterStore.setInitialFilters(this.checkedFilters())
     if (filterStore.getFilters().length > 0) {
       this.updatePillsCounter()
@@ -65,7 +67,7 @@ export default class extends Controller {
     return keywordParam === inputValue;
   }
 
-  // Pills
+  // Pills and radio buttons
   clearCheckedFilters() {
     this.advancedFiltersTarget.querySelectorAll("input:checked").forEach(input => input.click())
     this.pillTargets.forEach(input => {
@@ -86,16 +88,23 @@ export default class extends Controller {
     let checkedFilters = this.pillTargets
                       .filter(pill => pill.checked)
                       .map(pill => pill.value === "true" ? pill.name : pill.value);
-    if (this.radioButtonTargets.filter(radio => radio.checked)) {
-      checkedPills.push("distance")
+    if (this.radioButtonTargets.some(radio => radio.classList.contains("selected-button"))) {
+      checkedFilters.push("distance")
     }
     return checkedFilters;
+  }
+
+  updateRadioButtonsClass() {
+    this.radioButtonTargets.forEach(radio => {
+      if (radio.checked === true) {
+        radio.classList.add("selected-button");
+      }
+    })
   }
 
   updateCheckboxesFromFilterStore() {
     const filters = filterStore.getFilters();
 
-    // Update checkboxes based on filters in the filterStore
     this.pillTargets.forEach(pill => {
       if (filters.includes(pill.value)) {
         pill.checked = true;
@@ -174,13 +183,6 @@ export default class extends Controller {
     }
   }
 
-  checkedValues() {
-    // gets the query string of the url
-    const queryString = window.location.href.split('?')[1];
-    // produces an array of values of the key/value pairs from the query string
-    return [...new URLSearchParams(queryString).values()];
-  }
-
   clearAll() {
     if (this.isModalClean()) return
 
@@ -210,23 +212,8 @@ export default class extends Controller {
   }
 
   applyAdvancedFilters() {
-    // const anyNewFilters = [...this.advancedFiltersTarget.querySelectorAll("input:checked")].some(filter => !this.checkedValues().includes(filter.value));
-
-    // if (anyNewFilters) {
       this.updateFiltersState()
       this.submitForm()
-    // }
-  }
-
-  toggleRadioButton(event) {
-    let button = event.target
-    if (button.classList.contains("selected-button")) {
-      button.checked = false
-      button.classList.remove("selected-button")
-    } else {
-      button.checked = true
-      button.classList.add("selected-button")
-    }
   }
 
   handleLocationUpdate(event) {
