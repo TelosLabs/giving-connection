@@ -238,11 +238,19 @@ export default class extends Controller {
   }
 
   toggleFilter(event) {
-    const filter = event.target.value === "true" ? event.target.name : event.target.value;
+    const filter = this.filterName(event);
     if(filterStore.filters.has(filter)) {
       filterStore.removeFilter(filter);
     } else {
       filterStore.addFilter(filter);
+    }
+  }
+
+  filterName(event) {
+    if (event.target.name === "search[open_now]" || event.target.name === "search[open_weekends]") {
+      return event.target.name;
+    } else {
+      return event.target.value
     }
   }
 
