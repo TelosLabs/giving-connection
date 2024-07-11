@@ -1,12 +1,12 @@
 .main.flex.flex-col.items-center
-  h2 class="pb-4 text-2xl font-bold text-center pt-6 md:pt-16 md:mt-2 md:pb-9 text-gray-3"
+  h2 class="pt-6 pb-4 text-2xl font-bold text-center md:pt-16 md:mt-2 md:pb-9 text-gray-3"
     | Add or Claim a Nonprofit
 
-  p class="max-w-2xl px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
+  p class="px-8 pb-7 mx-auto max-w-2xl text-center sm:text-lg sm:pb-9 text-gray-3"
     | Giving Connection is a platform designed to connect people with nonprofits in their communities.
-  p class="max-w-2xl px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
+  p class="px-8 pb-7 mx-auto max-w-2xl text-center sm:text-lg sm:pb-9 text-gray-3"
     |  In order to create a nonprofit profile that is listed in Giving Connection's search results, a representative from your nonprofit should fill out the following form.
-  p class="max-w-2xl px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
+  p class="px-8 pb-7 mx-auto max-w-2xl text-center sm:text-lg sm:pb-9 text-gray-3"
     |  After we verify the nonprofit organization, we will contact the representative listed below to set up an account. You should expect to hear back from us within 3-5 business days.
 
   div class="md:hidden -z-1"
@@ -25,11 +25,11 @@
     .c-form class="gap-6 pb-11 md:pb-36"
       - if @message.errors.any?
           div class="w-full"
-            p class="text-red-500 italic font-semibold"
+            p class="italic font-semibold text-red-500"
               | Please review the problems below:
             ul
               - @message.errors.full_messages.each do |message|
-                li class="text-red-500 text-sm"
+                li class="text-sm text-red-500"
                   = "- #{message}"
       div class="w-full"
         = f.label :name, "*Name"
@@ -68,7 +68,7 @@
         = f.label :content, "*Message"
         = f.text_area :content, class:"c-input h-40", data: { 'contact-form-target': 'message'}, required: true
       // Honeypot
-      = invisible_captcha :street, :message
+      = invisible_captcha
       div class="w-full"
         = recaptcha_tags
 
