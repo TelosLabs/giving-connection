@@ -11,8 +11,8 @@ class SearchPills::Button::Component < ApplicationViewComponent
         class: "hidden pill",
         id: SecureRandom.alphanumeric,
         data: {
-          search_target: "pill",
-          action: "change->search#submitForm change->search#toggleDistanceFilter"
+          search_target: "radioButton",
+          action: "change->search#submitForm click->search#toggleDistanceFilter"
         }
       }
     )

@@ -11,6 +11,7 @@ export default class extends Controller {
     "customInput",
     "form",
     "pill",
+    "radioButton",
     "advancedFilters",
     "pillsCounter",
     "pillsCounterWrapper",
@@ -29,10 +30,9 @@ export default class extends Controller {
   connect() {
     useDebounce(this, { wait: 250 });
     useDispatch(this)
-    filterStore.setInitialFilters(this.checkedPills())
+    filterStore.setInitialFilters(this.checkedFilters())
     if (filterStore.getFilters().length > 0) {
       this.updatePillsCounter()
-      this.updateRadioButtonsClass()
     }
     
     window.addEventListener('location-updated', this.handleLocationUpdate.bind(this));
@@ -66,24 +66,30 @@ export default class extends Controller {
   }
 
   // Pills
-  clearCheckedPills() {
-    // Unchecks applied advanced filters firing their data-actions,
-    // which clear displayed badges (see select_multiple_controller.js:15 and select-multiple component).
+  clearCheckedFilters() {
     this.advancedFiltersTarget.querySelectorAll("input:checked").forEach(input => input.click())
     this.pillTargets.forEach(input => {
       input.checked = false;
       input.removeAttribute('checked');
     });
+    this.radioButtonTargets.forEach(radio => {
+      radio.checked = false;
+      radio.classList.remove("selected-button");
+    })
 
     filterStore.clearFilters();
     this.updateFiltersState()
     this.submitForm()
   }
 
-  checkedPills() {
-    return this.pillTargets
-    .filter(pill => pill.checked)
-    .map(pill => pill.value === "true" ? pill.name : pill.value);
+  checkedFilters() {
+    let checkedFilters = this.pillTargets
+                      .filter(pill => pill.checked)
+                      .map(pill => pill.value === "true" ? pill.name : pill.value);
+    if (this.radioButtonTargets.filter(radio => radio.checked)) {
+      checkedPills.push("distance")
+    }
+    return checkedFilters;
   }
 
   updateCheckboxesFromFilterStore() {
@@ -138,16 +144,6 @@ export default class extends Controller {
     if (this.advancedFiltersButton) {
       this.disableAdvancedFiltersButton(this.advancedFiltersButton)
     }
-  }
-
-  updateRadioButtonsClass() {
-    const buttons = document.querySelectorAll('input[name="search[distance]"]')
-    const buttons_array = [...buttons]
-    buttons_array.forEach(button => {
-      if (button.checked) {
-        button.classList.add("selected-button")
-      }
-    })
   }
 
   // Modal
@@ -254,31 +250,36 @@ export default class extends Controller {
     }
   }
 
-  // toggleDistanceFilter(event) {
-  //   const selectedValue = event.target.value;
-  //   const filter = { distance: selectedValue };
-  //   filterStore.getFilters().forEach(filter => {
-  //     if (filter.distance) {
-  //       filterStore.removeFilter(filter);
-  //     }
-  //   });
-  //   filterStore.addFilter(filter);
+  toggleDistanceFilter(event) {
+    const clickedPill = event.target;
+    const filterValue = clickedPill.value;
 
-  //   const buttons = document.querySelectorAll('input[name="search[distance]"]');
-  //   buttons.forEach(button => {
-  //     if (button.value === selectedValue) {
-  //       button.checked = true;
-  //     } else {
-  //       button.checked = false;
-  //     }
-  //   });
+    // If the clicked pill is already checked, uncheck it
+    if (clickedPill.classList.contains("selected-button")) {
+      clickedPill.checked = false;
+      clickedPill.classList.remove("selected-button");
+      filterStore.removeFilter("distance");
+      this.uncheckAllDistancePills();
+    } else {
+      this.uncheckAllDistancePills();
+      clickedPill.checked = true;
+      clickedPill.classList.add("selected-button");
+      filterStore.addFilter("distance");
+    }
+  }
 
-  // }
+  uncheckAllDistancePills() {
+    this.radioButtonTargets.forEach(radio => {
+      if (radio.name === "search[distance]") {
+        radio.checked = false;
+        radio.classList.remove("selected-button");
+      }
+    })
+  }
 
   handleFiltersChanged(event) {
     this.updateFiltersState();
     this.updateCheckboxesFromFilterStore();
-    this.updateRadioButtonsClass();
     this.updatePillsCounter();
   }
 
