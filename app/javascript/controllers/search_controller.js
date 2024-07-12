@@ -30,9 +30,11 @@ export default class extends Controller {
   connect() {
     useDebounce(this, { wait: 250 });
     useDispatch(this)
+
     filterStore.clearFilters();
     this.updateRadioButtonsClass();
     filterStore.setInitialFilters(this.checkedFilters())
+
     if (filterStore.getFilters().length > 0) {
       this.updatePillsCounter()
     }
@@ -87,10 +89,12 @@ export default class extends Controller {
   checkedFilters() {
     let checkedFilters = this.pillTargets
                       .filter(pill => pill.checked)
-                      .map(pill => pill.value === "true" ? pill.name : pill.value);
-    if (this.radioButtonTargets.some(radio => radio.classList.contains("selected-button"))) {
-      checkedFilters.push("distance")
-    }
+                      .map(pill => ({ value: pill.value === "true" ? pill.name : pill.value, category: pill.name }));
+    if (this.radioButtonTargets.forEach(radio =>  {
+      if (radio.classList.contains("selected-button")) {
+        checkedFilters.push({ value: radio.value, category: "distance" })
+      }
+    }));
     return checkedFilters;
   }
 
@@ -106,9 +110,9 @@ export default class extends Controller {
     const filters = filterStore.getFilters();
 
     this.pillTargets.forEach(pill => {
-      if (filters.includes(pill.value)) {
+      if (filters.some(filter => filter.value === pill.value && filter.category === pill.name)) {
         pill.checked = true;
-      } else if (pill.value === "true" && filters.includes(pill.name)) {
+      } else if (pill.value === "true" && filters.some(filter => filter.value === pill.name && filter.category === pill.name)) {
         pill.checked = true
       }
       else {
@@ -221,38 +225,44 @@ export default class extends Controller {
   }
 
   toggleFilter(event) {
-    const filter = this.filterName(event);
-    if(filterStore.filters.has(filter)) {
-      filterStore.removeFilter(filter);
+    const value = event.target.value;
+    const category = event.target.name
+    if(filterStore.hasFilter(value, category)) {
+      filterStore.removeFilter(value, category);
     } else {
-      filterStore.addFilter(filter);
+      filterStore.addFilter(value, category);
     }
   }
 
-  filterName(event) {
-    if (event.target.name === "search[open_now]" || event.target.name === "search[open_weekends]") {
-      return event.target.name;
-    } else {
-      return event.target.value
-    }
-  }
+  // Distance
 
   toggleDistanceFilter(event) {
     const clickedPill = event.target;
-    const filterValue = clickedPill.value;
 
     // If the clicked pill is already checked, uncheck it
     if (clickedPill.classList.contains("selected-button")) {
       clickedPill.checked = false;
       clickedPill.classList.remove("selected-button");
-      filterStore.removeFilter("distance");
-      this.uncheckAllDistancePills();
+      this.clearDistanceFilters()
     } else {
-      this.uncheckAllDistancePills();
+      this.clearDistanceFilters()
       clickedPill.checked = true;
       clickedPill.classList.add("selected-button");
-      filterStore.addFilter("distance");
+      filterStore.addFilter(clickedPill.value, "distance");
     }
+  }
+
+  clearDistanceFilters() {
+    this.removeDistanceFiltersFromStore();
+    this.uncheckAllDistancePills();
+  }
+
+  removeDistanceFiltersFromStore() {
+    filterStore.getFilters().forEach(filter => {
+      if (filter.category === "distance") {
+        filterStore.removeFilter(filter.value, filter.category);
+      }
+    });
   }
 
   uncheckAllDistancePills() {
