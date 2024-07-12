@@ -92,7 +92,7 @@ export default class extends Controller {
       badge.setAttribute('data-category', category);
 
         // Find the group container for the badge
-        const group = this.groupTargets.find(group => group.querySelector(`input[type="checkbox"][data-value="${value}"]`));
+        const group = this.groupTargets.find(group => group.querySelector(`input[type="checkbox"][data-value="${value}"][name="${category}"]`));
         if (group) {
           this.badgesContainerTarget.appendChild(badge);
         }
