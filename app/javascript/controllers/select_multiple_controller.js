@@ -3,7 +3,7 @@ import filterStore from "../utils/filterStore"
 
 export default class extends Controller {
 
-  static targets = ["input", "container", "badgesContainer", 'checkbox', 'badgeTemplate', 'group']
+  static targets = ["input", "container", "badgesContainer", 'checkbox', 'badgeTemplate', 'group', 'groupTitle']
   static values = { selected: Array }
 
   connect() {
@@ -100,8 +100,10 @@ export default class extends Controller {
   }
 
   search(event) {
-    const query = this.inputTarget.value
-    const regex = new RegExp('.*' + query.toLowerCase() + '.*', 'gmi')
+    const query = this.inputTarget.value.toLowerCase()
+    const regex = new RegExp('.*' + query + '.*', 'gmi')
+
+    // Search checkboxes
     this.checkboxTargets.forEach(checkbox => {
       if (checkbox.dataset.value.search(regex) >= 0) {
         checkbox.parentElement.classList.remove('hidden')
@@ -109,6 +111,17 @@ export default class extends Controller {
         checkbox.parentElement.classList.add('hidden')
       }
     })
+
+    // Search group titles
+    this.groupTitleTargets.forEach(groupTitle => {
+      if (groupTitle.dataset.groupTitle.search(regex) >= 0) {
+        groupTitle.parentElement.classList.remove('hidden')
+        groupTitle.parentElement.querySelectorAll('div').forEach(div => div.classList.remove('hidden'))
+      } else {
+        groupTitle.parentElement.classList.add('hidden')
+      }
+    })
+
     this.updateGroups()
   }
 

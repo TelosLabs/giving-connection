@@ -47,7 +47,7 @@
           <% elsif @items.is_a?(Hash) %>
             <% @items&.sort&.each do |group, list|%>
               <div class="mb-6" data-select-multiple-target="group">
-                <div class="pl-6 my-2 text-sm font-bold text-black">
+                <div class="pl-6 my-2 text-sm font-bold text-black" data-group-title="<%= group.downcase %> " data-select-multiple-target="groupTitle">
                   <%= group %>
                 </div>
                 <% if @klass.present? %>
