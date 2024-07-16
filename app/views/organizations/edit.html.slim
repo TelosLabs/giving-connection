@@ -364,6 +364,7 @@
                                     td
                                       = sched.label :open_time, class: "sr-only"
                                       = sched.time_field :open_time, class:"rounded-md p-1", value: sched&.object&.formatted_open_time&.strftime("%I:%M")
+                                    td
                                       = sched.label :close_time, class: "sr-only"
                                       = sched.time_field :close_time, class:"rounded-md p-1", value: sched&.object&.formatted_close_time&.strftime("%I:%M")
                                     td class="text-center"
