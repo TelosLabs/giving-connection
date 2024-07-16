@@ -363,10 +363,10 @@
                                       = sched.hidden_field :day, value: index
                                     td
                                       = sched.label :open_time, class: "sr-only"
-                                      = sched.time_field :open_time, class:"rounded-md p-1", value: sched&.object&.formatted_open_time&.strftime("%I:%M")
+                                      = sched.time_field :open_time, class:"rounded-md p-1", value: sched&.object&.formatted_open_time&.strftime("%H:%M")
                                     td
                                       = sched.label :close_time, class: "sr-only"
-                                      = sched.time_field :close_time, class:"rounded-md p-1", value: sched&.object&.formatted_close_time&.strftime("%I:%M")
+                                      = sched.time_field :close_time, class:"rounded-md p-1", value: sched&.object&.formatted_close_time&.strftime("%H:%M")
                                     td class="text-center"
                                       = sched.check_box :closed, class: "rounded-md"
                                       = sched.label :closed, class: "sr-only"
