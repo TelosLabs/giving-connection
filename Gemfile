@@ -71,9 +71,6 @@ gem "image_processing"
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 gem "city-state"
-gem "pronto"
-gem "pronto-flay", require: false
-gem "pronto-rubocop", require: false
 gem "timezone", "~> 1.0" #  Timezone lookup based on geolocation
 
 # Geolocation

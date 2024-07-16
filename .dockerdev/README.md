@@ -26,7 +26,6 @@ dip provision
 
 ## Running
 
-```sh
 dip rails s
 ```
 
@@ -60,7 +59,7 @@ dip bash -c 'ls -al tmp/cache'
 
 # update gems or packages
 dip bundle install
-dip yarn install
+dip yarn install --ignore-engines
 
 # run psql console
 dip psql

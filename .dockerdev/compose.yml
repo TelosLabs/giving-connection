@@ -5,7 +5,7 @@ x-app: &app
       RUBY_VERSION: '3.1.0'
       PG_MAJOR: '15'
       NODE_MAJOR: '16'
-  image: givingconnection-dev:1.0.0
+  image: giving_connection-dev:1.0.0
   environment: &env
     NODE_ENV: ${NODE_ENV:-development}
     RAILS_ENV: ${RAILS_ENV:-development}
@@ -31,7 +31,7 @@ x-backend: &backend
   environment: &backend_environment
     <<: *env
     REDIS_URL: redis://redis:6379/
-    DATABASE_URL: postgres://postgres:postgres@postgres:5432
+    DATABASE_URL: postgis://postgres:postgres@postgres:5432
     WEBPACKER_DEV_SERVER_HOST: webpacker
     MALLOC_ARENA_MAX: 2
     WEB_CONCURRENCY: ${WEB_CONCURRENCY:-1}
@@ -69,7 +69,7 @@ services:
     command: bundle exec sidekiq
 
   postgres:
-    image: postgres:15
+    image: postgis/postgis:14-3.4
     volumes:
       - .psqlrc:/root/.psqlrc:ro
       - postgres:/var/lib/postgresql/data
