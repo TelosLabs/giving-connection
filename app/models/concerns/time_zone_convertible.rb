@@ -24,6 +24,8 @@ module TimeZoneConvertible
   end
 
   def in_local_time(time)
+    return if time.blank?
+
     converter = TimeZoneConverter.new(time_zone)
     converter.to_local(time.strftime("%H:%M:%S"))
   end
