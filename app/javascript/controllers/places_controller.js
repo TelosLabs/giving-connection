@@ -102,10 +102,11 @@ export default class extends Controller {
   initMap() {
     this.map = new google.maps.Map(this.mapTarget, {
       center: new google.maps.LatLng(
-        this.getCookie("latitude") || this.latitudeValue || Number(this.latitudeTarget.value) || 36.16404968727089,
-        this.getCookie("longitude") || this.longitudeValue || Number(this.longitudeTarget.value) || -86.78125827725053
+        this.latitudeValue || this.getCookie("latitude") || Number(this.latitudeTarget.value) || 36.16404968727089,
+        this.longitudeValue || this.getCookie("longitude") || Number(this.longitudeTarget.value) || -86.78125827725053
         ),
       zoom: this.zoomLevel(),
+      gestureHandling: 'auto',
       mapTypeControl: true,
       mapTypeControlOptions: {
         style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
