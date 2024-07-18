@@ -106,7 +106,6 @@ export default class extends Controller {
         this.longitudeValue || this.getCookie("longitude") || Number(this.longitudeTarget.value) || -86.78125827725053
         ),
       zoom: this.zoomLevel(),
-      gestureHandling: 'auto',
       mapTypeControl: true,
       mapTypeControlOptions: {
         style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
