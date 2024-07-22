@@ -18,6 +18,8 @@ class OfficeHourDashboard < Administrate::BaseDashboard
     day_name: Field::String,
     open_time: TimeSelectField,
     close_time: TimeSelectField,
+    local_close_time: Field::String,
+    local_open_time: Field::String,
     closed: Field::Boolean
   }.freeze
 
@@ -28,8 +30,8 @@ class OfficeHourDashboard < Administrate::BaseDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
     day_name
-    open_time
-    close_time
+    local_open_time
+    local_close_time
     closed
   ].freeze
 
@@ -39,8 +41,8 @@ class OfficeHourDashboard < Administrate::BaseDashboard
     id
     location
     day_name
-    open_time
-    close_time
+    local_open_time
+    local_close_time
     closed
   ].freeze
 

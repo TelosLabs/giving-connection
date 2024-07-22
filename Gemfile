@@ -71,9 +71,6 @@ gem "image_processing"
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 gem "city-state"
-gem "pronto"
-gem "pronto-flay", require: false
-gem "pronto-rubocop", require: false
 gem "timezone", "~> 1.0" #  Timezone lookup based on geolocation
 
 # Geolocation
@@ -89,6 +86,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "pry-rails"
   gem "rspec-rails", "~> 5.0.0"
+  gem "spring-commands-rspec"
 end
 
 group :development do

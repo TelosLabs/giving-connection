@@ -1,8 +1,8 @@
 .main.flex.flex-col.items-center
-  h2 class="pb-4 text-2xl font-bold text-center pt-6 md:pt-16 md:mt-2 md:pb-9 text-gray-3"
+  h2 class="pt-6 pb-4 text-2xl font-bold text-center md:pt-16 md:mt-2 md:pb-9 text-gray-3"
     | Get in Touch
 
-  p class="max-w-lg px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
+  p class="px-8 pb-7 mx-auto max-w-lg text-center sm:text-lg sm:pb-9 text-gray-3"
     | Send us a message and we'll get back to you within 3-5 business days.
 
   div class="md:hidden -z-1"
@@ -21,11 +21,11 @@
     .c-form class="gap-6 pb-11 md:pb-36"
       - if @message.errors.any?
           div class="w-full"
-            p class="text-red-500 italic font-semibold"
+            p class="italic font-semibold text-red-500"
               | Please review the problems below:
             ul
               - @message.errors.full_messages.each do |message|
-                li class="text-red-500 text-sm"
+                li class="text-sm text-red-500"
                   = "- #{message}"
       div class="w-full"
         = f.label :name, "*Name"
@@ -46,7 +46,7 @@
         = f.label :content, "*Message"
         = f.text_area :content, class:"c-input h-40", required: true, data: { 'contact-form-target': 'message'}
       // Honeypot
-      = invisible_captcha :street, :message
+      = invisible_captcha
       div class="w-full"
         = recaptcha_tags
 

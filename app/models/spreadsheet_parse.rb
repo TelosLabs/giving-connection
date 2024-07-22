@@ -1,85 +1,86 @@
-# frozen_string_literal: true
-
 class SpreadsheetParse
-  FILES_NAME = ["orgs.csv", "tags.csv", "beneficiaries.csv", "causes.csv",
-    "locations.csv", "location_services.csv", "location_office_hours.csv", "location_phone_number.csv"].freeze
+  ASSOCIATION_NAMES = ["orgs", "tags", "beneficiaries", "causes",
+    "locations", "location_services", "location_office_hours", "location_phone_number"].freeze
 
-  def import(spreadsheet)
-    @organizations = []
-    file_path = File.open(Rails.root.join("db/uploads").to_s)
-    csv_file_paths = spreadsheet_to_csv(spreadsheet, file_path)
-    create_models(csv_file_paths)
-    results = import_organizations
-    execute_callbacks(results) if results.ids.any?
-    results
+  def initialize(spreadsheet, creator)
+    @spreadsheet = spreadsheet
+    @creator = creator
+    @file_path = File.open(Rails.root.join("db/uploads").to_s)
+    @csv_file_paths = csv_file_paths
   end
 
-  def spreadsheet_to_csv(spreadsheet, file_path)
-    data_spreadsheet = Roo::Spreadsheet.open(spreadsheet)
+  def csv_file_paths
+    data_spreadsheet = Roo::Spreadsheet.open(@spreadsheet)
 
-    FILES_NAME.each_with_index do |file_name, sheet|
+    ASSOCIATION_NAMES.each_with_index do |association_name, sheet|
       data_spreadsheet.default_sheet = data_spreadsheet.sheets[sheet]
-      data_spreadsheet.to_csv("#{file_path.path}/#{file_name}")
+      data_spreadsheet.to_csv("#{@file_path.path}/#{association_name}.csv")
     end
 
-    paths =
-      {orgs_csv_file: "#{file_path.path}/orgs.csv",
-       tags_csv_file: "#{file_path.path}/tags.csv",
-       beneficiaries_csv_file: "#{file_path.path}/beneficiaries.csv",
-       causes_csv_file: "#{file_path.path}/causes.csv",
-       locations_csv_file: "#{file_path.path}/locations.csv",
-       location_services_csv_file: "#{file_path.path}/location_services.csv",
-       location_office_hours_csv_file: "#{file_path.path}/location_office_hours.csv",
-       location_phone_number_csv_file: "#{file_path.path}/location_phone_number.csv"}
+    ASSOCIATION_NAMES.each_with_object({}) do |file_name, hash|
+      hash[:"#{file_name}_csv_file"] = "#{@file_path.path}/#{file_name}.csv"
+    end
   end
 
-  def create_models(csv_file_paths)
-    CSV.foreach(csv_file_paths[:orgs_csv_file], headers: :first_row) do |org_row|
-      next if organization_already_exists?(org_row["name"])
+  def import
+    total_import_results = {ids: [], failed_instances: []}
+    organizations = create_models
 
-      new_organization = Organization.new(build_organization_hash(org_row))
-      next unless new_organization
-
-      new_organization.build_social_media(build_social_media_hash(org_row))
-      create_tags(csv_file_paths[:tags_csv_file], new_organization, org_row["id"])
-      create_organization_beneficiaries(csv_file_paths[:beneficiaries_csv_file], new_organization, org_row["id"])
-      create_organization_causes(csv_file_paths[:causes_csv_file], new_organization, org_row["id"])
-      create_locations_location_services_office_hours_and_phone_numbers(
-        csv_file_paths[:locations_csv_file],
-        csv_file_paths[:location_services_csv_file],
-        csv_file_paths[:location_office_hours_csv_file],
-        csv_file_paths[:location_phone_number_csv_file],
-        new_organization, org_row["id"]
-      )
-
-      @organizations << new_organization
+    organizations.each do |org|
+      org_import_result = Organization.import([org], recursive: true, track_validation_failures: true)
+      if org_import_result&.ids&.any?
+        org.run_callbacks(:create) { true }
+        total_import_results[:ids] << org_import_result.ids.first
+      else
+        total_import_results[:failed_instances] += org_import_result&.failed_instances
+      end
     end
+    total_import_results
+  end
+
+  def create_models
+    organizations = []
+    CSV.foreach(@csv_file_paths[:orgs_csv_file], headers: :first_row) do |org_row|
+      next if organization_already_exists?(org_row["name"])
+      new_organization = Organization.new(build_organization_hash(org_row))
+
+      next unless new_organization
+      new_organization.build_social_media(build_social_media_hash(org_row))
+      new_organization = create_organization_associated_records(@csv_file_paths, new_organization, org_row["id"])
+      organizations << new_organization
+    end
+    organizations
   end
 
   def organization_already_exists?(org_name)
     Organization.unscoped.exists?(name: org_name)
   end
 
-  def create_tags(tags_csv_file_path, new_organization, org_id)
-    CSV.foreach(tags_csv_file_path, headers: :first_row) do |tag_row|
-      new_organization.tags.build(name: tag_row["name"]) if tag_row["organization_id"] == org_id
-    end
+  def create_organization_associated_records(csv_file_paths, new_organization, org_id)
+    create_associated_records(csv_file_paths[:tags_csv_file], new_organization, "organization_id", :tags, Tag, org_id)
+    create_associated_records(csv_file_paths[:beneficiaries_csv_file], new_organization, "organization_id", :organization_beneficiaries, BeneficiarySubcategory, org_id)
+    create_associated_records(csv_file_paths[:causes_csv_file], new_organization, "organization_id", :organization_causes, Cause, org_id)
+
+    create_locations_location_services_office_hours_and_phone_numbers(
+      csv_file_paths[:locations_csv_file],
+      csv_file_paths[:location_services_csv_file],
+      csv_file_paths[:location_office_hours_csv_file],
+      csv_file_paths[:location_phone_number_csv_file],
+      new_organization, org_id
+    )
+    new_organization
   end
 
-  def create_organization_beneficiaries(beneficiaries_csv_file_path, new_organization, org_id)
-    CSV.foreach(beneficiaries_csv_file_path, headers: :first_row) do |beneficiary_row|
-      if beneficiary_row["organization_id"] == org_id
-        beneficiary_subcategory = BeneficiarySubcategory.find_by_name(beneficiary_row["name"])
-        new_organization.organization_beneficiaries.build(beneficiary_subcategory: beneficiary_subcategory)
-      end
-    end
-  end
-
-  def create_organization_causes(causes_csv_file_path, new_organization, org_id)
-    CSV.foreach(causes_csv_file_path, headers: :first_row) do |cause_row|
-      if cause_row["organization_id"] == org_id
-        cause = Cause.find_by_name(cause_row["name"])
-        new_organization.organization_causes.build(cause: cause)
+  def create_associated_records(csv_file_path, new_object, id_key, association_name, model_name, org_id)
+    CSV.foreach(csv_file_path, headers: :first_row) do |row|
+      if row[id_key] == org_id
+        case association_name
+        when :tags
+          new_object.send(association_name).build(name: row["name"])
+        when :organization_beneficiaries, :organization_causes
+          data = model_name.find_by_name(row["name"])
+          new_object.send(association_name).build("#{model_name.to_s.underscore}": data)
+        end
       end
     end
   end
@@ -137,7 +138,7 @@ class SpreadsheetParse
      mission_statement_en: org_row["mission_statement_en"], vision_statement_en: org_row["vision_statement_en"],
      tagline_en: org_row["tagline_en"], mission_statement_es: org_row["mission_statement_es"],
      vision_statement_es: org_row["vision_statement_es"], tagline_es: org_row["tagline_es"],
-     website: org_row["website"], scope_of_work: org_row["scope_of_work"], creator: AdminUser.first,
+     website: org_row["website"], scope_of_work: org_row["scope_of_work"], creator: @creator,
      active: org_row["active"] == "yes",
      donation_link: org_row["donation_link"]}
   end
@@ -158,20 +159,5 @@ class SpreadsheetParse
      longitude: location_row["longitude"].present? ? location_row["longitude"].to_f : nil,
      time_zone: location_row["time_zone"].presence,
      email: location_row["email"], youtube_video_link: location_row["youtube_video_link"]}
-  end
-
-  def import_organizations
-    Organization.import(
-      @organizations,
-      recursive: true,
-      track_validation_failures: true
-    )
-  end
-
-  def execute_callbacks(results)
-    results.ids.each do |org_id|
-      org = Organization.find(org_id)
-      org.run_callbacks(:create) { true }
-    end
   end
 end
