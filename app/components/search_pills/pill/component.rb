@@ -11,7 +11,7 @@ class SearchPills::Pill::Component < ApplicationViewComponent
         id: SecureRandom.alphanumeric,
         data: {
           search_target: "pill",
-          action: "change->places#hidePopup change->search#updateFiltersState change->search#submitForm"
+          action: "change->search#toggleFilter change->search#submitForm"
         }
       }
     )

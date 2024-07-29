@@ -10,6 +10,7 @@ import * as Turbo from "@hotwired/turbo"
 import * as ActiveStorage from "@rails/activestorage"
 import "../components"
 import "channels"
+import filterStore from "utils/filterStore"
 
 Rails.start()
 ActiveStorage.start()

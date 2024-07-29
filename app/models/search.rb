@@ -41,9 +41,9 @@ class Search
       address: {city: city.presence, state: state.presence, zipcode: zipcode.presence},
       open_now: ActiveModel::Type::Boolean.new.cast(open_now),
       open_weekends: ActiveModel::Type::Boolean.new.cast(open_weekends),
-      beneficiary_groups: beneficiary_groups,
-      services: services,
-      causes: causes
+      beneficiary_groups: beneficiary_groups&.transform_values { |value| value.uniq },
+      services: services&.transform_values { |value| value.uniq },
+      causes: causes&.uniq
     }
   end
 
