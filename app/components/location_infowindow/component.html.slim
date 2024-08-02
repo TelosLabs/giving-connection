@@ -1,10 +1,10 @@
-// Save btn
-span class="ml-auto"
-  = render SaveButton::Component.new(user: @current_user, location: @location, simplified: true)
-
-// Logo
-div
-  = image_tag @location.organization.logo, class: "w-3/5 h-3/5 m-auto"
+div.flex.items-center.justify-between.w-full
+  // Logo
+  div.flex-grow.flex.justify-center
+    = image_tag @location.organization.logo, class: "w-3/5 h-3/5"
+  // Save btn
+  span
+    = render SaveButton::Component.new(user: @current_user, location: @location, simplified: true)
 
 // Name
 div class="flex items-center gap-1"
