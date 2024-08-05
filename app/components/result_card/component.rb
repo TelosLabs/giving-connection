@@ -5,7 +5,7 @@ class ResultCard::Component < ApplicationViewComponent
 
   def initialize(title:, address:, public_address:, link_to_google_maps:,
     image_url:, website:, description:, id:, current_user:, phone_number:,
-    verified:, causes: [], turbo_frame: {})
+    verified:, po_box:, causes: [], turbo_frame: {})
     @title = title
     @address = address
     @public_address = public_address
@@ -17,6 +17,7 @@ class ResultCard::Component < ApplicationViewComponent
     @current_user = current_user
     @phone_number = phone_number
     @verified = verified
+    @po_box = po_box
     @causes = causes
     # If not targeting a turbo-frame, don't provide this parameter
     @turbo_frame = turbo_frame
