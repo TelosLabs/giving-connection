@@ -1,23 +1,22 @@
 <div id="<%= @id %>" class="p-6 scroll-mt-96" data-controller="result-card--component">
   <div class="flex gap-2.5 mb-3">
-
     <div class="flex-shrink-0 w-24">
       <%= helpers.logo_link(@turbo_frame, @id, @image_url) %>
     </div>
-
     <div class="w-full">
-      <div class="flex flex-row items-start justify-between">
+      <div class="flex flex-row justify-between items-start">
         <%# Org name %>
         <div class="flex items-start">
           <%= helpers.title_link(@turbo_frame, @id, @title) %>
+          <% if @po_box %>
+            <%= render "shared/popover", copy: "No map pin available. Only PO Box listed.", wrapper_icon: "info_circle.svg", position: "right-0 w-28", icon_classes: "h-5 ml-1 p-0" %>
+          <% end %>
           <% if @verified %>
             <%= render "shared/popover", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg", position: "right-0" %>
           <% end %>
         </div>
-
         <%= render SaveButton::Component.new(user: @current_user, location: Location.find(@id), simplified: true) %>
       </div>
-
       <div class="pb-0 text-xs text-gray-4">
         <% if @public_address %>
           <p id="pointer"><%= link_to @address, @link_to_google_maps, target: "blank" %></p>
@@ -26,7 +25,7 @@
           <p><%= link_to @website_for_display, @website, target: '_blank', class: 'text-blue-medium'%></p>
         <% end %>
         <% if @phone_number.present? %>
-        <%= link_to "Call: #{@phone_number}", "tel:#{@phone_number}", class: 'text-blue-medium' %>
+          <%= link_to "Call: #{@phone_number}", "tel:#{@phone_number}", class: 'text-blue-medium' %>
         <% end %>
         <%# Designations %>
         <%= render DesignationTag::Component.new(Location.find(@id).organization) %>
@@ -43,7 +42,7 @@
       <%= formated_description %>
     </p>
   </div>
-  <div class="flex items-center justify-between">
+  <div class="flex justify-between items-center">
     <% unless @causes.empty? %>
       <section>
         <h2 class="mb-2 font-sans text-xs font-bold uppercase">Causes</h2>
@@ -56,7 +55,7 @@
             icon_svg_options: {class: "w-5 h-5", aria_hidden: true}) %>
       </section>
     <% end %>
-    <a href="<%= location_path(@id)%>" class="inline-flex items-center ml-4 text-sm font-bold text-blue-medium whitespace-nowrap", target="_blank">
+    <a href="<%= location_path(@id)%>" class="inline-flex items-center ml-4 text-sm font-bold whitespace-nowrap text-blue-medium", target="_blank">
       Go to Page
       <%= inline_svg_tag 'solid_arrow_right.svg', class: 'w-4 h-4 ml-2 text-blue-medium fill-current'%>
     </a>
