@@ -77,7 +77,7 @@ export default class extends Controller {
     }
 
     // Dispatch a custom event indicating the location has changed
-    const event = new CustomEvent('locationUpdated', {
+    const event = new CustomEvent('location-updated', {
       detail: { latitude: this.latitude, longitude: this.longitude }
     });
     window.dispatchEvent(event);
