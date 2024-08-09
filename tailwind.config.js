@@ -27,6 +27,7 @@ module.exports = {
         },
         salmon: {
           DEFAULT: "#fc8383",
+          light: "#FA989C",
         },
         red: {
           DEFAULT: "#f48284",
