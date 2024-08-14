@@ -114,7 +114,8 @@ div class=""
              div class="my-7 border-t border-gray-8"
              = render SocialMedia::Component.new(social_media: @location.social_media)
           // Help, donate and volunteer links
-          = render "locations/donate_volunteer_buttons", location: @location, container_styles: "flex flex-col gap-y-4 pt-7 border-t border-gray-8", find_help_link: @location.website
+          - if @location.website.present? || @location.organization.donation_link.present? || @location.organization.volunteer_link.present?
+            = render "locations/donate_volunteer_buttons", location: @location, container_styles: "flex flex-col gap-y-4 pt-7 border-t border-gray-8", find_help_link: @location.website
 
         - if @location.youtube_video_link.present?
           div class="flex flex-col items-center p-5 text-center"
@@ -155,7 +156,8 @@ div class=""
 
     // Aside Section
     div class="hidden flex-col flex-grow-0 px-11 w-full bg-white rounded h-min-content sm:flex md:max-w-402px md:p-7"
-      = render "locations/donate_volunteer_buttons", location: @location, container_styles: "flex flex-col gap-y-4 pb-7 mb-7 border-b border-gray-8", find_help_link: @location.website
+      - if @location.website.present? || @location.organization.donation_link.present? || @location.organization.volunteer_link.present?
+       = render "locations/donate_volunteer_buttons", location: @location, container_styles: "flex flex-col gap-y-4 pb-7 mb-7 border-b border-gray-8", find_help_link: @location.website
 
       h3 class="mb-3.5 text-sm font-bold uppercase"
         | Causes

@@ -1,13 +1,13 @@
 div class=local_assigns[:container_styles]
-  - link_path = local_assigns[:controller_name] == 'locations' ? local_assigns[:location] : location_path(id: local_assigns[:location].id)
-  = content_tag(\
-    :a,\
-    href: local_assigns[:find_help_link],\
-    class: "centered-flex w-full gap-2 py-3 border-0 rounded-md font-bold transition-colors text-white bg-salmon hover:bg-salmon-medium",\
-    target: "_blank",\
-  ) do
-    = inline_svg_tag "get-help-icon.svg", class: "w-7 h-7", alt: "Get Help icon"
-    | Find Help
+  - if local_assigns[:find_help_link].present? 
+    = content_tag(\
+      :a,\
+      href: local_assigns[:find_help_link],\
+      class: "centered-flex w-full gap-2 py-3 border-0 rounded-md font-bold transition-colors text-white bg-salmon hover:bg-salmon-medium",\
+      target: "_blank",\
+    ) do
+      = inline_svg_tag "get-help-icon.svg", class: "w-7 h-7", alt: "Get Help icon"
+      | Find Help
 
   div class="flex gap-x-4"
     - if local_assigns[:location].organization.donation_link.present?
