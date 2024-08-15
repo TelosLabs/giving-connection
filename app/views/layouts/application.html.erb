@@ -13,14 +13,12 @@
     </script>
     <!-- Microsoft tag -->
     <script>
-    window.uetq = window.uetq || [];
-    window.uetq.push('set', { 'pid': { 
-      'em': '<%= current_user&.email %>', // Replace with the variable that holds the user's email address. 
-      'ph': '<%= current_user&.phone_number %>', // Replace with the variable that holds the user's phone number. 
-   } });
+      window.uetq = window.uetq || [];
+      window.uetq.push('set', { 'pid': {
+        'em': '<%= current_user&.email %>'
+         } });
     </script>
     <!-- Conversion UET tag -->
-
     <title>Giving Connection</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <% if request.fullpath.include? "/search" %>
