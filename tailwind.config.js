@@ -27,6 +27,8 @@ module.exports = {
         },
         salmon: {
           DEFAULT: "#fc8383",
+          medium: "#FA989C",
+          light: "#FEDADA",
         },
         red: {
           DEFAULT: "#f48284",
