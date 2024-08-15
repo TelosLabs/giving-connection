@@ -16,21 +16,21 @@
     div class="flex flex-row justify-center w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
       div class="flex flex-row justify-center w-full min-h-full"
         div class="flex flex-col w-full max-w-sm md:border-r border-gray-7"
-          div class="fixed inset-0 flex items-center justify-center hidden min-h-screen overflow-y-auto animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;")
+          div class="flex hidden overflow-y-auto fixed inset-0 justify-center items-center min-h-screen animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;")
             div class="relative w-full max-h-full max-w-375px"
               = render partial: 'filter', locals: { form: f, search: @search, services: @services, causes: @causes, beneficiary_groups: @beneficiary_groups }
-          div class="flex flex-row justify-between w-full p-4 bg-gray-9 md:hidden"
-            span class="relative z-0 inline-flex shadow-sm md:hidden rounded-6px"
+          div class="flex flex-row justify-between p-4 w-full bg-gray-9 md:hidden"
+            span class="inline-flex relative z-0 shadow-sm md:hidden rounded-6px"
               / active bg-blue-dark.focus:text-white
               / inactive bg-white text-gray-3
-              button class="relative inline-flex items-center px-5 py-1 text-sm border rounded-l-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="0"
+              button class="inline-flex relative items-center px-5 py-1 text-sm border rounded-l-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="0"
                 | List
-              button class="relative inline-flex items-center px-5 py-1 -ml-px text-sm border rounded-r-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="1"
+              button class="inline-flex relative items-center px-5 py-1 -ml-px text-sm border rounded-r-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="1"
                 | Map
           // Search result cards
           = turbo_frame_tag "pagy" do
             div class="flex flex-col w-full bg-white md:h-85vh md:overflow-y-auto"
-              div class="flex flex-row items-center justify-between w-full p-4 bg-white border-b border-gray-8"
+              div class="flex flex-row justify-between items-center p-4 w-full bg-white border-b border-gray-8"
                 span class="text-xs text-gray-3"
                   | #{pluralize(@pagy.count, 'result')} found
                 - if params.dig('search', 'keyword').present? || list_of_filters(@search).present?
@@ -46,7 +46,7 @@
                   div class="inline-flex items-center px-3 py-2 text-xs text-gray-400"
                     = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-400 -ml-0.5'
                     | Create Search Alert
-              div class="w-full h-full overflow-y-auto md:flex md:flex-col" data-tabs-target="panel"
+              div class="overflow-y-auto w-full h-full md:flex md:flex-col" data-tabs-target="panel"
                 - if @results.present?
                   ul class="flex flex-col divide-y divide-gray-8" id="search-results"
                     - @results.each do |result|
@@ -62,22 +62,23 @@
                                                         phone_number: result.phone_number&.number,\
                                                         current_user: current_user,\
                                                         verified: result.organization.verified?,\
+                                                        po_box: result.po_box?,\
                                                         causes: result&.causes,\
                                                         turbo_frame: {id: "map-left-popup", src: new_map_popup_path(location_id: result&.id)})
                   - if @pagy.pages > SearchesHelper::MIN_REQUIRED_PAGES
-                    div class="h-40 px-4 mt-7"
+                    div class="px-4 mt-7 h-40"
                       p class="mb-5 text-sm text-gray-3"
                         = "Showing results #{@pagy&.from} - #{@pagy&.to}"
                       == render partial: 'pagy/nav', locals: { pagy: @pagy }
                 - else
                   div class="flex justify-center w-full"
                     = inline_svg_tag 'empty_state_4.svg', size: '278*279'
-                  div class="flex flex-col items-center justify-center w-full gap-4 px-12 mb-16 text-grey-2"
-                    p class="text-xl font-bold text-center "
+                  div class="flex flex-col gap-4 justify-center items-center px-12 mb-16 w-full text-grey-2"
+                    p class="text-xl font-bold text-center"
                       | We couldn't find any nonprofits that matched your search.
-                    p class="max-w-xs px-4 text-base text-center"
+                    p class="px-4 max-w-xs text-base text-center"
                       | Try searching for another keyword or editing your filters.
-                    button class="text-sm font-bold text-blue-medium" type="submit" data-action="click->search#clearKeywordInput click->search#clearCheckedPills click->search#clearAll"
+                    button class="text-sm font-bold text-blue-medium" type="submit" data-action="click->search#clearKeywordInput click->search#clearCheckedFilters click->search#clearAll"
                       | Clear Filters
 
                     = link_to( \
@@ -114,7 +115,7 @@
                   )
 
         // Desktop map
-        div class="relative hidden w-full md:flex" data-controller="places result-card--component" data-action="google-maps-callback@window->places#initMap" data-places-zoom-value="10" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}" data-places-popup-url-value="/map_popup/new?location_id="
+        div class="hidden relative w-full md:flex" data-controller="places result-card--component" data-action="google-maps-callback@window->places#initMap" data-places-zoom-value="10" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}" data-places-popup-url-value="/map_popup/new?location_id="
           div class="absolute inset-0 w-full h-full xs:h-85vh" data-places-target="map"
           // Left pop-up
           = turbo_frame_tag("map-left-popup", class: "rounded-6px overflow-y-auto w-3/4 max-w-xs xl:max-w-356px h-5/5 m-3")
