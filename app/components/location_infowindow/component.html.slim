@@ -1,17 +1,17 @@
-// Save btn
-span class="ml-auto"
-  = render SaveButton::Component.new(user: @current_user, location: @location, simplified: true)
-
-// Logo
-div
-  = image_tag @location.organization.logo, class: "w-3/5 h-3/5 m-auto"
+div.flex.items-center.justify-between.w-full
+  // Logo
+  div.flex-grow.flex.justify-center
+    = image_tag @location.organization.logo, class: "w-3/5 h-3/5"
 
 // Name
-div class="flex items-center gap-1"
+div class="flex flex-row gap-1 justify-between items-start"
   a id="pointer"
     = link_to @location.name, location_path(@location), target:"_blank", class: "text-small font-bold text-gray-2"
-  - if @location.organization.verified?
-    = render partial: "shared/popover", locals: {position: "right-0", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg"}
+  span class="flex ml-1"
+    - if @location.organization.verified?
+      = render partial: "shared/popover", locals: {position: "right-0", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg"}
+      // Save btn
+    = render SaveButton::Component.new(user: @current_user, location: @location, simplified: true)
 
 // Address, website, phone, and availability
 - if @location.public_address?
