@@ -4,18 +4,20 @@
       <%= helpers.logo_link(@turbo_frame, @id, @image_url) %>
     </div>
     <div class="w-full">
-      <div class="flex flex-row justify-between items-start">
+      <div class="flex flex-row justify-between">
         <%# Org name %>
         <div class="flex items-start">
           <%= helpers.title_link(@turbo_frame, @id, @title) %>
+        </div>
+        <div class="flex flex-row">
           <% if @po_box %>
             <%= render "shared/popover", copy: "No map pin available. Only PO Box listed.", wrapper_icon: "info_circle.svg", position: "right-0 w-28", icon_classes: "h-5 ml-1 p-0" %>
           <% end %>
           <% if @verified %>
             <%= render "shared/popover", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg", position: "right-0" %>
           <% end %>
+          <%= render SaveButton::Component.new(user: @current_user, location: Location.find(@id), simplified: true) %>
         </div>
-        <%= render SaveButton::Component.new(user: @current_user, location: Location.find(@id), simplified: true) %>
       </div>
       <div class="pb-0 text-xs text-gray-4">
         <% if @public_address %>
