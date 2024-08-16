@@ -5,7 +5,7 @@ div class="flex flex-col text-gray-2"
       div
         = inline_svg_tag 'new-blur-left.svg', size:'723*288'
       div
-        = inline_svg_tag 'new-blur-right.svg', size:'723*288'
+        = inline_svg_tag 'new-blur-right.svg', size:'723*288', class: "absolute right-0 h-60"
     div class="flex absolute top-0 right-0 left-0 flex-col justify-center items-center h-full"
       h2 class="px-5 text-3xl font-bold leading-10 text-center text-blue-dark"
         | Discover your network<br>of change
@@ -29,7 +29,7 @@ div class="px-6"
         | Select a cause below to learn more about organizations providing 
         | critical services within your chosen category. Scroll through listings to discover 
         | nonprofits meeting your needs.
-      = inline_svg_tag "blur-background-1", class: "absolute top-0 -z-1 w-full max-w-md md:-top-1/2"
+      = inline_svg_tag "blur-background-1.svg", class: "-z-1 absolute top-0 w-full max-w-md md:-top-1/2"
     = inline_svg_tag "browse-by-causes.svg", class: "w-full max-w-md -mt-6 md:w-2/5"
 
   section class="flex flex-col items-center pt-4 mb-6 md:pt-6 md:mb-28" id="causes-section"
