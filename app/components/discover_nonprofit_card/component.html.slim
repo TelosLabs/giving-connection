@@ -20,7 +20,7 @@ article class="overflow-hidden text-xs font-medium bg-white rounded shadow-md"
     // Donate/Volunteer buttons
     section class="relative w-full"
       h3 class="sr-only" altruistic menu
-      = render "locations/donate_volunteer_buttons", location: @location, container_styles: "flex gap-x-4 w-full pt-5 pb-3 border-t border-gray-8 text-base", find_help_link: location_path(@location)
+      = render "locations/donate_volunteer_buttons", location: @location, container_styles: "flex flex-col gap-4 w-full pt-5 pb-3 border-t border-gray-8 text-base", find_help_link: location_path(@location)
     // Actions menu
     section class="pt-6 pb-11 border-t border-gray-8"
       h3 class="w-0 h-0 opacity-0" actions menu

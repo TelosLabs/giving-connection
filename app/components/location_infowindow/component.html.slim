@@ -1,3 +1,6 @@
+span class="absolute top-4 left-4 ml-1"
+    = render SaveButton::Component.new(user: @current_user, location: @location, simplified: true)
+
 div.flex.items-center.justify-between.w-full
   // Logo
   div.flex-grow.flex.justify-center
@@ -9,8 +12,6 @@ div class="flex flex-row gap-1 justify-between items-start"
     = link_to @location.name, location_path(@location), target:"_blank", class: "text-small font-bold text-gray-2"
     - if @location.organization.verified?
       = render partial: "shared/popover", locals: {position: "right-0", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg"}
-  span class="flex ml-1"
-    = render SaveButton::Component.new(user: @current_user, location: @location, simplified: true)
 
 // Address, website, phone, and availability
 - if @location.public_address?
