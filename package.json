@@ -44,7 +44,7 @@
     "webpack-dev-server": "^4.0.0"
   },
   "engines": {
-    "node": "18.20.4"
+    "node": "20.17.0"
   },
   "scripts": {
     "dev": "webpack serve --config ./webpack/webpack.config.js --mode development --progress",
