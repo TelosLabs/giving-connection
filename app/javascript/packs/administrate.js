@@ -10,7 +10,6 @@ import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import "jquery"
 import "@nathanvda/cocoon"
-import "moment"
 
 Rails.start()
 ActiveStorage.start()

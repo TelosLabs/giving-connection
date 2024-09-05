@@ -72,6 +72,7 @@ gem "image_processing"
 gem "bootsnap", require: false
 gem "city-state"
 gem "timezone", "~> 1.0" #  Timezone lookup based on geolocation
+gem "momentjs-rails"
 
 # Geolocation
 gem "activerecord-postgis-adapter"
