@@ -21,25 +21,6 @@ const getSassLoader = () => {
   }
 }
 
-const getEsbuildLoader = (options) => {
-  return {
-    loader: require.resolve('esbuild-loader'),
-    options
-  }
-}
-
-const getEsbuildRule = () => {
-  return {
-    test: /\.(js|jsx|mjs)?(\.erb)?$/,
-    include: [sourcePath, ...additionalPaths].map((path) => resolve(process.cwd(), path)),
-    exclude: /node_modules/,
-    use: [ getEsbuildLoader({ target: "es2016" }) ]
-  }
-}
-
-const getEsbuildCssLoader = () => {
-  return getEsbuildLoader({ minify: true })
-}
 
 module.exports = () => [
   // Raw
@@ -69,7 +50,6 @@ module.exports = () => [
     use: [
       MiniCssExtractPlugin.loader,
       getCssLoader(),
-      getEsbuildCssLoader()
     ]
   },
   // SASS
