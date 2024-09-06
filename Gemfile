@@ -12,9 +12,9 @@ gem "pg", "~> 1.1"
 # Use Puma as the app server
 gem "puma", "~> 5.6"
 # Use SCSS for stylesheets
-gem "sass-rails", ">= 6"
 # Bundle and transpile JS in Rails. Read more: https://github.com/rails/jsbundling-rails/tree/main
 gem "jsbundling-rails"
+gem "cssbundling-rails"
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem "jbuilder", "~> 2.7"

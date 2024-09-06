@@ -1,8 +1,12 @@
 const { screens } = require("tailwindcss/defaultTheme");
-
 module.exports = {
-  purge: [],
-  darkMode: false, // or 'media' or 'class'
+  content: [
+    './app/helpers/**/*',
+    './app/javascript/**/*',
+    './app/views/**/*',
+    './app/components/**/*',,
+    './app/assets/stylesheets/**/*',
+  ],
   theme: {
     screens: {
       xs: "375px",
