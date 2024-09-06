@@ -1,4 +1,5 @@
 const { devServerPort } = require("./config")
+const webpack = require('webpack')
 // Extracts CSS into .css file
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
@@ -15,6 +16,11 @@ module.exports = (isProduction) => {
       entrypointsUseAssets: true,
     }),
     new RemoveEmptyScriptsPlugin(),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+    })
   ]
 
   const hash = isProduction ? '-[contenthash:8]' : ''
