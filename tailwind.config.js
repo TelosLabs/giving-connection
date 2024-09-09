@@ -4,7 +4,7 @@ module.exports = {
     './app/helpers/**/*',
     './app/javascript/**/*',
     './app/views/**/*',
-    './app/components/**/*',,
+    './app/components/**/*',
     './app/assets/stylesheets/**/*',
   ],
   theme: {
