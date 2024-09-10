@@ -26,5 +26,6 @@ module GivingConnection
     config.i18n.default_locale = :en
     config.i18n.available_locales = %i[en es]
     config.autoload_paths += Dir.glob("#{config.root}/app/lib")
+    config.assets.css_compressor = nil
   end
 end
