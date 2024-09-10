@@ -1,25 +1,5 @@
-const { resolve } = require("path");
-const { sourcePath, additionalPaths } = require("./config")
 // Extracts CSS into .css file
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
-const getCssLoader = () => {
-  return {
-    loader: require.resolve('css-loader'),
-    options: { sourceMap: true, importLoaders: 2 }
-  }
-}
-
-const getSassLoader = () => {
-  return {
-    loader: require.resolve('sass-loader'),
-    options: {
-      sassOptions: {
-        includePaths: additionalPaths
-      }
-    }
-  }
-}
 
 
 module.exports = () => [
@@ -49,7 +29,9 @@ module.exports = () => [
     test: /\.(css)$/i,
     use: [
       MiniCssExtractPlugin.loader,
-      getCssLoader(),
+      'style-loader',
+      'css-loader',
+      'postcss-loader'
     ]
   },
   // SASS
@@ -57,8 +39,9 @@ module.exports = () => [
     test: /\.(scss|sass)(\.erb)?$/i,
     use: [
       MiniCssExtractPlugin.loader,
-      getCssLoader(),
-      getSassLoader()
+      'style-loader',
+      'css-loader',
+      'sass-loader'
     ]
   },
 ]
