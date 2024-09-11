@@ -1,11 +1,11 @@
 div class="grid grid-cols-12 gap-6 mt-8 nested-fields" data-new-record="true" data-action="google-maps-callback@window->places#initMap" data-controller="places toggle" data-places-imageurl-value=("\#{asset_path 'markergc.png'}")
   div class="col-span-12 lg:col-span-6 md:col-span-7"
     = location_form.label :name, "Location Name", class:"text-sm"
-    = location_form.text_field :name, class: "block mb-4 h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
+    = location_form.text_field :name, class: "block mb-4 h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
     = location_form.label :address, "Address", class: "block text-sm text-gray-3 font-medium"
-    = location_form.search_field :address, class: "block mb-4 h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", data: { 'places-target': "field", action: "keydown->places#keydown" }
+    = location_form.search_field :address, class: "block mb-4 h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", data: { 'places-target': "field", action: "keydown->places#keydown" }
     = location_form.label :suite, "Suite Number", class:"text-sm"
-    = location_form.text_field :suite, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
+    = location_form.text_field :suite, class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
     = location_form.hidden_field :latitude, data: { 'places-target': "latitude" }, id: "places-latitude"
     = location_form.hidden_field :longitude, data: { 'places-target': "longitude" }, id: "places-longitude"
 
@@ -32,11 +32,11 @@ div class="grid grid-cols-12 gap-6 mt-8 nested-fields" data-new-record="true" da
   div class="col-span-12 md:col-span-7 lg:col-span-6"
     = location_form.fields_for :phone_number, PhoneNumber.new do |phone_form|
       = phone_form.label :number, "Phone", class: "block text-sm text-gray-3 font-medium"
-      = phone_form.text_field :number, { class: "block mb-4 h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+      = phone_form.text_field :number, { class: "block mb-4 h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
     = location_form.label :email, "Email", class:"block text-sm text-gray-3 font-medium"
-    = location_form.text_field :email, class: "block mb-4 h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
+    = location_form.text_field :email, class: "block mb-4 h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
     = location_form.label :youtube_video_link, "YouTube Video Link", class:"block text-sm text-gray-3 font-medium"
-    = location_form.text_field :youtube_video_link, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
+    = location_form.text_field :youtube_video_link, class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
 
   div class="hidden md:block md:col-span-5"
 

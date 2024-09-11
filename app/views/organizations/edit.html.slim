@@ -74,7 +74,7 @@
 
           div class="col-span-12 lg:col-span-7 md:col-span-6"
             = f.label :website, class: "block text-sm text-gray-3 font-medium"
-            = f.text_field :website, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+            = f.text_field :website, { class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
           div class="hidden col-span-3 md:flex"
 
@@ -228,11 +228,11 @@
                       | These are the locations that will have their own individual page on the platform and will appear on search listings. Think of them as facilities.
                 div class="col-span-12 lg:col-span-6 md:col-span-7"
                   = location_form.label :name, "Location Name", class:"block text-sm text-gray-3 font-medium pt-4"
-                  = location_form.text_field :name, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium scroll-mt-25"
+                  = location_form.text_field :name, class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium scroll-mt-25"
                   = location_form.label :address, "Address", class: "block text-sm text-gray-3 font-medium pt-4"
-                  = location_form.search_field :address, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium scroll-mt-25", data: { 'places-target': "field", action: "keydown->places#keydown" }
+                  = location_form.search_field :address, class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium scroll-mt-25", data: { 'places-target': "field", action: "keydown->places#keydown" }
                   = location_form.label :suite, "Suite Number", class:"block text-sm text-gray-3 font-medium pt-4"
-                  = location_form.text_field :suite, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
+                  = location_form.text_field :suite, class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
                   = location_form.hidden_field :latitude, data: { 'places-target': "latitude" }, id: "places-latitude"
                   = location_form.hidden_field :longitude, data: { 'places-target': "longitude" }, id: "places-longitude"
 
@@ -261,17 +261,17 @@
                 div class="col-span-12 lg:col-span-6 md:col-span-7" id="location-specific-fields"
                   = location_form.fields_for :phone_number, PhoneNumber.find_or_initialize_by(location: location_form.object) do |phone_form|
                     = phone_form.label :number, "Phone", class: "block text-sm text-gray-3 font-medium"
-                    = phone_form.text_field :number, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+                    = phone_form.text_field :number, { class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
                   div class="hidden col-span-3 md:flex"
                   = location_form.label :email, "Email", class:"block text-sm text-gray-3 font-medium pt-4"
-                  = location_form.text_field :email, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
+                  = location_form.text_field :email, class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
 
                   div class="hidden col-span-3 md:flex"
                   = location_form.label :youtube_video_link, "YouTube Video Link", class:"block text-sm text-gray-3 font-medium pt-4"
                   p class="mt-1 text-sm leading-5 text-gray-4"
                     | The listed YouTube video will appear on your nonprofit’s page.
-                  = location_form.text_field :youtube_video_link, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
+                  = location_form.text_field :youtube_video_link, class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium"
 
                   div class="hidden col-span-3 md:flex"
                   = location_form.label :images, "Location Images", class:"block text-sm text-gray-3 font-medium pt-4"
