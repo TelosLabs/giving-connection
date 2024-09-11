@@ -27,7 +27,7 @@
         div class="grid grid-cols-12 gap-6 mt-8" data-controller="toggle"
           div class="col-span-12 lg:col-span-6 md:col-span-7"
             = f.label :name, "* Organization Name", class: "block text-sm text-gray-3 font-medium"
-            = f.text_field :name, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+            = f.text_field :name, { class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
             div class="flex items-center mt-3"
               = check_box_tag :other_name_check, true, false, class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent ", data: { action: "toggle#toggle" }
@@ -37,25 +37,25 @@
 
           div class="hidden col-span-12 lg:col-span-6 md:col-span-7" data-toggle-target="toggleable menu"
             = f.label :second_name, "* Other Name", class: "block text-sm text-gray-3 font-medium"
-            = f.text_field :second_name, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+            = f.text_field :second_name, { class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
           div class="hidden col-span-3 md:flex"
 
           div class="col-span-12 lg:col-span-6 md:col-span-7" data-controller="ein-warning" data-ein-warning-url-value="#{check_ein_organizations_path}" data-action="change->ein-warning#checkUniqueness"
             = f.label :ein_number, "* EIN Number", class: "block text-sm text-gray-3 font-medium"
-            = f.text_field :ein_number, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", data: { ein_warning_target: "input" } }
+            = f.text_field :ein_number, { class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", data: { ein_warning_target: "input" } }
 
           div class="hidden col-span-3 md:flex"
 
           div class="col-span-12 lg:col-span-6 md:col-span-7"
               = f.label :irs_ntee_code, "* IRS NTEE Code", class: "block text-sm text-gray-3 font-medium"
-              = f.select :irs_ntee_code, options_for_select(Organization::NTEE_CODE, @organization.irs_ntee_code), { include_blank: '' }, { selected: nil, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px text-base text-gray-3 border-gray-5 focus:ring-blue-medium focus:border-blue-medium", autocomplete:"off" }
+              = f.select :irs_ntee_code, options_for_select(Organization::NTEE_CODE, @organization.irs_ntee_code), { include_blank: '' }, { selected: nil, class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px text-base text-gray-3 border-gray-5 focus:ring-blue-medium focus:border-blue-medium", autocomplete:"off" }
 
           div class="hidden col-span-3 md:flex"
 
           div class="col-span-12 lg:col-span-6 md:col-span-7"
               = f.label :scope_of_work, "Scope of Work", class: "block text-sm text-gray-3 font-medium"
-              = f.select :scope_of_work, options_for_select(Organization::SCOPE, @organization.scope_of_work), { include_blank: '' }, { selected: nil, class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px text-base text-gray-3 border-gray-5 focus:ring-blue-medium focus:border-blue-medium", autocomplete:"off" }
+              = f.select :scope_of_work, options_for_select(Organization::SCOPE, @organization.scope_of_work), { include_blank: '' }, { selected: nil, class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px text-base text-gray-3 border-gray-5 focus:ring-blue-medium focus:border-blue-medium", autocomplete:"off" }
 
           div class="hidden col-span-3 md:flex"
 
@@ -102,7 +102,7 @@
                 p If "Yes" is indicated and a link is provided, then both the volunteer tag and button appear.
               div class="mt-2"
                 = f.label :volunteer_link, class: "block text-sm text-gray-3 font-medium"
-                = f.text_field :volunteer_link, { class: "block h-46px mt-1 h-full w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+                = f.text_field :volunteer_link, { class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
         div class="my-4 mt-6 border-t border-t-blue-pale"
         section class="mt-6 text-gray-2" data-controller="toggle"
