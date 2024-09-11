@@ -28,10 +28,6 @@
     fill: #D3DCE6;
   }
 
-  .centered-flex {
-    @apply flex items-center justify-center;
-  }
-
   .positioned-center {
     top: 50%;
     left: 50%;
@@ -43,9 +39,6 @@
   scroll-margin-top: 6.25rem;
 }
 
-.custom-file-input {
-  visibility: hidden;
-}
 
 .tagify__input::before{
   position:static;
