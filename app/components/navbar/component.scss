@@ -13,7 +13,7 @@
 
   &--mobile {
     @media (min-width: 870px) {
-      display: none;
+      display: none !important;
       flex: none;
     }
   }

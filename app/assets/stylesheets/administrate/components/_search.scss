@@ -9,9 +9,9 @@ $_search-icon-size: 1rem;
 }
 
 .search__input {
-  border-radius: 100rem;
-  padding-left: $_search-icon-size * 2.5;
-  padding-right: $_search-icon-size * 2.5;
+  border-radius: 100rem !important;
+  padding-left: $_search-icon-size * 2.5 !important;
+  padding-right: $_search-icon-size * 2.5 !important;
 }
 
 .search__eyeglass-icon {

@@ -4,18 +4,18 @@
 // that code so it'll be compiled.
 
 import '../stylesheets/application'
-import 'swiper/swiper-bundle.css';
+import 'swiper/css/bundle'
 import Rails from "@rails/ujs"
 import * as Turbo from "@hotwired/turbo"
 import * as ActiveStorage from "@rails/activestorage"
 import "../components"
-import "channels"
-import filterStore from "utils/filterStore"
+import "../channels"
+import filterStore from "../utils/filterStore"
+import "../controllers"
 
 Rails.start()
 ActiveStorage.start()
 
-import "controllers"
 
 window.initMap = function (...args) {
   const event = new CustomEvent("google-maps-callback", {
