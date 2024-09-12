@@ -30,7 +30,7 @@
             = f.text_field :name, { class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
 
             div class="flex items-center mt-3"
-              = check_box_tag :other_name_check, true, false, class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent ", data: { action: "toggle#toggle" }
+              = check_box_tag :other_name_check, true, false, class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium  focus:ring-0 focus:ring-transparent ", data: { action: "toggle#toggle" }
               = label_tag :other_name_check, "My Organization is known by other names", class: "text-sm"
 
           div class="hidden col-span-3 lg:flex"
@@ -131,7 +131,7 @@
 
             div class="col-span-12 lg:col-span-6 md:col-span-7"
               div class="flex items-center mt-3"
-                = check_box_tag :other_name_check, 1, false, class: " h-4 w-4 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent", data: { action: "toggle#toggle" }
+                = check_box_tag :other_name_check, 1, false, class: " h-4 w-4 mr-2 rounded-6px text-base text-blue-medium  focus:ring-0 focus:ring-transparent", data: { action: "toggle#toggle" }
                 = label_tag :other_name_check, "Add Spanish Version", class: "text-sm text-black "
 
             div class="col-span-3 md:flex"
@@ -189,7 +189,7 @@
                 |  If you select the check box below for all populations served, then the field for specific populations served will be disabled.
               = render SelectMultiple::Component.new(f: f, klass: "Beneficiary", items: @beneficiary_groups, selected: @organization.beneficiary_subcategories.pluck(:name), placeholder: "Write populations served", options: { data: { general_population_target: "specificPopulationsContainer" } })
               div class="flex gap-x-2 items-center mt-3.5"
-                = f.check_box :general_population_serving, class: "h-4 w-4 rounded-md text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent", data: { general_population_target: "generalPopulationCheckbox", action: "change->general-population#clearSelectedPopulations" }
+                = f.check_box :general_population_serving, class: "h-4 w-4 rounded-md text-blue-medium  focus:ring-0 focus:ring-transparent", data: { general_population_target: "generalPopulationCheckbox", action: "change->general-population#clearSelectedPopulations" }
                 = f.label :general_population_serving, class: "text-sm text-black"
 
             div class="hidden col-span-3 md:flex"
@@ -237,7 +237,7 @@
                   = location_form.hidden_field :longitude, data: { 'places-target': "longitude" }, id: "places-longitude"
 
                   div class="flex items-center mt-4"
-                    = location_form.check_box :po_box, class: "h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent", checked: location_form.object.po_box
+                    = location_form.check_box :po_box, class: "h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium  focus:ring-0 focus:ring-transparent", checked: location_form.object.po_box
                     = location_form.label :po_box, "This address is a PO Box", class: "text-sm text-black"
 
                   div class="mt-4"
@@ -377,16 +377,16 @@
                   div class="col-span-12 lg:col-span-6 md:col-span-7"
                     div class="flex flex-col mt-3"
                       div
-                        = location_form.radio_button :non_standard_office_hours, :always_open, class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent ", checked: location_form.object.always_open?
+                        = location_form.radio_button :non_standard_office_hours, :always_open, class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium  focus:ring-0 focus:ring-transparent ", checked: location_form.object.always_open?
                         = location_form.label :non_standard_office_hours, "Always Open", class: "text-sm text-black", value: :always_open
                       div
-                        = location_form.radio_button :non_standard_office_hours, :appointment_only, class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent ", checked: location_form.object.appointment_only?
+                        = location_form.radio_button :non_standard_office_hours, :appointment_only, class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium  focus:ring-0 focus:ring-transparent ", checked: location_form.object.appointment_only?
                         = location_form.label :non_standard_office_hours, "By Appointment Only", class: "text-sm text-black", value: :appointment_only
                       div
-                        = location_form.radio_button :non_standard_office_hours, :no_set_business_hours, class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent ", checked: location_form.object.no_set_business_hours?
+                        = location_form.radio_button :non_standard_office_hours, :no_set_business_hours, class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium  focus:ring-0 focus:ring-transparent ", checked: location_form.object.no_set_business_hours?
                         = location_form.label :non_standard_office_hours, "No Set Business Hours - Call to Inquire", class: "text-sm text-black", value: :no_set_business_hours
                       div
-                        = location_form.radio_button :non_standard_office_hours, "", class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent ", checked: location_form.object&.non_standard_office_hours.nil?
+                        = location_form.radio_button :non_standard_office_hours, "", class: " h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium  focus:ring-0 focus:ring-transparent ", checked: location_form.object&.non_standard_office_hours.nil?
                         = location_form.label :non_standard_office_hours, "None", class: "text-sm text-black", value: ""
                 div class="hidden col-span-3 md:flex"
                 div class="col-span-12 text-center lg:col-span-5 md:col-span-7"
@@ -456,7 +456,7 @@
                 p class="text-sm font-medium text-gray-3"
                   | Do you verify the listed information?
                 div class="flex items-center mt-3"
-                  = f.check_box :verified, class: "h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent", checked: @organization.verified
+                  = f.check_box :verified, class: "h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium  focus:ring-0 focus:ring-transparent", checked: @organization.verified
                   = f.label :verified, "Check to verify", class: "text-sm"
 
       = f.submit 'Save', class: 'mx-auto mt-12 flex cursor-pointer uppercase flex-row justify-center items-center bg-seafoam py-4 px-10 rounded-6px text-blue-dark text-base font-bold focus:outline-none', data: { action: "click->form-validation#addEmptyRequiredStyles click->halt-navigation-on-change#startSaving" }
