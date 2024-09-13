@@ -2,7 +2,7 @@
 
 module SelectMultiple
   class Component < ApplicationViewComponent
-    def initialize(f: "", klass: "", name: "", items: {}, selected: [], options: {}, placeholder: "", required: false)
+    def initialize(f: "", klass: "", name: "", items: {}, selected: [], options: {}, placeholder: "", required: false, stimulus_controller: nil)
       @f = f
       @klass = klass
       @name = name
@@ -11,19 +11,20 @@ module SelectMultiple
       @options = options
       @placeholder = placeholder
       @required = required
+      @stimulus_controller = stimulus_controller || "select-multiple--component"
     end
 
     def options
       {
         class: "relative flex flex-wrap w-full mt-1 text-base border cursor-text min-h-46px rounded-6px text-gray-3",
         data: {
-          controller: "select-multiple extend-dropdown",
-          action: "click->select-multiple#focus click->extend-dropdown#show click@window->extend-dropdown#hide selectmultiple:clear->select-multiple#clearAll",
+          controller: "#{@stimulus_controller} extend-dropdown",
+          action: "click->#{@stimulus_controller}#focus click->extend-dropdown#show click@window->extend-dropdown#hide selectmultiple:clear->#{controller}#clearAll",
           "search-target": "customInput",
           form_validation_target: "selectMultiple",
-          "select-multiple-target": "container",
+          "#{@stimulus_controller}-target": "container",
           "extend-dropdown-target": "button",
-          "select-multiple-selected-value": @selected
+          "#{@stimulus_controller}-selected-value": @selected
         }
       }.merge(@options) do |key, first_value, repeated_value|
         if key == :data
