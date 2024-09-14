@@ -148,7 +148,10 @@ export default class extends Controller {
 
   updatePillsCounter() {
     let count = filterStore.getFilters().length;
-    this.pillsCounterTarget.textContent = count;
+    if (this.pillsCounterTarget) {
+      this.pillsCounterTarget.textContent = count;
+
+    }
     this.togglePillsCounter(count);
   }
 

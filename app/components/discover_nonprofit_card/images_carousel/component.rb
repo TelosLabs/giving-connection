@@ -8,7 +8,7 @@ class DiscoverNonprofitCard::ImagesCarousel::Component < ApplicationViewComponen
 
   def carousel_container_options
     {
-      class: "swiper-container",
+      class: "swiper-container relative",
       # don't override these
       data: {
         controller: "carousel",
