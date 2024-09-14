@@ -22,6 +22,7 @@
 @import "../../components/navbar/component";
 @import "../../components/causes_list/component";
 @import "../../../node_modules/@yaireo/tagify/dist/tagify";
+@import "../../../node_modules/swiper/swiper-bundle";
 
 // Custom styles here
 @layer utilities {
@@ -163,4 +164,12 @@ input#search-keyword-input {
 
 input.admin-panel-population:disabled + label {
   color: #8492A6;
+}
+
+.swiper-slide {
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
