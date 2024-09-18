@@ -4,6 +4,6 @@ class ImageHeicToJpegConverter < ApplicationService
   end
 
   def convert
-    MiniMagick::Image.read(@image).format("jpeg")
+    MiniMagick::Image.open(@image).format("jpeg")
   end
 end
