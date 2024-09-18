@@ -26,6 +26,7 @@ By default, it renders:
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
     <%= stylesheet_link_tag "application.tailwind" %>
     <%= javascript_include_tag *webpack_asset_urls('application', 'js'), defer: true %>
+    <%= javascript_include_tag *webpack_asset_urls('administrate', 'js'), defer: true %>
     <%= javascript_include_tag 'https://maps.googleapis.com/maps/api/js?key='+Rails.application.credentials.dig(:google_api_key)+'&loading=async&libraries=places&callback=initMap', 'data-turbolinks-eval': 'false' %>
   </head>
   <body>
