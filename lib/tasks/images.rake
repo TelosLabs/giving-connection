@@ -6,11 +6,15 @@ namespace :images do
         if image.blob.content_type == "image/heic"
           converted_image = ImageHeicToJpegConverter.new(image).convert
           filename = File.basename(image.filename.to_s, ".HEIC")
-          image.purge
-          if location.images.attach(io: File.open(converted_image.path), filename: "#{filename}.jpeg", content_type: "image/jpeg")
-            puts "Converted #{filename}.HEIC to #{filename}.jpeg"
+          if location.images.attach(
+            io: File.open(converted_image.path),
+            filename: "#{filename}.jpeg",
+            content_type: "image/jpeg"
+          )
+            image.purge
+            Rails.logger.info "Converted #{filename}.HEIC to jpeg for Location ID: #{location.id}"
           else
-            puts "Failed to convert #{filename}.HEIC to #{filename}.jpeg"
+            Rails.logger.error "Failed to attach converted image for Location ID: #{location.id}, Image ID: #{image.id}"
           end
         end
       end
