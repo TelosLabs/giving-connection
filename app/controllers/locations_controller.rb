@@ -22,7 +22,7 @@ class LocationsController < ApplicationController
   private
 
   def create_params
-    params.require(:location).permit(:address, :longitude, :latitude, :youtube_video_link, :time_zone)
+    params.require(:location).permit(:address, :longitude, :latitude, :youtube_video_link, :time_zone, images: [])
   end
 
   def you_toube_id(youtube_video_link)
