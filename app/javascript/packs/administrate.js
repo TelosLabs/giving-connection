@@ -10,12 +10,11 @@ import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import "jquery"
 import "@nathanvda/cocoon"
+import "../administrate"
+import "controllers"
 
 Rails.start()
 ActiveStorage.start()
-
-import "../administrate"
-import "controllers"
 
 window.initMap = function(...args) {
   const event = document.createEvent("Events")
