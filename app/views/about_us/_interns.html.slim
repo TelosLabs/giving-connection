@@ -6,6 +6,30 @@ details class="pb-6 mb-16 w-full max-w-4xl border-b open:pb-12 border-blue-gradi
           = inline_svg_tag 'expand-arrow.svg', class: "transition-transform duration-300 absolute mt-2 right-1", size:'16*16', data: { 'accordion--component-target': 'arrow'}
   div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
     = render BioCard::Component.new(\
+      name: "Ann Matthew",
+      job_title: "Platform Development Intern",
+      img_url: "charlotte.jpg", # TODO: Update image
+    ) do |c|
+      - c.with_biography do
+        p class="mb-3 text-gray-2"
+          | Ann Mathew is a Junior at Vanderbilt University, double majoring in Computer Science and Climate Studies. 
+          | She grew up in Cleveland, Ohio, but she has also lived in Shanghai, China. 
+          | At Vanderbilt, Ann is the Director of Communications for Vanderbilt Data Science and she is also involved 
+          | in various climate-focused programs and initiatives on campus.
+          span data-read-more-target="dots" class=""...
+        p data-read-more-target="collapsableText" class="hidden mb-3"
+          | Ann is excited to combine her interests in computer technology and social innovation with Giving Connection 
+          | as a Platform Development Intern. She has previously worked on tech-based projects in the non-profit space and 
+          | hopes to continue focusing on community in all of her future endeavors. She is excited to work with our community 
+          | partners and users to gather feedback for continued map improvements. Ann will primarily be working with Rutgers 
+          | University’s Hack4Impact team to create and implement a calendar of events for Giving Connection’s website. 
+          | She is thrilled to be involved with Giving Connection this year!  
+        a data-read-more-target="readMoreButton" data-action="read-more#toggleVisibility" class="font-bold cursor-pointer text-blue-medium" Read More
+      end
+    end
+
+  div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
+    = render BioCard::Component.new(\
       name: "Charlotte Goldstein",
       job_title: "Nonprofit & Community Outreach",
       img_url: "charlotte.jpg",
