@@ -24,8 +24,8 @@ main
     div class="hidden px-6 pb-6 text-2xl text-center text-white sm:block"
       | Search for nonprofits in Nashville & Atlantic City.
     = form_with model: @search, url: search_path, method: :get do |f|
-      .c-form class="py-0 mx-auto sm:px-3 sm:flex-col sm:justify-center sm:max-w-4xl"
-        div class="flex relative p-0 mb-7 w-full rounded-md divide-x c-input sm:max-w-xl sm:mb-0"
+      .c-form class="py-0 mx-auto max-w-3xl c-form sm:px-3 sm:flex-col sm:justify-center sm:max-w-4xl"
+        div class="flex relative p-0 mb-7 w-full h-14 rounded-md divide-x c-input sm:mb-0"
           div class="flex relative w-full"
             = f.text_field :keyword, autocomplete: "search", class:"border-none rounded-l-md pl-10 m-0 w-full", placeholder: "Try \"Mental Health Nonprofits\"", data: { test_id: "home_search_input"  }
             = inline_svg_tag 'search-icon.svg', class:"absolute top-1/3 left-4"
@@ -34,7 +34,7 @@ main
               = inline_svg_tag "location-dot.svg", size:"9*9", class:"h-7 mr-2 fill-current"
               p data-geolocation-target="currentLocation"
                 = @current_location[:city]&.presence || "Location not found"
-            div data-dropdown-target="menu" class="flex absolute right-0 top-11 z-10 w-52"
+            div data-dropdown-target="menu" class="flex absolute right-0 top-14 z-10 w-52"
               ul class="overflow-hidden w-full text-sm bg-white rounded border shadow-lg"
                 - @locations.each do |location|
                   li  class="block px-4 py-2 text-gray-3 hover:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#updateLocation" data-dropdown-target="menuItem"
