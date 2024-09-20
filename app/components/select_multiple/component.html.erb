@@ -7,7 +7,7 @@
   <%= "data-#{@stimulus_controller}-target='input'".html_safe %>
   data-detect-form-changes-target="utilityInput"
   class="pt-3 w-48 h-full text-sm align-middle border-0 border-transparent scroll-mt-25 focus:outline-none focus:border-transparent focus:ring-0 rounded-6px"
-  data-action="select-multiple-search#search"
+  <%= "data-action='#{@stimulus_controller}#search'".html_safe %>
   placeholder="<%= @placeholder %>">
     <div data-search-target="advancedFiltersCheckboxes" data-extend-dropdown-target="menu" class="hidden absolute left-0 top-full z-10 mt-2 w-full max-h-52" >
       <div class="overflow-y-auto p-5 max-h-52 bg-white rounded border border-gray-5">

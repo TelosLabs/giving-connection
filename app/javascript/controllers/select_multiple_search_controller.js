@@ -1,20 +1,13 @@
-import { Controller } from "@hotwired/stimulus"
 import filterStore from "../utils/filterStore"
+import SelectMultipleController from "./../../components/select_multiple/component_controller"
 
-export default class extends Controller {
-
-  static targets = ["input", "container", "badgesContainer", 'checkbox', 'badgeTemplate', 'group', 'groupTitle']
-  static values = { selected: Array }
+export default class extends SelectMultipleController {
+  static targets = SelectMultipleController.targets.concat("groupTitle")
 
   connect() {
     this.updateCheckboxes()
     this.updateBadges()
     this.search()
-  }
-
-  select(event) {
-    this.addCheckboxToStore(event)
-    this.updateBadges()
   }
 
   remove(event) {
@@ -30,17 +23,6 @@ export default class extends Controller {
     filterStore.clearFilters()
     this.updateCheckboxes()
     this.updateBadges()
-  }
-
-  focus() {
-    this.inputTarget.classList.remove('hidden')
-    this.inputTarget.focus()
-    this.containerTarget.classList.add('border-blue-medium')
-  }
-
-  hide() {
-    this.inputTarget.classList.add('hidden')
-    this.containerTarget.classList.remove('border-blue-medium')
   }
 
   addCheckboxToStore(event) {
@@ -100,18 +82,7 @@ export default class extends Controller {
   }
 
   search(event) {
-    const query = this.inputTarget.value.toLowerCase()
-    const regex = new RegExp('.*' + query + '.*', 'gmi')
-
-    // Search checkboxes
-    this.checkboxTargets.forEach(checkbox => {
-      if (checkbox.dataset.value.search(regex) >= 0) {
-        checkbox.parentElement.classList.remove('hidden')
-      } else {
-        checkbox.parentElement.classList.add('hidden')
-      }
-    })
-
+    super.search()
     // Search group titles
     this.groupTitleTargets.forEach(groupTitle => {
       if (groupTitle.dataset.groupTitle.search(regex) >= 0) {
