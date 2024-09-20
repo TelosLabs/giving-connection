@@ -1,7 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-
   static targets = ["input", "container", "badgesContainer", 'checkbox', 'badgeTemplate', 'group', ]
   static values = { selected: Array }
 
@@ -79,6 +78,19 @@ export default class extends Controller {
         group.classList.remove('hidden')
       } else {
         group.classList.add('hidden')
+      }
+    })
+  }
+
+  search(event) {
+    const query = this.inputTarget.value.toLowerCase()
+    const regex = new RegExp('.*' + query + '.*', 'gmi')
+
+    this.checkboxTargets.forEach(checkbox => {
+      if (checkbox.dataset.value.search(regex) >= 0) {
+        checkbox.parentElement.classList.remove('hidden')
+      } else {
+        checkbox.parentElement.classList.add('hidden')
       }
     })
   }
