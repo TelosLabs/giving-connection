@@ -19,12 +19,14 @@ main
           = inline_svg_tag 'x-icon.svg', size: '14*14'
 
   section id="search" class="py-12 gradient-blue sm:py-16"
+    div class ="absolute inset-0"
+      = render "stars_background"
     h2 class="z-20 px-12 pb-10 text-3xl font-bold text-center text-white fade-in md:text-6xl xs:px-20"
       = @main_text
     div class="hidden px-6 pb-6 text-2xl text-center text-white sm:block"
       | Search for nonprofits in Nashville & Atlantic City.
     = form_with model: @search, url: search_path, method: :get do |f|
-      .c-form class="py-0 mx-auto max-w-3xl c-form sm:px-3 sm:flex-col sm:justify-center sm:max-w-4xl"
+      .c-form class="relative z-30 py-0 mx-auto max-w-3xl c-form sm:px-3 sm:flex-col sm:justify-center sm:max-w-4xl"
         div class="flex relative p-0 mb-7 w-full h-14 rounded-md divide-x c-input sm:mb-0"
           div class="flex relative w-full"
             = f.text_field :keyword, autocomplete: "search", class:"border-none rounded-l-md pl-10 m-0 w-full", placeholder: "Try \"Mental Health Nonprofits\"", data: { test_id: "home_search_input"  }
