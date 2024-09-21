@@ -1,24 +1,19 @@
 main
-  section class="hidden relative bg-electric-teal" data-controller="banner" data-banner-target="banner"
-    div class="flex py-7 mx-auto max-w-3xl md:py-8"
-      div class="hidden md:block md:pl-4 lg:pl-0"
-        = inline_svg_tag 'megaphone.svg', size: '65*70'
-      div class="pr-10 pl-8 md:px-0 md:ml-8 text-gray-1"
-        div class="mb-1.5 text-xs font-bold md:text-sm text-balance md:text-base"
-          | We officially launched in Nashville & Atlantic City!
-        div class="text-xs leading-5 text-balance md:leading-6 md:text-sm md:pr-2 md:max-width:1/3"
-          p class="md:whitespace-nowrap"
-            p class="md:whitespace-normal"
-            | Our 
-            a href="http://www.givebutter.com/aclaunch" target='_blank'  class="text-blue-medium"
-              | 4th Annual Virtual Fundraising Campaign  
-            | is happening NOW! Support local nonprofits and help us shine a light on good in Atlantic City.
-      div class="flex absolute inset-y-0 right-0 items-start pt-1 pr-1 sm:pt-1.5 sm:pr-5 sm:items-start"
-        button class="flex p-2 rounded-md hover:bg-gray" type="button" data-action="banner#closeBanner"
-          span.sr-only Dismiss
-          = inline_svg_tag 'x-icon.svg', size: '14*14'
+  section id="search" class="relative py-20 gradient-blue sm:py-32"
+    section class="flex hidden absolute top-0 z-30 w-full bg-electric-teal" data-controller="banner" data-banner-target="banner"
+      div class="flex items-center py-2 mx-auto max-w-3xl md:py-2"
+        div class="block"
+          = inline_svg_tag 'megaphone.svg', size: '24'
+        div class="pr-2 pl-2 text-gray-1"
+          div class="pl-0 text-[10px] md:text-xs font-bold md:text-sm text-wrap md:text-base text-blue-dark mr-2"
+            | We've officially launched in Nashville & Atlantic City! 
+            a href="/search" target='_blank'  class="underline cursor-pointer decoration-2 text-blue-medium"
+              | Search Here
+        div class="flex absolute inset-y-0 right-0 items-start pt-1 pr-1 ml-2 sm:pt-1.5 sm:pr-5 sm:items-start"
+          button class="flex p-2 rounded-md hover:bg-gray" type="button" data-action="banner#closeBanner"
+            span.sr-only Dismiss
+            = inline_svg_tag 'x-icon.svg', size: '14*14'
 
-  section id="search" class="py-12 gradient-blue sm:py-16"
     div class ="absolute inset-0"
       = render "stars_background"
     h2 class="z-20 px-12 pb-10 text-3xl font-bold text-center text-white fade-in md:text-6xl xs:px-20"
