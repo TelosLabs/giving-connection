@@ -20,4 +20,12 @@
   &--no-center {
     margin: 0;
   }
+
+  &--search {
+    transition: background-color 0.3s ease;
+    &:hover {
+      background-color: white;
+    }
+  }
 }
+
