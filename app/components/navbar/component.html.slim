@@ -45,7 +45,7 @@ nav id="main-navbar" data-controller="navbar--component" class="#{non_sticky_pat
         li = link_to "Sign in", signin_path, class:'navbar__option text-lg font-bold mr-2 mid:mr-4 lg:mr-6'
         li = link_to "Create Account", signup_path, class:'c-button c-button--my_account py-2.5 px-5 text-white bg-blue-medium'
       li class="inline-block flex relative items-center mx-2 w-28 font-medium cursor-pointer lg:w-36" data-controller="dropdown" data-action="click@window->dropdown#hide touchstart@window->dropdown#hide keydown.up->dropdown#previousItem keydown.down->dropdown#nextItem keydown.esc->dropdown#hide" 
-        button data-action="dropdown#toggle:stop" class="flex items-center text-xs navbar__option underline-seafoam md:text-base text-seafoam"
+        button data-action="dropdown#toggle:stop" class="flex items-center text-xs navbar__option navbar__option--location md:text-base text-seafoam"
           = inline_svg_tag "location-dot.svg", size:"9*9", class:"h-7 mr-3 fill-current"
           p data-geolocation-target="currentLocation"
             = @current_location[:city]&.presence || "Location not found"

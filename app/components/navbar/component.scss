@@ -97,4 +97,14 @@
   &:hover::before {
     width: 100%;
   }
+
+  &--location {
+    &::before {
+      background-color: $secondary-seafoam;
+    }
+
+    &:hover::before {
+      width: 100%;
+    }
+  }
 }
