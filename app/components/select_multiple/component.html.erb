@@ -46,10 +46,10 @@
             <% end %>
           <% elsif @items.is_a?(Hash) %>
             <% @items&.sort&.each do |group, list|%>
-              <div class="mb-2" <%= "data-#{@stimulus_controller}-target='group'".html_safe %>
-                <div class="pl-6 my-2 text-sm font-bold text-black" data-group-title="<%= group.downcase %> " <%= "data-#{@stimulus_controller}-target='groupTitle'".html_safe %>
-                <%= group %>
-              </div>
+              <div class="mb-2" <%= "data-#{@stimulus_controller}-target='group'".html_safe %>>
+                <div class="pl-6 my-2 text-sm font-bold text-black" data-group-title="<%= group.downcase %> " <%= "data-#{@stimulus_controller}-target='groupTitle'".html_safe %>>
+                  <%= group %>
+                </div>
                 <% if @klass.present? %>
                   <%= @f.collection_check_boxes ids_array, collection(group), :id, :name do |c| %>
                     <% content_tag :div, class: "flex flex-row items-center my-2" do %>
