@@ -30,5 +30,12 @@
       background-color: white;
     }
   }
+
+  &--my_account {
+    transition: background-color 0.3s ease;
+    &:hover {
+      background-color: $secondary-seafoam;
+    }
+  }
 }
 
