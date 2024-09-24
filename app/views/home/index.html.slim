@@ -1,5 +1,5 @@
 main
-  section id="search" class="relative py-20 gradient-blue sm:py-32"
+  section id="search" class="relative py-20 gradient-blue sm:py-24"
     section class="flex hidden absolute top-0 z-30 w-full bg-electric-teal" data-controller="banner" data-banner-target="banner"
       div class="flex items-center py-2 mx-auto max-w-3xl md:py-2"
         div class="block"
@@ -21,7 +21,7 @@ main
     div class="hidden px-6 pb-6 text-2xl text-center text-white sm:block"
       | Search for nonprofits in Nashville & Atlantic City.
     = form_with model: @search, url: search_path, method: :get do |f|
-      .c-form class="relative z-30 py-0 mx-auto max-w-3xl c-form sm:px-3 sm:flex-col sm:justify-center sm:max-w-4xl"
+      .c-form class="relative py-0 mx-auto max-w-3xl z-25 c-form sm:px-3 sm:flex-col sm:justify-center sm:max-w-4xl"
         div class="flex relative p-0 mb-7 w-full h-14 rounded-md divide-x c-input sm:mb-0"
           div class="flex relative w-full"
             = f.text_field :keyword, autocomplete: "search", class:"border-none rounded-l-md pl-10 m-0 w-full", placeholder: "Try \"Mental Health Nonprofits\"", data: { test_id: "home_search_input"  }
