@@ -22,6 +22,9 @@
   }
 
   &--search {
+    font-size: 22px;
+    line-height: 26px;
+    letter-spacing: 1.1px;
     transition: background-color 0.3s ease;
     &:hover {
       background-color: white;
