@@ -77,3 +77,34 @@
     opacity: 0.85;
   }
 }
+
+.navbar__option {
+  position: relative;
+  padding: 0;
+  cursor: pointer;
+
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #ffff;
+    transition: width 0.3s ease-in-out;
+  }
+
+  &:hover::before {
+    width: 100%;
+  }
+
+  &--selected {
+    &::before {
+      background-color: $secondary-seafoam;
+    }
+
+    &:hover::before {
+      width: 100%;
+    }
+  }
+}

@@ -18,6 +18,7 @@
 @import "design_system/component/index";
 @import "helpers/index";
 @import "helpers/logo";
+@import "helpers/stars_background";
 @import "../../components/accordion/component";
 @import "../../components/navbar/component";
 @import "../../components/causes_list/component";
@@ -158,6 +159,20 @@ input#search-keyword-input {
   to {
     transform: rotate(360deg);
   }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 1s ease-in-out;
 }
 
 /* Admin panel populations */

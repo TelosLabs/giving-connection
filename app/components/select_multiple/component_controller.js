@@ -93,5 +93,6 @@ export default class extends Controller {
         checkbox.parentElement.classList.add('hidden')
       }
     })
+    this.updateGroups()
   }
 }
