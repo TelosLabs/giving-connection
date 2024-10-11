@@ -1,4 +1,4 @@
-# Docker for Development
+# Docker for Development 🐳 
 
 Source: [Ruby on Whales: Dockerizing Ruby and Rails development](https://evilmartians.com/chronicles/ruby-on-whales-docker-for-ruby-rails-development).
 
@@ -16,18 +16,25 @@ You can install `dip` as Ruby gem:
 gem install dip
 ```
 
-## Provisioning
+## Setup
 
-When using Dip it could be done with a single command:
+1. Build image: `dip build`
+2. Install yarn packages: `dip yarn install --ignore-engines`
+3. Install gems: `dip bundle install`
+4. Create databases: `dip rails db:create` and then `dip rails db:create RAILS_ENV=test`
+5. Enable postgis extensions
+`dip psql`
+When prompted for a password, enter: `postgres`
+Once inside the psql console, run
+`CREATE EXTENSION postgis;`
+`exit`
+7. Run `dip rake db:gis:setup`
+8. Run migrations: `dip rails db:migrate`
+9. Seed db: `dip rails db:seed`
+10. Finally, start the container with `dip up`
 
-```sh
-dip provision
-```
+11. Wait until everything is up and then open a browser in port 3000 
 
-## Running
-
-dip rails s
-```
 
 ## Developing with Dip
 
