@@ -1,0 +1,6 @@
+= turbo_frame_tag @frame_id do
+  = render LocationInfowindow::Component.new(\
+    location: @location,\
+    user_signed_in: user_signed_in?,\
+    current_user: current_user\
+  )

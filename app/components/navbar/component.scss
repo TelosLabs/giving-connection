@@ -1,0 +1,110 @@
+@import "../../assets/stylesheets/settings/variables";
+
+.navbar {
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  color: $copy-white;
+  background-color: $primary-dark-blue;
+
+  @media (min-width: 768px) {
+    height: 91px;
+  }
+
+  &--mobile {
+    @media (min-width: 870px) {
+      display: none !important;
+      flex: none;
+    }
+  }
+
+  &--desktop {
+    display: none;
+
+    @media (min-width: 870px) {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 500px;
+      font-size: 14px;
+    }
+
+    @media (min-width: 1024px) {
+      padding: 0 49px 0 39px ;
+    }
+
+    @media (min-width: 1280px) {
+      padding: 0 0 0 139px;
+    }
+  }
+}
+
+.sidebar-slide-in {
+  animation: slide-in 0.6s ease-in;
+}
+
+@keyframes slide-in {
+	0% {
+		transform: translateX(-300%);
+		visibility: hidden;
+    opacity: 0;
+	}
+  30% {
+    transform: translateX(-150%);
+    opacity: 0.5;
+  }
+	100% {
+		transform: translateX(0);
+		visibility: visible;
+    opacity: 1;
+	}
+}
+
+.sidebar-slide-out {
+  animation: slide-out 1s ease-out;
+}
+
+@keyframes slide-out {
+  0% {
+    transform: translateX(0);
+    visibility: visible;
+  }
+  70% {
+    transform: translateX(-150%);
+  }
+  100% {
+    transform: translateX(-300%);
+    visibility: hidden;
+    opacity: 0.85;
+  }
+}
+
+.navbar__option {
+  position: relative;
+  padding: 0;
+  cursor: pointer;
+
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #ffff;
+    transition: width 0.3s ease-in-out;
+  }
+
+  &:hover::before {
+    width: 100%;
+  }
+
+  &--selected {
+    &::before {
+      background-color: $secondary-seafoam;
+    }
+
+    &:hover::before {
+      width: 100%;
+    }
+  }
+}

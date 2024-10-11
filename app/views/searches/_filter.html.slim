@@ -1,0 +1,43 @@
+div class="bg-white rounded-3xl" data-search-target="advancedFilters"
+  div class="flex flex-col pb-11 w-full"
+    div class="inline-grid grid-cols-3 gap-x-4 justify-between items-center px-6 py-8 pb-5 w-full"
+      h2 class="col-start-2 text-xl font-bold text-center text-gray-2" Advanced Filters
+      button class="flex justify-end" type="button" data-action="click->modal#close click->modal#clearUnappliedFilters"
+        = inline_svg_tag "solid_close.svg", class: 'h-4 w-4 fill-current text-gray-2'
+
+    div class="flex overflow-y-auto flex-col w-full divide-y divide-gray-8"
+      p class="px-6 py-4 text-sm text-gray-4" Add more filters to narrow down your search results.
+      div class="px-6 py-8"
+        = form.label :causes, 'Causes', class: 'w-full text-base font-bold text-gray-2'
+        - if selected_("pills", @top_10_causes, search.causes || []).any?
+          div class='flex gap-1 items-center'
+            span class="inline-flex relative w-2 h-2 bg-green-300 rounded-full"
+            p class="text-sm text-gray-4" Selected Pills:
+          p class="flex flex-wrap gap-1 items-center text-sm text-gray-4"
+            = selected_("pills", @top_10_causes, search.causes || []).join(', ')
+        = render SelectMultiple::Component.new(name: 'search[causes]', items: causes, selected: selected_("advanced_filters", @top_10_causes, search.causes || []), stimulus_controller: "select-multiple-search")
+
+      div class="px-6 py-8"
+        = form.label :services, 'Services', class: 'w-full text-base font-bold text-gray-2'
+        - if selected_("pills", @top_10_services, search.services || []).any?
+          div class='flex gap-1 items-center'
+            span class="inline-flex relative w-2 h-2 bg-green-300 rounded-full"
+            p class="text-sm text-gray-4" Selected Pills:
+          p class="flex flex-wrap gap-1 items-center text-sm text-gray-4"
+            = selected_("pills", @top_10_services, search.services || []).join(', ')
+        = render SelectMultiple::Component.new(name: 'search[services]', items: services, selected: selected_("advanced_filters", @top_10_services, search.services || []), stimulus_controller: "select-multiple-search")
+
+      div class="px-6 py-8"
+        = form.label :beneficiary_groups, 'Populations Served', class: 'w-full text-base font-bold text-gray-2'
+        - if selected_("pills", @top_10_beneficiary_subcategories, search.beneficiary_groups || []).any?
+          div class='flex gap-1 items-center'
+            span class="inline-flex relative w-2 h-2 bg-green-300 rounded-full"
+            p class="text-sm text-gray-4" Selected Pills:
+          p class="flex flex-wrap gap-1 items-center text-sm text-gray-4"
+            = selected_("pills", @top_10_beneficiary_subcategories, search.beneficiary_groups || []).join(', ')
+        = render SelectMultiple::Component.new(name: 'search[beneficiary_groups]',items: beneficiary_groups, selected: selected_("advanced_filters", @top_10_beneficiary_subcategories.map, search.beneficiary_groups || []), stimulus_controller: "select-multiple-search")
+
+    div class="flex flex-row justify-between px-6 py-5 w-full border-t border-gray-8"
+      button class="flex justify-center px-4 py-2 text-left text-blue-medium" type="button" data-action="click->search#clearAll click->modal#close"
+        | Clear Advanced Filters
+      = form.submit "Apply filters", class: "uppercase font-bold tracking-wider px-5 py-2.5 text-white rounded-md bg-blue-medium cursor-pointer", data: { action: 'modal#close search#applyAdvancedFilters', disable_with: false}

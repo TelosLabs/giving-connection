@@ -1,0 +1,17 @@
+h1 Locations
+
+= link_to "Create Search Alert", new_alert_path(alert_params: @alert_params.to_unsafe_hash)
+
+- @locations.each do |location|
+  div
+    p = location.name
+    p = location.address
+    p = "Latitude: #{location.latitude}"
+    p = "Longitude: #{location.longitude}"
+    p = "Lonlat: #{location.lonlat}"
+    h3 = link_to "Mark as Favorite", favorite_locations_path(location: location), method: :post
+    / h3 = link_to "Delete Favorite", favorite_location_path(location.favorite_locations.where(user: current_user, location: location), method: :delete
+
+    iframe allowfullscreen="" style="border:0;" height="447" width="375" loading="lazy" src="https://www.google.com/maps/embed/v1/place?key=#{Rails.application.credentials.dig(:google_api_key)}&q=#{CGI.escape(location.address)}"
+    hr style="border-top: 3px solid #bbb;"
+

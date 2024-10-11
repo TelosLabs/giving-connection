@@ -1,0 +1,31 @@
+div class=local_assigns[:container_styles]
+  - if local_assigns[:find_help_link].present?
+    = content_tag(\
+      :a,\
+      href: local_assigns[:find_help_link],\
+      class: "flex items-center justify-center w-full gap-2 py-3 border-0 rounded-md font-bold transition-colors text-white bg-salmon hover:bg-salmon-medium",\
+      target: "_blank",\
+    ) do
+      = inline_svg_tag "get-help-icon.svg", class: "w-7 h-7", alt: "Get Help icon"
+      | Find Help
+
+  div class="flex gap-x-4"
+    - if local_assigns[:location].organization.donation_link.present?
+      = content_tag(\
+        :a,\
+        href: local_assigns[:location].organization.decorate.donation_link,\
+        class: "flex items-center justify-center  w-full gap-2 py-3 border-0 rounded-md font-bold transition-colors text-indigo-700 bg-indigo-100 hover:bg-indigo-200",\
+        target: "_blank",\
+      ) do
+        = image_tag "donate-icon.svg", class: "w-7 h-7", alt: "Donate icon"
+        | Donate
+
+    - if local_assigns[:location].organization.volunteer_availability? && local_assigns[:location].organization.volunteer_link.present?
+      = content_tag(\
+        :a,\
+        href: local_assigns[:location].organization.decorate.volunteer_link,\
+        class: "flex items-center justify-center  w-full gap-2 p-3 border-0 rounded-md font-bold transition-colors text-blue-dark bg-seafoam hover:bg-electric-teal",\
+        target: "_blank"\
+      ) do
+        = image_tag "volunteer-icon.svg", class: "w-7 h-7", alt: "Volunteer icon"
+        | Volunteer

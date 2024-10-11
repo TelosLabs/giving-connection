@@ -1,0 +1,13 @@
+h1 Home#Index
+
+= form_with model: @location, class: 'flex flex-col overflow-hidden items-center', data: { controller: "places", action: "google-maps-callback@window->places#initMap", "places-imageurl-value": "#{asset_path 'markergc.png'}"} do |f|
+  = f.label :address
+  = f.search_field :address, class: 'form-control', data: { 'places-target': "field", action: "keydown->places#keydown" }
+  br
+  div# style="height:400px;width:400px" data-places-target="map"
+  = f.hidden_field :latitude, data: { 'places-target': "latitude" }, id: "places-latitude"
+  = f.hidden_field :longitude, data: { 'places-target': "longitude" }, id: "places-longitude"
+
+  = f.submit
+
+= link_to "logout", destroy_user_session_path, method: :delete

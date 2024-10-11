@@ -1,0 +1,54 @@
+.main
+  h2 class="px-12 pt-14 pb-6 text-2xl font-bold text-center md:pt-20 md:mt-2 md:pb-9 text-gray-gray-7"
+    ' Create an account
+    | on Giving Connection
+
+  div class="md:hidden"
+    div class="absolute top-0 left-0 -z-1"
+      = inline_svg_tag 'mob-green-blur-signup.svg'
+    div class="absolute top-0 right-0 -z-1"
+      = inline_svg_tag 'mob-purple-blur-signup.svg'
+
+  div class="hidden md:flex"
+    div class="absolute top-0 left-0 pl-20 -z-1 xl:pl-40"
+      = inline_svg_tag 'desk-green-blur-signup.svg'
+    div class="absolute top-0 right-0 pr-20 -z-1 xl:pr-40"
+      = inline_svg_tag 'desk-purple-blur-signup.svg'
+
+  div class="px-6 pb-7 mx-auto max-w-md text-center sm:text-lg sm:pb-12"
+    | While our search experience is free and available to everyone, you can create an account to have a more personalized experience.
+
+  div class="px-6 mx-auto mb-14 max-w-sm sm:px-1 sm:text-lg text-gray-gray-7"
+    div class="flex pb-2"
+      div class="flex items-center mr-4"
+        = inline_svg_tag 'green-check.svg', size: '16*16'
+      div Save nonprofits that meet your needs
+    div class="flex pb-2"
+      div class="flex items-center mr-4"
+        = inline_svg_tag 'green-check.svg', size: '16*16'
+      div Receive search alerts via email when new nonprofits are added
+    div class="flex pr-1"
+      div class="pt-1 mr-4"
+        = inline_svg_tag 'green-check.svg', size: '16*16'
+      div Claim a nonprofit profile and manage the page
+
+  = render "users/shared/links"
+
+  = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+    .c-form
+      = form_group_for f, :name do
+        = f.text_field :name, autocomplete: "name", class:"c-input", data: { test_id: "signup_name_input"}
+      = form_group_for f, :email, label: 'Email Address' do
+        = f.email_field :email, autocomplete: "email", class:"c-input", data: { test_id: "signup_email_input"}
+      = form_group_for f, :password do
+        = f.password_field :password, autocomplete: "new-password", class:"c-input", placeholder: "(6+ characters)", data: { test_id: "signup_password_input"}
+      = form_group_for f, :password_confirmation do
+        = f.password_field :password_confirmation, autocomplete: "new-password", class: "c-input", placeholder: "Confirm your password", data: { test_id: "signup_password_confirmation_input"}
+      .c-form--action
+        = f.submit "Create Account", class:"c-button", data: { test_id: "signup_submit_btn", turbo: false }
+
+  div class="px-8 pb-28 mx-auto max-w-sm text-xs text-center sm:pb-36"
+    ' By continuing, you agree to Giving Connection’s
+    = link_to 'Terms & Conditions ', '#', class:'font-bold'
+    ' and
+    = link_to 'Privacy Policy', 'https://givingconnection.org/privacy-policy', class:'font-bold'

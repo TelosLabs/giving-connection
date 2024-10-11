@@ -1,0 +1,25 @@
+<div class="field-unit__label">
+  <%= f.label field.attribute %>
+</div>
+
+<% if params['action'] == 'edit' %>
+
+  <div class="field-unit__field">
+    <div data-controller="tags">
+      <% values = field.data.map { |tag| tag.name }.join(', ') %>
+      <input placeholder='write some tags' data-tags-target="output"
+        value="<%= values %>"  name='tags_attributes' id='tags_attributes' >
+    </div>
+  </div>
+
+<% else %>
+
+<div class="field-unit__field">
+  <div data-controller="tags">
+    <% values = JSON.parse(params.dig(:tags_attributes)).map { |tag| tag["value"] }.join(', ') if params.dig(:tags_attributes).present?  %>
+    <input placeholder='write some tags' data-tags-target="output"
+      value="<%= values %>"  name='tags_attributes' id='tags_attributes' >
+  </div>
+</div>
+
+<% end %>
