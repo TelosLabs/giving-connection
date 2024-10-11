@@ -23,8 +23,6 @@ x-backend: &backend
     - rails_cache:/app/tmp/cache
     - assets:/app/public/assets
     - node_modules:/app/node_modules
-    - packs:/app/public/packs
-    - packs-test:/app/public/packs-test
     - history:/usr/local/hist
     - ./.psqlrc:/root/.psqlrc:ro
     - ./.bashrc:/root/.bashrc:ro
@@ -32,7 +30,6 @@ x-backend: &backend
     <<: *env
     REDIS_URL: redis://redis:6379/
     DATABASE_URL: postgis://postgres:postgres@postgres:5432
-    WEBPACKER_DEV_SERVER_HOST: webpacker
     MALLOC_ARENA_MAX: 2
     WEB_CONCURRENCY: ${WEB_CONCURRENCY:-1}
     BOOTSNAP_CACHE_DIR: /usr/local/bundle/_bootsnap
@@ -59,8 +56,6 @@ services:
     ports:
       - '3000:3000'
     depends_on:
-      webpacker:
-        condition: service_started
       sidekiq:
         condition: service_started
 
@@ -95,22 +90,6 @@ services:
       timeout: 3s
       retries: 30
 
-  webpacker:
-    <<: *app
-    command: bundle exec ./bin/webpack-dev-server
-    ports:
-      - '3035:3035'
-    volumes:
-      - ..:/app:cached
-      - bundle:/usr/local/bundle
-      - node_modules:/app/node_modules
-      - packs:/app/public/packs
-      - packs-test:/app/public/packs-test
-    environment:
-      <<: *env
-      WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
-      YARN_CACHE_FOLDER: /app/node_modules/.yarn-cache
-
 volumes:
   bundle:
   node_modules:
@@ -119,6 +98,4 @@ volumes:
   postgres:
   redis:
   assets:
-  packs:
-  packs-test:
 
