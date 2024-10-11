@@ -1,0 +1,17 @@
+div class="flex gap-x-5"
+  = link_to( location_path(@location.id), class: "flex-shrink-0 self-center rounded ", target: '_blank' ) do
+    = image_tag @location.organization.logo, class: "w-20 h-20 object-contain", alt: "logo"
+  div class="flex flex-col"
+    // name and verified icon
+    div class="flex items-center mb-1.5"
+      h4 class="text-lg font-semibold leading-6 w-fit text-gray-2"
+        = link_to(@location.name, location_path(@location), target: "_blank")
+      - if @location.organization.verified?
+        = render partial: "shared/popover", locals: { position: "right-0", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg" }
+    // maps and phone
+    - if @location.public_address?
+      = link_to(@location.formatted_address, @location.link_to_google_maps, class: "w-3/4", target: "_blank")
+    - if @location.phone_number
+      a href="tel:#{@location.phone_number.number}" = @location.phone_number.number
+    // Designations
+    = render DesignationTag::Component.new(@location.organization)

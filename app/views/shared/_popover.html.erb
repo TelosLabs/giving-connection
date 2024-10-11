@@ -1,0 +1,12 @@
+<div data-controller="popover" class="relative">
+  <span data-action="mouseenter->popover#show mouseleave->popover#hide" data-popover-target="popover">
+    <%= inline_svg_tag local_assigns[:wrapper_icon], class: local_assigns[:icon_classes].presence || "h-4 ml-1" %>
+  </span>
+  <template data-popover-target="content">
+    <div data-popover-target="card" class="absolute z-10 px-3 py-1 mx-1 text-xs text-center text-white rounded-sm bg-gray-2 bg-opacity-90  <%= local_assigns[:position].presence || '' %>" >
+      <p>
+        <%= local_assigns[:copy] %>
+      </p>
+    </div>
+  </template>
+</div>

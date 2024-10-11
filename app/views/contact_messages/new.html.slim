@@ -1,0 +1,54 @@
+.main.flex.flex-col.items-center
+  h2 class="pt-6 pb-4 text-2xl font-bold text-center md:pt-16 md:mt-2 md:pb-9 text-gray-3"
+    | Get in Touch
+
+  p class="px-8 pb-7 mx-auto max-w-lg text-center sm:text-lg sm:pb-9 text-gray-3"
+    | Send us a message and we'll get back to you within 3-5 business days.
+
+  div class="md:hidden -z-1"
+    div class="absolute top-0 left-0 -z-1"
+      = inline_svg_tag 'mob-blur-left-contact.svg', class:"w-10/12 xs:w-full"
+    div class="absolute top-0 right-0 -z-1"
+      = inline_svg_tag 'mob-blur-right-contact.svg', size:"169*248"
+
+  div class="hidden md:flex"
+    div class="absolute top-0 left-0 pl-20 lg:pl-32 -z-1 xl:pl-80"
+      = inline_svg_tag 'desk-blur-left-contact.svg', size:"523*419"
+    div class="absolute top-0 inset-x-1/2 -z-1"
+      = inline_svg_tag 'desk-blur-right-contact.svg', size:"258*248"
+
+  = form_with model: @message, url: create_contact_message_path, method: :post, data: { controller: 'contact-form', "turbo": false} do |f|
+    .c-form class="gap-6 pb-11 md:pb-36"
+      - if @message.errors.any?
+          div class="w-full"
+            p class="italic font-semibold text-red-500"
+              | Please review the problems below:
+            ul
+              - @message.errors.full_messages.each do |message|
+                li class="text-sm text-red-500"
+                  = "- #{message}"
+      div class="w-full"
+        = f.label :name, "*Name"
+        = f.text_field :name, class:"c-input", required: true
+      div class="w-full"
+        = f.label :email, "*Email"
+        = f.email_field :email, class:"c-input", required: true
+      div class="w-full"
+        = f.label :phone
+        = f.telephone_field :phone, class: "c-input"
+      div class="w-full"
+        = f.label :subject, "*Subject"
+        = f.select :subject,\
+        [['I want to add a nonprofit to Giving Connection.', '1'],['I want to claim ownership of a nonprofit profile on Giving Connection.', '2'], ['Other', '3']],\
+        {include_blank: "Select a subject"}, {class: "c-input pr-7 bg-white", required: true, data: { action: "change->contact-form#subjectSelected",'contact-form-target': 'subject'}}
+
+      div class="w-full"
+        = f.label :content, "*Message"
+        = f.text_area :content, class:"c-input h-40", required: true, data: { 'contact-form-target': 'message'}
+      // Honeypot
+      = invisible_captcha
+      div class="w-full"
+        = recaptcha_tags
+
+      div class="mt-3"
+        = f.submit "Send message", class:"c-button"

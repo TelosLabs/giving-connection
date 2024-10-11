@@ -1,0 +1,97 @@
+div class="main"
+
+  div class="flex flex-col px-6 mx-auto mt-14 md:mt-28 md:flex-row max-w-7xl justify-evenly md:items-end lg:px-16"
+    div class="relative flex flex-col justify-center mb-8 text-center md:mx-0 md:mb-8"
+      div class="max-w-sm mx-auto"
+        h2 class="pb-8 text-2xl font-bold text-center"
+          | FREQUENTLY ASKED QUESTIONS
+        p class=""
+          ' Can't find what you are looking for below? Please reach us at
+          span
+            = link_to 'info@givingconnection.org', 'mailto:info@givingconnection.org', class:'text-blue-medium underline'
+          '  if you cannot find an answer to your question. We will get back
+          ' to you within 3 - 5 business days.
+      div class="hidden md:block md:absolute -top-56 -left-36 -z-1"
+        = inline_svg_tag 'faq-desk-blur-left.svg'
+      div class="right-0 hidden overflow-hidden md:block md:absolute -top-56 md:-right-20 -z-1"
+        = inline_svg_tag 'faq-desk-blur-right.svg'
+
+      div class="absolute -left-6 -z-1 md:hidden"
+        = inline_svg_tag 'faq-mob-blur-left.svg', size:'320*428'
+      div class="absolute overflow-visible -right-6 -top-40 -z-1 md:hidden"
+        = inline_svg_tag 'faq-mob-blur-right.svg'
+
+    div class="flex justify-center px-0"
+      = image_tag 'pablita-looking-for.svg', class:"object-cover h-full"
+
+
+  section class='flex flex-col max-w-xl gap-6 px-5 pt-6 pb-24 mx-auto divide-y md:mt-6 divide-gray-7 text-gray-2'
+    = render Accordion::Component.new(title: "How can I get help right away?",
+                                      description: "If you are having a medical or life threatening emergency, call 911. If you are in need of immediate crisis services, \
+                                      please visit or call the resources listed below.<br/> <br/> \
+                                      <a class='underline text-blue-medium' href='https://suicidepreventionlifeline.org/'>National Suicide Prevention Lifeline</a> \
+                                      <p>(800) 273-8255</p><br/> \
+                                      <a class='underline text-blue-medium' href='https://suicidepreventionlifeline.org/help-yourself/en-espanol/'>Nacional de Prevención del Suicidio</a> \
+                                      <p>(888) 628-9454</p><br/> \
+                                      <a class='underline text-blue-medium' href='https://suicidepreventionlifeline.org/help-yourself/for-deaf-hard-of-hearing/'>National Suicide Prevention Lifeline (Options for Deaf and Hard of Hearing)</a> \
+                                      <p>For TTY Users: Use your preferred relay service or dial 711 then 1-800-273-8255</p><br/> \
+                                      <a class='underline text-blue-medium' href='https://www.crisistextline.org/'>Crisis Text Line</a> \
+                                      <p>Text HOME to 741741</p><br/> \
+                                      <a class='underline text-blue-medium' href='https://www.thehotline.org/'>National Domestic Violence Hotline</a> \
+                                      <p>(800) 799-7233</p><br/> \
+                                      <a class='underline text-blue-medium' href='https://www.veteranscrisisline.net/'>Veterans Crisis Line</a> \
+                                      <p>(800) 273-8255, PRESS 1</p> \
+                                      <p>Text 838255</p> \
+                                      <a class='underline text-blue-medium' href='https://www.veteranscrisisline.net/get-help/chat'>Chat online</a><br/> \
+                                      <a class='underline text-blue-medium' href='https://gradresources.org/crisis/'>National Grad Crisis Line</a> \
+                                      <p>(877) 472-3457</p> \
+                                      <a class='underline text-blue-medium' href='https://www.rainn.org/'>National Sexual Assault Hotline</a> \
+                                      <p>(800) 656-4673</p><br/> \
+                                      <a class='underline text-blue-medium' href='https://childhelphotline.org/'>Childhelp National Child Abuse Hotline</a> \
+                                      <p>(800) 422-4453</p><br/> \
+                                      <a class='underline text-blue-medium' href='https://www.cdc.gov/hiv/library/hotlines.html'>CDC National HIV and AIDS Hotline</a> \
+                                      <p>(800) 232-4636</p><br/> \
+                                      <a class='underline text-blue-medium' href='https://www.samhsa.gov/find-help/national-helpline'>Substance Abuse and Mental Health Services Administration National Helpline</a>\
+                                      <p>(800) 662-4357</p><br/> \
+                                      <ul class='pl-10 list-disc'> \
+                                        <li><a class='underline text-blue-medium' href='https://aa.org/'>Alcoholics Anonymous</a></li> \
+                                        <li><a class='underline text-blue-medium' href='https://na.org/'>Narcotics Anonymous</a></li> \
+                                        <li><a class='underline text-blue-medium' href='https://www.gamblersanonymous.org/ga/'>Gamblers Anonymous</a></li> \
+                                      </ul>")
+    = render Accordion::Component.new(title: "How do I apply and use search filters?",
+                                      description: "Type your desired keywords into the search box. Click the filters icon in the top left corner of the platform. Select any filters you would \
+                                      like applied to your nonprofit search results such as Causes & Services, Populations Served, or Location.")
+    = render Accordion::Component.new(title: "How do I save a nonprofit page?",
+                                      description: "Once you have found a nonprofit that meets your needs, we want to make it easy for you to return to that nonprofit profile. Click the ribbon on \
+                                      the top right corner of the nonprofit profile in the results or in the individual nonprofit page to save it your account. You will be prompted to sign into your \
+                                      account in order to save the nonprofit profile.")
+    = render Accordion::Component.new(title: "What is an email alert and how do I create one?",
+                                      description: "An email alert can be created to receive an email whenever a new nonprofit meeting your specified needs joins the Giving Connection platform.<br/><br> \
+                                      Type in your desired relevant keywords into the search box. Click the filters icon in the top left corner of the platform. Select any filters you would \
+                                      like to use related to cause categories, populations served, or location. If you would like to create an email alert using this criteria, click the bell icon \
+                                      which says 'Create Search Alert' located at the top right corner of the nonprofit search results. You can select a custom frequency to receive that email of new \
+                                      nonprofits either daily, weekly, or monthly.")
+    = render Accordion::Component.new(title: "How do I access my saved pages and alerts?",
+                                      description: "Once signed in, click on My Account in the top right corner of the screen. In the drop down menu, you will see “Saved Page” and “Alerts” where \
+                                      you can edit or delete them.")
+    = render Accordion::Component.new(title: "How do I remove a nonprofit from my Saved Pages?",
+                                      description: "Go to My Account > Saved Pages. Click the ribbon on the top right corner of the nonprofit to remove the nonprofit from your saved pages.")
+    = render Accordion::Component.new(title: "How are nonprofits categorized? What if I can't find a category meeting my needs?",
+                                      description: "Nonprofits self categorize using a list of causes and services we created using inspiration from the IRS NTEE codes.  The National Taxonomy of \
+                                      Exempt Entities (NTEE) system is used by the IRS to classify nonprofit organizations. If you cannot find a particular cause category or service, please \
+                                      contact <a class='underline text-blue-medium' href='mailto:info@givingconnection.reg'>info@givingconnection.org.</a> We will consider adding the category or service to our list.")
+    = render Accordion::Component.new(title: "How do I create a nonprofit profile?",
+                                      description: "Click “Add a Nonprofit” on the toolbar at the top of the page. A representative from your nonprofit should fill out the form, including the name and email of the \
+                                      Profile Admin who will be updating the nonprofit’s profile. After we verify the nonprofit organization, we will contact the Profile Admin listed on the completed form to set \ 
+                                      up an account. You should expect to hear back from us within 3-5 business days.")
+    = render Accordion::Component.new(title: "How do you verify a nonprofit?",
+                                      description: "We use the organization name and EIN to make sure they are a 501(c)(3) nonprofit organization. We use sources like the \
+                                      <a class='underline text-blue-medium' href='https://www.irs.gov/charities-non-profits/search-for-tax-exempt-organizations'>IRS Tax Exempt Org Search Tool.</a> \
+                                      If your organization is not yet published on the IRS website, we may ask for your IRS determination. If you are still pending approval from the IRS, we \
+                                      will make an individual determination whether to add you to the platform based on your IRS application.")
+    = render Accordion::Component.new(title: "How do I delete a nonprofit profile?",
+                                      description: "You must be the listed representative in order to delete a nonprofit page. To unpublish a nonprofit listing, email \
+                                      <a class='underline text-blue-medium' href='mailto:info@givingconnection.reg'>info@givingconnection.org</a> \
+                                      or go to the “Contact Us” link below to send us a message requesting that we unpublish your nonprofit page.")
+    = render Accordion::Component.new(title: "What does the green check mark mean?",
+                                      description: "The green check mark next to a nonprofit’s name indicates that the information listed has been reviewed and verified by that nonprofit. When reviewing a nonprofit profile without a green check mark, users should visit the nonprofit’s website to verify the listed information.")

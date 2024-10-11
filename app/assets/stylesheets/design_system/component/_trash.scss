@@ -1,0 +1,10 @@
+@import "/settings/variables";
+
+.trash {
+  width: 1.5rem;
+  height: 1.5rem;
+  
+  &:hover {
+  stroke: $secondary-salmon;
+  }
+}

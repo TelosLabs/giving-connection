@@ -1,0 +1,30 @@
+h1 class="px-5 mb-11 mt-14 title text-2xl font-bold text-center md:mb-14 md:mt-32"
+  | Confirmation instructions
+
+= render "users/shared/links"
+
+// background SVGs
+div class="md:hidden" aria-hidden="true"
+  div class="absolute top-0 left-0 -z-1 w-72 sm:w-80 sm:h-80"
+    = inline_svg_tag 'mob-purple-blur-login.svg'
+  div class="absolute top-0 right-0 -z-1"
+    = inline_svg_tag 'mob-green-blur-login.svg'
+
+div class="hidden md:flex" aria-hidden="true"
+  div class="absolute top-0 left-0 pl-16 -z-1 lg:pl-32 xl:pl-80"
+    = inline_svg_tag 'desk-purple-blur-login.svg'
+  div class="absolute top-0 right-0 pt-20 pr-20 -z-1 lg:pr-52 xl:pr-96"
+    = inline_svg_tag 'desk-green-blur-login.svg'
+
+= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post, class: "mt-4 mb-12 md:mb-36" }) do |f|
+  div class="max-w-xs mx-auto"
+    = render "users/shared/error_messages", resource: resource
+
+    div class="flex flex-col mb-2.5"
+      = f.label :email, "Email Address", class: "mb-1.5 text-sm text-gray-3"
+      = f.email_field(:email, autofocus: true, autocomplete: "email", class: "c-input", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email))
+    
+    - if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations'
+      = link_to "Forgot your password?", new_password_path(resource_name), class:'block w-fit mx-auto text-sm font-bold text-gray-3'
+
+    = f.submit "Resend", class: "c-button mt-10 mb-20"

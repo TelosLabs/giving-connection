@@ -1,0 +1,41 @@
+@import "/settings/variables";
+
+.c-button {
+  display: flex;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 40px;
+  border-radius: 6px;
+  border: 0;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: $primary-dark-blue;
+  background-color: $secondary-seafoam;
+  line-height: 19px;
+  letter-spacing: 0.8px;
+
+  &--no-center {
+    margin: 0;
+  }
+
+  &--search {
+    font-size: 22px;
+    line-height: 26px;
+    letter-spacing: 1.1px;
+    transition: background-color 0.3s ease;
+    &:hover {
+      background-color: white;
+    }
+  }
+
+  &--my_account {
+    transition: background-color 0.3s ease;
+    &:hover {
+      background-color: $secondary-seafoam;
+    }
+  }
+}
+

@@ -1,0 +1,134 @@
+div class="w-full h-full bg-white"
+  div class="py-12 mx-auto max-w-6xl md:px-28 md:py-20"
+    h2 class="mb-6 text-2xl font-bold text-center text-grey-2 md:text-left"
+      | My Account
+    div
+      div data-controller="tabs" data-tabs-active-tab="border-blue-medium text-blue-medium"
+        nav class="flex overflow-x-auto px-6 -mb-px space-x-6 text-grey-5" aria-label="Tabs"
+          /! Current: "border-indigo-500 text-indigo-600", Default: "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab"
+            | My Profile
+          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab"
+            | Saved Pages
+          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" aria-current="page" href="#" data-action="click->tabs#change" data-tabs-target="tab"
+            | Alerts
+          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab"
+            | My Nonprofit Pages
+
+        div class="hidden px-6" data-tabs-target="panel"
+          h4 class="my-7 text-xl text-grey-2"
+            | My Profile Information
+          = form_with model: current_user, url: user_path(current_user), html: { method: :put } do |form|
+            div class="grid grid-cols-12 gap-6" data-controller="toggle"
+              div class="col-span-12 lg:col-span-5 md:col-span-7"
+                = form.label :name, "Name", class: "block text-sm text-grey-3 font-medium"
+                = form.text_field :name, { value: current_user.name, class: "c-input capitalize" }
+              div class="hidden col-span-3 md:flex"
+              div class="col-span-12 lg:col-span-5 md:col-span-7"
+                = form.label :email, "Email", class: "block text-sm text-grey-3 font-medium"
+                = form.email_field :email, { value: current_user.email, class: "c-input" }
+              div class="hidden col-span-3 md:flex"
+              div class="col-span-12 py-0 border-t border-gray-8"
+              div class="flex flex-row col-span-12 justify-between"
+                span class="text-sm font-medium text-grey-4"
+                  | Password
+                button class="text-blue-medium" type="button" data-action=("click->toggle#toggle touch->toggle#toggle")
+                  | Edit
+
+              div class="grid hidden grid-cols-12 col-span-12 gap-6" data-toggle-target="toggleable menu"
+                div class="col-span-12 lg:col-span-5 md:col-span-7"
+                  = form.label :old_password, "Old Password", class: "block text-sm text-grey-3 font-medium"
+                  = form.password_field :old_password, { class: "c-input" }
+                div class="hidden col-span-3 md:flex"
+                div class="col-span-12 lg:col-span-5 md:col-span-7"
+                  = form.label :password, "Please create a new password below using more than 6 characters.", class: "block text-sm text-grey-3 font-medium"
+                  = form.password_field :password, { class: "c-input" }
+                div class="hidden col-span-3 md:flex"
+                div class="col-span-12 lg:col-span-5 md:col-span-7"
+                  = form.label :password_confirmation, "Confirm New Password", class: "block text-sm text-grey-3 font-medium"
+                  = form.password_field :password_confirmation, { class: "c-input" }
+                div class="hidden col-span-3 md:flex"
+                div class="col-span-12"
+                  p class="text-xs text-grey-3"
+                    ' Can't remember your current password?
+                    = link_to "Reset via email", new_reset_password_path, class:'text-blue-medium'
+              div class="col-span-12 py-0 border-b border-gray-8"
+              div class="flex flex-row col-span-12 justify-center"
+                = form.submit "Update", class: "mx-auto py-2.5 px-5 text-sm font-bold text-white bg-blue-medium uppercase rounded-6px"
+              div class="col-span-12 py-4 border-t border-gray-8"
+                = link_to "Log out", destroy_user_session_path, method: :delete, class:'text-xl font-bold text-blue-dark', data: { turbo: false , test_id: "user_logout_link"}
+        div class="hidden" data-tabs-target="panel"
+          h4 class="px-6 my-7 text-xl text-grey-2"
+            | My Saved Nonprofit Pages
+          div class="flex flex-col px-2 w-full h-full md:overflow-y-auto"
+            - if @saved_pages.present?
+              ul class="flex flex-col divide-y divide-gray-8"
+                - @saved_pages.each do |page|
+                  li
+                    = render ResultCard::Component.new(title: page.name,\
+                                                      address: page.address,\
+                                                      public_address: page.public_address?,\
+                                                      link_to_google_maps: page.link_to_google_maps,\
+                                                      image_url: page.organization.logo,\
+                                                      id: page.id,\
+                                                      po_box: page.po_box?,\
+                                                      website: page.decorate.website || page.organization.decorate.website,\
+                                                      description: page.organization.mission_statement_en,\
+                                                      current_user: current_user,\
+                                                      phone_number: page.phone_number&.number,\
+                                                      verified: page.organization.verified?)
+            - else
+              div class="flex justify-center my-16 w-full"
+                = inline_svg_tag 'empty_state_1.svg', size:'298*153'
+              div class="flex flex-col gap-4 justify-center items-center my-4 mb-16 w-full text-grey-2"
+                p class="text-xl font-bold text-center"
+                  | You haven’t saved any Nonprofit Pages.
+                p class="px-4 max-w-xs text-base text-center"
+                  | Click on the top right ribbon to save pages when you are browsing through nonprofit listings.
+
+        div class="hidden px-6" data-tabs-target="panel"
+          h4 class="mt-7 text-xl text-grey-2"
+            | Manage Alerts
+          div class="flex flex-col w-full h-full md:overflow-y-auto"
+            - if @alerts.present?
+              ul class="flex flex-col divide-y divide-gray-8"
+                - @alerts.each_with_index do |alert, index|
+                  li class="flex flex-col py-10 w-full"
+                    div class="flex flex-row justify-between w-full"
+                      span class="text-lg font-bold text-black capitalize"
+                        | #{alert.decorate.title(index)}
+                      = link_to "Edit", edit_alert_path(alert), class: "text-blue-medium", data: { turbo_stream: true }
+                    div class="flex flex-row text-sm font-normal text-gray-2"
+                      | #{list_all_filters(alert).join(', ')}
+            - else
+              div class="flex justify-center my-16 w-full"
+                = inline_svg_tag 'empty_state_2.svg', size:'294*145'
+              div class="flex flex-col gap-4 justify-center items-center my-4 mb-16 w-full text-grey-2"
+                p class="text-xl font-bold text-center"
+                  | You haven’t created any search alerts.
+                p class="px-4 max-w-xs text-base text-center"
+                  | Create an email alert by clicking on “Create Alert” after making a search.
+
+        div class="hidden px-6" data-tabs-target="panel"
+          h4 class="my-7 text-xl text-grey-2"
+            | My Nonprofit Pages
+          div class="flex flex-col w-full h-full md:overflow-y-auto"
+            - if @my_organizations.present?
+              ul class="flex flex-col gap-11 divide-y divide-gray-8"
+                - @my_organizations.each do |organization|
+                  li class="flex flex-col w-full"
+                    div class="flex flex-row justify-between w-full"
+                      span class="flex items-center text-base font-medium text-grey-2"
+                        | #{organization.name}
+                        - if organization.verified?
+                          = render "shared/popover", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg"
+                      = link_to "Edit", edit_organization_path(organization), class:"text-blue-medium"
+
+            - else
+              div class="flex justify-center my-16 w-full"
+                = inline_svg_tag 'empty_state_3.svg', size:'321*169'
+              div class="flex flex-col gap-4 justify-center items-center my-4 mb-16 w-full text-grey-2"
+                p class="text-xl font-bold text-center"
+                  | You haven't claimed or added any Nonprofit Pages.
+                p class="px-4 max-w-xs text-base text-center"
+                  | Click "Add A Nonprofit" on the top menu bar to contact us about adding or claiming a nonprofit page.

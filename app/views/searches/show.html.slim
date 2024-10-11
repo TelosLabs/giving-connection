@@ -1,0 +1,141 @@
+- markers = @results&.map { |l| [l.latitude, l.longitude] }  || []
+= form_with(\
+  model: @search, \
+  url: "", \
+  class: 'relative', \
+  method: :get, \
+  data: { \
+    turbo_frame: "search-locations", \
+    turbo_action: "replace", \
+    controller: 'search modal', \
+    'search-target': 'form'}) do |f|
+  = render SearchBar::Component.new(form: f, search: @search, current_location: @current_location, locations: @locations)
+  = turbo_frame_tag "search-pills" do
+    = render SearchPills::Component.new(causes: @top_10_causes, services: @top_10_services, beneficiary_subcategories: @top_10_beneficiary_subcategories, params: params, current_location: @current_location)
+  = turbo_frame_tag "search-locations" do
+    div class="flex flex-row justify-center w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3"
+      div class="flex flex-row justify-center w-full min-h-full"
+        div class="flex flex-col w-full max-w-sm md:border-r border-gray-7"
+          div class="flex hidden overflow-y-auto fixed inset-0 justify-center items-center min-h-screen animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;")
+            div class="relative w-full max-h-full max-w-375px"
+              = render partial: 'filter', locals: { form: f, search: @search, services: @services, causes: @causes, beneficiary_groups: @beneficiary_groups }
+          div class="flex flex-row justify-between p-4 w-full bg-gray-9 md:hidden"
+            span class="inline-flex relative z-0 shadow-sm md:hidden rounded-6px"
+              / active bg-blue-dark.focus:text-white
+              / inactive bg-white text-gray-3
+              button class="inline-flex relative items-center px-5 py-1 text-sm border rounded-l-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="0"
+                | List
+              button class="inline-flex relative items-center px-5 py-1 -ml-px text-sm border rounded-r-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="1"
+                | Map
+          // Search result cards
+          = turbo_frame_tag "pagy" do
+            div class="flex flex-col w-full bg-white md:h-85vh md:overflow-y-auto"
+              div class="flex flex-row justify-between items-center p-4 w-full bg-white border-b border-gray-8"
+                span class="text-xs text-gray-3"
+                  | #{pluralize(@pagy.count, 'result')} found
+                - if params.dig('search', 'keyword').present? || list_of_filters(@search).present?
+                  = link_to( \
+                      new_alert_path( \
+                        filters: parse_filters(@search), \
+                        filters_list: list_of_filters(@search)), \
+                      class: "inline-flex items-center px-3 py-2 text-xs text-gray-3", \
+                      data: { turbo_stream: true } ) do
+                        = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
+                        | Create Search Alert
+                - else
+                  div class="inline-flex items-center px-3 py-2 text-xs text-gray-400"
+                    = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-400 -ml-0.5'
+                    | Create Search Alert
+              div class="overflow-y-auto w-full h-full md:flex md:flex-col" data-tabs-target="panel"
+                - if @results.present?
+                  ul class="flex flex-col divide-y divide-gray-8" id="search-results"
+                    - @results.each do |result|
+                      li
+                        = render ResultCard::Component.new(title: result&.name,\
+                                                        address: result&.formatted_address,\
+                                                        public_address: result.public_address?,\
+                                                        link_to_google_maps: result.link_to_google_maps,\
+                                                        image_url: result&.organization&.logo,\
+                                                        id: result&.id,\
+                                                        website: result&.decorate&.website || result&.organization&.decorate&.website,\
+                                                        description: "",\
+                                                        phone_number: result.phone_number&.number,\
+                                                        current_user: current_user,\
+                                                        verified: result.organization.verified?,\
+                                                        po_box: result.po_box?,\
+                                                        causes: result&.causes,\
+                                                        turbo_frame: {id: "map-left-popup", src: new_map_popup_path(location_id: result&.id)})
+                  - if @pagy.pages > SearchesHelper::MIN_REQUIRED_PAGES
+                    div class="px-4 mt-7 h-40"
+                      p class="mb-5 text-sm text-gray-3"
+                        = "Showing results #{@pagy&.from} - #{@pagy&.to}"
+                      == render partial: 'pagy/nav', locals: { pagy: @pagy }
+                - else
+                  div class="flex justify-center w-full"
+                    = inline_svg_tag 'empty_state_4.svg', size: '278*279'
+                  div class="flex flex-col gap-4 justify-center items-center px-12 mb-16 w-full text-grey-2"
+                    p class="text-xl font-bold text-center"
+                      | We couldn't find any nonprofits that matched your search.
+                    p class="px-4 max-w-xs text-base text-center"
+                      | Try searching for another keyword or editing your filters.
+                    button class="text-sm font-bold text-blue-medium" type="submit" data-action="click->search#clearKeywordInput click->search#clearCheckedFilters click->search#clearAll"
+                      | Clear Filters
+
+                    = link_to( \
+                      new_alert_path( \
+                        filters: parse_filters(@search), \
+                        filters_list: list_of_filters(@search) \
+                      ), \
+                      class: "mt-10 text-sm font-bold text-black", \
+                      data: { turbo_stream: true } \
+                    ) do
+                      | Create an Alert for this Search
+          // Mobile map
+          div class="hidden w-full h-85vh md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}"
+            div class="w-full h-full" data-places-target="map"
+            // Pin card
+            div class="hidden"
+              div class="hidden" data-places-target="latitude"
+              div class="hidden" data-places-target="longitude"
+              - @search.results.public_address.besides_po_boxes&.each do |result|
+                = cache result do
+                  - turbo_frame_id = "loc_#{result.id}"
+
+                  = turbo_frame_tag(\
+                    turbo_frame_id,\
+                    src: new_infowindow_path(frame_id: turbo_frame_id),\
+                    loading: "lazy",\
+                    class: "flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px",\
+                    data: {\
+                      places_target: "marker",\
+                      latitude: "#{result.latitude}",\
+                      longitude: "#{result.longitude}",\
+                      po_box: "#{result.po_box}",\
+                    }\
+                  )
+
+        // Desktop map
+        div class="hidden relative w-full md:flex" data-controller="places result-card--component" data-action="google-maps-callback@window->places#initMap" data-places-zoom-value="10" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}" data-places-popup-url-value="/map_popup/new?location_id="
+          div class="absolute inset-0 w-full h-full xs:h-85vh" data-places-target="map"
+          // Left pop-up
+          = turbo_frame_tag("map-left-popup", class: "rounded-6px overflow-y-auto w-3/4 max-w-xs xl:max-w-356px h-5/5 m-3")
+          // Pin card
+          div class="hidden"
+            div class="hidden" data-places-target="latitude"
+            div class="hidden" data-places-target="longitude"
+            - @search.results.public_address.besides_po_boxes&.each do |result|
+              = cache result do
+                - turbo_frame_id = "loc_#{result.id}"
+
+                = turbo_frame_tag(\
+                  turbo_frame_id,\
+                  src: new_infowindow_path(frame_id: turbo_frame_id),\
+                  loading: "lazy",\
+                  class: "flex flex-col items-center gap-2 px-3 pt-0 pb-3 text-center bg-white rounded-6px",\
+                  data: {\
+                    places_target: "marker",\
+                    latitude: "#{result.latitude}",\
+                    longitude: "#{result.longitude}",\
+                  }\
+                )
+// TODO DRY map markup

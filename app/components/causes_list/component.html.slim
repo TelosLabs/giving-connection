@@ -1,0 +1,11 @@
+= content_tag(:ul, @list_options) do
+  - @causes.each do |cause|
+    li
+      = content_tag(:a, path(cause)) do
+        = content_tag(:div, cause_options) do
+          span aria-labelledby=@tooltip_id class="labelled-icon"
+            = render CauseIcon::Component.new(svg_name: "causes_categories/#{cause.decorate.svg_file_name}", \
+                                                  wrapper_options: icon_wrapper_options, \
+                                                  svg_options: icon_svg_options)
+          = content_tag(:span, tooltip_options) do
+            = cause.name

@@ -1,0 +1,39 @@
+span class="absolute top-4 left-4 ml-1"
+    = render SaveButton::Component.new(user: @current_user, location: @location, simplified: true)
+
+div.flex.items-center.justify-between.w-full
+  // Logo
+  div.flex-grow.flex.justify-center
+    = image_tag @location.organization.logo, class: "w-3/5 h-3/5"
+
+// Name
+div class="flex flex-row gap-1 justify-between items-start"
+  a id="pointer"
+    = link_to @location.name, location_path(@location), target:"_blank", class: "text-small font-bold text-gray-2"
+    - if @location.organization.verified?
+      = render partial: "shared/popover", locals: {position: "right-0", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg"}
+
+// Address, website, phone, and availability
+- if @location.public_address?
+  p class="text-xs text-gray-4" id="pointer"
+    = link_to @location.formatted_address, @location.link_to_google_maps, target: "blank"
+
+p class="text-xs text-blue-medium"
+  = link_to @location.organization.decorate.website, @location.organization.decorate.website, target: "_blank"
+
+p class="text-xs text-blue-medium"
+  - if @location.phone_number
+    a href="tel:#{@location.phone_number.number}" = @location.phone_number.number
+
+p class="text-xs font-medium text-gray-2"
+  - if @location.non_standard_office_hours.present?
+    span class="#{@location.always_open? ? 'text-green-fountain' : 'text-states-error'}"
+      = @location.decorate.non_standard_office_hours_for_display
+  - elsif @location.open_now?
+    span class="text-green-fountain"
+      ' Open Now
+  - else
+    span class="text-states-error"
+      ' Closed
+    | -&nbsp;
+    = @location.decorate.closed_office_hours_display

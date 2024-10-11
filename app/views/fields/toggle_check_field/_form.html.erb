@@ -1,0 +1,13 @@
+<div class="field-unit__label">
+  <%= local_assigns[:f].label field.attribute %>
+</div>
+
+<div class="field-unit__field">
+  <%= local_assigns[:f].check_box(
+    field.attribute,
+    data: {
+      general_population_target: "generalPopulationCheckbox",
+      action: "change->general-population#clearSelectedPopulationsAdminPanel"
+    }
+  ) %>
+</div>

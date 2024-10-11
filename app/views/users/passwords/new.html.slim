@@ -1,0 +1,13 @@
+.main
+  h2 class="pt-14 pb-10 text-2xl font-bold text-center md:pt-32 md:mt-2 text-gray-gray-7"
+    | Reset your password?
+  
+  div class="px-4 pb-7 mx-auto max-w-md text-sm text-center text-black sm:text-lg sm:pb-12"
+    | Forgot your password? Please enter the email associated with your account so we can help you.
+
+  = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
+    .c-form
+      = form_group_for f, :email, label: "Email Address", class: "mb-6" do 
+        = f.email_field :email, autofocus: true, autocomplete: "email", class:"c-input"
+      .c-form--action class="mt-12 mb-44"
+        = f.submit "Send reset instructions", class:"c-button", data: { turbo: false}
