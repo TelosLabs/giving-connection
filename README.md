@@ -32,8 +32,9 @@ Connecting nonprofits with communities in Nashville and Atlantic City (for now!)
   - Run `rake db:gis:setup`
 3. Start redis with `redis-server`
 4. Run `rails db:migrate` and `rails db:seed`
-5. Run `bin/dev` to start the server
-6. Visit `localhost:3000` in your browser
+5. Copy the content of `.env.template` to a new file `.env`
+6. Run `bin/dev` to start the server
+7. Visit `localhost:3000` in your browser
 
 For running the app with Docker, check out the [Docker README](.dockerdev/README.md)
 
