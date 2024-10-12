@@ -18,7 +18,7 @@ Connecting nonprofits with communities in Nashville and Atlantic City (for now!)
 - cmake
 
 2. Clone the repository: `git clone xxxx`
-3. Install dependencies: `bundle install` and `yarn install`
+3. Run `bin/setup`
 
 ### Setup
 1. Create database: `rails db:create`
