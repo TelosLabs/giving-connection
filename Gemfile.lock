@@ -181,6 +181,7 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.4.4)
     docile (1.4.0)
+    dotenv (3.1.4)
     draper (4.0.2)
       actionpack (>= 5.0)
       activemodel (>= 5.0)
@@ -621,6 +622,7 @@ DEPENDENCIES
   cuprite
   database_consistency
   devise
+  dotenv
   draper
   factory_bot_rails
   faker

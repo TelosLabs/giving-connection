@@ -1,0 +1,17 @@
+all:
+  exclude:
+    - 'db/schema.rb'
+eslint:
+  exclude:
+    - 'app/assets/**/*'
+max_warnings: 150
+warnings_per_review: 30
+verbose: false
+rubocop:
+  # Map of RuboCop severity level to Pronto severity level
+  severities:
+    refactor: info
+    warning: error
+
+  # Enable suggestions
+  suggestions: true
