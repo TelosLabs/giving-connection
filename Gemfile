@@ -69,7 +69,7 @@ gem "administrate-field-select", "~> 2.0", require: "administrate/field/select_b
 gem "image_processing"
 
 # Reduces boot times through caching; required in config/boot.rb
-gem "bootsnap", require: false
+gem "bootsnap", ">= 1.18.4", require: false
 gem "city-state"
 gem "timezone", "~> 1.0" #  Timezone lookup based on geolocation
 gem "momentjs-rails"

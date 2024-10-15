@@ -41,7 +41,7 @@ You should see a version number if the installation was successful.
 
 #### Node.js
 Node.js is a JavaScript runtime that allows you to run JavaScript on the server side. We will use it to run the Giving Connection project.
-If you already have Node.js, note that version `v20.17.0` is required, which we will be installing.
+If you already have Node.js, note that version `v20.17.0` is required, which we will be installing. Later versions *may* work, but I haven't tested it.
 
 We will be using `nvm`, or Node Version Manager, to manage multiple versions of Node.js on your machine. This will allow you to install the correct version of Node.js for the project without interfering with your current version.
 
@@ -52,7 +52,7 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 
 2. Quit (<kbd>⌘</kbd> + <kbd>Q</kbd>) and reopen Terminal to apply the changes. Verify installation by running:
 ```bash
-nvm --version
+nvm -v
 ```
 
 3. Now, we'll install the correct version of Node.js for the project. Run the following command to install Node.js `v20.17.0`:
@@ -67,10 +67,10 @@ nvm use 20.17.0
 
 5. Verify that the correct version of Node.js was installed by running:
 ```bash
-node --version
+node -v
 ```
 
-Confirm that the version number is  `v20.17.0`. If it is, you can continue.
+Confirm that the version number is `v20.17.0`. If it is, you can continue.
 
 #### Ruby
 Ruby is the main programming language used in the project. It uses Ruby on Rails, a web application framework written in Ruby. We will use Ruby to run the Giving Connection project.
@@ -123,7 +123,7 @@ brew services start postgresql
 Next, we will clone the project and set up the dependencies.
 
 #### Setting up Git with your Github Account
-**If you already have Github Desktop installed and set up with your Github account, you can skip this step.**
+**If you already have Github Desktop installed and set up with your Github account, you can skip this step. You can also just install Github Desktop, and skip this step, but here's an alternative in case you want it.**
 Since our project is private, we can't just clone it without setting up Git with your Github account. Here's how to do that:
 
 1. Install the Github CLI by running:
@@ -169,7 +169,7 @@ If you get an error message, it's likely that you don't have access to the Hack4
 cd gc
 ```
 
-**For the remainer of these instructions, please keep your terminal at this directory. To confirm your current directory in case you need to restart your terminal later, please run `pwd` now and you'll see the current direcory that your terminal is in.**
+**For the remainer of these instructions, please keep your terminal at this directory. To confirm your current directory in case you need to restart your terminal later, please run `pwd` now and you'll see the current direcory that your terminal is in. You can also just open the project in Visual Studio Code, if you want, and start a Terminal session there.**
 
 #### Installing dependencies
 Finally, we will install the project dependencies and run any other required commands.
@@ -202,31 +202,31 @@ bundle install
 npm install -g yarn
 ```
 
-5. Install the Yarn Dependencies:
+6. Install the Yarn Dependencies:
 ```bash
 yarn install
 ```
 
-6. Install PostGIS (this is different than postgres):
+7. Install PostGIS (this is different than postgres):
 ```bash
-brew install PostGIS
+brew install postgis
 ```
 *This command will take a while to run.*
 
-7. Install rails:
+8. Install rails:
 ```bash
 gem install rails
 ```
 
-8. Quit (<kbd>⌘</kbd> + <kbd>Q</kbd>) and reopen Terminal to make the rails command available.
+9. Quit (<kbd>⌘</kbd> + <kbd>Q</kbd>) and reopen Terminal to make the rails command available. You're using VSCode, quit it and reopen it.
 
 
-9. Create the database:
+10. Create the database:
 ```bash
 rails db:create
 ```
 
-10. Associate postgres with PostGIS:
+11. Associate postgres with PostGIS:
 ```bash
 psql -d giving_connection_development
 ```
@@ -236,17 +236,17 @@ CREATE EXTENSION IF NOT EXISTS PostGIS;
 exit
 ```
 
-11. Setup rake tasks:
+12. Setup rake tasks:
 ```bash
 rake db:gis:setup
 ```
 
-12. Migrate the database:
+13. Migrate the database:
 ```bash
 rails db:migrate
 ```
 
-13. Seed the database:
+14. Seed the database:
 ```bash
 rails db:seed
 ```
@@ -259,11 +259,8 @@ bin/dev
 
 Wait until you stop seeing the output scroll, then visit `localhost:3000` in your browser to see the project running! To stop the project at any time, press <kbd>Ctrl</kbd> + <kbd>C</kbd> in the terminal.
 
-
-ignore
-FIXME
-- Add .env directy to root of project from .env.template
-- Gemfile bootsnap change
+Note to self:
+- Gemfile bootsnap change required on MacOS
 
 ## Windows/Linux
 Space Needed: 
