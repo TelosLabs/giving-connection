@@ -257,10 +257,7 @@ Finally, start the server!
 bin/dev
 ```
 
-Wait until you stop seeing the output scroll, then visit `localhost:3000` in your browser to see the project running! To stop the project at any time, press <kbd>Ctrl</kbd> + <kbd>C</kbd> in the terminal.
-
-Note to self:
-- Gemfile bootsnap change required on MacOS
+Wait until you stop seeing the output scroll, then visit `localhost:3000` in your browser to see the project running! To stop the project at any time, press <kbd>Ctrl</kbd> + <kbd>C</kbd> in the terminal. To run it again in the future, just run `bin/dev` again.
 
 ## Windows/Linux
 Space Needed: 
@@ -497,9 +494,3 @@ bin/dev
 ```
 
 Wait until you stop seeing the output scroll, then visit `localhost:3000` in your browser to see the project running! To stop the project at any time, press <kbd>Ctrl</kbd> + <kbd>C</kbd> in the terminal.
-
-
-ignore
-FIXME
-- Add .env directy to root of project from .env.template
-- Gemfile bootsnap change
