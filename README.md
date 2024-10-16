@@ -258,7 +258,7 @@ bin/dev
 
 Wait until you stop seeing the output scroll, then visit `localhost:3000` in your browser to see the project running! To stop the project at any time, press <kbd>Ctrl</kbd> + <kbd>C</kbd> in the terminal. To run it again in the future, just run `bin/dev` again.
 
-## Windows/Linux
+## Windows
 Extensive efforts were made to try to get the Giving Connection project to run on Windows *natively*. The project uses a lot of tools that are not compatible with Windows, and it's just not worth the effort to try to get it to work. However, you can still run the project on Windows by using the Windows Subsystem for Linux (WSL). Here's how to set it up:
 
 Note: These instructions are for WSL 2, which is only available on Windows 10 version 1903 or higher, or any version of Windows 11 (you're probably good if you've updated your PC in the last 4 years 😊). If you have an older version of Windows, you'll need to update it to use WSL 2. If you're already using a Linux distribution, you can skip the WSL 2 setup part. You can optionally use a virtual machine, if you have access to one, but it might be a bit more inconvenient.
