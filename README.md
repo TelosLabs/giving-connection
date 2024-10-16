@@ -18,11 +18,10 @@ Connecting nonprofits with communities in Nashville and Atlantic City (for now!)
 - cmake
 
 2. Clone the repository: `git clone xxxx`
-3. Install dependencies: `bundle install` and `yarn install`
+3. Run `bin/setup` to install dependencies and setup the database
 
-### Setup
-1. Create database: `rails db:create`
-2. Associate postgres database with postgis:
+4. Create database: `rails db:create`
+5. Associate postgres database with postgis:
   - Run postgres: `psql -d giving_connection_development`
   - Inside of postgres command line, run 
   ```
@@ -30,10 +29,10 @@ Connecting nonprofits with communities in Nashville and Atlantic City (for now!)
   exit
   ```
   - Run `rake db:gis:setup`
-3. Start redis with `redis-server`
-4. Run `rails db:migrate` and `rails db:seed`
-5. Run `bin/dev` to start the server
-6. Visit `localhost:3000` in your browser
+6. Start redis with `redis-server`
+7. Run `rails db:migrate` and `rails db:seed`
+8. Run `bin/dev` to start the server
+9. Visit `localhost:3000` in your browser
 
 For running the app with Docker, check out the [Docker README](.dockerdev/README.md)
 
