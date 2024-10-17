@@ -1,0 +1,729 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+AboutUsController	app/controllers/about_us_controller.rb	/^class AboutUsController < ApplicationController$/;"	c
+Accordion	app/components/accordion/component.rb	/^class Accordion::Component < ApplicationViewComponent$/;"	c
+ActionButtonHelper	app/helpers/action_button_helper.rb	/^module ActionButtonHelper$/;"	m
+ActiveStorage	lib/active_storage/service/better_s3_service.rb	/^module ActiveStorage$/;"	m
+AddActiveToOrganization	db/migrate/20220111122848_add_active_to_organization.rb	/^class AddActiveToOrganization < ActiveRecord::Migration[6.1]$/;"	c
+AddAppointmentOnlyToLocations	db/migrate/20211121214953_add_appointment_only_to_locations.rb	/^class AddAppointmentOnlyToLocations < ActiveRecord::Migration[6.1]$/;"	c
+AddDefaultFalseToPoBoxForLocations	db/migrate/20220207161434_add_default_false_to_po_box_for_locations.rb	/^class AddDefaultFalseToPoBoxForLocations < ActiveRecord::Migration[6.1]$/;"	c
+AddDonationLink	db/migrate/20220825190859_add_donation_link.rb	/^class AddDonationLink < ActiveRecord::Migration[6.1]$/;"	c
+AddEmailToLocations	db/migrate/20211130204102_add_email_to_locations.rb	/^class AddEmailToLocations < ActiveRecord::Migration[6.1]$/;"	c
+AddEmailToOrganizations	db/migrate/20211130222523_add_email_to_organizations.rb	/^class AddEmailToOrganizations < ActiveRecord::Migration[6.1]$/;"	c
+AddGeneralPopulationServingToOrganizations	db/migrate/20231115211830_add_general_population_serving_to_organizations.rb	/^class AddGeneralPopulationServingToOrganizations < ActiveRecord::Migration[6.1]$/;"	c
+AddImagesToLocations	db/migrate/20220905132005_add_images_to_locations.rb	/^class AddImagesToLocations < ActiveRecord::Migration[6.1]$/;"	c
+AddNameToLocations	db/migrate/20211125221813_add_name_to_locations.rb	/^class AddNameToLocations < ActiveRecord::Migration[6.1]$/;"	c
+AddNameToUsers	db/migrate/20211130203313_add_name_to_users.rb	/^class AddNameToUsers < ActiveRecord::Migration[6.1]$/;"	c
+AddNextAlertToAlerts	db/migrate/20220128163644_add_next_alert_to_alerts.rb	/^class AddNextAlertToAlerts < ActiveRecord::Migration[6.1]$/;"	c
+AddNonStandardOfficeHoursToLocations	db/migrate/20230810020732_add_non_standard_office_hours_to_locations.rb	/^class AddNonStandardOfficeHoursToLocations < ActiveRecord::Migration[6.1]$/;"	c
+AddPgSearchDmetaphoneSupportFunctions	db/migrate/20211125165827_add_pg_search_dmetaphone_support_functions.rb	/^class AddPgSearchDmetaphoneSupportFunctions < ActiveRecord::Migration[6.1]$/;"	c
+AddPhoneNumberToOrganizations	db/migrate/20211130222409_add_phone_number_to_organizations.rb	/^class AddPhoneNumberToOrganizations < ActiveRecord::Migration[6.1]$/;"	c
+AddPoBoxToLocations	db/migrate/20220125114120_add_po_box_to_locations.rb	/^class AddPoBoxToLocations < ActiveRecord::Migration[6.1]$/;"	c
+AddProfileAdminNameAndEmailToMessages	db/migrate/20220914174749_add_profile_admin_name_and_email_to_messages.rb	/^class AddProfileAdminNameAndEmailToMessages < ActiveRecord::Migration[6.1]$/;"	c
+AddPublicAddressToLocations	db/migrate/20230726001911_add_public_address_to_locations.rb	/^class AddPublicAddressToLocations < ActiveRecord::Migration[6.1]$/;"	c
+AddSearchExtensions	db/migrate/20211125165738_add_search_extensions.rb	/^class AddSearchExtensions < ActiveRecord::Migration[6.1]$/;"	c
+AddSearchResultsToAlerts	db/migrate/20220607164939_add_search_results_to_alerts.rb	/^class AddSearchResultsToAlerts < ActiveRecord::Migration[6.1]$/;"	c
+AddSecondNameToOrganization	db/migrate/20211130220215_add_second_name_to_organization.rb	/^class AddSecondNameToOrganization < ActiveRecord::Migration[6.1]$/;"	c
+AddSpatialData	db/migrate/20211005225218_add_spatial_data.rb	/^class AddSpatialData < ActiveRecord::Migration[6.1]$/;"	c
+AddSuiteToLocation	db/migrate/20220216165005_add_suite_to_location.rb	/^class AddSuiteToLocation < ActiveRecord::Migration[6.1]$/;"	c
+AddTimeZoneToLocation	db/migrate/20240510220249_add_time_zone_to_location.rb	/^class AddTimeZoneToLocation < ActiveRecord::Migration[6.1]$/;"	c
+AddVerifiedToOrganizations	db/migrate/20220802184357_add_verified_to_organizations.rb	/^class AddVerifiedToOrganizations < ActiveRecord::Migration[6.1]$/;"	c
+AddVolunteerAvailabilityToOrganizations	db/migrate/20230922225804_add_volunteer_availability_to_organizations.rb	/^class AddVolunteerAvailabilityToOrganizations < ActiveRecord::Migration[6.1]$/;"	c
+AddVolunteerLinkToOrganizations	db/migrate/20231006165935_add_volunteer_link_to_organizations.rb	/^class AddVolunteerLinkToOrganizations < ActiveRecord::Migration[6.1]$/;"	c
+AddYouToubeVideoLink	db/migrate/20220825161720_add_you_toube_video_link.rb	/^class AddYouToubeVideoLink < ActiveRecord::Migration[6.1]$/;"	c
+AddressField	app/fields/address_field.rb	/^class AddressField < Administrate::Field::Base$/;"	c
+Admin	app/controllers/admin/admin_users_controller.rb	/^module Admin$/;"	m
+Admin	app/controllers/admin/application_controller.rb	/^module Admin$/;"	m
+Admin	app/controllers/admin/categories_controller.rb	/^module Admin$/;"	m
+Admin	app/controllers/admin/causes_controller.rb	/^module Admin$/;"	m
+Admin	app/controllers/admin/export_locations_controller.rb	/^module Admin$/;"	m
+Admin	app/controllers/admin/location_services_controller.rb	/^module Admin$/;"	m
+Admin	app/controllers/admin/locations_controller.rb	/^module Admin$/;"	m
+Admin	app/controllers/admin/messages_controller.rb	/^module Admin$/;"	m
+Admin	app/controllers/admin/office_hours_controller.rb	/^module Admin$/;"	m
+Admin	app/controllers/admin/organization_admins_controller.rb	/^module Admin$/;"	m
+Admin	app/controllers/admin/organization_causes_controller.rb	/^module Admin$/;"	m
+Admin	app/controllers/admin/organizations_controller.rb	/^module Admin$/;"	m
+Admin	app/controllers/admin/phone_numbers_controller.rb	/^module Admin$/;"	m
+Admin	app/controllers/admin/services_controller.rb	/^module Admin$/;"	m
+Admin	app/controllers/admin/social_medias_controller.rb	/^module Admin$/;"	m
+Admin	app/controllers/admin/tags_controller.rb	/^module Admin$/;"	m
+Admin	app/controllers/admin/users_controller.rb	/^module Admin$/;"	m
+AdminUser	app/models/admin_user.rb	/^class AdminUser < ApplicationRecord$/;"	c
+AdminUserDashboard	app/dashboards/admin_user_dashboard.rb	/^class AdminUserDashboard < Administrate::BaseDashboard$/;"	c
+AdminUsersController	app/controllers/admin/admin_users_controller.rb	/^  class AdminUsersController < Admin::ApplicationController$/;"	c	class:Admin
+Alert	app/components/alert/component.rb	/^class Alert::Component < ApplicationViewComponent$/;"	c
+Alert	app/models/alert.rb	/^class Alert < ApplicationRecord$/;"	c
+AlertBeneficiary	app/models/alert_beneficiary.rb	/^class AlertBeneficiary < ApplicationRecord$/;"	c
+AlertCause	app/models/alert_cause.rb	/^class AlertCause < ApplicationRecord$/;"	c
+AlertDecorator	app/decorators/alert_decorator.rb	/^class AlertDecorator < ApplicationDecorator$/;"	c
+AlertPolicy	app/policies/alert_policy.rb	/^class AlertPolicy < ApplicationPolicy$/;"	c
+AlertSearchResults	app/services/alert_search_results.rb	/^class AlertSearchResults < ApplicationService$/;"	c
+AlertService	app/models/alert_service.rb	/^class AlertService < ApplicationRecord$/;"	c
+Alerts	app/jobs/alerts/send_saved_searches_alert_emails_job.rb	/^class Alerts::SendSavedSearchesAlertEmailsJob < ActiveJob::Base$/;"	c
+AlertsController	app/controllers/alerts_controller.rb	/^class AlertsController < ApplicationController$/;"	c
+AlertsHelper	app/helpers/alerts_helper.rb	/^module AlertsHelper$/;"	m
+Application	config/application.rb	/^  class Application < Rails::Application$/;"	c	class:GivingConnection
+ApplicationCable	app/channels/application_cable/channel.rb	/^module ApplicationCable$/;"	m
+ApplicationCable	app/channels/application_cable/connection.rb	/^module ApplicationCable$/;"	m
+ApplicationController	app/controllers/admin/application_controller.rb	/^  class ApplicationController < Administrate::ApplicationController$/;"	c	class:Admin
+ApplicationController	app/controllers/application_controller.rb	/^class ApplicationController < ActionController::Base$/;"	c
+ApplicationDecorator	app/decorators/application_decorator.rb	/^class ApplicationDecorator < Draper::Decorator$/;"	c
+ApplicationHelper	app/helpers/application_helper.rb	/^module ApplicationHelper$/;"	m
+ApplicationJob	app/jobs/application_job.rb	/^class ApplicationJob < ActiveJob::Base$/;"	c
+ApplicationMailer	app/mailers/application_mailer.rb	/^class ApplicationMailer < ActionMailer::Base$/;"	c
+ApplicationPolicy	app/policies/application_policy.rb	/^class ApplicationPolicy$/;"	c
+ApplicationQuery	app/queries/application_query.rb	/^class ApplicationQuery$/;"	c
+ApplicationRecord	app/models/application_record.rb	/^class ApplicationRecord < ActiveRecord::Base$/;"	c
+ApplicationService	app/services/application_service.rb	/^class ApplicationService$/;"	c
+ApplicationViewComponent	app/components/application_view_component.rb	/^class ApplicationViewComponent < ViewComponent::Base$/;"	c
+AutocompleteController	app/controllers/autocomplete_controller.rb	/^class AutocompleteController < ApplicationController$/;"	c
+BeneficiaryGroup	app/models/beneficiary_group.rb	/^class BeneficiaryGroup < ApplicationRecord$/;"	c
+BeneficiarySubcategory	app/models/beneficiary_subcategory.rb	/^class BeneficiarySubcategory < ApplicationRecord$/;"	c
+BetterRailsSystemTests	spec/system/support/better_rails_system_tests.rb	/^module BetterRailsSystemTests$/;"	m
+BioCard	app/components/bio_card/component.rb	/^class BioCard::Component < ApplicationViewComponent$/;"	c
+BookmarkChannel	app/channels/bookmark_channel.rb	/^class BookmarkChannel < ApplicationCable::Channel$/;"	c
+CategoriesController	app/controllers/admin/categories_controller.rb	/^  class CategoriesController < Admin::ApplicationController$/;"	c	class:Admin
+Cause	app/models/cause.rb	/^class Cause < ApplicationRecord$/;"	c
+CauseDashboard	app/dashboards/cause_dashboard.rb	/^class CauseDashboard < Administrate::BaseDashboard$/;"	c
+CauseDecorator	app/decorators/cause_decorator.rb	/^class CauseDecorator < ApplicationDecorator$/;"	c
+CauseIcon	app/components/cause_icon/component.rb	/^class CauseIcon::Component < ApplicationViewComponent$/;"	c
+CausePolicy	app/policies/cause_policy.rb	/^class CausePolicy < ApplicationPolicy$/;"	c
+CausesController	app/controllers/admin/causes_controller.rb	/^  class CausesController < Admin::ApplicationController$/;"	c	class:Admin
+CausesController	app/controllers/causes_controller.rb	/^class CausesController < ApplicationController$/;"	c
+CausesList	app/components/causes_list/component.rb	/^class CausesList::Component < ApplicationViewComponent$/;"	c
+ChangeColumnTypeAlertOpenNowAndOpenWeekends	db/migrate/20220107135406_change_column_type_alert_open_now_and_open_weekends.rb	/^class ChangeColumnTypeAlertOpenNowAndOpenWeekends < ActiveRecord::Migration[6.1]$/;"	c
+ChangeNullConstrainsFromOrganization	db/migrate/20220104160700_change_null_constrains_from_organization.rb	/^class ChangeNullConstrainsFromOrganization < ActiveRecord::Migration[6.1]$/;"	c
+Channel	app/channels/application_cable/channel.rb	/^  class Channel < ActionCable::Channel::Base$/;"	c	class:ApplicationCable
+CheckboxField	app/fields/checkbox_field.rb	/^class CheckboxField < Administrate::Field::Base$/;"	c
+CitiesController	app/controllers/cities_controller.rb	/^class CitiesController < ApplicationController$/;"	c
+Clockwork	config/clock.rb	/^module Clockwork$/;"	m
+Component	app/components/footer/component.rb	/^  class Component < ApplicationViewComponent; end$/;"	c	class:Footer
+Component	app/components/map_left_popup/component.rb	/^  class Component < ApplicationViewComponent$/;"	c	class:MapLeftPopup
+Component	app/components/search_bar/component.rb	/^  class Component < ApplicationViewComponent$/;"	c	class:SearchBar
+Component	app/components/select_multiple/component.rb	/^  class Component < ApplicationViewComponent$/;"	c	class:SelectMultiple
+ConfirmationsController	app/controllers/confirmations_controller.rb	/^class ConfirmationsController < Devise::ConfirmationsController$/;"	c
+Connection	app/channels/application_cable/connection.rb	/^  class Connection < ActionCable::Connection::Base$/;"	c	class:ApplicationCable
+Constants	app/models/organizations/constants.rb	/^  module Constants$/;"	m	class:Organizations
+ContactMessagesController	app/controllers/contact_messages_controller.rb	/^class ContactMessagesController < NonprofitRequestsController$/;"	c
+CreateActiveStorageTables	db/migrate/20211008114509_create_active_storage_tables.active_storage.rb	/^class CreateActiveStorageTables < ActiveRecord::Migration[5.2]$/;"	c
+CreateAlertBeneficiaries	db/migrate/20220107144927_create_alert_beneficiaries.rb	/^class CreateAlertBeneficiaries < ActiveRecord::Migration[6.1]$/;"	c
+CreateAlertCause	db/migrate/20220622165015_create_alert_cause.rb	/^class CreateAlertCause < ActiveRecord::Migration[6.1]$/;"	c
+CreateAlertServices	db/migrate/20220107144057_create_alert_services.rb	/^class CreateAlertServices < ActiveRecord::Migration[6.1]$/;"	c
+CreateAlerts	db/migrate/20211119163907_create_alerts.rb	/^class CreateAlerts < ActiveRecord::Migration[6.1]$/;"	c
+CreateBeneficiaryGroups	db/migrate/20211027143652_create_beneficiary_groups.rb	/^class CreateBeneficiaryGroups < ActiveRecord::Migration[6.1]$/;"	c
+CreateBeneficiarySubcategories	db/migrate/20211027143720_create_beneficiary_subcategories.rb	/^class CreateBeneficiarySubcategories < ActiveRecord::Migration[6.1]$/;"	c
+CreateCauses	db/migrate/20211108202541_create_causes.rb	/^class CreateCauses < ActiveRecord::Migration[6.1]$/;"	c
+CreateFavoriteLocations	db/migrate/20211112203518_create_favorite_locations.rb	/^class CreateFavoriteLocations < ActiveRecord::Migration[6.1]$/;"	c
+CreateInstagramPosts	db/migrate/20220616220704_create_instagram_posts.rb	/^class CreateInstagramPosts < ActiveRecord::Migration[6.1]$/;"	c
+CreateLocationServices	db/migrate/20211108202634_create_location_services.rb	/^class CreateLocationServices < ActiveRecord::Migration[6.1]$/;"	c
+CreateMessagesTable	db/migrate/20211125171346_create_messages_table.rb	/^class CreateMessagesTable < ActiveRecord::Migration[6.1]$/;"	c
+CreateOfficeHoursTable	db/migrate/20211022224442_create_office_hours_table.rb	/^class CreateOfficeHoursTable < ActiveRecord::Migration[6.1]$/;"	c
+CreateOrganizationAdmins	db/migrate/20211124170156_create_organization_admins.rb	/^class CreateOrganizationAdmins < ActiveRecord::Migration[6.1]$/;"	c
+CreateOrganizationBeneficiaries	db/migrate/20211027143733_create_organization_beneficiaries.rb	/^class CreateOrganizationBeneficiaries < ActiveRecord::Migration[6.1]$/;"	c
+CreateOrganizationCauses	db/migrate/20220215135904_create_organization_causes.rb	/^class CreateOrganizationCauses < ActiveRecord::Migration[6.1]$/;"	c
+CreateOrganizationMissionStatementAndVisionStatementAndTaglineAndDescriptionTranslationsForMobilityColumnBackend	db/migrate/20210923212719_create_organization_mission_statement_and_vision_statement_and_tagline_and_description_translations_for_mobility_column_backend.rb	/^class CreateOrganizationMissionStatementAndVisionStatementAndTaglineAndDescriptionTranslationsForMobilityColumnBackend < ActiveRecord::Migration[6.1]$/;"	c
+CreateOrganizations	db/migrate/20210923165538_create_organizations.rb	/^class CreateOrganizations < ActiveRecord::Migration[6.1]$/;"	c
+CreatePgSearchDocuments	db/migrate/20211012203819_create_pg_search_documents.rb	/^class CreatePgSearchDocuments < ActiveRecord::Migration[6.1]$/;"	c
+CreatePhoneNumbers	db/migrate/20211130204124_create_phone_numbers.rb	/^class CreatePhoneNumbers < ActiveRecord::Migration[6.1]$/;"	c
+CreateServices	db/migrate/20211108202616_create_services.rb	/^class CreateServices < ActiveRecord::Migration[6.1]$/;"	c
+CreateSocialMedias	db/migrate/20210930211422_create_social_medias.rb	/^class CreateSocialMedias < ActiveRecord::Migration[6.1]$/;"	c
+CreateTags	db/migrate/20211028214229_create_tags.rb	/^class CreateTags < ActiveRecord::Migration[6.1]$/;"	c
+CupriteHelpers	spec/system/support/cuprite_setup.rb	/^module CupriteHelpers$/;"	m
+DeliveringMessage	app/decorators/delivering_message.rb	/^class DeliveringMessage < SimpleDelegator$/;"	c
+DesignationTag	app/components/designation_tag/component.rb	/^class DesignationTag::Component < ApplicationViewComponent$/;"	c
+DeviseCreateAdminUsers	db/migrate/20210902212849_devise_create_admin_users.rb	/^class DeviseCreateAdminUsers < ActiveRecord::Migration[6.1]$/;"	c
+DeviseCreateUsers	db/migrate/20210902164512_devise_create_users.rb	/^class DeviseCreateUsers < ActiveRecord::Migration[6.1]$/;"	c
+DiscoverNonprofitCard	app/components/discover_nonprofit_card/actions_menu/component.rb	/^class DiscoverNonprofitCard::ActionsMenu::Component < ApplicationViewComponent$/;"	c
+DiscoverNonprofitCard	app/components/discover_nonprofit_card/component.rb	/^class DiscoverNonprofitCard::Component < ApplicationViewComponent$/;"	c
+DiscoverNonprofitCard	app/components/discover_nonprofit_card/head/component.rb	/^class DiscoverNonprofitCard::Head::Component < ApplicationViewComponent$/;"	c
+DiscoverNonprofitCard	app/components/discover_nonprofit_card/images_carousel/component.rb	/^class DiscoverNonprofitCard::ImagesCarousel::Component < ApplicationViewComponent$/;"	c
+DiscoverNonprofitCard	app/components/discover_nonprofit_card/images_carousel/nav_button/component.rb	/^class DiscoverNonprofitCard::ImagesCarousel::NavButton::Component < ApplicationViewComponent$/;"	c
+DonatesController	app/controllers/donates_controller.rb	/^class DonatesController < ApplicationController$/;"	c
+EinChecker	app/services/ein_checker.rb	/^class EinChecker < ApplicationService$/;"	c
+ExportLocationsController	app/controllers/admin/export_locations_controller.rb	/^  class ExportLocationsController < Admin::ApplicationController$/;"	c	class:Admin
+FaqsController	app/controllers/faqs_controller.rb	/^class FaqsController < ApplicationController$/;"	c
+FavoriteLocation	app/models/favorite_location.rb	/^class FavoriteLocation < ApplicationRecord$/;"	c
+FavoriteLocationsController	app/controllers/favorite_locations_controller.rb	/^class FavoriteLocationsController < ApplicationController$/;"	c
+FetchInstagramMedia	app/services/fetch_instagram_media.rb	/^class FetchInstagramMedia < ApplicationService$/;"	c
+FilterQuery	app/queries/locations/filter_query.rb	/^  class FilterQuery$/;"	c	class:Locations
+Footer	app/components/footer/component.rb	/^module Footer$/;"	m
+FormHelper	app/helpers/form_helper.rb	/^module FormHelper$/;"	m
+Geo	app/models/geo.rb	/^class Geo$/;"	c
+GeolocationQuery	app/queries/locations/geolocation_query.rb	/^  class GeolocationQuery$/;"	c	class:Locations
+GivingConnection	config/application.rb	/^module GivingConnection$/;"	m
+HiddenField	app/fields/hidden_field.rb	/^class HiddenField < Administrate::Field::Base$/;"	c
+HomeController	app/controllers/home_controller.rb	/^class HomeController < ApplicationController$/;"	c
+ImageHeicToJpegConverter	app/services/image_heic_to_jpeg_converter.rb	/^class ImageHeicToJpegConverter < ApplicationService$/;"	c
+InfowindowsController	app/controllers/infowindows_controller.rb	/^class InfowindowsController < ApplicationController$/;"	c
+Instagram	app/jobs/instagram/create_media_post_job.rb	/^class Instagram::CreateMediaPostJob < ApplicationJob$/;"	c
+Instagram	app/jobs/instagram/fetch_media_posts_job.rb	/^class Instagram::FetchMediaPostsJob < ApplicationJob$/;"	c
+InstagramPost	app/models/instagram_post.rb	/^class InstagramPost < ActiveRecord::Base$/;"	c
+KeywordQuery	app/queries/locations/keyword_query.rb	/^  class KeywordQuery < ApplicationQuery$/;"	c	class:Locations
+Location	app/models/location.rb	/^class Location < ActiveRecord::Base$/;"	c
+LocationDashboard	app/dashboards/location_dashboard.rb	/^class LocationDashboard < Administrate::BaseDashboard$/;"	c
+LocationDecorator	app/decorators/location_decorator.rb	/^class LocationDecorator < ApplicationDecorator$/;"	c
+LocationInfowindow	app/components/location_infowindow/component.rb	/^class LocationInfowindow::Component < ApplicationViewComponent$/;"	c
+LocationPolicy	app/policies/location_policy.rb	/^class LocationPolicy < ApplicationPolicy$/;"	c
+LocationService	app/models/location_service.rb	/^class LocationService < ApplicationRecord$/;"	c
+LocationServiceDashboard	app/dashboards/location_service_dashboard.rb	/^class LocationServiceDashboard < Administrate::BaseDashboard$/;"	c
+LocationServicesController	app/controllers/admin/location_services_controller.rb	/^  class LocationServicesController < Admin::ApplicationController$/;"	c	class:Admin
+LocationValidator	app/models/concerns/location_validator.rb	/^class LocationValidator < ActiveModel::Validator$/;"	c
+Locationable	app/controllers/concerns/locationable.rb	/^module Locationable$/;"	m
+Locations	app/models/locations/officeable.rb	/^module Locations$/;"	m
+Locations	app/models/locations/searchable.rb	/^module Locations$/;"	m
+Locations	app/queries/locations/filter_query.rb	/^module Locations$/;"	m
+Locations	app/queries/locations/geolocation_query.rb	/^module Locations$/;"	m
+Locations	app/queries/locations/keyword_query.rb	/^module Locations$/;"	m
+LocationsController	app/controllers/admin/locations_controller.rb	/^  class LocationsController < Admin::ApplicationController$/;"	c	class:Admin
+LocationsController	app/controllers/locations_controller.rb	/^class LocationsController < ApplicationController$/;"	c
+LocationsExporter	app/services/locations_exporter.rb	/^class LocationsExporter < ApplicationService$/;"	c
+LocationsHelper	app/helpers/locations_helper.rb	/^module LocationsHelper$/;"	m
+MapLeftPopup	app/components/map_left_popup/component.rb	/^module MapLeftPopup$/;"	m
+MapPopupsController	app/controllers/map_popups_controller.rb	/^class MapPopupsController < ApplicationController$/;"	c
+Message	app/models/message.rb	/^class Message < ActiveRecord::Base$/;"	c
+MessageDashboard	app/dashboards/message_dashboard.rb	/^class MessageDashboard < Administrate::BaseDashboard$/;"	c
+MessageDecorator	app/decorators/message_decorator.rb	/^class MessageDecorator < ApplicationDecorator$/;"	c
+MessageMailer	app/mailers/message_mailer.rb	/^class MessageMailer < ApplicationMailer$/;"	c
+MessagesController	app/controllers/admin/messages_controller.rb	/^  class MessagesController < Admin::ApplicationController$/;"	c	class:Admin
+MyAccountsController	app/controllers/my_accounts_controller.rb	/^class MyAccountsController < ApplicationController$/;"	c
+Navbar	app/components/navbar/component.rb	/^class Navbar::Component < ApplicationViewComponent$/;"	c
+NonprofitRequestsController	app/controllers/nonprofit_requests_controller.rb	/^class NonprofitRequestsController < ApplicationController$/;"	c
+OfficeHour	app/models/office_hour.rb	/^class OfficeHour < ActiveRecord::Base$/;"	c
+OfficeHourDashboard	app/dashboards/office_hour_dashboard.rb	/^class OfficeHourDashboard < Administrate::BaseDashboard$/;"	c
+OfficeHourDecorator	app/decorators/office_hour_decorator.rb	/^class OfficeHourDecorator < ApplicationDecorator$/;"	c
+OfficeHours	app/models/office_hours/searchable.rb	/^module OfficeHours$/;"	m
+OfficeHoursController	app/controllers/admin/office_hours_controller.rb	/^  class OfficeHoursController < Admin::ApplicationController$/;"	c	class:Admin
+OfficeHoursHelper	app/helpers/office_hours_helper.rb	/^module OfficeHoursHelper$/;"	m
+OfficeHoursValidator	app/models/concerns/office_hours_validator.rb	/^class OfficeHoursValidator < ActiveModel::Validator$/;"	c
+Officeable	app/models/locations/officeable.rb	/^  module Officeable$/;"	m	class:Locations
+Organization	app/models/organization.rb	/^class Organization < ApplicationRecord$/;"	c
+OrganizationAdmin	app/models/organization_admin.rb	/^class OrganizationAdmin < ApplicationRecord$/;"	c
+OrganizationAdminDashboard	app/dashboards/organization_admin_dashboard.rb	/^class OrganizationAdminDashboard < Administrate::BaseDashboard$/;"	c
+OrganizationAdminsController	app/controllers/admin/organization_admins_controller.rb	/^  class OrganizationAdminsController < Admin::ApplicationController$/;"	c	class:Admin
+OrganizationBeneficiary	app/models/organization_beneficiary.rb	/^class OrganizationBeneficiary < ApplicationRecord$/;"	c
+OrganizationCategory	app/models/organization_category.rb	/^class OrganizationCategory < ApplicationRecord$/;"	c
+OrganizationCause	app/models/organization_cause.rb	/^class OrganizationCause < ApplicationRecord$/;"	c
+OrganizationCauseDashboard	app/dashboards/organization_cause_dashboard.rb	/^class OrganizationCauseDashboard < Administrate::BaseDashboard$/;"	c
+OrganizationCausesController	app/controllers/admin/organization_causes_controller.rb	/^  class OrganizationCausesController < Admin::ApplicationController$/;"	c	class:Admin
+OrganizationDashboard	app/dashboards/organization_dashboard.rb	/^class OrganizationDashboard < Administrate::BaseDashboard$/;"	c
+OrganizationDecorator	app/decorators/organization_decorator.rb	/^class OrganizationDecorator < ApplicationDecorator$/;"	c
+OrganizationFormPresenter	app/presenters/organization_form_presenter.rb	/^class OrganizationFormPresenter$/;"	c
+OrganizationPolicy	app/policies/organization_policy.rb	/^class OrganizationPolicy < ApplicationPolicy$/;"	c
+OrganizationValidator	app/models/concerns/organization_validator.rb	/^class OrganizationValidator < ActiveModel::Validator$/;"	c
+Organizations	app/models/organizations/constants.rb	/^module Organizations$/;"	m
+OrganizationsController	app/controllers/admin/organizations_controller.rb	/^  class OrganizationsController < Admin::ApplicationController$/;"	c	class:Admin
+OrganizationsController	app/controllers/organizations_controller.rb	/^class OrganizationsController < ApplicationController$/;"	c
+PhoneNumber	app/models/phone_number.rb	/^class PhoneNumber < ApplicationRecord$/;"	c
+PhoneNumberDashboard	app/dashboards/phone_number_dashboard.rb	/^class PhoneNumberDashboard < Administrate::BaseDashboard$/;"	c
+PhoneNumbersController	app/controllers/admin/phone_numbers_controller.rb	/^  class PhoneNumbersController < Admin::ApplicationController$/;"	c	class:Admin
+PrivacyPoliciesController	app/controllers/privacy_policies_controller.rb	/^class PrivacyPoliciesController < ApplicationController$/;"	c
+Rack	config/initializers/rack_attack.rb	/^class Rack::Attack$/;"	c
+RandomCoordinatesGenerator	app/services/random_coordinates_generator.rb	/^class RandomCoordinatesGenerator < ApplicationService$/;"	c
+RemoveAppointmentOnlyFromLocations	db/migrate/20230810162104_remove_appointment_only_from_locations.rb	/^class RemoveAppointmentOnlyFromLocations < ActiveRecord::Migration[6.1]$/;"	c
+RemoveDescriptionFromOrgs	db/migrate/20211125214921_remove_description_from_orgs.rb	/^class RemoveDescriptionFromOrgs < ActiveRecord::Migration[6.1]$/;"	c
+RemoveImagesFromLocation	db/migrate/20220915191909_remove_images_from_location.rb	/^class RemoveImagesFromLocation < ActiveRecord::Migration[6.1]$/;"	c
+RemoveNullFromMessages	db/migrate/20220712023428_remove_null_from_messages.rb	/^class RemoveNullFromMessages < ActiveRecord::Migration[6.1]$/;"	c
+RemovePhysicalFromLocations	db/migrate/20230804232930_remove_physical_from_locations.rb	/^class RemovePhysicalFromLocations < ActiveRecord::Migration[6.1]$/;"	c
+RemoveUniquenessFromEinNumber	db/migrate/20240518174354_remove_uniqueness_from_ein_number.rb	/^class RemoveUniquenessFromEinNumber < ActiveRecord::Migration[6.1]$/;"	c
+ResetPasswordController	app/controllers/reset_password_controller.rb	/^class ResetPasswordController < ApplicationController$/;"	c
+Responder	app/controllers/turbo_controller.rb	/^  class Responder < ActionController::Responder$/;"	c	class:TurboController
+ResultCard	app/components/result_card/component.rb	/^class ResultCard::Component < ApplicationViewComponent$/;"	c
+SaveButton	app/components/save_button/component.rb	/^class SaveButton::Component < ApplicationViewComponent$/;"	c
+SavedSearchAlertMailer	app/mailers/saved_search_alert_mailer.rb	/^class SavedSearchAlertMailer < ApplicationMailer$/;"	c
+SavedSearchAlertMailerPreview	spec/mailers/previews/saved_search_alert_mailer_preview.rb	/^class SavedSearchAlertMailerPreview < ActionMailer::Preview$/;"	c
+Scope	app/policies/alert_policy.rb	/^  class Scope < Scope$/;"	c	class:AlertPolicy
+Scope	app/policies/application_policy.rb	/^  class Scope$/;"	c	class:ApplicationPolicy
+Scope	app/policies/cause_policy.rb	/^  class Scope < Scope$/;"	c	class:CausePolicy
+Scope	app/policies/location_policy.rb	/^  class Scope < Scope$/;"	c	class:LocationPolicy
+Scope	app/policies/organization_policy.rb	/^  class Scope < Scope$/;"	c	class:OrganizationPolicy
+Scope	app/policies/search_policy.rb	/^  class Scope < Scope$/;"	c	class:SearchPolicy
+Search	app/models/search.rb	/^class Search$/;"	c
+SearchBar	app/components/search_bar/component.rb	/^module SearchBar$/;"	m
+SearchPills	app/components/search_pills/button/component.rb	/^class SearchPills::Button::Component < ApplicationViewComponent$/;"	c
+SearchPills	app/components/search_pills/component.rb	/^class SearchPills::Component < ApplicationViewComponent$/;"	c
+SearchPills	app/components/search_pills/more_filters_button/component.rb	/^class SearchPills::MoreFiltersButton::Component < ApplicationViewComponent$/;"	c
+SearchPills	app/components/search_pills/pill/component.rb	/^class SearchPills::Pill::Component < ApplicationViewComponent$/;"	c
+SearchPolicy	app/policies/search_policy.rb	/^class SearchPolicy < ApplicationPolicy$/;"	c
+SearchPreviewPolicy	app/policies/search_preview_policy.rb	/^class SearchPreviewPolicy < ApplicationPolicy$/;"	c
+Searchable	app/models/locations/searchable.rb	/^  module Searchable$/;"	m	class:Locations
+Searchable	app/models/office_hours/searchable.rb	/^  module Searchable$/;"	m	class:OfficeHours
+SearchesController	app/controllers/searches_controller.rb	/^class SearchesController < ApplicationController$/;"	c
+SearchesHelper	app/helpers/searches_helper.rb	/^module SearchesHelper$/;"	m
+SelectMultiple	app/components/select_multiple/component.rb	/^module SelectMultiple$/;"	m
+Service	app/models/service.rb	/^class Service < ApplicationRecord$/;"	c
+Service	lib/active_storage/service/better_s3_service.rb	/^  class Service::BetterS3Service < Service::S3Service$/;"	c	class:ActiveStorage
+ServiceDashboard	app/dashboards/service_dashboard.rb	/^class ServiceDashboard < Administrate::BaseDashboard$/;"	c
+ServicesController	app/controllers/admin/services_controller.rb	/^  class ServicesController < Admin::ApplicationController$/;"	c	class:Admin
+SocialMedia	app/components/social_media/component.rb	/^class SocialMedia::Component < ApplicationViewComponent$/;"	c
+SocialMedia	app/models/social_media.rb	/^class SocialMedia < ApplicationRecord$/;"	c
+SocialMediaDashboard	app/dashboards/social_media_dashboard.rb	/^class SocialMediaDashboard < Administrate::BaseDashboard$/;"	c
+SocialMediasController	app/controllers/admin/social_medias_controller.rb	/^  class SocialMediasController < Admin::ApplicationController$/;"	c	class:Admin
+SpreadsheetParse	app/models/spreadsheet_parse.rb	/^class SpreadsheetParse$/;"	c
+Tag	app/models/tag.rb	/^class Tag < ApplicationRecord$/;"	c
+TagDashboard	app/dashboards/tag_dashboard.rb	/^class TagDashboard < Administrate::BaseDashboard$/;"	c
+TagInputField	app/fields/tag_input_field.rb	/^class TagInputField < Administrate::Field::Base$/;"	c
+TagsController	app/controllers/admin/tags_controller.rb	/^  class TagsController < Admin::ApplicationController$/;"	c	class:Admin
+TermsAndConditionsController	app/controllers/terms_and_conditions_controller.rb	/^class TermsAndConditionsController < ApplicationController$/;"	c
+Testing	app/models/testing.rb	/^class Testing < ApplicationRecord$/;"	c
+TimeSelectField	app/fields/time_select_field.rb	/^class TimeSelectField < Administrate::Field::Base$/;"	c
+TimeZoneConverter	app/services/time_zone_converter.rb	/^class TimeZoneConverter < ApplicationService$/;"	c
+TimeZoneConvertible	app/models/concerns/time_zone_convertible.rb	/^module TimeZoneConvertible$/;"	m
+ToggleCheckField	app/fields/toggle_check_field.rb	/^class ToggleCheckField < Administrate::Field::Base$/;"	c
+TurboController	app/controllers/turbo_controller.rb	/^class TurboController < ApplicationController$/;"	c
+UniquenessWarningField	app/fields/uniqueness_warning_field.rb	/^class UniquenessWarningField < Administrate::Field::Base$/;"	c
+User	app/models/user.rb	/^class User < ApplicationRecord$/;"	c
+UserDashboard	app/dashboards/user_dashboard.rb	/^class UserDashboard < Administrate::BaseDashboard$/;"	c
+UsersController	app/controllers/admin/users_controller.rb	/^  class UsersController < Admin::ApplicationController$/;"	c	class:Admin
+UsersController	app/controllers/users_controller.rb	/^class UsersController < ApplicationController$/;"	c
+WorkingHours	app/components/working_hours/component.rb	/^  class WorkingHours::Component < ApplicationViewComponent$/;"	c	class:WorkingHours
+WorkingHours	app/components/working_hours/component.rb	/^module WorkingHours$/;"	m
+action_button_styles	app/helpers/action_button_helper.rb	/^  def action_button_styles$/;"	f	class:ActionButtonHelper
+activate_bundler	bin/bundle	/^  def activate_bundler$/;"	f
+activation_error_handling	bin/bundle	/^  def activation_error_handling$/;"	f
+address_with_suite_number	app/models/location.rb	/^  def address_with_suite_number$/;"	f	class:Location
+admins_notification	app/mailers/message_mailer.rb	/^  def admins_notification(message)$/;"	f	class:MessageMailer
+after_confirmation_path_for	app/controllers/confirmations_controller.rb	/^  def after_confirmation_path_for(resource_name, resource)$/;"	f	class:ConfirmationsController
+after_sign_in_path_for	app/controllers/application_controller.rb	/^  def after_sign_in_path_for(resource_or_scope)$/;"	f	class:ApplicationController
+alert_params	app/controllers/alerts_controller.rb	/^  def alert_params$/;"	f	class:AlertsController
+assign_beneficiaries	app/helpers/alerts_helper.rb	/^  def assign_beneficiaries(object, list)$/;"	f	class:AlertsHelper
+assign_causes	app/helpers/alerts_helper.rb	/^  def assign_causes(object, list)$/;"	f	class:AlertsHelper
+assign_services	app/helpers/alerts_helper.rb	/^  def assign_services(object, list)$/;"	f	class:AlertsHelper
+at_least_one_main_location	app/models/concerns/organization_validator.rb	/^  def at_least_one_main_location$/;"	f	class:OrganizationValidator
+attach_logo_and_cover	app/models/organization.rb	/^  def attach_logo_and_cover$/;"	f	class:Organization
+attach_logos	app/mailers/application_mailer.rb	/^  def attach_logos$/;"	f	class:ApplicationMailer
+attach_organizations_logos	app/mailers/saved_search_alert_mailer.rb	/^  def attach_organizations_logos$/;"	f	class:SavedSearchAlertMailer
+authenticate_admin	app/controllers/admin/application_controller.rb	/^    def authenticate_admin$/;"	f	class:Admin.ApplicationController
+beneficiary_types	app/fields/checkbox_field.rb	/^  def beneficiary_types$/;"	f	class:CheckboxField
+blank_office_hours	app/models/location.rb	/^  def blank_office_hours(attributes)$/;"	f	class:Location
+btn_selector	app/components/save_button/component.rb	/^  def btn_selector$/;"	f	class:SaveButton
+build_alert_filters	app/mailers/saved_search_alert_mailer.rb	/^  def build_alert_filters$/;"	f	class:SavedSearchAlertMailer
+build_beneficiary_groups	app/services/alert_search_results.rb	/^  def build_beneficiary_groups$/;"	f	class:AlertSearchResults
+build_causes	app/services/alert_search_results.rb	/^  def build_causes$/;"	f	class:AlertSearchResults
+build_designation_map	app/components/designation_tag/component.rb	/^  def build_designation_map$/;"	f	class:DesignationTag
+build_location_hash	app/models/spreadsheet_parse.rb	/^  def build_location_hash(location_row)$/;"	f	class:SpreadsheetParse
+build_message	app/controllers/nonprofit_requests_controller.rb	/^  def build_message$/;"	f	class:NonprofitRequestsController
+build_organization_hash	app/models/spreadsheet_parse.rb	/^  def build_organization_hash(org_row)$/;"	f	class:SpreadsheetParse
+build_services	app/services/alert_search_results.rb	/^  def build_services$/;"	f	class:AlertSearchResults
+build_social_media_hash	app/models/spreadsheet_parse.rb	/^  def build_social_media_hash(org_row)$/;"	f	class:SpreadsheetParse
+bundler_requirement	bin/bundle	/^  def bundler_requirement$/;"	f
+bundler_version	bin/bundle	/^  def bundler_version$/;"	f
+button_options	app/components/discover_nonprofit_card/images_carousel/nav_button/component.rb	/^  def button_options$/;"	f	class:DiscoverNonprofitCard
+button_styles	app/components/save_button/component.rb	/^  def button_styles$/;"	f	class:SaveButton
+by_address	app/queries/locations/filter_query.rb	/^      def by_address(scope, address_params)$/;"	f	class:Locations.FilterQuery
+by_beneficiary_groups_served	app/queries/locations/filter_query.rb	/^      def by_beneficiary_groups_served(scope, beneficiary_groups_filters)$/;"	f	class:Locations.FilterQuery
+by_cause	app/queries/locations/filter_query.rb	/^      def by_cause(scope, causes)$/;"	f	class:Locations.FilterQuery
+by_keyword	app/queries/locations/keyword_query.rb	/^      def by_keyword(scope, keyword)$/;"	f	class:Locations.KeywordQuery
+by_service	app/queries/locations/filter_query.rb	/^      def by_service(scope, services)$/;"	f	class:Locations.FilterQuery
+call	app/queries/application_query.rb	/^  def self.call(*params)$/;"	F	class:ApplicationQuery
+call	app/queries/locations/filter_query.rb	/^      def call(params = {}, locations = Location.active)$/;"	f	class:Locations.FilterQuery
+call	app/queries/locations/geolocation_query.rb	/^      def call(params = {}, locations = Location.active)$/;"	f	class:Locations.GeolocationQuery
+call	app/queries/locations/keyword_query.rb	/^      def call(params = {}, locations = Location.active)$/;"	f	class:Locations.KeywordQuery
+call	app/services/alert_search_results.rb	/^  def call$/;"	f	class:AlertSearchResults
+call	app/services/application_service.rb	/^  def self.call(...)$/;"	F	class:ApplicationService
+call	app/services/ein_checker.rb	/^  def call$/;"	f	class:EinChecker
+call	app/services/locations_exporter.rb	/^  def call$/;"	f	class:LocationsExporter
+call	app/services/random_coordinates_generator.rb	/^  def call$/;"	f	class:RandomCoordinatesGenerator
+carousel_container_options	app/components/discover_nonprofit_card/images_carousel/component.rb	/^  def carousel_container_options$/;"	f	class:DiscoverNonprofitCard
+cause_options	app/components/causes_list/component.rb	/^  def cause_options$/;"	f	class:CausesList
+change	db/migrate/20210902164512_devise_create_users.rb	/^  def change$/;"	f	class:DeviseCreateUsers
+change	db/migrate/20210902212849_devise_create_admin_users.rb	/^  def change$/;"	f	class:DeviseCreateAdminUsers
+change	db/migrate/20210923165538_create_organizations.rb	/^  def change$/;"	f	class:CreateOrganizations
+change	db/migrate/20210923212719_create_organization_mission_statement_and_vision_statement_and_tagline_and_description_translations_for_mobility_column_backend.rb	/^  def change$/;"	f	class:CreateOrganizationMissionStatementAndVisionStatementAndTaglineAndDescriptionTranslationsForMobilityColumnBackend
+change	db/migrate/20210930211422_create_social_medias.rb	/^  def change$/;"	f	class:CreateSocialMedias
+change	db/migrate/20211005225218_add_spatial_data.rb	/^  def change$/;"	f	class:AddSpatialData
+change	db/migrate/20211008114509_create_active_storage_tables.active_storage.rb	/^  def change$/;"	f	class:CreateActiveStorageTables
+change	db/migrate/20211022224442_create_office_hours_table.rb	/^  def change$/;"	f	class:CreateOfficeHoursTable
+change	db/migrate/20211027143652_create_beneficiary_groups.rb	/^  def change$/;"	f	class:CreateBeneficiaryGroups
+change	db/migrate/20211027143720_create_beneficiary_subcategories.rb	/^  def change$/;"	f	class:CreateBeneficiarySubcategories
+change	db/migrate/20211027143733_create_organization_beneficiaries.rb	/^  def change$/;"	f	class:CreateOrganizationBeneficiaries
+change	db/migrate/20211028214229_create_tags.rb	/^  def change$/;"	f	class:CreateTags
+change	db/migrate/20211108202541_create_causes.rb	/^  def change$/;"	f	class:CreateCauses
+change	db/migrate/20211108202616_create_services.rb	/^  def change$/;"	f	class:CreateServices
+change	db/migrate/20211108202634_create_location_services.rb	/^  def change$/;"	f	class:CreateLocationServices
+change	db/migrate/20211112203518_create_favorite_locations.rb	/^  def change$/;"	f	class:CreateFavoriteLocations
+change	db/migrate/20211119163907_create_alerts.rb	/^  def change$/;"	f	class:CreateAlerts
+change	db/migrate/20211121214953_add_appointment_only_to_locations.rb	/^  def change$/;"	f	class:AddAppointmentOnlyToLocations
+change	db/migrate/20211124170156_create_organization_admins.rb	/^  def change$/;"	f	class:CreateOrganizationAdmins
+change	db/migrate/20211125171346_create_messages_table.rb	/^  def change$/;"	f	class:CreateMessagesTable
+change	db/migrate/20211125214921_remove_description_from_orgs.rb	/^  def change$/;"	f	class:RemoveDescriptionFromOrgs
+change	db/migrate/20211125221813_add_name_to_locations.rb	/^  def change$/;"	f	class:AddNameToLocations
+change	db/migrate/20211130203313_add_name_to_users.rb	/^  def change$/;"	f	class:AddNameToUsers
+change	db/migrate/20211130204102_add_email_to_locations.rb	/^  def change$/;"	f	class:AddEmailToLocations
+change	db/migrate/20211130204124_create_phone_numbers.rb	/^  def change$/;"	f	class:CreatePhoneNumbers
+change	db/migrate/20211130220215_add_second_name_to_organization.rb	/^  def change$/;"	f	class:AddSecondNameToOrganization
+change	db/migrate/20211130222409_add_phone_number_to_organizations.rb	/^  def change$/;"	f	class:AddPhoneNumberToOrganizations
+change	db/migrate/20211130222523_add_email_to_organizations.rb	/^  def change$/;"	f	class:AddEmailToOrganizations
+change	db/migrate/20220104160700_change_null_constrains_from_organization.rb	/^  def change$/;"	f	class:ChangeNullConstrainsFromOrganization
+change	db/migrate/20220107135406_change_column_type_alert_open_now_and_open_weekends.rb	/^  def change$/;"	f	class:ChangeColumnTypeAlertOpenNowAndOpenWeekends
+change	db/migrate/20220107144057_create_alert_services.rb	/^  def change$/;"	f	class:CreateAlertServices
+change	db/migrate/20220107144927_create_alert_beneficiaries.rb	/^  def change$/;"	f	class:CreateAlertBeneficiaries
+change	db/migrate/20220111122848_add_active_to_organization.rb	/^  def change$/;"	f	class:AddActiveToOrganization
+change	db/migrate/20220125114120_add_po_box_to_locations.rb	/^  def change$/;"	f	class:AddPoBoxToLocations
+change	db/migrate/20220128163644_add_next_alert_to_alerts.rb	/^  def change$/;"	f	class:AddNextAlertToAlerts
+change	db/migrate/20220207161434_add_default_false_to_po_box_for_locations.rb	/^  def change$/;"	f	class:AddDefaultFalseToPoBoxForLocations
+change	db/migrate/20220215135904_create_organization_causes.rb	/^  def change$/;"	f	class:CreateOrganizationCauses
+change	db/migrate/20220216165005_add_suite_to_location.rb	/^  def change$/;"	f	class:AddSuiteToLocation
+change	db/migrate/20220607164939_add_search_results_to_alerts.rb	/^  def change$/;"	f	class:AddSearchResultsToAlerts
+change	db/migrate/20220616220704_create_instagram_posts.rb	/^  def change$/;"	f	class:CreateInstagramPosts
+change	db/migrate/20220622165015_create_alert_cause.rb	/^  def change$/;"	f	class:CreateAlertCause
+change	db/migrate/20220712023428_remove_null_from_messages.rb	/^  def change$/;"	f	class:RemoveNullFromMessages
+change	db/migrate/20220802184357_add_verified_to_organizations.rb	/^  def change$/;"	f	class:AddVerifiedToOrganizations
+change	db/migrate/20220825161720_add_you_toube_video_link.rb	/^  def change$/;"	f	class:AddYouToubeVideoLink
+change	db/migrate/20220825190859_add_donation_link.rb	/^  def change$/;"	f	class:AddDonationLink
+change	db/migrate/20220905132005_add_images_to_locations.rb	/^  def change$/;"	f	class:AddImagesToLocations
+change	db/migrate/20220914174749_add_profile_admin_name_and_email_to_messages.rb	/^  def change$/;"	f	class:AddProfileAdminNameAndEmailToMessages
+change	db/migrate/20220915191909_remove_images_from_location.rb	/^  def change$/;"	f	class:RemoveImagesFromLocation
+change	db/migrate/20230726001911_add_public_address_to_locations.rb	/^  def change$/;"	f	class:AddPublicAddressToLocations
+change	db/migrate/20230804232930_remove_physical_from_locations.rb	/^  def change$/;"	f	class:RemovePhysicalFromLocations
+change	db/migrate/20230810020732_add_non_standard_office_hours_to_locations.rb	/^  def change$/;"	f	class:AddNonStandardOfficeHoursToLocations
+change	db/migrate/20230810162104_remove_appointment_only_from_locations.rb	/^  def change$/;"	f	class:RemoveAppointmentOnlyFromLocations
+change	db/migrate/20230922225804_add_volunteer_availability_to_organizations.rb	/^  def change$/;"	f	class:AddVolunteerAvailabilityToOrganizations
+change	db/migrate/20231006165935_add_volunteer_link_to_organizations.rb	/^  def change$/;"	f	class:AddVolunteerLinkToOrganizations
+change	db/migrate/20231115211830_add_general_population_serving_to_organizations.rb	/^  def change$/;"	f	class:AddGeneralPopulationServingToOrganizations
+change	db/migrate/20240510220249_add_time_zone_to_location.rb	/^  def change$/;"	f	class:AddTimeZoneToLocation
+change	db/migrate/20240518174354_remove_uniqueness_from_ein_number.rb	/^  def change$/;"	f	class:RemoveUniquenessFromEinNumber
+change_detection_form_container_setup	app/presenters/organization_form_presenter.rb	/^  def change_detection_form_container_setup$/;"	f	class:OrganizationFormPresenter
+change_detection_form_setup	app/presenters/organization_form_presenter.rb	/^  def change_detection_form_setup$/;"	f	class:OrganizationFormPresenter
+check_ein	app/controllers/admin/organizations_controller.rb	/^    def check_ein$/;"	f	class:Admin.OrganizationsController
+check_ein	app/controllers/organizations_controller.rb	/^  def check_ein$/;"	f	class:OrganizationsController
+city_state_zipcode	app/decorators/location_decorator.rb	/^  def city_state_zipcode$/;"	f	class:LocationDecorator
+clean_open_weekends	app/controllers/alerts_controller.rb	/^  def clean_open_weekends(new_alert)$/;"	f	class:AlertsController
+clean_time	app/models/office_hour.rb	/^  def clean_time$/;"	f	class:OfficeHour
+cli_arg_version	bin/bundle	/^  def cli_arg_version$/;"	f
+click_button	spec/system/support/cuprite_setup.rb	/^  def click_button(identifier)$/;"	f	class:CupriteHelpers
+close_hour_after_open_hour	app/models/concerns/office_hours_validator.rb	/^  def close_hour_after_open_hour$/;"	f	class:OfficeHoursValidator
+close_time_for_display	app/decorators/location_decorator.rb	/^  def close_time_for_display$/;"	f	class:LocationDecorator
+closed_if_does_not_offers_service	app/models/office_hour.rb	/^  def closed_if_does_not_offers_service$/;"	f	class:OfficeHour
+closed_office_hours_display	app/decorators/location_decorator.rb	/^  def closed_office_hours_display$/;"	f	class:LocationDecorator
+collection	app/components/select_multiple/component.rb	/^    def collection(name)$/;"	f	class:SelectMultiple.Component
+complete_office_hours	app/models/concerns/location_validator.rb	/^  def complete_office_hours$/;"	f	class:LocationValidator
+complete_time_zone	app/models/concerns/location_validator.rb	/^  def complete_time_zone$/;"	f	class:LocationValidator
+configure_permitted_parameters	app/controllers/application_controller.rb	/^  def configure_permitted_parameters$/;"	f	class:ApplicationController
+consistent_weekdays_hours?	app/models/locations/officeable.rb	/^    def consistent_weekdays_hours?$/;"	f	class:Locations.Officeable
+container_setup	app/components/designation_tag/component.rb	/^  def container_setup$/;"	f	class:DesignationTag
+convert	app/services/image_heic_to_jpeg_converter.rb	/^  def convert$/;"	f	class:ImageHeicToJpegConverter
+convert_times_to_utc	app/models/concerns/time_zone_convertible.rb	/^  def convert_times_to_utc$/;"	f	class:TimeZoneConvertible
+copy_styles	app/components/save_button/component.rb	/^  def copy_styles$/;"	f	class:SaveButton
+create	app/controllers/admin/organizations_controller.rb	/^    def create$/;"	f	class:Admin.OrganizationsController
+create	app/controllers/alerts_controller.rb	/^  def create$/;"	f	class:AlertsController
+create	app/controllers/favorite_locations_controller.rb	/^  def create$/;"	f	class:FavoriteLocationsController
+create	app/controllers/nonprofit_requests_controller.rb	/^  def create$/;"	f	class:NonprofitRequestsController
+create?	app/policies/alert_policy.rb	/^  def create?$/;"	f	class:AlertPolicy
+create?	app/policies/application_policy.rb	/^  def create?$/;"	f	class:ApplicationPolicy
+create_associated_records	app/models/spreadsheet_parse.rb	/^  def create_associated_records(csv_file_path, new_object, id_key, association_name, model_name, org_id)$/;"	f	class:SpreadsheetParse
+create_instagram_post	app/jobs/instagram/create_media_post_job.rb	/^  def create_instagram_post$/;"	f	class:Instagram
+create_instances_from_session	app/controllers/application_controller.rb	/^  def create_instances_from_session$/;"	f	class:ApplicationController
+create_location_office_hours	app/models/spreadsheet_parse.rb	/^  def create_location_office_hours(office_hours_file_path, new_location, location_id)$/;"	f	class:SpreadsheetParse
+create_location_phone_number	app/models/spreadsheet_parse.rb	/^  def create_location_phone_number(location_phone_number_csv_file, new_location, location_id)$/;"	f	class:SpreadsheetParse
+create_location_services	app/models/spreadsheet_parse.rb	/^  def create_location_services(location_services_csv_file_path, new_location, location_id)$/;"	f	class:SpreadsheetParse
+create_locations_location_services_office_hours_and_phone_numbers	app/models/spreadsheet_parse.rb	/^  def create_locations_location_services_office_hours_and_phone_numbers(locations_csv_file_path, location_services_csv_file_path, location_office_hours_csv_file, location_phone_number_csv_file, new_organization, org_id)$/;"	f	class:SpreadsheetParse
+create_models	app/models/spreadsheet_parse.rb	/^  def create_models$/;"	f	class:SpreadsheetParse
+create_organization_associated_records	app/models/spreadsheet_parse.rb	/^  def create_organization_associated_records(csv_file_paths, new_organization, org_id)$/;"	f	class:SpreadsheetParse
+create_organization_beneficiaries	app/controllers/admin/organizations_controller.rb	/^    def create_organization_beneficiaries(organization, beneficiaries_sub_ids)$/;"	f	class:Admin.OrganizationsController
+create_params	app/controllers/locations_controller.rb	/^  def create_params$/;"	f	class:LocationsController
+create_params	app/controllers/searches_controller.rb	/^  def create_params$/;"	f	class:SearchesController
+create_tags	app/controllers/admin/organizations_controller.rb	/^    def create_tags(organization, tags)$/;"	f	class:Admin.OrganizationsController
+create_tags	app/controllers/organizations_controller.rb	/^  def create_tags(organization, tags)$/;"	f	class:OrganizationsController
+csv_file_paths	app/models/spreadsheet_parse.rb	/^  def csv_file_paths$/;"	f	class:SpreadsheetParse
+current_location	app/controllers/concerns/locationable.rb	/^  def current_location$/;"	f	class:Locationable
+current_time_in_zone	app/models/office_hour.rb	/^  def current_time_in_zone$/;"	f	class:OfficeHour
+current_time_in_zone	app/models/office_hours/searchable.rb	/^  def current_time_in_zone$/;"	f	class:OfficeHours
+day_hours	app/models/locations/officeable.rb	/^    def day_hours(day)$/;"	f	class:Locations.Officeable
+day_name	app/models/office_hour.rb	/^  def day_name$/;"	f	class:OfficeHour
+debug	spec/system/support/cuprite_setup.rb	/^  def debug(*args)$/;"	f	class:CupriteHelpers
+default_location	app/controllers/concerns/locationable.rb	/^  def default_location$/;"	f	class:Locationable
+default_response	app/mailers/message_mailer.rb	/^  def default_response(message)$/;"	f	class:MessageMailer
+default_time_zone	app/models/office_hour.rb	/^  def default_time_zone$/;"	f	class:OfficeHour
+delete	app/controllers/locations_controller.rb	/^  def delete$/;"	f	class:LocationsController
+delete_tags	app/controllers/admin/organizations_controller.rb	/^    def delete_tags(organization, tags)$/;"	f	class:Admin.OrganizationsController
+delete_tags	app/controllers/organizations_controller.rb	/^  def delete_tags(organization, tags)$/;"	f	class:OrganizationsController
+delete_upload	app/controllers/organizations_controller.rb	/^  def delete_upload$/;"	f	class:OrganizationsController
+delete_upload?	app/policies/organization_policy.rb	/^  def delete_upload?$/;"	f	class:OrganizationPolicy
+designation_copies	app/decorators/organization_decorator.rb	/^  def designation_copies$/;"	f	class:OrganizationDecorator
+destroy	app/controllers/alerts_controller.rb	/^  def destroy$/;"	f	class:AlertsController
+destroy	app/controllers/favorite_locations_controller.rb	/^  def destroy$/;"	f	class:FavoriteLocationsController
+destroy?	app/policies/alert_policy.rb	/^  def destroy?$/;"	f	class:AlertPolicy
+destroy?	app/policies/application_policy.rb	/^  def destroy?$/;"	f	class:ApplicationPolicy
+device	app/helpers/application_helper.rb	/^  def device$/;"	f	class:ApplicationHelper
+display_day_working_hours	app/decorators/location_decorator.rb	/^  def display_day_working_hours(office_hour)$/;"	f	class:LocationDecorator
+display_resource	app/dashboards/cause_dashboard.rb	/^  def display_resource(cause)$/;"	f	class:CauseDashboard
+display_resource	app/dashboards/location_dashboard.rb	/^  def display_resource(location)$/;"	f	class:LocationDashboard
+display_resource	app/dashboards/organization_dashboard.rb	/^  def display_resource(organization)$/;"	f	class:OrganizationDashboard
+display_resource	app/dashboards/service_dashboard.rb	/^  def display_resource(service)$/;"	f	class:ServiceDashboard
+display_resource	app/dashboards/user_dashboard.rb	/^  def display_resource(user)$/;"	f	class:UserDashboard
+donation_link	app/decorators/organization_decorator.rb	/^  def donation_link$/;"	f	class:OrganizationDecorator
+down	db/migrate/20211012203819_create_pg_search_documents.rb	/^  def down$/;"	f
+down	db/migrate/20211125165738_add_search_extensions.rb	/^  def down$/;"	f	class:AddSearchExtensions
+down	db/migrate/20211125165827_add_pg_search_dmetaphone_support_functions.rb	/^  def down$/;"	f
+dynamic_main_text	app/controllers/home_controller.rb	/^  def dynamic_main_text$/;"	f	class:HomeController
+edit	app/controllers/alerts_controller.rb	/^  def edit$/;"	f	class:AlertsController
+edit	app/controllers/organizations_controller.rb	/^  def edit$/;"	f	class:OrganizationsController
+edit?	app/policies/alert_policy.rb	/^  def edit?$/;"	f	class:AlertPolicy
+edit?	app/policies/application_policy.rb	/^  def edit?$/;"	f	class:ApplicationPolicy
+email_change	app/controllers/users_controller.rb	/^  def email_change$/;"	f
+env_var_version	bin/bundle	/^  def env_var_version$/;"	f
+errors_for	app/helpers/form_helper.rb	/^  def errors_for(form, field)$/;"	f	class:FormHelper
+errors_label	app/helpers/form_helper.rb	/^  def errors_label(form, label, field)$/;"	f	class:FormHelper
+execute_search	app/models/search.rb	/^  def execute_search$/;"	f	class:Search
+factory	app/models/geo.rb	/^  def self.factory$/;"	F	class:Geo
+favorite_location	app/components/save_button/component.rb	/^  def favorite_location$/;"	f	class:SaveButton
+filters	app/models/search.rb	/^  def filters$/;"	f	class:Search
+filters_ids	app/helpers/alerts_helper.rb	/^  def filters_ids(filters)$/;"	f	class:AlertsHelper
+find_resource	app/controllers/admin/office_hours_controller.rb	/^    def find_resource(param)$/;"	f	class:Admin.OfficeHoursController
+flash_message	app/controllers/users_controller.rb	/^  def flash_message$/;"	f	class:UsersController
+form_group_for	app/helpers/form_helper.rb	/^  def form_group_for(form, field, opts = {}, &block)$/;"	f	class:FormHelper
+format_cause_name	app/components/select_multiple/component.rb	/^    def format_cause_name(name)$/;"	f	class:SelectMultiple.Component
+format_link	app/services/locations_exporter.rb	/^  def format_link(id)$/;"	f
+formated_description	app/components/result_card/component.rb	/^  def formated_description$/;"	f	class:ResultCard
+formatted_address	app/models/location.rb	/^  def formatted_address$/;"	f	class:Location
+formatted_close_time	app/models/office_hour.rb	/^  def formatted_close_time$/;"	f	class:OfficeHour
+formatted_open_time	app/models/office_hour.rb	/^  def formatted_open_time$/;"	f	class:OfficeHour
+gemfile	bin/bundle	/^  def gemfile$/;"	f
+geo_filters	app/models/search.rb	/^  def geo_filters$/;"	f	class:Search
+geo_near	app/queries/locations/filter_query.rb	/^      def geo_near(scope, coords, distance)$/;"	f	class:Locations.FilterQuery
+geo_near	app/queries/locations/geolocation_query.rb	/^      def geo_near(scope, coords, distance)$/;"	f	class:Locations.GeolocationQuery
+geolocation_query	app/models/search.rb	/^  def geolocation_query$/;"	f	class:Search
+get_name	app/models/testing.rb	/^  def get_name$/;"	f	class:Testing
+has_donation_or_volunteer_link?	app/helpers/locations_helper.rb	/^  def has_donation_or_volunteer_link?(location)$/;"	f	class:LocationsHelper
+icon_name	app/components/save_button/component.rb	/^  def icon_name$/;"	f	class:SaveButton
+icon_svg_options	app/components/causes_list/component.rb	/^  def icon_svg_options$/;"	f	class:CausesList
+icon_wrapper_options	app/components/causes_list/component.rb	/^  def icon_wrapper_options$/;"	f	class:CausesList
+ids_array	app/components/select_multiple/component.rb	/^    def ids_array$/;"	f	class:SelectMultiple.Component
+import	app/controllers/admin/organizations_controller.rb	/^    def import$/;"	f	class:Admin.OrganizationsController
+import	app/models/spreadsheet_parse.rb	/^  def import$/;"	f	class:SpreadsheetParse
+in_local_time	app/models/concerns/time_zone_convertible.rb	/^  def in_local_time(time)$/;"	f	class:TimeZoneConvertible
+index	app/controllers/about_us_controller.rb	/^  def index$/;"	f	class:AboutUsController
+index	app/controllers/autocomplete_controller.rb	/^  def index$/;"	f	class:AutocompleteController
+index	app/controllers/causes_controller.rb	/^  def index$/;"	f	class:CausesController
+index	app/controllers/home_controller.rb	/^  def index$/;"	f	class:HomeController
+index?	app/policies/application_policy.rb	/^  def index?$/;"	f	class:ApplicationPolicy
+initialize	app/components/accordion/component.rb	/^  def initialize(title:, description:)$/;"	f	class:Accordion
+initialize	app/components/alert/component.rb	/^  def initialize(type:, message:)$/;"	f	class:Alert
+initialize	app/components/bio_card/component.rb	/^  def initialize(name: "", job_title: "", img_url: "")$/;"	f	class:BioCard
+initialize	app/components/cause_icon/component.rb	/^  def initialize(svg_name:, wrapper_options: {}, svg_options: {})$/;"	f	class:CauseIcon
+initialize	app/components/causes_list/component.rb	/^  def initialize(causes:, tooltip: false, list_options: {}, cause_options: {}, icon_wrapper_options: {}, tooltip_options: {}, icon_svg_options: {})$/;"	f	class:CausesList
+initialize	app/components/designation_tag/component.rb	/^  def initialize(organization, container_options: {})$/;"	f	class:DesignationTag
+initialize	app/components/discover_nonprofit_card/actions_menu/component.rb	/^  def initialize(user:, location:)$/;"	f	class:DiscoverNonprofitCard
+initialize	app/components/discover_nonprofit_card/component.rb	/^  def initialize(user:, location:)$/;"	f	class:DiscoverNonprofitCard
+initialize	app/components/discover_nonprofit_card/head/component.rb	/^  def initialize(location:)$/;"	f	class:DiscoverNonprofitCard
+initialize	app/components/discover_nonprofit_card/images_carousel/component.rb	/^  def initialize(images:, image_styles: "", placeholder_options: {}, carousel_container_options: {})$/;"	f	class:DiscoverNonprofitCard
+initialize	app/components/discover_nonprofit_card/images_carousel/nav_button/component.rb	/^  def initialize(direction:, outline:)$/;"	f	class:DiscoverNonprofitCard
+initialize	app/components/location_infowindow/component.rb	/^  def initialize(location:, user_signed_in:, current_user:)$/;"	f	class:LocationInfowindow
+initialize	app/components/map_left_popup/component.rb	/^    def initialize(result:, current_user: false)$/;"	f	class:MapLeftPopup.Component
+initialize	app/components/navbar/component.rb	/^  def initialize(signed_in:, current_location:, locations: @locations)$/;"	f	class:Navbar
+initialize	app/components/result_card/component.rb	/^  def initialize(title:, address:, public_address:, link_to_google_maps:,$/;"	f	class:ResultCard
+initialize	app/components/save_button/component.rb	/^  def initialize(user:, location:, simplified: false)$/;"	f	class:SaveButton
+initialize	app/components/search_bar/component.rb	/^    def initialize(form:, search:, current_location:, locations:)$/;"	f	class:SearchBar.Component
+initialize	app/components/search_pills/button/component.rb	/^  def initialize(name:, value:, checked:, copy:, options: {})$/;"	f	class:SearchPills
+initialize	app/components/search_pills/component.rb	/^  def initialize(causes:, services:, current_location:, beneficiary_subcategories:, params:)$/;"	f	class:SearchPills
+initialize	app/components/search_pills/pill/component.rb	/^  def initialize(name:, value:, checked:, options: {data: {action: ""}})$/;"	f	class:SearchPills
+initialize	app/components/select_multiple/component.rb	/^    def initialize(f: "", klass: "", name: "", items: {}, selected: [], options: {}, placeholder: "", required: false, stimulus_controller: nil)$/;"	f	class:SelectMultiple.Component
+initialize	app/components/social_media/component.rb	/^  def initialize(social_media:)$/;"	f	class:SocialMedia
+initialize	app/components/working_hours/component.rb	/^    def initialize(result:)$/;"	f	class:WorkingHours.WorkingHours
+initialize	app/models/spreadsheet_parse.rb	/^  def initialize(spreadsheet, creator)$/;"	f	class:SpreadsheetParse
+initialize	app/policies/application_policy.rb	/^    def initialize(user, scope)$/;"	f	class:ApplicationPolicy.Scope
+initialize	app/policies/application_policy.rb	/^  def initialize(user, record)$/;"	f	class:ApplicationPolicy
+initialize	app/services/alert_search_results.rb	/^  def initialize(alert)$/;"	f	class:AlertSearchResults
+initialize	app/services/ein_checker.rb	/^  def initialize(ein)$/;"	f	class:EinChecker
+initialize	app/services/fetch_instagram_media.rb	/^  def initialize$/;"	f	class:FetchInstagramMedia
+initialize	app/services/image_heic_to_jpeg_converter.rb	/^  def initialize(image)$/;"	f	class:ImageHeicToJpegConverter
+initialize	app/services/locations_exporter.rb	/^  def initialize(locations, link_pattern)$/;"	f	class:LocationsExporter
+initialize	app/services/random_coordinates_generator.rb	/^  def initialize(central_lat:, central_lng:, max_radius:)$/;"	f	class:RandomCoordinatesGenerator
+initialize	app/services/time_zone_converter.rb	/^  def initialize(local_time_zone, utc_time_zone = "UTC")$/;"	f	class:TimeZoneConverter
+initialize	lib/active_storage/service/better_s3_service.rb	/^    def initialize(bucket:, upload: {}, **options)$/;"	f	class:ActiveStorage.Service
+invoked_as_script?	bin/bundle	/^  def invoked_as_script?$/;"	f
+kilometers_to_miles	app/helpers/searches_helper.rb	/^  def kilometers_to_miles(kms)$/;"	f	class:SearchesHelper
+latest_media_posts	app/services/fetch_instagram_media.rb	/^  def latest_media_posts$/;"	f	class:FetchInstagramMedia
+line_string	app/models/geo.rb	/^  def self.line_string(points)$/;"	F	class:Geo
+link_args	app/components/save_button/component.rb	/^  def link_args$/;"	f	class:SaveButton
+link_to_google_maps	app/models/location.rb	/^  def link_to_google_maps$/;"	f	class:Location
+list_all_filters	app/helpers/alerts_helper.rb	/^  def list_all_filters(object)$/;"	f	class:AlertsHelper
+list_filter_variables	app/helpers/alerts_helper.rb	/^  def list_filter_variables(object)$/;"	f	class:AlertsHelper
+list_of_filters	app/helpers/searches_helper.rb	/^  def list_of_filters(object)$/;"	f	class:SearchesHelper
+load_bundler!	bin/bundle	/^  def load_bundler!$/;"	f
+load_webpack_manifest	app/helpers/application_helper.rb	/^  def load_webpack_manifest$/;"	f	class:ApplicationHelper
+local_close_time	app/decorators/office_hour_decorator.rb	/^  def local_close_time$/;"	f	class:OfficeHourDecorator
+local_open_time	app/decorators/office_hour_decorator.rb	/^  def local_open_time$/;"	f	class:OfficeHourDecorator
+location_from_cookie	app/controllers/concerns/locationable.rb	/^  def location_from_cookie$/;"	f	class:Locationable
+location_from_params	app/controllers/concerns/locationable.rb	/^  def location_from_params$/;"	f	class:Locationable
+location_params	app/controllers/searches_controller.rb	/^  def location_params$/;"	f	class:SearchesController
+lockfile	bin/bundle	/^  def lockfile$/;"	f
+lockfile_version	bin/bundle	/^  def lockfile_version$/;"	f
+log_results	app/controllers/admin/organizations_controller.rb	/^    def log_results(results)$/;"	f	class:Admin.OrganizationsController
+logo_link	app/helpers/locations_helper.rb	/^  def logo_link(turbo_frame, id, image_url)$/;"	f	class:LocationsHelper
+lonlat_geo_point	app/models/location.rb	/^  def lonlat_geo_point$/;"	f	class:Location
+message_params	app/controllers/nonprofit_requests_controller.rb	/^  def message_params$/;"	f	class:NonprofitRequestsController
+miles_to_km	app/components/search_pills/component.rb	/^  def miles_to_km(miles)$/;"	f	class:SearchPills
+monday_office_hours	app/decorators/location_decorator.rb	/^  def monday_office_hours$/;"	f	class:LocationDecorator
+new	app/controllers/admin/export_locations_controller.rb	/^    def new$/;"	f	class:Admin.ExportLocationsController
+new	app/controllers/admin/organizations_controller.rb	/^    def new$/;"	f	class:Admin.OrganizationsController
+new	app/controllers/alerts_controller.rb	/^  def new$/;"	f	class:AlertsController
+new	app/controllers/infowindows_controller.rb	/^  def new$/;"	f	class:InfowindowsController
+new	app/controllers/locations_controller.rb	/^  def new$/;"	f	class:LocationsController
+new	app/controllers/map_popups_controller.rb	/^  def new$/;"	f	class:MapPopupsController
+new	app/controllers/nonprofit_requests_controller.rb	/^  def new$/;"	f	class:NonprofitRequestsController
+new	app/controllers/organizations_controller.rb	/^  def new$/;"	f	class:OrganizationsController
+new	app/controllers/reset_password_controller.rb	/^  def new$/;"	f	class:ResetPasswordController
+new?	app/policies/alert_policy.rb	/^  def new?$/;"	f	class:AlertPolicy
+new?	app/policies/application_policy.rb	/^  def new?$/;"	f	class:ApplicationPolicy
+next_office_hours	app/models/office_hours/searchable.rb	/^    def next_office_hours$/;"	f	class:OfficeHours.Searchable
+next_open_day	app/models/locations/officeable.rb	/^    def next_open_day$/;"	f	class:Locations.Officeable
+next_open_office_hours	app/models/locations/officeable.rb	/^    def next_open_office_hours$/;"	f	class:Locations.Officeable
+non_standard_office_hours_for_display	app/decorators/location_decorator.rb	/^  def non_standard_office_hours_for_display$/;"	f	class:LocationDecorator
+non_sticky_paths	app/components/navbar/component.rb	/^  def non_sticky_paths$/;"	f	class:Navbar
+not_password_change	app/controllers/users_controller.rb	/^  def not_password_change$/;"	f
+notification	app/components/alert/component.rb	/^  def notification$/;"	f	class:Alert
+object_for	lib/active_storage/service/better_s3_service.rb	/^    def object_for(key)$/;"	f	class:ActiveStorage.Service
+office_hours_not_applicable?	app/models/office_hour.rb	/^  def office_hours_not_applicable?$/;"	f	class:OfficeHour
+old_password_params	app/controllers/users_controller.rb	/^  def old_password_params$/;"	f
+open_and_close_times_present?	app/models/concerns/time_zone_convertible.rb	/^  def open_and_close_times_present?$/;"	f	class:TimeZoneConvertible
+open_now?	app/models/locations/officeable.rb	/^    def open_now?$/;"	f	class:Locations.Officeable
+open_now?	app/models/office_hours/searchable.rb	/^    def open_now?$/;"	f	class:OfficeHours.Searchable
+open_same_day?	app/models/locations/officeable.rb	/^    def open_same_day?(next_open)$/;"	f	class:Locations.Officeable
+open_time_for_display	app/decorators/location_decorator.rb	/^  def open_time_for_display$/;"	f	class:LocationDecorator
+opened_now	app/queries/locations/filter_query.rb	/^      def opened_now(scope, open_now)$/;"	f	class:Locations.FilterQuery
+opened_on_weekends	app/queries/locations/filter_query.rb	/^      def opened_on_weekends(scope, open_on_weekends)$/;"	f	class:Locations.FilterQuery
+options	app/components/search_bar/component.rb	/^    def options$/;"	f	class:SearchBar.Component
+options	app/components/select_multiple/component.rb	/^    def options$/;"	f	class:SelectMultiple.Component
+organization_already_exists?	app/models/spreadsheet_parse.rb	/^  def organization_already_exists?(org_name)$/;"	f	class:SpreadsheetParse
+organization_params	app/controllers/organizations_controller.rb	/^  def organization_params$/;"	f	class:OrganizationsController
+pairs_to_points	app/models/geo.rb	/^  def self.pairs_to_points(pairs)$/;"	F	class:Geo
+parameterize_address_filters	app/queries/locations/filter_query.rb	/^      def parameterize_address_filters(address_params)$/;"	f	class:Locations.FilterQuery
+parse_filters	app/helpers/searches_helper.rb	/^  def parse_filters(object)$/;"	f	class:SearchesHelper
+password_params	app/controllers/users_controller.rb	/^  def password_params$/;"	f
+path	app/components/causes_list/component.rb	/^  def path(cause)$/;"	f	class:CausesList
+pause	spec/system/support/cuprite_setup.rb	/^  def pause$/;"	f	class:CupriteHelpers
+perform	app/jobs/alerts/send_saved_searches_alert_emails_job.rb	/^  def perform(alert_id)$/;"	f	class:Alerts
+perform	app/jobs/instagram/create_media_post_job.rb	/^  def perform(post)$/;"	f	class:Instagram
+perform	app/jobs/instagram/fetch_media_posts_job.rb	/^  def perform$/;"	f	class:Instagram
+placeholder_options	app/components/discover_nonprofit_card/images_carousel/component.rb	/^  def placeholder_options$/;"	f	class:DiscoverNonprofitCard
+point	app/models/geo.rb	/^  def self.point(longitude, latitude)$/;"	F	class:Geo
+polygon	app/models/geo.rb	/^  def self.polygon(points)$/;"	F	class:Geo
+post_attributes	app/jobs/instagram/create_media_post_job.rb	/^  def post_attributes$/;"	f	class:Instagram
+random_point_in_disk	app/services/random_coordinates_generator.rb	/^  def random_point_in_disk$/;"	f	class:RandomCoordinatesGenerator
+real_subject	app/decorators/message_decorator.rb	/^  def real_subject$/;"	f	class:MessageDecorator
+removable_fav_location?	app/components/save_button/component.rb	/^  def removable_fav_location?$/;"	f	class:SaveButton
+resolve	app/policies/alert_policy.rb	/^    def resolve$/;"	f	class:AlertPolicy.Scope
+resolve	app/policies/application_policy.rb	/^    def resolve$/;"	f	class:ApplicationPolicy.Scope
+resolve	app/policies/cause_policy.rb	/^    def resolve$/;"	f	class:CausePolicy.Scope
+resolve	app/policies/location_policy.rb	/^    def resolve$/;"	f	class:LocationPolicy.Scope
+resolve	app/policies/organization_policy.rb	/^    def resolve$/;"	f	class:OrganizationPolicy.Scope
+resolve	app/policies/search_policy.rb	/^    def resolve$/;"	f	class:SearchPolicy.Scope
+resource_params	app/controllers/admin/organizations_controller.rb	/^    def resource_params$/;"	f	class:Admin.OrganizationsController
+respond_to_request	app/controllers/favorite_locations_controller.rb	/^  def respond_to_request$/;"	f	class:FavoriteLocationsController
+save	app/decorators/delivering_message.rb	/^  def save$/;"	f	class:DeliveringMessage
+save	app/models/search.rb	/^  def save$/;"	f	class:Search
+schedule_next_alert	app/models/alert.rb	/^  def schedule_next_alert$/;"	f	class:Alert
+scoped_resource	app/controllers/admin/application_controller.rb	/^    def scoped_resource$/;"	f	class:Admin.ApplicationController
+search_params	app/services/alert_search_results.rb	/^  def search_params$/;"	f	class:AlertSearchResults
+selected_	app/helpers/searches_helper.rb	/^  def selected_(type, top_ten, search)$/;"	f	class:SearchesHelper
+send_alert	app/mailers/saved_search_alert_mailer.rb	/^  def send_alert(alert)$/;"	f	class:SavedSearchAlertMailer
+send_alert	spec/mailers/previews/saved_search_alert_mailer_preview.rb	/^  def send_alert$/;"	f	class:SavedSearchAlertMailerPreview
+send_alert_email	app/jobs/alerts/send_saved_searches_alert_emails_job.rb	/^  def send_alert_email$/;"	f	class:Alerts
+set_assets_for_template	app/mailers/saved_search_alert_mailer.rb	/^  def set_assets_for_template$/;"	f	class:SavedSearchAlertMailer
+set_beneficiary_groups	app/controllers/organizations_controller.rb	/^  def set_beneficiary_groups$/;"	f	class:OrganizationsController
+set_beneficiary_groups	app/controllers/searches_controller.rb	/^  def set_beneficiary_groups$/;"	f	class:SearchesController
+set_causes	app/controllers/searches_controller.rb	/^  def set_causes$/;"	f	class:SearchesController
+set_form_data	app/controllers/organizations_controller.rb	/^  def set_form_data$/;"	f	class:OrganizationsController
+set_location	app/controllers/concerns/locationable.rb	/^  def set_location$/;"	f	class:Locationable
+set_results	app/mailers/saved_search_alert_mailer.rb	/^  def set_results$/;"	f	class:SavedSearchAlertMailer
+set_search_pills_data	app/controllers/searches_controller.rb	/^  def set_search_pills_data$/;"	f	class:SearchesController
+set_services	app/controllers/organizations_controller.rb	/^  def set_services$/;"	f	class:OrganizationsController
+set_services	app/controllers/searches_controller.rb	/^  def set_services$/;"	f	class:SearchesController
+set_session_alert_params	app/controllers/alerts_controller.rb	/^  def set_session_alert_params$/;"	f	class:AlertsController
+set_session_favorite	app/controllers/favorite_locations_controller.rb	/^  def set_session_favorite$/;"	f	class:FavoriteLocationsController
+show	app/controllers/causes_controller.rb	/^  def show$/;"	f	class:CausesController
+show	app/controllers/cities_controller.rb	/^  def show$/;"	f	class:CitiesController
+show	app/controllers/donates_controller.rb	/^  def show$/;"	f	class:DonatesController
+show	app/controllers/faqs_controller.rb	/^  def show$/;"	f	class:FaqsController
+show	app/controllers/locations_controller.rb	/^  def show$/;"	f	class:LocationsController
+show	app/controllers/my_accounts_controller.rb	/^  def show$/;"	f	class:MyAccountsController
+show	app/controllers/organizations_controller.rb	/^  def show$/;"	f	class:OrganizationsController
+show	app/controllers/privacy_policies_controller.rb	/^  def show$/;"	f	class:PrivacyPoliciesController
+show	app/controllers/searches_controller.rb	/^  def show$/;"	f	class:SearchesController
+show	app/controllers/terms_and_conditions_controller.rb	/^  def show$/;"	f	class:TermsAndConditionsController
+show?	app/policies/application_policy.rb	/^  def show?$/;"	f	class:ApplicationPolicy
+show?	app/policies/search_preview_policy.rb	/^  def show?$/;"	f	class:SearchPreviewPolicy
+single_main_location	app/models/concerns/organization_validator.rb	/^  def single_main_location$/;"	f	class:OrganizationValidator
+skip_pundit?	app/controllers/application_controller.rb	/^  def skip_pundit?$/;"	f	class:ApplicationController
+sort_by_more_services	app/models/location.rb	/^  def self.sort_by_more_services(locations)$/;"	F	class:Location
+starting_coordinates	app/queries/locations/filter_query.rb	/^      def starting_coordinates(lat, lon)$/;"	f	class:Locations.FilterQuery
+starting_coordinates	app/queries/locations/geolocation_query.rb	/^      def starting_coordinates(lat, lon)$/;"	f	class:Locations.GeolocationQuery
+stimulus_controller	app/fields/hidden_field.rb	/^  def stimulus_controller$/;"	f	class:HiddenField
+stimulus_target	app/fields/hidden_field.rb	/^  def stimulus_target$/;"	f	class:HiddenField
+storable_location?	app/controllers/application_controller.rb	/^  def storable_location?$/;"	f	class:ApplicationController
+store_user_location!	app/controllers/application_controller.rb	/^  def store_user_location!$/;"	f	class:ApplicationController
+street	app/decorators/location_decorator.rb	/^  def street$/;"	f	class:LocationDecorator
+subscribed	app/channels/bookmark_channel.rb	/^  def subscribed$/;"	f	class:BookmarkChannel
+svg_file_name	app/decorators/cause_decorator.rb	/^  def svg_file_name$/;"	f	class:CauseDecorator
+system!	bin/setup	/^def system!(*args)$/;"	f
+take_screenshot	spec/system/support/better_rails_system_tests.rb	/^  def take_screenshot$/;"	f	class:BetterRailsSystemTests
+time_zone	app/models/office_hour.rb	/^  def time_zone$/;"	f	class:OfficeHour
+title	app/decorators/alert_decorator.rb	/^  def title(index)$/;"	f	class:AlertDecorator
+title_link	app/helpers/locations_helper.rb	/^  def title_link(turbo_frame, id, title)$/;"	f	class:LocationsHelper
+to_local	app/services/time_zone_converter.rb	/^  def to_local(time_str)$/;"	f	class:TimeZoneConverter
+to_param	app/models/cause.rb	/^  def to_param$/;"	f	class:Cause
+to_s	app/fields/address_field.rb	/^  def to_s$/;"	f	class:AddressField
+to_s	app/fields/checkbox_field.rb	/^  def to_s$/;"	f	class:CheckboxField
+to_s	app/fields/hidden_field.rb	/^  def to_s$/;"	f	class:HiddenField
+to_s	app/fields/tag_input_field.rb	/^  def to_s$/;"	f	class:TagInputField
+to_s	app/fields/time_select_field.rb	/^  def to_s$/;"	f	class:TimeSelectField
+to_s	app/fields/toggle_check_field.rb	/^  def to_s$/;"	f	class:ToggleCheckField
+to_s	app/fields/uniqueness_warning_field.rb	/^  def to_s$/;"	f	class:UniquenessWarningField
+to_turbo_stream	app/controllers/turbo_controller.rb	/^    def to_turbo_stream$/;"	f	class:TurboController.Responder
+to_utc	app/services/time_zone_converter.rb	/^  def to_utc(time_str)$/;"	f	class:TimeZoneConverter
+to_wkt	app/models/geo.rb	/^  def self.to_wkt(feature)$/;"	F	class:Geo
+today_office_hours	app/models/locations/officeable.rb	/^    def today_office_hours$/;"	f	class:Locations.Officeable
+tooltip_options	app/components/causes_list/component.rb	/^  def tooltip_options$/;"	f	class:CausesList
+top	app/models/beneficiary_subcategory.rb	/^  def self.top(limit: 10)$/;"	F	class:BeneficiarySubcategory
+top	app/models/cause.rb	/^  def self.top(limit: 10)$/;"	F	class:Cause
+top	app/models/service.rb	/^  def self.top(limit: 10)$/;"	F	class:Service
+top_causes_ids	app/models/cause.rb	/^  def self.top_causes_ids(limit: 10)$/;"	F	class:Cause
+top_organization_subcategories_ids	app/models/beneficiary_subcategory.rb	/^  def self.top_organization_subcategories_ids(limit: 10)$/;"	F	class:BeneficiarySubcategory
+top_services_ids	app/models/service.rb	/^  def self.top_services_ids(limit: 10)$/;"	F	class:Service
+turbo_disabled_urls	app/helpers/application_helper.rb	/^  def turbo_disabled_urls$/;"	f	class:ApplicationHelper
+unsubscribed	app/channels/bookmark_channel.rb	/^  def unsubscribed$/;"	f	class:BookmarkChannel
+up	db/migrate/20211012203819_create_pg_search_documents.rb	/^  def up$/;"	f	class:CreatePgSearchDocuments
+up	db/migrate/20211125165738_add_search_extensions.rb	/^  def up$/;"	f	class:AddSearchExtensions
+up	db/migrate/20211125165827_add_pg_search_dmetaphone_support_functions.rb	/^  def up$/;"	f	class:AddPgSearchDmetaphoneSupportFunctions
+update	app/controllers/admin/organizations_controller.rb	/^    def update$/;"	f	class:Admin.OrganizationsController
+update	app/controllers/alerts_controller.rb	/^  def update$/;"	f	class:AlertsController
+update	app/controllers/organizations_controller.rb	/^  def update$/;"	f	class:OrganizationsController
+update	app/controllers/users_controller.rb	/^  def update$/;"	f	class:UsersController
+update?	app/policies/alert_policy.rb	/^  def update?$/;"	f	class:AlertPolicy
+update?	app/policies/application_policy.rb	/^  def update?$/;"	f	class:ApplicationPolicy
+update?	app/policies/organization_policy.rb	/^  def update?$/;"	f	class:OrganizationPolicy
+update_alert_search_results	app/controllers/alerts_controller.rb	/^  def update_alert_search_results(alert)$/;"	f	class:AlertsController
+update_alert_search_results	app/mailers/saved_search_alert_mailer.rb	/^  def update_alert_search_results$/;"	f	class:SavedSearchAlertMailer
+update_next_alert	app/jobs/alerts/send_saved_searches_alert_emails_job.rb	/^  def update_next_alert$/;"	f	class:Alerts
+update_params	app/controllers/users_controller.rb	/^  def update_params$/;"	f
+update_tags	app/controllers/admin/organizations_controller.rb	/^    def update_tags(organization, tags)$/;"	f	class:Admin.OrganizationsController
+update_tags	app/controllers/organizations_controller.rb	/^  def update_tags(organization, tags)$/;"	f	class:OrganizationsController
+upload	app/controllers/admin/organizations_controller.rb	/^    def upload$/;"	f	class:Admin.OrganizationsController
+url	app/decorators/application_decorator.rb	/^  def url(raw_url)$/;"	f	class:ApplicationDecorator
+user_not_authorized	app/controllers/application_controller.rb	/^  def user_not_authorized$/;"	f	class:ApplicationController
+using_session	spec/system/support/capybara_setup.rb	/^  def using_session(name, &block)$/;"	f
+valid_donation_url	app/models/concerns/organization_validator.rb	/^  def valid_donation_url$/;"	f	class:OrganizationValidator
+valid_url	app/models/concerns/organization_validator.rb	/^  def valid_url(raw_url, attribute)$/;"	f	class:OrganizationValidator
+valid_volunteer_url	app/models/concerns/organization_validator.rb	/^  def valid_volunteer_url$/;"	f	class:OrganizationValidator
+valid_website_url	app/models/concerns/location_validator.rb	/^  def valid_website_url$/;"	f	class:LocationValidator
+valid_website_url	app/models/concerns/organization_validator.rb	/^  def valid_website_url$/;"	f	class:OrganizationValidator
+validate	app/models/concerns/location_validator.rb	/^  def validate(record)$/;"	f	class:LocationValidator
+validate	app/models/concerns/office_hours_validator.rb	/^  def validate(record)$/;"	f	class:OfficeHoursValidator
+validate	app/models/concerns/organization_validator.rb	/^  def validate(record)$/;"	f	class:OrganizationValidator
+volunteer_link	app/decorators/organization_decorator.rb	/^  def volunteer_link$/;"	f	class:OrganizationDecorator
+webpack_asset_urls	app/helpers/application_helper.rb	/^  def webpack_asset_urls(asset_name, asset_type)$/;"	f	class:ApplicationHelper
+webpack_manifest	app/helpers/application_helper.rb	/^  def webpack_manifest$/;"	f	class:ApplicationHelper
+website	app/decorators/application_decorator.rb	/^  def website$/;"	f	class:ApplicationDecorator
+website_action_params	app/components/discover_nonprofit_card/actions_menu/component.rb	/^  def website_action_params$/;"	f	class:DiscoverNonprofitCard
+website_for_display	app/components/result_card/component.rb	/^  def website_for_display$/;"	f	class:ResultCard
+weekdays	app/helpers/office_hours_helper.rb	/^  def weekdays$/;"	f	class:OfficeHoursHelper
+working_hours	app/decorators/location_decorator.rb	/^  def working_hours$/;"	f	class:LocationDecorator
+wrapper_options	app/components/cause_icon/component.rb	/^  def wrapper_options$/;"	f	class:CauseIcon
+wrapper_styles	app/components/save_button/component.rb	/^  def wrapper_styles$/;"	f	class:SaveButton
+you_toube_id	app/controllers/locations_controller.rb	/^  def you_toube_id(youtube_video_link)$/;"	f	class:LocationsController

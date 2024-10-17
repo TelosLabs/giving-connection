@@ -59,7 +59,7 @@ Rails.application.configure do
   config.log_tags = [:request_id]
 
   # Use a different cache store in production.
-  config.cache_store = :redis_cache_store, {url: ENV["REDIS_URL"]}
+  config.cache_store = :redis_cache_store, {url: ENV["REDIS_URL"], ssl_params: {verify_mode: OpenSSL::SSL::VERIFY_NONE}}
 
   config.action_mailer.perform_caching = false
 
