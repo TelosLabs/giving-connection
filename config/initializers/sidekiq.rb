@@ -1,5 +1,5 @@
 REDIS_URL = if Rails.env.production?
-  ENV["REDISCLOUD_URL"] || Rails.application.credentials.production[:redis_url]
+  ENV["REDIS_URL"] || Rails.application.credentials.production[:redis_url]
 elsif Rails.env.staging?
   ENV["REDISCLOUD_URL"] || Rails.application.credentials.staging[:redis_url]
 else
