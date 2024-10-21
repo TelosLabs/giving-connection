@@ -1,5 +1,5 @@
 REDIS_URL = if Rails.env.production?
-  ENV["REDISCLOUD_URL"] || Rails.application.credentials.production[:redis_url]
+  ENV["REDIS_URL"] || Rails.application.credentials.production[:redis_url]
 elsif Rails.env.staging?
   ENV["REDISCLOUD_URL"] || Rails.application.credentials.staging[:redis_url]
 else
@@ -7,9 +7,15 @@ else
 end
 
 Sidekiq.configure_server do |config|
-  config.redis = {url: REDIS_URL}
+  config.redis = {
+    url: REDIS_URL,
+    ssl_params: {verify_mode: OpenSSL::SSL::VERIFY_NONE}
+  }
 end
 
 Sidekiq.configure_client do |config|
-  config.redis = {url: REDIS_URL}
+  config.redis = {
+    url: REDIS_URL,
+    ssl_params: {verify_mode: OpenSSL::SSL::VERIFY_NONE}
+  }
 end
