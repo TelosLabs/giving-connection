@@ -25,7 +25,7 @@ class Location < ActiveRecord::Base
   include PgSearch::Model
   multisearchable against: [:name]
 
-  enum non_standard_office_hours: {appointment_only: 1, always_open: 2, no_set_business_hours: 3}
+  enum :non_standard_office_hours, {appointment_only: 1, always_open: 2, no_set_business_hours: 3}
 
   belongs_to :organization, optional: true
 
