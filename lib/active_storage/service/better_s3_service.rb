@@ -10,7 +10,7 @@ module ActiveStorage
 
     def initialize(bucket:, upload: {}, **options)
       @root = options.delete(:root)
-      super(bucket: bucket, upload: upload, **options)
+      super
     end
 
     private
