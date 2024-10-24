@@ -21,7 +21,7 @@
       </div>
       <div class="pb-0 text-xs text-gray-4">
         <% if @public_address %>
-          <p id="pointer"><%= link_to @address, @link_to_google_maps, target: "blank" %></p>
+          <p class="pop-out" ><%= link_to @address, @link_to_google_maps, target: "blank" %></p>
         <% end %>
         <% if @website.present? %>
           <p><%= link_to @website_for_display, @website, target: '_blank', class: 'text-blue-medium'%></p>

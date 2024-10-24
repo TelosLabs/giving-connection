@@ -6,9 +6,8 @@
 ) do %>
   <%= render CauseIcon::Component.new(
     svg_name: icon_name,
-    wrapper_options: { class: wrapper_styles },
+    wrapper_options: { class: "pop-out #{wrapper_styles}" },
     svg_options: { class: "w-4 h-auto", aria_hidden: true }
   ) %>
-
   <span class="<%= copy_styles %>">Save</span>
 <% end %>

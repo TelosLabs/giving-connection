@@ -1,4 +1,6 @@
-#pointer:hover {
-	cursor: pointer;
-	transform: scale(1.08);
+.pop-out {
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.08);
+  }
 }

@@ -28,6 +28,7 @@ module.exports = {
       colors: {
         seafoam: {
           DEFAULT: "#9ae2e0",
+          light: "#adf7f5",
         },
         salmon: {
           DEFAULT: "#fc8383",
