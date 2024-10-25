@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgis/postgis
+    platform: linux/amd64
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    command: bash -c "sed -i 's/host all all all scram-sha-256/host all all all trust/g' /var/lib/postgresql/data/pg_hba.conf && docker-entrypoint.sh postgres"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  redis:
+    image: redis:latest
+    platform: linux/amd64
+  web:
+    tty: true
+    build: .
+    command: ./entrypoint.sh
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=
+      - REDIS_HOST=redis
+volumes:
+  db_data:
