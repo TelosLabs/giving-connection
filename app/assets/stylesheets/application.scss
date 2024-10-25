@@ -21,7 +21,6 @@
 @import "helpers/stars_background";
 @import "../../components/accordion/component";
 @import "../../components/navbar/component";
-@import "../../components/causes_list/component";
 @import "../../../node_modules/@yaireo/tagify/dist/tagify";
 @import "../../../node_modules/swiper/swiper-bundle";
 
@@ -187,4 +186,9 @@ input.admin-panel-population:disabled + label {
     height: 100%;
     object-fit: cover;
   }
+}
+
+// Popover
+.labelled-icon:hover + span[role=tooltip] {
+  display: inline;
 }

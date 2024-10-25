@@ -38,14 +38,18 @@
                       new_alert_path( \
                         filters: parse_filters(@search), \
                         filters_list: list_of_filters(@search)), \
-                      class: "inline-flex items-center px-3 py-2 text-xs text-gray-3", \
+                      class: "inline-flex items-center px-3 py-1 text-xs text-gray-3 cursor-pointer border border-gray-5 hover:bg-gray-5 rounded-full", \
                       data: { turbo_stream: true } ) do
                         = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
                         | Create Search Alert
                 - else
-                  div class="inline-flex items-center px-3 py-2 text-xs text-gray-400"
-                    = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-400 -ml-0.5'
-                    | Create Search Alert
+                  - tooltip_id = SecureRandom.hex(8)
+                  div class="relative text-xs text-center"
+                    div class="inline-flex items-center px-3 py-1 text-xs text-gray-400 rounded-full border cursor-pointer border-gray-5 labelled-icon" aria-labelledby=tooltip_id
+                      = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-400 -ml-0.5'
+                      | Create Search Alert
+                    span role="tooltip" id=tooltip_id class="hidden absolute right-24 px-3 py-1 mt-8 w-48 text-white bg-opacity-90 rounded-lg transform translate-x-1/2 bg-gray-2"
+                      | Select search pills to narrow and create a search alert
               div class="overflow-y-auto w-full h-full md:flex md:flex-col" data-tabs-target="panel"
                 - if @results.present?
                   ul class="flex flex-col divide-y divide-gray-8" id="search-results"
