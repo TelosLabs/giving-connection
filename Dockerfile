@@ -36,6 +36,9 @@ COPY . .
 # Install Node.js dependencies
 RUN yarn install
 
+# Add node_modules/.bin to the PATH
+ENV PATH="./node_modules/.bin:$PATH"
+
 # Install foreman for running Procfile scripts
 RUN gem install foreman
 

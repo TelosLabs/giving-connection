@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# Create the tmp/pids directory if it doesn't exist
+mkdir -p tmp/pids
+
 # Remove a potentially pre-existing server.pid for Rails
 rm -f /app/tmp/pids/server.pid
 
@@ -8,7 +11,7 @@ rm -f /app/tmp/pids/server.pid
 echo "Waiting for PostgreSQL to start..."
 until psql -h db -U postgres -c '\q' 2>/dev/null; do
   sleep 1
-  echo "Can't reach database, retrying..."
+  echo "Can't reach database, retrying (this shouldn't take more than 30 seconds to find)..."
 done
 
 echo "Found PostgreSQL!"
