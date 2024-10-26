@@ -10,4 +10,4 @@
       = form_group_for f, :email, label: "Email Address", class: "mb-6" do 
         = f.email_field :email, autofocus: true, autocomplete: "email", class:"c-input"
       .c-form--action class="mt-12 mb-44"
-        = f.submit "Send reset instructions", class:"c-button", data: { turbo: false}
+        = f.submit "Send reset instructions", class:"c-button hover:bg-seafoam-light transition", data: { turbo: false}
