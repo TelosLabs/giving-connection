@@ -54,7 +54,7 @@
       p You’ll receive an email when a newly
       p published organization matches your search.
     div class='mt-5'
-      = form.submit alert&.persisted? ? 'SAVE' : 'Create Alert', class:'c-button'
+      = form.submit alert&.persisted? ? 'SAVE' : 'Create Alert', class:'hover:bg-seafoam-light transition c-button'
     - if alert&.persisted?
       div class="my-4 text-center"
         = link_to 'Delete alert', alert_path(alert), class:"text-sm font-bold text-blue-medium", method: :delete

@@ -6,7 +6,7 @@ nav class="flex justify-between"
                                           svg_options: {class: "w-1/2", aria_hidden: true})
     span class="#{action_button_styles[:copy]}" View Page
   // Save
-  = render SaveButton::Component.new(user: @user, location: @location)
+  = render SaveButton::Component.new(user: @user, location: @location, tooltip_position: "top-10")
 
   // Share
   button type="button" class="#{action_button_styles[:button]}" data-controller="copy-to-clipboard" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="#{location_url(@location)}"

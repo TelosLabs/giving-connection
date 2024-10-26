@@ -16,7 +16,7 @@
           <% if @verified %>
             <%= render "shared/popover", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg", position: "right-0" %>
           <% end %>
-          <%= render SaveButton::Component.new(user: @current_user, location: Location.find(@id), simplified: true) %>
+          <%= render SaveButton::Component.new(user: @current_user, location: Location.find(@id), simplified: true, tooltip_position:  "right-0 mt-2") %>
         </div>
       </div>
       <div class="pb-0 text-xs text-gray-4">
