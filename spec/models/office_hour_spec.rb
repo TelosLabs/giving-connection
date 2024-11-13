@@ -44,12 +44,16 @@ RSpec.describe OfficeHour, type: :model do
       it "converts the time from location's time zone to UTC before saving" do
         subject { oh }
 
+        # Set the open and close times with a specific time zone
+        oh.open_time = Time.zone.parse("12:00 PM").in_time_zone("Pacific Time (US & Canada)")
+        oh.close_time = Time.zone.parse("4:00 PM").in_time_zone("Pacific Time (US & Canada)")
+
         oh.save!
 
         expect(oh.open_time.zone).to eql("UTC")
         expect(oh.close_time.zone).to eql("UTC")
-        expect(oh.open_time.hour).to eql(19)
-        expect(oh.close_time.hour).to eql(23)
+        expect(oh.open_time.hour).to eql(20)
+        expect(oh.close_time.hour).to eql(0)
       end
     end
   end

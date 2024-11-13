@@ -10,38 +10,39 @@ div class=""
 
       div class="pt-5 pb-16 md:px-11 md:text-left"
         div
+          - url = @location.website || @location.organization.website
           - if @location.organization.verified?
             div class="flex justify-center items-center mb-2.5"
-              h5 class="flex mb-1 text-lg font-bold text-center"
-                = @location.name
+              h5 class="flex mb-1 text-lg font-bold text-center pop-out"
+                = link_to @location.name, url, target: url.present? ? "_blank" : "", class: "text-black"
               = render "shared/popover", wrapper_icon: "verified_nonprofit_check.svg", copy: "Information verified by nonprofit."
             p class="text-xs text-center font-base text-gray-4"
               = "This nonprofit has verified the listed information."
           - else
-            h5 class="mb-1 text-lg font-bold text-center"
-              = @location.name
+            h5 class="mb-1 text-lg font-bold text-center pop-out"
+               = link_to @location.name, url, target: url.present? ? "_blank" : "", class: "text-black"
             p class="text-xs text-center font-base text-gray-4"
               = "This nonprofit has not yet verified the listed information."
 
           - if current_user.present? && policy(@location.organization).update?
-            p class="text-xs text-center text-blue-500 font-base" id="pointer"
+            p class="text-xs text-center text-blue-500 font-base" class="pop-out"
               = link_to "Edit My Nonprofit Page", edit_organization_path( @location.organization)
           // Designations
           = render DesignationTag::Component.new(@location.organization, container_options: { class: "justify-center items-center" })
 
           div class="mt-4"
             - if @location.public_address?
-              p class="text-xs text-center font-base text-gray-4" id="pointer"
+              p class="text-xs text-center font-base text-gray-4" class="pop-out"
                 = link_to @location.formatted_address, @location.link_to_google_maps, target: "blank"
             p class="text-xs text-center font-base text-gray-4"
               = "EIN Number: #{@location.organization.ein_number}"
 
         div class="flex gap-2.5 justify-center items-center mt-4" data-controller="copy-to-clipboard"
-          button type="button" class="flex items-center text-sm gray-2" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="#{request.url}"
+          button type="button" class="flex items-center text-sm pop-out gray-2" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="#{request.url}"
             = inline_svg_tag 'share_icon.svg', class: " fill-current mr-2"
             | Share
 
-          span class="inline-flex gap-x-2 items-center"
+          span class="inline-flex gap-x-2 items-center pop-out"
             = render SaveButton::Component.new(user: current_user, location: @location, simplified: true)
             span class="text-sm" aria-hidden="true" Save
 

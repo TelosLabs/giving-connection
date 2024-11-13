@@ -370,7 +370,7 @@
                                     td class="text-center"
                                       = sched.check_box :closed, class: "rounded-md"
                                       = sched.label :closed, class: "sr-only"
-                        button type="button" class="block px-5 py-2.5 mx-auto w-1/3 text-white rounded-md bg-blue-medium" data-action="click->modal#close"
+                        button type="button" class="block px-5 py-2.5 mx-auto w-1/3 text-white rounded-md transition bg-blue-medium hover:bg-seafoam" data-action="click->modal#close"
                           | Save
 
                   div class="hidden col-span-3 md:flex"
@@ -459,6 +459,6 @@
                   = f.check_box :verified, class: "h-4 w-4 mt-1 mr-2 rounded-6px text-base text-blue-medium  focus:ring-0 focus:ring-transparent", checked: @organization.verified
                   = f.label :verified, "Check to verify", class: "text-sm"
 
-      = f.submit 'Save', class: 'mx-auto mt-12 flex cursor-pointer uppercase flex-row justify-center items-center bg-seafoam py-4 px-10 rounded-6px text-blue-dark text-base font-bold focus:outline-none', data: { action: "click->form-validation#addEmptyRequiredStyles click->halt-navigation-on-change#startSaving" }
+      = f.submit 'Save', class: 'hover:bg-seafoam-light transition mx-auto mt-12 flex cursor-pointer uppercase flex-row justify-center items-center bg-seafoam py-4 px-10 rounded-6px text-blue-dark text-base font-bold focus:outline-none', data: { action: "click->form-validation#addEmptyRequiredStyles click->halt-navigation-on-change#startSaving" }
   // unsaved changes modal
   = render "organizations/unsaved_changes_modal_template"  

@@ -1,14 +1,17 @@
+<% tooltip_id = SecureRandom.hex(8) %>
 <%= link_to(
-  link_args[:path],
-  method: link_args[:method],
-  class: "#{btn_selector} #{button_styles}",
-  data: { turbo_stream: true }
-) do %>
+      link_args[:path],
+      method: link_args[:method],
+      class: "#{btn_selector} #{button_styles} relative",
+      data: { turbo_stream: true}
+    ) do %>
   <%= render CauseIcon::Component.new(
-    svg_name: icon_name,
-    wrapper_options: { class: wrapper_styles },
-    svg_options: { class: "w-4 h-auto", aria_hidden: true }
-  ) %>
-
+        svg_name: icon_name,
+        wrapper_options: { class: "pop-out labelled-icon #{wrapper_styles}", "aria-labelledby": tooltip_id },
+        svg_options: { class: "w-4 h-auto", aria_hidden: true }
+      ) %>
+  <span role="tooltip" id="<%= tooltip_id %>" class="<%= "hidden absolute z-10 px-2 py-1 w-44 text-xs text-white bg-opacity-90 rounded-lg transform bg-gray-2 #{@tooltip_position}" %>" >
+    Save this nonprofit to you account!
+  </span>
   <span class="<%= copy_styles %>">Save</span>
 <% end %>

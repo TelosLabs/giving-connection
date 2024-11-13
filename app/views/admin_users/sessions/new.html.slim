@@ -1,9 +1,9 @@
-.main class="mb-12 md:mb-36 mt-14 md:mt-32"
+.main class="mt-14 mb-12 md:mb-36 md:mt-32"
   h2 class="pb-6 text-2xl font-bold text-center md:pb-9 text-gray-gray-7"
     | Welcome back!
 
   div class="md:hidden"
-    div class="absolute top-0 left-0 -z-1 w-72 sm:w-80 sm:h-80"
+    div class="absolute top-0 left-0 w-72 -z-1 sm:w-80 sm:h-80"
       = inline_svg_tag 'mob-purple-blur-login.svg'
     div class="absolute top-0 right-0 -z-1"
       = inline_svg_tag 'mob-green-blur-login.svg'
@@ -25,4 +25,4 @@
       - if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations'
         = link_to "Forgot your password?", new_password_path(resource_name), class:'font-bold flex self-end md:self-center'
       .c-form--action class="mt-12"
-        = f.submit "Sign in", class:"c-button", data: { test_id: "admin_login_submit_btn"}
+        = f.submit "Sign in", class:"c-button hover:bg-seafoam-light transition", data: { test_id: "admin_login_submit_btn"}

@@ -1,12 +1,12 @@
 nav class="flex justify-between"
   // GC profile link
-  = link_to location_path(@location), class: "relative grid place-items-center pb-4 text-blue-medium", target: "_blank" do
+  = link_to location_path(@location), class: "pop-out  relative grid place-items-center pb-4 text-blue-medium", target: "_blank" do
     = render CauseIcon::Component.new(svg_name: "non_profit_cards/redirect.svg", \
                                           wrapper_options: {class: "icon w-10 h-10 border border-blue-medium"}, \
                                           svg_options: {class: "w-1/2", aria_hidden: true})
     span class="#{action_button_styles[:copy]}" View Page
   // Save
-  = render SaveButton::Component.new(user: @user, location: @location)
+  = render SaveButton::Component.new(user: @user, location: @location, tooltip_position: "top-10")
 
   // Share
   button type="button" class="#{action_button_styles[:button]}" data-controller="copy-to-clipboard" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="#{location_url(@location)}"

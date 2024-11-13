@@ -8,7 +8,7 @@ div class="flex relative flex-col gap-2 p-7 bg-white rounded-6px" id="loc_#{@res
         - if @result.organization.verified?
           = render partial: "shared/popover", locals: { position: "right-0", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg" }
       - if @result.public_address?
-        p class="text-xs text-gray-500 lg:text-sm" id="pointer"
+        p class="text-xs text-gray-500 lg:text-sm" class="pop-out"
           = link_to @result.formatted_address, @result.link_to_google_maps, target: "blank"
       // Designations
       = render DesignationTag::Component.new(@result.organization)
