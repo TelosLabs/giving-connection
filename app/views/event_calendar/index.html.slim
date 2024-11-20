@@ -1,1 +1,26 @@
-= render Calendar::Component.new()
+div.flex.justify-center.mt-16 
+    div.w-4/6
+        p 
+            b.text-xl My Account 
+        div.flex.gap-x-6.ml-10.mt-4 
+            a#event_profile.text-cyan-600.linked_item style="transition: color 0.1s ease;" onclick="clicked(this)" href="#"
+                b.text-sm My Profile 
+            a#event_saved_pages.linked_item style="transition: color 0.1s ease;" onclick="clicked(this)" href="#"
+                b.text-sm Saved Pages      
+            a#event_alerts.linked_item style="transition: color 0.1s ease;" onclick="clicked(this)" href="#" 
+                b.text-sm Alerts 
+            a#event_nonprofit_pages.linked_item style="transition: color 0.1s ease;" onclick="clicked(this)" href="#" 
+                b.text-sm My Nonprofit Pages 
+            a#event_my_events.linked_item style="transition: color 0.1s ease;" onclick="clicked(this)" href="#"
+                b.text-sm My Events 
+
+ / Fix positioning later
+ = render Calendar::Component.new()
+
+javascript:
+    function clicked(element) {  
+        document.querySelectorAll(".linked_item").forEach(link => {
+            link.classList.remove("text-cyan-600");
+        }); 
+        element.classList.add("text-cyan-600");
+    }
