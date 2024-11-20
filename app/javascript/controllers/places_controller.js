@@ -27,6 +27,8 @@ export default class extends Controller {
 
     if (typeof(google) != "undefined") {
       this.initMap()
+    } else {
+      this.displayBrowserNotSupportedMessage()
     }
     const pagyFrame = document.getElementById("pagy")
 
@@ -35,6 +37,18 @@ export default class extends Controller {
         const cardTitles = document.querySelectorAll('[id^="new_favorite"]');
         this.setTitleListeners(cardTitles);
       }).observe(pagyFrame, { subtree: true, childList: true });
+    }
+  }
+
+  displayBrowserNotSupportedMessage() {
+    const mapContainer = this.mapTarget;
+    if (mapContainer) {
+      mapContainer.innerHTML = `
+        <div style='text-align: center; padding: 20px;'>
+          <p>It looks like your browser is not supported for displaying the map.</p>
+          <p>Please update your browser to the latest version or try using a different browser for the best experience.</p>
+        </div>
+      `;
     }
   }
 
