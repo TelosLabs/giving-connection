@@ -32,7 +32,7 @@ div class="w-full h-full bg-white"
               div class="flex flex-row col-span-12 justify-between"
                 span class="text-sm font-medium text-grey-4"
                   | Password
-                button class="text-blue-medium" type="button" data-action=("click->toggle#toggle touch->toggle#toggle")
+                button class="text-blue-medium hover:text-blue-dark" type="button" data-action=("click->toggle#toggle touch->toggle#toggle")
                   | Edit
 
               div class="grid hidden grid-cols-12 col-span-12 gap-6" data-toggle-target="toggleable menu"
@@ -97,7 +97,7 @@ div class="w-full h-full bg-white"
                     div class="flex flex-row justify-between w-full"
                       span class="text-lg font-bold text-black capitalize"
                         | #{alert.decorate.title(index)}
-                      = link_to "Edit", edit_alert_path(alert), class: "text-blue-medium", data: { turbo_stream: true }
+                      = link_to "Edit", edit_alert_path(alert), class: "text-blue-medium hover:text-blue-dark", data: { turbo_stream: true }
                     div class="flex flex-row text-sm font-normal text-gray-2"
                       | #{list_all_filters(alert).join(', ')}
             - else
@@ -122,7 +122,7 @@ div class="w-full h-full bg-white"
                         | #{organization.name}
                         - if organization.verified?
                           = render "shared/popover", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg"
-                      = link_to "Edit", edit_organization_path(organization), class:"text-blue-medium"
+                      = link_to "Edit", edit_organization_path(organization), class:"text-blue-medium hover:text-blue-dark"
 
             - else
               div class="flex justify-center my-16 w-full"
