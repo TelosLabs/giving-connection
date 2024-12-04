@@ -1,0 +1,23 @@
+<div class="absolute flex space-x-1 w-100">
+<div class="flex bg-gray-5">
+  <%= link_to(
+    link_args[:path],
+    method: link_args[:method],
+    class: "#{btn_selector} #{button_styles}",
+    data: { turbo_stream: true }
+  ) do %>
+    <span class="<%= copy_styles %>">List</span>
+  <% end %>
+</div>
+<div class="flex bg-gray-5">
+
+  <%= link_to(
+    link_args[:path],
+    method: link_args[:method],
+    class: "#{btn_selector} #{button_styles}",
+    data: { turbo_stream: true }
+  ) do %>
+    <span class="alternative-copy-styles">Calendar</span>
+  <% end %>
+</div>
+</div>
