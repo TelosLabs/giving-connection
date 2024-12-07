@@ -8,7 +8,7 @@ class Search
 
   attr_accessor :keyword, :results, :distance, :city, :state, :zipcode,
     :beneficiary_groups, :services, :causes, :open_now, :open_weekends,
-    :lat, :lon
+    :scope_of_work, :lat, :lon
 
   def save
     raise ActiveRecord::RecordInvalid unless valid?
@@ -43,7 +43,8 @@ class Search
       open_weekends: ActiveModel::Type::Boolean.new.cast(open_weekends),
       beneficiary_groups: beneficiary_groups&.transform_values { |value| value.uniq },
       services: services&.transform_values { |value| value.uniq },
-      causes: causes&.uniq
+      causes: causes&.uniq,
+      scope_of_work: scope_of_work
     }
   end
 
