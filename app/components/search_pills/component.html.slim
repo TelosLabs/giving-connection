@@ -35,6 +35,9 @@ div class="w-full bg-gray-9"
         div class="flex w-full md:w-auto md:py-3.5 md:pl-7"
           - @radii_in_miles.each do |radius|
             = render SearchPills::Button::Component.new(name: "search[distance]", value: miles_to_km(radius), checked: @params.dig(:search, :distance) == miles_to_km(radius).to_s, copy: radius == "Any" ? radius : "#{radius} mi")
+        div class="flex gap-2 ml-2 w-full md:w-auto md:py-3.5 md:pl-7"
+          - Organizations::Constants::SCOPE.each do |scope|
+            = render SearchPills::Pill::Component.new(name: "search[scope_of_work]", value: scope, checked: @params.dig(:search, :scope_of_work)&.include?(scope)), options: { multiple: true }, copy: scope
       / Services
       div class="flex hidden overflow-y-auto flex-wrap gap-x-2 gap-y-3 px-6 py-4 max-h-28 border-r border-b border-l" data-tabs-target="panel"
         - @services.each do |service|
