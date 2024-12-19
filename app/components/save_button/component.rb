@@ -6,6 +6,7 @@ class SaveButton::Component < ApplicationViewComponent
     @location = location
     @simplified = simplified
     @tooltip_position = tooltip_position
+    @removable_fav_location = removable_fav_location?
   end
 
   def link_args

@@ -11,7 +11,11 @@
         svg_options: { class: "w-4 h-auto", aria_hidden: true }
       ) %>
   <span role="tooltip" id="<%= tooltip_id %>" class="<%= "hidden absolute z-10 px-2 py-1 w-44 text-xs text-white bg-opacity-90 rounded-lg transform bg-gray-2 #{@tooltip_position}" %>" >
-    Save this nonprofit to you account!
+    <% if @removable_fav_location %>
+      Remove this nonprofit from your account
+    <% else %>
+      Save this nonprofit to you account!
+    <% end %>
   </span>
   <span class="<%= copy_styles %>">Save</span>
 <% end %>
