@@ -98,8 +98,12 @@ div class="w-full h-full bg-white"
                       span class="text-lg font-bold text-black capitalize"
                         | #{alert.decorate.title(index)}
                       = link_to "Edit", edit_alert_path(alert), class: "text-blue-medium hover:text-blue-dark", data: { turbo_stream: true }
-                    div class="flex flex-row text-sm font-normal text-gray-2"
-                      | #{list_all_filters(alert).join(', ')}
+                    div class="flex flex-col text-sm font-normal text-gray-2"
+                      - if list_all_filters(alert).present?
+                        p
+                          | Filters: #{list_all_filters(alert).join(', ')}
+                      p
+                        | Frequency: #{alert.frequency.capitalize}
             - else
               div class="flex justify-center my-16 w-full"
                 = inline_svg_tag 'empty_state_2.svg', size:'294*145'

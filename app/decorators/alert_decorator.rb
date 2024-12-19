@@ -2,6 +2,10 @@ class AlertDecorator < ApplicationDecorator
   delegate_all
 
   def title(index)
-    object.keyword.presence || "Alert #{index + 1}"
+    if object.keyword.present?
+      "Keyword: #{object.keyword}"
+    else
+      "Alert #{index + 1}"
+    end
   end
 end
