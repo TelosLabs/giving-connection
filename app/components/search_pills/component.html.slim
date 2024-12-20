@@ -1,4 +1,4 @@
-div class="w-full bg-gray-9"
+div class="w-full bg-gray-9" id="tabs-wrapper"
   div data-controller="tabs" data-tabs-active-tab=("border-b-4 border-blue-medium") data-tabs-inactive-tab="underline-on-hover"
     div class="flex"
       / Clear-Counter button
@@ -19,7 +19,7 @@ div class="w-full bg-gray-9"
             span class="hidden relative mb-2 ml-1 w-2 h-2 rounded-full bg-salmon" id="appliedIcon"
 
     / Panels
-    div class="bg-white"
+    div class="bg-white" id="search-pills-panel"
       / Causes
       div class="flex hidden overflow-y-auto flex-wrap gap-x-2 gap-y-3 px-6 py-4 max-h-28 border-r border-b border-l" data-tabs-target="panel"
         - @causes.each do |cause|
