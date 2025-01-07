@@ -65,7 +65,7 @@ gem "administrate"
 gem "administrate-field-active_storage"
 gem "administrate-field-nested_has_many", git: "https://github.com/TelosLabs/administrate-field-nested_has_many.git", branch: "feature/stimulus-controller"
 gem "administrate-field-select", "~> 2.0", require: "administrate/field/select_basic"
-gem "image_processing"
+gem "image_processing", "~> 1.13"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
