@@ -219,7 +219,10 @@ GEM
       concurrent-ruby (~> 1.1)
       webrick (~> 1.7)
       websocket-driver (~> 0.7)
-    ffi (1.17.0)
+    ffi (1.17.0-aarch64-linux-gnu)
+    ffi (1.17.0-arm64-darwin)
+    ffi (1.17.0-x86_64-darwin)
+    ffi (1.17.0-x86_64-linux-gnu)
     formatador (1.1.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
@@ -681,7 +684,7 @@ DEPENDENCIES
   webdrivers (~> 5.2)
 
 RUBY VERSION
-   ruby 3.1.0p0
+   ruby 3.1.5p252
 
 BUNDLED WITH
    2.3.22
