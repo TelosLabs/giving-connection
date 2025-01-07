@@ -24,7 +24,6 @@ gem "redis", "~> 4.0"
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Active Storage variant
-# gem 'image_processing', '~> 1.2'
 
 # Use Devise for authentication
 gem "devise"
@@ -131,4 +130,4 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 
-gem 'mini_magick', '~> 5.0', '>= 5.0.1'
+gem "mini_magick"
