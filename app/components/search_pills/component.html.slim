@@ -11,7 +11,7 @@ div class="w-full bg-gray-9" id="tabs-wrapper"
       / Tabs
       ul class="flex overflow-x-auto overflow-y-hidden flex-1 gap-x-6 pr-6 pl-5 text-sm list-none bg-blue-pale text-gray-2"
         - @tabs_labels.each do |tab_label|
-          li data-action="click->tabs#change" data-tabs-target="tab"
+          li data-action="mouseover->tabs#change" data-tabs-target="tab"
             a class="inline-block py-3 whitespace-nowrap" href="#" = tab_label
         li data-action="click->modal#open" class="underline-on-hover"
           button class="inline-block py-3 whitespace-nowrap" type="button" id="advanced-filters-button"
