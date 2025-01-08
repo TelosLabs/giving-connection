@@ -216,3 +216,14 @@ input.admin-panel-population:disabled + label {
   }
 
 }
+
+// Expandable panel on hover
+#tabs-wrapper:hover #search-pills-panel {
+  max-height: 1000px;
+}
+
+#search-pills-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+}
