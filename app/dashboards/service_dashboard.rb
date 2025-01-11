@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require "administrate/base_dashboard"
 
 class ServiceDashboard < Administrate::BaseDashboard
@@ -10,10 +8,10 @@ class ServiceDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
+    id: Field::Number,
     cause: Field::BelongsTo,
     location_services: Field::HasMany,
     locations: Field::HasMany,
-    id: Field::Number,
     name: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime
@@ -62,8 +60,4 @@ class ServiceDashboard < Administrate::BaseDashboard
   # def display_resource(service)
   #   "Service ##{service.id}"
   # end
-
-  def display_resource(service)
-    service.name
-  end
 end
