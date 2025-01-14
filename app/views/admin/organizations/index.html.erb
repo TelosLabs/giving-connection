@@ -58,5 +58,6 @@ It renders the `_table` partial to display details about the resources.
     resources: resources,
     table_title: "page-title"
   ) %>
-  <%= paginate resources, param_name: '_page' %>
+
+  <%= render("pagination", resources: resources) %>
 </section>
