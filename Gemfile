@@ -61,7 +61,7 @@ gem "net-pop", require: false
 gem "net-smtp", require: false
 
 # Use administrate admin framework
-gem "administrate"
+gem "administrate", "~> 0.20.0"
 gem "administrate-field-active_storage"
 gem "administrate-field-nested_has_many", git: "https://github.com/TelosLabs/administrate-field-nested_has_many.git", branch: "feature/stimulus-controller"
 gem "administrate-field-select", "~> 2.0", require: "administrate/field/select_basic"
