@@ -5,6 +5,16 @@ class RedirectionController < ApplicationController
   layout "redirection"
 
   def notice_external_link
-    @target_url = params[:target_url]
+    @target_url = safe_url(params[:target_url])
+  end
+
+  private
+
+  def safe_url(url)
+    uri = URI.parse(url)
+
+    uri.to_s if uri.is_a?(URI::HTTP)
+  rescue URI::InvalidURIError
+    nil
   end
 end
