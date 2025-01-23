@@ -64,7 +64,7 @@ class Organization < ApplicationRecord
 
   def regenerate_org_locations_slugs
     locations.order(:created_at).each do |location|
-      base_slug = ein_number.parametrize
+      base_slug = ein_number
       slug = base_slug
       counter = 1
 
