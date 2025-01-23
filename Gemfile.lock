@@ -223,6 +223,8 @@ GEM
     ffi (1.17.1-arm64-darwin)
     ffi (1.17.1-x86_64-linux-gnu)
     formatador (1.1.0)
+    friendly_id (5.5.1)
+      activerecord (>= 4.0.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     guard (2.19.1)
@@ -623,6 +625,7 @@ DEPENDENCIES
   draper
   factory_bot_rails
   faker
+  friendly_id (~> 5.5)
   guard-rspec
   image_processing (~> 1.13)
   inline_svg

@@ -62,6 +62,22 @@ class Organization < ApplicationRecord
   accepts_nested_attributes_for :organization_beneficiaries, allow_destroy: true
   accepts_nested_attributes_for :organization_causes, allow_destroy: true
 
+  def regenerate_org_locations_slugs
+    locations.order(:created_at).each do |location|
+      base_slug = ein_number
+      slug = base_slug
+      counter = 1
+
+      while Location.exists?(slug: slug)
+        slug = "#{base_slug}-#{counter}"
+        counter += 1
+      end
+
+      location.slug = slug
+      location.save!
+    end
+  end
+
   private
 
   def attach_logo_and_cover
