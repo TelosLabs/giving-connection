@@ -74,8 +74,9 @@ Rails.application.routes.draw do
   root to: "home#index"
 
   # Custom routes for city-based search
-  get "/atlantic_city", to: "cities#show", city: "Atlantic City", as: :atlantic_city
+  get "/atlantic-city", to: "cities#show", city: "Atlantic City", as: :atlantic_city
   get "/nashville", to: "cities#show", city: "Nashville", as: :nashville
+  get "/los-angeles", to: "cities#show", city: "Los Angeles", as: :los_angeles
 
   get "redirect", to: "redirection#notice_external_link", as: :redirect
 end
