@@ -1,14 +1,19 @@
 main
   section id="search" class="relative py-20 gradient-blue sm:py-24"
-    section class="flex hidden absolute top-0 z-20 w-full bg-electric-teal" data-controller="banner" data-banner-target="banner"
+    section class="flex hidden absolute top-0 z-20 w-full text-white bg-salmon" data-controller="banner" data-banner-target="banner"
       div class="flex items-center py-2 mx-auto max-w-3xl md:py-2"
-        div class="block"
+        div class="block ml-2"
           = inline_svg_tag 'megaphone.svg', size: '24'
         div class="pr-2 pl-2 text-gray-1"
-          div class="pl-0 text-[10px] md:text-xs font-bold md:text-sm text-wrap md:text-base text-blue-dark mr-2"
-            | We've officially launched in Nashville & Atlantic City! 
-            a href="/search" target='_blank'  class="underline cursor-pointer hover:text-blue-dark decoration-2 text-blue-medium"
-              | Search Here
+          div class="pl-0 text-[10px] md:text-xs font-bold md:text-sm text-wrap md:text-base text-white pr-4"
+            | We've launched an emergency response for those affected by the Los Angeles wildfires. 
+            | Search 
+            a href="/search" target='_blank'  class="text-white underline cursor-pointer hover:text-seafoam decoration-2"
+              | here
+            |  to find nonprofits in LA or access the full resource list 
+            a href="https://docs.google.com/spreadsheets/d/10_UtQ6bcGx93liGP6AgSrrY7taSjbaM4xAI7lsJeSSQ/edit?gid=0#gid=0" target='_blank'  class="text-white underline cursor-pointer hover:text-seafoam decoration-2"
+              | here
+            | .
         div class="flex absolute inset-y-0 right-0 items-start pt-1 pr-1 ml-2 sm:pt-1.5 sm:pr-5 sm:items-start"
           button class="flex p-2 rounded-md hover:bg-gray" type="button" data-action="banner#closeBanner"
             span.sr-only Dismiss
