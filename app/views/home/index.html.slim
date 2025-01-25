@@ -2,12 +2,11 @@ main
   section id="search" class="relative py-20 gradient-blue sm:py-24"
     section class="flex hidden absolute top-0 z-20 w-full text-white bg-salmon" data-controller="banner" data-banner-target="banner"
       div class="flex items-center py-2 mx-auto max-w-3xl md:py-2"
-        div class="block"
+        div class="block ml-2"
           = inline_svg_tag 'megaphone.svg', size: '24'
         div class="pr-2 pl-2 text-gray-1"
-          div class="pl-0 text-[10px] md:text-xs font-bold md:text-sm text-wrap md:text-base text-white mr-2"
+          div class="pl-0 text-[10px] md:text-xs font-bold md:text-sm text-wrap md:text-base text-white pr-4"
             | We've launched an emergency response for those affected by the Los Angeles wildfires. 
-            br
             | Search 
             a href="/search" target='_blank'  class="text-white underline cursor-pointer hover:text-seafoam decoration-2"
               | here
