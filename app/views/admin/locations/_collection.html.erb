@@ -57,6 +57,7 @@ to display a collection of resources in an HTML table.
 
   <tbody>
     <% resources.each do |resource| %>
+    <% resource = resource.decorate if resource.class == OfficeHour %>
       <tr class="js-table-row"
           <% if accessible_action?(resource, :show) %>
             <%= %(tabindex=0 role=link data-url=#{polymorphic_path([namespace, resource])}) %>
