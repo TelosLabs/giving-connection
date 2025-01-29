@@ -2,5 +2,6 @@
   <%= f.label field.attribute %>
 </div>
 <div class="field-unit__field">
-  <%= f.time_field field.attribute, value: field&.resource&.in_local_time(field.data)&.strftime("%H:%M") || "" %>
+  <% time_zone = Location.find(params[:id]).time_zone %>
+  <%= f.time_field field.attribute, value: field&.data&.in_time_zone(time_zone)&.strftime("%H:%M") || "" %>
 </div>
