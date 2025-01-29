@@ -2,6 +2,6 @@
   <%= f.label field.attribute %>
 </div>
 <div class="field-unit__field">
-  <% time_zone = Location.find(params[:id]).time_zone %>
+  <% time_zone = Location.find(params[:id]).time_zone if field.resource.respond_to?(:location)  %>
   <%= f.time_field field.attribute, value: field&.data&.in_time_zone(time_zone)&.strftime("%H:%M") || "" %>
 </div>
