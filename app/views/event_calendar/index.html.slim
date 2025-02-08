@@ -12,8 +12,21 @@ div.flex.justify-center.mt-16
             a#event_nonprofit_pages.linked_item style="transition: color 0.1s ease;" onclick="clicked(this)" href="#" 
                 b.text-sm My Nonprofit Pages 
             a#event_my_events.linked_item style="transition: color 0.1s ease;" onclick="clicked(this)" href="#"
-                b.text-sm My Events 
-               
+                b.text-sm My Events    
+        
+        /! Attachment for users to insert image, two div containers, one for showing the uploaded file, the second for user to upload file
+        div.flex.justify-start.mt-5
+            div.flex.flex-col.items-center
+                div.text-base.mb-2 style="font-weight: 500; color:#3B4958;"
+                    | Attach Flyer/Photo    
+                img.outline.outline-1.outline-gray-700 style="background: #E6E6E6; height: 148px; width:148px;" id="uploaded-img"
+            div.flex.flex-col.items-start style="margin-left:27px; margin-top:50px;"    
+                label.bg-white.hover:bg-gray-100.text-gray-700.py-2.px-4.border.border-gray-400.rounded-md for="file-upload" 
+                    b Upload
+                input id="file-upload" type="file" name="filename" class="hidden" 
+                p.text-s.mt-1
+                    | Maximum size of 5MB
+
 
 javascript:
     function clicked(element) {  
@@ -21,4 +34,17 @@ javascript:
             link.classList.remove("text-cyan-600");
         }); 
         element.classList.add("text-cyan-600");
-    }
+    } 
+
+    // Upload function for uploading photo 
+    document.getElementById("file-upload").addEventListener("change", function() {
+        const img = document.getElementById("uploaded-img");
+        const file = this.files[0]; // Get selected file (Get first file in case user uploads multiple files)
+
+        if (file) {
+            const reader = new FileReader(); // Create new FileReader object allowing us to read contents of file
+            reader.onload = (e) => img.src = e.target.result; // Fires update image preview ONCE file is read 
+            reader.readAsDataURL(file); // Reading the file as a Base64 URL (so it can be shown as an image)
+        }
+    });
+
