@@ -113,6 +113,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     volunteer_link
     organization_causes
     social_media
+    locations
   ].freeze
 
   # COLLECTION_FILTERS
