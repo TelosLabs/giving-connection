@@ -6,6 +6,7 @@ Note: These intructions were written based on fresh installations of Mac and Win
 ## Click to see instructions for your operating system:
 - [Mac](#mac)
 - [Windows](#windows)
+- (New) [Docker](#docker)
 
 ## Mac
 
@@ -483,39 +484,39 @@ When asked if you want to overwrite the existing executable, type `y` and press 
 rails db:create
 ```
 
-11. Setup rake tasks:
+10. Setup rake tasks:
 ```bash
 rake db:gis:setup
 ```
 
-12. Migrate the database:
+11. Migrate the database:
 ```bash
 rails db:migrate
 ```
 
-13. Seed the database:
+12. Seed the database:
 ```bash
 rails db:seed
 ```
 
-14. Install puma:
+13. Install puma:
 ```bash
 gem install puma
 ```
 
-15. Install foreman:
+14. Install foreman:
 ```bash 
 gem install foreman
 ```
 
-16. Restart the Ubuntu Terminal to apply the changes, then navigate back to the project directory.
+15. Restart the Ubuntu Terminal to apply the changes, then navigate back to the project directory.
 
-17. Create this directory:
+16. Create this directory:
 ```bash
 mkdir tmp/pids
 ```
 
-18. Add the appropriate permissions:
+17. Add the appropriate permissions:
 ```bash
 chmod -R 775 tmp/pids
 ```
@@ -530,4 +531,35 @@ If you see an error message claiming that `foreman` does not exist, close and re
 
 Wait until you stop seeing the output scroll, then visit `localhost:3000` in your browser to see the project running! To stop the project at any time, press <kbd>Ctrl</kbd> + <kbd>C</kbd> in the terminal.
 
-*Time to sleep 😑🛏️*.
+## Docker
+I've added this option in an attempt to simplify development by packaging the project with Docker. If you are having trouble with the Windows or Mac instructions, you might find this section useful.
+
+1. Install Docker Desktop. You won't be interacting with the application directly, but it installs the shell as well which we will be using more often. Make sure you do this before you use VSCode or any other Terminal. If you know what you're doing, you can skip this step.
+
+2. Run the setup script in PowerShell (Windows) or Terminal (Mac/Ubuntu/Debian):
+```
+bash setup-docker.sh
+```
+
+3. Once the output has stopped scrolling super fast, go to [http://localhost:3000](http://localhost:3000) in your browser and see it up and running!
+
+4. You can stop following the logs at any time with <kbd>Ctrl</kbd> + <kbd>C</kbd>. This doesn't shut down the container though. See the next section for that.
+
+### Running After Setup
+You can stop running the project at any time by typing
+```bash
+docker-compose down
+```
+
+And then restart at any time with
+```bash
+docker-compose up -d
+# If you want to follow the logs again (recommended)
+docker-compose logs -f web
+```
+
+### Also Useful
+If you ever need to remove existing volumes from Docker (this removes everything!)
+```bash
+docker system prune -a --volumes
+``` 
