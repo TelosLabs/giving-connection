@@ -30,17 +30,46 @@ div.flex.justify-center.mt-16
     div.outer-layer.save-review-outer
       div.inner-layer.save-review-inner
         | Save and Review
-    
+                b.text-sm My Events    
+        
+        /! Attachment for users to insert image, two div containers, one for showing the uploaded file, the second for user to upload file
+        div.flex.justify-start.mt-5
+            div.flex.flex-col.items-center
+                div.text-base.mb-2 style="font-weight: 500; color:#3B4958;"
+                    | Attach Flyer/Photo    
+                img.outline.outline-1.outline-gray-700 style="background: #E6E6E6; height: 148px; width:148px;" id="uploaded-img"
+            div.flex.flex-col.items-start style="margin-left:27px; margin-top:50px;"    
+                label.bg-white.hover:bg-gray-100.text-gray-700.py-2.px-4.border.border-gray-400.rounded-md for="file-upload" 
+                    b Upload
+                input id="file-upload" accept="image/*" type="file" name="filename" class="hidden" 
+                p.text-s.mt-1
+                    | Maximum size of 5MB
 
-//Fix positioning later
 = render Calendar::Component.new()
+javascript: 
+    const MAX_SIZE_IN_BYTES = 5 * 1024 * 1024; // 5MB
 
 
-
-javascript:
     function clicked(element) {  
         document.querySelectorAll(".linked_item").forEach(link => {
             link.classList.remove("text-cyan-600");
         }); 
         element.classList.add("text-cyan-600");
-    }
+    } 
+
+    // Upload function for uploading photo 
+    document.getElementById("file-upload").addEventListener("change", function() {
+        const img = document.getElementById("uploaded-img");
+        const file = this.files[0];  
+
+        if (file) { 
+            if(file.size> MAX_SIZE_IN_BYTES){
+                alert("The file size exceeds the 5MB limit. Please upload a smaller image."); 
+                this.value = ""; // Clear the file input 
+                return;
+            } 
+            const reader = new FileReader(); 
+            reader.onload = (e) => img.src = e.target.result; 
+            reader.readAsDataURL(file); 
+        }
+    });

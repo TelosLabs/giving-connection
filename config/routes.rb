@@ -65,6 +65,7 @@ Rails.application.routes.draw do
   get "discover/:name" => "causes#show", :as => :discover_show
   resource :my_account, only: %i[show]
   resource :about_us, only: %i[show]
+  resource :review_and_publish, controller: "review_and_publish"
   resource :faqs, only: %i[show]
   resource :donate, only: %i[show]
   resource :privacy_policy, only: %i[show]
