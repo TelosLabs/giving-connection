@@ -1,0 +1,61 @@
+/*Taken from figma*/
+div.flex {
+  gap: 23px; 
+}
+
+.outer-layer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px; 
+}
+
+.inner-layer {
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+  flex-shrink: 0;
+  text-align: center; 
+  font-family: "Inter"; 
+  font-size: 24px; 
+  font-weight: 600; 
+  line-height: 36px; 
+  letter-spacing: -0.264px; 
+  color: #FFF; 
+}
+
+/* Save as a Draft button */
+.save-draft-outer {
+  width: 205px; 
+  height: 54px; 
+  padding: 12px 17px 13px 17px; 
+  background: #AAA; 
+}
+
+.save-draft-inner {
+  width: 171px; 
+  height: 29px; 
+}
+
+/* Save and Review button */
+.save-review-outer {
+  width: 228px; 
+  height: 54px; 
+  padding: 12px 17px 13px 18px; 
+  background: #707070; 
+}
+
+.save-review-inner {
+  width: 193px; 
+  height: 29px; 
+}
+
+/*didn't add the click and it changes color*/
+
+/*.outer-layer:hover {
+  opacity: 0.9; /
+}
+
+.outer-layer:active {
+  background: #888888; 
+}*/
