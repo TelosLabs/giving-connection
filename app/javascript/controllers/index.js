@@ -6,7 +6,7 @@ import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"
 import Carousel from '@stimulus-components/carousel'
 import { Autocomplete } from "stimulus-autocomplete"
 import { Dropdown } from "tailwindcss-stimulus-components"
-import CalendarComponentController from "./calendar_component_controller"
+// import CalendarComponentController from "./calendar_component_controller"
 
 const application = Application.start()
 application.register('carousel', Carousel)
