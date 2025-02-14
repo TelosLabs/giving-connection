@@ -27,9 +27,11 @@ div.flex.justify-center.mt-16
                 p.text-s.mt-1
                     | Maximum size of 5MB
 
+= render Calendar::Component.new()
 
 javascript: 
     const MAX_SIZE_IN_BYTES = 5 * 1024 * 1024; // 5MB
+
 
     function clicked(element) {  
         document.querySelectorAll(".linked_item").forEach(link => {
@@ -54,4 +56,3 @@ javascript:
             reader.readAsDataURL(file); 
         }
     });
-
