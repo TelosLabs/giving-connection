@@ -1,24 +1,3 @@
-div.flex.justify-center.mt-16 
-    div.w-4/6
-        p 
-            b.text-xl My Account 
-        div.flex.gap-x-6.ml-10.mt-4 
-            a#event_profile.text-cyan-600.linked_item style="transition: color 0.1s ease;" onclick="clicked(this)" href="#"
-                b.text-sm My Profile 
-            a#event_saved_pages.linked_item style="transition: color 0.1s ease;" onclick="clicked(this)" href="#"
-                b.text-sm Saved Pages      
-            a#event_alerts.linked_item style="transition: color 0.1s ease;" onclick="clicked(this)" href="#" 
-                b.text-sm Alerts 
-            a#event_nonprofit_pages.linked_item style="transition: color 0.1s ease;" onclick="clicked(this)" href="#" 
-                b.text-sm My Nonprofit Pages 
-            a#event_my_events.linked_item style="transition: color 0.1s ease;" onclick="clicked(this)" href="#"
-                b.text-sm My Events 
-div.max-w-4xl.mx-auto.mt-10.bg-gray-200.p-3.sticky.top-0.z-10
-    div.flex.justify-between.font-bold.border-black.pb-2
-        div Events
-        div.mr-80 Status
-        
- 
 div.flex.justify-center.mt-16
   div.flex.gap-4
     // Save as a Draft button
@@ -32,7 +11,7 @@ div.flex.justify-center.mt-16
         | Save and Review
                 b.text-sm My Events    
         
-        /! Attachment for users to insert image, two div containers, one for showing the uploaded file, the second for user to upload file
+        // Attachment for users to insert image, two div containers, one for showing the uploaded file, the second for user to upload file
         div.flex.justify-start.mt-5
             div.flex.flex-col.items-center
                 div.text-base.mb-2 style="font-weight: 500; color:#3B4958;"
@@ -44,32 +23,3 @@ div.flex.justify-center.mt-16
                 input id="file-upload" accept="image/*" type="file" name="filename" class="hidden" 
                 p.text-s.mt-1
                     | Maximum size of 5MB
-
-= render Calendar::Component.new()
-javascript: 
-    const MAX_SIZE_IN_BYTES = 5 * 1024 * 1024; // 5MB
-
-
-    function clicked(element) {  
-        document.querySelectorAll(".linked_item").forEach(link => {
-            link.classList.remove("text-cyan-600");
-        }); 
-        element.classList.add("text-cyan-600");
-    } 
-
-    // Upload function for uploading photo 
-    document.getElementById("file-upload").addEventListener("change", function() {
-        const img = document.getElementById("uploaded-img");
-        const file = this.files[0];  
-
-        if (file) { 
-            if(file.size> MAX_SIZE_IN_BYTES){
-                alert("The file size exceeds the 5MB limit. Please upload a smaller image."); 
-                this.value = ""; // Clear the file input 
-                return;
-            } 
-            const reader = new FileReader(); 
-            reader.onload = (e) => img.src = e.target.result; 
-            reader.readAsDataURL(file); 
-        }
-    });

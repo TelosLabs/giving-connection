@@ -7,4 +7,9 @@ class EventCalendarController < ApplicationController
     def index
       # Add any logic for the Event Calendar page here
     end
+
+    def section
+      @section = params[:section]
+      render partial: "account_sections/#{@section}"
+    end
   end
