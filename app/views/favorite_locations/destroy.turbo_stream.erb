@@ -5,3 +5,6 @@
 <%= turbo_stream.replace_all(".save-location-#{@location.id}-btn") do %>
   <%= render SaveButton::Component.new(user: @user, location: @location) %>
 <% end %>
+
+<%# Remove the entire saved page card from My Account page %>
+<%= turbo_stream.remove "saved-page-#{@location.id}" %>
