@@ -23,7 +23,7 @@ div class=local_assigns[:container_styles]
     - if local_assigns[:location].organization.volunteer_availability? && local_assigns[:location].organization.volunteer_link.present?
       = content_tag(\
         :a,\
-        href: redirect_path(target_url: local_assigns[:location].organization.decorate.volunteer_link),\
+        href: local_assigns[:location].organization.decorate.volunteer_link,\
         target: "_blank",\
         class: "flex items-center justify-center w-full gap-2 py-3 border-0 rounded-md font-bold transition-colors text-blue-dark bg-seafoam hover:bg-electric-teal",\
       ) do
