@@ -169,31 +169,3 @@ div class="w-full h-full bg-white"
                   | You haven't claimed or added any Nonprofit Pages.
                 p class="px-4 max-w-xs text-base text-center"
                   | Click "Add A Nonprofit" on the top menu bar to contact us about adding or claiming a nonprofit page.
-
-javascript: 
-    const MAX_SIZE_IN_BYTES = 5 * 1024 * 1024; // 5MB
-
-
-    function clicked(element) {  
-        document.querySelectorAll(".linked_item").forEach(link => {
-            link.classList.remove("text-cyan-600");
-        }); 
-        element.classList.add("text-cyan-600");
-    } 
-
-    // Upload function for uploading photo 
-    document.getElementById("file-upload").addEventListener("change", function() {
-        const img = document.getElementById("uploaded-img");
-        const file = this.files[0];  
-
-        if (file) { 
-            if(file.size> MAX_SIZE_IN_BYTES){
-                alert("The file size exceeds the 5MB limit. Please upload a smaller image."); 
-                this.value = ""; // Clear the file input 
-                return;
-            } 
-            const reader = new FileReader(); 
-            reader.onload = (e) => img.src = e.target.result; 
-            reader.readAsDataURL(file); 
-        }
-    });
