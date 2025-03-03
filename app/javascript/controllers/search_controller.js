@@ -15,8 +15,17 @@ export default class extends Controller {
     "advancedFilters",
     "pillsCounter",
     "pillsCounterWrapper",
-    "filtersIcon"
+    "filtersIcon",
+    "panel",
+    "tab",
+    "searchPillsPanel",
+    "tabsWrapper"
   ]
+
+  static values = {
+    currentExpandedCategory: String,
+    isMobile: Boolean
+  }
 
   static debounces = ["displayClearKeywordButton"]
 
@@ -25,6 +34,15 @@ export default class extends Controller {
       this.advancedFiltersButton = document.getElementById("advanced-filters-button")
       this.enableAdvancedFiltersButton(this.advancedFiltersButton)
     })
+    
+    // Initialize with no expanded category
+    this.currentExpandedCategoryValue = ''
+    
+    // Check if we're on mobile
+    this.checkIfMobile()
+    
+    // Add resize listener to update mobile state
+    window.addEventListener('resize', this.checkIfMobile.bind(this))
   }
   
   connect() {
@@ -41,6 +59,79 @@ export default class extends Controller {
     
     window.addEventListener('location-updated', this.handleLocationUpdate.bind(this));
     window.addEventListener('filters-changed', this.handleFiltersChanged.bind(this));
+  }
+
+  disconnect() {
+    window.removeEventListener('location-updated', this.handleLocationUpdate.bind(this));
+    window.removeEventListener('filters-changed', this.handleFiltersChanged.bind(this));
+    window.removeEventListener('resize', this.checkIfMobile.bind(this));
+  }
+
+  // Check if we're on mobile
+  checkIfMobile() {
+    const wasMobile = this.isMobileValue
+    this.isMobileValue = window.innerWidth <= 768
+    
+    // Update the wrapper class when switching between mobile and desktop
+    if (wasMobile !== this.isMobileValue) {
+      this.tabsWrapperTarget.classList.toggle('is-mobile', this.isMobileValue)
+      
+      // Reset state when switching between mobile and desktop
+      this.collapseAllPanels()
+      this.currentExpandedCategoryValue = ''
+      this.searchPillsPanelTarget.classList.remove('expanded')
+    }
+  }
+
+  // Handle tab hover for desktop
+  handleTabHover(event) {
+    if (this.isMobileValue) return
+    
+    const hoveredTab = event.currentTarget
+    const categoryName = hoveredTab.textContent.trim()
+    this.collapseAllPanels()
+    this.expandPanel(categoryName)
+  }
+
+  // Handle mobile filter expansion
+  toggleFilterCategory(event) {
+    // Only handle click events on mobile
+    if (!this.isMobileValue) return
+    
+    event.preventDefault()
+    event.stopPropagation()
+
+    const clickedTab = event.currentTarget
+    const categoryName = clickedTab.textContent.trim()
+    
+    // If clicking the same category that's already expanded, collapse it
+    if (this.currentExpandedCategoryValue === categoryName) {
+      this.collapseAllPanels()
+      this.currentExpandedCategoryValue = ''
+      this.searchPillsPanelTarget.classList.remove('expanded')
+      return
+    }
+
+    // Otherwise, expand the clicked category and collapse others
+    this.collapseAllPanels()
+    this.expandPanel(categoryName)
+    this.currentExpandedCategoryValue = categoryName
+    this.searchPillsPanelTarget.classList.add('expanded')
+  }
+
+  collapseAllPanels() {
+    this.panelTargets.forEach(panel => {
+      panel.classList.add('hidden')
+    })
+  }
+
+  expandPanel(categoryName) {
+    const panelIndex = this.tabTargets.findIndex(tab => 
+      tab.textContent.trim() === categoryName
+    )
+    if (panelIndex >= 0) {
+      this.panelTargets[panelIndex].classList.remove('hidden')
+    }
   }
 
   // Keyword
@@ -281,10 +372,5 @@ export default class extends Controller {
     this.updateFiltersState();
     this.updateCheckboxesFromFilterStore();
     this.updatePillsCounter();
-  }
-
-  disconnect() {
-    window.removeEventListener('location-updated', this.handleLocationUpdate.bind(this));
-    window.removeEventListener('filters-changed', this.handleFiltersChanged.bind(this));
   }
 }

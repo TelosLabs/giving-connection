@@ -25,9 +25,19 @@ export default class extends Controller {
       }).observe(sidebar, { subtree: true, childList: true });
     }
 
-    if (typeof(google) != "undefined") {
-      this.initMap()
+    // More comprehensive check for Google Maps support
+    if (typeof google !== "undefined" && 
+        typeof google.maps !== "undefined" && 
+        typeof google.maps.Map === "function" &&
+        typeof google.maps.Marker === "function") {
+      try {
+        this.initMap()
+      } catch (error) {
+        console.error("Failed to initialize Google Maps:", error);
+        this.displayBrowserNotSupportedMessage()
+      }
     } else {
+      console.warn("Google Maps API not properly loaded");
       this.displayBrowserNotSupportedMessage()
     }
     const pagyFrame = document.getElementById("pagy")
