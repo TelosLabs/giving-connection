@@ -79,4 +79,8 @@ Rails.application.routes.draw do
 
   # Non-profit Event Calendar
   get 'event_calendar', to: 'event_calendar#index'
+
+  # non-profit events
+  post '/events/:org_id', to: 'events#create'
+  
 end
