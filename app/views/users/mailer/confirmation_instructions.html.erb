@@ -1,4 +1,4 @@
-<p>Welcome <%= @user&.name %>,</p>
+<p>Welcome <%= sanitize(@user&.name&.truncate(50)) %>,</p>
 <p>We are thrilled you are joining the Giving Connection community. We look forward to serving your nonprofit needs by making finding help and serving others easier.</p>
 <p style = "margin-bottom: 30px;">You can confirm your account email through the link below:</p>
 <div style = "text-align: center;">

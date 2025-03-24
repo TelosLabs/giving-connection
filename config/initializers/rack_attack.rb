@@ -1,14 +1,27 @@
 class Rack::Attack
   ### Configure Cache ###
 
-  # If you don't want to use Rails.cache (Rack::Attack's default), then
-  # configure it here.
-  #
-  # Note: The store is only used for throttling (not blocklisting and
-  # safelisting). It must implement .increment and .write like
-  # ActiveSupport::Cache::Store
+  # Configure Rack::Attack to use Redis with namespace and key expiry
+  CACHE_PREFIX = "rack_attack".freeze
 
-  # Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
+  # Use Redis for storing throttle data with automatic key expiry
+  Rack::Attack.cache.store = Redis::Store.new(
+    url: ENV.fetch("REDISCLOUD_URL") { ENV.fetch("REDIS_URL", "redis://localhost:6379/0") },
+    namespace: CACHE_PREFIX,
+    expires_in: 1.day # Global TTL for keys
+  )
+
+  class << self
+    private
+
+    # Helper method to create Redis keys with size limits
+    def cache_key_with_limits(key, max_size = 1024)
+      # Ensure key doesn't exceed maximum size to prevent memory issues
+      key = key.to_s
+      key = key[0...max_size] if key.length > max_size
+      "#{CACHE_PREFIX}:#{key}"
+    end
+  end
 
   ### Throttle Spammy Clients ###
 
@@ -24,7 +37,67 @@ class Rack::Attack
   #
   # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.ip}"
   throttle("req/ip", limit: 300, period: 5.minutes) do |req|
-    req.ip # unless req.path.start_with?('/assets')
+    cache_key_with_limits("ip:#{req.ip}") unless req.path.start_with?("/assets")
+  end
+
+  ### Prevent Registration Spam ###
+
+  # Throttle new account registrations by IP
+  # Allow 3 registrations per IP per hour
+  throttle("registrations/ip", limit: 3, period: 1.hour) do |req|
+    if req.path == "/users" && req.post?
+      cache_key_with_limits("registration:ip:#{req.ip}")
+    end
+  end
+
+  # Allow list of common email providers that shouldn't be restricted
+  ALLOWED_EMAIL_PROVIDERS = %w[
+    gmail.com
+    outlook.com
+    hotmail.com
+    yahoo.com
+    icloud.com
+    aol.com
+    protonmail.com
+    proton.me
+    me.com
+    msn.com
+    live.com
+    mail.com
+  ].freeze
+
+  # Stricter throttling for suspicious email domains
+  # (domains not in the allowed list)
+  throttle("registrations/suspicious_email_domain", limit: 2, period: 1.hour) do |req|
+    if req.path == "/users" && req.post? && req.params["user"].present?
+      email = req.params["user"]["email"].to_s
+      domain = email.split("@").last.to_s.downcase if email.include?("@")
+      if domain.present? && !ALLOWED_EMAIL_PROVIDERS.include?(domain)
+        cache_key_with_limits("registration:domain:#{domain}")
+      end
+    end
+  end
+
+  # Return a custom error message for throttled registration attempts
+  Rack::Attack.throttled_responder = lambda do |env|
+    now = Time.now
+    match_data = env["rack.attack.match_data"]
+    period = match_data[:period]
+    retry_after = period - (now.to_i % period)
+
+    headers = {
+      "Content-Type" => "application/json",
+      "Retry-After" => retry_after.to_s
+    }
+
+    [
+      429,
+      headers,
+      [{
+        error: "Too many attempts. Please try again in #{retry_after} seconds.",
+        retry_after: retry_after
+      }.to_json]
+    ]
   end
 
   ### Prevent Brute-Force Login Attacks ###
@@ -74,4 +147,9 @@ class Rack::Attack
   #    {},   # headers
   #    ['']] # body
   # end
+
+  # Clean up expired keys periodically (runs async in Redis)
+  if defined?(Rails.cache) && Rails.cache.respond_to?(:redis)
+    Rails.cache.redis.expire(CACHE_PREFIX, 24.hours.to_i)
+  end
 end
