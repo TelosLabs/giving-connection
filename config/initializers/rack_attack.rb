@@ -80,7 +80,7 @@ class Rack::Attack
 
   # Return a custom error message for throttled registration attempts
   Rack::Attack.throttled_responder = lambda do |env|
-    now = Time.now
+    now = Time.zone.now
     match_data = env["rack.attack.match_data"]
     period = match_data[:period]
     retry_after = period - (now.to_i % period)
