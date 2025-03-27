@@ -6,11 +6,13 @@ import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"
 import Carousel from '@stimulus-components/carousel'
 import { Autocomplete } from "stimulus-autocomplete"
 import { Dropdown } from "tailwindcss-stimulus-components"
+// import CalendarComponentController from "./calendar_component_controller"
 
 const application = Application.start()
 application.register('carousel', Carousel)
 application.register('autocomplete', Autocomplete)
 application.register('dropdown', Dropdown)
+application.register("calendar-component", CalendarComponentController)
 const context = require.context(".", true, /_controller\.js$/)
 const contextComponents = require.context("../../components", true, /_controller\.js$/)
 application.load(
