@@ -9,6 +9,8 @@ div class="w-full h-full bg-white"
           a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab"
             | My Profile
           a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab"
+            | My Events
+          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab"
             | Saved Pages
           a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" aria-current="page" href="#" data-action="click->tabs#change" data-tabs-target="tab"
             | Alerts
@@ -57,6 +59,41 @@ div class="w-full h-full bg-white"
                 = form.submit "Update", class: "mx-auto py-2.5 px-5 text-sm font-bold text-white bg-blue-medium uppercase rounded-6px"
               div class="col-span-12 py-4 border-t border-gray-8"
                 = link_to "Log out", destroy_user_session_path, method: :delete, class:'text-xl font-bold text-blue-dark', data: { turbo: false , test_id: "user_logout_link"}
+
+
+
+        div class="px-6" data-tabs-target="panel"
+          h4 class="my-7 text-xl text-grey-2"
+            | My Events
+
+          div.w-full.flex.justify-between.place-items-center
+            div
+              div.inline-flex.rounded-md.shadow-xs role="group"
+                button.px-4.py-2.text-sm.font-medium.text-gray-700.bg-gray-100.border.border-gray-300.rounded-l-md onclick="document.getElementById('events_list').classList.remove('hidden'); document.getElementById('events_calendar').classList.add('invisible');"
+                  p List 
+                button.px-4.py-2.text-sm.font-medium.text-gray-700.bg-gray-100.border.border-gray-300.rounded-r-md onclick="document.getElementById('events_list').classList.add('hidden'); document.getElementById('events_calendar').classList.remove('invisible');"
+                  p Calendar
+              select.ms-4.rounded-md.border.border-gray-300.text-gray-700.text-sm
+                option value="ALL"
+                  | All Events
+            
+            button.px-4.py-2.text-sm.font-medium.text-gray-700.border.border-gray-300.rounded-md style="background: #9AE2DF;" onclick="window.location.href='/event_calendar'"
+              | Create Event
+
+
+          div.max-w-4xl.mx-auto.bg-gray-200.mt-2.p-1.sticky.z-10.ps-4.rounded-md
+            div.flex.justify-between.font-bold.border-black
+                div Events
+                div.mr-80 Status
+        
+          div id="events_list" class="h-full"
+            p class="text-center text-grey-2 pt-10 h-full"
+              | Your upcoming events will appear here.
+
+          div id="events_calendar" class="invisible h-full w-full"
+            = render Calendar::Component.new()
+
+
         div class="hidden" data-tabs-target="panel"
           h4 class="px-6 my-7 text-xl text-grey-2"
             | My Saved Nonprofit Pages
