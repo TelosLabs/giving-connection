@@ -1,37 +1,49 @@
 div class="flex flex-col text-gray-2"
-  /* Banner */
+  /* Header */
   div class="relative h-60 bg-seafoam"
-    div class="flex overflow-hidden justify-around h-60 flew-row"
+    div class="flex justify-around overflow-hidden h-60 flew-row"
       div
         = inline_svg_tag 'new-blur-left.svg', size:'723*288'
       div
         = inline_svg_tag 'new-blur-right.svg', size:'723*288'
-    div class="flex absolute top-0 right-0 left-0 flex-col justify-center items-center h-full"
+    div class="absolute top-0 left-0 right-0 flex flex-col items-center justify-center h-full"
       h2 class="px-5 text-3xl font-bold leading-10 text-center text-blue-dark"
-        | Start with change in your<br>community
+        | Connecting people <br> with nonprofits
 
-    div class="hidden absolute top-20 left-80 fill-current text-blue-dark lg:block"
+    div class="absolute hidden fill-current top-20 left-80 text-blue-dark lg:block"
       = inline_svg_tag 'simple-star.svg', size: '22*22'
 
-    div class="hidden absolute top-12 right-96 fill-current text-blue-dark lg:block"
+    div class="absolute hidden fill-current top-12 right-96 text-blue-dark lg:block"
       = inline_svg_tag 'simple-heart.svg', size: '22*22'
 
-    div class="hidden absolute bottom-12 right-64 fill-current text-blue-dark lg:block"
+    div class="absolute hidden fill-current bottom-12 right-64 text-blue-dark lg:block"
       = inline_svg_tag 'simple-star.svg', size: '22*22'
 
-  /* Mission and Vision*/
-  div class="flex flex-col justify-center items-center px-6 py-20 bg-white"
+  /* Banner */
+  div class="flex flex-col items-center justify-center w-full px-6 pt-20 text-center pb-14 bg-blue-gradient-3"
+    div class="flex flex-col justify-center w-full max-w-5xl lg:flex-row lg:justify-around"
+      p class="font-light text-gray-2"
+        ' We believe in the power of connection. Our mission is to make it easy 
+        | for individuals and organizations to find, support, and engage with nonprofits 
+        | that align with their values and interests. We know that nonprofits do incredible work, 
+        | but they often face challenges in reaching the right people—whether it’s potential donors, 
+        | volunteers, or those in need of their services. That’s where Giving Connection comes in. 
+        | Our free, user-friendly platform serves as a bridge between nonprofits and the communities 
+        | they serve, ensuring that support reaches those who need it most.
+
+  /* Our Mission and Vision */
+  div class="flex flex-col items-center justify-center px-6 py-20 bg-white"
     div class="flex flex-col w-full max-w-4xl"
       div class="flex flex-col justify-between lg:flex-row lg:mb-20"
         div class="flex justify-center mb-6 lg:hidden lg:mb-0"
           = inline_svg_tag "pablita-4.svg", size: "313*176"
-        div class="flex relative flex-col text-center"
+        div class="relative flex flex-col text-center"
           div
             = inline_svg_tag "blur-background-3.svg", size: "345*220"
-          div class="absolute top-0 right-0 left-0 lg:top-1/4"
+          div class="absolute top-0 left-0 right-0 lg:top-1/4"
             h2 class="mb-6 text-2xl font-bold text-gray-2"
               | Our Mission
-            p class="mx-auto text-gray-2 max-w-327px"
+            p class="mx-auto font-light text-gray-2 max-w-327px"
               ' To connect people with nonprofits using a search platform
               ' that harnesses the power of local communities and puts people first.
         div class="hidden lg:flex lg:justify-center"
@@ -39,58 +51,254 @@ div class="flex flex-col text-gray-2"
 
 
       div class="flex flex-col justify-between lg:flex-row"
-        div class="flex justify-center items-center mb-6 lg:mb-0"
+        div class="flex items-center justify-center mb-6 lg:mb-0"
           = inline_svg_tag "pablita-5.svg", size: "403*269"
-        div class="flex relative flex-col text-center"
+        div class="relative flex flex-col text-center"
           div
             = inline_svg_tag "blur-background-4.svg", size: "306*219"
-          div class="absolute top-0 right-0 left-0 lg:top-1/4"
+          div class="absolute top-0 left-0 right-0 lg:top-1/4"
             h2 class="mb-6 text-2xl font-bold text-gray-2"
               | Our Vision
-            p class="mx-auto text-gray-2 max-w-327px"
+            p class="mx-auto font-light text-gray-2 max-w-327px"
               ' A world where finding help and serving others is easy.
+  
+  /* Our Services */
+  div class="relative h-100 bg-seafoam"
+    div class="justify-around hidden overflow-hidden h-100 flew-row sm:flex"
+      div
+        = inline_svg_tag 'new-blur-left.svg', size:'1004*400'
+      div
+        = inline_svg_tag 'new-blur-right.svg', size:'1004*400'
+    div class="flex justify-around overflow-hidden h-100 flew-row sm:hidden"
+      div
+        = inline_svg_tag 'new-blur-left.svg', size:'1004*700'
+      div
+        = inline_svg_tag 'new-blur-right.svg', size:'1004*700'
+    div class="absolute top-0 left-0 right-0 flex flex-col items-center justify-center h-full"
+      h3 class="mb-8 text-2xl font-bold uppercase text-blue-dark"
+        | Our Services
+      div class="flex justify-between w-full max-w-5xl"
+        
+        div class="grid grid-cols-1 px-10 md:grid-cols-2 gap-y-5 md:gap-y-10 gap-x-20"
+        
+          div class="flex gap-8"
+            div class="flex items-center justify-center"
+              span aria-hidden="true"
+                = inline_svg_tag 'magnifying-glass.svg', size: '35*35', class: "text-blue-dark"
+            div
+              h4 class="text-lg font-bold text-gray-2"
+                | Searchable Nonprofit Directory
+              p class="font-light text-gray-2"
+                ' Find nonprofits by cause, location, or service type.
+          div class="flex gap-8"
+            div class="flex items-center justify-center"
+              span aria-hidden="true"
+                = inline_svg_tag 'calendar-heart.svg', size: '35*35', class: "text-blue-dark"
+            div
+              h4 class="text-lg font-bold text-gray-2"
+                | Community Calendar of Events 
+              p class="font-light text-gray-2"
+                ' Discover upcoming volunteer opportunities, fundraisers, and outreach events.
+          div class="flex gap-8"
+            div class="flex items-center justify-center"
+              span aria-hidden="true"
+                = inline_svg_tag 'sun.svg', size: '35*35', class: "text-blue-dark"
+            div
+              h4 class="text-lg font-bold text-gray-2"
+                | Nonprofit Spotlights & Discovery
+              p class="font-light text-gray-2"
+                ' Learn about organizations making an impact and how you can get involved.
+          div class="flex gap-8"
+            div class="flex items-center justify-center"
+              span aria-hidden="true"
+                = inline_svg_tag 'star-2.svg', size: '35*35', class: "text-blue-dark"
+            div
+              h4 class="text-lg font-bold text-gray-2"
+                | Resources & Collaboration
+              p class="font-light text-gray-2"
+                ' Helping nonprofits grow through networking, partnerships, and support.
 
-  /* Our Objectives */
-  div class="flex flex-col justify-center items-center px-6 pt-20 pb-14 w-full text-center bg-blue-gradient-3"
-    h3 class="mb-8 text-2xl font-bold uppercase text-blue-dark lg:mb-16"
-      | Our Objectives
-    div class="flex flex-col justify-center w-full max-w-5xl lg:flex-row lg:justify-around"
-      div class="flex flex-col justify-center items-center mx-auto mb-10 text-center max-w-270px"
-        div class="relative mb-6"
-          = image_tag 'hands-table-2.png', size:'268x206', class:'rounded-lg'
-          = inline_svg_tag 'sticker-sparkle.svg', size:'39', class:'absolute top-1/2 -left-7'
-        h5 class="mb-3 text-lg font-bold uppercase text-gray-2"
-          | Connection
-        p class="text-gray-2"
-          ' Connect those in need with resources in their community. Foster greater and deeper
-          | connections between volunteers, donors, and nonprofits.
+  /* Our Values */
+  div class="flex flex-col items-center justify-center px-6 py-20 bg-white"
+    div class="flex flex-col w-full max-w-5xl"
+      div class="justify-center w-full max-w-5xl text-center"
+        div class="pb-10"
+          h3 class="mb-4 text-2xl font-bold uppercase text-blue-dark"
+            | Our Values
+          p class="mb-10 font-light text-gray-2"
+            | Our work is driven by core values that guide everything we do:
+        div class="flex flex-wrap justify-center gap-y-10"
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'user-heart.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | People always come first.
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'sword.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | Use your superpowers for good.
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'target.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | Remember your why.
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'brain.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | Everything is figureoutable.
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'handshake.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | Cultivate a community of change.
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'heart-straight.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | Trust the process, yourself, and your gut.
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'lightbulb.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | Be bold, brave, and innovate.
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'hand-heart.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | Lead with empathy.
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'users-three.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | Communities are best positioned to know what they need.
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'hands-clapping.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | Celebrate small wins.
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'circles-three-plus.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | Disrupt the status quo.
 
-      div class="flex flex-col justify-center items-center mx-auto mb-10 text-center max-w-270px"
-        div class="relative mb-6"
-          = image_tag 'friends-2.png', size:'268x206', class:'rounded-lg'
-          = inline_svg_tag 'sticker-heart.svg', size:'39', class:'absolute top-6 -right-7'
-        h5 class="mb-3 text-lg font-bold uppercase text-gray-2"
-          | Community
-        p class="text-gray-2"
-          ' Equip communities with the tools they need to help their local members. Empower users
-          | to form their own specialized communities of desired change.
 
-      div class="flex flex-col justify-center items-center mx-auto mb-10 text-center max-w-270px"
-        div class="relative mb-6"
-          = image_tag 'hands-2.png', size:'268x206', class:'rounded-lg'
-          = inline_svg_tag 'sticker-sparkle.svg', size:'39', class:'absolute bottom-5 -right-5'
-        h5 class="mb-3 text-lg font-bold uppercase text-gray-2"
-          | Compassion
-        p class="text-gray-2"
-          ' Inspire users to discover their philanthropic needs or passions. Cultivate cultures
-          | based on giving rather than receiving, compassion over competition.
+  
+  
+  /* Our Story */
+  div class="flex flex-col items-center justify-center w-full px-6 pt-20 text-center pb-14 bg-blue-gradient-3"
+    div class="justify-center w-full max-w-5xl gap-10 sm:flex lg:flex-row lg:justify-around"
+      div class="flex justify-center w-full mb-8 sm:hidden"
+          = inline_svg_tag "idea-image.svg"
+      div class="justify-center w-full max-w-5xl"
+        h3 class="mb-4 text-2xl font-bold uppercase text-blue-dark"
+          | Our Story
+        p class="font-light text-gray-2"
+          ' Giving Connection was founded on a simple but powerful idea: what if finding the 
+          | right nonprofit was as easy as a Google search?
+          | <br><br>
+          | Our founder, Stephanie Morrison, has spent her career advocating for communities in need.
+          | As a Googler, she saw how tech tools can quickly connect people with the information they need.
+          | As a public defender in Nashville, she witnessed firsthand how access to resources—or the lack of it—could change a person’s life. These experiences shaped her vision for Giving Connection: a centralized, easy-to-use platform where anyone can find and engage with nonprofits that matter to them.
+          | <br><br>
+          | Since launching in 2021, Giving Connection has expanded to New Jersey, Tennessee, and California, 
+          | with plans to continue growing. 
+          | <br><br>
+          | What started as a vision to simplify nonprofit discovery is becoming a nationwide movement. 
+          | And we’re just getting started.
+      div class="justify-center hidden sm:flex"
+        = inline_svg_tag "idea-image.svg"
+  
+  /* Where we Serve */
+  div class="relative h-full bg-seafoam"
+    div class="flex justify-around h-full overflow-hidden flew-row"
+      div
+        = inline_svg_tag 'new-blur-left.svg', size:'1004*400'
+      div
+        = inline_svg_tag 'new-blur-right.svg', size:'1004*400'
+    div class="absolute top-0 left-0 right-0 flex flex-col items-center justify-center h-full px-10"
+      div class="w-full max-w-4xl mb-10 text-center"
+        h3 class="mb-8 text-2xl font-bold uppercase text-blue-dark"
+          | Where we serve
+        p
+          ' Giving Connection is expanding nationwide to make it easier for people to find 
+          | and support nonprofits in their communities. 
+          | Our platform currently features thousands of nonprofits across the United States, 
+          | with active hubs in:
+      
+      div class="flex gap-10 sm:hidden"
+        div class="p-4 rounded-full bg-blue-gradient-3"
+            span class="w-full h-full" aria-hidden="true"
+              = inline_svg_tag 'location-heart.svg', size: '50*50', class: "text-blue-dark"
+        div 
+          h4 class="text-lg font-bold text-gray-2"
+              | Nashville, TN
+          h4 class="text-lg font-bold text-gray-2"
+              | Atlantic City, NJ
+          h4 class="text-lg font-bold text-gray-2"
+              | Los Angeles, CA
+
+      div class="justify-around hidden w-full max-w-4xl sm:flex"
+        div class="flex flex-col items-center gap-4 mb-4"
+          div class="p-4 rounded-full bg-blue-gradient-3"
+            span class="w-full h-full" aria-hidden="true"
+              = inline_svg_tag 'location-heart.svg', size: '50*50', class: "text-blue-dark"
+          div
+            h4 class="text-lg font-bold text-gray-2"
+              | Nashville, TN
+        div class="flex flex-col items-center gap-4 mb-4"
+          div class="p-4 rounded-full bg-blue-gradient-3"
+            span class="w-full h-full" aria-hidden="true"
+              = inline_svg_tag 'location-heart.svg', size: '50*50', class: "text-blue-dark"
+          div
+            h4 class="text-lg font-bold text-gray-2"
+              | Atlantic City, NJ
+        div class="flex flex-col items-center gap-4 mb-4"
+          div class="p-4 rounded-full bg-blue-gradient-3"
+            span class="w-full h-full" aria-hidden="true"
+              = inline_svg_tag 'location-heart.svg', size: '50*50', class: "text-blue-dark"
+          div
+            h4 class="text-lg font-bold text-gray-2"
+              | Los Angeles, CA
 
   /* Meet the Trustees */
-  div class="flex flex-col justify-center items-center px-6 pt-20 w-full bg-white"
+  div class="flex flex-col items-center justify-center w-full px-6 pt-20 bg-white"
     div
-      h2 class="mb-12 text-2xl font-bold text-center uppercase text-blue-dark"
+      h2 class="mb-4 text-2xl font-bold text-center uppercase text-blue-dark"
         | Meet the Trustees
-    div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
+    
+    div class="flex flex-col justify-center w-full max-w-5xl text-center lg:flex-row lg:justify-around pb-14"
+      p class="text-gray-2"
+        ' Our dedicated team comprises individuals from diverse backgrounds, 
+        | each bringing unique perspectives and a shared commitment to our mission. 
+        | From experts in health and wellness to leaders in education and corporate development, 
+        | our trustees and interns work collaboratively to drive our vision forward.
+
+    div class="w-full max-w-4xl pb-12 mb-16 border-b border-blue-gradient-2 last:border-b-0"
       = render BioCard::Component.new(\
         name: "Stephanie Morrison",
         job_title: "President & Founder",
@@ -140,9 +348,7 @@ div class="flex flex-col text-gray-2"
               ' life battling an inherently unjust system for a life of endless joy and limitless creativity serving
               ' as Fran’s full-time caregiver and Direct Support Professional through Easter Seals of NJ. Together,
               ' Fran and Stephanie created a 10 episode podcast called "Fran Says Podcast" as well as a children's book,
-              ' "Super Fran!" all of which can be found at
-              a href="http://fransayspodcast.com/" class="underline text-blue-medium"
-                | Fransayspodcast.com.
+              ' "Super Fran!".
               br
               br
               ' Alongside her relentless pursuit of kindness and connection, Stephanie's passions include any activity
@@ -152,7 +358,7 @@ div class="flex flex-col text-gray-2"
         end
       end
 
-    div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
+    div class="w-full max-w-4xl pb-12 mb-16 border-b border-blue-gradient-2 last:border-b-0"
       = render BioCard::Component.new(\
         name: "Emily Longfellow",
         job_title: "Vice President",
@@ -197,9 +403,9 @@ div class="flex flex-col text-gray-2"
         end
       end
 
-    div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
+    div class="w-full max-w-4xl pb-12 mb-16 border-b border-blue-gradient-2 last:border-b-0"
       = render BioCard::Component.new(\
-        name: "Erikka Moreno",
+        name: "Erikka Huntzinger",
         job_title: "Secretary",
         img_url: "erikka.png"\
       ) do |c|
@@ -235,7 +441,7 @@ div class="flex flex-col text-gray-2"
         end
       end
 
-    div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
+    div class="w-full max-w-4xl pb-12 mb-16 border-b border-blue-gradient-2 last:border-b-0"
       = render BioCard::Component.new(\
         name: "Gail Wilsey-Morrison",
         job_title: "Treasurer",
@@ -289,7 +495,7 @@ div class="flex flex-col text-gray-2"
         end
       end
 
-    div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
+    div class="w-full max-w-4xl pb-12 mb-16 border-b border-blue-gradient-2 last:border-b-0"
       = render BioCard::Component.new(\
         name: "Kelly McNabb",
         job_title: "Trustee",
@@ -327,7 +533,7 @@ div class="flex flex-col text-gray-2"
         end
       end
 
-    div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
+    div class="w-full max-w-4xl pb-12 mb-16 border-b border-blue-gradient-2 last:border-b-0"
       = render BioCard::Component.new(\
         name: "Makala Kaupalolo",
         job_title: "Trustee",
@@ -356,7 +562,7 @@ div class="flex flex-col text-gray-2"
         end
       end
 
-    div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
+    div class="w-full max-w-4xl pb-12 mb-16 border-b border-blue-gradient-2 last:border-b-0"
       = render BioCard::Component.new(\
         name: "Karen Mainolfi",
         job_title: "Trustee",
@@ -410,7 +616,7 @@ div class="flex flex-col text-gray-2"
         end
       end
 
-    div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
+    div class="w-full max-w-4xl pb-12 mb-16 border-b border-blue-gradient-2 last:border-b-0"
       = render BioCard::Component.new(\
         name: "Frances Wilsey",
         job_title: "Honorary Board Member & Chief Joy Officer",
@@ -461,17 +667,38 @@ div class="flex flex-col text-gray-2"
 
     = render "interns"
     // Youtube Video
-    div class="pb-12 mb-16 w-full max-w-4xl h-full"
-      iframe src="https://www.youtube.com/embed/H62FCqZ1cAg?rel=0" class="w-full h-64 md:h-500px" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+    div class="w-full h-full max-w-4xl pb-12 mb-16"
+      iframe src="https://www.youtube.com/embed/FlJTLODPzU8?si=sFOwHXf4XM31RkCl" class="w-full h-64 md:h-500px" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
 
-
+  /* Join Us */
+  div class="flex flex-col items-center justify-center w-full px-6 pt-20 text-center pb-14 bg-blue-gradient-3"
+    div class="justify-center w-full max-w-4xl gap-10 px-10 sm:flex lg:flex-row lg:justify-around"
+      div class="justify-center w-full pb-8"
+        h3 class="mb-4 text-2xl font-bold uppercase text-blue-dark"
+          | Join Us
+        p class="font-light text-gray-2"
+          ' Sign up today to help us create a more accessible, impactful, and community-driven 
+          | search experience that transforms the way people connect with nonprofits.
+          | <br><br>
+          | If you are interested in volunteering, interning, or joining our team, 
+          | please email <b>stephanie@givingconnection.org</b> for more information.
+          
+      div class="flex justify-center w-full h-full px-10 sm:w-2/3"
+        = inline_svg_tag "connect.svg", size:"full"
+  
+  /* Footer */
   div class="relative h-96 bg-seafoam"
-    div class="flex overflow-hidden justify-around h-96 flew-row"
+    div class="justify-around hidden overflow-hidden h-100 flew-row sm:flex"
       div
-        = inline_svg_tag 'new-blur-left.svg', size:'723*384'
+        = inline_svg_tag 'new-blur-left.svg', size:'1004*400'
       div
-        = inline_svg_tag 'new-blur-right.svg', size:'723*384'
-    div class="absolute top-0 right-0 left-0 mx-auto max-w-md text-center"
-      h2 class="px-5 pt-20 pb-11 text-2xl font-bold text-center sm:px-0 md:pt-28 text-blue-dark"
-        | Want to connect with nonprofits in your community?
-      = link_to "START YOUR SEARCH", search_path, class:'c-button inline-block my-1 text-white bg-blue-dark hover:bg-blue-medium transition'
+        = inline_svg_tag 'new-blur-right.svg', size:'1004*400'
+    div class="flex justify-around overflow-hidden h-100 flew-row sm:hidden"
+      div
+        = inline_svg_tag 'new-blur-left.svg', size:'1004*700'
+      div
+        = inline_svg_tag 'new-blur-right.svg', size:'1004*700'
+    div class="absolute top-0 left-0 right-0 max-w-5xl px-10 mx-auto text-center"
+      h2 class="px-5 pt-20 text-xl font-bold text-center sm:text-2xl pb-11 sm:px-0 md:pt-28 text-blue-dark"
+        | Looking to connect with like-minded changemakers and make a bigger impact in your community? Join Community Connectors today!
+      = link_to "LEARN MORE", search_path, class:'c-button inline-block my-1 text-white bg-blue-dark hover:bg-blue-medium transition'
