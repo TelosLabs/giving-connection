@@ -19,18 +19,38 @@ div class="flex flex-col text-gray-2"
     div class="absolute hidden fill-current bottom-12 right-64 text-blue-dark lg:block"
       = inline_svg_tag 'simple-star.svg', size: '22*22'
 
-  /* Banner */
-  div class="flex flex-col items-center justify-center w-full px-6 pt-20 text-center pb-14 bg-blue-gradient-3"
-    div class="flex flex-col justify-center w-full max-w-5xl lg:flex-row lg:justify-around"
-      p class="font-light text-gray-2"
-        ' We believe in the power of connection. Our mission is to make it easy 
-        | for individuals and organizations to find, support, and engage with nonprofits 
-        | that align with their values and interests. We know that nonprofits do incredible work, 
-        | but they often face challenges in reaching the right people—whether it’s potential donors, 
-        | volunteers, or those in need of their services. That’s where Giving Connection comes in. 
-        | Our free, user-friendly platform serves as a bridge between nonprofits and the communities 
-        | they serve, ensuring that support reaches those who need it most.
-
+  /* Our Story */
+  div class="flex flex-col items-center justify-center w-full px-6 pt-20 text-left pb-14 bg-blue-gradient-3"
+    div class="justify-center w-full max-w-5xl gap-10 sm:flex lg:flex-row lg:justify-around"
+      div class="flex justify-center w-full mb-8 sm:hidden"
+          = inline_svg_tag "idea-image.svg"
+      div class="justify-center w-full max-w-5xl"
+        h3 class="mb-4 text-2xl font-bold text-center uppercase text-blue-dark"
+          | Our Story
+        p class="text-lg font-semibold text-blue-dark"
+          ' Giving Connection was founded on a simple but powerful idea:
+        p class="pb-4 text-lg italic font-semibold text-blue-dark"
+          | What if finding the right nonprofit was as easy as a Google search?
+        p class="pb-4 font-light text-gray-2"
+          ' Our founder, Stephanie Morrison, has spent her career advocating for communities in need. 
+          | As a Googler, she saw firsthand how technology can connect people with information in an instant. 
+          | As a public defender in Nashville, she witnessed how access to resources—or the lack of it—could 
+          | change the course of a person’s life. These experiences shaped her vision for Giving Connection: 
+          | a centralized, easy-to-use platform where anyone can find and engage with nonprofits that matter to them.
+        h3 class="mb-4 text-2xl font-bold text-center uppercase text-blue-dark"
+          | We believe in the power of connection
+        p class="pb-4 font-light text-gray-2"
+          ' Our goal is to make it easier for everyone to discover, support, and engage with nonprofits that 
+          | align with their values and interests. We know that nonprofits are doing incredible work, but too 
+          | often they face challenges in reaching the right people—whether that’s potential donors, volunteers, 
+          | or the communities they serve. Giving Connection exists to bridge that gap.
+        p class="font-light text-gray-2"
+          ' Our free, user-friendly platform brings people and nonprofits together, ensuring that support 
+          | reaches those who need it most. What began as a vision to simplify nonprofit discovery is now 
+          | growing into a nationwide movement. And we’re just getting started.
+      div class="justify-center hidden sm:flex"
+        = inline_svg_tag "idea-image.svg"
+  
   /* Our Mission and Vision */
   div class="flex flex-col items-center justify-center px-6 py-20 bg-white"
     div class="flex flex-col w-full max-w-4xl"
@@ -205,34 +225,6 @@ div class="flex flex-col text-gray-2"
             div
               h4 class="mx-8 text-gray-2"
                 | Disrupt the status quo.
-
-
-  
-  
-  /* Our Story */
-  div class="flex flex-col items-center justify-center w-full px-6 pt-20 text-center pb-14 bg-blue-gradient-3"
-    div class="justify-center w-full max-w-5xl gap-10 sm:flex lg:flex-row lg:justify-around"
-      div class="flex justify-center w-full mb-8 sm:hidden"
-          = inline_svg_tag "idea-image.svg"
-      div class="justify-center w-full max-w-5xl"
-        h3 class="mb-4 text-2xl font-bold uppercase text-blue-dark"
-          | Our Story
-        p class="font-light text-gray-2"
-          ' Giving Connection was founded on a simple but powerful idea: what if finding the 
-          | right nonprofit was as easy as a Google search?
-          | <br><br>
-          | Our founder, Stephanie Morrison, has spent her career advocating for communities in need.
-          | As a Googler, she saw how tech tools can quickly connect people with the information they need.
-          | As a public defender in Nashville, she witnessed firsthand how access to resources—or the lack of it—could change a person’s life. These experiences shaped her vision for Giving Connection: a centralized, easy-to-use platform where anyone can find and engage with nonprofits that matter to them.
-          | <br><br>
-          | Since launching in 2021, Giving Connection has expanded to New Jersey, Tennessee, and California, 
-          | with plans to continue growing. 
-          | <br><br>
-          | What started as a vision to simplify nonprofit discovery is becoming a nationwide movement. 
-          | And we’re just getting started.
-      div class="justify-center hidden sm:flex"
-        = inline_svg_tag "idea-image.svg"
-  
   /* Where we Serve */
   div class="relative h-full bg-seafoam"
     div class="flex justify-around h-full overflow-hidden flew-row"
@@ -680,7 +672,7 @@ div class="flex flex-col text-gray-2"
           | search experience that transforms the way people connect with nonprofits.
           | <br><br>
           | If you are interested in volunteering, interning, or joining our team, 
-          | please email <b>stephanie@givingconnection.org</b> for more information.
+          | please email <span class="font-bold">stephanie@givingconnection.org</span> for more information.
           
       div class="flex justify-center w-full h-full px-10 sm:w-2/3"
         = inline_svg_tag "connect.svg", size:"full"
