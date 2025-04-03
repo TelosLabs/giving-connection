@@ -36,6 +36,20 @@ class EventsController < ApplicationController
     end
   end
 
+  def destroy
+    event = Event.find_by(id: params[:id])
+  
+    unless event
+      return render json: { error: "Event not found" }, status: :not_found
+    end
+  
+    if event.destroy
+      render json: { message: "Event deleted successfully" }, status: :ok
+    else
+      render json: { error: "Failed to delete event" }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def event_params
