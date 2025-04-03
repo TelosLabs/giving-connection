@@ -72,23 +72,11 @@ Rails.application.routes.draw do
   resource :privacy_policy, only: %i[show]
   resource :infowindow, only: :new
   resources :autocomplete, only: %i[index]
+  resources :events, only: [:index, :new, :create, :destroy]
 
   root to: "home#index"
 
   # Custom routes for city-based search
   get "/atlantic_city", to: "cities#show", city: "Atlantic City", as: :atlantic_city
-  get "/nashville", to: "cities#show", city: "Nashville", as: :nashville
-
-  # Non-profit events listing route (accepts orgId as query parameter)
-  get '/events', to: 'events#index'
-
-
-  # Non-profit Event Calendar
-  get 'event_calendar', to: 'event_calendar#index'
-
-  # non-profit events
-  post '/events/:org_id', to: 'events#create'
-  delete '/events/:id', to: 'events#destroy'
-  
-  
+  get "/nashville", to: "cities#show", city: "Nashville", as: :nashville  
 end

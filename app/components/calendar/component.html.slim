@@ -10,9 +10,8 @@ div data-controller="calendar-component" data-calendar-component-target="calenda
 
 javascript:
   document.addEventListener('DOMContentLoaded', function() {
-    console.log("Init calendar");
     var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
+    window.calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
       events: [],
       eventClick: function(info) {
@@ -20,5 +19,5 @@ javascript:
         window.location = info.event.url;
       }
     });
-    calendar.render();
+    window.calendar.render();
   });

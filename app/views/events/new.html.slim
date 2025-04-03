@@ -1,0 +1,266 @@
+style
+      | .required::before {
+      |   content: "* ";
+      |   font-weight: bold;
+      | }
+
+div.flex.justify-center.mt-16.h-full style="background-color: #F9FAFC"
+  div.flex.gap-4.bg-white.w-3/4
+
+    = form_with url: events_path, model: Event.new, scope: :event, method: :post, class: "w-full h-full m-12 flex flex-col items-start gap-4" do |f|
+      = hidden_field_tag 'org_id', params[:org_id]
+
+      h2.text-2xl.font-bold style="color: #3B4958;"
+        | Create Event
+
+      h3.text-xl 
+        = @organization&.name || "[Organization Name]"
+
+      hr.w-full.border.border-gray-300
+
+      div
+        h3.text-xl.mb-2 
+          | General Event Information 
+        p.opacity-70.text-sm
+          | General information about your nonprofit event.
+
+      div.w-full
+        = f.label :title, class: "required"
+        = f.text_field :title, class: "c-input"
+
+      div.w-full
+        = f.label :description, class: "required"
+        = f.text_area :description, class: "c-input"
+
+      div.w-full.flex.justify-start.gap-3
+        div.w-full
+          = f.label :date, class: "text-base required"
+          = f.date_field :date, class: "c-input"
+          
+        div.w-full
+          = f.label :start_time, "Start Time", class: "text-base required"
+          = f.time_field :start_time, class: "c-input"
+
+        div.w-full.relative
+          = f.label :end_time, "End Time", class: "text-base"
+          = f.time_field :end_time, class: "c-input", onchange: "shouldShowClearButton()"
+          button.hidden.absolute.right-3.bottom-3 type="button" id="clear-end-time" onclick="clearEndTime()"
+            | x
+
+      i.font-light.text-sm.text-slate-500 id="timezone-info" 
+        | (Your selected times will be based on your browser's timezone - ?).
+
+      / Event Recurring Type
+      div.w-full
+        label.text-base.mb-2.font-medium.text-slate-700.required
+          | Is this a recurring event?
+
+      div.flex.justify-start.gap-2
+        = f.radio_button :recurring, false, checked: true, class: "mt-1", id: "recurring-no"
+        = f.label :recurring_false, "One-time", class: "text-base font-medium text-slate-700"
+
+      div.flex.justify-start.gap-2
+        = f.radio_button :recurring, true, class: "mt-1", id: "recurring-yes"
+        = f.label :recurring_true, "Recurring", class: "text-base font-medium text-slate-700"
+
+      / Location
+      div.w-full
+        label.text-base.mb-2.font-medium.text-slate-700.required
+          | Location
+
+      div.flex.justify-start.gap-2
+        = f.radio_button :remote, true, checked: true, class: "mt-1", id: "remote-yes", onclick: "toggleLocation(false)"
+        = f.label :remote_true, "Remote/Online", class: "text-base font-medium text-slate-700"
+
+      div.flex.justify-start.gap-2
+        = f.radio_button :remote, false, class: "mt-1", id: "remote-no", onclick: "toggleLocation(true)"
+        = f.label :remote_false, "In-Person", class: "text-base font-medium text-slate-700"
+
+      / Location Container, appears when In-Person is selected
+      div.hidden.flex-between.w-full.gap-10 id="location-container"
+        div.w-1/2
+          = f.label :address, class: "text-base font-medium text-slate-700 required"
+          = f.text_field :address, class: "c-input"
+
+        div.w-1/2
+          label.text-base.font-medium.text-slate-700
+            | Map View
+          img.outline.outline-1.outline-gray-700.w-full style="background: #E6E6E6; height: 200px;" id="uploaded-img"
+          
+      -# Attachment for users to insert image
+      div.text-base.mt-4.font-medium.text-slate-700
+          | Attach Flyer/Photo    
+      div.flex.justify-start
+          div.flex.flex-col.items-center
+              img.outline.outline-1.outline-gray-700 style="background: #E6E6E6; height: 148px; width:148px;" id="uploaded-img"
+          div.flex.flex-col.items-start style="margin-left:27px; margin-top:50px;"    
+              label.bg-white.hover:bg-gray-100.text-gray-700.py-2.px-4.border.border-gray-400.rounded-md.cursor-pointer for="event_image"
+                  b Upload
+              = f.file_field :image, accept: "image/*", class: "hidden", id: "event_image"
+              p.text-s.mt-1
+                  | Maximum size of 5MB
+
+      div.w-full
+        = f.label :external_link, "External Link for RSVP (if applicable)"
+        = f.text_field :external_link, class: "c-input"
+
+      div.w-full
+        label
+          | Event Type
+        br
+        div.flex.flex-col.gap-2.mt-1
+          div.flex.gap-2
+            = f.check_box :event_type_volunteer, class: "mt-1 rounded"
+            = f.label :event_type_volunteer, "Volunteer", class: "text-base font-medium text-slate-700"
+          div.flex.gap-2   
+            = f.check_box :event_type_fundraiser, class: "mt-1 rounded"
+            = f.label :event_type_fundraiser, "Fundraiser", class: "text-base font-medium text-slate-700"
+          div.flex.gap-2
+            = f.check_box :event_type_outreach, class: "mt-1 rounded"
+            = f.label :event_type_outreach, "Outreach", class: "text-base font-medium text-slate-700"
+          div.flex.gap-2
+            = f.check_box :event_type_other, class: "mt-1 rounded"
+            = f.label :event_type_other, "Other", class: "text-base font-medium text-slate-700"
+
+        div.flex.justify-center.gap-4.w-full.mb-4
+          = f.button 'Save as Draft', type: 'button', class: 'rounded-md text-xl py-2 px-4 bg-gray-300 text-white font-semibold', onclick: "return submitForm(true);"
+          = f.button 'Save and Review', type: 'button', class: 'rounded-md text-xl py-2 px-4 bg-gray-400 text-white font-semibold', onclick: "return submitForm(false);"
+
+javascript defer: 
+    const MAX_SIZE_IN_BYTES = 5 * 1024 * 1024; // 5MB
+    const USER_TZ = new Date().toString().match(/\(([A-Za-z\s].*)\)/)[1];
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get today's date
+        const today = new Date();
+        
+        // Format today's date as YYYY-MM-DD for the input element
+        const formattedDate = today.toISOString().split('T')[0];
+        
+        // Set the min attribute to today's date
+        document.getElementById('event_date').setAttribute('min', formattedDate);
+
+        // Set the timezone info text helper
+        document.getElementById("timezone-info").textContent = document.getElementById("timezone-info").textContent.replaceAll("?", USER_TZ);
+    });
+
+    // Upload function for uploading photo 
+    document.getElementById("event_image").addEventListener("change", function() {
+        const img = document.getElementById("uploaded-img");
+        const file = this.files[0];  
+
+        if (file) { 
+            if(file.size > MAX_SIZE_IN_BYTES){
+                alert("The file size exceeds the 5MB limit. Please upload a smaller image."); 
+                this.value = ""; // Clear the file input 
+                return;
+            } 
+            const reader = new FileReader(); 
+            reader.onload = (e) => img.src = e.target.result; 
+            reader.readAsDataURL(file); 
+        }
+    });
+
+    function toggleLocation(isInPerson) {
+        const locationContainer = document.getElementById("location-container");
+        locationContainer.style.display = isInPerson ? "flex" : "none";
+    }
+
+    function clearEndTime() {
+        const endTimeInput = document.getElementById("event_end_time");
+        const clearButton = document.getElementById("clear-end-time");
+        clearButton.style.display = "none";
+        endTimeInput.value = "";
+    }
+
+    function shouldShowClearButton() {
+        const endTimeInput = document.getElementById("event_end_time");
+        const clearButton = document.getElementById("clear-end-time");
+        clearButton.style.display = endTimeInput.value ? "block" : "none";
+    }
+
+    function validateForm() {
+        const title = document.getElementById("event_title").value;
+        const description = document.getElementById("event_description").value;
+        const date = document.getElementById("event_date").value;
+        const startTime = document.getElementById("event_start_time").value;
+        const endTime = document.getElementById("event_end_time").value;
+        const isRecurring = document.querySelector('input[name="event[recurring]"]:checked').value;
+        const isInPerson = document.querySelector('input[name="event[remote]"]:checked').value === "false";
+        const address = isInPerson ? document.getElementById("event_address").value : null;
+
+        // Validate required fields
+        if (!title || !description || !date || !startTime) {
+            return "Please fill in all required fields.";
+        }
+
+        // Make sure an address is provided if the event is in-person
+        if (isInPerson && !address) {
+            return "Please provide an address for in-person events.";
+        }
+
+        // Make sure the start time is before the end time if end time is provided
+        if (endTime) {
+            const startDateTime = new Date(`${date}T${startTime}`);
+            const endDateTime = new Date(`${date}T${endTime}`);
+            if (startDateTime >= endDateTime) {
+                return "Start time must be before end time. If you've entered an end time by mistake, please clear it and re-submit.";
+            }
+        }
+
+        return null; // No validation errors
+    }
+
+    function submitForm(isDraft) {
+        // Validate the form
+        let validityMessage = validateForm();
+        if (validityMessage) {
+            alert(validityMessage);
+            return;
+        }
+
+        const form = document.querySelector("form");
+        const formData = new FormData(form);
+        formData.append("event[is_draft]", isDraft);
+
+        // Edit the days for start and end time to match that of the date with the selected times, splitting the date and time
+        // and then combining them into a single string
+        const date = document.getElementById("event_date").value;
+        let startTime = document.getElementById("event_start_time").value;
+        // Convert times to UTC based on the user's timezone in the browser
+        // Set the start and end times in the formData
+        if (startTime) {
+            const startTimeUTC = new Date(`${date}T${startTime}`).toISOString();
+            formData.set("event[start_time]", startTimeUTC);
+        }
+        if (endTime) {
+            let endTime = document.getElementById("event_end_time").value;
+            const endTimeUTC = new Date(`${date}T${endTime}`).toISOString();
+            formData.set("event[end_time]", endTimeUTC);
+        }
+
+        
+        // Use fetch to submit the form instead of form.submit()
+        console.log("Submitting form with data:", Object.fromEntries(formData.entries()));
+        fetch(form.action, {
+            method: form.method,
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.event) {
+                // Redirect to /events page on success
+                window.location.href = '/my_account';
+            } else {
+                // Display errors
+                alert(data.message + (data.errors ? ': ' + data.errors.join(', ') : ''));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while submitting the form.');
+        });
+    }
