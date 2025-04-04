@@ -89,6 +89,9 @@ Rails.application.routes.draw do
   # non-profit events
   post '/events/:org_id', to: 'events#create'
   delete '/events/:id', to: 'events#destroy'
+  put '/events/:id', to: 'events#update'
+
+
   
   
 end

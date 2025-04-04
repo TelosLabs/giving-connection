@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_02_27_181921) do
+ActiveRecord::Schema.define(version: 2025_04_04_165614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -135,7 +135,7 @@ ActiveRecord::Schema.define(version: 2025_02_27_181921) do
     t.string "title", null: false
     t.text "description"
     t.datetime "start_time", null: false
-    t.datetime "end_time", null: false
+    t.datetime "end_time"
     t.string "link"
     t.string "image_link"
     t.string "location"
