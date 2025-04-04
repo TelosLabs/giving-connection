@@ -72,6 +72,7 @@ Rails.application.routes.draw do
   resource :privacy_policy, only: %i[show]
   resource :infowindow, only: :new
   resources :autocomplete, only: %i[index]
+  resources :events, only: [:index, :new, :create, :destroy]
 
   root to: "home#index"
 
@@ -94,4 +95,5 @@ Rails.application.routes.draw do
 
   
   
+  get "/nashville", to: "cities#show", city: "Nashville", as: :nashville  
 end
