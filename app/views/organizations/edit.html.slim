@@ -1,5 +1,5 @@
 = content_tag(:div, class: "w-full bg-grey-9", data: @form_presenter&.change_detection_form_container_setup) do
-  div class="z-10 sticky flex justify-between w-full px-10 md:px-20 py-4 bg-white border-b-2 top-[80px] md:top-[91px] border-gray-9 " id="organization-header"
+  div class="z-10 sticky flex justify-between w-full px-10 md:px-20 py-4 bg-white border-b-2 top-[80px] md:top-[91px] border-gray-9"
     div class=""
       h3 class="font-light text-left text-md text-gray-3"
         | Edit Page
@@ -20,33 +20,33 @@
       = button_tag 'Save Changes', type: 'submit', form: 'organization-form', class: 'hover:bg-seafoam-light transition flex cursor-pointer uppercase flex-row justify-center items-center bg-seafoam py-4 px-10 rounded-6px text-blue-dark text-base font-bold focus:outline-none', data: {action: "click->form-validation#addEmptyRequiredStyles click->halt-navigation-on-change#startSaving"}
   div class="flex w-full bg-white"
     div class="hidden md:flex flex-col sticky top-[181px] pt-4 pl-20 pr-8 border-r-2 border-gray-9 shrink-0 h-[calc(100vh-181px)] overflow-y-auto"
-      div class="flex flex-col pb-4 gap-y-2"
-        a class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-nav-target="general-information" href="#general-information"
+      div class="flex flex-col pb-4 gap-y-2" data-controller="scrollspy"
+        p class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-id="general-information" data-scrollspy-target="link" data-action="click->scrollspy#scrollToSection" role="button"
           = inline_svg_tag 'star.svg', class: "w-4 h-4 mr-1"
           | General Information
-        a class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-nav-target="organization-information" href="#organization-information"
+        p class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-id="organization-information" data-scrollspy-target="link" data-action="click->scrollspy#scrollToSection" role="button"
           = inline_svg_tag 'list.svg', class: "w-4 h-4 mr-1"
           | Organization Information
-        a class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-nav-target="causes" href="#causes"
+        p class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-id="causes" data-scrollspy-target="link" data-action="click->scrollspy#scrollToSection" role="button"
           = inline_svg_tag 'heart_outlined.svg', class: "w-4 h-4 mr-1"
           | Causes
-        a class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-nav-target="populations-served" href="#populations-served"
+        p class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-id="populations-served" data-scrollspy-target="link" data-action="click->scrollspy#scrollToSection" role="button"
           = inline_svg_tag 'user_group.svg', class: "w-4 h-4 mr-1"
           | Populations Served
-        a class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-nav-target="main-location" href="#main-location"
+        p class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-id="main-location" data-scrollspy-target="link" data-action="click->scrollspy#scrollToSection" role="button"
           = inline_svg_tag 'office.svg', class: "w-4 h-4 mr-1"
           | Main Location 
-        a class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-nav-target="additional-locations" href="#additional-locations"
+        p class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-id="additional-locations" data-scrollspy-target="link" data-action="click->scrollspy#scrollToSection" role="button"
           = inline_svg_tag 'location-dot.svg', class: "w-4 h-4 mr-1"
           | Additional Locations
-        a class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-nav-target="social-media" href="#social-media"
+        p class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-id="social-media" data-scrollspy-target="link" data-action="click->scrollspy#scrollToSection" role="button"
           = inline_svg_tag 'like.svg', class: "w-4 h-4 mr-1"
           | Social Media 
-        a class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-nav-target="information-verification" href="#information-verification"
+        p class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-id="information-verification" data-scrollspy-target="link" data-action="click->scrollspy#scrollToSection" role="button"
           = inline_svg_tag 'verify.svg', class: "w-4 h-4 mr-1"
           | Information Verification
       div class="flex justify-center p-2 border-t-2 rounded-md border-gray-9 hover:bg-blue-100"
-        a class="flex items-center font-medium leading-7 text-center cursor-pointer text-md text-blue-dark" href="#top"
+        p class="flex items-center font-medium leading-7 text-center cursor-pointer text-md text-blue-dark" href="#top"
           = inline_svg_tag 'back_icon.svg', class: "w-4 h-4 mr-1"
           | Back to top
 
@@ -54,7 +54,7 @@
       div class="flex flex-col p-12 pt-6"
         = form_for(@organization, data: @form_presenter&.change_detection_form_setup&.merge({controller: 'form-validation'})) do |f|
           section class="text-gray-2"
-            h3 class="flex items-center text-lg font-medium leading-7 text-blue-medium" id="general-information"
+            h3 class="flex items-center text-lg font-medium leading-7 text-blue-medium" id="general-information" data-scrollspy-target="section" 
               = inline_svg_tag 'star.svg', class: "w-4 h-4 mr-1"
               | General Information
             p class="text-sm leading-5 text-gray-4"
@@ -142,7 +142,7 @@
 
             div class="my-4 mt-6 border-t border-t-blue-pale"
             section class="mt-6 text-gray-2" data-controller="toggle"
-              h3 class="flex items-center text-lg font-medium leading-7 text-blue-medium" id="organization-information"
+              h3 class="flex items-center text-lg font-medium leading-7 text-blue-medium" id="organization-information" data-scrollspy-target="section" 
                 = inline_svg_tag 'list.svg', class: "w-4 h-4 mr-1"
                 | Organization Information
 
@@ -191,7 +191,7 @@
 
             div class="my-4 mt-6 border-t border-t-blue-pale"
             section class="mt-6 text-gray-2"
-              h3 class="flex items-center text-lg font-medium leading-7 text-blue-medium" id="causes"
+              h3 class="flex items-center text-lg font-medium leading-7 text-blue-medium" id="causes" data-scrollspy-target="section"
                 = inline_svg_tag 'heart_outlined.svg', class: "w-4 h-4 mr-1"
                 | Causes
               p class="max-w-lg text-sm text-gray-4"
@@ -207,7 +207,7 @@
 
             div class="my-4 mt-6 border-t border-t-blue-pale"
             section class="mt-6 text-gray-2"
-              h3 class="flex items-center text-lg font-medium leading-7 text-blue-medium" id="populations-served"
+              h3 class="flex items-center text-lg font-medium leading-7 text-blue-medium" id="populations-served" data-scrollspy-target="section"
                   = inline_svg_tag 'user_group.svg', class: "w-4 h-4 mr-1"
                   | Populations Served
               p class="max-w-lg text-sm text-gray-4"
@@ -243,7 +243,7 @@
             div class="my-4 mt-6 border-t border-t-blue-pale"
             section data-controller="nested-form"
               section class="mt-6 text-gray-2"
-                h3 class="flex items-center text-lg font-medium leading-7 text-blue-medium" id="main-location"
+                h3 class="flex items-center text-lg font-medium leading-7 text-blue-medium" id="main-location" data-scrollspy-target="section"
                   = inline_svg_tag 'office.svg', class: "w-4 h-4 mr-1"
                   | Main Location
                 p class="text-sm leading-5 text-gray-4"
@@ -258,7 +258,7 @@
                   div class="grid grid-cols-12 gap-6 mt-8 nested-fields" data-action="google-maps-callback@window->places#initMap" data-controller="places extend-toggle" data-places-imageurl-value="#{asset_path 'markergc.png'}"
                     - if location_form.index == 1
                       div class="col-span-12 mt-12 lg:col-span-7 md:col-span-7 text-gray-2"
-                        h6 class="pb-2 text-lg font-medium leading-7" id="additional-locations"
+                        h6 class="pb-2 text-lg font-medium leading-7" id="additional-locations" data-scrollspy-target="section"
                           | Additional Locations
                         p class="text-sm leading-5 text-gray-4"
                           | These are the locations that will have their own individual page on the platform and will appear on search listings. Think of them as facilities.
@@ -435,7 +435,7 @@
 
             div class="my-4 mt-6 border-t border-t-blue-pale"
             section class="mt-6 text-gray-2"
-              h3 class="flex items-center text-lg font-medium leading-7 text-blue-medium" id="social-media"
+              h3 class="flex items-center text-lg font-medium leading-7 text-blue-medium" id="social-media" data-scrollspy-target="section"
                 = inline_svg_tag 'like.svg', class: "w-4 h-4 mr-1"
                 | Social Media
               p class="text-sm leading-5 text-gray-4"
@@ -483,7 +483,7 @@
             section class="mt-6 text-gray-2"
               div class="grid grid-cols-12 gap-6"
                 div class="col-span-12 lg:col-span-6 md:col-span-7"
-                  h3 class="flex items-center text-lg font-medium leading-7 text-blue-medium" id="information-verification"
+                  h3 class="flex items-center text-lg font-medium leading-7 text-blue-medium" id="information-verification" data-scrollspy-target="section"
                     = inline_svg_tag 'verify.svg', class: "w-4 h-4 mr-1"
                     | Information Verification
                   p class="mt-1 text-sm leading-5 text-gray-4"
