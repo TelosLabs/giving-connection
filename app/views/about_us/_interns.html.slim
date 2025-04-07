@@ -1,224 +1,311 @@
-details class="pb-6 mb-16 w-full max-w-4xl border-b open:pb-12 border-blue-gradient-2"
-  summary class="flex justify-between items-center cursor-pointer" data-controller="accordion--component"
-    div class="flex relative flex-col justify-center items-center w-full bg-white" data-action="click->accordion--component#rotateArrow"
+details class="w-full max-w-4xl pb-6 mb-16 border-b open:pb-12 border-blue-gradient-2"
+  summary class="flex items-center justify-between cursor-pointer" data-controller="accordion--component"
+    div class="relative flex flex-col items-center justify-center w-full bg-white" data-action="click->accordion--component#rotateArrow"
         h2 class="flex mb-8 text-2xl font-bold text-center uppercase text-blue-dark"
-          | 2024 Interns
+          | 2025 Interns
           = inline_svg_tag 'expand-arrow.svg', class: "transition-transform duration-300 absolute mt-2 right-1", size:'16*16', data: { 'accordion--component-target': 'arrow'}
-  div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
-    = render BioCard::Component.new(\
-      name: "Ann Matthew",
-      job_title: "Platform Development Intern",
-      img_url: "ann.jpg",
-    ) do |c|
-      - c.with_biography do
-        p class="mb-3 text-gray-2"
-          | Ann Mathew is a Junior at Vanderbilt University, double majoring in Computer Science and Climate Studies. 
-          | She grew up in Cleveland, Ohio, but she has also lived in Shanghai, China. 
-          | At Vanderbilt, Ann is the Director of Communications for Vanderbilt Data Science and she is also involved 
-          | in various climate-focused programs and initiatives on campus.
-          span data-read-more-target="dots" class=""...
-        p data-read-more-target="collapsableText" class="hidden mb-3"
-          | Ann is excited to combine her interests in computer technology and social innovation with Giving Connection 
-          | as a Platform Development Intern. She has previously worked on tech-based projects in the non-profit space and 
-          | hopes to continue focusing on community in all of her future endeavors. She is excited to work with our community 
-          | partners and users to gather feedback for continued map improvements. Ann will primarily be working with Rutgers 
-          | University’s Hack4Impact team to create and implement a calendar of events for Giving Connection’s website. 
-          | She is thrilled to be involved with Giving Connection this year!  
-        a data-read-more-target="readMoreButton" data-action="read-more#toggleVisibility" class="font-bold cursor-pointer text-blue-medium" Read More
+  div class="flex flex-wrap justify-center max-w-4xl"
+    div class="w-full max-w-4xl px-4 sm:w-1/2"
+      = render BioCard::Component.new(\
+        name: "Luke Cassidy",
+        job_title: "Public Interest Law Fellow",
+        img_url: "luke.jpg",
+      ) do |c|
+        - c.with_biography do
+          p class="mb-3 text-gray-2"
+            | Luke is joining the Giving Connection team as a legal intern for the summer of 2025. 
+            | Luke is a rising 2L law student at Vanderbilt University Law School. Luke was born 
+            | and raised in Park City, UT, before relocating to Wolfeboro, NH, 
+            | and finally arriving in Nashville, TN.
+            span data-read-more-target="dots" class=""...
+          p data-read-more-target="collapsableText" class="hidden mb-3"
+            | Before law school, Luke attended Vanderbilt University, 
+            | graduating with a B.S. in Human & Organizational Development and participating in club hockey, 
+            | club sailing, club fencing, the Phi Delta Theta social fraternity, and Next Steps, a peer 
+            | mentorship and tutoring program for neurodivergent students. In law school, Luke has continued 
+            | to play club hockey, and is also a member of the Vanderbilt Bar Association, Vanderbilt  Ambassadors, 
+            | the Entertainment & Sports Law Society, the Law & Business Society, and If/When/How. 
+            | Prior to coming to Giving Connection, Luke worked extensively in law offices, 
+            | interning for the Carroll County Attorney’s Office in Ossipee, NH through high school 
+            | and undergrad, as well as Coleman-Talley LLP in Atlanta, GA between undergrad and law school. 
+            | He has interest and experience in matters of transactional law, including corporate governance 
+            | & compliance, contracts, and M&A. Luke is very excited to apply these skills and give back to 
+            | the Nashville community through his time at Giving Connection.
+          a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+        end
       end
-    end
 
-  div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
-    = render BioCard::Component.new(\
-      name: "Charlotte Goldstein",
-      job_title: "Nonprofit & Community Outreach",
-      img_url: "charlotte.jpg",
-    ) do |c|
-      - c.with_biography do
-        p class="mb-3 text-gray-2"
-          | Charlotte Goldstein is currently pursuing dual majors in Public Policy and Political Science at UNC Chapel Hill. 
-          | Charlotte is originally from Philadelphia, but moved to Seattle, Washington in 2013, where her family still resides. 
-          | She joined our 2024 Summer Internship Program as the Nonprofit & Community Outreach Coordinator. 
-          span data-read-more-target="dots" class=""...
-        p data-read-more-target="collapsableText" class="hidden mb-3"
-          | Charlotte's studies at UNC have deepened her understanding of the challenges facing communities across the country, 
-          | and have inspired her to get involved in local initiatives that impact people's lives. 
-          | Charlotte is focused on addressing systemic inequalities and advocating for policies that foster equity and justice.  
-          | She is committed to leveraging her education, skills and experiences to enact meaningful change. 
-          | At UNC, Charlotte served on Zeta Tau Alpha’s philanthropy board as the External Involvement Chair and is currently on the 
-          | Executive Board as the Diversity, Equity, and Inclusion Chair. She has worked with UNC’s Young Democrats club to increase 
-          | college voter registration and has canvassed around Chapel Hill during election season. In the summer of 2023, she worked for the 
-          | Women’s Business Incubator, a Seattle non-profit which aims to combat rising childcare costs and create a supportive community 
-          | for parents. In this role, Charlotte cared for children aged 2-5 and managed administrative and marketing tasks to expand outreach and attract new clients.
-          br
-          br
-          | In her personal time, Charlotte enjoys reading, cooking, playing the guitar, and spending time with family and friends. 
-          | Charlotte is eager to build on the skills and interests she has developed over the years in her role at Giving Connection!
-        a data-read-more-target="readMoreButton" data-action="read-more#toggleVisibility" class="font-bold cursor-pointer text-blue-medium" Read More
+    div class="w-full max-w-4xl px-4 sm:w-1/2"
+      = render BioCard::Component.new(\
+        name: "Nathaly Shige",
+        job_title: "Platform Development Fellow",
+        img_url: "nathaly.jpg",
+      ) do |c|
+        - c.with_biography do
+          p class="mb-3 text-gray-2"
+            | Nathaly Shige is a rising junior at Stanford University, where she studies Design and Computer Science. 
+            | With a background in product strategy, platform development, and social advocacy, she has led initiatives 
+            | at the intersection of technology and impact—developing AI-powered tools for education and healthcare, 
+            | building data-driven platforms, and driving large-scale digital solutions to advance equity and access.
+            span data-read-more-target="dots" class=""...
+          p data-read-more-target="collapsableText" class="hidden mb-3"
+            | Alongside her work in tech, Nathaly has spent years leading nonprofit efforts focused on gender equality, 
+            | education, and civic engagement. Her initiatives have reached national scale in Brazil and gained 
+            | international recognition, contributing to public policy change and youth leadership networks across the 
+            | globe.
+            br
+            br
+            | She brings a unique perspective shaped by both grassroots activism and high-level strategy, 
+            | always centering inclusion, dignity, and systemic change in her work. At Giving Connection, 
+            | Nathaly is contributing to product and platform development, helping design and implement features 
+            | that expand access to resources and strengthen community infrastructure. Her work this summer builds 
+            | on her ongoing interest in creating thoughtful, inclusive technologies that respond to real-world needs.
+          a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+        end
       end
-    end
-
-  div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
-    = render BioCard::Component.new(\
-      name: "Jenna Yang",
-      job_title: "Platform Development Fellow",
-      img_url: "jenna.jpg",
-    ) do |c|
-      - c.with_biography do
-        p class="mb-3 text-gray-2"
-          | Jenna Yang is a rising sophomore from Southern California studying at Stanford University,
-          | where she is planning to double major in Computer Science and English with a Creative Writing concentration.
-          | She is joining the Giving Connection team as a Platform Development Fellow, specifically through the CS+Social Good fellowship.
-          | Outside of school, she loves to read, write poetry and prose, go to the beach, and spend time with friends and family. 
-          span data-read-more-target="dots" class=""...
-        p data-read-more-target="collapsableText" class="hidden mb-3"
-          | Jenna’s community involvement in the past include teaching math to underserved populations, playing the piano for seniors, and serving on a district
-          | committee of her region’s Key Club.  Having engaged with volunteer work for many years of her life, she is particularly interested in the ways that technology can 
-          | be leveraged to generate creative solutions for  the simple yet crucial purpose of helping others. Drawing from her mathematical, programming, storytelling, 
-          | and community service backgrounds, she looks forward to exploring the many ways in which technology is applied to solve pressing issues, 
-          | as well as working with and learning from people from different disciplines who are all united by the same goal of creating meaningful impact in the world.
-        a data-read-more-target="readMoreButton" data-action="read-more#toggleVisibility" class="font-bold cursor-pointer text-blue-medium" Read More
+    
+    div class="w-full max-w-4xl px-4 sm:w-1/2"
+      = render BioCard::Component.new(\
+        name: "Tommy Ngo",
+        job_title: "Platform Development Fellow",
+        img_url: "tommy_ngo.jpg",
+      ) do |c|
+        - c.with_biography do
+          p class="mb-3 text-gray-2"
+            | Tommy Ngo is our Platform Development Fellow! Please add him to the 2025 Interns section.
+            | Tommy Ngo is a rising sophomore from Iowa studying Computer Science on the Human-Computer 
+            | Interaction track at Stanford. Tommy is passionate about designing inclusive technologies 
+            | and expanding access to resources for underserved communities. His drive is shaped by his 
+            | prior experience taking care of his grandma and volunteering in his hometown. 
+            span data-read-more-target="dots" class=""...
+          p data-read-more-target="collapsableText" class="hidden mb-3"
+            | In past years, he facilitated the children's STEM + art programs at his local library, 
+            | designed graphic materials for various organizations, and served as Communications Specialist 
+            | for Key Club. During his free time, he loves to dance and is a part of three dance teams: 
+            | Legacy, XTRM, and MLH. He is excited to contribute to Giving Connection and create tools that 
+            | uplift, empower, and inspire communities. 
+          a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+        end
       end
-    end
 
-  div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
-    = render BioCard::Component.new(\
-      name: "Saniya Mahate",
-      job_title: "Platform Development Fellow",
-      img_url: "saniya.jpg",
-    ) do |c|
-      - c.with_biography do
-        p class="mb-3 text-gray-2"
-          | Saniya Mahate is a rising junior at Stanford University, where she studies Economics and Computer Science. 
-          | A Maryland native, she continues to cherish her roots and ties to the East Coast region. Throughout high school and her time at Stanford, 
-          | Saniya has engaged in a broad spectrum of economics research at both GWU and the Stanford Institute for Economic Policy Research. 
-          | Her research endeavors, which have had tangible real-world impacts, fuel her passion for work with significant societal implications.
-          span data-read-more-target="dots" class=""...
-        p data-read-more-target="collapsableText" class="hidden mb-3"
-          | Saniya serves as a Platform Development Fellow at Giving Connection, bringing her expertise in software engineering to this transformative nonprofit platform. 
-          | She is dedicated to leveraging technology to support underserved, local communities and to foster meaningful connections. 
-          | In her role, Saniya is focused on developing and implementing new features to enhance productivity, scale the platform, and improve the user experience. 
-          | She is excited to contribute innovative technological solutions and to collaborate with the Giving Connection community.
-        a data-read-more-target="readMoreButton" data-action="read-more#toggleVisibility" class="font-bold cursor-pointer text-blue-medium" Read More
-      end
-    end
-
-details class="pb-6 mb-16 w-full max-w-4xl border-b open:pb-12 border-blue-gradient-2"
-  summary class="flex justify-between items-center cursor-pointer" data-controller="accordion--component"
-    div class="flex relative flex-col justify-center items-center w-full bg-white" data-action="click->accordion--component#rotateArrow"
+details class="w-full max-w-4xl pb-6 mb-16 border-b open:pb-12 border-blue-gradient-2"
+  summary class="flex items-center justify-between cursor-pointer" data-controller="accordion--component"
+    div class="relative flex flex-col items-center justify-center w-full bg-white" data-action="click->accordion--component#rotateArrow"
         h2 class="flex mb-8 text-2xl font-bold text-center uppercase text-blue-dark"
           | Past Interns
           = inline_svg_tag 'expand-arrow.svg', class: "transition-transform duration-300 absolute mt-2 right-1", size:'16*16', data: { 'accordion--component-target': 'arrow'}
-  div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
-    = render BioCard::Component.new(\
-      name: "Monica Cook",
-      job_title: "Nonprofit Outreach Coordinator",
-      img_url: "monica_cook.jpg",
-    ) do |c|
-      - c.with_biography do
-        p class="mb-3 text-gray-2"
-          | Monica joined the Giving Connection team in January 2023 for an internship as the Nonprofit Outreach Coordinator, 
-          | focusing her attention on building relationships in the Nashville community. Monica is a freshman at Lipscomb University 
-          | in Nashville, TN, studying Law, Justice, and Society. She plans to use this degree as a foundation for one day attending 
-          | law school. She is an active participant in the Student Activities Board, Turning Point USA, and RAICES, an organization 
-          | that offers community building and cultural conversations for Hispanic students at Lipscomb University. 
-          span data-read-more-target="dots" class=""...
-        p data-read-more-target="collapsableText" class="hidden mb-3"
-          | Monica was born in Guatemala and raised in Columbus, Ohio. During high school, she was an outstanding honor student 
-          | while spending numerous hours honing her communication skills on the Speech and Debate Team. She served extensively 
-          | within her community at a local non-profit called the DREAM Center in addition to remaining heavily involved in her church. 
-          | In her free time Monica enjoys participating in dance, which she has been practicing consistently for ten years. Monica 
-          | cares deeply about making an impact in her community. She takes advantage of every learning opportunity and is excited 
-          | to incorporate her experience as an intern with Giving Connection into her future aspiration of becoming a lawyer.
-        a data-read-more-target="readMoreButton" data-action="read-more#toggleVisibility" class="font-bold cursor-pointer text-blue-medium" Read More
+  
+  div class="flex flex-wrap justify-center max-w-4xl"
+    div class="w-full max-w-4xl px-4 sm:w-1/2"
+      = render BioCard::Component.new(\
+        name: "Ann Matthew",
+        job_title: "Platform Development Intern",
+        img_url: "ann.jpg",
+      ) do |c|
+        - c.with_biography do
+          p class="mb-3 text-gray-2"
+            | Ann Mathew is a Junior at Vanderbilt University, double majoring in Computer Science and Climate Studies. 
+            | She grew up in Cleveland, Ohio, but she has also lived in Shanghai, China. 
+            | At Vanderbilt, Ann is the Director of Communications for Vanderbilt Data Science and she is also involved 
+            | in various climate-focused programs and initiatives on campus.
+            span data-read-more-target="dots" class=""...
+          p data-read-more-target="collapsableText" class="hidden mb-3"
+            | Ann is excited to combine her interests in computer technology and social innovation with Giving Connection 
+            | as a Platform Development Intern. She has previously worked on tech-based projects in the non-profit space and 
+            | hopes to continue focusing on community in all of her future endeavors. She is excited to work with our community 
+            | partners and users to gather feedback for continued map improvements. Ann will primarily be working with Rutgers 
+            | University’s Hack4Impact team to create and implement a calendar of events for Giving Connection’s website. 
+            | She is thrilled to be involved with Giving Connection this year!  
+          a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+        end
       end
-    end
 
-  div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
-    = render BioCard::Component.new(\
-      name: "Mohraeil Rezk",
-      job_title: "Community Outreach Coordinator",
-      img_url: "mohraeil_razk.jpeg",
-    ) do |c|
-      - c.with_biography do
-        p class="mb-3 text-gray-2"
-          | Mohraeil was born in Asyut, Egypt and immigrated to Nashville, TN as a young child. Growing up in a low income, 
-          | minority community, she witnessed firsthand the disparities underprivileged populations encounter. She joined 
-          | Giving Connection in March 2023 as the Community Outreach Coordinator looking to give back to the Nashville community. 
-          | Deeply passionate about the organization’s mission, Mohraeil hopes she can provide unique insight on the challenges vulnerable communities face.
-          span data-read-more-target="dots" class=""...
-        p data-read-more-target="collapsableText" class="hidden mb-3"
-          | Mohraeil is a freshman at Vanderbilt University studying Medicine, Health, and Society with a concentration in Inequality, 
-          | Intersectionality, and Health Justice and plans to pursue a career in Health Law. Mohraeil hopes to one day launch her own 
-          | nonprofit that aids impoverished communities in the Middle East, providing access to affordable housing, healthcare, and 
-          | education. She is currently involved with Katie’s Art Project, Persist Nashville, Vanderbilt Student Volunteers for Science, 
-          | and OCCM, an organization that connects students in faith, community, and values with the ancient faith of the Orthodox church. 
-          | In her free time, Mohraeil enjoys making hyper-realistic artwork, watching Korean shows, listening to 50s/60s music, and reading historical fiction novels. 
-          br
-          br
-          | Mohraeil has experience tutoring and motivating students, actively working to build confidence and skills in struggling 
-          | learners. She is currently working with her church to establish a Sunday school service for youth with special needs. 
-          | She is incredibly grateful and excited to work with Giving Connection, hoping to use her experience here as a foundation for her 
-          | future career in law and nonprofit work.
-        a data-read-more-target="readMoreButton" data-action="read-more#toggleVisibility" class="font-bold cursor-pointer text-blue-medium" Read More
+    div class="w-full max-w-4xl px-4 sm:w-1/2"
+      = render BioCard::Component.new(\
+        name: "Charlotte Goldstein",
+        job_title: "Nonprofit & Community Outreach",
+        img_url: "charlotte.jpg",
+      ) do |c|
+        - c.with_biography do
+          p class="mb-3 text-gray-2"
+            | Charlotte Goldstein is currently pursuing dual majors in Public Policy and Political Science at UNC Chapel Hill. 
+            | Charlotte is originally from Philadelphia, but moved to Seattle, Washington in 2013, where her family still resides. 
+            | She joined our 2024 Summer Internship Program as the Nonprofit & Community Outreach Coordinator. 
+            span data-read-more-target="dots" class=""...
+          p data-read-more-target="collapsableText" class="hidden mb-3"
+            | Charlotte's studies at UNC have deepened her understanding of the challenges facing communities across the country, 
+            | and have inspired her to get involved in local initiatives that impact people's lives. 
+            | Charlotte is focused on addressing systemic inequalities and advocating for policies that foster equity and justice.  
+            | She is committed to leveraging her education, skills and experiences to enact meaningful change. 
+            | At UNC, Charlotte served on Zeta Tau Alpha’s philanthropy board as the External Involvement Chair and is currently on the 
+            | Executive Board as the Diversity, Equity, and Inclusion Chair. She has worked with UNC’s Young Democrats club to increase 
+            | college voter registration and has canvassed around Chapel Hill during election season. In the summer of 2023, she worked for the 
+            | Women’s Business Incubator, a Seattle non-profit which aims to combat rising childcare costs and create a supportive community 
+            | for parents. In this role, Charlotte cared for children aged 2-5 and managed administrative and marketing tasks to expand outreach and attract new clients.
+            br
+            br
+            | In her personal time, Charlotte enjoys reading, cooking, playing the guitar, and spending time with family and friends. 
+            | Charlotte is eager to build on the skills and interests she has developed over the years in her role at Giving Connection!
+          a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+        end
       end
-    end
 
-
-  div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
-    = render BioCard::Component.new(\
-      name: "Molly Buffenbarger",
-      job_title: "Community Outreach Coordinator",
-      img_url: "Molly_Buffenbarger.png",
-    ) do |c|
-      - c.with_biography do
-        p class="mb-3 text-gray-2"
-          | Molly Buffenbarger started her internship at Giving Connection in June 2023 as the Community Outreach Coordinator. Molly grew up in Atlanta, Georgia 
-          | and is now a rising senior at Vanderbilt University. At Vanderbilt, she is double majoring in Medicine, Health, & Society and English—with a concentration 
-          | in Creative Writing. Molly hopes to pursue her masters in Secondary Education and go into teaching English, while simultaneously working on her own novels.
-          span data-read-more-target="dots" class=""...
-        p data-read-more-target="collapsableText" class="hidden mb-3"
-          | She spent the 2023 spring semester studying English Literature in Edinburgh, Scotland, but she is back in Nashville for the summer. In her free time, she 
-          | loves listening to Taylor Swift and reading fantasy, romance novels. She hopes to spend this summer engaging with the Nashville community as a member of 
-          | Giving Connection.  Molly first gained experience with nonprofits during her sophomore year of high school when she started fundraising for the Children’s 
-          | Healthcare of Atlanta, as a part of her high school Dance Marathon organization.
-          br
-          br
-          | Since then, Molly has joined Vanderbilt Dance Marathon and has spent the entirety of her college career fundraising for Monroe Carell Jr. Children’s Hospital 
-          | at Vanderbilt. Within Vanderbilt Dance Marathon, Molly has continuously worked on the outreach side of the organization, where she has served as the Director 
-          | of High Schools, Director of Alumni Relations, and Director of Stewardship. Molly remains ecstatic to apply the outreach skills she has gained from Dance Marathon
-          | to the greater Nashville community through Giving Connection.
-        a data-read-more-target="readMoreButton" data-action="read-more#toggleVisibility" class="font-bold cursor-pointer text-blue-medium" Read More
+    div class="w-full max-w-4xl px-4 sm:w-1/2"
+      = render BioCard::Component.new(\
+        name: "Jenna Yang",
+        job_title: "Platform Development Fellow",
+        img_url: "jenna.jpg",
+      ) do |c|
+        - c.with_biography do
+          p class="mb-3 text-gray-2"
+            | Jenna Yang is a rising sophomore from Southern California studying at Stanford University,
+            | where she is planning to double major in Computer Science and English with a Creative Writing concentration.
+            | She is joining the Giving Connection team as a Platform Development Fellow, specifically through the CS+Social Good fellowship.
+            | Outside of school, she loves to read, write poetry and prose, go to the beach, and spend time with friends and family. 
+            span data-read-more-target="dots" class=""...
+          p data-read-more-target="collapsableText" class="hidden mb-3"
+            | Jenna’s community involvement in the past include teaching math to underserved populations, playing the piano for seniors, and serving on a district
+            | committee of her region’s Key Club.  Having engaged with volunteer work for many years of her life, she is particularly interested in the ways that technology can 
+            | be leveraged to generate creative solutions for  the simple yet crucial purpose of helping others. Drawing from her mathematical, programming, storytelling, 
+            | and community service backgrounds, she looks forward to exploring the many ways in which technology is applied to solve pressing issues, 
+            | as well as working with and learning from people from different disciplines who are all united by the same goal of creating meaningful impact in the world.
+          a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+        end
       end
-    end
 
-  div class="w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
-    = render BioCard::Component.new(\
-      name: "Astha Bhandari",
-      job_title: "Web Development Fellow",
-      img_url: "astha.jpg",
-    ) do |c|
-      - c.with_biography do
-        p class="text-gray-2"
-          | Astha Bhandari is joining us through Stanford University's Haas Center for Public Service for an internship as our Web Development Fellow. She was 
-          | awarded a stipend for students specifically pursuing CS + Social Good. She will be focused on improving our platform's user experience as well as 
-          | developing new features to increase our impact.
-          span data-read-more-target="dots" class=""...
-        p data-read-more-target="collapsableText" class="hidden mb-3"
-          | Astha is a freshman at Stanford University in Palo Alto, California and is planning to study Symbolic Systems. She is passionate about utilizing technology 
-          | to uplift underserved communities, create ethics in tech, and change the current climate of social platforms. She is an active member of the Women in Computer 
-          | Science (WiCS) club at Stanford, and is a WiCS Fellow as well. 
-          br
-          br
-          | Astha was born in Nepal and raised around the world. She attended high school in North Carolina where she formed her own clubs centered around undoing human 
-          | rights injustices worldwide. She loves coming up with innovative solutions to all problems, big or small, facing our society today. In her free time, you can find 
-          | Astha cuddling with her dog watching another comedic action movie (something she does best). She also enjoys reading, spending time with her family, hiking, and 
-          | learning to play piano. 
-          br 
-          br 
-          | Astha believes that technology is the way of the future, there is no going around it. She wants to embrace the good that technology has to offer while realizing 
-          | there are many aspects that can be improved. Astha wants to help build a better future for upcoming generations by making the world a little more ethical, 
-          | one line of code at a time. 
-        a data-read-more-target="readMoreButton" data-action="read-more#toggleVisibility" class="font-bold cursor-pointer text-blue-medium" Read More
+    div class="w-full max-w-4xl px-4 sm:w-1/2"
+      = render BioCard::Component.new(\
+        name: "Saniya Mahate",
+        job_title: "Platform Development Fellow",
+        img_url: "saniya.jpg",
+      ) do |c|
+        - c.with_biography do
+          p class="mb-3 text-gray-2"
+            | Saniya Mahate is a rising junior at Stanford University, where she studies Economics and Computer Science. 
+            | A Maryland native, she continues to cherish her roots and ties to the East Coast region. Throughout high school and her time at Stanford, 
+            | Saniya has engaged in a broad spectrum of economics research at both GWU and the Stanford Institute for Economic Policy Research. 
+            | Her research endeavors, which have had tangible real-world impacts, fuel her passion for work with significant societal implications.
+            span data-read-more-target="dots" class=""...
+          p data-read-more-target="collapsableText" class="hidden mb-3"
+            | Saniya serves as a Platform Development Fellow at Giving Connection, bringing her expertise in software engineering to this transformative nonprofit platform. 
+            | She is dedicated to leveraging technology to support underserved, local communities and to foster meaningful connections. 
+            | In her role, Saniya is focused on developing and implementing new features to enhance productivity, scale the platform, and improve the user experience. 
+            | She is excited to contribute innovative technological solutions and to collaborate with the Giving Connection community.
+          a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+        end
       end
-    end
+
+    
+    div class="w-full max-w-4xl px-4 sm:w-1/2"
+      = render BioCard::Component.new(\
+        name: "Monica Cook",
+        job_title: "Nonprofit Outreach Coordinator",
+        img_url: "monica_cook.jpg",
+      ) do |c|
+        - c.with_biography do
+          p class="mb-3 text-gray-2"
+            | Monica joined the Giving Connection team in January 2023 for an internship as the Nonprofit Outreach Coordinator, 
+            | focusing her attention on building relationships in the Nashville community. Monica is a freshman at Lipscomb University 
+            | in Nashville, TN, studying Law, Justice, and Society. She plans to use this degree as a foundation for one day attending 
+            | law school. She is an active participant in the Student Activities Board, Turning Point USA, and RAICES, an organization 
+            | that offers community building and cultural conversations for Hispanic students at Lipscomb University. 
+            span data-read-more-target="dots" class=""...
+          p data-read-more-target="collapsableText" class="hidden mb-3"
+            | Monica was born in Guatemala and raised in Columbus, Ohio. During high school, she was an outstanding honor student 
+            | while spending numerous hours honing her communication skills on the Speech and Debate Team. She served extensively 
+            | within her community at a local non-profit called the DREAM Center in addition to remaining heavily involved in her church. 
+            | In her free time Monica enjoys participating in dance, which she has been practicing consistently for ten years. Monica 
+            | cares deeply about making an impact in her community. She takes advantage of every learning opportunity and is excited 
+            | to incorporate her experience as an intern with Giving Connection into her future aspiration of becoming a lawyer.
+          a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+        end
+      end
+
+    div class="w-full max-w-4xl px-4 sm:w-1/2"
+      = render BioCard::Component.new(\
+        name: "Mohraeil Rezk",
+        job_title: "Community Outreach Coordinator",
+        img_url: "mohraeil_razk.jpeg",
+      ) do |c|
+        - c.with_biography do
+          p class="mb-3 text-gray-2"
+            | Mohraeil was born in Asyut, Egypt and immigrated to Nashville, TN as a young child. Growing up in a low income, 
+            | minority community, she witnessed firsthand the disparities underprivileged populations encounter. She joined 
+            | Giving Connection in March 2023 as the Community Outreach Coordinator looking to give back to the Nashville community. 
+            | Deeply passionate about the organization’s mission, Mohraeil hopes she can provide unique insight on the challenges vulnerable communities face.
+            span data-read-more-target="dots" class=""...
+          p data-read-more-target="collapsableText" class="hidden mb-3"
+            | Mohraeil is a freshman at Vanderbilt University studying Medicine, Health, and Society with a concentration in Inequality, 
+            | Intersectionality, and Health Justice and plans to pursue a career in Health Law. Mohraeil hopes to one day launch her own 
+            | nonprofit that aids impoverished communities in the Middle East, providing access to affordable housing, healthcare, and 
+            | education. She is currently involved with Katie’s Art Project, Persist Nashville, Vanderbilt Student Volunteers for Science, 
+            | and OCCM, an organization that connects students in faith, community, and values with the ancient faith of the Orthodox church. 
+            | In her free time, Mohraeil enjoys making hyper-realistic artwork, watching Korean shows, listening to 50s/60s music, and reading historical fiction novels. 
+            br
+            br
+            | Mohraeil has experience tutoring and motivating students, actively working to build confidence and skills in struggling 
+            | learners. She is currently working with her church to establish a Sunday school service for youth with special needs. 
+            | She is incredibly grateful and excited to work with Giving Connection, hoping to use her experience here as a foundation for her 
+            | future career in law and nonprofit work.
+          a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+        end
+      end
+
+
+    div class="w-full max-w-4xl px-4 sm:w-1/2"
+      = render BioCard::Component.new(\
+        name: "Molly Buffenbarger",
+        job_title: "Community Outreach Coordinator",
+        img_url: "Molly_Buffenbarger.png",
+      ) do |c|
+        - c.with_biography do
+          p class="mb-3 text-gray-2"
+            | Molly Buffenbarger started her internship at Giving Connection in June 2023 as the Community Outreach Coordinator. Molly grew up in Atlanta, Georgia 
+            | and is now a rising senior at Vanderbilt University. At Vanderbilt, she is double majoring in Medicine, Health, & Society and English—with a concentration 
+            | in Creative Writing. Molly hopes to pursue her masters in Secondary Education and go into teaching English, while simultaneously working on her own novels.
+            span data-read-more-target="dots" class=""...
+          p data-read-more-target="collapsableText" class="hidden mb-3"
+            | She spent the 2023 spring semester studying English Literature in Edinburgh, Scotland, but she is back in Nashville for the summer. In her free time, she 
+            | loves listening to Taylor Swift and reading fantasy, romance novels. She hopes to spend this summer engaging with the Nashville community as a member of 
+            | Giving Connection.  Molly first gained experience with nonprofits during her sophomore year of high school when she started fundraising for the Children’s 
+            | Healthcare of Atlanta, as a part of her high school Dance Marathon organization.
+            br
+            br
+            | Since then, Molly has joined Vanderbilt Dance Marathon and has spent the entirety of her college career fundraising for Monroe Carell Jr. Children’s Hospital 
+            | at Vanderbilt. Within Vanderbilt Dance Marathon, Molly has continuously worked on the outreach side of the organization, where she has served as the Director 
+            | of High Schools, Director of Alumni Relations, and Director of Stewardship. Molly remains ecstatic to apply the outreach skills she has gained from Dance Marathon
+            | to the greater Nashville community through Giving Connection.
+          a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+        end
+      end
+
+    div class="w-full max-w-4xl px-4 sm:w-1/2"
+      = render BioCard::Component.new(\
+        name: "Astha Bhandari",
+        job_title: "Web Development Fellow",
+        img_url: "astha.jpg",
+      ) do |c|
+        - c.with_biography do
+          p class="text-gray-2"
+            | Astha Bhandari is joining us through Stanford University's Haas Center for Public Service for an internship as our Web Development Fellow. She was 
+            | awarded a stipend for students specifically pursuing CS + Social Good. She will be focused on improving our platform's user experience as well as 
+            | developing new features to increase our impact.
+            span data-read-more-target="dots" class=""...
+          p data-read-more-target="collapsableText" class="hidden mb-3"
+            | Astha is a freshman at Stanford University in Palo Alto, California and is planning to study Symbolic Systems. She is passionate about utilizing technology 
+            | to uplift underserved communities, create ethics in tech, and change the current climate of social platforms. She is an active member of the Women in Computer 
+            | Science (WiCS) club at Stanford, and is a WiCS Fellow as well. 
+            br
+            br
+            | Astha was born in Nepal and raised around the world. She attended high school in North Carolina where she formed her own clubs centered around undoing human 
+            | rights injustices worldwide. She loves coming up with innovative solutions to all problems, big or small, facing our society today. In her free time, you can find 
+            | Astha cuddling with her dog watching another comedic action movie (something she does best). She also enjoys reading, spending time with her family, hiking, and 
+            | learning to play piano. 
+            br 
+            br 
+            | Astha believes that technology is the way of the future, there is no going around it. She wants to embrace the good that technology has to offer while realizing 
+            | there are many aspects that can be improved. Astha wants to help build a better future for upcoming generations by making the world a little more ethical, 
+            | one line of code at a time. 
+          a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+        end
+      end
