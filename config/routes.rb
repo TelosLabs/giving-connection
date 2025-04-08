@@ -95,9 +95,4 @@ Rails.application.routes.draw do
   post '/events/:org_id', to: 'events#create'
   delete '/events/:id', to: 'events#destroy'
   put '/events/:id', to: 'events#update'
-
-
-  
-  
-  get "/nashville", to: "cities#show", city: "Nashville", as: :nashville  
 end
