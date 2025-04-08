@@ -78,8 +78,19 @@ div class="w-full h-full bg-white"
                   option value="ALL"
                     | All Events
               
-              = link_to "Create Event", new_event_path(org_id: @organization), class: "px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md", style: "background: #9AE2DF;"
+              - if current_user.administrated_organizations.count > 1
+                div.relative
+                  button.px-3.py-1.text-sm.font-medium.text-gray-700.bg-gray-100.border.border-gray-300.rounded-md.relative.flex.justify-between.items-center style="background: #9AE2DF;" onclick="document.getElementById('create_event_dropdown').classList.toggle('hidden');"
+                    p Create Event
+                    = inline_svg_tag "down-arrow.svg", size:"12*12", class:"h-7 ms-2 fill-current text-gray-3"
 
+                  div.absolute.flex.flex-col.justify-between.z-50.rounded-md.shadow-lg.hidden id="create_event_dropdown"
+                    - for org in current_user.administrated_organizations
+                      = link_to org.name, new_event_path(org_id: org.id), class: "px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 bg-white hover:bg-gray-100" + \
+                        (org.id == current_user.administrated_organizations.first.id ? " rounded-t-md" : "") + \
+                        (org.id == current_user.administrated_organizations.last.id ? " rounded-b-md" : "")
+              - else 
+                = link_to "Create Event", new_event_path(org_id: current_user.administrated_organizations.first.id), class: "px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md", style: "background: #9AE2DF;"
 
             div.max-w-4xl.mx-auto.bg-gray-200.mt-2.p-1.sticky.z-10.ps-4.rounded-md
               div.flex.justify-between.font-bold.border-black
@@ -92,7 +103,7 @@ div class="w-full h-full bg-white"
                 ul class="flex flex-col divide-y divide-gray-8"
                   - @events.each do |event|
                     li
-                      = render EventListCard::Component.new(event: event)
+                      = render EventListCard::Component.new(event: event, edit_url: edit_event_path(event), view_url: event_path(event))
               - else
                 p class="text-center text-grey-2 pt-10 h-full"
                   | Your upcoming events will appear here.

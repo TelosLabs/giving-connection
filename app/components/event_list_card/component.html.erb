@@ -41,11 +41,15 @@
         <%= truncate(event.description, length: 150) %>
       </div>
       
-      <% if event.link.present? %>
-        <div class="event-actions">
-          <a href="<%= event.link %>" class="event-button">Volunteer</a>
+      <% if event.type_of_event.present? %>
+        <% badge_bg_colors = { "Fundraiser" => "#E1F3FF", "Volunteer" => "#E0E7FF", "Outreach" => "#DBFFE5", "Other" => "#EDEDED" } %>
+        <% badge_text_colors = { "Fundraiser" => "#113C7B", "Volunteer" => "#4338CA", "Outreach" => "#08543D", "Other" => "#1F2C3D" } %>
+        <div class="flex gap-2">
+            <% event.type_of_event.each do |type| %>
+                <span style="background-color: <%= badge_bg_colors[type] %>; color: <%= badge_text_colors[type] %>; border: 1px solid <%= badge_text_colors[type] %>;"  class="text-xs font-medium leading-none font-['Inter'] px-4 py-2 rounded-full "><%= type %></span>
+            <% end %>
         </div>
-      <% end %>
+    <% end %>
     </div>
     <div class="flex-none">
         <% if event.image_link.present? %>
@@ -78,13 +82,13 @@
                     </li>
                 <% end %>
                 <li>
-                    <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
+                    <a href="<%= @edit_url %>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
                 </li>
                 <li>
-                    <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View</a>
+                    <a href="<%= @view_url %>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View</a>
                 </li>
                 <li>
-                    <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="onDeleteEvent('<%= event.id %>', '<%= event.title %>')">Delete</a>
+                    <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-red-400" onclick="onDeleteEvent('<%= event.id %>', '<%= event.title %>')">Delete</a>
                 </li>
             </ul>
         </div>
@@ -126,6 +130,7 @@
         .then(response => {
             if (response.ok) {
                 alert('Event published successfully');
+                window.location.reload();
             } else {
                 alert('Error publishing event');
             }
