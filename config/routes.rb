@@ -72,7 +72,11 @@ Rails.application.routes.draw do
   resource :privacy_policy, only: %i[show]
   resource :infowindow, only: :new
   resources :autocomplete, only: %i[index]
-  resources :events, only: [:index, :new, :create, :destroy]
+  resources :events, only: [:index, :new, :create, :destroy, :edit, :update, :show] do
+    member do
+      post :publish
+    end
+  end
 
   root to: "home#index"
 
