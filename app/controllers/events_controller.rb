@@ -1,8 +1,8 @@
 class EventsController < ApplicationController
-  
-  skip_before_action :authenticate_user!, only: [:create]
-  skip_before_action :verify_authenticity_token, only: [:create]
-  after_action :skip_authorization, only: [:create]
+
+  skip_before_action :authenticate_user!, only: [:index, :create, :update, :destroy]
+  skip_before_action :verify_authenticity_token, only: [:index, :create, :update, :destroy]
+  after_action :skip_authorization, only: [:index, :create, :update, :destroy]
   skip_after_action :verify_authorized
   skip_after_action :verify_policy_scoped, only: [:index]
 
@@ -296,6 +296,26 @@ class EventsController < ApplicationController
     end
   end
 
+  def update
+   
+    event = Event.find_by(id: params[:id])
+
+    unless event
+      
+      return render json: { error: "Event not found" }, status: :not_found
+    end
+
+    
+    if event.update(event_params)
+      
+      render json: { message: "Event updated successfully", event: event }, status: :ok
+    else
+      
+      render json: { error: "Failed to update event", details: event.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+  
+
   def destroy
     event = Event.find_by(id: params[:id])
   
@@ -317,6 +337,9 @@ class EventsController < ApplicationController
       :title, :description, :link, :image_link, :location,
       :published, :isRecurring, :start_time, :end_time,
       type_of_event: [], tags: [], categories: [], subcategories: []
-    )
+      ).tap do |whitelisted|
+        # Allow end_time to be nil for create and update actions
+        whitelisted[:end_time] = nil if whitelisted[:end_time].blank?
+      end
   end
 end
