@@ -49,11 +49,14 @@ export default class extends Controller {
     const section = document.getElementById(sectionId)
     if (!section) return
   
-    const offset = 180
+    const offset = 190
     const top = section.getBoundingClientRect().top + window.scrollY - offset
   
     window.scrollTo({ top, behavior: 'smooth' })
   }
-  
-  
+
+  scrollToTop(event) {
+    event.preventDefault()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 }

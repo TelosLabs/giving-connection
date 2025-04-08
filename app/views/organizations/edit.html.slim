@@ -19,8 +19,8 @@
     div class=""
       = button_tag 'Save Changes', type: 'submit', form: 'organization-form', class: 'hover:bg-seafoam-light transition flex cursor-pointer uppercase flex-row justify-center items-center bg-seafoam py-4 px-10 rounded-6px text-blue-dark text-base font-bold focus:outline-none', data: {action: "click->form-validation#addEmptyRequiredStyles click->halt-navigation-on-change#startSaving"}
   div class="flex w-full bg-white"
-    div class="hidden md:flex flex-col sticky top-[181px] pt-4 pl-20 pr-8 border-r-2 border-gray-9 shrink-0 h-[calc(100vh-181px)] overflow-y-auto"
-      div class="flex flex-col pb-4 gap-y-2" data-controller="scrollspy"
+    div class="hidden md:flex flex-col sticky top-[181px] pt-4 pl-20 pr-8 border-r-2 border-gray-9 shrink-0 h-[calc(100vh-181px)] overflow-y-auto" data-controller="scrollspy"
+      div class="flex flex-col pb-4 gap-y-2"
         p class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-id="general-information" data-scrollspy-target="link" data-action="click->scrollspy#scrollToSection" role="button"
           = inline_svg_tag 'star.svg', class: "w-4 h-4 mr-1"
           | General Information
@@ -37,7 +37,7 @@
           = inline_svg_tag 'office.svg', class: "w-4 h-4 mr-1"
           | Main Location 
         p class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-id="additional-locations" data-scrollspy-target="link" data-action="click->scrollspy#scrollToSection" role="button"
-          = inline_svg_tag 'location-dot.svg', class: "w-4 h-4 mr-1"
+          = inline_svg_tag 'location-outline.svg', class: "w-4 h-4 mr-1"
           | Additional Locations
         p class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-id="social-media" data-scrollspy-target="link" data-action="click->scrollspy#scrollToSection" role="button"
           = inline_svg_tag 'like.svg', class: "w-4 h-4 mr-1"
@@ -45,10 +45,11 @@
         p class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-id="information-verification" data-scrollspy-target="link" data-action="click->scrollspy#scrollToSection" role="button"
           = inline_svg_tag 'verify.svg', class: "w-4 h-4 mr-1"
           | Information Verification
-      div class="flex justify-center p-2 border-t-2 rounded-md border-gray-9 hover:bg-blue-100"
-        p class="flex items-center font-medium leading-7 text-center cursor-pointer text-md text-blue-dark" href="#top"
-          = inline_svg_tag 'back_icon.svg', class: "w-4 h-4 mr-1"
+      div class="flex justify-center p-2 transition border-t-2 rounded-md cursor-pointer border-gray-9 hover:bg-blue-100" data-action="click->scrollspy#scrollToTop" role="button"
+        p class="flex items-center font-medium leading-7 text-center text-md text-blue-dark" 
+          = inline_svg_tag 'back_top.svg', class: "w-4 h-4 mr-1"
           | Back to top
+        
 
     div class="flex-1 w-3/4 scroll-pt-[181px]"
       div class="flex flex-col p-12 pt-6"
