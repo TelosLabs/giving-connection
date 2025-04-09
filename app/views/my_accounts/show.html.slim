@@ -70,9 +70,9 @@ div class="w-full h-full bg-white"
             div.w-full.flex.justify-between.place-items-center
               div
                 div.inline-flex.rounded-md.shadow-xs role="group"
-                  button.px-4.py-2.text-sm.font-medium.text-gray-700.bg-gray-100.border.border-gray-300.rounded-l-md onclick="document.getElementById('events_list').classList.remove('hidden'); document.getElementById('events_calendar').classList.add('invisible');"
+                  button.px-4.py-2.text-sm.font-medium.text-gray-700.bg-gray-200.border.border-gray-300.rounded-l-md onclick="toggleList(true);" id="events_list_button"
                     p List 
-                  button.px-4.py-2.text-sm.font-medium.text-gray-700.bg-gray-100.border.border-gray-300.rounded-r-md onclick="document.getElementById('events_list').classList.add('hidden'); document.getElementById('events_calendar').classList.remove('invisible');"
+                  button.px-4.py-2.text-sm.font-medium.text-gray-700.bg-gray-100.border.border-gray-300.rounded-r-md onclick="toggleList(false);" id="events_calendar_button"
                     p Calendar
                 select.ms-4.rounded-md.border.border-gray-300.text-gray-700.text-sm
                   option value="ALL"
@@ -108,7 +108,7 @@ div class="w-full h-full bg-white"
                 p class="text-center text-grey-2 pt-10 h-full"
                   | Your upcoming events will appear here.
 
-            div id="events_calendar" class="invisible h-full w-full"
+            div id="events_calendar" class="invisible h-0 w-0"
               = render Calendar::Component.new()
 
 
@@ -213,7 +213,12 @@ javascript:
             id: event.id,
             title: event.title,
             start: event.start_time,
-            end: event.end_time
+            end: event.end_time,
+            description: event.description,
+            location: event.location,
+            url: `/events/${event.id}`,
+            eventType: event.type_of_event,
+            orgName: data.organization.name,
           });
         });
         window.calendar.addEventSource(events);
@@ -221,3 +226,32 @@ javascript:
       })
     }
   });
+
+  function toggleList(isList) {
+    if (isList) {
+      // Show list and hide calendar
+      document.getElementById('events_list').classList.remove('hidden'); 
+      document.getElementById('events_calendar').classList.add('invisible'); 
+      document.getElementById('events_list').classList.remove('h-full'); 
+      document.getElementById('events_calendar').classList.add('h-0');
+      document.getElementById('events_calendar').classList.add('w-0');
+
+      // Change button styles
+      document.getElementById('events_list_button').classList.add('bg-gray-200');
+      document.getElementById('events_calendar_button').classList.remove('bg-gray-200');
+    } else {
+      document.getElementById('events_list').classList.add('hidden'); 
+      document.getElementById('events_calendar').classList.remove('invisible'); 
+      document.getElementById('events_list').classList.add('h-full');
+      document.getElementById('events_calendar').classList.remove('h-0'); 
+      document.getElementById('events_calendar').classList.remove('w-0');
+
+      document.getElementById('events_list_button').classList.remove('bg-gray-200');
+      document.getElementById('events_calendar_button').classList.add('bg-gray-200');
+
+      if (window.calendar) {
+        window.calendar.render();
+      }
+    }
+  }
+    

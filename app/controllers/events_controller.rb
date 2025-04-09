@@ -29,10 +29,10 @@ class EventsController < ApplicationController
         event_hash
       end
       
-      render json: { events: events_with_timezone }, status: :ok
+      render json: { events: events_with_timezone, organization: organization }, status: :ok
     else
       # If no timezone provided, just return the events with UTC times
-      render json: { events: events, timezone: "UTC" }, status: :ok
+      render json: { events: events, organization: organization, timezone: "UTC" }, status: :ok
     end
   end
   

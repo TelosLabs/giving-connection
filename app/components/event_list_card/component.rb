@@ -1,4 +1,3 @@
-# app/components/event_list_card/component.rb
 module EventListCard
   class Component < ViewComponent::Base
 
