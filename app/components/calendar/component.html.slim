@@ -29,6 +29,69 @@ div class="flex stretch justify-center items-center gap-24 mt-4 bg-gray-100 p-4 
           div class="w-4 h-4 rounded-full bg-[blue]" id="legend_other"
           span Other
 
+style
+  | /* Override FullCalendar styles */
+  | .fc-header-toolbar {
+  |   margin-bottom: 10px !important;
+  | }
+  | .fc-day-today {
+  |   background-color: #f8f9fa !important;
+  | }
+  | .fc .fc-event-title {
+  |   white-space: normal !important;
+  |   font: 'Inter';
+  | }
+  | .fc .fc-event {
+  |   padding: 2px 4px !important;
+  | }
+  | .fc .fc-daygrid-day-events .fc-event {
+  |   background-color: rgba(0, 0, 0, 0.02) !important; /* Slightly darker but still subtle */
+  |   
+  | }
+  | .fc-daygrid-day-number {
+  |    color: #1F2D3D !important;
+  | }
+  | .fc-daygrid-day-top {
+  |    flex-direction: row !important;  
+  | }
+  | /* Change day of week header background color */
+  | .fc .fc-col-header-cell {
+  |   background-color: #E2ECF7 !important;
+  |   padding-top: .75em !important;
+  |   padding-bottom: .75em !important;
+  |   text-align: center !important;;
+  | }
+  |
+  | .fc .fc-col-header-cell:first-child {
+  |   border-radius: 5px 0 0 0 !important;
+  | }
+  |
+  | .fc .fc-col-header-cell:last-child {
+  |   border-radius: 0 5px 0 0 !important;
+  | }
+  |
+  | .fc-theme-standard .fc-scrollgrid {
+  |   border-radius: 5px 5px 0 0 !important;
+  | }
+  | 
+  | /* Optional: If you want to change the text color to complement the background */
+  | .fc .fc-col-header-cell-cushion {
+  |   color: #707070 !important;
+  |   font-size: 16px;
+  |   font-weight: 500;
+  |   line-height: 150%; /* 24px */
+  |   letter-spacing: -0.176px;
+  |   text-transform: uppercase;
+  | }
+  | .fc .fc-button-primary {
+  |   background: none !important;
+  |   border: none !important;
+  |   color: #1F2D3D !important;
+  | }
+
+
+
+
 javascript:
   document.addEventListener('DOMContentLoaded', setupCalendar);
 

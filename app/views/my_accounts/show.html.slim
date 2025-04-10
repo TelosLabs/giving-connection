@@ -93,12 +93,12 @@ div class="w-full h-full bg-white"
               - else 
                 = link_to "Create Event", new_event_path(org_id: current_user.administrated_organizations.first.id), class: "px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md", style: "background: #9AE2DF;"
 
-            div.max-w-4xl.mx-auto.bg-gray-200.mt-2.p-1.sticky.z-10.ps-4.rounded-md
-              div.flex.justify-between.font-bold.border-black
-                  div Events
-                  div.mr-12 Status
           
             div id="events_list" class="h-full"
+              div.max-w-4xl.mx-auto.bg-gray-200.mt-2.p-1.sticky.z-10.ps-4.rounded-md
+                div.flex.justify-between.font-bold.border-black
+                    div Events
+                    div.mr-12 Status
               = hidden_field_tag 'org_ids', current_user.administrated_organizations.pluck(:id)
               - if @events.present?
                 ul class="flex flex-col divide-y divide-gray-8"
@@ -109,7 +109,7 @@ div class="w-full h-full bg-white"
                 p class="text-center text-grey-2 pt-10 h-full"
                   | Your upcoming events will appear here.
 
-            div id="events_calendar" class="invisible h-0 w-0"
+            div id="events_calendar" class="hidden h-0 w-0"
               = render Calendar::Component.new(admin: true)
 
 
@@ -194,7 +194,7 @@ javascript:
     if (isList) {
       // Show list and hide calendar
       document.getElementById('events_list').classList.remove('hidden'); 
-      document.getElementById('events_calendar').classList.add('invisible'); 
+      document.getElementById('events_calendar').classList.add('hidden'); 
       document.getElementById('events_list').classList.remove('h-full'); 
       document.getElementById('events_calendar').classList.add('h-0');
       document.getElementById('events_calendar').classList.add('w-0');
@@ -204,7 +204,7 @@ javascript:
       document.getElementById('events_calendar_button').classList.remove('bg-gray-200');
     } else {
       document.getElementById('events_list').classList.add('hidden'); 
-      document.getElementById('events_calendar').classList.remove('invisible'); 
+      document.getElementById('events_calendar').classList.remove('hidden'); 
       document.getElementById('events_list').classList.add('h-full');
       document.getElementById('events_calendar').classList.remove('h-0'); 
       document.getElementById('events_calendar').classList.remove('w-0');
