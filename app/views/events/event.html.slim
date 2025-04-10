@@ -1,0 +1,106 @@
+div class="w-[75vw] mx-auto mt-6 p-3 flex justify-between gap-4 mb-24"
+    div class="flex flex-col gap-3 w-2/3 rounded-md bg-white"
+        img src="/assets/cover-default.png" alt="Cover Image" class="w-full h-24 object-cover rounded-t-md"        
+        - if current_user.administrated_organizations.include?(@event.organization)
+            div class="flex justify-end me-4"
+                = link_to "Edit", edit_event_path(@event), class: "text-blue-500 text-sm font-semibold"
+        div class="flex mx-auto justify-center"
+            - if @event.type_of_event.present?
+                - badge_bg_colors = { "Fundraiser" => "#E1F3FF", "Volunteer" => "#E0E7FF", "Outreach" => "#DBFFE5", "Other" => "#EDEDED" }
+                - badge_text_colors = { "Fundraiser" => "#113C7B", "Volunteer" => "#4338CA", "Outreach" => "#08543D", "Other" => "#1F2C3D" }
+                .flex.gap-2
+                    - @event.type_of_event.each do |type|
+                        span.text-xs.font-medium.leading-none[
+                            style="background-color: #{badge_bg_colors[type]}; color: #{badge_text_colors[type]}; border: 1px solid #{badge_text_colors[type]};"
+                            class="mx-auto font-['Inter'] px-4 py-2 rounded-full"
+                        ] = type
+        h2 class="self-stretch h-7 text-center justify-center text-slate-800 text-lg font-bold font-['Inter'] leading-7"
+            = @event.title + " by " + @event.organization.name
+        div class="flex mx-auto justify-center"
+            button class="w-2/3 h-12 px-32 py-3 bg-indigo-100 text-color-blue-51 rounded-md inline-flex justify-center items-center gap-2 whitespace-nowrap"
+                | Add to Calendar
+        - if @event.link.present?
+            div class="self-stretch h-5 text-center justify-center"
+                span class="text-gray-700 text-base font-bold font-['Inter'] leading-normal"
+                    | More Information: 
+                a class="text-[#3B4958] text-base font-normal font-['Inter'] leading-normal underline" href="//#{@event.link}" target="_blank"
+                    = @event.link
+        div class="flex justify-center"
+            hr class="w-[95%] h-0.5 bg-gray-200 my-4"
+        div class="p-5"
+            div
+                h3 class="text-[#3B4958] text-base font-bold font-['Inter'] leading-7"
+                    | Description
+                p class="text-gray-700 text-base font-normal font-['Inter'] leading-normal"
+                    = @event.description
+
+            div class="flex justify-start gap-2 items-center mt-8"
+                h3 class="text-[#3B4958] text-base font-bold font-['Inter'] leading-7"
+                    | Date: 
+                - if @event.end_time.present? && @event.start_time.to_date != @event.end_time.to_date
+                    p class="text-gray-700 text-base font-normal font-['Inter'] leading-normal"
+                        = @event.start_time.strftime("%B %d, %Y") + " - " + @event.end_time.strftime("%B %d, %Y")
+                - else
+                    p class="text-gray-700 text-base font-normal font-['Inter'] leading-normal"
+                        = @event.start_time.strftime("%B %d, %Y")
+
+
+            div class="flex justify-start gap-2 items-center"
+                h3 class="text-[#3B4958] text-base font-bold font-['Inter'] leading-7"
+                    | Time: 
+                - if @event.end_time.present? && @event.start_time.to_date == @event.end_time.to_date
+                    p class="text-gray-700 text-base font-normal font-['Inter'] leading-normal"
+                        = @event.start_time.strftime("%I:%M %p") + " - " + @event.end_time.strftime("%I:%M %p")
+                - else
+                    p class="text-gray-700 text-base font-normal font-['Inter'] leading-normal"
+                        = @event.start_time.strftime("%I:%M %p")
+
+            div class="flex justify-start gap-2 items-center mt-6"
+                h3 class="text-[#3B4958] text-base font-bold font-['Inter'] leading-7"
+                    | Location: 
+                p class="text-gray-700 text-base font-normal font-['Inter'] leading-normal"
+                    = @event.location
+
+        
+        / TODO: Replace with event image if available
+        = image_tag url_for(@event.image_link), class: "w-full h-24 object-cover rounded-b-md", data: { target: "logo.output" }
+
+
+    div class="w-1/3 flex flex-col gap-4"
+        div class="flex flex-col gap-4 rounded-md bg-white"
+            div class="w-full flex flex-col gap-2 p-3 justify-center items-center"
+                / TODO: check org logo
+                = image_tag url_for(@organization.logo), class: "h-24 w-24 border border-gray-8 rounded border-2 border-gray-5 object-contain", data: { target: "logo.output" }
+                h2 class="w-72 h-7 text-center justify-center text-black text-lg font-bold font-['Inter'] leading-7"
+                    = @event.organization.name
+                = render CausesList::Component.new( \
+                    causes: @event.organization.causes.uniq, \
+                    list_options: { class: "flex gap-3 mx-2 text-sm mt-4"}, \
+                    icon_wrapper_options: { class: "labelled-icon w-14 h-14 flex justify-center items-center rounded-full bg-blue-pale", aria_hidden: true}, \
+                    icon_svg_options: {class: "w-12 h-8", aria_hidden: true})
+
+
+        - if @upcoming_events.present?
+            div class="flex flex-col gap-4 rounded-md bg-white p-4"
+                h3 class="self-stretch h-5 justify-center text-black text-sm font-bold font-['Inter'] uppercase leading-tight"
+                    | UPCOMING EVENTS
+                
+                ul class="flex flex-col"
+                    - @upcoming_events.each do |ev|
+                        = render EventListCard::Component.new(admin: false, small: true, event: ev, edit_url: edit_event_path(ev), view_url: event_path(ev))
+                
+                button class="flex gap-2 justify-center font-['Inter'] font-normal text-base" 
+                    | View All Events
+
+                button type="button" class="flex self-stretch px-28 py-3 bg-rose-400 rounded-md justify-center items-center gap-2 text-white"
+                    / = inline_svg_tag "mingcute_notification-line.svg", size:"16*16", class:"h-7 w-7 fill-current text-white"
+                    p class="text-base text-white text-bold font-['Inter'] leading-normal text-nowrap" Subcribe to Calendar
+
+                button type="button" class="flex self-stretch px-28 py-3 bg-indigo-100 rounded-md justify-center items-center gap-2 text-[#4338CA] text-no-wrap"
+                    / = inline_svg_tag "bx_export.svg", size:"4*4", class:""
+                    p class="text-base text-bold font-['Inter'] leading-normal text-nowrap" Export Calendar
+        
+
+    
+
+

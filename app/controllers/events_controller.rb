@@ -7,16 +7,18 @@ class EventsController < ApplicationController
   skip_after_action :verify_policy_scoped, only: [:index]
 
   def index
-    org_id = params[:org_id] || params[:orgId]
+    org_id = params[:org_id] || params[:orgId] || ''
+
+    # If no org_id is provided, return all events
     if org_id.blank?
-      return render json: { error: "orgId parameter is required" }, status: :bad_request
+      return render json: { events: Event.where(published: true).order(:start_time), organizations: Organization.all }, status: :ok
     end
-  
+
     organization = Organization.find_by(id: org_id)
     unless organization
       return render json: { error: "Organization not found" }, status: :not_found
     end
-  
+    
     events = organization.events.order(:start_time)
     
     # If user timezone is provided, convert the times for display
@@ -63,110 +65,6 @@ class EventsController < ApplicationController
     render :form
   end
 
-  def update
-    @event = Event.find(params[:id])
-    @user_timezone = params[:timezone] || 'UTC'
-    
-    # Create a copy of the parameters we can modify
-    update_params = event_params.to_h
-    
-    # Process the date and time fields from the form
-    if params[:event][:date].present? && params[:event][:start_time].present?
-      date = params[:event][:date]
-      start_time = params[:event][:start_time]
-      
-      # Parse the local time with the user's timezone
-      local_start_time = Time.use_zone(@user_timezone) do
-        Time.zone.parse("#{date} #{start_time}")
-      end
-      
-      # Convert to UTC for storage
-      update_params[:start_time] = local_start_time.utc
-      
-      # Handle end time if present
-      if params[:event][:end_time].present?
-        end_time = params[:event][:end_time]
-        
-        # Parse the local time with the user's timezone
-        local_end_time = Time.use_zone(@user_timezone) do
-          Time.zone.parse("#{date} #{end_time}")
-        end
-        
-        # Convert to UTC for storage
-        update_params[:end_time] = local_end_time.utc
-      end
-    elsif params[:event][:start_time].present? # For JSON API
-      # Try to parse ISO8601 format with timezone info
-      begin
-        update_params[:start_time] = Time.parse(params[:event][:start_time]).utc
-        update_params[:end_time] = Time.parse(params[:event][:end_time]).utc if params[:event][:end_time].present?
-      rescue ArgumentError
-        # If the time string doesn't include timezone info, use the provided timezone
-        start_time = Time.use_zone(@user_timezone) do
-          Time.zone.parse(params[:event][:start_time])
-        end
-        update_params[:start_time] = start_time.utc
-        
-        if params[:event][:end_time].present?
-          end_time = Time.use_zone(@user_timezone) do
-            Time.zone.parse(params[:event][:end_time])
-          end
-          update_params[:end_time] = end_time.utc
-        end
-      end
-    end
-    
-    # Handle the remote/location fields
-    if params[:event][:remote] == "true"
-      update_params[:location] = "Remote"
-    elsif params[:event][:address].present?
-      update_params[:location] = params[:event][:address]
-    end
-    
-    # Process event types
-    update_params[:type_of_event] = JSON.parse(params[:event][:type_of_event]) if params[:event][:type_of_event].present?
-    
-    # Handle external link
-    update_params[:link] = params[:event][:external_link] if params[:event][:external_link].present?
-    
-    # Set whether it's a draft or not
-    update_params[:published] = params[:event][:is_draft] != "true"
-    
-    # Set recurring flag
-    update_params[:isRecurring] = params[:event][:recurring] == "true"
-    
-    if @event.update(update_params)
-      # If update was successful
-      respond_to do |format|
-        format.html { redirect_to my_account_path, notice: "Event was successfully updated." }
-        format.json { 
-          # For JSON response, convert times to the user's timezone
-          event_json = @event.as_json
-          event_json['start_time'] = @event.start_time&.in_time_zone(@user_timezone)
-          event_json['end_time'] = @event.end_time&.in_time_zone(@user_timezone)
-          event_json['timezone'] = @user_timezone
-          
-          render json: { 
-            message: "Event updated successfully", 
-            event: event_json 
-          }, status: :ok 
-        }
-      end
-    else
-      # If update failed, re-render the form with error messages
-      @organization = @event.organization
-      @event_date = params[:event][:date]
-      @event_start_time = params[:event][:start_time]
-      @event_end_time = params[:event][:end_time]
-      @event_is_remote = params[:event][:remote] == "true"
-      
-      respond_to do |format|
-        format.html { render :form }
-        format.json { render json: { message: "Event update failed", errors: @event.errors.full_messages }, status: :unprocessable_entity }
-      end
-    end
-  end
-
   def show
     @event = Event.find(params[:id])
     @organization = @event.organization
@@ -205,6 +103,22 @@ class EventsController < ApplicationController
       render json: { message: "Event published successfully" }, status: :ok
     else
       render json: { message: "Failed to publish event", errors: event.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def discover
+    if params[:id]
+      # Logic for discover with specific event
+      @event = Event.find(params[:id])
+      @organization = @event.organization
+      # Take next 3 upcoming events for this org
+      @upcoming_events = Event.where(organization_id: @organization.id, published: true).order(:start_time).limit(3)
+      render :event
+    else
+      # Logic for discover without specific event
+      @events = Event.where(published: true).order(:start_time)
+      @events = @events.select { |event| event.start_time > Time.now }
+      render :discover
     end
   end
 
@@ -299,6 +213,10 @@ class EventsController < ApplicationController
   def update
    
     event = Event.find_by(id: params[:id])
+
+    if params[:event][:address].present?
+      params[:event][:location] = params[:event][:address]
+    end
 
     unless event
       

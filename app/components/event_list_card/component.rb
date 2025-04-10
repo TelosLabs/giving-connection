@@ -3,8 +3,10 @@ module EventListCard
 
     include Rails.application.routes.url_helpers
     
-    def initialize(event:, edit_url: nil, view_url: nil)
+    def initialize(admin:, small:, event:, edit_url: nil, view_url: nil)
+      @admin = admin
       @event = event
+      @small = small
       @edit_url = edit_url
       @view_url = view_url
     end

@@ -74,9 +74,10 @@ div class="w-full h-full bg-white"
                     p List 
                   button.px-4.py-2.text-sm.font-medium.text-gray-700.bg-gray-100.border.border-gray-300.rounded-r-md onclick="toggleList(false);" id="events_calendar_button"
                     p Calendar
-                select.ms-4.rounded-md.border.border-gray-300.text-gray-700.text-sm
-                  option value="ALL"
-                    | All Events
+                / TODO - Filter by org
+                / select.ms-4.rounded-md.border.border-gray-300.text-gray-700.text-sm
+                /   option value="ALL" onchange=""
+                /     | All Events
               
               - if current_user.administrated_organizations.count > 1
                 div.relative
@@ -103,13 +104,13 @@ div class="w-full h-full bg-white"
                 ul class="flex flex-col divide-y divide-gray-8"
                   - @events.each do |event|
                     li
-                      = render EventListCard::Component.new(event: event, edit_url: edit_event_path(event), view_url: event_path(event))
+                      = render EventListCard::Component.new(admin: true, small: false, event: event, edit_url: edit_event_path(event), view_url: event_path(event))
               - else
                 p class="text-center text-grey-2 pt-10 h-full"
                   | Your upcoming events will appear here.
 
             div id="events_calendar" class="invisible h-0 w-0"
-              = render Calendar::Component.new()
+              = render Calendar::Component.new(admin: true)
 
 
         div class="hidden" data-tabs-target="panel"
@@ -189,44 +190,6 @@ div class="w-full h-full bg-white"
                   | Click "Add A Nonprofit" on the top menu bar to contact us about adding or claiming a nonprofit page.
 
 javascript: 
-  document.addEventListener('DOMContentLoaded', () => {
-    let awaitCalendarRender = setInterval(() => {
-      if (window.calendar) {
-        clearInterval(awaitCalendarRender);
-        return;
-      }
-    }, 100);
-    let orgIds = document.getElementById('org_ids').value.split(' ');
-    for (let orgId of orgIds) {
-      fetch("/events?org_id=" + orgId, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        }
-      })
-      .then(response => response.json())
-      .then(data => {
-        let events = [];
-        data.events.forEach(event => {
-          events.push({
-            id: event.id,
-            title: event.title,
-            start: event.start_time,
-            end: event.end_time,
-            description: event.description,
-            location: event.location,
-            url: `/events/${event.id}`,
-            eventType: event.type_of_event,
-            orgName: data.organization.name,
-          });
-        });
-        window.calendar.addEventSource(events);
-        window.calendar.render();
-      })
-    }
-  });
-
   function toggleList(isList) {
     if (isList) {
       // Show list and hide calendar

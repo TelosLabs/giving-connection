@@ -1,25 +1,133 @@
-/ FullCalendar CSS
-link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css"
 / FullCalendar JS
 script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"
 script src='https://unpkg.com/popper.js/dist/umd/popper.min.js'
 script src="https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js"
 
-
 div data-controller="calendar-component" data-calendar-component-target="calendar" class="calendar-container"
     div class="flex align-center justify-center"
         div id="calendar" class="w-full h-full mt-2"
 
+div class="flex stretch justify-center items-center gap-24 mt-4 bg-gray-100 p-4 rounded-lg"
+    - if @admin
+      div class="flex items-center gap-2"
+          div class="w-4 h-4 rounded-full bg-[blue]"
+          span Published
+      div class="flex items-center gap-2"
+          div class="w-4 h-4 rounded-full bg-[grey]"
+          span Draft
+    - else
+      div class="flex items-center gap-2"
+          div class="w-4 h-4 rounded-full bg-[blue]" id="legend_outreach"
+          span Outreach
+      div class="flex items-center gap-2"
+          div class="w-4 h-4 rounded-full bg-[blue]" id="legend_volunteer"
+          span Volunteer
+      div class="flex items-center gap-2"
+          div class="w-4 h-4 rounded-full bg-[blue]" id="legend_fundraiser"
+          span Fundraiser
+      div class="flex items-center gap-2" 
+          div class="w-4 h-4 rounded-full bg-[blue]" id="legend_other"
+          span Other
+
 javascript:
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', setupCalendar);
+
+  async function setupCalendar() {
+    // Background Colors (HSL)
+    const badge_bg_colors = { 
+      "Fundraiser": "hsl(204, 100%, 94%)", 
+      "Volunteer": "hsl(226, 100%, 94%)", 
+      "Outreach": "hsl(137, 100%, 93%)", 
+      "Other": "hsl(0, 0%, 93%)" 
+    };
+
+    // Text Colors (HSL)
+    const badge_text_colors = { 
+      "Fundraiser": "hsl(216, 76%, 27%)", 
+      "Volunteer": "hsl(245, 58%, 51%)", 
+      "Outreach": "hsl(162, 83%, 18%)", 
+      "Other": "hsl(214, 33%, 18%)" 
+    };
+
+    const cal_colors = {
+      "Fundraiser": "hsl(204, 100%, 45%)",
+      "Volunteer": "hsl(226, 100%, 45%)",
+      "Outreach": "hsl(137, 100%, 45%)",
+      "Other": "hsl(0, 0%, 45%)"
+    };
+
     var calendarEl = document.getElementById('calendar');
+    const isAdminCalendar = "#{@admin}" == "true";
+    if (isAdminCalendar) {
+      let orgIds = document.getElementById('org_ids').value.split(' ');
+      var events = [];
+      for (let orgId of orgIds) {
+        const response = await fetch("/events?org_id=" + orgId, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          }
+        });
+        if (!response.ok) {
+          console.error('Error fetching events:', response.statusText);
+          return;
+        }
+        const data = await response.json();
+        data.events.forEach(event => {
+          events.push({
+            id: event.id,
+            title: event.title,
+            start: event.start_time,
+            end: event.end_time,
+            description: event.description,
+            location: event.location,
+            url: `/events/${event.id}`,
+            eventType: event.type_of_event,
+            orgName: data.organization.name,
+            color: event.published ? 'blue' : 'grey',
+            editable: false,
+          });
+        });
+      }
+    } else {
+      document.getElementById('legend_other').style.backgroundColor = cal_colors["Other"];
+      document.getElementById('legend_volunteer').style.backgroundColor = cal_colors["Volunteer"];
+      document.getElementById('legend_fundraiser').style.backgroundColor = cal_colors["Fundraiser"];
+      document.getElementById('legend_outreach').style.backgroundColor = cal_colors["Outreach"];
+      var events = [];
+      const response = await fetch("/events", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+      });
+      if (!response.ok) {
+        console.error('Error fetching events:', response.statusText);
+        return;
+      }
+      const data = await response.json();
+      data.events.forEach(event => {
+        events.push({
+          id: event.id,
+          title: event.title,
+          start: event.start_time,
+          end: event.end_time,
+          description: event.description,
+          location: event.location,
+          url: `/events/discover/${event.id}`,
+          eventType: event.type_of_event,
+          orgName: data.organizations.find(org => org.id == event.organization_id).name,
+          color: cal_colors[event.type_of_event[0]] || 'grey',
+          editable: false,
+        });
+      });
+    }
+
     window.calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
-      events: [],
-      eventClick: function(info) {
-        info.jsEvent.preventDefault();
-        window.location = info.event.url;
-      },
+      events,
       eventDidMount: function(info) {
         // Set href of the event element to the event URL
         info.el.setAttribute('href', info.event.url);
@@ -32,9 +140,6 @@ javascript:
         const description = info.event.extendedProps.description || '';
         const orgName = info.event.extendedProps.orgName || '?';
         const eventTypes = info.event.extendedProps.eventType || [];
-
-        const badge_bg_colors = { "Fundraiser": "#E1F3FF", "Volunteer": "#E0E7FF", "Outreach": "#DBFFE5", "Other": "#EDEDED" };
-        const badge_text_colors = { "Fundraiser": "#113C7B", "Volunteer": "#4338CA", "Outreach": "#08543D", "Other": "#1F2C3D" };
 
         const singleDay = eventStart.getDate() === eventEnd.getDate();
         const truncateLength = 250;
@@ -89,5 +194,5 @@ javascript:
       },
     });
     window.calendar.render();
-  });
-
+    window.calendar.updateSize();
+  }

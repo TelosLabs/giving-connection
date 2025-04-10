@@ -273,7 +273,12 @@ javascript defer:
             formData.set("event[end_time]", endTime);
         }
         
-        console.log("Submitting form with data:", Object.fromEntries(formData.entries()));  
+        if (!isDraft) {
+            const confirmation = confirm(`Are you sure you want to create and publish this event? This cannot be undone.`);
+            if (!confirmation) {
+                return;
+            }
+        }
 
         fetch(form.action, {
             method: form.method,

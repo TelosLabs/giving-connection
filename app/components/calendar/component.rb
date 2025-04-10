@@ -1,5 +1,5 @@
 class Calendar::Component < ApplicationViewComponent
-  def initialize()
-    
+  def initialize(admin:)
+    @admin = admin
   end
 end

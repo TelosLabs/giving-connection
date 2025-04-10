@@ -1,4 +1,4 @@
-<div class="flex flex-col align-items-start gap-3 self-stretch py-5 px-3 border-b-2 border-[#E6E6E6] rounded-md">
+<div class="flex flex-col align-items-start gap-3 self-stretch py-5 px-3 border-b-2 border-[#E6E6E6]">
   <div class="flex justify-between items-center gap-10 self-stretch">
     <div class="flex-none">
       <% day_of_week = event.start_time.strftime("%a").upcase %>
@@ -14,12 +14,19 @@
     </div>
     
     <div class="flex flex-col items-start gap-4 grow">
-      <div class="text-xs font-['Inter'] font-semibold leading-none"><%= "#{day_of_week}, #{month} #{day}, #{year} at #{time}" %></div>
+      <% if !@small %>
+        <div class="text-xs font-['Inter'] font-semibold leading-none"><%= "#{day_of_week}, #{month} #{day}, #{year} at #{time}" %></div>
+      <% end %>
       
       <div class="flex flex-col gap-0">
-        <h2 class="text-black text-base font-bold leading-normal font-['Inter']"><%= event.title %></h2>
+        <% if @admin %>
+            <h2 class="text-black text-base font-bold leading-normal font-['Inter']"><%= event.title %></h2>
+        <% else %>  
+            <h2 class="text-black text-base font-bold leading-normal font-['Inter'] hover:underline"><a href="/events/discover/<%= event.id %>"><%= event.title %></a></h2>
+        <% end %>
         
-        <% if event.organization %>
+        
+        <% if event.organization && !@small %>
             <div class="text-xs font-medium leading-tight font-['Inter']"><%= event.organization.name %></div>
         <% end %>
         
@@ -34,6 +41,10 @@
                 <i class="location-icon"></i>
                 <p class="text-[#6B7280] text-xs font-medium leading-none font-['Inter']">Virtual Event</p>
             </div>
+        <% end %>
+
+        <% if @small %>
+            <div class="text-xs font-['Inter'] text-[#6B7280] font-semibold leading-none"><%= "#{day_of_week}, #{month} #{day}, #{year} at #{time}" %></div>
         <% end %>
       </div>
       
@@ -51,48 +62,53 @@
         </div>
     <% end %>
     </div>
-    <div class="flex-none">
-        <% if event.image_link.present? %>
-        <img src="<%= event.image_link %>" alt="<%= event.title %>" />
-        <% else %>
-        <img class="outline outline-1 outline-gray-700" style="background: #E6E6E6; height: 150px; width: 150px; min-width: 150px;" id="uploaded-img">
-        <% end %>
-    </div>
-  
-    <div class="flex-none w-12 text-center">
-        <p class="text-[#6B7280] text-xs font-medium leading-tight font-['Inter']">
-            <% if event.published %>
-                <strong>Published</strong>
-            <% else %>
-                <span>Draft</span>
-            <% end %>
-        </p>
-    </div>
 
-    <div class="cursor-pointer relative group">
-        <div onclick="showEllipseOptions(this);">
-            <%= inline_svg_tag "ellipses.svg", size:"3*3", class:"h-7 mr-2 fill-current text-gray-3" %>
+    <% if !@small %>
+        <div class="flex-none">
+            <% if event.image_link.present? %>
+            <img src="<%= event.image_link %>" alt="<%= event.title %>" />
+            <% else %>
+            <img class="outline outline-1 outline-gray-700" style="background: #E6E6E6; height: 150px; width: 150px; min-width: 150px;" id="uploaded-img">
+            <% end %>
         </div>
-        <div class="absolute hidden bg-white border border-gray-300 rounded-md shadow-lg z-10" id="ellipse-options">
-            <input type="hidden" id="event_id" name="event_id" value="<%= event.id %>" />
-            <ul class="py-2">
-                <% if !event.published %>
-                    <li>
-                        <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="onPublishEvent('<%= event.id %>', '<%= event.title %>')">Publish</a>
-                    </li>
+    <% end %>
+  
+    
+    <% if @admin %>
+        <div class="flex-none w-12 text-center">
+            <p class="text-[#6B7280] text-xs font-medium leading-tight font-['Inter']">
+                <% if event.published %>
+                    <strong>Published</strong>
+                <% else %>
+                    <span>Draft</span>
                 <% end %>
-                <li>
-                    <a href="<%= @edit_url %>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
-                </li>
-                <li>
-                    <a href="<%= @view_url %>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View</a>
-                </li>
-                <li>
-                    <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-red-400" onclick="onDeleteEvent('<%= event.id %>', '<%= event.title %>')">Delete</a>
-                </li>
-            </ul>
+            </p>
         </div>
-    </div>  
+        <div class="cursor-pointer relative group">
+            <div onclick="showEllipseOptions(this);">
+                <%= inline_svg_tag "ellipses.svg", size:"3*3", class:"h-7 mr-2 fill-current text-gray-3" %>
+            </div>
+            <div class="absolute hidden bg-white border border-gray-300 rounded-md shadow-lg z-10" id="ellipse-options">
+                <input type="hidden" id="event_id" name="event_id" value="<%= event.id %>" />
+                <ul class="py-2">
+                    <% if !event.published %>
+                        <li>
+                            <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="onPublishEvent('<%= event.id %>', '<%= event.title %>')">Publish</a>
+                        </li>
+                    <% end %>
+                    <li>
+                        <a href="<%= @edit_url %>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
+                    </li>
+                    <li>
+                        <a href="<%= @view_url %>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View</a>
+                    </li>
+                    <li>
+                        <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-red-400" onclick="onDeleteEvent('<%= event.id %>', '<%= event.title %>')">Delete</a>
+                    </li>
+                </ul>
+            </div>
+        </div>  
+    <% end %>
   </div>
 </div>
 
