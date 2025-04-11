@@ -17,8 +17,11 @@ div class="w-[75vw] mx-auto mt-6 p-3 flex justify-between gap-4 mb-24"
         h2 class="self-stretch h-7 text-center justify-center text-slate-800 text-lg font-bold font-['Inter'] leading-7"
             = @event.title + " by " + @event.organization.name
         div class="flex mx-auto justify-center"
-            button class="w-2/3 h-12 px-32 py-3 bg-indigo-100 text-color-blue-51 rounded-md inline-flex justify-center items-center gap-2 whitespace-nowrap"
-                | Add to Calendar
+            button class="h-12 px-32 py-3 bg-indigo-100 text-[#4338CA] rounded-md flex justify-center items-center gap-2 whitespace-nowrap"
+                svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    path d="M11.4922 16H13.4922V7H16.4922L12.4922 2L8.49219 7H11.4922V16Z" fill="#4338CA"
+                    path d="M5.49219 22H19.4922C20.5952 22 21.4922 21.103 21.4922 20V11C21.4922 9.897 20.5952 9 19.4922 9H15.4922V11H19.4922V20H5.49219V11H9.49219V9H5.49219C4.38919 9 3.49219 9.897 3.49219 11V20C3.49219 21.103 4.38919 22 5.49219 22Z" fill="#4338CA"
+                p Add to Calendar
         - if @event.link.present?
             div class="self-stretch h-5 text-center justify-center"
                 span class="text-gray-700 text-base font-bold font-['Inter'] leading-normal"
@@ -63,7 +66,8 @@ div class="w-[75vw] mx-auto mt-6 p-3 flex justify-between gap-4 mb-24"
 
         
         / TODO: Replace with event image if available
-        = image_tag url_for(@event.image_link), class: "w-full h-24 object-cover rounded-b-md", data: { target: "logo.output" }
+        - if @event.image.present?
+            = image_tag url_for(@event.image), class: "w-full object-cover rounded-b-md", data: { target: "logo.output" }
 
 
     div class="w-1/3 flex flex-col gap-4"
@@ -92,12 +96,15 @@ div class="w-[75vw] mx-auto mt-6 p-3 flex justify-between gap-4 mb-24"
                 button class="flex gap-2 justify-center font-['Inter'] font-normal text-base" 
                     | View All Events
 
-                button type="button" class="flex self-stretch px-28 py-3 bg-rose-400 rounded-md justify-center items-center gap-2 text-white"
-                    / = inline_svg_tag "mingcute_notification-line.svg", size:"16*16", class:"h-7 w-7 fill-current text-white"
+                button type="button" class="flex self-stretch py-3 bg-rose-400 rounded-md justify-center items-center gap-2 text-white"
+                    svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        path fill-rule="evenodd" clip-rule="evenodd" d="M5.50848 9C5.50848 7.14348 6.24597 5.36301 7.55873 4.05025C8.87148 2.7375 10.652 2 12.5085 2C14.365 2 16.1455 2.7375 17.4582 4.05025C18.771 5.36301 19.5085 7.14348 19.5085 9V12.764L21.3305 16.408C21.4144 16.5757 21.454 16.7621 21.4455 16.9494C21.4371 17.1368 21.3809 17.3188 21.2823 17.4783C21.1837 17.6379 21.046 17.7695 20.8822 17.8608C20.7184 17.9521 20.534 18 20.3465 18H16.3825C16.16 18.8582 15.6589 19.6183 14.9577 20.1609C14.2566 20.7035 13.3951 20.9979 12.5085 20.9979C11.6219 20.9979 10.7604 20.7035 10.0592 20.1609C9.35805 19.6183 8.85691 18.8582 8.63448 18H4.67048C4.48295 18 4.29854 17.9521 4.13474 17.8608C3.97095 17.7695 3.83321 17.6379 3.73462 17.4783C3.63603 17.3188 3.57985 17.1368 3.57142 16.9494C3.563 16.7621 3.6026 16.5757 3.68648 16.408L5.50848 12.764V9ZM10.7765 18C10.952 18.304 11.2045 18.5565 11.5085 18.732C11.8125 18.9075 12.1574 18.9999 12.5085 18.9999C12.8595 18.9999 13.2044 18.9075 13.5084 18.732C13.8125 18.5565 14.0649 18.304 14.2405 18H10.7765ZM12.5085 4C11.1824 4 9.91062 4.52678 8.97294 5.46447C8.03526 6.40215 7.50848 7.67392 7.50848 9V12.764C7.50845 13.0743 7.43622 13.3804 7.29748 13.658L6.12748 16H18.8905L17.7205 13.658C17.5814 13.3805 17.5088 13.0744 17.5085 12.764V9C17.5085 7.67392 16.9817 6.40215 16.044 5.46447C15.1063 4.52678 13.8346 4 12.5085 4Z" fill="white"
                     p class="text-base text-white text-bold font-['Inter'] leading-normal text-nowrap" Subcribe to Calendar
 
-                button type="button" class="flex self-stretch px-28 py-3 bg-indigo-100 rounded-md justify-center items-center gap-2 text-[#4338CA] text-no-wrap"
-                    / = inline_svg_tag "bx_export.svg", size:"4*4", class:""
+                button type="button" class="flex py-3 bg-indigo-100 rounded-md justify-center items-center gap-2 text-[#4338CA] text-no-wrap"
+                    svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        path d="M11.4922 16H13.4922V7H16.4922L12.4922 2L8.49219 7H11.4922V16Z" fill="#4338CA"
+                        path d="M5.49219 22H19.4922C20.5952 22 21.4922 21.103 21.4922 20V11C21.4922 9.897 20.5952 9 19.4922 9H15.4922V11H19.4922V20H5.49219V11H9.49219V9H5.49219C4.38919 9 3.49219 9.897 3.49219 11V20C3.49219 21.103 4.38919 22 5.49219 22Z" fill="#4338CA"
                     p class="text-base text-bold font-['Inter'] leading-normal text-nowrap" Export Calendar
         
 

@@ -154,12 +154,17 @@ javascript:
         });
       }
     } else {
+      // Discover events calendar data
       document.getElementById('legend_other').style.backgroundColor = cal_colors["Other"];
       document.getElementById('legend_volunteer').style.backgroundColor = cal_colors["Volunteer"];
       document.getElementById('legend_fundraiser').style.backgroundColor = cal_colors["Fundraiser"];
       document.getElementById('legend_outreach').style.backgroundColor = cal_colors["Outreach"];
+
+      // Parse url parameters for filters if they exist
+      const urlParams = new URLSearchParams(window.location.search);
+
       var events = [];
-      const response = await fetch("/events", {
+      const response = await fetch(urlParams.size > 0 ? `/events?${urlParams.toString()}` : "/events", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

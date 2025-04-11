@@ -102,7 +102,7 @@ div.flex.justify-center.mt-16.h-full style="background-color: #F9FAFC"
           div.flex.flex-col.items-start style="margin-left:27px; margin-top:50px;"    
               label.bg-white.hover:bg-gray-100.text-gray-700.py-2.px-4.border.border-gray-400.rounded-md.cursor-pointer for="event_image"
                   b Upload
-              = f.file_field :image, accept: "image/*", class:  @readonly ? "hidden cursor-not-allowed" : "hidden", id: "event_image", disabled: @readonly
+              = f.file_field :image, accept: "image/png, image/jpeg", class:  @readonly ? "hidden cursor-not-allowed" : "hidden", id: "event_image", disabled: @readonly
               p.text-s.mt-1
                   | Maximum size of 5MB
 

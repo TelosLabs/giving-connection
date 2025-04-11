@@ -1,3 +1,8 @@
+script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"
+script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
+script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
+link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
+
 div class="w-full h-64 relative bg-gradient-to-r from-teal-200 via-teal-300/75 to-teal-200 overflow-hidden"
     div class="w-96 h-20 left-[505px] top-[91px] absolute text-center justify-start text-blue-900 text-3xl font-extrabold font-['Poppins'] leading-10"
         | Explore nonprofit events in your community
@@ -6,21 +11,80 @@ div class="w-full h-64 relative bg-gradient-to-r from-teal-200 via-teal-300/75 t
     img class="w-8 h-8 left-[257px] top-[77px] absolute" src="/assets/gc-star.png" width="32" height="32"
 
 div class="y-12 mx-auto max-w-6xl md:px-28 md:py-20 mt-6"
-    div.flex.justify-between.items-center.items-stretch
+    = form_with url: "/events/discover", method: :get, local: true, class: "flex justify-between items-center items-stretch" do |f|
         div.flex.justify-start.items-center.items-stretch.w-3/4
-            input class="text-gray-500 text-sm font-medium font-['Inter'] leading-10 tracking-tight rounded-l-lg flex-grow" type="text" placeholder="Try 'Mental Health Events'"
-            button class="text-sky-900 bg-[#9AE2E0] text-base font-semibold font-['Inter'] leading-10 rounded-r-lg px-4 py-auto" type="submit"
-                | SEARCH
-        button class="text-center justify-center text-sky-900 text-base font-semibold font-['Inter'] leading-10 bg-slate-300 rounded-md px-4"
-            | FILTER
+            = f.text_field :query, value: params[:query], class: "text-gray-500 text-sm font-medium font-['Inter'] leading-10 tracking-tight rounded-l-lg flex-grow", placeholder: "Try \"Mental Health Events\""
+            button class="text-sky-900 bg-[#9AE2E0] text-base font-semibold font-['Inter'] leading-10 rounded-r-lg px-4 py-auto flex justify-center items-center gap-2" type="submit"
+                svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none"
+                    path d="M14.875 14.875L10.625 10.625M12.0417 7.08333C12.0417 9.82175 9.82175 12.0417 7.08333 12.0417C4.34492 12.0417 2.125 9.82175 2.125 7.08333C2.125 4.34492 4.34492 2.125 7.08333 2.125C9.82175 2.125 12.0417 4.34492 12.0417 7.08333Z" stroke="#113C7B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                p SEARCH
+        button class="text-center text-sky-900 text-base font-semibold font-['Inter'] leading-10 bg-slate-300 rounded-md px-4 flex justify-center items-center gap-2" onclick="showFilters(true)" type="button"
+            svg xmlns="http://www.w3.org/2000/svg" width="13" height="14" viewBox="0 0 13 14" fill="none"
+                path fill-rule="evenodd" clip-rule="evenodd" d="M4.25 0.875V4.375C4.25 4.9 3.9 5.25 3.375 5.25C2.85 5.25 2.5 4.9 2.5 4.375V0.875C2.5 0.35 2.85 0 3.375 0C3.9 0 4.25 0.35 4.25 0.875ZM2.5 12.075C1.5375 11.725 0.75 10.7625 0.75 9.625C0.75 8.1375 1.8875 7 3.375 7C4.8625 7 6 8.1375 6 9.625C6 10.7625 5.3 11.725 4.25 12.075V12.25V13.125C4.25 13.65 3.9 14 3.375 14C2.85 14 2.5 13.65 2.5 13.125V12.25V12.075ZM9.5 9.625V13.125C9.5 13.65 9.85 14 10.375 14C10.9 14 11.25 13.65 11.25 13.125V9.625C11.25 9.1 10.9 8.75 10.375 8.75C9.85 8.75 9.5 9.1 9.5 9.625ZM10.375 7C8.8875 7 7.75 5.8625 7.75 4.375C7.75 3.2375 8.5375 2.275 9.5 1.925V1.75V0.875C9.5 0.35 9.85 0 10.375 0C10.9 0 11.25 0.35 11.25 0.875V1.75V1.925C12.2125 2.275 13 3.2375 13 4.375C13 5.8625 11.8625 7 10.375 7Z" fill="#113C7B"
+            p FILTER
+
+        div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 p-6 bg-white rounded-lg z-10 shadow-lg right-0 hidden" id="filters"
+            div class="flex justify-between items-center mb-4"
+                h2 class="text-xl font-semibold font-['Inter'] text-gray-900"
+                    | Filters
+                button type="button" class="text-gray-500 hover:text-gray-800" onclick="showFilters(false)"
+                    | ✕
+            
+            div class="flex flex-col gap-6"
+                div
+                    h3 class="text-gray-900 text-base font-semibold font-['Inter'] mb-2"
+                        | Event Type
+                    div class="flex flex-col gap-2"
+                        div class="flex items-center gap-2"
+                            = f.check_box :type_of_event, { multiple: true, checked: params[:type_of_event].present? && params[:type_of_event].include?("Fundraiser") }, "Fundraiser", nil
+                            label class="text-gray-900 text-sm font-normal font-['Inter']"
+                                | Fundraiser
+                        div class="flex items-center gap-2"
+                            = f.check_box :type_of_event, { multiple: true, checked: params[:type_of_event].present? && params[:type_of_event].include?("Volunteer") }, "Volunteer", nil
+                            label class="text-gray-900 text-sm font-normal font-['Inter']"
+                                | Volunteer
+                        div class="flex items-center gap-2"
+                            = f.check_box :type_of_event, { multiple: true, checked: params[:type_of_event].present? && params[:type_of_event].include?("Outreach") }, "Outreach", nil
+                            label class="text-gray-900 text-sm font-normal font-['Inter']"
+                                | Outreach
+                        div class="flex items-center gap-2"
+                            = f.check_box :type_of_event, { multiple: true, checked: params[:type_of_event].present? && params[:type_of_event].include?("Other") }, "Other", nil
+                            label class="text-gray-900 text-sm font-normal font-['Inter']"
+                                | Other
+                
+                div
+                    h3 class="text-gray-900 text-base font-semibold font-['Inter'] mb-2"
+                        | Location
+                    div class="flex flex-col gap-2"
+                        div class="flex items-center gap-2"
+                            = f.check_box :location, { multiple: true, checked: params[:location].present? && params[:location] != "Remote" }, "In-Person", nil
+                            label class="text-gray-900 text-sm font-normal font-['Inter']"
+                                | In-Person
+                        div class="flex items-center gap-2"
+                            = f.check_box :location, { multiple: true, checked: params[:location].present? && params[:location] == "Remote" }, "Virtual", nil
+                            label class="text-gray-900 text-sm font-normal font-['Inter']"
+                                | Virtual
+                
+                div
+                    h3 class="text-gray-900 text-base font-semibold font-['Inter'] mb-2"
+                        | Date Range
+                    = f.text_field :daterange, value: params[:daterange], class: "w-full rounded-md text-center", placeholder: "Select date range"
+                
+                div class="mt-6 flex justify-end"
+                    button type="submit" class="px-4 py-2 bg-[#9AE2E0] text-sky-900 font-semibold rounded-md"
+                        | Apply Filters
 
     div class="flex gap-4 mt-6 justify-between"
         h2 class="text-center justify-center text-black text-2xl font-normal font-['Inter'] leading-9"
             | Upcoming Events
         div.inline-flex.rounded-md.shadow-xs role="group"
-            button.px-4.py-2.text-sm.font-medium.text-gray-700.bg-gray-200.border.border-gray-300.rounded-l-md onclick="toggleList(true);" id="events_list_button"
+            button.px-4.py-2.text-sm.font-medium.text-gray-700.bg-gray-200.border.border-gray-300.rounded-l-md.flex.justify-center.items-center.gap-2 onclick="toggleList(true);" id="events_list_button"
+                svg xmlns="http://www.w3.org/2000/svg" width="15" height="11" viewBox="0 0 15 11" fill="none"
+                    path d="M1 0.75H13.6667M1 5.5H13.6667M1 10.25H13.6667" stroke="black" stroke-linecap="round" stroke-linejoin="round"
                 p List 
-            button.px-4.py-2.text-sm.font-medium.text-gray-700.bg-gray-100.border.border-gray-300.rounded-r-md onclick="toggleList(false);" id="events_calendar_button"
+            button.px-4.py-2.text-sm.font-medium.text-gray-700.bg-gray-100.border.border-gray-300.rounded-r-md.flex.justify-center.items-center.gap-2 onclick="toggleList(false);" id="events_calendar_button"
+                svg xmlns="http://www.w3.org/2000/svg" width="18" height="17" viewBox="0 0 18 17" fill="none"
+                    path d="M5.44444 4.05556V0.5M12.5556 4.05556V0.5M4.55556 7.61111H13.4444M2.77778 16.5H15.2222C16.2041 16.5 17 15.7041 17 14.7222V4.05556C17 3.07372 16.2041 2.27778 15.2222 2.27778H2.77778C1.79594 2.27778 1 3.07372 1 4.05556V14.7222C1 15.7041 1.79594 16.5 2.77778 16.5Z" stroke="black" stroke-width="0.75" stroke-linecap="round" stroke-linejoin="round"
                 p Calendar
 
     div id="events_list" class="h-full bg-white mt-3 rounded-md"
@@ -70,5 +134,80 @@ javascript:
       window.calendar.render();
     }
   }
+
+  // Add the showFilters function to toggle filter visibility
+  function showFilters(show) {
+    const filtersEl = document.getElementById('filters');
+    if (show) {
+      filtersEl.classList.remove('hidden');
+    } else {
+      filtersEl.classList.add('hidden');
+    }
+  }
+
+  function parseDateRange(dateRangeStr) {
+    if (!dateRangeStr) return { start: null, end: null };
+    
+    // Decode URL-encoded characters
+    const decodedStr = decodeURIComponent(dateRangeStr);
+    
+    // Split by the hyphen to get start and end parts
+    const parts = decodedStr.split(' - ');
+    if (parts.length !== 2) return { start: null, end: null };
+    
+    const startStr = parts[0];
+    const endStr = parts[1];
+    
+    // Parse dates directly with moment
+    const startDate = moment(startStr, 'M/D hh:mm A');
+    const endDate = moment(endStr, 'M/D hh:mm A');
+    
+    return {
+      start: startDate.isValid() ? startDate : null,
+      end: endDate.isValid() ? endDate : null
+    };
+  }
+
+  $(function() {
+    // Get the daterange parameter from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const dateRangeParam = urlParams.get('daterange');
+    
+    // Initialize daterangepicker with appropriate options
+    const daterangepickerOptions = {
+      timePicker: true,
+      autoUpdateInput: false, // Don't update input until user selects a date range
+      locale: {
+        format: 'M/D h:mm A',
+        cancelLabel: 'Clear',
+        applyLabel: 'Apply'
+      },
+      drops: 'up',
+      opens: 'center'
+    };
+    
+    // Only set startDate and endDate if there's a valid daterange parameter
+    if (dateRangeParam) {
+      const parsedDates = parseDateRange(dateRangeParam);
+      if (parsedDates.start && parsedDates.end) {
+        daterangepickerOptions.startDate = parsedDates.start;
+        daterangepickerOptions.endDate = parsedDates.end;
+        daterangepickerOptions.autoUpdateInput = true; // Update input with the existing date range
+      }
+    }
+    
+    // Initialize daterangepicker
+    const dateRangePicker = $('input[name="daterange"]').daterangepicker(daterangepickerOptions);
+    
+    // Add event listeners to update the input value when user selects a date range
+    dateRangePicker.on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('M/D h:mm A') + ' - ' + picker.endDate.format('M/D h:mm A'));
+    });
+    
+    // Clear the input when user cancels
+    dateRangePicker.on('cancel.daterangepicker', function(ev, picker) {
+      $(this).val('');
+    });
+  });
 
 
