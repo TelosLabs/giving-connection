@@ -48,6 +48,34 @@ export default class extends Controller {
         this.setTitleListeners(cardTitles);
       }).observe(pagyFrame, { subtree: true, childList: true });
     }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const city = urlParams.get('city');
+
+    const CITIES = {
+      "Nashville" : { latitude: 36.16404968727089, longitude: -86.78125827725053 },
+      "Atlantic City" : { latitude: 39.3625, longitude: -74.425 },
+      "Search all": { latitude: 37.0902, longitude: -95.7129 },
+      "Los Angeles": { latitude: 34.0522, longitude: -118.2437 },
+    }
+
+    if (city && CITIES[city]) {
+      const { latitude, longitude } = CITIES[city];
+      
+      const alreadyReloaded = urlParams.get('reloaded');
+      if (!alreadyReloaded) {
+        urlParams.set('reloaded', 'true');
+        window.location.search = urlParams.toString();
+      }
+
+      this.setCookie("latitude", latitude);
+      this.setCookie("longitude", longitude);
+      this.setCookie("city", city);
+
+      this.map.setCenter({ lat: latitude, lng: longitude });
+      this.map.setZoom(12);
+    }
+
   }
 
   displayBrowserNotSupportedMessage() {
