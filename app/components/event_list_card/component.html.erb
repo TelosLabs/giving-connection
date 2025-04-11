@@ -64,14 +64,16 @@
     </div>
 
     <% if !@small %>
-        <div class="flex-none">
-            <% if event.image_link.present? %>
-            <img src="<%= event.image_link %>" alt="<%= event.title %>" />
-            <% else %>
-            <img class="outline outline-1 outline-gray-700" style="background: #E6E6E6; height: 150px; width: 150px; min-width: 150px;" id="uploaded-img">
-            <% end %>
-        </div>
+  <div class="flex justify-center mx-0 -mt-14 w-full h-75">
+    <% if @event.image.attached? %>
+                
+      <%= image_tag url_for(@event.image), alt: @event.title, class: 'shadow rounded logo-size bg-white' %>
+    <% else %>
+      <img class="outline outline-1 outline-gray-700" style="background: #E6E6E6; height: 150px; width: 150px; min-width: 150px;" id="uploaded-img">
     <% end %>
+  </div>
+<% end %>
+
   
     
     <% if @admin %>

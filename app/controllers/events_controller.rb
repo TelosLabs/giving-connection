@@ -252,7 +252,7 @@ class EventsController < ApplicationController
 
   def event_params
     params.require(:event).permit(
-      :title, :description, :link, :image_link, :location,
+      :title, :description, :link, :image, :location,
       :published, :isRecurring, :start_time, :end_time,
       type_of_event: [], tags: [], categories: [], subcategories: []
       ).tap do |whitelisted|
