@@ -93,7 +93,7 @@ div class="w-[75vw] mx-auto mt-6 p-3 flex justify-between gap-4 mb-24"
                     - @upcoming_events.each do |ev|
                         = render EventListCard::Component.new(admin: false, small: true, event: ev, edit_url: edit_event_path(ev), view_url: event_path(ev))
                 
-                button class="flex gap-2 justify-center font-['Inter'] font-normal text-base" 
+                button class="flex gap-2 justify-center font-['Inter'] font-normal text-base" onclick="window.location.href = '/events/explore?ein=#{@event.organization.ein_number}'"
                     | View All Events
 
                 button type="button" class="flex self-stretch py-3 bg-rose-400 rounded-md justify-center items-center gap-2 text-white"

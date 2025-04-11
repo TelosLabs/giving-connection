@@ -8,26 +8,22 @@ div data-controller="calendar-component" data-calendar-component-target="calenda
         div id="calendar" class="w-full h-full mt-2"
 
 div class="flex stretch justify-center items-center gap-24 mt-4 bg-gray-100 p-4 rounded-lg"
+    div class="flex items-center gap-2"
+        div class="w-4 h-4 rounded-full bg-[blue]" id="legend_outreach"
+        span Outreach
+    div class="flex items-center gap-2"
+        div class="w-4 h-4 rounded-full bg-[blue]" id="legend_volunteer"
+        span Volunteer
+    div class="flex items-center gap-2"
+        div class="w-4 h-4 rounded-full bg-[blue]" id="legend_fundraiser"
+        span Fundraiser
+    div class="flex items-center gap-2" 
+        div class="w-4 h-4 rounded-full bg-[blue]" id="legend_other"
+        span Other
     - if @admin
       div class="flex items-center gap-2"
-          div class="w-4 h-4 rounded-full bg-[blue]"
-          span Published
-      div class="flex items-center gap-2"
-          div class="w-4 h-4 rounded-full bg-[grey]"
+          div class="w-4 h-4 rounded-full bg-[red]"
           span Draft
-    - else
-      div class="flex items-center gap-2"
-          div class="w-4 h-4 rounded-full bg-[blue]" id="legend_outreach"
-          span Outreach
-      div class="flex items-center gap-2"
-          div class="w-4 h-4 rounded-full bg-[blue]" id="legend_volunteer"
-          span Volunteer
-      div class="flex items-center gap-2"
-          div class="w-4 h-4 rounded-full bg-[blue]" id="legend_fundraiser"
-          span Fundraiser
-      div class="flex items-center gap-2" 
-          div class="w-4 h-4 rounded-full bg-[blue]" id="legend_other"
-          span Other
 
 style
   | /* Override FullCalendar styles */
@@ -45,7 +41,7 @@ style
   |   padding: 2px 4px !important;
   | }
   | .fc .fc-daygrid-day-events .fc-event {
-  |   background-color: rgba(0, 0, 0, 0.02) !important; /* Slightly darker but still subtle */
+  |   background-color: rgba(0, 0, 0, 0.02) !important; 
   |   
   | }
   | .fc-daygrid-day-number {
@@ -54,7 +50,6 @@ style
   | .fc-daygrid-day-top {
   |    flex-direction: row !important;  
   | }
-  | /* Change day of week header background color */
   | .fc .fc-col-header-cell {
   |   background-color: #E2ECF7 !important;
   |   padding-top: .75em !important;
@@ -74,7 +69,6 @@ style
   |   border-radius: 5px 5px 0 0 !important;
   | }
   | 
-  | /* Optional: If you want to change the text color to complement the background */
   | .fc .fc-col-header-cell-cushion {
   |   color: #707070 !important;
   |   font-size: 16px;
@@ -88,8 +82,6 @@ style
   |   border: none !important;
   |   color: #1F2D3D !important;
   | }
-
-
 
 
 javascript:
@@ -119,11 +111,18 @@ javascript:
       "Other": "hsl(0, 0%, 45%)"
     };
 
+    // Update legend colors
+    document.getElementById('legend_other').style.backgroundColor = cal_colors["Other"];
+    document.getElementById('legend_volunteer').style.backgroundColor = cal_colors["Volunteer"];
+    document.getElementById('legend_fundraiser').style.backgroundColor = cal_colors["Fundraiser"];
+    document.getElementById('legend_outreach').style.backgroundColor = cal_colors["Outreach"];
+
     var calendarEl = document.getElementById('calendar');
     const isAdminCalendar = "#{@admin}" == "true";
+    var events = [];
+    
     if (isAdminCalendar) {
       let orgIds = document.getElementById('org_ids').value.split(' ');
-      var events = [];
       for (let orgId of orgIds) {
         const response = await fetch("/events?org_id=" + orgId, {
           method: "GET",
@@ -145,25 +144,17 @@ javascript:
             end: event.end_time,
             description: event.description,
             location: event.location,
-            url: `/events/${event.id}`,
+            url: `/events/explore/${event.id}`,
             eventType: event.type_of_event,
             orgName: data.organization.name,
-            color: event.published ? 'blue' : 'grey',
+            color: event.published ? cal_colors[event.type_of_event[0]] || 'grey' : 'red',
             editable: false,
           });
         });
       }
     } else {
-      // Discover events calendar data
-      document.getElementById('legend_other').style.backgroundColor = cal_colors["Other"];
-      document.getElementById('legend_volunteer').style.backgroundColor = cal_colors["Volunteer"];
-      document.getElementById('legend_fundraiser').style.backgroundColor = cal_colors["Fundraiser"];
-      document.getElementById('legend_outreach').style.backgroundColor = cal_colors["Outreach"];
-
       // Parse url parameters for filters if they exist
       const urlParams = new URLSearchParams(window.location.search);
-
-      var events = [];
       const response = await fetch(urlParams.size > 0 ? `/events?${urlParams.toString()}` : "/events", {
         method: "GET",
         headers: {
@@ -184,7 +175,7 @@ javascript:
           end: event.end_time,
           description: event.description,
           location: event.location,
-          url: `/events/discover/${event.id}`,
+          url: `/events/explore/${event.id}`,
           eventType: event.type_of_event,
           orgName: data.organizations.find(org => org.id == event.organization_id).name,
           color: cal_colors[event.type_of_event[0]] || 'grey',
@@ -195,6 +186,11 @@ javascript:
 
     window.calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
       events,
       eventDidMount: function(info) {
         // Set href of the event element to the event URL

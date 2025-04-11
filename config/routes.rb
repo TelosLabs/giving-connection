@@ -72,7 +72,9 @@ Rails.application.routes.draw do
   resource :privacy_policy, only: %i[show]
   resource :infowindow, only: :new
   resources :autocomplete, only: %i[index]
-  get 'events/discover(/:id)', to: 'events#discover', as: :discover_events
+
+  
+  get 'events/explore(/:id)', to: 'events#discover', as: :discover_events
 
   resources :events, only: [:index, :new, :create, :destroy, :edit, :update, :show], 
             constraints: { id: /\d+/ } do

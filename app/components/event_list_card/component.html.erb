@@ -19,13 +19,8 @@
       <% end %>
       
       <div class="flex flex-col gap-0">
-        <% if @admin %>
-            <h2 class="text-black text-base font-bold leading-normal font-['Inter']"><%= event.title %></h2>
-        <% else %>  
-            <h2 class="text-black text-base font-bold leading-normal font-['Inter'] hover:underline"><a href="/events/discover/<%= event.id %>"><%= event.title %></a></h2>
-        <% end %>
-        
-        
+        <h2 class="text-black text-base font-bold leading-normal font-['Inter'] hover:underline"><a href="/events/explore/<%= event.id %>"><%= event.title %></a></h2>
+
         <% if event.organization && !@small %>
             <div class="text-xs font-medium leading-tight font-['Inter']"><%= event.organization.name %></div>
         <% end %>

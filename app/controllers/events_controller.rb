@@ -115,16 +115,23 @@ class EventsController < ApplicationController
       @event = Event.find(params[:id])
       @organization = @event.organization
       # Take next 3 upcoming events for this org
-      @upcoming_events = Event.where(organization_id: @organization.id, published: true).order(:start_time).limit(3)
+      @upcoming_events = Event.where(organization_id: @organization.id, published: true)
+              .where('start_time > ?', Time.now)
+              .order(:start_time)
+              .limit(3)
       render :event
     else
       # Logic for discover without specific event
       @events = Event.where(published: true).order(:start_time)
       @events = @events.select { |event| event.start_time > Time.now }
 
+      if params[:ein].present?
+        @organization = Organization.find_by(ein_number: params[:ein])
+      end
+
       # If search query is present, filter events based on the query
       filter_events()
-      render :discover
+      render :explore
     end
   end
 
@@ -321,7 +328,17 @@ class EventsController < ApplicationController
 
   # Used for discover events to filter events based on query params
   def filter_events
-    # If user uses search bar, filter events based on the query first
+    # If an organzation ein is provided, filter events by that organization first
+    if params[:ein].present?
+      organization = Organization.find_by(ein_number: params[:ein])
+      if organization
+        @events = @events.select { |event| event.organization_id == organization.id }
+      else
+        @events = []
+      end
+    end
+
+    # If user uses search bar, filter events based on the query second
     if params[:query].present?
       @events = @events.select do |event|
         event.title.downcase.include?(params[:query].downcase) ||
@@ -331,7 +348,7 @@ class EventsController < ApplicationController
       end
     end
     
-    # Filter by event type
+    # Then, use other filters
     if params[:type_of_event].present?
       types = params[:type_of_event].is_a?(Array) ? params[:type_of_event] : [params[:type_of_event]]
       @events = @events.select do |event|
