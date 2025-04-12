@@ -12,7 +12,7 @@ export default class extends Controller {
     this.observer = new IntersectionObserver(this.handleIntersect.bind(this), {
       root: null,
       threshold: 0,
-      rootMargin: "-30% 0px -70% 0px"
+      rootMargin: `-${181 + 20}px 0px -70% 0px`
     })
 
     this.sectionElements.forEach(section => {
@@ -49,7 +49,7 @@ export default class extends Controller {
     const section = document.getElementById(sectionId)
     if (!section) return
   
-    const offset = 190
+    const offset = 181
     const top = section.getBoundingClientRect().top + window.scrollY - offset
   
     window.scrollTo({ top, behavior: 'smooth' })
