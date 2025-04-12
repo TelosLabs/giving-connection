@@ -9,6 +9,8 @@ export default class extends Controller {
       return document.getElementById(id)
     })
 
+    this.addDynamicLocationLinks()
+
     this.observer = new IntersectionObserver(this.handleIntersect.bind(this), {
       root: null,
       threshold: 0,
@@ -59,4 +61,28 @@ export default class extends Controller {
     event.preventDefault()
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
+
+  addDynamicLocationLinks() {
+    const sidebarContainer = document.getElementById('sidebar-add-locations')
+    const dynamicLocations = document.querySelectorAll('[id^="add-location-"]')
+  
+    dynamicLocations.forEach(location => {
+      const label = location.dataset.label || "Unnamed Location"
+      const id = location.id
+  
+      const link = document.createElement('p')
+      link.setAttribute('role', 'button')
+      link.setAttribute('data-section-id', id)
+      link.setAttribute('data-scrollspy-target', 'link')
+      link.setAttribute('data-action', 'click->scrollspy#scrollToSection')
+      link.className = "flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100"
+  
+      link.innerHTML = `<svg class="w-4 h-4 mr-1"><use xlink:href="#location-dot"></use></svg> ${label}`
+  
+      sidebarContainer.appendChild(link)
+  
+      this.sectionElements.push(location)
+    })
+  }
+  
 }

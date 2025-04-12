@@ -39,6 +39,7 @@
         p class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-id="additional-locations" data-scrollspy-target="link" data-action="click->scrollspy#scrollToSection" role="button"
           = inline_svg_tag 'location-outline.svg', class: "w-4 h-4 mr-1"
           | Additional Locations
+          div class="" id="sidebar-add-locations"
         p class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-id="social-media" data-scrollspy-target="link" data-action="click->scrollspy#scrollToSection" role="button"
           = inline_svg_tag 'like.svg', class: "w-4 h-4 mr-1"
           | Social Media 
@@ -263,7 +264,8 @@
                           | Additional Locations
                         p class="text-sm leading-5 text-gray-4"
                           | These are the locations that will have their own individual page on the platform and will appear on search listings. Think of them as facilities.
-                    div class="col-span-12 lg:col-span-6 md:col-span-7" data-section-nav-target="location" data-label="#{location_form.object.name.presence || 'Unnamed Location'}" id="location-#{location_form.index}"
+                    - idLocation = location_form.index == 0 ? nil : "add-location-#{location_form.index}"
+                    div class="col-span-12 lg:col-span-6 md:col-span-7" data-section-nav-target="location" data-label="#{location_form.object.name.presence || 'Unnamed Location'}" id=idLocation
                       = location_form.label :name, "Location Name", class:"block text-sm text-gray-3 font-medium pt-4"
                       = location_form.text_field :name, class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium scroll-mt-25"
                       = location_form.label :address, "Address", class: "block text-sm text-gray-3 font-medium pt-4"
