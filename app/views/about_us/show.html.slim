@@ -20,7 +20,7 @@ div class="flex flex-col text-gray-2"
       = inline_svg_tag 'simple-star.svg', size: '22*22'
 
   /* Our Story */
-  div class="flex flex-col items-center justify-center w-full px-6 pt-20 text-left pb-14 bg-blue-gradient-3"
+  div class="flex flex-col items-center justify-center w-full px-6 py-20 text-left bg-blue-gradient-3"
     div class="justify-center w-full max-w-5xl gap-10 sm:flex lg:flex-row lg:justify-around"
       div class="flex justify-center w-full mb-8 sm:hidden"
           = inline_svg_tag "idea-image.svg"
@@ -242,40 +242,44 @@ div class="flex flex-col text-gray-2"
           | Our platform currently features thousands of nonprofits across the United States, 
           | with active hubs in:
       
-      div class="flex gap-10 sm:hidden"
-        div class="p-4 rounded-full bg-blue-gradient-3"
-            span class="w-full h-full" aria-hidden="true"
-              = inline_svg_tag 'location-heart.svg', size: '50*50', class: "text-blue-dark"
-        div 
-          h4 class="text-lg font-bold text-gray-2"
-              | Nashville, TN
-          h4 class="text-lg font-bold text-gray-2"
-              | Atlantic City, NJ
-          h4 class="text-lg font-bold text-gray-2"
-              | Los Angeles, CA
+      = link_to "/search", class:'block', target: "_blank" do
+        div class="flex gap-10 sm:hidden"
+          div class="p-4 rounded-full bg-blue-gradient-3"
+              span class="w-full h-full" aria-hidden="true"
+                = inline_svg_tag 'location-heart.svg', size: '50*50', class: "text-blue-dark"
+          div 
+            h4 class="text-lg font-bold text-gray-2"
+                | Nashville, TN
+            h4 class="text-lg font-bold text-gray-2"
+                | Atlantic City, NJ
+            h4 class="text-lg font-bold text-gray-2"
+                | Los Angeles, CA
 
       div class="justify-around hidden w-full max-w-4xl sm:flex"
-        div class="flex flex-col items-center gap-4 mb-4"
-          div class="p-4 rounded-full bg-blue-gradient-3"
-            span class="w-full h-full" aria-hidden="true"
-              = inline_svg_tag 'location-heart.svg', size: '50*50', class: "text-blue-dark"
-          div
-            h4 class="text-lg font-bold text-gray-2"
-              | Nashville, TN
-        div class="flex flex-col items-center gap-4 mb-4"
-          div class="p-4 rounded-full bg-blue-gradient-3"
-            span class="w-full h-full" aria-hidden="true"
-              = inline_svg_tag 'location-heart.svg', size: '50*50', class: "text-blue-dark"
-          div
-            h4 class="text-lg font-bold text-gray-2"
-              | Atlantic City, NJ
-        div class="flex flex-col items-center gap-4 mb-4"
-          div class="p-4 rounded-full bg-blue-gradient-3"
-            span class="w-full h-full" aria-hidden="true"
-              = inline_svg_tag 'location-heart.svg', size: '50*50', class: "text-blue-dark"
-          div
-            h4 class="text-lg font-bold text-gray-2"
-              | Los Angeles, CA
+        = link_to "/search?city=Nashville", class:'block', target: "_blank" do
+          div class="flex flex-col items-center gap-4 mb-4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span class="w-full h-full" aria-hidden="true"
+                = inline_svg_tag 'location-heart.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="text-lg font-bold text-gray-2"
+                | Nashville, TN
+        = link_to "/search?city=Atlantic%20City", class:'block', target: "_blank" do
+          div class="flex flex-col items-center gap-4 mb-4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span class="w-full h-full" aria-hidden="true"
+                = inline_svg_tag 'location-heart.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="text-lg font-bold text-gray-2"
+                | Atlantic City, NJ
+        = link_to "/search?city=Los%20Angeles", class:'block', target: "_blank" do
+          div class="flex flex-col items-center gap-4 mb-4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span class="w-full h-full" aria-hidden="true"
+                = inline_svg_tag 'location-heart.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="text-lg font-bold text-gray-2"
+                | Los Angeles, CA
 
   /* Meet the Trustees */
   div class="flex flex-col items-center justify-center w-full px-6 pt-20 bg-white"
@@ -672,7 +676,7 @@ div class="flex flex-col text-gray-2"
           | search experience that transforms the way people connect with nonprofits.
           | <br><br>
           | If you are interested in volunteering, interning, or joining our team, 
-          | please email <span class="font-bold">stephanie@givingconnection.org</span> for more information.
+          | please email <a class="font-bold" href="mailto:stephanie@givingconnection.org">stephanie@givingconnection.org</a> for more information.
           
       div class="flex justify-center w-full h-full px-10 sm:w-2/3"
         = inline_svg_tag "connect.svg", size:"full"
@@ -690,6 +694,6 @@ div class="flex flex-col text-gray-2"
       div
         = inline_svg_tag 'new-blur-right.svg', size:'1004*700'
     div class="absolute top-0 left-0 right-0 max-w-5xl px-10 mx-auto text-center"
-      h2 class="px-5 pt-20 text-xl font-bold text-center sm:text-2xl pb-11 sm:px-0 md:pt-28 text-blue-dark"
+      h2 class="px-5 py-10 text-xl font-bold text-center sm:text-2xl pb-11 sm:px-0 md:pt-28 text-blue-dark"
         | Looking to connect with like-minded changemakers and make a bigger impact in your community? Join Community Connectors today!
-      = link_to "LEARN MORE", search_path, class:'c-button inline-block my-1 text-white bg-blue-dark hover:bg-blue-medium transition'
+      = link_to "LEARN MORE", "https://network-17946832.mn.co/share/NCOJH27WAwaTSz4w?utm_source=manual", class:'c-button inline-block my-1 text-white bg-blue-dark hover:bg-blue-medium transition', target: "_blank"
