@@ -172,6 +172,8 @@ class Rack::Attack
 
   # Clean up expired keys periodically (runs async in Redis)
   if defined?(Rails.cache) && Rails.cache.respond_to?(:redis)
-    Rails.cache.redis.expire(CACHE_PREFIX, 24.hours.to_i)
+    Rails.cache.redis.with do |redis|
+      redis.expire(CACHE_PREFIX, 24.hours.to_i)
+    end
   end
 end
