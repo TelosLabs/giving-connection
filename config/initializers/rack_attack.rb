@@ -19,6 +19,12 @@ class Rack::Attack
       suspicious_domain: 5.minutes,    # Instead of 1 hour
       login: 20.seconds               # Keep as is for login
     }.freeze
+  elsif Rails.env.test?
+    {
+      registration_ip: 1.second,      # Effectively disable throttling
+      suspicious_domain: 1.second,    # Effectively disable throttling
+      login: 1.second                 # Effectively disable throttling
+    }.freeze
   else
     {
       registration_ip: 1.hour,

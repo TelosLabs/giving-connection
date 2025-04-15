@@ -87,7 +87,7 @@ group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "factory_bot_rails"
   gem "pry-rails"
-  gem "rspec-rails", "~> 5.0.0"
+  gem "rspec-rails", "~> 6.1.0"
   gem "spring-commands-rspec"
   gem "dotenv"
 end
