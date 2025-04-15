@@ -3,7 +3,7 @@ require "rake"
 
 RSpec.describe SpreadsheetParse do
   describe "#csv_file_paths" do
-    let!(:spreadsheet) { "#{fixture_path}/GC_Dummy_Data_for_DB.xlsx" }
+    let!(:spreadsheet) { "#{fixture_paths.first}/GC_Dummy_Data_for_DB.xlsx" }
     let!(:creator) { create(:admin_user) }
     let(:file_path) { File.open(Rails.root.join("db/uploads").to_s) }
 
@@ -17,7 +17,7 @@ RSpec.describe SpreadsheetParse do
   end
 
   describe "#create_models" do
-    let!(:spreadsheet) { "#{fixture_path}/GC_Dummy_Data_for_DB.xlsx" }
+    let!(:spreadsheet) { "#{fixture_paths.first}/GC_Dummy_Data_for_DB.xlsx" }
     let!(:creator) { create(:admin_user) }
 
     it "builds organizations" do
@@ -31,7 +31,7 @@ RSpec.describe SpreadsheetParse do
 
   describe "#import" do
     let!(:creator) { create(:admin_user) }
-    let!(:spreadsheet) { "#{fixture_path}/GC_Dummy_Data_for_DB.xlsx" }
+    let!(:spreadsheet) { "#{fixture_paths.first}/GC_Dummy_Data_for_DB.xlsx" }
 
     it "returns a hash of import results" do
       results = described_class.new(spreadsheet, creator).import

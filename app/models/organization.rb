@@ -52,7 +52,7 @@ class Organization < ApplicationRecord
   validates :irs_ntee_code, presence: true, inclusion: {in: Organizations::Constants::NTEE_CODE}
   validates :mission_statement_en, presence: true
   validates :scope_of_work, presence: true, inclusion: {in: Organizations::Constants::SCOPE}
-  validates :logo, content_type: ["image/png", "image/jpg", "image/jpeg"],
+  validates :logo, content_type: ["image/png", "image/jpeg"],
     size: {less_than: 5.megabytes, message: "File too large. Must be less than 5MB in size"}
 
   after_create :attach_logo_and_cover
