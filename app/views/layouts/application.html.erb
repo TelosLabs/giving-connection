@@ -18,6 +18,14 @@
         'em': '<%= current_user&.email %>'
          } });
     </script>
+    <!-- Timezone Cookie Set -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        console.log("Setting user timezone cookie to: " + timezone);
+        document.cookie = `user_timezone=${timezone};path=/;max-age=31536000`; // 1 year expiry
+      });
+    </script>
     <!-- Conversion UET tag -->
     <title>Giving Connection</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
