@@ -84,5 +84,20 @@ export default class extends Controller {
       this.sectionElements.push(location)
     })
   }
+
+  toggleCollapse(event) {
+    const target = event.target.closest('p');
+    const list = target.nextElementSibling;
+    const chevron = target.querySelector('button svg');
+  
+    if (list.classList.contains('hidden')) {
+      list.classList.remove('hidden');
+      chevron.classList.add('rotate-90');
+    } else {
+      list.classList.add('hidden');
+      chevron.classList.remove('rotate-90');
+    }
+  }  
+  
   
 }

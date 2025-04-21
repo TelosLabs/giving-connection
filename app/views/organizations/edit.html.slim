@@ -39,7 +39,9 @@
         p class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-id="additional-locations" data-scrollspy-target="link" data-action="click->scrollspy#scrollToSection" role="button"
           = inline_svg_tag 'location-outline.svg', class: "w-4 h-4 mr-1"
           | Additional Locations
-          div class="" id="sidebar-add-locations"
+          button class="ml-auto text-sm text-gray-500 focus:outline-none" data-action="click->scrollspy#toggleCollapse"
+            = inline_svg_tag 'chevron-right.svg', class: "w-4 h-4 transform transition-transform duration-200"
+        div class="hidden" id="sidebar-add-locations"
         p class="flex items-center p-1 text-lg font-light leading-7 transition rounded-md cursor-pointer text-gray-3 hover:text-blue-medium hover:bg-blue-100" data-section-id="social-media" data-scrollspy-target="link" data-action="click->scrollspy#scrollToSection" role="button"
           = inline_svg_tag 'like.svg', class: "w-4 h-4 mr-1"
           | Social Media 
