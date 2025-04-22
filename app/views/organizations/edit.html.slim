@@ -1,10 +1,10 @@
 = content_tag(:div, class: "w-full bg-grey-9", data: @form_presenter&.change_detection_form_container_setup) do
-  div class="z-10 sticky flex justify-between w-full px-10 md:px-20 py-4 bg-white border-b-2 top-[80px] md:top-[91px] border-gray-9"
+  div class="z-10 sticky md:flex justify-between w-full px-10 md:px-20 py-4 bg-white border-b-2 top-[80px] md:top-[91px] border-gray-9"
     div class=""
-      h3 class="font-light text-left text-md text-gray-3"
+      h3 class="text-sm font-light text-left md:text-md text-gray-3"
         | Edit Page
       div class="flex items-center"
-        h2 class="text-xl font-medium text-gray-2"
+        h2 class="text-sm font-medium md:text-xl text-gray-2"
           = @organization.name
         - if @organization.verified?
           = render partial: "shared/popover", locals: { copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg" } 
@@ -17,7 +17,7 @@
               li class="text-sm text-red-500"
                 = "- #{message}"
     div class=""
-      = button_tag 'Save Changes', type: 'submit', form: 'organization-form', class: 'hover:bg-seafoam-light transition flex cursor-pointer uppercase flex-row justify-center items-center bg-seafoam py-4 px-10 rounded-6px text-blue-dark text-base font-bold focus:outline-none', data: {action: "click->form-validation#addEmptyRequiredStyles click->halt-navigation-on-change#startSaving"}
+      = button_tag 'Save', type: 'submit', form: 'organization-form', class: 'w-full md:2-auto hover:bg-seafoam-light transition flex cursor-pointer uppercase flex-row justify-center items-center bg-seafoam py-1 md:py-4 px-10 rounded-6px text-blue-dark text-sm md:text-base font-bold focus:outline-none', data: {action: "click->form-validation#addEmptyRequiredStyles click->halt-navigation-on-change#startSaving"}
   div class="flex w-full bg-white"
     div class="hidden md:flex flex-col sticky top-[181px] pt-4 pl-20 pr-8 border-r-2 border-gray-9 shrink-0 h-[calc(100vh-181px)] overflow-y-auto" data-controller="scrollspy"
       div class="flex flex-col pb-4 gap-y-2"
@@ -501,5 +501,6 @@
                       = f.label :verified, "Check to verify", class: "text-sm"
 
           //= f.submit 'Save', class: 'hover:bg-seafoam-light transition mx-auto mt-12 flex cursor-pointer uppercase flex-row justify-center items-center bg-seafoam py-4 px-10 rounded-6px text-blue-dark text-base font-bold focus:outline-none', data: { action: "click->form-validation#addEmptyRequiredStyles click->halt-navigation-on-change#startSaving" }
+
   // unsaved changes modal
   = render "organizations/unsaved_changes_modal_template"  
