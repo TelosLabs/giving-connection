@@ -375,7 +375,7 @@
                             div class="flex justify-between w-full mb-4"
                               h6.pb-4.text-lg.font-semibold aria-level="7"
                                 | Hours
-                              button class='p-2 h-7 rounded-xl text-gray-1 bg-gray-7 hover:bg-gray-6' type="button" data-action="modal#close modal#restoreCheckboxesState"
+                              button class='p-2 h-7 rounded-xl text-gray-1 bg-gray-7 hover:bg-gray-6' type="button" data-action="modal#close"
                                 span.sr-only Dismiss
                                 = inline_svg_tag 'x-icon.svg', class:'h-3 w-3'
                             p class="mb-6 text-sm text-gray-4"
@@ -411,7 +411,7 @@
                                         td class="text-center"
                                           = sched.check_box :closed, class: "rounded-md"
                                           = sched.label :closed, class: "sr-only"
-                            button type="button" class="block px-5 py-2.5 mx-auto w-1/3 text-white rounded-md transition bg-blue-medium hover:bg-seafoam" data-action="click->modal#close"
+                            button type="button" class="block px-5 py-2.5 mx-auto w-1/3 text-white rounded-md transition bg-blue-medium hover:bg-seafoam" data-action="click->modal#submitAndClose"
                               | Submit
 
                       div class="hidden col-span-3 md:flex"
