@@ -45,11 +45,11 @@ module ApplicationHelper
   end
 
   def format_event_time(datetime)
-    return "" unless datetime.present?
+    return "" if datetime.blank?
 
     datetime.in_time_zone(@user_timezone || Time.zone.name)
-            .strftime("%^a, %^b %d, %Y at %l:%M %p")
-            .gsub(/\s+/, ' ')
-            .strip
+      .strftime("%^a, %^b %d, %Y at %l:%M %p")
+      .gsub(/\s+/, " ")
+      .strip
   end
 end

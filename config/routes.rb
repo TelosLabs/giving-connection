@@ -72,10 +72,10 @@ Rails.application.routes.draw do
   resource :infowindow, only: :new
   resources :autocomplete, only: %i[index]
 
-  get 'events/explore(/:id)', to: 'events#discover', as: :discover_events
+  get "events/explore(/:id)", to: "events#discover", as: :discover_events
 
-  resources :events, only: [:index, :new, :create, :destroy, :edit, :update, :show], 
-            constraints: { id: /\d+/ } do
+  resources :events, only: [:index, :new, :create, :destroy, :edit, :update, :show],
+    constraints: {id: /\d+/} do
     member do
       post :publish
     end
@@ -90,16 +90,14 @@ Rails.application.routes.draw do
 
   get "redirect", to: "redirection#notice_external_link", as: :redirect
 
-  
   # Non-profit events listing route (accepts orgId as query parameter)
-  get '/events', to: 'events#index'
-
+  get "/events", to: "events#index"
 
   # Non-profit Event Calendar
-  get 'event_calendar', to: 'event_calendar#index'
+  get "event_calendar", to: "event_calendar#index"
 
   # non-profit events
-  post '/events/:org_id', to: 'events#create'
-  delete '/events/:id', to: 'events#destroy'
-  put '/events/:id', to: 'events#update'
+  post "/events/:org_id", to: "events#create"
+  delete "/events/:id", to: "events#destroy"
+  put "/events/:id", to: "events#update"
 end
