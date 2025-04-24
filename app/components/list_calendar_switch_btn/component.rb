@@ -1,4 +1,4 @@
-class ListCalBtn::Component < ApplicationViewComponent
+class ListCalendarSwitchBtn::Component < ApplicationViewComponent
     include ActionButtonHelper
   
     def initialize(user:, location:, simplified: false)
