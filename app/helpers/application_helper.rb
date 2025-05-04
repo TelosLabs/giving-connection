@@ -32,4 +32,24 @@ module ApplicationHelper
   def webpack_asset_urls(asset_name, asset_type)
     webpack_manifest["entrypoints"][asset_name]["assets"][asset_type]
   end
+
+  def get_timezone
+    # Get the timezone from the request environment
+    timezone = request.env["user_timezone"] || Time.zone.name
+
+    # Set the user's timezone in the instance variable
+    @user_timezone = timezone
+
+    # Return the timezone
+    timezone
+  end
+
+  def format_event_time(datetime)
+    return "" if datetime.blank?
+
+    datetime.in_time_zone(@user_timezone || Time.zone.name)
+      .strftime("%^a, %^b %d, %Y at %l:%M %p")
+      .gsub(/\s+/, " ")
+      .strip
+  end
 end
