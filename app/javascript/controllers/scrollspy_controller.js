@@ -2,6 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["link"]
+  scrolling = false
 
   connect() {
     this.sectionElements = this.linkTargets.map(link => {
@@ -20,6 +21,7 @@ export default class extends Controller {
     this.sectionElements.forEach(section => {
       if (section) this.observer.observe(section)
     })
+
   }
 
   handleIntersect(entries) {
@@ -28,6 +30,8 @@ export default class extends Controller {
       .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0]
 
     if (!visibleEntry) return
+
+    if (this.scrolling) return
 
     const visibleId = visibleEntry.target.id
 
@@ -46,7 +50,8 @@ export default class extends Controller {
 
   scrollToSection(event) {
     event.preventDefault()
-  
+    this.scrolling = true
+
     const sectionId = event.currentTarget.dataset.sectionId
     const section = document.getElementById(sectionId)
     if (!section) return
@@ -55,6 +60,18 @@ export default class extends Controller {
     const top = section.getBoundingClientRect().top + window.scrollY - offset
   
     window.scrollTo({ top, behavior: 'smooth' })
+    this.linkTargets.forEach(link => {
+      const isActive = link.dataset.sectionId === sectionId
+
+      link.classList.toggle("text-blue-medium", isActive)
+      link.classList.toggle("font-medium", isActive)
+      link.classList.toggle("text-gray-3", !isActive)
+    })
+
+    setTimeout(() => {
+      this.scrolling = false;
+    }, 1000);
+  
   }
 
   scrollToTop(event) {
@@ -98,6 +115,4 @@ export default class extends Controller {
       chevron.classList.remove('rotate-90');
     }
   }  
-  
-  
 }
