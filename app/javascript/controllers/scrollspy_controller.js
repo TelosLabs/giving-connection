@@ -22,6 +22,9 @@ export default class extends Controller {
       if (section) this.observer.observe(section)
     })
 
+    this.boundScroll = this.checkBottomEntry.bind(this);
+    window.addEventListener("scroll", this.boundScroll);
+
   }
 
   handleIntersect(entries) {
@@ -46,6 +49,7 @@ export default class extends Controller {
 
   disconnect() {
     if (this.observer) this.observer.disconnect()
+    window.removeEventListener("scroll", this.boundScroll);
   }
 
   scrollToSection(event) {
@@ -114,5 +118,24 @@ export default class extends Controller {
       list.classList.add('hidden');
       chevron.classList.remove('rotate-90');
     }
-  }  
+  }
+  
+  checkBottomEntry() {
+    const el = document.getElementById("scrollable-content");
+    const rect = el.getBoundingClientRect();
+
+    console.log("Rect: ",rect.bottom)
+    console.log("Height:", window.innerHeight)
+  
+    if (rect.bottom <= window.innerHeight + 100) {
+      this.linkTargets.forEach(link => {
+        const isActive = link.dataset.sectionId === "information-verification"
+  
+        link.classList.toggle("text-blue-medium", isActive)
+        link.classList.toggle("font-medium", isActive)
+        link.classList.toggle("text-gray-3", !isActive)
+      })
+    }
+  }
+  
 }
