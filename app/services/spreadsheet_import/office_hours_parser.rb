@@ -11,7 +11,7 @@ module SpreadsheetImport
 
       normalized = normalize(@input)
 
-      chunks = normalized.scan(/([\w\s\-–,]+?)\s*[:\-–]?\s*(Closed|[\d:\s]+[\-\–]\s*[\d:\s]+)/i)
+      chunks = normalized.scan(/([\w\s\-–,]+?)[:\-]\s*(Closed|[\d:\s]+[\-\–]\s*[\d:\s]+)/i)
 
       chunks.flat_map do |day_part, time_part|
         days = extract_days(day_part)
@@ -30,9 +30,9 @@ module SpreadsheetImport
     private
 
     def normalize(str)
-      str.gsub(/[–—]/, '-') # convert en/em dashes to hyphen
-        .gsub(/[ ]+/, ' ')  # remove non-breaking space
-        .gsub(/\s+/, ' ')   # collapse multiple spaces
+      str.gsub(/[–—]/, '-')
+        .gsub(/[ ]+/, ' ')
+        .gsub(/\s+/, ' ')
         .strip
     end
 
