@@ -184,6 +184,7 @@ GEM
     crass (1.0.6)
     cssbundling-rails (1.4.1)
       railties (>= 6.0.0)
+    csv (3.2.6)
     cuprite (0.15.1)
       capybara (~> 3.0)
       ferrum (~> 0.15.0)
@@ -235,6 +236,9 @@ GEM
     formatador (1.1.0)
     friendly_id (5.5.1)
       activerecord (>= 4.0.0)
+    geocoder (1.8.5)
+      base64 (>= 0.1.0)
+      csv (>= 3.0.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     guard (2.19.1)
@@ -664,6 +668,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   friendly_id (~> 5.5)
+  geocoder
   guard-rspec
   image_processing (~> 1.13)
   inline_svg
