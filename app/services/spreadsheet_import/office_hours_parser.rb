@@ -7,42 +7,29 @@ module SpreadsheetImport
     end
 
     def call
-      return [] if @input.strip.downcase == "na"
+      return [] if blank_input?
 
-      normalized = normalize(@input)
+      parts = split_by_ampersand(normalize(@input))
 
-      chunks = normalized.scan(/([\w\s\-–,]+?)[:\-]\s*(Closed|[\d:\s]+[\-\–]\s*[\d:\s]+)/i)
-
-      chunks.flat_map do |day_part, time_part|
-        days = extract_days(day_part)
-        opens_at, closes_at = extract_times(time_part)
-
-        days.map do |day|
-          {
-            day: day,
-            opens_at: opens_at,
-            closes_at: closes_at
-          }
-        end
-      end
+      parts.flat_map { |part| parse_single_part(part) }
     end
 
     private
 
     def normalize(str)
-      str.gsub(/[–—]/, '-')
-        .gsub(/[ ]+/, ' ')
-        .gsub(/\s+/, ' ')
+      str.gsub(/[–—]/, "-")
+        .gsub(/[ ]+/, " ")
+        .gsub(/\s+/, " ")
         .strip
     end
 
-    def extract_days(day_str)
-      day_str = day_str.strip.gsub(/[:\-]+$/, '')
-      parts = day_str.split(',').map(&:strip)
+    def parse_days(day_str)
+      day_str = day_str.strip.gsub(/[:\-]+$/, "")
+      parts = day_str.split(",").map(&:strip)
 
       parts.flat_map do |part|
-        if part.include?('-')
-          start_day, end_day = part.split('-').map { |d| standardize_day(d) }
+        if part.include?("-")
+          start_day, end_day = part.split("-").map { |d| standardize_day(d) }
           days_between(start_day, end_day)
         else
           [standardize_day(part)]
@@ -51,7 +38,7 @@ module SpreadsheetImport
     end
 
     def extract_times(time_str)
-      return [nil, nil] if time_str.strip.downcase == 'closed'
+      return [nil, nil] if time_str.strip.downcase == "closed"
 
       times = time_str.strip.split(/[\-–]/).map(&:strip)
       [normalize_time(times[0]), normalize_time(times[1])]
@@ -75,7 +62,46 @@ module SpreadsheetImport
 
     def normalize_time(time)
       return nil if time.blank?
-      Time.parse(time).strftime("%H:%M") rescue nil
+      begin
+        Time.parse(time).strftime("%H:%M")
+      rescue
+        nil
+      end
+    end
+
+    def blank_input?
+      @input.strip.downcase == "na"
+    end
+
+    def split_by_ampersand(input)
+      input.split("&").map(&:strip)
+    end
+
+    def parse_single_part(part)
+      return [] if part.blank?
+
+      day_str, time_str = split_days_and_times(part)
+      return [] unless day_str && time_str
+
+      days = parse_days(day_str)
+      opens_at, closes_at = parse_times_or_247(time_str)
+
+      days.map do |day|
+        {
+          day: day,
+          opens_at: opens_at,
+          closes_at: closes_at
+        }
+      end
+    end
+
+    def split_days_and_times(part)
+      part.split(":", 2).map(&:strip)
+    end
+
+    def parse_times_or_247(time_str)
+      return ["00:00", "24:00"] if time_str.downcase == "24/7"
+      extract_times(time_str)
     end
   end
 end
