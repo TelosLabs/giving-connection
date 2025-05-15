@@ -75,6 +75,8 @@ gem "momentjs-rails"
 
 # Geolocation
 gem "activerecord-postgis-adapter"
+gem "timezone_finder"
+gem "geocoder"
 
 # Instagram feed
 gem "koala"
