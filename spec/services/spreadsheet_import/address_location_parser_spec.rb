@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe SpreadsheetImport::AddressLocationParser do
   it "returns the correct coordinates for New York" do

@@ -1,8 +1,7 @@
-require 'geocoder'
+require "geocoder"
 
 module SpreadsheetImport
   class AddressLocationParser
-
     def initialize(address)
       @address = clean_address(address)
     end
@@ -15,10 +14,8 @@ module SpreadsheetImport
 
     def clean_address(raw_address)
       address = raw_address.strip
-      address = address.gsub(/[\t\r\n]+/, ' ')
-      address = address.gsub(/\s+/, ' ')
-      address
+      address = address.gsub(/[\t\r\n]+/, " ")
+      address.gsub(/\s+/, " ")
     end
-
   end
 end

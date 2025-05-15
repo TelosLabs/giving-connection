@@ -52,7 +52,7 @@ module SpreadsheetImport
       if start_index <= end_index
         DAYS[start_index..end_index]
       else
-        DAYS[start_index..-1] + DAYS[0..end_index]
+        DAYS[start_index..] + DAYS[0..end_index]
       end
     end
 
@@ -63,7 +63,7 @@ module SpreadsheetImport
     def normalize_time(time)
       return nil if time.blank?
       begin
-        Time.parse(time).strftime("%H:%M")
+        Time.zone.parse(time).strftime("%H:%M")
       rescue
         nil
       end
