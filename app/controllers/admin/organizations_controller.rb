@@ -15,7 +15,7 @@ module Admin
 
     def import
       @creator = current_admin_user
-      results = SpreadsheetParse.new(params[:file], @creator).import
+      results = SpreadsheetImport::SpreadsheetParser.new(spreadsheet: params[:file], creator: current_user).call
       flash.now[:notice] = log_results(results)
       render :upload, status: :unprocessable_entity
     end
