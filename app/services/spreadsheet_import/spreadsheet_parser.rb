@@ -10,7 +10,7 @@ module SpreadsheetImport
     end
 
     def call
-      load_presets
+      #load_presets
       import
     end  
 
@@ -55,40 +55,54 @@ module SpreadsheetImport
     
     
     def import
-      total_import_results = {ids: [], failed_instances: []}
+      total_import_results = { ids: [], failed_instances: [] }
       organizations = create_models
 
-      organizations.each do |org|
+      organizations.each_with_index do |org, i|
         org_import_result = Organization.import([org], recursive: true, track_validation_failures: true)
+
         if org_import_result&.ids&.any?
           org.run_callbacks(:create) { true }
           total_import_results[:ids] << org_import_result.ids.first
+          Rails.logger.warn "Import SUCCESSFUL for organization at row #{i + 2} (name: #{org.name})"
         else
-          total_import_results[:failed_instances] += org_import_result&.failed_instances
+          Rails.logger.warn "Import failed for organization at row #{i + 2} (name: #{org.name})"
+          if org_import_result
+            org_import_result.failed_instances.each_with_index do |failed_org, j|
+              Rails.logger.warn "  Validation errors: #{failed_org.errors.full_messages.join(', ')}"
+            end
+          end
+          total_import_results[:failed_instances] += org_import_result&.failed_instances || []
         end
       end
       total_import_results
     end
 
+
     def create_models
       organizations = []
-      CSV.foreach(@csv_file_paths[:orgs_csv_file], headers: :first_row) do |org_row|
+      CSV.foreach(@csv_file_paths[:orgs_csv_file], headers: :first_row).with_index(2) do |org_row, row_number|
         begin
-          next if organization_already_exists?(org_row["Organization Name"])
-          new_organization = Organization.new(build_organization_hash(org_row))
+          org_name = org_row["Organization Name"]
+          if organization_already_exists?(org_name)
+            Rails.logger.info "Skipping existing organization: #{org_name} (row #{row_number})"
+            next
+          end
 
-          next unless new_organization
+          new_organization = Organization.new(build_organization_hash(org_row))
           new_organization.build_social_media(build_social_media_hash(org_row))
           build_location_from_org_row(new_organization, org_row)
           build_org_associations(new_organization, org_row)
 
           organizations << new_organization
+          Rails.logger.info "Prepared organization: #{new_organization.name} (row #{row_number})"
         rescue => e
-          Rails.logger.error("Failed to parse organization row #{index}: #{e.message}")
+          Rails.logger.error "Error building organization at row #{row_number}: #{e.message}"
         end
       end
       organizations
     end
+
 
     def organization_already_exists?(org_name)
       Organization.unscoped.exists?(name: org_name)
@@ -124,9 +138,42 @@ module SpreadsheetImport
       }
     end
 
+    def safe_non_standard_office_hours(value)
+      valid_values = Location.non_standard_office_hours.keys
+
+      cleaned = value.to_s.strip.downcase
+      return cleaned if valid_values.include?(cleaned)
+
+      nil
+    end
+
+
     def build_location_from_org_row(organization, org_row)
-      geo_result = SpreadsheetImport::AddressLocationParser.new(org_row["Address"]).call
-      timezone = SpreadsheetImport::TimezoneDetection.new(org_row["Address"]).call
+      if org_row["Website link"].to_s.strip.downcase == "not found"
+        Rails.logger.warn "⏭ Skipping location for #{organization.name} — organization marked as 'Not Found'"
+        return
+      end
+
+      address = org_row["Address"]
+      geo_result = nil
+      timezone = nil
+
+      begin
+        geo_result = SpreadsheetImport::AddressLocationParser.new(address).call
+      rescue => e
+        Rails.logger.error "🌍 Failed to geocode address '#{address}': #{e.message}"
+      end
+
+      begin
+        timezone = nil
+        if geo_result
+          timezone = SpreadsheetImport::TimezoneDetection.new(geo_result.latitude, geo_result.longitude).call
+        else
+          Rails.logger.warn "🌐 Skipping timezone detection — no geo result available."
+        end
+      rescue => e
+        Rails.logger.error "🕒 Failed to detect timezone for '#{address}': #{e.message}"
+      end
 
       location = organization.locations.build(
         name: "Main Location",
@@ -134,7 +181,7 @@ module SpreadsheetImport
         email: org_row["Email"],
         time_zone: timezone,
         offer_services: true,
-        non_standard_office_hours: org_row["Hours of Operation"],
+        non_standard_office_hours: safe_non_standard_office_hours(org_row["Hours of Operation"]),
         youtube_video_link: org_row["YouTube Video Link"],
         website: org_row["Website link"],
         latitude: geo_result&.latitude,

@@ -10,15 +10,23 @@ module Admin
     #   send_foo_updated_email(requested_resource)
     # end
 
-    def upload
+    def import
+      if params[:file].blank?
+        Rails.logger.error "❌ No file received in params[:file]"
+        redirect_to upload_admin_organizations_path, alert: "Missing file" and return
+      end
+
+      file = params[:file]
+      creator = current_admin_user
+
+      Rails.logger.warn "✅ File received: #{file.original_filename}"
+      results = SpreadsheetImport::SpreadsheetParser.new(spreadsheet: file, creator: creator).call
+
+      flash.now[:notice] = log_results(results)
+      render :upload, status: results[:failed_instances].any? ? :unprocessable_entity : :ok
     end
 
-    def import
-      @creator = current_admin_user
-      results = SpreadsheetImport::SpreadsheetParser.new(spreadsheet: params[:file], creator: current_user).call
-      flash.now[:notice] = log_results(results)
-      render :upload, status: :unprocessable_entity
-    end
+
 
     def new
       resource = new_resource
@@ -107,8 +115,13 @@ module Admin
     private
 
     def log_results(results)
-      "#{results[:ids].size} organizations succesfully created. <br>" \
-      "#{results[:failed_instances].size} organizations failed: <br>"
+      successful = results[:ids].size
+      failed = results[:failed_instances].size
+      failed_names = results[:failed_instances].map(&:name).join(", ")
+
+      "#{successful} organization(s) successfully created.<br>" \
+      "#{failed} organization(s) failed: #{failed_names.presence || 'None'}<br>".html_safe
     end
+
   end
 end
