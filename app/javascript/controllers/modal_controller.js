@@ -36,12 +36,15 @@ export default class extends Controller {
     this.displayAppliedIcon();
 
     this.skipUnsavedCheck = false;
+
+    document.addEventListener("turbo:submit-end", this._actuallyCloseModal.bind(this));
   }
 
   disconnect() {
     this.skipUnsavedCheck = true;
     this._actuallyCloseModal();
     this.close();
+    document.removeEventListener("turbo:submit-end", this._actuallyCloseModal.bind(this));
   }
 
   open(e) {
