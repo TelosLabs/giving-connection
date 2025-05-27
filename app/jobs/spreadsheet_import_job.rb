@@ -19,25 +19,10 @@ class SpreadsheetImportJob < ApplicationJob
     parser = SpreadsheetImport::SpreadsheetParser.new(spreadsheet: file, creator: admin, import_log: import_log)
     results = parser.call
 
-    if results[:failed_instances].any?
-      error_messages = results[:failed_instances].map do |row, org|
-         if org.nil?
-          "Row #{row}: unknown error (org is nil)"
-        else
-          "Row #{row}: #{org.errors.full_messages.join(', ')}"
-        end
-      end.join("\n")
-
-      import_log.update!(status: "completed", error_messages: error_messages)
-    else
-      import_log.update!(status: "completed", error_messages: nil)
-    end
-
-
     Rails.logger.info "✅ Import completed: #{results[:ids].size} created, #{results[:failed_instances].size} failed."
 
   rescue => e
-    import_log.update!(status: "failed", error_messages: e.message) if import_log
+    import_log.update!(status: "failed") if import_log
     Rails.logger.error "❌ Spreadsheet import failed: #{e.message}"
     raise
   ensure

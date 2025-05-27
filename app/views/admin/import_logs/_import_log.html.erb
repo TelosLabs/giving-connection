@@ -11,9 +11,14 @@
   <tr>
     <td colspan="6">
       <details>
-        <summary class="font-bold text-red-600">View Errors</summary>
-        <pre style="white-space: pre-wrap;"><%= import_log.error_messages %></pre>
+        <summary class="font-bold text-red-600 cursor-pointer">Import Errors</summary>
+        <div class="p-2 mt-2 bg-gray-100 rounded">
+          <% import_log.error_messages.split("\n").each do |line| %>
+            <p class="text-sm text-red-700"><%= line %></p>
+          <% end %>
+        </div>
       </details>
+
     </td>
   </tr>
 <% end %>

@@ -56,25 +56,45 @@ module SpreadsheetImport
     
     
     def import
+      @error_messages_by_row = Hash.new { |hash, key| hash[key] = [] }
       total_import_results = { ids: [], failed_instances: [] }
       organizations = create_models
 
-      organizations.each_with_index do |org, i|
+      organizations.each do |entry|
+        row_number = entry[:row_number]
+        org = entry[:org]
+        org_row = entry[:org_row]
+
         org_import_result = Organization.import([org], recursive: true, track_validation_failures: true)
 
         if org_import_result&.ids&.any?
           org.run_callbacks(:create) { true }
           total_import_results[:ids] << org_import_result.ids.first
-          Rails.logger.warn "Import SUCCESSFUL for organization at row #{i + 2} (name: #{org.name})"
+          Rails.logger.warn "Import SUCCESSFUL for organization at row #{row_number} (name: #{org.name})"
         else
-          Rails.logger.warn "Import failed for organization at row #{i + 2} (name: #{org.name})"
-          if org_import_result
+          Rails.logger.warn "Import failed for organization at row #{row_number} (name: #{org.name})"
+          if org_import_result && org_import_result.respond_to?(:failed_instances)
             org_import_result.failed_instances.each do |row_index, failed_org|
+              log_organization_errors(row_number, org_row, org)
               total_import_results[:failed_instances] << { row: row_index, org: failed_org }
             end
+          else
+            log_organization_errors(row_number, org_row, org)
+            total_import_results[:failed_instances] << { row: i, org: org }
+            Rails.logger.error "⚠️ Unknown import failure at row #{row_number} — no error details available"
           end
         end
       end
+
+      formatted_errors = @error_messages_by_row.map do |label, messages|
+        ["#{label}:", *messages.map { |msg| "• #{msg}" }].join("\n")
+      end.join("\n\n")
+
+      @import_log.update!(
+        error_messages: formatted_errors.presence || "No errors found.",
+        status: "completed"
+      )
+
       total_import_results
     end
 
@@ -88,7 +108,7 @@ module SpreadsheetImport
           org_name = org_row["Organization Name"]
           if organization_already_exists?(org_name)
             Rails.logger.info "Skipping existing organization: #{org_name} (row #{row_number})"
-            @import_log&.increment!(:success_count)
+            @import_log&.increment!(:skipped_count)
             next
           end
 
@@ -97,28 +117,31 @@ module SpreadsheetImport
           new_organization.build_social_media(build_social_media_hash(org_row))
           location_success = build_location_from_org_row(new_organization, org_row)
           if location_success != true
-            Rails.logger.warn "⏭ Skipping organization #{org_name} at row #{row_number} due to incomplete info"
-            @import_log&.increment!(:skipped_count)
             case location_success
             when "NA"
               Rails.logger.warn "⏭ Skipping organization #{org_name} at row #{row_number} due to incomplete info"
-              @import_log&.increment!(:skipped_count)
+              @import_log&.increment!(:error_count)
             when "geocode"
               Rails.logger.warn "⏭ Error in organization #{org_name} at row #{row_number} due to address issue"
               @import_log&.increment!(:error_count)
             when "timezone"
               Rails.logger.warn "⏭ Error in organization #{org_name} at row #{row_number} due to timezone issue"
               @import_log&.increment!(:error_count)
+            else
+              Rails.logger.warn "⏭ Skipping organization #{org_name} at row #{row_number} due to unknown location issue"
+              @import_log&.increment!(:error_count)
             end
             next
           end
+
           build_org_associations(new_organization, org_row)
 
-          organizations << new_organization
+          organizations << { row_number: row_number, org: new_organization, org_row: org_row }
           Rails.logger.info "Prepared organization: #{new_organization.name} (row #{row_number})"
           @import_log&.increment!(:success_count)
         rescue => e
-          Rails.logger.error "Error building organization at row #{row_number}: #{e.message}"
+          organizations << { row_number: row_number, org: new_organization, org_row: org_row }
+          log_organization_errors(row_number, org_row, new_organization, e)
           @import_log&.increment!(:error_count)
         ensure
           row_number += 1
@@ -134,18 +157,18 @@ module SpreadsheetImport
     
     def build_organization_hash(org_row)      
       {
-        name: org_row["Organization Name"],
-        ein_number: org_row["EIN Number"],
-        irs_ntee_code: full_ntee_code(org_row["IRS NTEE Code"]),
-        mission_statement_en: org_row["Mission Statement - What We Do"],
-        vision_statement_en: org_row["Vision - Goals and Aspirations"],
-        tagline_en: org_row["Services - How We Do It"],
+        name: clean_na(org_row["Organization Name"]),
+        ein_number: clean_na(org_row["EIN Number"]),
+        irs_ntee_code: full_ntee_code(clean_na(org_row["IRS NTEE Code"])),
+        mission_statement_en: clean_na(org_row["Mission Statement - What We Do"]),
+        vision_statement_en: clean_na(org_row["Vision - Goals and Aspirations"]),
+        tagline_en: clean_na(org_row["Services - How We Do It"]),
         mission_statement_es: nil,
         vision_statement_es: nil,
         tagline_es: nil,
-        website: org_row["Website link"],
-        donation_link: org_row["Donation link"],
-        scope_of_work: org_row["Scope of Work"],
+        website: clean_na(org_row["Website link"]),
+        donation_link: clean_na(org_row["Donation link"]),
+        scope_of_work: clean_na(org_row["Scope of Work"]),
         active: true
       }
     end
@@ -251,6 +274,61 @@ module SpreadsheetImport
       normalized_code = raw_code.strip.upcase
       Organizations::Constants::NTEE_CODE.find { |entry| entry.start_with?(normalized_code) }
     end
-    
+
+    def clean_na(value)
+      normalized = value.to_s.strip.upcase
+      ["NA", "N/A"].include?(normalized) ? nil : value
+    end
+
+    def log_organization_errors(row_number, org_row, organization, exception = nil)
+      org_name = org_row["Organization Name"]
+      label = "Row #{row_number} — #{org_name.presence || 'Unnamed Org'}"
+
+      if exception
+        Rails.logger.error "#{label}: #{exception.message}"
+        @error_messages_by_row[label] << exception.message
+      end
+
+      if clean_na(organization&.mission_statement_en).blank?
+        @error_messages_by_row[label] << "Missing mission statement"
+      end
+
+      if clean_na(organization&.vision_statement_en).blank?
+        @error_messages_by_row[label] << "Missing vision statement"
+      end
+
+      if clean_na(organization&.tagline_en).blank?
+        @error_messages_by_row[label] << "Missing tagline"
+      end
+
+      if clean_na(organization&.locations).blank?
+        @error_messages_by_row[label] << "Missing location"
+      else
+        location = organization.locations.first
+
+        if clean_na(location.address).blank?
+          @error_messages_by_row[label] << "Missing address"
+        end
+
+        if clean_na(location.latitude).blank? || clean_na(location.longitude).blank?
+          @error_messages_by_row[label] << "Missing geolocation data"
+        end
+
+        if clean_na(location.time_zone).blank?
+          @error_messages_by_row[label] << "Missing time zone" 
+        end
+
+        if clean_na(location.office_hours).blank? && clean_na(location.non_standard_office_hours).blank?
+          @error_messages_by_row[label] << "Missing office hours"
+        end
+      end
+    end
+
+    def clean_na(value)
+      normalized = value.to_s.strip.upcase
+      ["NA", "N/A"].include?(normalized) ? nil : value
+    end
+
+
   end
 end
