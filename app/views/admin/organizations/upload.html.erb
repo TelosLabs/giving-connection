@@ -12,3 +12,10 @@
     <%= submit_tag "Import Organizations", style: "margin-top:16px" %>
   <% end %>
 </section>
+
+<section class="main-content__body">
+  <h2>Previous Imports</h2>
+  <div id="import-logs">
+    <%= render partial: "admin/organizations/import_logs", locals: { import_logs: @import_logs } %>
+  </div>
+</section>

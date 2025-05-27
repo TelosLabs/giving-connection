@@ -10,21 +10,28 @@ module Admin
     #   send_foo_updated_email(requested_resource)
     # end
 
+    def upload
+      @import_logs = ImportLog.order(created_at: :desc).limit(10)
+      @latest_import_log = ImportLog.last
+
+    end
+
     def import
       if params[:file].blank?
-        Rails.logger.error "❌ No file received in params[:file]"
-        redirect_to upload_admin_organizations_path, alert: "Missing file" and return
+        redirect_to upload_admin_organizations_path, alert: "Please upload a file." and return
       end
 
-      file = params[:file]
-      creator = current_admin_user
+      # Save the file to a temp path
+      temp_path = Rails.root.join("tmp", "uploads", "#{SecureRandom.uuid}_#{params[:file].original_filename}")
+      FileUtils.mkdir_p(temp_path.dirname)
+      File.open(temp_path, "wb") { |f| f.write(params[:file].read) }
 
-      Rails.logger.warn "✅ File received: #{file.original_filename}"
-      results = SpreadsheetImport::SpreadsheetParser.new(spreadsheet: file, creator: creator).call
+      # Enqueue the job
+      SpreadsheetImportJob.perform_later(temp_path.to_s, current_admin_user.id)
 
-      flash.now[:notice] = log_results(results)
-      render :upload, status: results[:failed_instances].any? ? :unprocessable_entity : :ok
+      redirect_to upload_admin_organizations_path, notice: "Import started in background. This may take several minutes."
     end
+
 
 
 

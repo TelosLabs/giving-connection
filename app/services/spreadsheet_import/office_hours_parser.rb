@@ -1,6 +1,6 @@
 module SpreadsheetImport
   class OfficeHoursParser
-    DAYS = %w[Monday Tuesday Wednesday Thursday Friday Saturday Sunday]
+    DAYS = %w[monday tuesday wednesday thursday friday saturday sunday]
 
     def initialize(input)
       @input = input.to_s
@@ -11,7 +11,11 @@ module SpreadsheetImport
 
       parts = split_by_ampersand(normalize(@input))
 
-      parts.flat_map { |part| parse_single_part(part) }
+      parsed_entries = parts.flat_map { |part| parse_single_part(part) }
+
+      full_week = normalize_to_full_week(parsed_entries)
+
+      normalize_days_to_indexes(full_week)
     end
 
     private
@@ -57,13 +61,13 @@ module SpreadsheetImport
     end
 
     def standardize_day(str)
-      DAYS.find { |d| d.casecmp(str.strip.capitalize).zero? }
+      DAYS.find { |d| d.casecmp(str.strip.capitalize).zero? }&.downcase
     end
 
     def normalize_time(time)
       return nil if time.blank?
       begin
-        Time.zone.parse(time).strftime("%H:%M")
+        Time.parse(time).strftime("%H:%M")
       rescue
         nil
       end
@@ -83,17 +87,19 @@ module SpreadsheetImport
       day_str, time_str = split_days_and_times(part)
       return [] unless day_str && time_str
 
-      days = parse_days(day_str)
+      days = parse_days(day_str) # Now returns ["monday", "tuesday", ...]
       opens_at, closes_at = parse_times_or_247(time_str)
 
       days.map do |day|
         {
           day: day,
-          opens_at: opens_at,
-          closes_at: closes_at
+          open_time: opens_at,
+          close_time: closes_at,
+          closed: opens_at.nil? || closes_at.nil?
         }
       end
     end
+
 
     def split_days_and_times(part)
       part.split(":", 2).map(&:strip)
@@ -103,5 +109,36 @@ module SpreadsheetImport
       return ["00:00", "24:00"] if time_str.downcase == "24/7"
       extract_times(time_str)
     end
+
+    def normalize_to_full_week(entries)
+      full_schedule = {}
+
+      entries.each do |entry|
+        day = entry[:day].downcase
+        full_schedule[day] = {
+          day: day,
+          open_time: entry[:open_time],
+          close_time: entry[:close_time],
+          closed: entry[:closed]
+        }
+      end
+
+      DAYS.map(&:downcase).map do |day|
+        full_schedule[day] || { day: day, open_time: nil, close_time: nil, closed: true }
+      end
+    end
+
+    def default_closed_schedule
+      DAYS.map(&:downcase).map do |day|
+        { day: day, open_time: nil, close_time: nil, closed: true }
+      end
+    end
+
+    def normalize_days_to_indexes(entries)
+      entries.map do |entry|
+        entry.merge(day: DAYS.index(entry[:day]))
+      end
+    end
+
   end
 end

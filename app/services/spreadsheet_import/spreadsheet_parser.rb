@@ -2,9 +2,10 @@ module SpreadsheetImport
   class SpreadsheetParser
     ASSOCIATION_NAMES = ["orgs", "presets"].freeze
 
-    def initialize(spreadsheet:, creator:)
+    def initialize(spreadsheet:, creator:, import_log: nil)
       @spreadsheet = spreadsheet
       @creator = creator
+      @import_log = import_log
       @file_path = File.open(Rails.root.join("db/uploads").to_s)
       @csv_file_paths = csv_file_paths
     end
@@ -68,11 +69,10 @@ module SpreadsheetImport
         else
           Rails.logger.warn "Import failed for organization at row #{i + 2} (name: #{org.name})"
           if org_import_result
-            org_import_result.failed_instances.each_with_index do |failed_org, j|
-              Rails.logger.warn "  Validation errors: #{failed_org.errors.full_messages.join(', ')}"
+            org_import_result.failed_instances.each do |row_index, failed_org|
+              total_import_results[:failed_instances] << { row: row_index, org: failed_org }
             end
           end
-          total_import_results[:failed_instances] += org_import_result&.failed_instances || []
         end
       end
       total_import_results
@@ -83,21 +83,45 @@ module SpreadsheetImport
       organizations = []
       CSV.foreach(@csv_file_paths[:orgs_csv_file], headers: :first_row).with_index(2) do |org_row, row_number|
         begin
+          @import_log&.increment!(:total_rows)
+
           org_name = org_row["Organization Name"]
           if organization_already_exists?(org_name)
             Rails.logger.info "Skipping existing organization: #{org_name} (row #{row_number})"
+            @import_log&.increment!(:success_count)
             next
           end
 
           new_organization = Organization.new(build_organization_hash(org_row))
+          new_organization.creator = @creator
           new_organization.build_social_media(build_social_media_hash(org_row))
-          build_location_from_org_row(new_organization, org_row)
+          location_success = build_location_from_org_row(new_organization, org_row)
+          if location_success != true
+            Rails.logger.warn "⏭ Skipping organization #{org_name} at row #{row_number} due to incomplete info"
+            @import_log&.increment!(:skipped_count)
+            case location_success
+            when "NA"
+              Rails.logger.warn "⏭ Skipping organization #{org_name} at row #{row_number} due to incomplete info"
+              @import_log&.increment!(:skipped_count)
+            when "geocode"
+              Rails.logger.warn "⏭ Error in organization #{org_name} at row #{row_number} due to address issue"
+              @import_log&.increment!(:error_count)
+            when "timezone"
+              Rails.logger.warn "⏭ Error in organization #{org_name} at row #{row_number} due to timezone issue"
+              @import_log&.increment!(:error_count)
+            end
+            next
+          end
           build_org_associations(new_organization, org_row)
 
           organizations << new_organization
           Rails.logger.info "Prepared organization: #{new_organization.name} (row #{row_number})"
+          @import_log&.increment!(:success_count)
         rescue => e
           Rails.logger.error "Error building organization at row #{row_number}: #{e.message}"
+          @import_log&.increment!(:error_count)
+        ensure
+          row_number += 1
         end
       end
       organizations
@@ -112,7 +136,7 @@ module SpreadsheetImport
       {
         name: org_row["Organization Name"],
         ein_number: org_row["EIN Number"],
-        irs_ntee_code: org_row["IRS NTEE Code"],
+        irs_ntee_code: full_ntee_code(org_row["IRS NTEE Code"]),
         mission_statement_en: org_row["Mission Statement - What We Do"],
         vision_statement_en: org_row["Vision - Goals and Aspirations"],
         tagline_en: org_row["Services - How We Do It"],
@@ -122,7 +146,6 @@ module SpreadsheetImport
         website: org_row["Website link"],
         donation_link: org_row["Donation link"],
         scope_of_work: org_row["Scope of Work"],
-        creator: @creator,
         active: true
       }
     end
@@ -151,7 +174,7 @@ module SpreadsheetImport
     def build_location_from_org_row(organization, org_row)
       if org_row["Website link"].to_s.strip.downcase == "not found"
         Rails.logger.warn "⏭ Skipping location for #{organization.name} — organization marked as 'Not Found'"
-        return
+        return "NA"
       end
 
       address = org_row["Address"]
@@ -162,6 +185,7 @@ module SpreadsheetImport
         geo_result = SpreadsheetImport::AddressLocationParser.new(address).call
       rescue => e
         Rails.logger.error "🌍 Failed to geocode address '#{address}': #{e.message}"
+        return "geocode"
       end
 
       begin
@@ -170,9 +194,11 @@ module SpreadsheetImport
           timezone = SpreadsheetImport::TimezoneDetection.new(geo_result.latitude, geo_result.longitude).call
         else
           Rails.logger.warn "🌐 Skipping timezone detection — no geo result available."
+          return "timezone"
         end
       rescue => e
         Rails.logger.error "🕒 Failed to detect timezone for '#{address}': #{e.message}"
+        return "timezone"
       end
 
       location = organization.locations.build(
@@ -185,7 +211,8 @@ module SpreadsheetImport
         youtube_video_link: org_row["YouTube Video Link"],
         website: org_row["Website link"],
         latitude: geo_result&.latitude,
-        longitude: geo_result&.longitude
+        longitude: geo_result&.longitude,
+        main: true
       )
     
       phone_number = org_row["Phone"]
@@ -199,8 +226,11 @@ module SpreadsheetImport
     
       hours_string = org_row["Detailed Hours Of Operation"]
       if hours_string.present?
-        office_hours = SpreadsheetImport::OfficeHoursParser.new(hours_string).call
+        SpreadsheetImport::OfficeHoursParser.new(hours_string).call.each do |attrs|
+          location.office_hours.build(attrs)
+        end
       end
+      true
     end
 
     def build_org_associations(org, org_row)
@@ -213,7 +243,14 @@ module SpreadsheetImport
         beneficiary = BeneficiarySubcategory.find_by(name: ben_name)
         org.organization_beneficiaries.build(beneficiary_subcategory: beneficiary) if beneficiary
       end
-    end    
+    end
+
+    def full_ntee_code(raw_code)
+      return nil if raw_code.blank?
+
+      normalized_code = raw_code.strip.upcase
+      Organizations::Constants::NTEE_CODE.find { |entry| entry.start_with?(normalized_code) }
+    end
     
   end
 end
