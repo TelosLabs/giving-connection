@@ -27,7 +27,7 @@ module Admin
       File.open(temp_path, "wb") { |f| f.write(params[:file].read) }
 
       # Enqueue the job
-      SpreadsheetImportJob.perform_later(temp_path.to_s, current_admin_user.id)
+      SpreadsheetImportJob.perform_later(temp_path.to_s, current_admin_user.id, params[:file].original_filename)
 
       redirect_to upload_admin_organizations_path, notice: "Import started in background. This may take several minutes."
     end

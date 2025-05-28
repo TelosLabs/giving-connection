@@ -57,7 +57,6 @@ module SpreadsheetImport
     
     def import
       @error_messages_by_row = Hash.new { |hash, key| hash[key] = [] }
-      total_import_results = { ids: [], failed_instances: [] }
       organizations = create_models
 
       organizations.each do |entry|
@@ -69,20 +68,9 @@ module SpreadsheetImport
 
         if org_import_result&.ids&.any?
           org.run_callbacks(:create) { true }
-          total_import_results[:ids] << org_import_result.ids.first
           Rails.logger.warn "Import SUCCESSFUL for organization at row #{row_number} (name: #{org.name})"
         else
           Rails.logger.warn "Import failed for organization at row #{row_number} (name: #{org.name})"
-          if org_import_result && org_import_result.respond_to?(:failed_instances)
-            org_import_result.failed_instances.each do |row_index, failed_org|
-              log_organization_errors(row_number, org_row, org)
-              total_import_results[:failed_instances] << { row: row_index, org: failed_org }
-            end
-          else
-            log_organization_errors(row_number, org_row, org)
-            total_import_results[:failed_instances] << { row: i, org: org }
-            Rails.logger.error "⚠️ Unknown import failure at row #{row_number} — no error details available"
-          end
         end
       end
 
@@ -94,8 +82,6 @@ module SpreadsheetImport
         error_messages: formatted_errors.presence || "No errors found.",
         status: "completed"
       )
-
-      total_import_results
     end
 
 
@@ -116,32 +102,22 @@ module SpreadsheetImport
           new_organization.creator = @creator
           new_organization.build_social_media(build_social_media_hash(org_row))
           location_success = build_location_from_org_row(new_organization, org_row)
-          if location_success != true
-            case location_success
-            when "NA"
-              Rails.logger.warn "⏭ Skipping organization #{org_name} at row #{row_number} due to incomplete info"
-              @import_log&.increment!(:error_count)
-            when "geocode"
-              Rails.logger.warn "⏭ Error in organization #{org_name} at row #{row_number} due to address issue"
-              @import_log&.increment!(:error_count)
-            when "timezone"
-              Rails.logger.warn "⏭ Error in organization #{org_name} at row #{row_number} due to timezone issue"
-              @import_log&.increment!(:error_count)
-            else
-              Rails.logger.warn "⏭ Skipping organization #{org_name} at row #{row_number} due to unknown location issue"
-              @import_log&.increment!(:error_count)
-            end
-            next
-          end
 
           build_org_associations(new_organization, org_row)
 
+          has_errors = log_organization_errors(row_number, org_row, new_organization)
+          if has_errors
+            Rails.logger.warn "❌ Skipping row #{row_number} due to missing data (#{org_name || 'Unnamed Org'})"
+            @import_log&.increment!(:error_count)
+            next
+          else
+            @import_log&.increment!(:success_count)
+          end
+
           organizations << { row_number: row_number, org: new_organization, org_row: org_row }
           Rails.logger.info "Prepared organization: #{new_organization.name} (row #{row_number})"
-          @import_log&.increment!(:success_count)
         rescue => e
           organizations << { row_number: row_number, org: new_organization, org_row: org_row }
-          log_organization_errors(row_number, org_row, new_organization, e)
           @import_log&.increment!(:error_count)
         ensure
           row_number += 1
@@ -283,45 +259,47 @@ module SpreadsheetImport
     def log_organization_errors(row_number, org_row, organization, exception = nil)
       org_name = org_row["Organization Name"]
       label = "Row #{row_number} — #{org_name.presence || 'Unnamed Org'}"
+      had_errors = false
 
       if exception
         Rails.logger.error "#{label}: #{exception.message}"
         @error_messages_by_row[label] << exception.message
+        had_errors = true
       end
 
       if clean_na(organization&.mission_statement_en).blank?
         @error_messages_by_row[label] << "Missing mission statement"
-      end
-
-      if clean_na(organization&.vision_statement_en).blank?
-        @error_messages_by_row[label] << "Missing vision statement"
-      end
-
-      if clean_na(organization&.tagline_en).blank?
-        @error_messages_by_row[label] << "Missing tagline"
+        had_errors = true
       end
 
       if clean_na(organization&.locations).blank?
         @error_messages_by_row[label] << "Missing location"
+        had_errors = true
       else
         location = organization.locations.first
 
         if clean_na(location.address).blank?
           @error_messages_by_row[label] << "Missing address"
+          had_errors = true
         end
 
         if clean_na(location.latitude).blank? || clean_na(location.longitude).blank?
           @error_messages_by_row[label] << "Missing geolocation data"
+          had_errors = true
         end
 
         if clean_na(location.time_zone).blank?
           @error_messages_by_row[label] << "Missing time zone" 
+          had_errors = true
         end
 
         if clean_na(location.office_hours).blank? && clean_na(location.non_standard_office_hours).blank?
           @error_messages_by_row[label] << "Missing office hours"
+          had_errors = true
         end
       end
+      
+      had_errors
     end
 
     def clean_na(value)
