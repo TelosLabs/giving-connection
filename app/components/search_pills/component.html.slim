@@ -1,5 +1,5 @@
-div class="w-full bg-gray-9"
-  div data-controller="tabs" data-tabs-active-tab=("border-b-4 border-blue-medium") data-tabs-inactive-tab="underline-on-hover"
+div class="w-full bg-gray-9" id="tabs-wrapper" data-search-target="tabsWrapper"
+  div data-controller="tabs" data-tabs-active-tab="underline-on-hover" data-tabs-inactive-tab="underline-on-hover"
     div class="flex"
       / Clear-Counter button
       span class="flex justify-center items-center py-3 pr-2 pl-5 w-14 text-xs bg-blue-pale"
@@ -11,7 +11,7 @@ div class="w-full bg-gray-9"
       / Tabs
       ul class="flex overflow-x-auto overflow-y-hidden flex-1 gap-x-6 pr-6 pl-5 text-sm list-none bg-blue-pale text-gray-2"
         - @tabs_labels.each do |tab_label|
-          li data-action="click->tabs#change" data-tabs-target="tab"
+          li data-action="mouseover->search#handleTabHover click->search#toggleFilterCategory" data-search-target="tab" data-tabs-target="tab"
             a class="inline-block py-3 whitespace-nowrap" href="#" = tab_label
         li data-action="click->modal#open" class="underline-on-hover"
           button class="inline-block py-3 whitespace-nowrap" type="button" id="advanced-filters-button"
@@ -19,14 +19,14 @@ div class="w-full bg-gray-9"
             span class="hidden relative mb-2 ml-1 w-2 h-2 rounded-full bg-salmon" id="appliedIcon"
 
     / Panels
-    div class="bg-white"
+    div class="bg-white" id="search-pills-panel" data-search-target="searchPillsPanel"
       / Causes
-      div class="flex hidden overflow-y-auto flex-wrap gap-x-2 gap-y-3 px-6 py-4 max-h-28 border-r border-b border-l" data-tabs-target="panel"
+      div class="flex hidden overflow-y-auto flex-wrap gap-x-2 gap-y-3 px-6 py-4 max-h-28 border-r border-b border-l" data-search-target="panel" data-tabs-target="panel"
         - @causes.each do |cause|
           = render SearchPills::Pill::Component.new(name: "search[causes][]", value: cause.name, checked: @params.dig(:search, :causes)&.include?(cause.name), options: { multiple: true })
         = render SearchPills::MoreFiltersButton::Component.new
       / Location
-      div class="flex hidden flex-col border-b md:flex-row md:items-center" data-tabs-target="panel"
+      div class="flex hidden flex-col border-b md:flex-row md:items-center" data-search-target="panel" data-tabs-target="panel"
         div class="py-4 pl-6 text-sm text-gray-2"
           span class="inline-flex items-center"
             = inline_svg_tag "location-dot.svg", class: "h-3 w-3 fill-current text-blue-medium mr-1"
@@ -39,17 +39,17 @@ div class="w-full bg-gray-9"
           - Organizations::Constants::SCOPE.each do |scope|
             = render SearchPills::Pill::Component.new(name: "search[scope_of_work]", value: scope, checked: @params.dig(:search, :scope_of_work)&.include?(scope)), options: { multiple: true }, copy: scope
       / Services
-      div class="flex hidden overflow-y-auto flex-wrap gap-x-2 gap-y-3 px-6 py-4 max-h-28 border-r border-b border-l" data-tabs-target="panel"
+      div class="flex hidden overflow-y-auto flex-wrap gap-x-2 gap-y-3 px-6 py-4 max-h-28 border-r border-b border-l" data-search-target="panel" data-tabs-target="panel"
         - @services.each do |service|
           = render SearchPills::Pill::Component.new(name: "search[services][#{service.cause.name}][]", value: service.name, checked: @params.dig('search', 'services', service.cause.name)&.include?(service.name), options: { multiple: true })
         = render SearchPills::MoreFiltersButton::Component.new
       / Populations Served
-      div class="flex hidden overflow-y-auto flex-wrap gap-x-2 gap-y-3 px-6 py-4 max-h-28 border-r border-b border-l" data-tabs-target="panel"
+      div class="flex hidden overflow-y-auto flex-wrap gap-x-2 gap-y-3 px-6 py-4 max-h-28 border-r border-b border-l" data-search-target="panel" data-tabs-target="panel"
         - @beneficiary_subcategories.each do |subcategory|
           = render SearchPills::Pill::Component.new(name: "search[beneficiary_groups][#{subcategory.beneficiary_group.name}][]", value: subcategory.name, checked: @params.dig('search', 'beneficiary_groups', subcategory.beneficiary_group.name)&.include?(subcategory.name), options: { multiple: true })
         = render SearchPills::MoreFiltersButton::Component.new
       / Hours
-      div class="flex hidden gap-x-2 px-6 py-4 w-full border-r border-b border-l" data-tabs-target="panel"
+      div class="flex hidden gap-x-2 px-6 py-4 w-full border-r border-b border-l" data-search-target="panel" data-tabs-target="panel"
         = render SearchPills::Pill::Component.new(name: "search[open_now]", value: true, checked: @params.dig('search', 'open_now') == 'true') do
           | Open Now
         = render SearchPills::Pill::Component.new(name: "search[open_weekends]", value: true, checked: @params.dig('search', 'open_weekends') == 'true') do

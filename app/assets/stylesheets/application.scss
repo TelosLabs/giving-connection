@@ -216,3 +216,34 @@ input.admin-panel-population:disabled + label {
   }
 
 }
+
+// Expandable panel styles
+#search-pills-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+}
+
+// Desktop hover behavior (screen width > 768px)
+@media (min-width: 768px) {
+  #tabs-wrapper:not(.is-mobile):hover #search-pills-panel {
+    max-height: 1000px;
+    overflow: visible;
+  }
+}
+
+// Mobile behavior (screen width <= 768px)
+@media (max-width: 768px) {
+  #search-pills-panel {
+    &.expanded {
+      max-height: 1000px;
+      overflow: visible;
+    }
+  }
+
+  #tabs-wrapper.is-mobile {
+    #search-pills-panel {
+      overflow: visible;
+    }
+  }
+}

@@ -5,7 +5,7 @@ module Locationable
   DEFAULT_LONGITUDE = -86.78125827725053
   DEFAULT_STATE = "Tennessee"
   DEFAULT_COUNTRY = "USA"
-  AVAILABLE_CITIES = ["Nashville", "Atlantic City", "Search all"].freeze
+  AVAILABLE_CITIES = ["Nashville", "Atlantic City", "Los Angeles", "Search all"].freeze
   DEFAULT_CITY = self::AVAILABLE_CITIES.first
 
   included do

@@ -1,37 +1,99 @@
 div class="flex flex-col text-gray-2"
-  /* Banner */
+  /* Header */
   div class="relative h-60 bg-seafoam"
-    div class="flex overflow-hidden justify-around h-60 flew-row"
+    div class="flex justify-around overflow-hidden h-60 flew-row"
       div
         = inline_svg_tag 'new-blur-left.svg', size:'723*288'
       div
         = inline_svg_tag 'new-blur-right.svg', size:'723*288'
-    div class="flex absolute top-0 right-0 left-0 flex-col justify-center items-center h-full"
+    div class="absolute top-0 left-0 right-0 flex flex-col items-center justify-center h-full"
       h2 class="px-5 text-3xl font-bold leading-10 text-center text-blue-dark"
-        | Start with change in your<br>community
+        | Connecting people <br> with nonprofits
 
-    div class="hidden absolute top-20 left-80 fill-current text-blue-dark lg:block"
+    div class="absolute hidden fill-current top-20 left-80 text-blue-dark lg:block"
       = inline_svg_tag 'simple-star.svg', size: '22*22'
 
-    div class="hidden absolute top-12 right-96 fill-current text-blue-dark lg:block"
+    div class="absolute hidden fill-current top-12 right-96 text-blue-dark lg:block"
       = inline_svg_tag 'simple-heart.svg', size: '22*22'
 
-    div class="hidden absolute bottom-12 right-64 fill-current text-blue-dark lg:block"
+    div class="absolute hidden fill-current bottom-12 right-64 text-blue-dark lg:block"
       = inline_svg_tag 'simple-star.svg', size: '22*22'
 
-  /* Mission and Vision*/
-  div class="flex flex-col justify-center items-center px-6 py-20 bg-white"
+  /* Our Story */
+  div class="flex flex-col items-center justify-center w-full px-6 py-20 text-left bg-blue-gradient-3"
+    div class="justify-center w-full max-w-5xl gap-10 sm:flex lg:flex-row lg:justify-around"
+      div class="flex justify-center w-full mb-8 sm:hidden"
+          = inline_svg_tag "idea-image.svg"
+      div class="justify-center w-full max-w-5xl"
+        h3 class="mb-4 text-2xl font-bold text-center uppercase text-blue-dark"
+          | Our Story
+        p class="text-lg font-semibold text-blue-dark"
+          ' Giving Connection was founded on a simple but powerful idea:
+        p class="pb-4 text-lg italic font-semibold text-blue-dark"
+          | What if finding the right nonprofit was as easy as a Google search?
+        p class="pb-4 font-light text-gray-2"
+          ' Our founder, Stephanie Morrison, has spent her career advocating for communities in need. 
+          | As a Googler, she saw firsthand how technology can connect people with information in an instant. 
+          | As a public defender in Nashville, she witnessed how access to resources—or the lack of it—could 
+          | change the course of a person’s life. These experiences shaped her vision for Giving Connection: 
+          | a centralized, easy-to-use platform where anyone can find and engage with nonprofits that matter to them.
+        h3 class="mb-4 text-2xl font-bold text-center uppercase text-blue-dark"
+          | We believe in the power of connection
+        p class="pb-4 font-light text-gray-2"
+          ' Our goal is to make it easier for everyone to discover, support, and engage with nonprofits that 
+          | align with their values and interests. We know that nonprofits are doing incredible work, but too 
+          | often they face challenges in reaching the right people—whether that’s potential donors, volunteers, 
+          | or the communities they serve. Giving Connection exists to bridge that gap.
+        p class="font-light text-gray-2"
+          ' Our free, user-friendly platform brings people and nonprofits together, ensuring that support 
+          | reaches those who need it most. What began as a vision to simplify nonprofit discovery is now 
+          | growing into a nationwide movement. And we’re just getting started.
+      div class="justify-center hidden sm:flex"
+        = inline_svg_tag "idea-image.svg"
+  
+  /* Our Partnerships */
+  div class=" bg-seafoam"
+    div class="max-w-5xl px-0 py-8 mx-auto md:px-10"
+      h3 class="pt-5 mb-4 text-2xl font-bold text-center uppercase text-blue-dark"
+        | Our Partnerships
+      h2 class="px-5 font-light sm:px-0 text-blue-dark"
+        | Giving Connection is proud to have grown with the support of global and community-driven partnerships. 
+        | We have collaborated with <span class="font-bold">Dell Technologies</span> on pro bono strategic workshops and with 
+        | <span class="font-bold">Hack4Impact at Rutgers University</span> to co-develop features like our Community Calendar of Events. 
+        | Our organizational journey has also been strengthened through participation in world-class programs, 
+        | including the <span class="font-bold">2023 Global Social Impact House</span> in Costa Rica, hosted by the 
+        | <span class="font-bold">University of Pennsylvania’s Center for Social Impact Strategy</span>, and the 
+        | <span class="font-bold">2025 AWS & Deloitte Social Entrepreneur Accelerator</span> in Cape Town, South Africa.
+        <br><br>
+        | We are also deeply proud of our summer internship program, launched in partnership with the 
+        | <span class="font-bold">CS+Social Good initiative at Stanford University</span>. This program provides students with meaningful, 
+        | hands-on opportunities to apply their skills to real-world social impact work, while contributing 
+        | directly to Giving Connection’s growth, design, and development. Their creativity and commitment 
+        | continue to shape the future of our platform.
+        <br><br>
+        | Our story and our mission has been featured in 
+        | <a href="https://www.nytimes.com/2024/12/27/style/stephanie-morrison-scott-platt-wedding.html" class="italic underline">The New York Times</a>, 
+        | where Stephanie’s rain-soaked Hawaiian wedding ceremony which included her beloved Aunt Fran drew 
+        | national attention to the heart behind Giving Connection. In 2025, we were honored to see our 
+        | founder recognized with the 
+        | <a href="https://sjmagazine.net/featured/2025-women-of-excellence" class="italic underline">SJ Magazine Women of Excellence Inspiration Award</a>, 
+        | a celebration of the deep humanity, joy, and innovation that fuel our work.
+        <br><br>
+
+
+  /* Our Mission and Vision */
+  div class="flex flex-col items-center justify-center px-6 py-20 bg-white"
     div class="flex flex-col w-full max-w-4xl"
       div class="flex flex-col justify-between lg:flex-row lg:mb-20"
         div class="flex justify-center mb-6 lg:hidden lg:mb-0"
           = inline_svg_tag "pablita-4.svg", size: "313*176"
-        div class="flex relative flex-col text-center"
+        div class="relative flex flex-col text-center"
           div
             = inline_svg_tag "blur-background-3.svg", size: "345*220"
-          div class="absolute top-0 right-0 left-0 lg:top-1/4"
+          div class="absolute top-0 left-0 right-0 lg:top-1/4"
             h2 class="mb-6 text-2xl font-bold text-gray-2"
               | Our Mission
-            p class="mx-auto text-gray-2 max-w-327px"
+            p class="mx-auto font-light text-gray-2 max-w-327px"
               ' To connect people with nonprofits using a search platform
               ' that harnesses the power of local communities and puts people first.
         div class="hidden lg:flex lg:justify-center"
@@ -39,439 +101,631 @@ div class="flex flex-col text-gray-2"
 
 
       div class="flex flex-col justify-between lg:flex-row"
-        div class="flex justify-center items-center mb-6 lg:mb-0"
+        div class="flex items-center justify-center mb-6 lg:mb-0"
           = inline_svg_tag "pablita-5.svg", size: "403*269"
-        div class="flex relative flex-col text-center"
+        div class="relative flex flex-col text-center"
           div
             = inline_svg_tag "blur-background-4.svg", size: "306*219"
-          div class="absolute top-0 right-0 left-0 lg:top-1/4"
+          div class="absolute top-0 left-0 right-0 lg:top-1/4"
             h2 class="mb-6 text-2xl font-bold text-gray-2"
               | Our Vision
-            p class="mx-auto text-gray-2 max-w-327px"
+            p class="mx-auto font-light text-gray-2 max-w-327px"
               ' A world where finding help and serving others is easy.
+  
+  /* Our Services */
+  div class="relative h-100 bg-seafoam"
+    div class="justify-around hidden overflow-hidden h-100 flew-row sm:flex"
+      div
+        = inline_svg_tag 'new-blur-left.svg', size:'1004*400'
+      div
+        = inline_svg_tag 'new-blur-right.svg', size:'1004*400'
+    div class="flex justify-around overflow-hidden h-100 flew-row sm:hidden"
+      div
+        = inline_svg_tag 'new-blur-left.svg', size:'1004*700'
+      div
+        = inline_svg_tag 'new-blur-right.svg', size:'1004*700'
+    div class="absolute top-0 left-0 right-0 flex flex-col items-center justify-center h-full"
+      h3 class="mb-8 text-2xl font-bold uppercase text-blue-dark"
+        | Our Services
+      div class="flex justify-between w-full max-w-5xl"
+        
+        div class="grid grid-cols-1 px-10 md:grid-cols-2 gap-y-5 md:gap-y-10 gap-x-20"
+        
+          div class="flex gap-8"
+            div class="flex items-center justify-center"
+              span aria-hidden="true"
+                = inline_svg_tag 'magnifying-glass.svg', size: '35*35', class: "text-blue-dark"
+            div
+              h4 class="text-lg font-bold text-gray-2"
+                | Searchable Nonprofit Directory
+              p class="font-light text-gray-2"
+                ' Find nonprofits by cause, location, or service type.
+          div class="flex gap-8"
+            div class="flex items-center justify-center"
+              span aria-hidden="true"
+                = inline_svg_tag 'calendar-heart.svg', size: '35*35', class: "text-blue-dark"
+            div
+              h4 class="text-lg font-bold text-gray-2"
+                | Community Calendar of Events 
+              p class="font-light text-gray-2"
+                ' Discover upcoming volunteer opportunities, fundraisers, and outreach events.
+          div class="flex gap-8"
+            div class="flex items-center justify-center"
+              span aria-hidden="true"
+                = inline_svg_tag 'sun.svg', size: '35*35', class: "text-blue-dark"
+            div
+              h4 class="text-lg font-bold text-gray-2"
+                | Nonprofit Spotlights & Discovery
+              p class="font-light text-gray-2"
+                ' Learn about organizations making an impact and how you can get involved.
+          div class="flex gap-8"
+            div class="flex items-center justify-center"
+              span aria-hidden="true"
+                = inline_svg_tag 'star-2.svg', size: '35*35', class: "text-blue-dark"
+            div
+              h4 class="text-lg font-bold text-gray-2"
+                | Resources & Collaboration
+              p class="font-light text-gray-2"
+                ' Helping nonprofits grow through networking, partnerships, and support.
 
-  /* Our Objectives */
-  div class="flex flex-col justify-center items-center px-6 pt-20 pb-14 w-full text-center bg-blue-gradient-3"
-    h3 class="mb-8 text-2xl font-bold uppercase text-blue-dark lg:mb-16"
-      | Our Objectives
-    div class="flex flex-col justify-center w-full max-w-5xl lg:flex-row lg:justify-around"
-      div class="flex flex-col justify-center items-center mx-auto mb-10 text-center max-w-270px"
-        div class="relative mb-6"
-          = image_tag 'hands-table-2.png', size:'268x206', class:'rounded-lg'
-          = inline_svg_tag 'sticker-sparkle.svg', size:'39', class:'absolute top-1/2 -left-7'
-        h5 class="mb-3 text-lg font-bold uppercase text-gray-2"
-          | Connection
-        p class="text-gray-2"
-          ' Connect those in need with resources in their community. Foster greater and deeper
-          | connections between volunteers, donors, and nonprofits.
+  /* Our Values */
+  div class="flex flex-col items-center justify-center px-6 py-20 bg-white"
+    div class="flex flex-col w-full max-w-5xl"
+      div class="justify-center w-full max-w-5xl text-center"
+        div class="pb-10"
+          h3 class="mb-4 text-2xl font-bold uppercase text-blue-dark"
+            | Our Values
+          p class="mb-10 font-light text-gray-2"
+            | Our work is driven by core values that guide everything we do:
+        div class="flex flex-wrap justify-center gap-y-10"
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'user-heart.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | People always come first.
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'sword.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | Use your superpowers for good.
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'target.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | Remember your why.
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'brain.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | Everything is figureoutable.
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'handshake.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | Cultivate a community of change.
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'heart-straight.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | Trust the process, yourself, and your gut.
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'lightbulb.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | Be bold, brave, and innovate.
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'hand-heart.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | Lead with empathy.
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'users-three.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | Communities are best positioned to know what they need.
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'hands-clapping.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | Celebrate small wins.
+          div class="flex flex-col items-center w-1/2 gap-4 md:w-1/4"
+            div class="p-4 rounded-full bg-blue-gradient-3"
+              span aria-hidden="true"
+                = inline_svg_tag 'circles-three-plus.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="mx-8 text-gray-2"
+                | Disrupt the status quo.
+  /* Where we Serve */
+  div class="relative h-full bg-seafoam"
+    div class="flex justify-around h-full overflow-hidden flew-row"
+      div
+        = inline_svg_tag 'new-blur-left.svg', size:'1004*400'
+      div
+        = inline_svg_tag 'new-blur-right.svg', size:'1004*400'
+    div class="absolute top-0 left-0 right-0 flex flex-col items-center justify-center h-full px-10"
+      div class="w-full max-w-4xl mb-10 text-center"
+        h3 class="mb-8 text-2xl font-bold uppercase text-blue-dark"
+          | Where we serve
+        p
+          ' Giving Connection is expanding nationwide to make it easier for people to find 
+          | and support nonprofits in their communities. 
+          | Our platform currently features thousands of nonprofits across the United States, 
+          | with active hubs in:
+      
+      = link_to "/search", class:'block', target: "_blank" do
+        div class="flex gap-10 sm:hidden"
+          div class="p-4 transition duration-300 rounded-full bg-blue-gradient-3 hover:bg-gray-9 hover:scale-105"
+              span class="w-full h-full" aria-hidden="true"
+                = inline_svg_tag 'location-heart.svg', size: '50*50', class: "text-blue-dark"
+          div 
+            h4 class="text-lg font-bold text-gray-2"
+                | Nashville, TN
+            h4 class="text-lg font-bold text-gray-2"
+                | Atlantic City, NJ
+            h4 class="text-lg font-bold text-gray-2"
+                | Los Angeles, CA
 
-      div class="flex flex-col justify-center items-center mx-auto mb-10 text-center max-w-270px"
-        div class="relative mb-6"
-          = image_tag 'friends-2.png', size:'268x206', class:'rounded-lg'
-          = inline_svg_tag 'sticker-heart.svg', size:'39', class:'absolute top-6 -right-7'
-        h5 class="mb-3 text-lg font-bold uppercase text-gray-2"
-          | Community
-        p class="text-gray-2"
-          ' Equip communities with the tools they need to help their local members. Empower users
-          | to form their own specialized communities of desired change.
-
-      div class="flex flex-col justify-center items-center mx-auto mb-10 text-center max-w-270px"
-        div class="relative mb-6"
-          = image_tag 'hands-2.png', size:'268x206', class:'rounded-lg'
-          = inline_svg_tag 'sticker-sparkle.svg', size:'39', class:'absolute bottom-5 -right-5'
-        h5 class="mb-3 text-lg font-bold uppercase text-gray-2"
-          | Compassion
-        p class="text-gray-2"
-          ' Inspire users to discover their philanthropic needs or passions. Cultivate cultures
-          | based on giving rather than receiving, compassion over competition.
+      div class="justify-around hidden w-full max-w-4xl sm:flex"
+        = link_to "/search?city=Nashville", class:'block', target: "_blank" do
+          div class="flex flex-col items-center gap-4 mb-4"
+            div class="p-4 transition duration-300 rounded-full bg-blue-gradient-3 hover:bg-gray-9 hover:scale-105"
+              span class="w-full h-full" aria-hidden="true"
+                = inline_svg_tag 'location-heart.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="text-lg font-bold text-gray-2"
+                | Nashville, TN
+        = link_to "/search?city=Atlantic%20City", class:'block', target: "_blank" do
+          div class="flex flex-col items-center gap-4 mb-4"
+            div class="p-4 transition duration-300 rounded-full bg-blue-gradient-3 hover:bg-gray-9 hover:scale-105"
+              span class="w-full h-full" aria-hidden="true"
+                = inline_svg_tag 'location-heart.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="text-lg font-bold text-gray-2"
+                | Atlantic City, NJ
+        = link_to "/search?city=Los%20Angeles", class:'block', target: "_blank" do
+          div class="flex flex-col items-center gap-4 mb-4"
+            div class="p-4 transition duration-300 rounded-full bg-blue-gradient-3 hover:bg-gray-9 hover:scale-105"
+              span class="w-full h-full" aria-hidden="true"
+                = inline_svg_tag 'location-heart.svg', size: '50*50', class: "text-blue-dark"
+            div
+              h4 class="text-lg font-bold text-gray-2"
+                | Los Angeles, CA
 
   /* Meet the Trustees */
-  div class="flex flex-col justify-center items-center px-6 pt-20 w-full bg-white"
+  div class="flex flex-col items-center justify-center w-full px-6 pt-20 bg-white"
     div
-      h2 class="mb-12 text-2xl font-bold text-center uppercase text-blue-dark"
+      h2 class="mb-4 text-2xl font-bold text-center uppercase text-blue-dark"
         | Meet the Trustees
-    div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
-      = render BioCard::Component.new(\
-        name: "Stephanie Morrison",
-        job_title: "President & Founder",
-        img_url: "stephanie.png"\
-      ) do |c|
-        - c.with_biography do
-          p class="mb-3 text-gray-2"
-            ' Stephanie Morrison's immersion in the nonprofit world spans many decades, locations and experiences - as
-            ' a beneficiary of services, volunteer, donor, supporter, intern with nonprofits as well as a nonprofit
-            ' consulting firm, and as a lawyer connecting people to nonprofits. Her passion for helping others began at
-            ' an early age growing up in the small town of Cape May, NJ. Her focus on community based initiatives developed
-            ' during high school as the Lieutenant Governor of Division 1 then District Governor for the New Jersey District
-            ' of Key Club International.
-            span data-read-more-target="dots"...
-            span data-read-more-target="collapsableText" class="hidden"
-              br
-              br
-              ' She graduated from Stanford University with a B.A. in Political Science in 2011. For years during and after
-              ' college, Stephanie facilitated writing workshops at the local juvenile hall through The Beat Within. She also
-              ' served as Overall Director for Stanford Dance Marathon and a JusticeCorps' member volunteering weekly with the
-              ' Family Law Facilitator's Office during her senior year. In the summer, she worked for Changing Our World advising
-              ' nonprofits in the New York area in addition to interning with the Christopher & Dana Reeve Foundation. Following
-              ' graduation, she volunteered with the California Innocence Project in San Diego before going on to work as a Legal
-              ' Assistant for the Patents Team at Google Inc. for nearly three years. While at Google, she volunteered her time with
-              ' Google Corps and as the Dress Committee Co-Chair with the Princess Project.
-              br
-              br
-              ' Stephanie spent her 1L year at Tulane University Law School in New Orleans, LA, where she volunteered with
-              ' the Tulane Legal Assistance Program as well as with the Orleans Public Defenders during her first summer.
-              ' She transferred to Vanderbilt University Law School in 2015 and immediately started interning with
-              ' the Nashville Defenders. While attending law school, she participated in the Actual Innocence Practicum
-              ' and was recognized by the Tennessee Supreme Court for completing over 120 hours of pro bono work.
-              ' She received her J.D. from Vanderbilt University in May 2017 and became licensed to practice law
-              ' in Tennessee in October 2017.
-              br
-              br
-              ' Stephanie immediately began her career as an Assistant Public Defender at the Nashville Defenders Office
-              ' in Nashville, TN. Life as a public defender was marked by chronic stress and constant exposure to secondary trauma.
-              ' Poverty, systemic racism, homelessness, mental health, addiction, immigration concerns, sexual trauma, childhood
-              ' trauma and physical violence were among the list of issues facing each client navigating the criminal justice system.
-              ' The tragedy and devastation felt by communities surviving poverty was unbearable to witness. It became clear during
-              ' this time that she had to bring Giving Connection to life and disrupt the status quo.
-              br
-              br
-              ' When the pandemic intensified in June 2020, Stephanie decided to move back home to help her mother care for
-              ' her Aunt Fran who has Williams Syndrome. She traded a perpetual cycle of stress and productivity-obsessed
-              ' life battling an inherently unjust system for a life of endless joy and limitless creativity serving
-              ' as Fran’s full-time caregiver and Direct Support Professional through Easter Seals of NJ. Together,
-              ' Fran and Stephanie created a 10 episode podcast called "Fran Says Podcast" as well as a children's book,
-              ' "Super Fran!" all of which can be found at
-              a href="http://fransayspodcast.com/" class="underline text-blue-medium"
-                | Fransayspodcast.com.
-              br
-              br
-              ' Alongside her relentless pursuit of kindness and connection, Stephanie's passions include any activity
-              ' on or near the water, traveling, health & wellness, country music, and spending time with her family and friends.
-              br
-          a data-read-more-target="readMoreButton" data-action="read-more#toggleVisibility" class="font-bold cursor-pointer text-blue-medium" Read More
+    
+    div class="flex flex-col justify-center w-full max-w-5xl text-center lg:flex-row lg:justify-around pb-14"
+      p class="text-gray-2"
+        ' Our strength lies in the people behind the mission. 
+        | Our team brings together individuals from diverse backgrounds including 
+        | product development, sales, engineering, law, nonprofit leadership, 
+        | partnerships, and management, all united by a shared commitment to building stronger communities.
+    div class="flex flex-wrap justify-center max-w-4xl"
+      div class="w-full max-w-4xl px-4 sm:w-1/2"
+        = render BioCard::Component.new(\
+          name: "Stephanie (Morrison) Platt",
+          job_title: "President & Founder",
+          img_url: "stephanie.png"\
+        ) do |c|
+          - c.with_biography do
+            p class="mb-3 text-gray-2"
+              ' Stephanie (Morrison) Platt’s lifelong commitment to social impact has taken shape across decades, geographies, 
+              ' and roles, first as a beneficiary of nonprofit services, and later as a volunteer, donor, supporter, consultant, 
+              ' public interest lawyer, and now, as the visionary founder of <i>Giving Connection</i>. Her passion for helping others 
+              ' began in the small town of Cape May, NJ and deepened through hands-on leadership in high school as Lieutenant 
+              ' Governor and then District Governor for the New Jersey District of Key Club International, where she helped 
+              ' raise over $125,000 for global causes.
+              span data-read-more-target="dots"...
+              span data-read-more-target="collapsableText" class="hidden"
+                br
+                br
+                ' She went on to graduate from Stanford University with a B.A. in Political Science, where her commitment to 
+                ' service and justice flourished. At Stanford, she led <i>The Beat Within</i> writing workshops for incarcerated youth, 
+                ' served as Overall Director for the university’s largest student-run fundraiser, Dance Marathon, and volunteered 
+                ' with JusticeCorps at the Family Law Facilitator’s Office. Her summers were equally mission-driven as she interned 
+                ' with the Christopher & Dana Reeve Foundation, advising nonprofits with Changing Our World, and later volunteering 
+                ' with the California Innocence Project in San Diego.
+                br
+                br
+                ' After college, Stephanie joined the patents team at Google, where she sharpened her legal acumen while volunteering 
+                ' with Google Corps and co-chairing the Princess Project’s Dress Committee. But the call to justice pulled her in another 
+                ' direction. She began law school at Tulane, volunteering with the Tulane Legal Assistance Program and the Orleans Public 
+                ' Defenders, then transferred to Vanderbilt University Law School. There, she interned with the Nashville Defenders, 
+                ' joined the Actual Innocence Practicum, and completed over 120 hours of pro bono work which earned recognition from 
+                ' the Tennessee Supreme Court.
+                br
+                br
+                ' In 2017, she officially became an Assistant Public Defender at the Nashville Defenders Office. The work was urgent 
+                ' and relentless. Each day brought cases tied to poverty, mental illness, addiction, systemic racism, housing insecurity, 
+                ' and trauma. Stephanie stood at the frontlines of an overwhelmed system and saw the devastating consequences of disconnection 
+                ' with people unable to find the help they desperately needed. That experience planted the seeds of <i>Giving Connection</i>, a platform 
+                ' built to disrupt the status quo and ensure no one in crisis has to navigate it alone.
+                br
+                br
+                ' When the COVID-19 pandemic hit, Stephanie stepped away from law to return home and care for her beloved Aunt Fran, 
+                ' who has Williams Syndrome. That move changed everything. What began as caregiving evolved into creative partnership. 
+                ' Together, they launched the <i>Fran Says Podcast</i> and co-wrote a children’s book, <i>Super Fran!</i>. Inspired by Fran’s joy, 
+                ' curiosity, and fierce spirit, Stephanie turned her vision for <i>Giving Connection</i> into a reality—a nonprofit that connects 
+                ' people with nonprofits using a free, easy-to-use search platform centered on human dignity and community voice.
+                br
+                br
+                ' Stephanie is an alumna of the <a href="https://csis.upenn.edu/residential-program/gsih/" class="font-bold transition duration-300 hover:font-extrabold hover:text-blue-950">2023 Global Social Impact House</a> in Costa Rica through the University of Pennsylvania’s Center 
+                ' for Social Impact Strategy and the <a href="https://www.linkedin.com/posts/kat-esser-15327014_socialimpact-healthtech-globalhealth-activity-7326019623269642242-cGNE?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAeuWmYBcvTRmsdeyBvu5r7Ep30vBKiIp_A" class="font-bold transition duration-300 hover:font-extrabold hover:text-blue-950">2025 AWS & Deloitte Social Entrepreneur Accelerator</a> in Cape Town, South Africa. 
+                ' Her work and personal story have been featured in <a href="https://www.nytimes.com/2024/12/27/style/stephanie-morrison-scott-platt-wedding.html" class="font-medium transition duration-300 font-italic hover:text-blue-950">The New York Times</a>, where her rain-drenched Hawaiian wedding with Fran by 
+                ' her side drew national attention to the heart behind <i>Giving Connection</i>. In 2025, she was named a recipient of <a href="https://sjmagazine.net/featured/2025-women-of-excellence" class="font-medium transition duration-300 font-italic hover:text-blue-950"> SJ Magazine’s Women of Excellence Inspiration Award</a>.
+                br
+                br
+                ' Stephanie’s work is powered by deep empathy, bold innovation, and a refusal to accept broken systems as immovable. 
+                ' When she’s not working to grow <i>Giving Connection</i>, you’ll find her near the water, exploring new places, singing along 
+                ' to country music, and soaking up every moment with her husband, friends, and family—especially Fran.
+                br
+            a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+          end
         end
-      end
 
-    div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
-      = render BioCard::Component.new(\
-        name: "Emily Longfellow",
-        job_title: "Vice President",
-        img_url: "emily.png"\
-      ) do |c|
-        - c.with_biography do
-          p class="mb-3 text-gray-2"
-            ' Emily Longfellow has made it her lifelong mission to help people live happier and healthier
-            ' lives. Her focus on balancing physical, mental, emotional and spiritual health makes her a
-            ' dynamic leader in the health & wellness space as well as in her many roles in the community.
-            ' Growing up in St. Louis and Oklahoma City, Emily remained heavily involved in many types and
-            ' levels of athletics. From gymnastics to field hockey, lacrosse to cheerleading, Emily's
-            ' dedication to physical health mirrored her commitment to the pursuit of knowledge in the
-            ' classroom. She was selected to attend Stanford University and spent her freshman year
-            ' as a member of the cheerleading squad.
-            span data-read-more-target="dots" class=""...
-            span data-read-more-target="collapsableText" class="hidden"
-              ' Throughout her undergrad experience, she volunteered
-              ' with the Stanford Health Corp, where she designed lesson plans and taught 5th graders about
-              ' health and wellness in low socioeconomic schools. She also acted as President of the Beta Eta
-              ' Deuteron chapter of Kappa Kappa Gamma during her senior year, consistently encouraging her
-              ' peers to stay active and make mental health a priority.
-              br
-              br
-              ' Emily graduated from Stanford University in 2011 with a B.A. in American Studies. She later
-              ' went on to receive a Credential of Readiness from the Harvard Business School. Emily has spent
-              ' time working in politics and teaching at a local high school in Oklahoma. She also employed her
-              ' leadership skills as a coach for high school and middle school lacrosse, field hockey, and cheerleading.
-              ' She volunteered with Girls on the Run promoting girl empowerment by teaching life skills through
-              ' lessons and running. Emily understands the importance of community based initiatives as a way
-              ' to change the world by helping one person at a time.
-              br
-              br
-              ' For the last decade, she has devoted her career to employee wellness, helping companies of all sizes, 
-              ' from local small businesses to global Fortune 50’s, to find digital health and wellbeing solutions to 
-              ' fit their population health and business goals. Most recently, Emily has taken on a fractional growth role 
-              ' at a San Francisco-based fintech company, and started Bloom Ambition, a speaking, coaching, and special 
-              ' events company for high-performing women. She is a multi-passionate entrepreneur, dedicated fitness fanatic, 
-              ' healthy meal advocate, and positive psychology enthusiast. But even with all her many successes and accomplishments, 
-              ' Emily's favorite role of all is of course as mom. She lives in Oklahoma City with her husband, three young sons, and two dogs.
-          a data-read-more-target="readMoreButton" data-action="read-more#toggleVisibility" class="font-bold cursor-pointer text-blue-medium" Read More
+      div class="w-full max-w-4xl px-4 sm:w-1/2"
+        = render BioCard::Component.new(\
+          name: "Emily Longfellow",
+          job_title: "Vice President",
+          img_url: "emily.png"\
+        ) do |c|
+          - c.with_biography do
+            p class="mb-3 text-gray-2"
+              ' Emily Longfellow has made it her lifelong mission to help people live happier and healthier
+              ' lives. Her focus on balancing physical, mental, emotional and spiritual health makes her a
+              ' dynamic leader in the health & wellness space as well as in her many roles in the community.
+              ' Growing up in St. Louis and Oklahoma City, Emily remained heavily involved in many types and
+              ' levels of athletics. From gymnastics to field hockey, lacrosse to cheerleading, Emily's
+              ' dedication to physical health mirrored her commitment to the pursuit of knowledge in the
+              ' classroom. She was selected to attend Stanford University and spent her freshman year
+              ' as a member of the cheerleading squad.
+              span data-read-more-target="dots" class=""...
+              span data-read-more-target="collapsableText" class="hidden"
+                ' Throughout her undergrad experience, she volunteered
+                ' with the Stanford Health Corp, where she designed lesson plans and taught 5th graders about
+                ' health and wellness in low socioeconomic schools. She also acted as President of the Beta Eta
+                ' Deuteron chapter of Kappa Kappa Gamma during her senior year, consistently encouraging her
+                ' peers to stay active and make mental health a priority.
+                br
+                br
+                ' Emily graduated from Stanford University in 2011 with a B.A. in American Studies. She later
+                ' went on to receive a Credential of Readiness from the Harvard Business School. Emily has spent
+                ' time working in politics and teaching at a local high school in Oklahoma. She also employed her
+                ' leadership skills as a coach for high school and middle school lacrosse, field hockey, and cheerleading.
+                ' She volunteered with Girls on the Run promoting girl empowerment by teaching life skills through
+                ' lessons and running. Emily understands the importance of community based initiatives as a way
+                ' to change the world by helping one person at a time.
+                br
+                br
+                ' For the last decade, she has devoted her career to employee wellness, helping companies of all sizes, 
+                ' from local small businesses to global Fortune 50’s, to find digital health and wellbeing solutions to 
+                ' fit their population health and business goals. Most recently, Emily has taken on a fractional growth role 
+                ' at a San Francisco-based fintech company, and started Bloom Ambition, a speaking, coaching, and special 
+                ' events company for high-performing women. She is a multi-passionate entrepreneur, dedicated fitness fanatic, 
+                ' healthy meal advocate, and positive psychology enthusiast. But even with all her many successes and accomplishments, 
+                ' Emily's favorite role of all is of course as mom. She lives in Oklahoma City with her husband, three young sons, and two dogs.
+            a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+          end
         end
-      end
 
-    div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
-      = render BioCard::Component.new(\
-        name: "Erikka Moreno",
-        job_title: "Secretary",
-        img_url: "erikka.png"\
-      ) do |c|
-        - c.with_biography do
-          p class="mb-3 text-gray-2"
-            ' Erikka has a diverse background encompassing education, nonprofit work, and corporate leadership development. 
-            ' She graduated in 2011 from Stanford University with a degree in Human Biology. She later went on to receive a 
-            ' Credential of Readiness with honors from the Harvard Business School. After graduation, Erikka began her career 
-            ' with HealthCorps, a nonprofit founded by Dr. Oz and his wife with a mission to empower youth to live healthier 
-            ' and happier lives. She spent two years teaching at a high school in East Los Angeles, CA where she was immersed 
-            ' in the daily struggles facing her students. While her primary responsibility was to educate students about nutrition, 
-            ' physical activity, and mental resilience, Erikka found her greatest role was empowering students to discover their
-            ' own unique abilities and to be successful in their individual paths.
-            span data-read-more-target="dots" class=""...
-            span data-read-more-target="collapsableText" class="hidden"
-              br
-              br
-              ' Erikka’s teaching experience inspired her to move across the country to Boston, MA in order to begin her role working 
-              ' for Reebok Foundation’s nonprofit called BOKS (Build Our Kids' Success). As a grassroots program, BOKS provides 
-              ' curriculum, support, and training to school and youth organizations across the world, with the main goal of helping 
-              ' kids live happier and healthier lives. Erikka held a variety of roles during her six years with BOKS. From running 
-              ' the program herself to creating local and national outreach strategies to leading the development of all digital tools, 
-              ' Erikka saw first-hand the meaningful impact this program has had on youth all over the country. 
-              br
-              br
-              ' Erikka is currently the Director of Partnerships at Lean In Girls, expanding the program's reach by collaborating 
-              ' with schools, nonprofits, and youth-based organizations. She remains committed to making a positive impact on 
-              ' young lives, with a current focus on empowering girls and building leadership skills through Lean In Girls.
-              br
-              br
-              ' Erikka resides in Boston, MA with her fiancé, Steve, and 4 year old golden retriever, Lola.
-          a data-read-more-target="readMoreButton" data-action="read-more#toggleVisibility" class="font-bold cursor-pointer text-blue-medium" Read More
+      div class="w-full max-w-4xl px-4 sm:w-1/2"
+        = render BioCard::Component.new(\
+          name: "Erikka Huntzinger",
+          job_title: "Secretary",
+          img_url: "erikka.png"\
+        ) do |c|
+          - c.with_biography do
+            p class="mb-3 text-gray-2"
+              ' Erikka has a diverse background encompassing education, nonprofit work, and corporate leadership development. 
+              ' She graduated in 2011 from Stanford University with a degree in Human Biology. She later went on to receive a 
+              ' Credential of Readiness with honors from the Harvard Business School. After graduation, Erikka began her career 
+              ' with HealthCorps, a nonprofit founded by Dr. Oz and his wife with a mission to empower youth to live healthier 
+              ' and happier lives. She spent two years teaching at a high school in East Los Angeles, CA where she was immersed 
+              ' in the daily struggles facing her students. While her primary responsibility was to educate students about nutrition, 
+              ' physical activity, and mental resilience, Erikka found her greatest role was empowering students to discover their
+              ' own unique abilities and to be successful in their individual paths.
+              span data-read-more-target="dots" class=""...
+              span data-read-more-target="collapsableText" class="hidden"
+                br
+                br
+                ' Erikka’s teaching experience inspired her to move across the country to Boston, MA in order to begin her role working 
+                ' for Reebok Foundation’s nonprofit called BOKS (Build Our Kids' Success). As a grassroots program, BOKS provides 
+                ' curriculum, support, and training to school and youth organizations across the world, with the main goal of helping 
+                ' kids live happier and healthier lives. Erikka held a variety of roles during her six years with BOKS. From running 
+                ' the program herself to creating local and national outreach strategies to leading the development of all digital tools, 
+                ' Erikka saw first-hand the meaningful impact this program has had on youth all over the country. 
+                br
+                br
+                ' Erikka is currently the Director of Partnerships at Lean In Girls, expanding the program's reach by collaborating 
+                ' with schools, nonprofits, and youth-based organizations. She remains committed to making a positive impact on 
+                ' young lives, with a current focus on empowering girls and building leadership skills through Lean In Girls.
+                br
+                br
+                ' Erikka resides in Boston, MA with her fiancé, Steve, and 4 year old golden retriever, Lola.
+            a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+          end
         end
-      end
 
-    div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
-      = render BioCard::Component.new(\
-        name: "Gail Wilsey-Morrison",
-        job_title: "Treasurer",
-        img_url: "gail.png"\
-      ) do |c|
-        - c.with_biography do
-          p class="mb-3 text-gray-2"
-            ' Gail Wilsey-Morrison’s passion in life is serving her family, friends, and community. 
-            ' Growing up in the small resort town of Cape May as the daughter of two teachers, the stage 
-            ' was set for a life full of compassion, love, and a desire to make the world a better place. 
-            ' Her greatest accomplishment is her daughter, Stephanie Morrison, Founder and President of Giving Connection. 
-            ' Gail was a single parent since Steph was 10 months old and their journey was filled with struggles, 
-            ' success, and most importantly JOY!
-            span data-read-more-target="dots" class=""...
-            span data-read-more-target="collapsableText" class="hidden"
-              br
-              br
-              ' Gail spent her first two years at Springfield College then transferred to the University of Colorado where
-              ' she graduated with a B.S. in Physical Education and Community Recreation. She was a Collegiate gymnast
-              ' which helped develop her integrity, sportsmanship, work ethic, and competitiveness that she has carried
-              ' into the everyday aspect of her personal and professional life. After years of various restaurant positions
-              ' in Hawaii and Seattle, Gail benefited from a ten year position as a customer service representative for
-              ' Alaska Airlines. Not only did the position train her in invaluable people skills but it allowed her to
-              ' travel with Stephanie to many parts of the United States that she would not have been able to see. In 1998,
-              ' Gail moved home to Cape May and entered into the real estate market at Century 21. Gail's instant success
-              ' in the industry has been acknowledged with her induction into the Million Dollar Club in 2000 and 2001
-              ' and membership into the Circle of Excellence from 2002 to 2008, 2010 to 2023.
-              br
-              br
-              ' Gail recognized the need for a client-centered approach to delivering real estate service and decided to open
-              ' the doors of Wilsey Realty in April 2005. In December 2006, she unveiled her beautifully renovated, centrally
-              ' located office, which was the winner of the Renovation Award from the Historic Preservation Commission in 2006.
-              ' For over a decade, Gail and her team of talented agents were a driving force in the Cape May real estate market.
-              ' Gail's belief in providing top notch customer service and harnessing technology to connect clients to their real
-              ' estate needs led to her decision to merge with Long & Foster in February 2016. The combination of the "Wilsey 
-              ' Difference" with the tools, technology, and mission of Long & Foster helped her consistently become a top agent 
-              ' in Cape May.
-              br
-              br
-              ' Outside her real estate responsibilities, Gail remains a well-respected member of the community and a leader
-              ' amongst her peers. She has been a member of the Corinthian Yacht Club of Cape May for 60+ years and has served 
-              ' as Membership Chairman for over two decades. She formerly served on the Board of Directors of Cape May
-              ' Stage for nine years, including as President from 2012-2013. She also coached gymnastics at Joanne Reagan
-              ' Dance Studios for many years. Her most important roles remain mother to her daughter, Stephanie Morrison,
-              ' and caretaker to her sister, Frances Wilsey, who has Williams Syndrome. Her reputation for kindness and
-              ' consideration within the Cape May community has fostered strong relationships characterized by mutual
-              ' admiration, respect and care. Gail was honored with the 2022 Arthur T. Birsh Supporter of the Year Award for her 
-              ' service and dedication to Giving Connection. She is excited about the growth of Giving Connection and looks forward 
-              ' to continuing her support for this well needed non-profit!
-          a data-read-more-target="readMoreButton" data-action="read-more#toggleVisibility" class="font-bold cursor-pointer text-blue-medium" Read More
+      div class="w-full max-w-4xl px-4 sm:w-1/2"
+        = render BioCard::Component.new(\
+          name: "Gail Wilsey-Morrison",
+          job_title: "Treasurer",
+          img_url: "gail.png"\
+        ) do |c|
+          - c.with_biography do
+            p class="mb-3 text-gray-2"
+              ' Gail Wilsey-Morrison’s passion in life is serving her family, friends, and community. 
+              ' Growing up in the small resort town of Cape May as the daughter of two teachers, the stage 
+              ' was set for a life full of compassion, love, and a desire to make the world a better place. 
+              ' Her greatest accomplishment is her daughter, Stephanie Morrison, Founder and President of Giving Connection. 
+              ' Gail was a single parent since Steph was 10 months old and their journey was filled with struggles, 
+              ' success, and most importantly JOY!
+              span data-read-more-target="dots" class=""...
+              span data-read-more-target="collapsableText" class="hidden"
+                br
+                br
+                ' Gail spent her first two years at Springfield College then transferred to the University of Colorado where
+                ' she graduated with a B.S. in Physical Education and Community Recreation. She was a Collegiate gymnast
+                ' which helped develop her integrity, sportsmanship, work ethic, and competitiveness that she has carried
+                ' into the everyday aspect of her personal and professional life. After years of various restaurant positions
+                ' in Hawaii and Seattle, Gail benefited from a ten year position as a customer service representative for
+                ' Alaska Airlines. Not only did the position train her in invaluable people skills but it allowed her to
+                ' travel with Stephanie to many parts of the United States that she would not have been able to see. In 1998,
+                ' Gail moved home to Cape May and entered into the real estate market at Century 21. Gail's instant success
+                ' in the industry has been acknowledged with her induction into the Million Dollar Club in 2000 and 2001
+                ' and membership into the Circle of Excellence from 2002 to 2008, 2010 to 2023.
+                br
+                br
+                ' Gail recognized the need for a client-centered approach to delivering real estate service and decided to open
+                ' the doors of Wilsey Realty in April 2005. In December 2006, she unveiled her beautifully renovated, centrally
+                ' located office, which was the winner of the Renovation Award from the Historic Preservation Commission in 2006.
+                ' For over a decade, Gail and her team of talented agents were a driving force in the Cape May real estate market.
+                ' Gail's belief in providing top notch customer service and harnessing technology to connect clients to their real
+                ' estate needs led to her decision to merge with Long & Foster in February 2016. The combination of the "Wilsey 
+                ' Difference" with the tools, technology, and mission of Long & Foster helped her consistently become a top agent 
+                ' in Cape May.
+                br
+                br
+                ' Outside her real estate responsibilities, Gail remains a well-respected member of the community and a leader
+                ' amongst her peers. She has been a member of the Corinthian Yacht Club of Cape May for 60+ years and has served 
+                ' as Membership Chairman for over two decades. She formerly served on the Board of Directors of Cape May
+                ' Stage for nine years, including as President from 2012-2013. She also coached gymnastics at Joanne Reagan
+                ' Dance Studios for many years. Her most important roles remain mother to her daughter, Stephanie Morrison,
+                ' and caretaker to her sister, Frances Wilsey, who has Williams Syndrome. Her reputation for kindness and
+                ' consideration within the Cape May community has fostered strong relationships characterized by mutual
+                ' admiration, respect and care. Gail was honored with the 2022 Arthur T. Birsh Supporter of the Year Award for her 
+                ' service and dedication to Giving Connection. She is excited about the growth of Giving Connection and looks forward 
+                ' to continuing her support for this well needed non-profit!
+            a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+          end
         end
-      end
 
-    div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
-      = render BioCard::Component.new(\
-        name: "Kelly McNabb",
-        job_title: "Trustee",
-        img_url: "kelly.png"\
-      ) do |c|
-        - c.with_biography do
-          p class="mb-3 text-gray-2"
-            ' Kelly earned her Bachelor’s degree in Human Biology from Stanford University,
-            ' where she was granted Phi Beta Kappa honors.
-            br
-            br
-            ' After graduation, she joined Teach for America in Colorado as a math teacher. Teaching in some of the nation’s
-            ' lowest-income schools, Kelly witnessed pervasive and vast inequities firsthand. Many of her students and their
-            ' parents struggled to make ends meet in a system that unfairly disadvantaged them. This ignited a deep desire
-            ' in Kelly to help others. During her tenure as a teacher, Kelly also earned her Masters in Education at the
-            ' University of Colorado, majoring in Urban Leadership.
-            span data-read-more-target="dots" class=""...
-            span data-read-more-target="collapsableText" class="hidden"
+      div class="w-full max-w-4xl px-4 sm:w-1/2"
+        = render BioCard::Component.new(\
+          name: "Kelly McNabb",
+          job_title: "Trustee",
+          img_url: "kelly.png"\
+        ) do |c|
+          - c.with_biography do
+            p class="mb-3 text-gray-2"
+              ' Kelly earned her Bachelor’s degree in Human Biology from Stanford University,
+              ' where she was granted Phi Beta Kappa honors.
               br
               br
-              ' After her term in the Teach for America corps, Kelly transitioned to a long career Dropbox, where she still
-              ' works today. She spent her first four years as an Account Executive, working with educational institutions as
-              ' they implemented Dropbox on their campuses. She then transitioned into various other roles, eventually landing as a Product Manager.
-              br
-              br
-              ' In her spare time, Kelly helped found Dropbox’s Social Impact branch. She served on Dropbox’s first two Grant
-              ' Allocation Committees, selecting the first nonprofits to receive large grants from the new Social Impact fund.
-              ' These nonprofits would become long-standing partners for Dropbox.
-              br
-              br
-              ' Most notably, Kelly helped to establish the Dropbox product donation program, of which she has been the manager
-              ' for the last six years. Since its inception, this program has donated over forty-thousand licenses to two-thousand
-              ' nonprofits around the world. Kelly has had a hand in facilitating each of these donations.
-          a data-read-more-target="readMoreButton" data-action="read-more#toggleVisibility" class="font-bold cursor-pointer text-blue-medium" Read More
+              ' After graduation, she joined Teach for America in Colorado as a math teacher. Teaching in some of the nation’s
+              ' lowest-income schools, Kelly witnessed pervasive and vast inequities firsthand. Many of her students and their
+              ' parents struggled to make ends meet in a system that unfairly disadvantaged them. This ignited a deep desire
+              ' in Kelly to help others. During her tenure as a teacher, Kelly also earned her Masters in Education at the
+              ' University of Colorado, majoring in Urban Leadership.
+              span data-read-more-target="dots" class=""...
+              span data-read-more-target="collapsableText" class="hidden"
+                br
+                br
+                ' After her term in the Teach for America corps, Kelly transitioned to a long career Dropbox, where she still
+                ' works today. She spent her first four years as an Account Executive, working with educational institutions as
+                ' they implemented Dropbox on their campuses. She then transitioned into various other roles, eventually landing as a Product Manager.
+                br
+                br
+                ' In her spare time, Kelly helped found Dropbox’s Social Impact branch. She served on Dropbox’s first two Grant
+                ' Allocation Committees, selecting the first nonprofits to receive large grants from the new Social Impact fund.
+                ' These nonprofits would become long-standing partners for Dropbox.
+                br
+                br
+                ' Most notably, Kelly helped to establish the Dropbox product donation program, of which she has been the manager
+                ' for the last six years. Since its inception, this program has donated over forty-thousand licenses to two-thousand
+                ' nonprofits around the world. Kelly has had a hand in facilitating each of these donations.
+            a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+          end
         end
-      end
 
-    div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
-      = render BioCard::Component.new(\
-        name: "Makala Kaupalolo",
-        job_title: "Trustee",
-        img_url: "makala.png"\
-      ) do |c|
-        - c.with_biography do
-          p class="mb-3 text-gray-2"
-            ' Born and raised in Maui, Hawaii, Makala attended Stanford University, where she was involved in a variety of
-            ' volunteer and student activities. She served as President of Project Dosti, through which she volunteered at
-            ' a school in rural India. Makala also served as a volunteer teacher in Bali, Indonesia and studied abroad
-            ' in Beijing.
-            br
-            br
-            ' Makala’s interest in law developed during her time at Stanford. She volunteered with JusticeCorps
-            ' in San Mateo County, CA where she assisted attorneys providing legal services at the Family
-            ' Law Facilitator’s Office. She worked with self-represented litigants as they navigated the legal
-            ' system during some of their most difficult experiences including domestic violence and child custody issues.
-            ' Following graduation, Makala worked as a Legal Assistant for the Competition/Antitrust team at Google Inc. in Mountain View, CA.
-            span data-read-more-target="dots" class=""...
-            span data-read-more-target="collapsableText" class="hidden"
+      div class="w-full max-w-4xl px-4 sm:w-1/2"
+        = render BioCard::Component.new(\
+          name: "Makala Kaupalolo",
+          job_title: "Trustee",
+          img_url: "makala.png"\
+        ) do |c|
+          - c.with_biography do
+            p class="mb-3 text-gray-2"
+              ' Born and raised in Maui, Hawaii, Makala attended Stanford University, where she was involved in a variety of
+              ' volunteer and student activities. She served as President of Project Dosti, through which she volunteered at
+              ' a school in rural India. Makala also served as a volunteer teacher in Bali, Indonesia and studied abroad
+              ' in Beijing.
               br
               br
-              ' Makala graduated from Harvard Law School in 2017. Since then, she has worked in New York City and Palo Alto as an Associate at 
-              ' Skadden, Arps, Slate, Meagher & Flom LLP in the Financial Institutions Group (Mergers and Acquisitions).
-          a data-read-more-target="readMoreButton" data-action="read-more#toggleVisibility" class="font-bold cursor-pointer text-blue-medium" Read More
+              ' Makala’s interest in law developed during her time at Stanford. She volunteered with JusticeCorps
+              ' in San Mateo County, CA where she assisted attorneys providing legal services at the Family
+              ' Law Facilitator’s Office. She worked with self-represented litigants as they navigated the legal
+              ' system during some of their most difficult experiences including domestic violence and child custody issues.
+              ' Following graduation, Makala worked as a Legal Assistant for the Competition/Antitrust team at Google Inc. in Mountain View, CA.
+              span data-read-more-target="dots" class=""...
+              span data-read-more-target="collapsableText" class="hidden"
+                br
+                br
+                ' Makala graduated from Harvard Law School in 2017. Since then, she has worked in New York City and Palo Alto as an Associate at 
+                ' Skadden, Arps, Slate, Meagher & Flom LLP in the Financial Institutions Group (Mergers and Acquisitions).
+            a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+          end
         end
-      end
 
-    div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
-      = render BioCard::Component.new(\
-        name: "Karen Mainolfi",
-        job_title: "Trustee",
-        img_url: "karen2.png"\
-      ) do |c|
-        - c.with_biography do
-          p class="mb-3 text-gray-2"
-            ' Karen was born and raised in Montgomery, Ohio, but spent several years of her early childhood in Kobe, Japan.
-            ' Arriving not knowing the culture or language, she quickly learned the value of openness and humility, and the
-            ' fundamental principle that different is not wrong, it's just different.
-            ' While Karen and her family returned to the US shortly after the Great Hanshin earthquake, the experiences her family had in the aftermath
-            ' of the disaster highlighted the powerful impact of charitable outreach and support.
-            span data-read-more-target="dots" class=""...
-            span data-read-more-target="collapsableText" class="hidden"
-              br
-              br
-              ' Karen led a very active and community based childhood, where activities like undokai ('un-doh-kye') in Japan
-              ' and enrollment in sports and afterschool programs in the US built the foundation for her enthusiasm for health
-              ' and civic responsibility. But it wasn’t until high school that she had a striking realization of what she wanted
-              ' to do in her future. At a school-wide assembly watching a drug and alcohol awareness video, Karen was struck
-              ' by the image of a teenage girl, who was the victim of a drinking and driving accident, putting on eyeshadow
-              ' with a prosthetic arm. In that moment she remembers thinking, “That’s what I want to do. I want to make
-              ' things that help people live their version of life as normal.”
-              br
-              br
-              ' Karen carried this passion and her academic and athletic accomplishments to Stanford University, where she was
-              ' offered admittance onto their Varsity Lacrosse Team and focused her studies on design and human anatomy.
-              ' Being an NCAA student athlete throughout college helped define her sense of integrity, teamwork, work ethic,
-              ' and accountability that she strives to embody in all facets of her life. Karen was also fortunate enough to have
-              ' been surrounded by many strong, confident, and empowering women as a member of the Beta Eta Deuteron chapter of
-              ' Kappa Kappa Gamma, several of which she is serving alongside as a Trustee for Giving Connection. She graduated
-              ' in 2011 with a degree in Biomechanical Engineering and later in 2013 with a Master of Science in Mechanical
-              ' Engineering, with an emphasis in mechatronics.
-              br
-              br
-              ' After graduation, Karen moved to Southern California and worked for 5 years at Beckman Coulter, a medical 
-              ' diagnostics company advancing and optimizing patient laboratory care. Eager to more directly and tangibly 
-              ' impact patients, in 2017 Karen accepted a position at Edwards Lifesciences, a company dedicated to providing 
-              ' innovative solutions for people fighting cardiovascular heart disease. This, as she later found out, 
-              ' was a fortuitous move to a company whose original founder set out to build the first artificial heart, 
-              ' which she wrote a paper on during senior year of high school. It is also coincidental (or is it not?) 
-              ' that her ankle tattoo, the Japanese symbol 心 (kokoro) meaning “heart and spirit and soul and mind all together”, 
-              ' is one of three Japanese words for “heart”. Karen feels blessed to be a part of an incredibly talented, 
-              ' passionately patient focused team, developing cutting edge mitral and tricuspid valve regurgitation 
-              ' therapies to help suffering patients live longer, healthier, and more productive lives – exactly what she set
-              '  out to do during that one defining assembly in high school.
-              br
-              br
-              ' Karen still resides in Southern California with her husband, Phil, and two cats, Clyde and Eugene.
-          a data-read-more-target="readMoreButton" data-action="read-more#toggleVisibility" class="font-bold cursor-pointer text-blue-medium" Read More
+      div class="w-full max-w-4xl px-4 sm:w-1/2"
+        = render BioCard::Component.new(\
+          name: "Karen Mainolfi",
+          job_title: "Trustee",
+          img_url: "karen2.png"\
+        ) do |c|
+          - c.with_biography do
+            p class="mb-3 text-gray-2"
+              ' Karen was born and raised in Montgomery, Ohio, but spent several years of her early childhood in Kobe, Japan.
+              ' Arriving not knowing the culture or language, she quickly learned the value of openness and humility, and the
+              ' fundamental principle that different is not wrong, it's just different.
+              ' While Karen and her family returned to the US shortly after the Great Hanshin earthquake, the experiences her family had in the aftermath
+              ' of the disaster highlighted the powerful impact of charitable outreach and support.
+              span data-read-more-target="dots" class=""...
+              span data-read-more-target="collapsableText" class="hidden"
+                br
+                br
+                ' Karen led a very active and community based childhood, where activities like undokai ('un-doh-kye') in Japan
+                ' and enrollment in sports and afterschool programs in the US built the foundation for her enthusiasm for health
+                ' and civic responsibility. But it wasn’t until high school that she had a striking realization of what she wanted
+                ' to do in her future. At a school-wide assembly watching a drug and alcohol awareness video, Karen was struck
+                ' by the image of a teenage girl, who was the victim of a drinking and driving accident, putting on eyeshadow
+                ' with a prosthetic arm. In that moment she remembers thinking, “That’s what I want to do. I want to make
+                ' things that help people live their version of life as normal.”
+                br
+                br
+                ' Karen carried this passion and her academic and athletic accomplishments to Stanford University, where she was
+                ' offered admittance onto their Varsity Lacrosse Team and focused her studies on design and human anatomy.
+                ' Being an NCAA student athlete throughout college helped define her sense of integrity, teamwork, work ethic,
+                ' and accountability that she strives to embody in all facets of her life. Karen was also fortunate enough to have
+                ' been surrounded by many strong, confident, and empowering women as a member of the Beta Eta Deuteron chapter of
+                ' Kappa Kappa Gamma, several of which she is serving alongside as a Trustee for Giving Connection. She graduated
+                ' in 2011 with a degree in Biomechanical Engineering and later in 2013 with a Master of Science in Mechanical
+                ' Engineering, with an emphasis in mechatronics.
+                br
+                br
+                ' After graduation, Karen moved to Southern California and worked for 5 years at Beckman Coulter, a medical 
+                ' diagnostics company advancing and optimizing patient laboratory care. Eager to more directly and tangibly 
+                ' impact patients, in 2017 Karen accepted a position at Edwards Lifesciences, a company dedicated to providing 
+                ' innovative solutions for people fighting cardiovascular heart disease. This, as she later found out, 
+                ' was a fortuitous move to a company whose original founder set out to build the first artificial heart, 
+                ' which she wrote a paper on during senior year of high school. It is also coincidental (or is it not?) 
+                ' that her ankle tattoo, the Japanese symbol 心 (kokoro) meaning “heart and spirit and soul and mind all together”, 
+                ' is one of three Japanese words for “heart”. Karen feels blessed to be a part of an incredibly talented, 
+                ' passionately patient focused team, developing cutting edge mitral and tricuspid valve regurgitation 
+                ' therapies to help suffering patients live longer, healthier, and more productive lives – exactly what she set
+                '  out to do during that one defining assembly in high school.
+                br
+                br
+                ' Karen still resides in Southern California with her husband, Phil, and two cats, Clyde and Eugene.
+            a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+          end
         end
-      end
 
-    div class="pb-12 mb-16 w-full max-w-4xl border-b border-blue-gradient-2 last:border-b-0"
-      = render BioCard::Component.new(\
-        name: "Frances Wilsey",
-        job_title: "Honorary Board Member & Chief Joy Officer",
-        img_url: "fran.png",
-      ) do |c|
-        - c.with_biography do
-          p class="mb-3 text-gray-2"
-            ' Frances Wilsey, Stephanie's aunt and Gail's sister, grew up in the small town on the Jersey Shore of Cape May, NJ.
-            ' She has served her community as the unofficial town mayor and social director for decades. Fran has many
-            ' passions in life but the most important to her are love, family, her many many friends, WWE
-            ' wrestling,
-            ' jewelry, makeup, dessert, in addition to all music but especially John Mellencamp and Joan Jett.
-            br
-            br
-            ' Fran lived the majority of her life under the non-descriptive, non-diagnosis of “neurologically impaired”,
-            ' which left her devoid of knowledge about her disorder or a community to connect. When she was 40 years old,
-            ' a family friend mentioned that Fran looked similar to someone she knew with Williams Syndrome.
-            span data-read-more-target="dots" class=""...
-            span data-read-more-target="collapsableText" class="hidden"
-              ' After a simple blood test, it was confirmed. Her diagnosis shed light onto potential and ongoing health concerns
-              ' which allowed Fran and her family to monitor her physical, emotional and social needs. Most importantly,
-              ' Fran was able to connect with the beautiful Williams Syndrome community to learn that she shares many
-              ' characteristics with others like her. Alongside an illuminating smile and the love of music, Fran shares
-              ' what is known as the joy gene - the gift of bringing true joy to every person they meet.
+      div class="w-full max-w-4xl px-4 sm:w-1/2"
+        = render BioCard::Component.new(\
+          name: "Frances Wilsey",
+          job_title: "Honorary Board Member & Chief Joy Officer",
+          img_url: "fran.png",
+        ) do |c|
+          - c.with_biography do
+            p class="mb-3 text-gray-2"
+              ' Frances Wilsey, Stephanie's aunt and Gail's sister, grew up in the small town on the Jersey Shore of Cape May, NJ.
+              ' She has served her community as the unofficial town mayor and social director for decades. Fran has many
+              ' passions in life but the most important to her are love, family, her many many friends, WWE
+              ' wrestling,
+              ' jewelry, makeup, dessert, in addition to all music but especially John Mellencamp and Joan Jett.
               br
               br
-              ' When the pandemic hit, it knocked a blow to Fran and her family. Because Fran was in the vulnerable population,
-              ' this meant she could no longer attend daycare with her friends, socialize at tap class, or leave the house at all.
-              ' While Stephanie was living her first dream as a public defender in Nashville, TN, she quickly realized she had a
-              ' bigger dream and was needed more in her own home. Stephanie moved home in the summer of 2020 to help her family
-              ' care for Fran. It has been the greatest blessing of their lives.
-              br
-              br
-              ' During this time, Fran and Stephanie started a podcast called Fran Says. Fran Says is the unfiltered version of what's
-              ' on everyone's mind but luckily she feels the freedom to say. Fran explores her favorite topics (WWE, bats, John Mellencamp,
-              ' Williams Syndrome & everything in between) while also teaching us life lessons of love, joy, and happiness. They wrote a
-              ' children’s book about Fran called "Super Fran!" In addition, they rewrote the Keith Urban song “Fighter” and created
-              ' a music video to celebrate Gail on her 62nd birthday. All of which can be found at
-              a href="https://www.fransayspodcast.com/" class="mt-2 font-bold text-blue-medium" fransayspodcast.com
-              br
-              br
-              ' As Chief Joy Officer, Fran is responsible for infusing joy into everything she does which is infectious to every person
-              ' she meets. While she is not a voting or official member of the Board, Fran provides inspiration, comic relief,
-              ' constant joy and a grounding spirit that reminds us all that kindness and giving are the most important parts of life.
-          a data-read-more-target="readMoreButton" data-action="read-more#toggleVisibility" class="font-bold cursor-pointer text-blue-medium" Read More
+              ' Fran lived the majority of her life under the non-descriptive, non-diagnosis of “neurologically impaired”,
+              ' which left her devoid of knowledge about her disorder or a community to connect. When she was 40 years old,
+              ' a family friend mentioned that Fran looked similar to someone she knew with Williams Syndrome.
+              span data-read-more-target="dots" class=""...
+              span data-read-more-target="collapsableText" class="hidden"
+                ' After a simple blood test, it was confirmed. Her diagnosis shed light onto potential and ongoing health concerns
+                ' which allowed Fran and her family to monitor her physical, emotional and social needs. Most importantly,
+                ' Fran was able to connect with the beautiful Williams Syndrome community to learn that she shares many
+                ' characteristics with others like her. Alongside an illuminating smile and the love of music, Fran shares
+                ' what is known as the joy gene - the gift of bringing true joy to every person they meet.
+                br
+                br
+                ' When the pandemic hit, it knocked a blow to Fran and her family. Because Fran was in the vulnerable population,
+                ' this meant she could no longer attend daycare with her friends, socialize at tap class, or leave the house at all.
+                ' While Stephanie was living her first dream as a public defender in Nashville, TN, she quickly realized she had a
+                ' bigger dream and was needed more in her own home. Stephanie moved home in the summer of 2020 to help her family
+                ' care for Fran. It has been the greatest blessing of their lives.
+                br
+                br
+                ' During this time, Fran and Stephanie started a podcast called Fran Says. Fran Says is the unfiltered version of what's
+                ' on everyone's mind but luckily she feels the freedom to say. Fran explores her favorite topics (WWE, bats, John Mellencamp,
+                ' Williams Syndrome & everything in between) while also teaching us life lessons of love, joy, and happiness. They wrote a
+                ' children’s book about Fran called "Super Fran!" In addition, they rewrote the Keith Urban song “Fighter” and created
+                ' a music video to celebrate Gail on her 62nd birthday.
+                br
+                br
+                ' As Chief Joy Officer, Fran is responsible for infusing joy into everything she does which is infectious to every person
+                ' she meets. While she is not a voting or official member of the Board, Fran provides inspiration, comic relief,
+                ' constant joy and a grounding spirit that reminds us all that kindness and giving are the most important parts of life.
+            a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+          end
         end
-      end
 
     = render "interns"
     // Youtube Video
-    div class="pb-12 mb-16 w-full max-w-4xl h-full"
-      iframe src="https://www.youtube.com/embed/H62FCqZ1cAg?rel=0" class="w-full h-64 md:h-500px" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+    div class="w-full h-full max-w-4xl pb-12 mb-16"
+      iframe src="https://www.youtube.com/embed/FlJTLODPzU8?si=sFOwHXf4XM31RkCl" class="w-full h-64 md:h-500px" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
 
-
+  /* Join Us */
+  div class="flex flex-col items-center justify-center w-full px-6 pt-20 text-center pb-14 bg-blue-gradient-3"
+    div class="justify-center w-full max-w-4xl gap-10 px-10 sm:flex lg:flex-row lg:justify-around"
+      div class="justify-center w-full pb-8"
+        h3 class="mb-4 text-2xl font-bold uppercase text-blue-dark"
+          | Join Us
+        p class="font-light text-gray-2"
+          ' Sign up today to help us create a more accessible, impactful, and community-driven 
+          | search experience that transforms the way people connect with nonprofits.
+          | <br><br>
+          | If you are interested in volunteering, interning, or joining our team, 
+          | please email <a class="font-bold transition duration-300 hover:font-extrabold hover:text-blue-950" href="mailto:stephanie@givingconnection.org">stephanie@givingconnection.org</a> for more information.
+          
+      div class="flex justify-center w-full h-full px-10 sm:w-2/3"
+        = inline_svg_tag "connect.svg", size:"full"
+  
+  /* Footer */
   div class="relative h-96 bg-seafoam"
-    div class="flex overflow-hidden justify-around h-96 flew-row"
+    div class="justify-around hidden overflow-hidden h-100 flew-row sm:flex"
       div
-        = inline_svg_tag 'new-blur-left.svg', size:'723*384'
+        = inline_svg_tag 'new-blur-left.svg', size:'1004*400'
       div
-        = inline_svg_tag 'new-blur-right.svg', size:'723*384'
-    div class="absolute top-0 right-0 left-0 mx-auto max-w-md text-center"
-      h2 class="px-5 pt-20 pb-11 text-2xl font-bold text-center sm:px-0 md:pt-28 text-blue-dark"
-        | Want to connect with nonprofits in your community?
-      = link_to "START YOUR SEARCH", search_path, class:'c-button inline-block my-1 text-white bg-blue-dark hover:bg-blue-medium transition'
+        = inline_svg_tag 'new-blur-right.svg', size:'1004*400'
+    div class="flex justify-around overflow-hidden h-100 flew-row sm:hidden"
+      div
+        = inline_svg_tag 'new-blur-left.svg', size:'1004*700'
+      div
+        = inline_svg_tag 'new-blur-right.svg', size:'1004*700'
+    div class="absolute top-0 left-0 right-0 max-w-5xl px-10 mx-auto text-center"
+      h2 class="px-5 py-10 text-xl font-bold text-center sm:text-2xl pb-11 sm:px-0 md:pt-28 text-blue-dark"
+        | Looking to connect with like-minded changemakers and make a bigger impact in your community? Join Community Connectors today!
+      = link_to "LEARN MORE", "https://network-17946832.mn.co/share/NCOJH27WAwaTSz4w?utm_source=manual", class:'c-button inline-block my-1 text-white bg-blue-dark hover:bg-blue-medium transition', target: "_blank"

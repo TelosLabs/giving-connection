@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
-
+ActiveRecord::Schema[7.0].define(version: 2025_01_17_173849) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -23,7 +22,7 @@ ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -36,7 +35,7 @@ ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
     t.string "service_name", null: false
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
@@ -50,18 +49,18 @@ ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
-    t.datetime "locked_at"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "locked_at", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
@@ -69,8 +68,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
   create_table "alert_beneficiaries", force: :cascade do |t|
     t.bigint "alert_id", null: false
     t.bigint "beneficiary_subcategory_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["alert_id"], name: "index_alert_beneficiaries_on_alert_id"
     t.index ["beneficiary_subcategory_id"], name: "index_alert_beneficiaries_on_beneficiary_subcategory_id"
   end
@@ -78,8 +77,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
   create_table "alert_causes", force: :cascade do |t|
     t.bigint "alert_id", null: false
     t.bigint "cause_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["alert_id"], name: "index_alert_causes_on_alert_id"
     t.index ["cause_id"], name: "index_alert_causes_on_cause_id"
   end
@@ -87,8 +86,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
   create_table "alert_services", force: :cascade do |t|
     t.bigint "alert_id", null: false
     t.bigint "service_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["alert_id"], name: "index_alert_services_on_alert_id"
     t.index ["service_id"], name: "index_alert_services_on_service_id"
   end
@@ -104,8 +103,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
     t.string "keyword"
     t.string "beneficiary_groups"
     t.string "frequency", default: "weekly"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.date "next_alert"
     t.string "search_results", default: [], array: true
     t.index ["user_id"], name: "index_alerts_on_user_id"
@@ -113,31 +112,42 @@ ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
 
   create_table "beneficiary_groups", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "beneficiary_subcategories", force: :cascade do |t|
     t.string "name"
     t.bigint "beneficiary_group_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["beneficiary_group_id"], name: "index_beneficiary_subcategories_on_beneficiary_group_id"
   end
 
   create_table "causes", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "favorite_locations", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "location_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_favorite_locations_on_location_id"
     t.index ["user_id"], name: "index_favorite_locations_on_user_id"
+  end
+
+  create_table "friendly_id_slugs", force: :cascade do |t|
+    t.string "slug", null: false
+    t.integer "sluggable_id", null: false
+    t.string "sluggable_type", limit: 50
+    t.string "scope"
+    t.datetime "created_at"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
   create_table "instagram_posts", force: :cascade do |t|
@@ -145,17 +155,17 @@ ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
     t.string "post_url", null: false
     t.bigint "external_id", null: false
     t.string "media_type", null: false
-    t.datetime "creation_date", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "creation_date", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "location_services", force: :cascade do |t|
     t.string "description"
     t.bigint "location_id", null: false
     t.bigint "service_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_location_services_on_location_id"
     t.index ["service_id"], name: "index_location_services_on_service_id"
   end
@@ -169,8 +179,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
     t.boolean "main", default: false, null: false
     t.boolean "offer_services"
     t.bigint "organization_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "name", null: false
     t.string "email"
     t.boolean "po_box", default: false
@@ -179,8 +189,10 @@ ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
     t.boolean "public_address", default: true, null: false
     t.integer "non_standard_office_hours"
     t.string "time_zone"
+    t.string "slug"
     t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
     t.index ["organization_id"], name: "index_locations_on_organization_id"
+    t.index ["slug"], name: "index_locations_on_slug", unique: true
   end
 
   create_table "messages", force: :cascade do |t|
@@ -201,8 +213,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
     t.time "open_time"
     t.time "close_time"
     t.boolean "closed", default: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "location_id"
     t.index ["location_id"], name: "index_office_hours_on_location_id"
   end
@@ -211,8 +223,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
     t.bigint "organization_id", null: false
     t.bigint "user_id", null: false
     t.string "role"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["organization_id"], name: "index_organization_admins_on_organization_id"
     t.index ["user_id"], name: "index_organization_admins_on_user_id"
   end
@@ -220,8 +232,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
   create_table "organization_beneficiaries", force: :cascade do |t|
     t.bigint "organization_id", null: false
     t.bigint "beneficiary_subcategory_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["beneficiary_subcategory_id"], name: "index_organization_beneficiaries_on_beneficiary_subcategory_id"
     t.index ["organization_id"], name: "index_organization_beneficiaries_on_organization_id"
   end
@@ -229,8 +241,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
   create_table "organization_causes", force: :cascade do |t|
     t.bigint "cause_id", null: false
     t.bigint "organization_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["cause_id"], name: "index_organization_causes_on_cause_id"
     t.index ["organization_id"], name: "index_organization_causes_on_organization_id"
   end
@@ -243,8 +255,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
     t.string "scope_of_work", null: false
     t.string "creator_type"
     t.bigint "creator_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "mission_statement_en", null: false
     t.text "mission_statement_es"
     t.text "vision_statement_en"
@@ -273,8 +285,8 @@ ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
     t.text "content"
     t.string "searchable_type"
     t.bigint "searchable_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
   end
 
@@ -282,16 +294,16 @@ ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
     t.string "number"
     t.boolean "main"
     t.bigint "location_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_phone_numbers_on_location_id"
   end
 
   create_table "services", force: :cascade do |t|
     t.string "name"
     t.bigint "cause_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["cause_id"], name: "index_services_on_cause_id"
   end
 
@@ -303,16 +315,16 @@ ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
     t.string "youtube"
     t.string "blog"
     t.bigint "organization_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["organization_id"], name: "index_social_medias_on_organization_id"
   end
 
   create_table "tags", force: :cascade do |t|
     t.string "name"
     t.bigint "organization_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["name"], name: "index_tags_on_name"
     t.index ["organization_id"], name: "index_tags_on_organization_id"
   end
@@ -321,22 +333,22 @@ ActiveRecord::Schema[6.1].define(version: 2024_05_18_174354) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.string "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
+    t.datetime "confirmed_at", precision: nil
+    t.datetime "confirmation_sent_at", precision: nil
     t.string "unconfirmed_email"
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
-    t.datetime "locked_at"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "locked_at", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "name"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
