@@ -11,14 +11,29 @@ module Admin
     # end
 
     def upload
+      @import_logs = ImportLog.order(created_at: :desc).limit(10)
+      @latest_import_log = ImportLog.last
+
     end
 
     def import
-      @creator = current_admin_user
-      results = SpreadsheetParse.new(params[:file], @creator).import
-      flash.now[:notice] = log_results(results)
-      render :upload, status: :unprocessable_entity
+      if params[:file].blank?
+        redirect_to upload_admin_organizations_path, alert: "Please upload a file." and return
+      end
+
+      # Save the file to a temp path
+      temp_path = Rails.root.join("tmp", "uploads", "#{SecureRandom.uuid}_#{params[:file].original_filename}")
+      FileUtils.mkdir_p(temp_path.dirname)
+      File.open(temp_path, "wb") { |f| f.write(params[:file].read) }
+
+      # Enqueue the job
+      SpreadsheetImportJob.perform_later(temp_path.to_s, current_admin_user.id, params[:file].original_filename)
+
+      redirect_to upload_admin_organizations_path, notice: "Import started in background. This may take several minutes."
     end
+
+
+
 
     def new
       resource = new_resource
@@ -107,8 +122,13 @@ module Admin
     private
 
     def log_results(results)
-      "#{results[:ids].size} organizations succesfully created. <br>" \
-      "#{results[:failed_instances].size} organizations failed: <br>"
+      successful = results[:ids].size
+      failed = results[:failed_instances].size
+      failed_names = results[:failed_instances].map(&:name).join(", ")
+
+      "#{successful} organization(s) successfully created.<br>" \
+      "#{failed} organization(s) failed: #{failed_names.presence || 'None'}<br>".html_safe
     end
+
   end
 end
