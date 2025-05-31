@@ -36,12 +36,16 @@ export default class extends Controller {
     this.displayAppliedIcon();
 
     this.skipUnsavedCheck = false;
+
+    this.boundActuallyCloseModal = this._actuallyCloseModal.bind(this);
+    document.addEventListener("turbo:submit-end", this.boundActuallyCloseModal);
   }
 
   disconnect() {
     this.skipUnsavedCheck = true;
     this._actuallyCloseModal();
     this.close();
+    document.removeEventListener("turbo:submit-end", this.boundActuallyCloseModal);
   }
 
   open(e) {
@@ -252,7 +256,7 @@ export default class extends Controller {
     this.containerTarget.classList.add(this.toggleClass);
     if (this.background) this.background.remove();
   }
-  
+
   
   submitAndClose(event) {
     this.skipUnsavedCheck = true;
