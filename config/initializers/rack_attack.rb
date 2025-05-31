@@ -1,14 +1,37 @@
+require "rack/attack"
+
 class Rack::Attack
   ### Configure Cache ###
 
-  # If you don't want to use Rails.cache (Rack::Attack's default), then
-  # configure it here.
-  #
-  # Note: The store is only used for throttling (not blocklisting and
-  # safelisting). It must implement .increment and .write like
-  # ActiveSupport::Cache::Store
+  CACHE_PREFIX = "rack::attack".freeze
 
-  # Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
+  # Use Redis as our cache backend
+  Rack::Attack.cache.store = Redis.new(
+    url: ENV.fetch("REDISCLOUD_URL", "redis://localhost:6379/1"),
+    reconnect_attempts: 1,
+    timeout: 1
+  )
+
+  # Development-specific settings for easier testing
+  THROTTLE_PERIODS = if Rails.env.development?
+    {
+      registration_ip: 5.minutes,      # Instead of 1 hour
+      suspicious_domain: 5.minutes,    # Instead of 1 hour
+      login: 20.seconds               # Keep as is for login
+    }.freeze
+  elsif Rails.env.test?
+    {
+      registration_ip: 1.second,      # Effectively disable throttling
+      suspicious_domain: 1.second,    # Effectively disable throttling
+      login: 1.second                 # Effectively disable throttling
+    }.freeze
+  else
+    {
+      registration_ip: 1.hour,
+      suspicious_domain: 1.hour,
+      login: 20.seconds
+    }.freeze
+  end
 
   ### Throttle Spammy Clients ###
 
@@ -21,10 +44,99 @@ class Rack::Attack
   # quickly. If so, enable the condition to exclude them from tracking.
 
   # Throttle all requests by IP (60rpm)
-  #
-  # Key: "rack::attack:#{Time.now.to_i/:period}:req/ip:#{req.ip}"
   throttle("req/ip", limit: 300, period: 5.minutes) do |req|
-    req.ip # unless req.path.start_with?('/assets')
+    req.ip unless req.path.start_with?("/assets")
+  end
+
+  ### Prevent Registration Spam ###
+
+  # Throttle new account registrations by IP
+  throttle("registrations/ip", limit: 1, period: THROTTLE_PERIODS[:registration_ip]) do |req|
+    if req.path == "/users" && req.post?
+      Rails.logger.info "[Rack::Attack] Registration attempt from IP: #{req.ip}" if Rails.env.development?
+      req.ip
+    end
+  end
+
+  # Allow list of common email providers that shouldn't be restricted
+  ALLOWED_EMAIL_PROVIDERS = %w[
+    gmail.com
+    outlook.com
+    hotmail.com
+    yahoo.com
+    icloud.com
+    aol.com
+    protonmail.com
+    proton.me
+    me.com
+    msn.com
+    live.com
+    mail.com
+  ].freeze
+
+  # Stricter throttling for suspicious email domains
+  throttle("registrations/suspicious_email_domain", limit: 2, period: THROTTLE_PERIODS[:suspicious_domain]) do |req|
+    if req.path == "/users" && req.post? && req.params["user"].present?
+      email = req.params["user"]["email"].to_s
+      domain = email.split("@").last.to_s.downcase if email.include?("@")
+
+      if Rails.env.development?
+        Rails.logger.info "[Rack::Attack] Registration email domain: #{domain}"
+        Rails.logger.info "[Rack::Attack] Is suspicious domain? #{!ALLOWED_EMAIL_PROVIDERS.include?(domain)}"
+      end
+
+      if domain.present? && !ALLOWED_EMAIL_PROVIDERS.include?(domain)
+        domain
+      end
+    end
+  end
+
+  # Return a custom error message for throttled registration attempts
+  Rack::Attack.throttled_responder = lambda do |request|
+    now = Time.now.utc
+    match_data = request.env["rack.attack.match_data"]
+
+    Rails.logger.info "[Rack::Attack] Throttle triggered"
+    Rails.logger.info "[Rack::Attack] Match data: #{match_data.inspect}"
+    Rails.logger.info "[Rack::Attack] Request path: #{request.path}"
+    Rails.logger.info "[Rack::Attack] Client IP: #{request.ip}"
+
+    period = match_data[:period]
+    retry_after = period - (now.to_i % period)
+
+    # Determine the type of throttle that was triggered
+    throttle_type = case match_data[:discriminator]
+    when request.ip
+      "IP-based rate limit"
+    when ->(d) { d.is_a?(String) && d.include?(".") }
+      "Suspicious email domain"
+    else
+      "Rate limit"
+    end
+
+    headers = {
+      "Content-Type" => "application/json",
+      "Retry-After" => retry_after.to_s
+    }
+
+    message = case throttle_type
+    when "IP-based rate limit"
+      "Too many registration attempts from this IP address. Please try again in #{retry_after} seconds."
+    when "Suspicious email domain"
+      "Registration attempts from this email domain are temporarily restricted. Please try again in #{retry_after} seconds or use a different email provider."
+    else
+      "Too many attempts. Please try again in #{retry_after} seconds."
+    end
+
+    [
+      429,
+      headers,
+      [{
+        error: message,
+        retry_after: retry_after,
+        throttle_type: throttle_type
+      }.to_json]
+    ]
   end
 
   ### Prevent Brute-Force Login Attacks ###
@@ -37,26 +149,15 @@ class Rack::Attack
   # different IPs to try brute-forcing a password for a specific account.
 
   # Throttle POST requests to /login by IP address
-  #
-  # Key: "rack::attack:#{Time.now.to_i/:period}:logins/ip:#{req.ip}"
-  throttle("logins/ip", limit: 5, period: 20.seconds) do |req|
+  throttle("logins/ip", limit: 5, period: THROTTLE_PERIODS[:login]) do |req|
     if req.path == "/login" && req.post?
       req.ip
     end
   end
 
   # Throttle POST requests to /login by email param
-  #
-  # Key: "rack::attack:#{Time.now.to_i/:period}:logins/email:#{normalized_email}"
-  #
-  # Note: This creates a problem where a malicious user could intentionally
-  # throttle logins for another user and force their login requests to be
-  # denied, but that's not very common and shouldn't happen to you. (Knock
-  # on wood!)
-  throttle("logins/email", limit: 5, period: 20.seconds) do |req|
+  throttle("logins/email", limit: 5, period: THROTTLE_PERIODS[:login]) do |req|
     if req.path == "/login" && req.post?
-      # Normalize the email, using the same logic as your authentication process, to
-      # protect against rate limit bypasses. Return the normalized email if present, nil otherwise.
       req.params["email"].to_s.downcase.gsub(/\s+/, "").presence
     end
   end
@@ -74,4 +175,11 @@ class Rack::Attack
   #    {},   # headers
   #    ['']] # body
   # end
+
+  # Clean up expired keys periodically (runs async in Redis)
+  if defined?(Rails.cache) && Rails.cache.respond_to?(:redis)
+    Rails.cache.redis.with do |redis|
+      redis.expire(CACHE_PREFIX, 24.hours.to_i)
+    end
+  end
 end

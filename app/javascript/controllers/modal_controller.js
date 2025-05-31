@@ -34,10 +34,18 @@ export default class extends Controller {
       document.querySelectorAll("input.modal-checkbox")
     );
     this.displayAppliedIcon();
+
+    this.skipUnsavedCheck = false;
+
+    this.boundActuallyCloseModal = this._actuallyCloseModal.bind(this);
+    document.addEventListener("turbo:submit-end", this.boundActuallyCloseModal);
   }
 
   disconnect() {
+    this.skipUnsavedCheck = true;
+    this._actuallyCloseModal();
     this.close();
+    document.removeEventListener("turbo:submit-end", this.boundActuallyCloseModal);
   }
 
   open(e) {
@@ -61,23 +69,24 @@ export default class extends Controller {
       document.body.insertAdjacentHTML("beforeend", this.backgroundHtml);
       this.background = document.querySelector(`#${this.backgroundId}`);
     }
+
+    this.readCheckboxesState();
   }
 
-  close(event) {
-    // Stops event bubbling if the modal was closed by a click
+  close(event, options = {}) {
     if (event) event.preventDefault();
-
-    // Unlock the scroll and restore previous scroll position
-    this.unlockScroll();
-
-    // Hide the modal
-    this.containerTarget.classList.add(this.toggleClass);
-
-    // Remove the background
-    if (this.background) {
-      this.background.remove();
+  
+    const skipUnsaved = options.skipUnsaved || false;
+  
+    if (!this.skipUnsavedCheck && !skipUnsaved && this.hasUnsavedChanges()) {
+      this.triggerUnsavedChangesModal();
+      return;
     }
+  
+    this._actuallyCloseModal();
+    this.skipUnsavedCheck = false;
   }
+  
 
   clearUnappliedFilters() {
     // gets the query string of the url
@@ -94,21 +103,21 @@ export default class extends Controller {
     });
   }
 
-  closeBackground(e) {
-    if (this.allowBackgroundClose && e.target === this.containerTarget) {
-      this.close(e);
+  closeBackground(event) {
+    if (this.allowBackgroundClose && event.target === this.containerTarget) {
+      this.close(event);
       this.clearUnappliedFilters();
     }
-  }
-
-  closeWithKeyboard(e) {
+  }  
+  
+  closeWithKeyboard(event) {
     if (
-      e.keyCode === 27 &&
+      event.keyCode === 27 &&
       !this.containerTarget.classList.contains(this.toggleClass)
     ) {
-      this.close(e);
+      this.close(event);
     }
-  }
+  }  
 
   _backgroundHTML() {
     return `<div id="${this.backgroundId}" class="fixed top-0 left-0 w-full h-full" style="background-color: ${this.backdropColorValue}; z-index: 9998;"></div>`;
@@ -192,22 +201,94 @@ export default class extends Controller {
   }
 
   restoreCheckboxesState() {
+    console.log("Restoring checkboxes state");
     const checkboxes = [
       ...this.containerTarget.querySelectorAll("[type='checkbox']"),
     ];
-
+  
     const timeboxes = [
       ...this.containerTarget.querySelectorAll("[type='time']"),
     ];
-
-    checkboxes.forEach((checkbox) => {
-      const originalState = this.checkboxesOriginalState.shift();
-      if (checkbox.checked !== originalState) checkbox.checked = originalState;
+  
+    checkboxes.forEach((checkbox, index) => {
+      const originalState = this.checkboxesOriginalState?.[index];
+      if (originalState !== undefined && checkbox.checked !== originalState) {
+        checkbox.checked = originalState;
+      }
     });
-
-    timeboxes.forEach((timebox) => {
-      const originalState = this.timeboxesOriginalState.shift();
-      if (timebox.value !== originalState) timebox.value = originalState;
+  
+    timeboxes.forEach((timebox, index) => {
+      const originalState = this.timeboxesOriginalState?.[index];
+      if (originalState !== undefined && timebox.value !== originalState) {
+        timebox.value = originalState;
+      }
     });
+  }  
+
+  hasUnsavedChanges() {
+    const checkboxes = [
+      ...this.containerTarget.querySelectorAll("[type='checkbox']"),
+    ];
+    const timeboxes = [
+      ...this.containerTarget.querySelectorAll("[type='time']"),
+    ];
+  
+    const currentCheckboxes = checkboxes.map((checkbox) => checkbox.checked);
+    const currentTimeboxes = timeboxes.map((timebox) => timebox.value);
+  
+    return (
+      JSON.stringify(currentCheckboxes) !== JSON.stringify(this.checkboxesOriginalState) ||
+      JSON.stringify(currentTimeboxes) !== JSON.stringify(this.timeboxesOriginalState)
+    );
   }
+
+  triggerUnsavedChangesModal() {
+    const event = new CustomEvent("show-unsaved-modal", {
+      bubbles: true,
+      detail: { url: "javascript:void(0)" }
+    });
+  
+    this.element.dispatchEvent(event);
+  }
+
+  _actuallyCloseModal() {
+    this.unlockScroll();
+    this.containerTarget.classList.add(this.toggleClass);
+    if (this.background) this.background.remove();
+  }
+
+  
+  submitAndClose(event) {
+    this.skipUnsavedCheck = true;
+    this.readCheckboxesState();
+    this._actuallyCloseModal();
+  }
+
+  leave(event) {
+    event.preventDefault();
+  
+    const targetHref = event.currentTarget.getAttribute("href");
+  
+    this.skipUnsavedCheck = true;
+    this.close();
+  
+    document.querySelectorAll('[data-controller~="modal"]').forEach((el) => {
+      if (el === this.element) return;
+  
+      const modalController = this.application.getControllerForElementAndIdentifier(el, "modal");
+  
+      if (modalController) {
+        modalController.restoreCheckboxesState();
+        modalController.skipUnsavedCheck = true;
+        modalController.close();
+      }
+    });
+  
+    setTimeout(() => {
+      if (targetHref && targetHref !== "javascript:void(0)") {
+        window.location.href = targetHref;
+      }
+    }, 100);
+  }  
+  
 }
