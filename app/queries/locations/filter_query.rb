@@ -11,6 +11,7 @@ module Locations
         scope = by_cause(scope, params[:causes])
         scope = by_service(scope, params[:services])
         scope = by_beneficiary_groups_served(scope, params[:beneficiary_groups])
+        scope = by_scope_of_work(scope, params[:scope_of_work])
         scope = opened_now(scope, params[:open_now])
         opened_on_weekends(scope, params[:open_weekends])
       end
@@ -88,6 +89,14 @@ module Locations
           .where("(beneficiary_groups.name, beneficiary_subcategories.name) IN (#{complex_query.join(",")})")
           .group("locations.id")
           .having("count(locations.id) >= ?", complex_query.size) # multiple filters add up with AND behavior
+      end
+
+      def by_scope_of_work(scope, scope_of_work)
+        return scope if scope_of_work.blank? || scope.empty?
+
+        Location.joins(:organization)
+          .where("locations.id IN (?)", scope.ids)
+          .where("organizations.scope_of_work = ?", scope_of_work)
       end
 
       def starting_coordinates(lat, lon)

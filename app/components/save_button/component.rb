@@ -1,10 +1,12 @@
 class SaveButton::Component < ApplicationViewComponent
   include ActionButtonHelper
 
-  def initialize(user:, location:, simplified: false)
+  def initialize(user:, location:, simplified: false, tooltip_position: "")
     @user = user
     @location = location
     @simplified = simplified
+    @tooltip_position = tooltip_position
+    @removable_fav_location = removable_fav_location?
   end
 
   def link_args

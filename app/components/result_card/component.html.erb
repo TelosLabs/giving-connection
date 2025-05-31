@@ -16,12 +16,12 @@
           <% if @verified %>
             <%= render "shared/popover", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg", position: "right-0" %>
           <% end %>
-          <%= render SaveButton::Component.new(user: @current_user, location: Location.find(@id), simplified: true) %>
+          <%= render SaveButton::Component.new(user: @current_user, location: Location.find(@id), simplified: true, tooltip_position:  "right-0 mt-2") %>
         </div>
       </div>
       <div class="pb-0 text-xs text-gray-4">
         <% if @public_address %>
-          <p id="pointer"><%= link_to @address, @link_to_google_maps, target: "blank" %></p>
+          <p class="pop-out" ><%= link_to @address, @link_to_google_maps, target: "blank" %></p>
         <% end %>
         <% if @website.present? %>
           <p><%= link_to @website_for_display, @website, target: '_blank', class: 'text-blue-medium'%></p>
@@ -57,7 +57,7 @@
             icon_svg_options: {class: "w-5 h-5", aria_hidden: true}) %>
       </section>
     <% end %>
-    <a href="<%= location_path(@id)%>" class="inline-flex items-center ml-4 text-sm font-bold whitespace-nowrap text-blue-medium", target="_blank">
+    <a href="<%= location_path(@id)%>" class="inline-flex items-center ml-4 text-sm font-bold whitespace-nowrap pop-out text-blue-medium", target="_blank">
       Go to Page
       <%= inline_svg_tag 'solid_arrow_right.svg', class: 'w-4 h-4 ml-2 text-blue-medium fill-current'%>
     </a>

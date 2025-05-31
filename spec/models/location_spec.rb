@@ -62,5 +62,30 @@ RSpec.describe Location, type: :model do
         end
       end
     end
+
+    # Test friendly id slug generation
+    describe "location slugs" do
+      context "when an organization has a single location" do
+        let(:organization) { create(:organization) }
+        let(:location) { create(:location, non_standard_office_hours: :always_open, organization: organization) }
+
+        it "is expected to have the org's ein as slug" do
+          expect(location.slug).to eq(organization.ein_number)
+        end
+      end
+
+      context "when a location is added to an org with existing locations" do
+        let!(:organization) { create(:organization) } # the org has a location with slug '12345'
+        let!(:new_location) { build(:location, non_standard_office_hours: :always_open, organization: organization, name: "New Location") }
+
+        it "is expected to generate a unique slug for each location based on the org's ein" do
+          organization.reload
+          new_location.save
+          new_location.reload
+
+          expect(new_location.slug).to eq("#{organization.ein_number}-2")
+        end
+      end
+    end
   end
 end

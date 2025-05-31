@@ -33,7 +33,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     organization_beneficiaries: CheckboxField,
     logo: Field::ActiveStorage,
     tags: TagInputField,
-    locations: Field::NestedHasMany,
+    locations: Field::NestedHasMany.with_options(skip: :organization),
     phone_number: Field::Text,
     email: Field::Text,
     active: Field::Boolean,

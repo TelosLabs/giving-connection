@@ -21,7 +21,6 @@
 @import "helpers/stars_background";
 @import "../../components/accordion/component";
 @import "../../components/navbar/component";
-@import "../../components/causes_list/component";
 @import "../../../node_modules/@yaireo/tagify/dist/tagify";
 @import "../../../node_modules/swiper/swiper-bundle";
 
@@ -186,5 +185,65 @@ input.admin-panel-population:disabled + label {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+}
+
+// Popover
+.labelled-icon:hover + span[role=tooltip] {
+  display: inline;
+}
+
+// Underline on hover
+
+.underline-on-hover {
+  position: relative;
+  padding: 0;
+  cursor: pointer;
+
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 4px;
+    background-color: #0782D0;
+    transition: width 0.3s ease-in-out;
+  }
+
+  &:hover::before {
+    width: 100%;
+  }
+
+}
+
+// Expandable panel styles
+#search-pills-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+}
+
+// Desktop hover behavior (screen width > 768px)
+@media (min-width: 768px) {
+  #tabs-wrapper:not(.is-mobile):hover #search-pills-panel {
+    max-height: 1000px;
+    overflow: visible;
+  }
+}
+
+// Mobile behavior (screen width <= 768px)
+@media (max-width: 768px) {
+  #search-pills-panel {
+    &.expanded {
+      max-height: 1000px;
+      overflow: visible;
+    }
+  }
+
+  #tabs-wrapper.is-mobile {
+    #search-pills-panel {
+      overflow: visible;
+    }
   }
 }

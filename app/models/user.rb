@@ -32,10 +32,25 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable,
     :rememberable, :validatable, :confirmable, :lockable, :trackable
 
+  # Validations
+  validates :name, presence: true,
+    length: {minimum: 2, maximum: 50},
+    format: {with: /\A[a-zA-Z\s\-']+\z/, message: "can only contain letters, spaces, hyphens and apostrophes"}
+
+  validate :no_urls_in_name
+
   has_many :organizations, as: :creator
   has_many :alerts
   has_many :fav_locs, class_name: "FavoriteLocation"
   has_many :favorited_locations, through: :fav_locs, source: :location
   has_many :organization_admin
   has_many :administrated_organizations, through: :organization_admin, source: :organization
+
+  private
+
+  def no_urls_in_name
+    if name.present? && name.match?(/https?:\/\/|\.[a-z]{2,}/i)
+      errors.add(:name, "cannot contain URLs or web links")
+    end
+  end
 end

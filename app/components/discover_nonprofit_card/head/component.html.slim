@@ -10,7 +10,7 @@ div class="flex gap-x-5"
         = render partial: "shared/popover", locals: { position: "right-0", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg" }
     // maps and phone
     - if @location.public_address?
-      = link_to(@location.formatted_address, @location.link_to_google_maps, class: "w-3/4", target: "_blank")
+      = link_to(@location.formatted_address, @location.link_to_google_maps, class: "pop-out w-3/4", target: "_blank")
     - if @location.phone_number
       a href="tel:#{@location.phone_number.number}" = @location.phone_number.number
     // Designations
