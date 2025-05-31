@@ -97,6 +97,8 @@ jobs:
       - name: Install Node packages
         run: |
           bin/yarn install --ignore-engines
+      - name: Install ImageMagick
+        run: sudo apt-get install imagemagick
       - name: Run tests
         run: |
           bundle exec rspec --fail-fast

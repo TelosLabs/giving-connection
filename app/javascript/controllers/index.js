@@ -18,3 +18,12 @@ application.load(
     definitionsFromContext(contextComponents)
   )
 )
+
+document.addEventListener("show-unsaved-modal", (e) => {
+  const controllerElement = document.querySelector('[data-controller~="halt-navigation-on-change"]');
+
+  // Use Stimulus API to get controller instance
+  const controller = application.getControllerForElementAndIdentifier(controllerElement, "halt-navigation-on-change");
+
+  if (controller) controller.displayModalOnChange(e);
+});

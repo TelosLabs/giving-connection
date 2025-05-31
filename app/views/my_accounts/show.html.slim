@@ -64,7 +64,7 @@ div class="w-full h-full bg-white"
             - if @saved_pages.present?
               ul class="flex flex-col divide-y divide-gray-8"
                 - @saved_pages.each do |page|
-                  li
+                  li id="saved-page-#{page.id}" class="relative"
                     = render ResultCard::Component.new(title: page.name,\
                                                       address: page.address,\
                                                       public_address: page.public_address?,\
@@ -77,12 +77,14 @@ div class="w-full h-full bg-white"
                                                       current_user: current_user,\
                                                       phone_number: page.phone_number&.number,\
                                                       verified: page.organization.verified?)
+                    = link_to favorite_location_path(FavoriteLocation.find_by(user: current_user, location: page)), method: :delete, class: "absolute top-6 right-14 text-blue-medium hover:text-blue-dark", data: { turbo_stream: true } do
+                      = inline_svg_tag 'trash.svg', class: 'w-5 h-5 stroke-salmon'
             - else
               div class="flex justify-center my-16 w-full"
                 = inline_svg_tag 'empty_state_1.svg', size:'298*153'
               div class="flex flex-col gap-4 justify-center items-center my-4 mb-16 w-full text-grey-2"
                 p class="text-xl font-bold text-center"
-                  | You haven’t saved any Nonprofit Pages.
+                  | You haven't saved any Nonprofit Pages.
                 p class="px-4 max-w-xs text-base text-center"
                   | Click on the top right ribbon to save pages when you are browsing through nonprofit listings.
 
@@ -98,16 +100,20 @@ div class="w-full h-full bg-white"
                       span class="text-lg font-bold text-black capitalize"
                         | #{alert.decorate.title(index)}
                       = link_to "Edit", edit_alert_path(alert), class: "text-blue-medium hover:text-blue-dark", data: { turbo_stream: true }
-                    div class="flex flex-row text-sm font-normal text-gray-2"
-                      | #{list_all_filters(alert).join(', ')}
+                    div class="flex flex-col text-sm font-normal text-gray-2"
+                      - if list_all_filters(alert).present?
+                        p
+                          | Filters: #{list_all_filters(alert).join(', ')}
+                      p
+                        | Frequency: #{alert.frequency.capitalize}
             - else
               div class="flex justify-center my-16 w-full"
                 = inline_svg_tag 'empty_state_2.svg', size:'294*145'
               div class="flex flex-col gap-4 justify-center items-center my-4 mb-16 w-full text-grey-2"
                 p class="text-xl font-bold text-center"
-                  | You haven’t created any search alerts.
+                  | You haven't created any search alerts.
                 p class="px-4 max-w-xs text-base text-center"
-                  | Create an email alert by clicking on “Create Alert” after making a search.
+                  | Create an email alert by clicking on "Create Alert" after making a search.
 
         div class="hidden px-6" data-tabs-target="panel"
           h4 class="my-7 text-xl text-grey-2"

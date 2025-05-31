@@ -52,7 +52,7 @@ class Organization < ApplicationRecord
   validates :irs_ntee_code, presence: true, inclusion: {in: Organizations::Constants::NTEE_CODE}
   validates :mission_statement_en, presence: true
   validates :scope_of_work, presence: true, inclusion: {in: Organizations::Constants::SCOPE}
-  validates :logo, content_type: ["image/png", "image/jpg", "image/jpeg"],
+  validates :logo, content_type: ["image/png", "image/jpeg"],
     size: {less_than: 5.megabytes, message: "File too large. Must be less than 5MB in size"}
 
   after_create :attach_logo_and_cover
@@ -61,6 +61,22 @@ class Organization < ApplicationRecord
   accepts_nested_attributes_for :locations, allow_destroy: true
   accepts_nested_attributes_for :organization_beneficiaries, allow_destroy: true
   accepts_nested_attributes_for :organization_causes, allow_destroy: true
+
+  def regenerate_org_locations_slugs
+    locations.order(:created_at).each do |location|
+      base_slug = ein_number
+      slug = base_slug
+      counter = 1
+
+      while Location.exists?(slug: slug)
+        slug = "#{base_slug}-#{counter}"
+        counter += 1
+      end
+
+      location.slug = slug
+      location.save!
+    end
+  end
 
   private
 

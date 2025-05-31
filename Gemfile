@@ -3,10 +3,10 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.1.0"
+ruby "3.2.8"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
-gem "rails", "~> 7.0.8.5"
+gem "rails", "~> 7.2.2.1"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 # Use Puma as the app server
@@ -24,7 +24,6 @@ gem "redis", "~> 4.0"
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Active Storage variant
-# gem 'image_processing', '~> 1.2'
 
 # Use Devise for authentication
 gem "devise"
@@ -42,7 +41,7 @@ gem "cocoon"
 gem "draper"
 gem "faker"
 gem "inline_svg"
-gem "mobility", "~> 1.1.3"
+gem "mobility", "~> 1.2.9"
 gem "name_of_person"
 gem "pagy"
 gem "pg_search"
@@ -62,11 +61,11 @@ gem "net-pop", require: false
 gem "net-smtp", require: false
 
 # Use administrate admin framework
-gem "administrate"
+gem "administrate", "~> 0.20.0"
 gem "administrate-field-active_storage"
 gem "administrate-field-nested_has_many", git: "https://github.com/TelosLabs/administrate-field-nested_has_many.git", branch: "feature/stimulus-controller"
 gem "administrate-field-select", "~> 2.0", require: "administrate/field/select_basic"
-gem "image_processing"
+gem "image_processing", "~> 1.13"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
@@ -88,7 +87,7 @@ group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "factory_bot_rails"
   gem "pry-rails"
-  gem "rspec-rails", "~> 5.0.0"
+  gem "rspec-rails", "~> 6.1.0"
   gem "spring-commands-rspec"
   gem "dotenv"
 end
@@ -131,4 +130,6 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 
-gem "mini_magick", "~> 4.11"
+gem "mini_magick"
+
+gem "friendly_id", "~> 5.5"

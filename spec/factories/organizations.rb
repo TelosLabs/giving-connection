@@ -27,7 +27,7 @@
 FactoryBot.define do
   factory :organization do
     name { "organization" }
-    ein_number { "testing" }
+    ein_number { "12345" }
     irs_ntee_code { "A90: Arts Services" }
     mission_statement_en { "testing" }
     vision_statement_en { "testing" }

@@ -25,6 +25,21 @@ class Location < ActiveRecord::Base
   include PgSearch::Model
   multisearchable against: [:name]
 
+  extend FriendlyId
+  friendly_id :slug_candidates, use: [:slugged, :finders]
+
+  def slug_candidates
+    if organization.present?
+      if organization.locations.size == 1
+        [org_ein]
+      else
+        [ein_with_incrementor]
+      end
+    else
+      [:name]
+    end
+  end
+
   enum :non_standard_office_hours, {appointment_only: 1, always_open: 2, no_set_business_hours: 3}
 
   belongs_to :organization, optional: true
@@ -65,6 +80,8 @@ class Location < ActiveRecord::Base
   scope :main, -> { where(main: true) }
 
   before_validation :lonlat_geo_point
+  before_validation :ensure_slug_uniqueness
+  after_create :regenerate_org_locations_slugs, if: :multiple_locations?
 
   delegate :social_media, to: :organization
 
@@ -115,5 +132,38 @@ class Location < ActiveRecord::Base
     attributes["open_time"].blank? &&
       attributes["close_time"].blank? &&
       attributes["closed"].blank?
+  end
+
+  def org_ein
+    organization&.ein_number
+  end
+
+  def ein_with_incrementor
+    return unless organization
+
+    locations = organization.locations.to_a
+    locations << self if new_record?
+    sorted_locations = locations.sort_by { |loc| loc.created_at || Time.current }
+    slug_index = sorted_locations.index(self) + 1
+    "#{organization.ein_number}-#{slug_index}"
+  end
+
+  def ensure_slug_uniqueness
+    return unless organization
+
+    self.slug = nil if organization.locations.where(slug: slug).exists?
+  end
+
+  def regenerate_org_locations_slugs
+    organization.locations.each do |location|
+      location.slug = nil
+      location.save
+    end
+  end
+
+  def multiple_locations?
+    return if organization.nil?
+
+    organization.locations.count > 1
   end
 end
