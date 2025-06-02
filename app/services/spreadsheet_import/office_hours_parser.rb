@@ -67,7 +67,7 @@ module SpreadsheetImport
     def normalize_time(time)
       return nil if time.blank?
       begin
-        Time.zone.parse(time).strftime("%H:%M")
+        Time.parse(time).strftime("%H:%M")
       rescue
         nil
       end
@@ -100,6 +100,7 @@ module SpreadsheetImport
       end
     end
 
+
     def split_days_and_times(part)
       part.split(":", 2).map(&:strip)
     end
@@ -123,13 +124,13 @@ module SpreadsheetImport
       end
 
       DAYS.map(&:downcase).map do |day|
-        full_schedule[day] || {day: day, open_time: nil, close_time: nil, closed: true}
+        full_schedule[day] || { day: day, open_time: nil, close_time: nil, closed: true }
       end
     end
 
     def default_closed_schedule
       DAYS.map(&:downcase).map do |day|
-        {day: day, open_time: nil, close_time: nil, closed: true}
+        { day: day, open_time: nil, close_time: nil, closed: true }
       end
     end
 
@@ -138,5 +139,6 @@ module SpreadsheetImport
         entry.merge(day: DAYS.index(entry[:day]))
       end
     end
+
   end
 end

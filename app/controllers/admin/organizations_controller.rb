@@ -13,6 +13,7 @@ module Admin
     def upload
       @import_logs = ImportLog.order(created_at: :desc).limit(10)
       @latest_import_log = ImportLog.last
+
     end
 
     def import
@@ -23,13 +24,16 @@ module Admin
       # Save the file to a temp path
       temp_path = Rails.root.join("tmp", "uploads", "#{SecureRandom.uuid}_#{params[:file].original_filename}")
       FileUtils.mkdir_p(temp_path.dirname)
-      File.binwrite(temp_path, params[:file].read)
+      File.open(temp_path, "wb") { |f| f.write(params[:file].read) }
 
       # Enqueue the job
       SpreadsheetImportJob.perform_later(temp_path.to_s, current_admin_user.id, params[:file].original_filename)
 
       redirect_to upload_admin_organizations_path, notice: "Import started in background. This may take several minutes."
     end
+
+
+
 
     def new
       resource = new_resource
@@ -123,7 +127,8 @@ module Admin
       failed_names = results[:failed_instances].map(&:name).join(", ")
 
       "#{successful} organization(s) successfully created.<br>" \
-      "#{failed} organization(s) failed: #{failed_names.presence || "None"}<br>".html_safe
+      "#{failed} organization(s) failed: #{failed_names.presence || 'None'}<br>".html_safe
     end
+
   end
 end
