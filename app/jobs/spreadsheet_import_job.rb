@@ -24,5 +24,9 @@ class SpreadsheetImportJob < ApplicationJob
     raise
   ensure
     file&.close
+    if file_path && File.exist?(file_path)
+      File.delete(file_path)
+      Rails.logger.info "🧹 Temp file #{file_path} deleted."
+    end
   end
 end
