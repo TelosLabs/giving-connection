@@ -21,26 +21,15 @@ module Admin
         redirect_to upload_admin_organizations_path, alert: "Please upload a file." and return
       end
 
-      # Sanitize filename to remove invalid characters
-      sanitized_filename = params[:file].original_filename.gsub(/[^0-9A-Za-z.\-]/, '_')
+      # Save the file to a temp path
+      temp_path = Rails.root.join("tmp", "uploads", "#{SecureRandom.uuid}_#{params[:file].original_filename}")
+      FileUtils.mkdir_p(temp_path.dirname)
+      File.open(temp_path, "wb") { |f| f.write(params[:file].read) }
 
-      begin
-        # Secure temporary directory creation
-        Dir.mktmpdir("uploads") do |dir|
-          temp_path = File.join(dir, "#{SecureRandom.uuid}_#{sanitized_filename}")
+      # Enqueue the job
+      SpreadsheetImportJob.perform_later(temp_path.to_s, current_admin_user.id, params[:file].original_filename)
 
-          # Save the file to a temp path
-          File.open(temp_path, "wb") { |f| f.write(params[:file].read) }
-
-          # Enqueue the job
-          SpreadsheetImportJob.perform_later(temp_path.to_s, current_admin_user.id, params[:file].original_filename)
-        end
-
-        redirect_to upload_admin_organizations_path, notice: "Import started in background. This may take several minutes."
-      rescue => e
-        Rails.logger.error("File upload error: #{e.message}")
-        redirect_to upload_admin_organizations_path, alert: "Failed to process the uploaded file. Please try again."
-      end
+      redirect_to upload_admin_organizations_path, notice: "Import started in background. This may take several minutes."
     end
 
     def new
@@ -135,8 +124,7 @@ module Admin
       failed_names = results[:failed_instances].map(&:name).join(", ")
 
       "#{successful} organization(s) successfully created.<br>" \
-      "#{failed} organization(s) failed: #{failed_names.presence || 'None'}<br>".html_safe
+      "#{failed} organization(s) failed: #{failed_names.presence || "None"}<br>".html_safe
     end
-
   end
 end

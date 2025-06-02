@@ -18,7 +18,6 @@ class SpreadsheetImportJob < ApplicationJob
     file = File.open(file_path)
     parser = SpreadsheetImport::SpreadsheetParser.new(spreadsheet: file, creator: admin, import_log: import_log)
     results = parser.call
-
   rescue => e
     import_log.update!(status: "failed", error_messages: e.message) if import_log
     Rails.logger.error "❌ Spreadsheet import failed: #{e.message}"
