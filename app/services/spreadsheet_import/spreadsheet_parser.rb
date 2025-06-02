@@ -11,18 +11,18 @@ module SpreadsheetImport
     end
 
     def call
-      #load_presets
+      # load_presets
       import
-    end  
+    end
 
     private
 
     def csv_file_paths
       data_spreadsheet = Roo::Spreadsheet.open(@spreadsheet)
-      
+
       missing_sheets = ASSOCIATION_NAMES - data_spreadsheet.sheets.map(&:to_s)
       if missing_sheets.any?
-        raise "Missing required sheets: #{missing_sheets.join(', ')}"
+        raise "Missing required sheets: #{missing_sheets.join(", ")}"
       end
 
       ASSOCIATION_NAMES.each do |association_name|
@@ -39,22 +39,21 @@ module SpreadsheetImport
     def load_presets
       CSV.foreach(@csv_file_paths[:presets_csv_file], headers: :first_row) do |row|
         # Each cell can have a value or be blank. We'll skip blank ones and only import unique values.
-    
+
         # 1. Causes
         cause = row["causes"]&.strip
         Cause.find_or_create_by!(name: cause) if cause.present?
-    
+
         # 2. Beneficiaries
         beneficiary = row["beneficiaries"]&.strip
         BeneficiarySubcategory.find_or_create_by!(name: beneficiary) if beneficiary.present?
-    
+
         # 3. Services
         service = row["services"]&.strip
         Service.find_or_create_by!(name: service) if service.present?
       end
     end
-    
-    
+
     def import
       @error_messages_by_row = Hash.new { |hash, key| hash[key] = [] }
       organizations = create_models
@@ -62,7 +61,7 @@ module SpreadsheetImport
       organizations.each do |entry|
         row_number = entry[:row_number]
         org = entry[:org]
-        org_row = entry[:org_row]
+        entry[:org_row]
 
         org_import_result = Organization.import([org], recursive: true, track_validation_failures: true)
 
@@ -84,54 +83,48 @@ module SpreadsheetImport
       )
     end
 
-
     def create_models
       organizations = []
       CSV.foreach(@csv_file_paths[:orgs_csv_file], headers: :first_row).with_index(2) do |org_row, row_number|
-        begin
-          @import_log&.increment!(:total_rows)
+        @import_log&.increment!(:total_rows)
 
-          org_name = org_row["Organization Name"]
-          if organization_already_exists?(org_name)
-            Rails.logger.info "Skipping existing organization: #{org_name} (row #{row_number})"
-            @import_log&.increment!(:skipped_count)
-            next
-          end
-
-          new_organization = Organization.new(build_organization_hash(org_row))
-          new_organization.creator = @creator
-          new_organization.build_social_media(build_social_media_hash(org_row))
-          location_success = build_location_from_org_row(new_organization, org_row)
-
-          build_org_associations(new_organization, org_row)
-
-          has_errors = log_organization_errors(row_number, org_row, new_organization)
-          if has_errors
-            Rails.logger.warn "❌ Skipping row #{row_number} due to missing data (#{org_name || 'Unnamed Org'})"
-            @import_log&.increment!(:error_count)
-            next
-          else
-            @import_log&.increment!(:success_count)
-          end
-
-          organizations << { row_number: row_number, org: new_organization, org_row: org_row }
-          Rails.logger.info "Prepared organization: #{new_organization.name} (row #{row_number})"
-        rescue => e
-          organizations << { row_number: row_number, org: new_organization, org_row: org_row }
-          @import_log&.increment!(:error_count)
-        ensure
-          row_number += 1
+        org_name = org_row["Organization Name"]
+        if organization_already_exists?(org_name)
+          Rails.logger.info "Skipping existing organization: #{org_name} (row #{row_number})"
+          @import_log&.increment!(:skipped_count)
+          next
         end
+
+        new_organization = Organization.new(build_organization_hash(org_row))
+        new_organization.creator = @creator
+        new_organization.build_social_media(build_social_media_hash(org_row))
+        build_location_from_org_row(new_organization, org_row)
+
+        build_org_associations(new_organization, org_row)
+
+        has_errors = log_organization_errors(row_number, org_row, new_organization)
+        if has_errors
+          Rails.logger.warn "❌ Skipping row #{row_number} due to missing data (#{org_name || "Unnamed Org"})"
+          @import_log&.increment!(:error_count)
+          next
+        else
+          @import_log&.increment!(:success_count)
+        end
+
+        organizations << {row_number: row_number, org: new_organization, org_row: org_row}
+        Rails.logger.info "Prepared organization: #{new_organization.name} (row #{row_number})"
+      rescue
+        organizations << {row_number: row_number, org: new_organization, org_row: org_row}
+        @import_log&.increment!(:error_count)
       end
       organizations
     end
 
-
     def organization_already_exists?(org_name)
       Organization.unscoped.exists?(name: org_name)
     end
-    
-    def build_organization_hash(org_row)      
+
+    def build_organization_hash(org_row)
       {
         name: clean_na(org_row["Organization Name"]),
         ein_number: clean_na(org_row["EIN Number"]),
@@ -168,7 +161,6 @@ module SpreadsheetImport
 
       nil
     end
-
 
     def build_location_from_org_row(organization, org_row)
       if org_row["Website link"].to_s.strip.downcase == "not found"
@@ -213,16 +205,16 @@ module SpreadsheetImport
         longitude: geo_result&.longitude,
         main: true
       )
-    
+
       phone_number = org_row["Phone"]
       location.build_phone_number(number: phone_number, main: true) if phone_number.present?
-    
+
       services = (org_row["Services"] || "").split(",").map(&:strip)
       services.each do |service_name|
         service = Service.find_by(name: service_name)
         location.location_services.build(service: service) if service
       end
-    
+
       hours_string = org_row["Detailed Hours Of Operation"]
       if hours_string.present?
         SpreadsheetImport::OfficeHoursParser.new(hours_string).call.each do |attrs|
@@ -237,7 +229,7 @@ module SpreadsheetImport
         cause = Cause.find_by(name: cause_name)
         org.organization_causes.build(cause: cause) if cause
       end
-    
+
       (org_row["Populations Served"] || "").split(",").map(&:strip).each do |ben_name|
         beneficiary = BeneficiarySubcategory.find_by(name: ben_name)
         org.organization_beneficiaries.build(beneficiary_subcategory: beneficiary) if beneficiary
@@ -258,7 +250,7 @@ module SpreadsheetImport
 
     def log_organization_errors(row_number, org_row, organization, exception = nil)
       org_name = org_row["Organization Name"]
-      label = "Row #{row_number} — #{org_name.presence || 'Unnamed Org'}"
+      label = "Row #{row_number} — #{org_name.presence || "Unnamed Org"}"
       had_errors = false
 
       if exception
@@ -289,7 +281,7 @@ module SpreadsheetImport
         end
 
         if clean_na(location.time_zone).blank?
-          @error_messages_by_row[label] << "Missing time zone" 
+          @error_messages_by_row[label] << "Missing time zone"
           had_errors = true
         end
 
@@ -298,7 +290,7 @@ module SpreadsheetImport
           had_errors = true
         end
       end
-      
+
       had_errors
     end
 
@@ -306,7 +298,5 @@ module SpreadsheetImport
       normalized = value.to_s.strip.upcase
       ["NA", "N/A"].include?(normalized) ? nil : value
     end
-
-
   end
 end

@@ -10,21 +10,19 @@ module SpreadsheetImport
     end
 
     def call
-      begin
-        Timeout.timeout(DEFAULT_TIMEOUT) do
-          result = Geocoder.search(@address).first
-          unless result
-            Rails.logger.warn "📍 Geocoding failed: No result for address: '#{@address}'"
-          end
-          result
+      Timeout.timeout(DEFAULT_TIMEOUT) do
+        result = Geocoder.search(@address).first
+        unless result
+          Rails.logger.warn "📍 Geocoding failed: No result for address: '#{@address}'"
         end
-      rescue Timeout::Error
-        Rails.logger.error "⏱ Geocoding timed out for address: '#{@address}'"
-        nil
-      rescue => e
-        Rails.logger.error "❌ Geocoding error for address '#{@address}': #{e.message}"
-        nil
+        result
       end
+    rescue Timeout::Error
+      Rails.logger.error "⏱ Geocoding timed out for address: '#{@address}'"
+      nil
+    rescue => e
+      Rails.logger.error "❌ Geocoding error for address '#{@address}': #{e.message}"
+      nil
     end
 
     private
