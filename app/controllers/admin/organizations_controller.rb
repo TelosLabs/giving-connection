@@ -21,19 +21,25 @@ module Admin
         redirect_to upload_admin_organizations_path, alert: "Please upload a file." and return
       end
 
+      # Sanitize filename to remove invalid characters
+      sanitized_filename = params[:file].original_filename.gsub(/[^0-9A-Za-z.\-]/, '_')
+
       # Save the file to a temp path
-      temp_path = Rails.root.join("tmp", "uploads", "#{SecureRandom.uuid}_#{params[:file].original_filename}")
-      FileUtils.mkdir_p(temp_path.dirname)
-      File.open(temp_path, "wb") { |f| f.write(params[:file].read) }
+      temp_path = Rails.root.join("tmp", "uploads", "#{SecureRandom.uuid}_#{sanitized_filename}")
+
+      begin
+        FileUtils.mkdir_p(temp_path.dirname) # Ensure directory exists
+        File.open(temp_path, "wb") { |f| f.write(params[:file].read) }
+      rescue => e
+        Rails.logger.error("File upload error: #{e.message}")
+        redirect_to upload_admin_organizations_path, alert: "Failed to process the uploaded file. Please try again." and return
+      end
 
       # Enqueue the job
       SpreadsheetImportJob.perform_later(temp_path.to_s, current_admin_user.id, params[:file].original_filename)
 
       redirect_to upload_admin_organizations_path, notice: "Import started in background. This may take several minutes."
     end
-
-
-
 
     def new
       resource = new_resource
