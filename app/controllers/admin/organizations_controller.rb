@@ -24,21 +24,23 @@ module Admin
       # Sanitize filename to remove invalid characters
       sanitized_filename = params[:file].original_filename.gsub(/[^0-9A-Za-z.\-]/, '_')
 
-      # Save the file to a temp path
-      temp_path = Rails.root.join("tmp", "uploads", "#{SecureRandom.uuid}_#{sanitized_filename}")
-
       begin
-        FileUtils.mkdir_p(temp_path.dirname) # Ensure directory exists
-        File.open(temp_path, "wb") { |f| f.write(params[:file].read) }
+        # Secure temporary directory creation
+        Dir.mktmpdir("uploads") do |dir|
+          temp_path = File.join(dir, "#{SecureRandom.uuid}_#{sanitized_filename}")
+
+          # Save the file to a temp path
+          File.open(temp_path, "wb") { |f| f.write(params[:file].read) }
+
+          # Enqueue the job
+          SpreadsheetImportJob.perform_later(temp_path.to_s, current_admin_user.id, params[:file].original_filename)
+        end
+
+        redirect_to upload_admin_organizations_path, notice: "Import started in background. This may take several minutes."
       rescue => e
         Rails.logger.error("File upload error: #{e.message}")
-        redirect_to upload_admin_organizations_path, alert: "Failed to process the uploaded file. Please try again." and return
+        redirect_to upload_admin_organizations_path, alert: "Failed to process the uploaded file. Please try again."
       end
-
-      # Enqueue the job
-      SpreadsheetImportJob.perform_later(temp_path.to_s, current_admin_user.id, params[:file].original_filename)
-
-      redirect_to upload_admin_organizations_path, notice: "Import started in background. This may take several minutes."
     end
 
     def new
