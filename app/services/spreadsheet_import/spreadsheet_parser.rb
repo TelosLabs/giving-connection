@@ -251,11 +251,6 @@ module SpreadsheetImport
       Organizations::Constants::NTEE_CODE.find { |entry| entry.start_with?(normalized_code) }
     end
 
-    def clean_na(value)
-      normalized = value.to_s.strip.upcase
-      ["NA", "N/A"].include?(normalized) ? nil : value
-    end
-
     def log_organization_errors(row_number, org_row, organization, exception = nil)
       org_name = org_row["Organization Name"]
       label = "Row #{row_number} — #{org_name.presence || 'Unnamed Org'}"
@@ -306,7 +301,6 @@ module SpreadsheetImport
       normalized = value.to_s.strip.upcase
       ["NA", "N/A"].include?(normalized) ? nil : value
     end
-
 
   end
 end
