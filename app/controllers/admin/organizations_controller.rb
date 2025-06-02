@@ -13,7 +13,6 @@ module Admin
     def upload
       @import_logs = ImportLog.order(created_at: :desc).limit(10)
       @latest_import_log = ImportLog.last
-
     end
 
     def import
@@ -21,13 +20,13 @@ module Admin
         redirect_to upload_admin_organizations_path, alert: "Please upload a file." and return
       end
 
-      sanitized_filename = params[:file].original_filename.gsub(/[^0-9A-Za-z.\-]/, '_')
+      sanitized_filename = params[:file].original_filename.gsub(/[^0-9A-Za-z.\-]/, "_")
 
       begin
         dir = Dir.mktmpdir("uploads")
         temp_path = File.join(dir, "#{SecureRandom.uuid}_#{sanitized_filename}")
 
-        File.open(temp_path, "wb") { |f| f.write(params[:file].read) }
+        File.binwrite(temp_path, params[:file].read)
 
         SpreadsheetImportJob.perform_later(temp_path.to_s, current_admin_user.id, params[:file].original_filename)
 
@@ -37,7 +36,6 @@ module Admin
         redirect_to upload_admin_organizations_path, alert: "Failed to process the uploaded file. Please try again."
       end
     end
-
 
     def new
       resource = new_resource
