@@ -1,5 +1,5 @@
 .main
-  h2 class="px-12 pt-14 pb-6 text-2xl font-bold text-center md:pt-20 md:mt-2 md:pb-9 text-gray-gray-7"
+  h2 class="px-12 pb-6 text-2xl font-bold text-center pt-14 md:pt-20 md:mt-2 md:pb-9 text-gray-gray-7"
     ' Create an account
     | on Giving Connection
 
@@ -15,10 +15,10 @@
     div class="absolute top-0 right-0 pr-20 -z-1 xl:pr-40"
       = inline_svg_tag 'desk-purple-blur-signup.svg'
 
-  div class="px-6 pb-7 mx-auto max-w-md text-center sm:text-lg sm:pb-12"
+  div class="max-w-md px-6 mx-auto text-center pb-7 sm:text-lg sm:pb-12"
     | While our search experience is free and available to everyone, you can create an account to have a more personalized experience.
 
-  div class="px-6 mx-auto mb-14 max-w-sm sm:px-1 sm:text-lg text-gray-gray-7"
+  div class="max-w-sm px-6 mx-auto mb-14 sm:px-1 sm:text-lg text-gray-gray-7"
     div class="flex pb-2"
       div class="flex items-center mr-4"
         = inline_svg_tag 'green-check.svg', size: '16*16'
@@ -48,11 +48,13 @@
       = invisible_captcha
       div class="w-full"
         = recaptcha_tags
+            .mt-4.mb-2.flex.items-start.gap-2.text-sm.text-gray-600
+      div class="w-full mt-5 text-center md:text-left"
+        = f.check_box :terms_of_service, required: true
+        label for="user_terms_of_service"
+          |  I agree to Giving Connection’s  
+          = link_to 'Terms & Conditions', '#', class: 'text-blue-600 underline'
+          |  and 
+          = link_to 'Privacy Policy', 'https://givingconnection.org/privacy-policy', class: 'text-blue-600 underline'
       .c-form--action
         = f.submit "Create Account", class:"c-button hover:bg-seafoam-light transition", data: { test_id: "signup_submit_btn", turbo: false }
-
-  div class="px-8 pb-28 mx-auto max-w-sm text-xs text-center sm:pb-36"
-    ' By continuing, you agree to Giving Connection’s
-    = link_to 'Terms & Conditions ', '#', class:'font-bold'
-    ' and
-    = link_to 'Privacy Policy', 'https://givingconnection.org/privacy-policy', class:'font-bold'

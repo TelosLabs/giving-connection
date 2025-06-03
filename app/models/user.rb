@@ -32,6 +32,10 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :recoverable,
     :rememberable, :validatable, :confirmable, :lockable, :trackable
 
+  attr_accessor :terms_of_service
+  validates :terms_of_service, acceptance: { accept: '1' }, on: :create
+
+
   # Validations
   validates :name, presence: true,
     length: {minimum: 2, maximum: 50},
