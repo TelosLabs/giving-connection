@@ -54,6 +54,11 @@ export default class extends Controller {
       e.preventDefault();
     }
 
+    if (!this.containerTarget || !this.containerTarget.classList) {
+      console.warn("Modal container not ready. Aborting open().");
+      return;
+    }
+x
     if (e.target.blur) {
       e.target.blur();
     }
