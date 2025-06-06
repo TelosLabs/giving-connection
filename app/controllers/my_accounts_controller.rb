@@ -8,5 +8,6 @@ class MyAccountsController < ApplicationController
     @saved_pages = current_user.favorited_locations
     @alerts = current_user.alerts.order(:id)
     @my_organizations = current_user.administrated_organizations
+    @events = @my_organizations.flat_map(&:events).sort_by(&:start_time)
   end
 end
