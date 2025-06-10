@@ -23,12 +23,12 @@ module Admin
       sanitized_filename = params[:file].original_filename.gsub(/[^0-9A-Za-z.\-]/, "_")
 
       begin
-        dir = Dir.mktmpdir("uploads")
-        temp_path = File.join(dir, "#{SecureRandom.uuid}_#{sanitized_filename}")
+        persisted_path = Rails.root.join("storage", "imports", "#{SecureRandom.uuid}_#{sanitized_filename}")
+        FileUtils.mkdir_p(File.dirname(persisted_path))
+        File.binwrite(persisted_path, params[:file].read)
 
-        File.binwrite(temp_path, params[:file].read)
 
-        SpreadsheetImportJob.perform_later(temp_path.to_s, current_admin_user.id, params[:file].original_filename)
+        SpreadsheetImportJob.perform_later(persisted_path.to_s, current_admin_user.id, params[:file].original_filename)
 
         redirect_to upload_admin_organizations_path, notice: "Import started in background. This may take several minutes."
       rescue => e

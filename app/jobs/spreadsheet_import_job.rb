@@ -1,5 +1,6 @@
 class SpreadsheetImportJob < ApplicationJob
   queue_as :default
+  discard_on StandardError
 
   def perform(file_path, admin_user_id, original_filename)
     admin = AdminUser.find(admin_user_id)
@@ -21,7 +22,6 @@ class SpreadsheetImportJob < ApplicationJob
   rescue => e
     import_log&.update!(status: "failed", error_messages: e.message)
     Rails.logger.error "❌ Spreadsheet import failed: #{e.message}"
-    raise
   ensure
     file&.close
     if file_path && File.exist?(file_path)
