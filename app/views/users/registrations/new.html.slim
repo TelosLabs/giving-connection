@@ -53,8 +53,8 @@
         = f.check_box :terms_of_service, required: true
         label for="user_terms_of_service"
           |  I agree to Giving Connection’s  
-          = link_to 'Terms & Conditions', '#', class: 'text-blue-600 underline'
+          = link_to 'Terms & Conditions', terms_of_use_path, class: 'text-blue-600 underline', target: '_blank'
           |  and 
-          = link_to 'Privacy Policy', 'https://givingconnection.org/privacy-policy', class: 'text-blue-600 underline'
+          = link_to 'Privacy Policy', privacy_policy_path, class: 'text-blue-600 underline', target: '_blank'
       .c-form--action
         = f.submit "Create Account", class:"c-button hover:bg-seafoam-light transition", data: { test_id: "signup_submit_btn", turbo: false }
