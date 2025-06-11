@@ -1,4 +1,4 @@
-module SpreadhsheetImporter
+module SpreadsheetImport
   class Importer
     def initialize(spreadsheet, creator)
       @spreadsheet = spreadsheet
