@@ -20,10 +20,10 @@ module Admin
         redirect_to upload_admin_organizations_path, alert: "Please upload a file." and return
       end
 
-      sanitized_filename = params[:file].original_filename.gsub(/[^0-9A-Za-z.\-]/, "_")
-
       begin
-        persisted_path = Rails.root.join("storage", "imports", "#{SecureRandom.uuid}_#{sanitized_filename}")
+        filename = File.basename(params[:file].original_filename.gsub(/[^0-9A-Za-z.\-]/, "_"))
+        persisted_path = Rails.root.join("storage", "imports", "#{SecureRandom.uuid}_#{filename}")
+
         FileUtils.mkdir_p(File.dirname(persisted_path))
         File.binwrite(persisted_path, params[:file].read)
 
