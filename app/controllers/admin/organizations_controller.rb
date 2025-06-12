@@ -27,7 +27,6 @@ module Admin
         FileUtils.mkdir_p(File.dirname(persisted_path))
         File.binwrite(persisted_path, params[:file].read)
 
-
         SpreadsheetImportJob.perform_later(persisted_path.to_s, current_admin_user.id, params[:file].original_filename)
 
         redirect_to upload_admin_organizations_path, notice: "Import started in background. This may take several minutes."
