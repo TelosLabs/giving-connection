@@ -64,6 +64,11 @@ export default class extends Controller {
     // Unhide the modal
     this.containerTarget.classList.remove(this.toggleClass);
 
+    if (!this.containerTarget || this.containerTarget.classList.contains(this.toggleClass)) {
+      return;
+    }
+
+
     // Insert the background
     if (!this.data.get("disable-backdrop") && this.containerTarget) {
       document.body.insertAdjacentHTML("beforeend", this.backgroundHtml);
