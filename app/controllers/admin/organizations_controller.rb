@@ -20,14 +20,20 @@ module Admin
         redirect_to upload_admin_organizations_path, alert: "Please upload a file." and return
       end
 
+      filename = File.basename(params[:file].original_filename.gsub(/[^0-9A-Za-z.\-]/, "_"))
+
+      if ImportLog.where(status: "in_progress", file_name: filename).exists?
+        redirect_to upload_admin_organizations_path, alert: "An import is already in progress for this file." and return
+      end
+
       begin
-        filename = File.basename(params[:file].original_filename.gsub(/[^0-9A-Za-z.\-]/, "_"))
-        persisted_path = Rails.root.join("storage", "imports", "#{SecureRandom.uuid}_#{filename}")
+        blob = ActiveStorage::Blob.create_and_upload!(
+          io: params[:file],
+          filename: filename,
+          content_type: params[:file].content_type
+        )
 
-        FileUtils.mkdir_p(File.dirname(persisted_path))
-        File.binwrite(persisted_path, params[:file].read)
-
-        SpreadsheetImportJob.perform_later(persisted_path.to_s, current_admin_user.id, params[:file].original_filename)
+        SpreadsheetImportJob.perform_later(blob.signed_id, current_admin_user.id, filename)
 
         redirect_to upload_admin_organizations_path, notice: "Import started in background. This may take several minutes."
       rescue => e

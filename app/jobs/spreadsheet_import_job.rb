@@ -2,9 +2,8 @@ class SpreadsheetImportJob < ApplicationJob
   queue_as :default
   discard_on StandardError
 
-  def perform(file_path, admin_user_id, original_filename)
+  def perform(blob_signed_id, admin_user_id, original_filename)
     admin = AdminUser.find(admin_user_id)
-    File.basename(file_path)
 
     import_log = ImportLog.create!(
       admin_user: admin,
@@ -16,17 +15,20 @@ class SpreadsheetImportJob < ApplicationJob
       status: "in_progress"
     )
 
-    file = File.open(file_path)
-    parser = SpreadsheetImport::SpreadsheetParser.new(spreadsheet: file, creator: admin, import_log: import_log)
-    parser.call
+    blob = ActiveStorage::Blob.find_signed(blob_signed_id)
+
+    blob.open do |file|
+      parser = SpreadsheetImport::SpreadsheetParser.new(
+        spreadsheet: file,
+        creator: admin,
+        import_log: import_log
+      )
+      parser.call
+    end
+
+    Rails.logger.info "✅ Import completed: #{original_filename}"
   rescue => e
     import_log&.update!(status: "failed", error_messages: e.message)
     Rails.logger.error "❌ Spreadsheet import failed: #{e.message}"
-  ensure
-    file&.close
-    if file_path && File.exist?(file_path)
-      File.delete(file_path)
-      Rails.logger.info "🧹 Temp file #{file_path} deleted."
-    end
   end
 end
