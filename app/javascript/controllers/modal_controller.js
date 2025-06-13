@@ -65,7 +65,7 @@ export default class extends Controller {
     this.containerTarget.classList.remove(this.toggleClass);
 
     // Insert the background
-    if (!this.data.get("disable-backdrop")) {
+    if (!this.data.get("disable-backdrop") && this.containerTarget) {
       document.body.insertAdjacentHTML("beforeend", this.backgroundHtml);
       this.background = document.querySelector(`#${this.backgroundId}`);
     }
