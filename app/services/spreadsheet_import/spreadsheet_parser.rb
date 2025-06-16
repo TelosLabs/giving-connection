@@ -1,6 +1,6 @@
 module SpreadsheetImport
   class SpreadsheetParser
-    ASSOCIATION_NAMES = ["orgs", "presets"].freeze
+    ASSOCIATION_NAMES = ["orgs"].freeze
 
     def initialize(spreadsheet:, creator:, import_log: nil)
       @spreadsheet = spreadsheet
