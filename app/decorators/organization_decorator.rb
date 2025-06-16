@@ -35,9 +35,8 @@ class OrganizationDecorator < ApplicationDecorator
 
   def url_or_nil(link)
     uri = URI.parse(link)
-    return link if uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
+    link if uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
   rescue URI::InvalidURIError, TypeError
     nil
   end
-
 end
