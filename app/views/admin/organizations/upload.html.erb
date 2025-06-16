@@ -1,14 +1,56 @@
 <header class="main-content__header" role="banner">
-  <h1 class="main-content__page-title">
-    <%= "Upload Organizations" %>
-  </h1>
+  <h1 class="main-content__page-title">Upload Organizations</h1>
   <div>
     <%= link_to t("administrate.actions.back"), :back, class: "button" %>
   </div>
 </header>
+
 <section class="main-content__body">
   <%= form_tag import_admin_organizations_path, multipart: true do %>
     <%= file_field_tag :file, required: true %>
     <%= submit_tag "Import Organizations", style: "margin-top:16px" %>
   <% end %>
+</section>
+
+<section class="main-content__body">
+  <h2>Previous Imports</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>File</th>
+        <th>Status</th>
+        <th>Total</th>
+        <th>Success</th>
+        <th>Skipped</th>
+        <th>Errors</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @import_logs.each do |import_log| %>
+        <tr id="<%= dom_id(import_log) %>">
+          <td><%= import_log.file_name %></td>
+          <td><%= import_log.status %></td>
+          <td><%= import_log.total_rows %></td>
+          <td><%= import_log.success_count %></td>
+          <td><%= import_log.skipped_count %></td>
+          <td><%= import_log.error_count %></td>
+        </tr>
+
+        <% if import_log.error_messages.present? %>
+          <tr>
+            <td colspan="6">
+              <details>
+                <summary class="font-bold text-red-600 cursor-pointer">Import Errors</summary>
+                <div class="p-2 mt-2 bg-gray-100 rounded">
+                  <% import_log.error_messages.split("\n").each do |line| %>
+                    <p class="text-sm text-red-700"><%= line %></p>
+                  <% end %>
+                </div>
+              </details>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
 </section>
