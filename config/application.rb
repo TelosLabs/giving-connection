@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "boot"
+require_relative "../app/middleware/timezone_detector"
 
 require "rails/all"
 
@@ -27,5 +28,6 @@ module GivingConnection
     config.i18n.available_locales = %i[en es]
     config.autoload_paths += Dir.glob("#{config.root}/app/lib")
     config.assets.css_compressor = nil
+    config.middleware.use TimezoneDetector
   end
 end
