@@ -295,7 +295,12 @@ module SpreadsheetImport
       cleaned = value.to_s.strip
       return nil if ["NA", "N/A"].include?(cleaned.upcase)
 
-      cleaned.gsub(/[#\/]+\z/, "")
+      cleaned = cleaned.gsub(/\Amailto:/i, '')
+
+      cleaned = cleaned.gsub(/[#\/]+\z/, '')
+
+      cleaned
     end
+
   end
 end
