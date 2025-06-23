@@ -48,10 +48,10 @@ module SpreadsheetImport
 
     def clean_address(address)
       address.to_s.strip
-             .gsub(/[\t\r\n]+/, ", ") # normalize newlines and tabs
-             .gsub(/,+/, ",")         # collapse multiple commas
-             .gsub(/\s+/, " ")        # normalize spaces
-             .gsub(/ ,/, ",")         # remove space before commas
+        .gsub(/[\t\r\n]+/, ", ")
+        .gsub(/,+/, ",")
+        .gsub(/\s+/, " ")
+        .gsub(/ ,/, ",")
     end
 
     def po_box?(address)
