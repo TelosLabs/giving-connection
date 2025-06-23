@@ -49,9 +49,9 @@ module SpreadsheetImport
     def clean_address(address)
       address.to_s.strip
         .gsub(/[\t\r\n]+/, ", ")
-        .gsub(/,+/, ",")
+        .squeeze(",")
         .gsub(/\s+/, " ")
-        .gsub(/ ,/, ",")
+        .gsub(" ,", ",")
     end
 
     def po_box?(address)
