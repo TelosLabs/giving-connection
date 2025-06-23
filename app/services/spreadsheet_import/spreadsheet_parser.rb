@@ -144,12 +144,12 @@ module SpreadsheetImport
 
     def build_social_media_hash(org_row)
       {
-        facebook: org_row["Facebook"],
-        instagram: org_row["Instagram"],
-        twitter: org_row["Twitter/X"],
-        linkedin: org_row["LinkedIn"],
-        youtube: org_row["YouTube"],
-        blog: org_row["Blog"]
+        facebook: clean_na(org_row["Facebook"]),
+        instagram: clean_na(org_row["Instagram"]),
+        twitter: clean_na(org_row["Twitter/X"]),
+        linkedin: clean_na(org_row["LinkedIn"]),
+        youtube: clean_na(org_row["YouTube"]),
+        blog: clean_na(org_row["Blog"])
       }
     end
 
@@ -195,12 +195,12 @@ module SpreadsheetImport
       location = organization.locations.build(
         name: clean_na(org_row["Organization Name"]),
         address: org_row["Address"],
-        email: org_row["Email"],
+        email: clean_na(org_row["Email"]),
         time_zone: timezone,
         offer_services: true,
         non_standard_office_hours: safe_non_standard_office_hours(org_row["Hours of Operation"]),
-        youtube_video_link: org_row["YouTube Video Link"],
-        website: org_row["Website link"],
+        youtube_video_link: clean_na(org_row["YouTube Video Link"]),
+        website: clean_na(org_row["Website link"]),
         latitude: geo_result&.latitude,
         longitude: geo_result&.longitude,
         main: true
@@ -290,8 +290,12 @@ module SpreadsheetImport
     end
 
     def clean_na(value)
-      normalized = value.to_s.strip.upcase
-      ["NA", "N/A"].include?(normalized) ? nil : value
+      return nil if value.blank?
+
+      cleaned = value.to_s.strip
+      return nil if ["NA", "N/A"].include?(cleaned.upcase)
+
+      cleaned.gsub(/[#\/]+\z/, "")
     end
   end
 end
