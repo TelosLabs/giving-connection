@@ -1,6 +1,6 @@
 module SpreadsheetImport
   class SpreadsheetParser
-    ASSOCIATION_NAMES = ["orgs"].freeze
+    ASSOCIATION_NAMES = ["orgs", "presets"].freeze
 
     def initialize(spreadsheet:, creator:, import_log: nil)
       @spreadsheet = spreadsheet
@@ -193,7 +193,7 @@ module SpreadsheetImport
       end
 
       location = organization.locations.build(
-        name: "Main Location",
+        name: clean_na(org_row["Organization Name"]),
         address: org_row["Address"],
         email: org_row["Email"],
         time_zone: timezone,
