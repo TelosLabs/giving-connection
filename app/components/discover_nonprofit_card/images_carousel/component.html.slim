@@ -1,7 +1,7 @@
-= content_tag(:div, carousel_container_options)
+= content_tag(:div, carousel_container_options.merge(class: "#{carousel_container_options[:class]} overflow-hidden w-full max-w-full"))
   = render DiscoverNonprofitCard::ImagesCarousel::NavButton::Component.new(direction: :prev, outline: "M15 19l-7-7 7-7")
 
-  div class="swiper-wrapper w-full"
+  div class="w-full swiper-wrapper"
     - @images.each do |image|
       img src=url_for(image) class="swiper-slide #{@image_styles} object-contain" alt="Slide #{@images.index(image) + 1} of #{@images.length}"
 
