@@ -129,7 +129,7 @@ module SpreadsheetImport
         name: clean_na(org_row["Organization Name"]),
         ein_number: clean_na(org_row["EIN Number"]),
         irs_ntee_code: full_ntee_code(clean_na(org_row["IRS NTEE Code"])),
-        mission_statement_en: clean_na(org_row["Mission Statement - What We Do"]),
+        mission_statement_en: clean_na(org_row["Mission Statement - What We Do"]) || "Visit organization's website for more details",
         vision_statement_en: clean_na(org_row["Vision - Goals and Aspirations"]),
         tagline_en: clean_na(org_row["Services - How We Do It"]),
         mission_statement_es: nil,
