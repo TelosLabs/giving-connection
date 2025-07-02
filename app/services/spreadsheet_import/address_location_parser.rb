@@ -7,25 +7,22 @@ module SpreadsheetImport
 
     def initialize(address)
       @raw_address = address
-      @cleaned_address = clean_address(address)
     end
 
     def call
       Timeout.timeout(DEFAULT_TIMEOUT) do
-        result = try_geocode(@cleaned_address)
+        llm_result = RubyLlm.format_address(@raw_address)
 
-        if result.nil? && po_box?(@cleaned_address)
-          zip = extract_zip(@cleaned_address)
-          result = try_geocode(zip) if zip
+        if llm_result.is_a?(Hash) && llm_result[:error]
+          Rails.logger.warn "❌ LLM failed to parse address: #{@raw_address}"
         end
 
-        if result.nil?
-          simplified_address = remove_apartment_or_suite(@cleaned_address)
-          result = try_geocode(simplified_address)
-        end
+        parsed_address = build_parsed_address(llm_result)
+
+        result = try_geocode(parsed_address)
 
         unless result
-          Rails.logger.warn "📍 Geocoding failed: No result for address: '#{@raw_address}'"
+          Rails.logger.warn "📍 Geocoding failed for parsed input: '#{parsed_address}'"
         end
 
         result
@@ -42,28 +39,22 @@ module SpreadsheetImport
 
     def try_geocode(address)
       return nil if address.blank?
-
       Geocoder.search(address).first
     end
 
-    def clean_address(address)
-      address.to_s.strip
-        .gsub(/[\t\r\n]+/, ", ")
-        .squeeze(",")
-        .gsub(/\s+/, " ")
-        .gsub(" ,", ",")
-    end
+    def build_parsed_address(parsed)
+      return nil unless parsed.is_a?(Hash)
 
-    def po_box?(address)
-      address.upcase.match?(/\bP\.?O\.?\s*BOX\b/)
-    end
+      address_line1 = parsed["address_line1"]
+      city = parsed["city"]
+      state = parsed["state"]
+      zip = parsed["zip"]
 
-    def extract_zip(address)
-      address[/\b\d{5}(?:-\d{4})?\b/]
-    end
-
-    def remove_apartment_or_suite(address)
-      address.gsub(/\b(APT|SUITE|STE|UNIT|FLOOR|#)\s*\w+/i, "").strip
+      if address_line1.nil?
+        [city, state, zip].compact.join(", ")
+      else
+        [address_line1, city, state, zip].compact.join(", ")
+      end
     end
   end
 end

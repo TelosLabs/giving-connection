@@ -6,7 +6,7 @@ module SpreadsheetImport
     def self.format_address(raw_address)
       prompt = <<~PROMPT
         Format the following US address string into a structured JSON with keys:
-        - address_line1 (remove PO Box if present)
+        - address_line1 (remove PO Box if present. If no street address is found, return null)
         - city
         - state
         - zip
@@ -29,14 +29,7 @@ module SpreadsheetImport
       response = chat.ask(prompt)
 
       begin
-        parsed = JSON.parse(response.content)
-        [
-          parsed["address_line1"],
-          parsed["city"],
-          parsed["state"],
-          parsed["zip"],
-          parsed["country"]
-        ].compact.join(", ")
+        JSON.parse(response.content)
       rescue JSON::ParserError
         { error: "Could not parse LLM response", raw_response: response.content }
       end
