@@ -1,6 +1,6 @@
 module SpreadsheetImport
   class OfficeHoursParser
-    DAYS = %w[monday tuesday wednesday thursday friday saturday sunday]
+    DAYS = %w[sunday monday tuesday wednesday thursday friday saturday]
 
     def initialize(input)
       @input = input.to_s

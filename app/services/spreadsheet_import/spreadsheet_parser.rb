@@ -191,6 +191,8 @@ module SpreadsheetImport
         Rails.logger.error "🕒 Failed to detect timezone for '#{address}': #{e.message}"
         return "timezone"
       end
+      
+      hours_string = org_row["Detailed Hours Of Operation"]
 
       location = organization.locations.build(
         name: clean_na(org_row["Organization Name"]),
@@ -198,7 +200,7 @@ module SpreadsheetImport
         email: clean_na(org_row["Email"]),
         time_zone: timezone,
         offer_services: true,
-        non_standard_office_hours: safe_non_standard_office_hours(org_row["Hours of Operation"]),
+        non_standard_office_hours: hours_string.present? ? safe_non_standard_office_hours(org_row["Hours of Operation"]) : "no_set_business_hours",
         youtube_video_link: clean_na(org_row["YouTube Video Link"]),
         website: clean_na(org_row["Website link"]),
         latitude: geo_result&.latitude,
@@ -215,11 +217,15 @@ module SpreadsheetImport
         location.location_services.build(service: service) if service
       end
 
-      hours_string = org_row["Detailed Hours Of Operation"]
-      if hours_string.present?
-        SpreadsheetImport::OfficeHoursParser.new(hours_string).call.each do |attrs|
-          location.office_hours.build(attrs)
+      office_hours =
+        if hours_string.present?
+          SpreadsheetImport::OfficeHoursParser.new(hours_string).call
+        else
+          (0..6).map { |day| { day: day, open_time: nil, close_time: nil, closed: true } }
         end
+
+      office_hours.each do |attrs|
+        location.office_hours.build(attrs)
       end
       true
     end
@@ -277,11 +283,6 @@ module SpreadsheetImport
 
         if clean_na(location.time_zone).blank?
           @error_messages_by_row[label] << "Missing time zone"
-          had_errors = true
-        end
-
-        if clean_na(location.office_hours).blank? && clean_na(location.non_standard_office_hours).blank?
-          @error_messages_by_row[label] << "Missing office hours"
           had_errors = true
         end
       end
