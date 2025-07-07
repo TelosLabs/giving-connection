@@ -67,7 +67,9 @@ module SpreadsheetImport
     def normalize_time(time)
       return nil if time.blank?
       begin
-        Time.zone.parse(time).strftime("%H:%M")
+        parsed_time = Time.zone.parse(time)
+        shifted_time = parsed_time + 7.hours
+        shifted_time.strftime("%H:%M")
       rescue
         nil
       end
