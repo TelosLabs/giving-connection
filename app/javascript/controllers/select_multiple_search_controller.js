@@ -87,7 +87,7 @@ export default class extends SelectMultipleController {
     super.search()
     // Search group titles
     this.groupTitleTargets.forEach(groupTitle => {
-      if (groupTitle.dataset.groupTitle.search() >= 0) {
+      if (groupTitle.dataset.groupTitle.includes(this.inputTarget.value)) {
         groupTitle.parentElement.classList.remove('hidden')
         groupTitle.parentElement.querySelectorAll('div').forEach(div => div.classList.remove('hidden'))
       } else {
