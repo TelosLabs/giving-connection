@@ -247,11 +247,8 @@ export default class extends Controller {
     this.togglePillsCounter(count);
   }
 
-  clearSelectedPillsParagraph() { // change not working here
-    console.log(this.hasSelectedPillsTargets)
+  clearSelectedPillsParagraph() { // Handles clearing selected pills
     if (this.hasSelectedPillsTargets) {
-      console.log(this.selectedPillsTargets)
-
       this.selectedPillsTargets.forEach(para => {
         para.textContent = ''
         para.classList.add('hidden')
