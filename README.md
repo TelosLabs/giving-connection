@@ -3,8 +3,8 @@
 Connecting nonprofits with communities in Nashville and Atlantic City (for now!).
 
 ### Stack
-- Ruby on Rails 6.1.x
-- Ruby 3.1.x
+- Ruby on Rails 7.2.x
+- Ruby 3.2.x
 - Postgres and Postgis
 - Hotwire
 - Tailwind CSS
@@ -16,10 +16,11 @@ Connecting nonprofits with communities in Nashville and Atlantic City (for now!)
 - Bundler (`gem install bundler`)
 - Redis
 - cmake
+- Github SSH key (for cloning the repository)
+- Postgres with Postgis extension
 
-2. Clone the repository: `git clone xxxx`
+2. Clone the repository: `git clone git@github.com:TelosLabs/giving-connection.git`
 3. Run `bin/setup` to install dependencies and setup the database
-
 4. Create database: `rails db:create`
 5. Associate postgres database with postgis:
   - Run postgres: `psql -d giving_connection_development`
