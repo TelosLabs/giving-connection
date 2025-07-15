@@ -5,6 +5,8 @@ export default class extends SelectMultipleController {
   static targets = SelectMultipleController.targets.concat("groupTitle")
 
   connect() {
+    // Listen for event to clear all filters
+    this.element.addEventListener('selectmultiple:clear', () => this.clearAll())
     this.updateCheckboxes()
     this.updateBadges()
     this.search()
@@ -85,7 +87,7 @@ export default class extends SelectMultipleController {
     super.search()
     // Search group titles
     this.groupTitleTargets.forEach(groupTitle => {
-      if (groupTitle.dataset.groupTitle.search(regex) >= 0) {
+      if (groupTitle.dataset.groupTitle.search() >= 0) {
         groupTitle.parentElement.classList.remove('hidden')
         groupTitle.parentElement.querySelectorAll('div').forEach(div => div.classList.remove('hidden'))
       } else {

@@ -15,6 +15,7 @@ export default class extends Controller {
     "advancedFilters",
     "pillsCounter",
     "pillsCounterWrapper",
+    "selectedPills",
     "filtersIcon",
     "panel",
     "tab",
@@ -246,6 +247,18 @@ export default class extends Controller {
     this.togglePillsCounter(count);
   }
 
+  clearSelectedPillsParagraph() { // change not working here
+    console.log(this.hasSelectedPillsTargets)
+    if (this.hasSelectedPillsTargets) {
+      console.log(this.selectedPillsTargets)
+
+      this.selectedPillsTargets.forEach(para => {
+        para.textContent = ''
+        para.classList.add('hidden')
+      })
+    }
+  }
+
   updateFiltersState(event) {
     this.updatePillsCounter()
     if (this.advancedFiltersButton) {
@@ -287,8 +300,9 @@ export default class extends Controller {
     const event = new CustomEvent('selectmultiple:clear', {})
 
     const anyFilterApplied = filterStore.getFilters().length > 0
+    this.element.dispatchEvent(event) // added dispatch to trigger listener in select multiple search controller
 
-    this.inputTargets.forEach(input => {
+    this.inputTargets.forEach(input =>  { // nothing in inputTargets
       this.clearInput(input)
     })
     this.customInputTargets.forEach(input => {
@@ -297,6 +311,7 @@ export default class extends Controller {
 
     if (anyFilterApplied) {
       this.updateFiltersState()
+      //this.clearSelectedPillsParagraph() // change here
       this.submitForm()
     }
   }
