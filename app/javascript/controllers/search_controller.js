@@ -15,7 +15,6 @@ export default class extends Controller {
     "advancedFilters",
     "pillsCounter",
     "pillsCounterWrapper",
-    "selectedPills",
     "filtersIcon",
     "panel",
     "tab",
@@ -245,15 +244,6 @@ export default class extends Controller {
 
     }
     this.togglePillsCounter(count);
-  }
-
-  clearSelectedPillsParagraph() { // Handles clearing selected pills
-    if (this.hasSelectedPillsTargets) {
-      this.selectedPillsTargets.forEach(para => {
-        para.textContent = ''
-        para.classList.add('hidden')
-      })
-    }
   }
 
   updateFiltersState(event) {
