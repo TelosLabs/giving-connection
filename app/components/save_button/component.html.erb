@@ -2,7 +2,7 @@
 <%= link_to(
       link_args[:path],
       method: link_args[:method],
-      class: "#{btn_selector} #{button_styles} relative",
+      class: "group #{btn_selector} #{button_styles} relative",
       data: { turbo_stream: true}
     ) do %>
   <%= render CauseIcon::Component.new(
@@ -10,7 +10,7 @@
         wrapper_options: { class: "pop-out labelled-icon #{wrapper_styles}", "aria-labelledby": tooltip_id },
         svg_options: { class: "w-4 h-auto", aria_hidden: true }
       ) %>
-  <span role="tooltip" id="<%= tooltip_id %>" class="<%= "hidden absolute z-10 px-2 py-1 w-44 text-xs text-white bg-opacity-90 rounded-lg transform bg-gray-2 #{@tooltip_position}" %>" >
+  <span role="tooltip" id="<%= tooltip_id %>" class="<%= "pointer-events-none absolute z-10 px-2 py-1 w-44 text-xs text-white bg-opacity-90 rounded-lg transform bg-gray-2 #{@tooltip_position} opacity-0 group-hover:opacity-100 transition" %>" >
     <% if @removable_fav_location %>
       Remove this nonprofit from your account
     <% else %>
