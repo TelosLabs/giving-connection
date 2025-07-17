@@ -10,7 +10,7 @@ class CausesList::Component < ApplicationViewComponent
     @tooltip_id = SecureRandom.hex
   end
 
-  def link_url(cause)
+  def path(cause)
     {
       href: discover_show_path(cause)
     }

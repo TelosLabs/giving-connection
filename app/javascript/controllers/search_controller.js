@@ -289,11 +289,6 @@ export default class extends Controller {
     const anyFilterApplied = filterStore.getFilters().length > 0
     this.element.dispatchEvent(event) // added dispatch to trigger listener in select multiple search controller
 
-    // Removed unnecessary loop over inputTargets as it is always empty.
-    this.customInputTargets.forEach(input => {
-      input.dispatchEvent(event)
-    })
-
     if (anyFilterApplied) {
       this.updateFiltersState()
       this.submitForm()
