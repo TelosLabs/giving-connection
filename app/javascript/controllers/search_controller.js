@@ -287,10 +287,8 @@ export default class extends Controller {
     const event = new CustomEvent('selectmultiple:clear', {})
 
     const anyFilterApplied = filterStore.getFilters().length > 0
+    this.element.dispatchEvent(event) // added dispatch to trigger listener in select multiple search controller
 
-    this.inputTargets.forEach(input => {
-      this.clearInput(input)
-    })
     this.customInputTargets.forEach(input => {
       input.dispatchEvent(event)
     })
