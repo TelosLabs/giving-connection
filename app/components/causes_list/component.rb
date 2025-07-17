@@ -11,7 +11,9 @@ class CausesList::Component < ApplicationViewComponent
   end
 
   def link_url(cause)
-    discover_show_url(cause)
+    {
+      href: discover_show_path(cause)
+    }
   end
 
   def cause_options
