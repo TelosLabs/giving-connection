@@ -14,7 +14,9 @@ module.exports = (webpackConfig) => {
 
   // Add dev server configs
   webpackConfig.devServer = {
-    https: false,
+    server: {
+      type: 'http'
+    },
     host: 'localhost',
     port: devServerPort,
     hot: false,
