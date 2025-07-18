@@ -18,9 +18,8 @@ export default class extends Controller {
     "filtersIcon",
     "panel",
     "tab",
-    "searchPillsPanel",
-    "tabsWrapper"
-  ]
+    "searchPillsPanel"
+  ] 
 
   static values = {
     currentExpandedCategory: String,
@@ -73,7 +72,7 @@ export default class extends Controller {
     this.isMobileValue = window.innerWidth <= 768
     
     // Update the wrapper class when switching between mobile and desktop
-    if (wasMobile !== this.isMobileValue) {
+    if (wasMobile !== this.isMobileValue && this.hasTabsWrapperTarget) {
       this.tabsWrapperTarget.classList.toggle('is-mobile', this.isMobileValue)
       
       // Reset state when switching between mobile and desktop
