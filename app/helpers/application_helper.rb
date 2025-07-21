@@ -12,7 +12,7 @@ module ApplicationHelper
 
   # recaptcha gem doesn't work well with Turbo
   def turbo_disabled_urls
-    [new_nonprofit_request_url, new_contact_message_url]
+    [new_contact_message_url]
   end
 
   def load_webpack_manifest
