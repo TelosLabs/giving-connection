@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_01_17_173849) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_22_205152) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -148,6 +148,20 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_17_173849) do
     t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
+  end
+
+  create_table "import_logs", force: :cascade do |t|
+    t.bigint "admin_user_id", null: false
+    t.string "file_name"
+    t.integer "total_rows"
+    t.integer "success_count"
+    t.integer "error_count"
+    t.integer "skipped_count"
+    t.string "status"
+    t.text "error_messages"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_user_id"], name: "index_import_logs_on_admin_user_id"
   end
 
   create_table "instagram_posts", force: :cascade do |t|
@@ -368,6 +382,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_17_173849) do
   add_foreign_key "beneficiary_subcategories", "beneficiary_groups"
   add_foreign_key "favorite_locations", "locations"
   add_foreign_key "favorite_locations", "users"
+  add_foreign_key "import_logs", "admin_users"
   add_foreign_key "location_services", "locations"
   add_foreign_key "location_services", "services"
   add_foreign_key "locations", "organizations"
