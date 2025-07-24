@@ -1,9 +1,9 @@
 <%= turbo_stream.replace_all(".save-location-#{@location.id}-btn__simplified") do %>
-  <%= render SaveButton::Component.new(user: @user, location: @location, simplified: true) %>
+  <%= render SaveButton::Component.new(user: @user, location: @location, simplified: true, tooltip_position: "right-0 mt-2") %>
 <% end %>
 
 <%= turbo_stream.replace_all(".save-location-#{@location.id}-btn") do %>
-  <%= render SaveButton::Component.new(user: @user, location: @location) %>
+  <%= render SaveButton::Component.new(user: @user, location: @location, tooltip_position: "top-10") %>
 <% end %>
 
 <%# Remove the entire saved page card from My Account page %>
