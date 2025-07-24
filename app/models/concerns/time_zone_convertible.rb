@@ -1,38 +1,58 @@
 module TimeZoneConvertible
   extend ActiveSupport::Concern
 
-  included do
-    before_save :convert_times_to_utc, if: :open_and_close_times_present?
+  def open_time=(value)
+    if value.present?
+      converted_time = convert_time_to_utc(value)
+      super(converted_time)
+    else
+      super
+    end
   end
 
-  def convert_times_to_utc
-    raise "Time zone must be present" if time_zone.blank?
-
-    converter = TimeZoneConverter.new(time_zone)
-
-    converted_open_time = converter.to_utc(open_time.strftime("%H:%M:%S"))
-    converted_close_time = converter.to_utc(close_time.strftime("%H:%M:%S"))
-
-    # Handle rollover
-    if converted_close_time < converted_open_time
-      # Adjust close time to next day
-      converted_close_time += 1.day
+  def close_time=(value)
+    if value.present?
+      converted_time = convert_time_to_utc(value)
+      super(converted_time)
+    else
+      super
     end
-
-    self.open_time = converted_open_time
-    self.close_time = converted_close_time
   end
 
   def in_local_time(time)
     return if time.blank?
 
-    converter = TimeZoneConverter.new(time_zone)
-    converter.to_local(time.strftime("%H:%M:%S"))
+    # Convert from UTC back to local timezone
+    local_timezone = ActiveSupport::TimeZone[time_zone]
+    time.in_time_zone(local_timezone)
   end
 
   private
 
-  def open_and_close_times_present?
-    open_time.present? && close_time.present?
+  def convert_time_to_utc(time)
+    return nil if time.blank?
+
+    # If it's already a Time object in UTC, return it as is
+    if time.is_a?(Time) && time.zone == "UTC"
+      return time
+    end
+
+    # Get the time string (HH:MM:SS format)
+    time_str = if time.is_a?(Time)
+      time.strftime("%H:%M:%S")
+    elsif time.is_a?(String)
+      # Ensure we have seconds if not provided
+      time.match?(/\d{2}:\d{2}:\d{2}/) ? time : "#{time}:00"
+    else
+      time.to_s
+    end
+
+    # Create a Time object in the local timezone using today's date
+    local_timezone = ActiveSupport::TimeZone[time_zone]
+    today = Date.current
+    local_time = local_timezone.parse("#{today} #{time_str}")
+
+    # Convert to UTC
+    local_time.utc
   end
 end
