@@ -72,7 +72,7 @@ export default class extends Controller {
     this.isMobileValue = window.innerWidth <= 768
     
     // Update the wrapper class when switching between mobile and desktop
-    if (wasMobile !== this.isMobileValue && this.hasTabsWrapperTarget) {
+    if (this.hasTabsWrapperTarget && wasMobile !== this.isMobileValue) {
       this.tabsWrapperTarget.classList.toggle('is-mobile', this.isMobileValue)
       
       // Reset state when switching between mobile and desktop
