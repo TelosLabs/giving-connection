@@ -1,7 +1,7 @@
 = content_tag(:ul, @list_options) do
   - @causes.each do |cause|
     li
-      = content_tag(:a, cause.name, href: link_url(cause), data: { turbo: false }) do
+      = content_tag(:a, href: link_url(cause), data: { turbo: false }) do
         = content_tag(:div, cause_options) do
           span aria-labelledby=@tooltip_id class="labelled-icon"
             = render CauseIcon::Component.new(svg_name: "causes_categories/#{cause.decorate.svg_file_name}", \
