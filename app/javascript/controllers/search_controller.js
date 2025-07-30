@@ -18,9 +18,8 @@ export default class extends Controller {
     "filtersIcon",
     "panel",
     "tab",
-    "searchPillsPanel",
-    "tabsWrapper"
-  ]
+    "searchPillsPanel"
+  ] 
 
   static values = {
     currentExpandedCategory: String,
@@ -73,7 +72,7 @@ export default class extends Controller {
     this.isMobileValue = window.innerWidth <= 768
     
     // Update the wrapper class when switching between mobile and desktop
-    if (wasMobile !== this.isMobileValue) {
+    if (this.hasTabsWrapperTarget && wasMobile !== this.isMobileValue) {
       this.tabsWrapperTarget.classList.toggle('is-mobile', this.isMobileValue)
       
       // Reset state when switching between mobile and desktop
@@ -287,10 +286,8 @@ export default class extends Controller {
     const event = new CustomEvent('selectmultiple:clear', {})
 
     const anyFilterApplied = filterStore.getFilters().length > 0
+    this.element.dispatchEvent(event) // added dispatch to trigger listener in select multiple search controller
 
-    this.inputTargets.forEach(input => {
-      this.clearInput(input)
-    })
     this.customInputTargets.forEach(input => {
       input.dispatchEvent(event)
     })

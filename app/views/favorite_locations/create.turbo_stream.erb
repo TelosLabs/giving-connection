@@ -2,13 +2,15 @@
   <%= render SaveButton::Component.new(
     user: @new_favorite_location.user,
     location: @new_favorite_location.location,
-    simplified: true
+    simplified: true,
+    tooltip_position: "right-0 mt-2"
   ) %>
 <% end %>
 
 <%= turbo_stream.replace_all(".save-location-#{@location.id}-btn") do %>
   <%= render SaveButton::Component.new(
     user: @new_favorite_location.user,
-    location: @new_favorite_location.location
+    location: @new_favorite_location.location,
+    tooltip_position: "top-10"
   ) %>
 <% end %>
