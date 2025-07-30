@@ -1,5 +1,14 @@
 require "rails_helper"
 
+OFFSET_HOURS = 7
+
+def offset_time(time_str)
+  return time_str if time_str.nil?
+
+  # Parse and shift by OFFSET_HOURS
+  (Time.parse(time_str) + OFFSET_HOURS.hours).strftime("%H:%M")
+end
+
 RSpec.describe SpreadsheetImport::OfficeHoursParser do
   describe "#call" do
     let(:default_closed_day) do |day|
@@ -15,11 +24,11 @@ RSpec.describe SpreadsheetImport::OfficeHoursParser do
     it "parses standard ranges" do
       result = described_class.new("Monday - Friday: 8:00 - 16:00").call
       expected = week_with(
-        0 => {day: 0, open_time: "08:00", close_time: "16:00", closed: false},
-        1 => {day: 1, open_time: "08:00", close_time: "16:00", closed: false},
-        2 => {day: 2, open_time: "08:00", close_time: "16:00", closed: false},
-        3 => {day: 3, open_time: "08:00", close_time: "16:00", closed: false},
-        4 => {day: 4, open_time: "08:00", close_time: "16:00", closed: false}
+        1 => {day: 1, open_time: offset_time("08:00"), close_time: offset_time("16:00"), closed: false},
+        2 => {day: 2, open_time: offset_time("08:00"), close_time: offset_time("16:00"), closed: false},
+        3 => {day: 3, open_time: offset_time("08:00"), close_time: offset_time("16:00"), closed: false},
+        4 => {day: 4, open_time: offset_time("08:00"), close_time: offset_time("16:00"), closed: false},
+        5 => {day: 5, open_time: offset_time("08:00"), close_time: offset_time("16:00"), closed: false}
       )
       expect(result).to eq(expected)
     end
@@ -27,9 +36,9 @@ RSpec.describe SpreadsheetImport::OfficeHoursParser do
     it "parses non-continuous days" do
       result = described_class.new("Monday, Thursday - Friday: 9:00 - 17:00").call
       expected = week_with(
-        0 => {day: 0, open_time: "09:00", close_time: "17:00", closed: false},
-        3 => {day: 3, open_time: "09:00", close_time: "17:00", closed: false},
-        4 => {day: 4, open_time: "09:00", close_time: "17:00", closed: false}
+        1 => {day: 1, open_time: offset_time("09:00"), close_time: offset_time("17:00"), closed: false},
+        4 => {day: 4, open_time: offset_time("09:00"), close_time: offset_time("17:00"), closed: false},
+        5 => {day: 5, open_time: offset_time("09:00"), close_time: offset_time("17:00"), closed: false}
       )
       expect(result).to eq(expected)
     end
@@ -37,8 +46,8 @@ RSpec.describe SpreadsheetImport::OfficeHoursParser do
     it "parses different hours" do
       result = described_class.new("Monday: 9:00 - 17:00 & Saturday: 14:00 - 16:00").call
       expected = week_with(
-        0 => {day: 0, open_time: "09:00", close_time: "17:00", closed: false},
-        5 => {day: 5, open_time: "14:00", close_time: "16:00", closed: false}
+        1 => {day: 1, open_time: offset_time("09:00"), close_time: offset_time("17:00"), closed: false},
+        6 => {day: 6, open_time: offset_time("14:00"), close_time: offset_time("16:00"), closed: false}
       )
       expect(result).to eq(expected)
     end
@@ -46,7 +55,7 @@ RSpec.describe SpreadsheetImport::OfficeHoursParser do
     it "parses 24/7 format" do
       result = described_class.new("Monday: 24/7").call
       expected = week_with(
-        0 => {day: 0, open_time: "00:00", close_time: "24:00", closed: false}
+        1 => {day: 1, open_time: "00:00", close_time: "24:00", closed: false}
       )
       expect(result).to eq(expected)
     end
@@ -54,12 +63,12 @@ RSpec.describe SpreadsheetImport::OfficeHoursParser do
     it "parses combining everything" do
       result = described_class.new("Monday, Wednesday-Friday: 9:00 - 17:00 & Saturday, Sunday: 14:00 - 16:00").call
       expected = week_with(
-        0 => {day: 0, open_time: "09:00", close_time: "17:00", closed: false},
-        2 => {day: 2, open_time: "09:00", close_time: "17:00", closed: false},
-        3 => {day: 3, open_time: "09:00", close_time: "17:00", closed: false},
-        4 => {day: 4, open_time: "09:00", close_time: "17:00", closed: false},
-        5 => {day: 5, open_time: "14:00", close_time: "16:00", closed: false},
-        6 => {day: 6, open_time: "14:00", close_time: "16:00", closed: false}
+        1 => {day: 1, open_time: offset_time("09:00"), close_time: offset_time("17:00"), closed: false},
+        3 => {day: 3, open_time: offset_time("09:00"), close_time: offset_time("17:00"), closed: false},
+        4 => {day: 4, open_time: offset_time("09:00"), close_time: offset_time("17:00"), closed: false},
+        5 => {day: 5, open_time: offset_time("09:00"), close_time: offset_time("17:00"), closed: false},
+        6 => {day: 6, open_time: offset_time("14:00"), close_time: offset_time("16:00"), closed: false},
+        0 => {day: 0, open_time: offset_time("14:00"), close_time: offset_time("16:00"), closed: false}
       )
       expect(result).to eq(expected)
     end
