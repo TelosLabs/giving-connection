@@ -6,7 +6,7 @@ def offset_time(time_str)
   return time_str if time_str.nil?
 
   # Parse and shift by OFFSET_HOURS
-  (Time.parse(time_str) + OFFSET_HOURS.hours).strftime("%H:%M")
+  (Time.zone.parse(time_str) + OFFSET_HOURS.hours).strftime("%H:%M")
 end
 
 RSpec.describe SpreadsheetImport::OfficeHoursParser do
