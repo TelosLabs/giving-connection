@@ -191,7 +191,7 @@ module SpreadsheetImport
         Rails.logger.error "🕒 Failed to detect timezone for '#{address}': #{e.message}"
         return "timezone"
       end
-      
+
       hours_string = org_row["Detailed Hours Of Operation"]
 
       location = organization.locations.build(
@@ -221,7 +221,7 @@ module SpreadsheetImport
         if hours_string.present?
           SpreadsheetImport::OfficeHoursParser.new(hours_string).call
         else
-          (0..6).map { |day| { day: day, open_time: nil, close_time: nil, closed: true } }
+          (0..6).map { |day| {day: day, open_time: nil, close_time: nil, closed: true} }
         end
 
       office_hours.each do |attrs|

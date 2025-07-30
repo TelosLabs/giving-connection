@@ -1,8 +1,7 @@
-require 'ruby_llm'
+require "ruby_llm"
 
 module SpreadsheetImport
   class RubyLlm
-
     def self.format_address(raw_address)
       prompt = <<~PROMPT
         Format the following US address string into a structured JSON with keys:
@@ -31,7 +30,7 @@ module SpreadsheetImport
       begin
         JSON.parse(response.content)
       rescue JSON::ParserError
-        { error: "Could not parse LLM response", raw_response: response.content }
+        {error: "Could not parse LLM response", raw_response: response.content}
       end
     end
   end
