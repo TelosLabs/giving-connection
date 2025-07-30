@@ -29,18 +29,10 @@
                 | #{pluralize(@pagy.count, 'result')} found
               div class="flex gap-2"
                 - if user_signed_in?
-                  - if params[:search].present?
-                    button onclick="window.open('/search_export/download?search_params=#{CGI.escape(params[:search].to_json)}', '_blank')" class="inline-flex items-center justify-center px-3 py-1 text-xs text-gray-3 cursor-pointer border border-gray-5 hover:bg-gray-5 rounded-full bg-white"
-                      span class="flex items-center"
-                        span class="mr-1" ⬇
-                        span Download Results
-                  - else
-                    - download_tooltip_id = SecureRandom.hex(8)
-                    div class="relative text-xs text-center"
-                      div class="inline-flex items-center px-3 py-1 text-xs text-gray-400 rounded-full border cursor-not-allowed border-gray-5" aria-labelledby=download_tooltip_id
-                        | ⬇ Download Results
-                      span role="tooltip" id=download_tooltip_id class="hidden absolute right-0 z-10 px-3 py-1 mt-8 w-48 text-white bg-opacity-90 rounded-lg transform translate-x-1/2 bg-gray-2"
-                        | No search parameters to download
+                  button onclick="window.open('/search_export/download?search_params=#{CGI.escape(params[:search]&.to_json || '{}')}', '_blank')" class="inline-flex items-center justify-center px-3 py-1 text-xs text-gray-3 cursor-pointer border border-gray-5 hover:bg-gray-5 rounded-full bg-white"
+                    span class="flex items-center"
+                      span class="mr-1" ⬇
+                      span Download Results
                 - else
                   - download_tooltip_id = SecureRandom.hex(8)
                   div class="relative text-xs text-center"
@@ -103,18 +95,10 @@
                 | #{pluralize(@pagy.count, 'result')} found
               div class="flex gap-2"
                 - if user_signed_in?
-                  - if params[:search].present?
-                    button onclick="window.open('/search_export/download?search_params=#{CGI.escape(params[:search].to_json)}', '_blank')" class="inline-flex items-center justify-center px-3 py-1 text-xs text-gray-3 cursor-pointer border border-gray-5 hover:bg-gray-5 rounded-full bg-white"
-                      span class="flex items-center"
-                        span class="mr-1" ⬇
-                        span Download Results
-                  - else
-                    - download_tooltip_id = SecureRandom.hex(8)
-                    div class="relative text-xs text-center"
-                      div class="inline-flex items-center px-3 py-1 text-xs text-gray-400 rounded-full border cursor-not-allowed border-gray-5" aria-labelledby=download_tooltip_id
-                        | ⬇ Download Results
-                      span role="tooltip" id=download_tooltip_id class="hidden absolute right-0 z-10 px-3 py-1 mt-8 w-48 text-white bg-opacity-90 rounded-lg transform translate-x-1/2 bg-gray-2"
-                        | No search parameters to download
+                  button onclick="window.open('/search_export/download?search_params=#{CGI.escape(params[:search]&.to_json || '{}')}', '_blank')" class="inline-flex items-center justify-center px-3 py-1 text-xs text-gray-3 cursor-pointer border border-gray-5 hover:bg-gray-5 rounded-full bg-white"
+                    span class="flex items-center"
+                      span class="mr-1" ⬇
+                      span Download Results
                 - else
                   - download_tooltip_id = SecureRandom.hex(8)
                   div class="relative text-xs text-center"
