@@ -4,16 +4,19 @@ class SearchesController < ApplicationController
   skip_before_action :authenticate_user!
 
   def show
-    if !request.referrer&.include?(search_url) && params["search"].blank?
-      @search = Search.new
-      render "_preview"
-    end
-
     set_search_pills_data
-    @search = params["search"].present? ? Search.new(create_params.merge(location_params)) : Search.new(location_params)
-    @search.save
-    @pagy, @results = pagy(@search.results)
-    puts @search.errors.full_messages if @search.results.any?
+    
+    if !request.referrer&.include?(search_url) && params["search"].blank?
+      @search = Search.new(location_params)
+      @search.save
+      @pagy, @results = pagy(@search.results)
+      render "_preview"
+    else
+      @search = params["search"].present? ? Search.new(create_params.merge(location_params)) : Search.new(location_params)
+      @search.save
+      @pagy, @results = pagy(@search.results)
+      puts @search.errors.full_messages if @search.results.any?
+    end
 
     authorize @search
   end

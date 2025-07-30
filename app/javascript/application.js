@@ -1,1 +1,2 @@
-// Entry point for the build script in your package.json
+// Test if JavaScript is loading
+console.log('=== APPLICATION.JS LOADED ===');

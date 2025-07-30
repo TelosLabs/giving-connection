@@ -1,40 +1,15 @@
 = form_with(\
   model: @search, \
-  url: "", \
+  url: search_path, \
   class: 'relative', \
   method: :get, \
   data: { \
-    turbo_frame: "search-locations", \
-    turbo_action: "replace", \
     controller: 'search modal', \
     'search-target': 'form'}) do |f|
   = render SearchBar::Component.new(form: f, search: @search, current_location: @current_location, locations: @locations)
-  = turbo_frame_tag "search-pills", src: search_path() do
-    div class="w-full bg-gray-9"
-      div
-        div data-tabs-active-tab=("border-b-4 border-blue-medium")
-          div class="flex pb-14 bg-white border-b"
-            / Clear-Counter button
-            span class="flex justify-center items-center py-3 pr-2 pl-5 w-14 text-xs bg-blue-pale"
-              span class="inline-flex hidden items-center px-1 py-0.5 bg-white rounded-full border border-blue-medium" data-search-target="pillsCounterWrapper"
-                span class="mr-0.5" data-search-target="pillsCounter"
-                button type="button"
-                  = inline_svg_tag "x-icon.svg", class: 'h-2 w-2 fill-current stroke-current stroke-1 text-blue-medium ml-1 relative'
-              = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative', data: { 'search-target': "filtersIcon" }
-            / Tabs
-            - tabs_labels = ['Causes', 'Location', 'Services', 'Populations Served', 'Hours']
-            ul class="flex overflow-x-auto overflow-y-hidden flex-1 gap-x-6 pr-6 pl-5 text-sm list-none bg-blue-pale text-gray-2"
-              - tabs_labels.each do |tab_label|
-                li
-                  span class="inline-block py-3 whitespace-nowrap"
-                    = tab_label
-              li
-                button class="inline-block py-3 whitespace-nowrap" type="button" id="advanced-filters-button" disabled="true"
-                  | Advanced Filters
-                  span class="hidden relative mb-2 ml-1 w-2 h-2 rounded-full bg-salmon" id="appliedIcon"
+  = render SearchPills::Component.new(causes: @top_10_causes, services: @top_10_services, beneficiary_subcategories: @top_10_beneficiary_subcategories, params: params, current_location: @current_location)
 
-  = turbo_frame_tag "search-locations", src: search_path() do
-    div class="w-full md:flex md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3 underline-on-hover"
+  div class="w-full md:flex md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3 underline-on-hover"
       div class="w-full max-w-sm md:border-r border-gray-7"
         div class="flex hidden overflow-y-auto fixed inset-0 justify-center items-center min-h-screen animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;")
           div class="relative w-full max-h-full max-w-375px"
@@ -48,12 +23,152 @@
               | Map
         // Search result cards (mobile)
         div class="flex flex-col w-full bg-white md:h-85vh md:overflow-y-auto md:hidden" data-tabs-target="panel"
-          div class="flex justify-center items-center h-full"
-            div class="spinner"
+          div class="flex flex-col w-full bg-white md:h-85vh md:overflow-y-auto"
+            div class="flex flex-row justify-between items-center p-4 w-full bg-white border-b border-gray-8"
+              span class="text-xs text-gray-3"
+                | #{pluralize(@pagy.count, 'result')} found
+              div class="flex gap-2"
+                - if user_signed_in?
+                  - if params[:search].present?
+                    button onclick="window.open('/search_export/download?search_params=#{CGI.escape(params[:search].to_json)}', '_blank')" class="inline-flex items-center justify-center px-3 py-1 text-xs text-gray-3 cursor-pointer border border-gray-5 hover:bg-gray-5 rounded-full bg-white"
+                      span class="flex items-center"
+                        span class="mr-1" ⬇
+                        span Download Results
+                  - else
+                    - download_tooltip_id = SecureRandom.hex(8)
+                    div class="relative text-xs text-center"
+                      div class="inline-flex items-center px-3 py-1 text-xs text-gray-400 rounded-full border cursor-not-allowed border-gray-5" aria-labelledby=download_tooltip_id
+                        | ⬇ Download Results
+                      span role="tooltip" id=download_tooltip_id class="hidden absolute right-0 z-10 px-3 py-1 mt-8 w-48 text-white bg-opacity-90 rounded-lg transform translate-x-1/2 bg-gray-2"
+                        | No search parameters to download
+                - else
+                  - download_tooltip_id = SecureRandom.hex(8)
+                  div class="relative text-xs text-center"
+                    div class="inline-flex items-center px-3 py-1 text-xs text-gray-400 rounded-full border cursor-not-allowed border-gray-5" aria-labelledby=download_tooltip_id
+                      | ⬇ Download Results
+                    span role="tooltip" id=download_tooltip_id class="hidden absolute right-0 z-10 px-3 py-1 mt-8 w-48 text-white bg-opacity-90 rounded-lg transform translate-x-1/2 bg-gray-2"
+                      | Sign in to download search results
+                
+                - if params.dig('search', 'keyword').present? || list_of_filters(@search).present?
+                  = link_to( \
+                      new_alert_path( \
+                        filters: parse_filters(@search), \
+                        filters_list: list_of_filters(@search)), \
+                      class: "inline-flex items-center px-3 py-1 text-xs text-gray-3 cursor-pointer border border-gray-5 hover:bg-gray-5 rounded-full", \
+                      data: { turbo_stream: true } ) do
+                        = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
+                        | Create Search Alert
+                - else
+                  - tooltip_id = SecureRandom.hex(8)
+                  div class="relative text-xs text-center"
+                    div class="inline-flex items-center px-3 py-1 text-xs text-gray-400 rounded-full border cursor-pointer border-gray-5 labelled-icon" aria-labelledby=tooltip_id
+                      = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-400 -ml-0.5'
+                      | Create Search Alert
+                    span role="tooltip" id=tooltip_id class="hidden absolute right-24 z-10 px-3 py-1 mt-8 w-48 text-white bg-opacity-90 rounded-lg transform translate-x-1/2 bg-gray-2"
+                      | Select search pills to narrow and create a search alert
+            div class="overflow-y-auto w-full h-full md:flex md:flex-col" data-tabs-target="panel"
+              - if @results.present?
+                ul class="flex flex-col divide-y divide-gray-8" id="search-results"
+                  - @results.each do |result|
+                    li
+                      = render ResultCard::Component.new(title: result&.name,\
+                                                      address: result&.formatted_address,\
+                                                      public_address: result.public_address?,\
+                                                      link_to_google_maps: result.link_to_google_maps,\
+                                                      image_url: result&.organization&.logo,\
+                                                      id: result&.id,\
+                                                      website: result&.decorate&.website || result&.organization&.decorate&.website,\
+                                                      description: "",\
+                                                      phone_number: result.phone_number&.number,\
+                                                      current_user: current_user,\
+                                                      verified: result.organization.verified?,\
+                                                      po_box: result.po_box?,\
+                                                      causes: result&.causes,\
+                                                      turbo_frame: {id: "map-left-popup", src: new_map_popup_path(location_id: result&.id)})
+              - else
+                div class="flex justify-center w-full"
+                  = inline_svg_tag 'empty_state_4.svg', size: '278*279'
+                div class="flex flex-col gap-4 justify-center items-center px-12 mb-16 w-full text-grey-2"
+                  p class="text-xl font-bold text-center"
+                    | We couldn't find any nonprofits that matched your search.
+                  p class="px-4 max-w-xs text-base text-center"
+                    | Try searching for another keyword or editing your filters.
+                  button class="text-sm font-bold text-blue-medium" type="submit" data-action="click->search#clearKeywordInput click->search#clearCheckedFilters click->search#clearAll"
+                    | Clear Filters
         // Search result cards
         div class="hidden w-full bg-white md:h-85vh md:flex md:flex-col md:overflow-y-auto"
-          div class="flex justify-center items-center h-full"
-            div class="spinner"
+          div class="flex flex-col w-full bg-white md:h-85vh md:overflow-y-auto"
+            div class="flex flex-row justify-between items-center p-4 w-full bg-white border-b border-gray-8"
+              span class="text-xs text-gray-3"
+                | #{pluralize(@pagy.count, 'result')} found
+              div class="flex gap-2"
+                - if user_signed_in?
+                  - if params[:search].present?
+                    button onclick="window.open('/search_export/download?search_params=#{CGI.escape(params[:search].to_json)}', '_blank')" class="inline-flex items-center justify-center px-3 py-1 text-xs text-gray-3 cursor-pointer border border-gray-5 hover:bg-gray-5 rounded-full bg-white"
+                      span class="flex items-center"
+                        span class="mr-1" ⬇
+                        span Download Results
+                  - else
+                    - download_tooltip_id = SecureRandom.hex(8)
+                    div class="relative text-xs text-center"
+                      div class="inline-flex items-center px-3 py-1 text-xs text-gray-400 rounded-full border cursor-not-allowed border-gray-5" aria-labelledby=download_tooltip_id
+                        | ⬇ Download Results
+                      span role="tooltip" id=download_tooltip_id class="hidden absolute right-0 z-10 px-3 py-1 mt-8 w-48 text-white bg-opacity-90 rounded-lg transform translate-x-1/2 bg-gray-2"
+                        | No search parameters to download
+                - else
+                  - download_tooltip_id = SecureRandom.hex(8)
+                  div class="relative text-xs text-center"
+                    div class="inline-flex items-center px-3 py-1 text-xs text-gray-400 rounded-full border cursor-not-allowed border-gray-5" aria-labelledby=download_tooltip_id
+                      | ⬇ Download Results
+                    span role="tooltip" id=download_tooltip_id class="hidden absolute right-0 z-10 px-3 py-1 mt-8 w-48 text-white bg-opacity-90 rounded-lg transform translate-x-1/2 bg-gray-2"
+                      | Sign in to download search results
+                
+                - if params.dig('search', 'keyword').present? || list_of_filters(@search).present?
+                  = link_to( \
+                      new_alert_path( \
+                        filters: parse_filters(@search), \
+                        filters_list: list_of_filters(@search)), \
+                      class: "inline-flex items-center px-3 py-1 text-xs text-gray-3 cursor-pointer border border-gray-5 hover:bg-gray-5 rounded-full", \
+                      data: { turbo_stream: true } ) do
+                        = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
+                        | Create Search Alert
+                - else
+                  - tooltip_id = SecureRandom.hex(8)
+                  div class="relative text-xs text-center"
+                    div class="inline-flex items-center px-3 py-1 text-xs text-gray-400 rounded-full border cursor-pointer border-gray-5 labelled-icon" aria-labelledby=tooltip_id
+                      = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-400 -ml-0.5'
+                      | Create Search Alert
+                    span role="tooltip" id=tooltip_id class="hidden absolute right-24 z-10 px-3 py-1 mt-8 w-48 text-white bg-opacity-90 rounded-lg transform translate-x-1/2 bg-gray-2"
+                      | Select search pills to narrow and create a search alert
+            div class="overflow-y-auto w-full h-full md:flex md:flex-col" data-tabs-target="panel"
+              - if @results.present?
+                ul class="flex flex-col divide-y divide-gray-8" id="search-results"
+                  - @results.each do |result|
+                    li
+                      = render ResultCard::Component.new(title: result&.name,\
+                                                      address: result&.formatted_address,\
+                                                      public_address: result.public_address?,\
+                                                      link_to_google_maps: result.link_to_google_maps,\
+                                                      image_url: result&.organization&.logo,\
+                                                      id: result&.id,\
+                                                      website: result&.decorate&.website || result&.organization&.decorate&.website,\
+                                                      description: "",\
+                                                      phone_number: result.phone_number&.number,\
+                                                      current_user: current_user,\
+                                                      verified: result.organization.verified?,\
+                                                      po_box: result.po_box?,\
+                                                      causes: result&.causes,\
+                                                      turbo_frame: {id: "map-left-popup", src: new_map_popup_path(location_id: result&.id)})
+              - else
+                div class="flex justify-center w-full"
+                  = inline_svg_tag 'empty_state_4.svg', size: '278*279'
+                div class="flex flex-col gap-4 justify-center items-center px-12 mb-16 w-full text-grey-2"
+                  p class="text-xl font-bold text-center"
+                    | We couldn't find any nonprofits that matched your search.
+                  p class="px-4 max-w-xs text-base text-center"
+                    | Try searching for another keyword or editing your filters.
+                  button class="text-sm font-bold text-blue-medium" type="submit" data-action="click->search#clearKeywordInput click->search#clearCheckedFilters click->search#clearAll"
+                    | Clear Filters
 
       //Map mobile
       div class="relative w-full md:hidden"
@@ -69,3 +184,4 @@
           div class="hidden"
             div class="hidden" data-places-target="latitude"
             div class="hidden" data-places-target="longitude"
+  div
