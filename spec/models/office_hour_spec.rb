@@ -44,7 +44,7 @@ RSpec.describe OfficeHour, type: :model do
       it "converts the time from location's time zone to UTC before saving" do
         subject { oh }
 
-        # Set the open and close times as strings (the new logic handles string conversion)
+        # Set the open and close times as strings
         oh.open_time = "12:00"
         oh.close_time = "16:00"
 
