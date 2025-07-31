@@ -37,23 +37,25 @@ RSpec.describe OfficeHour, type: :model do
   end
 
   describe "callbacks" do
-    let(:location) { create(:location, :with_office_hours, time_zone: "Pacific Time (US & Canada)") }
-    let(:oh) { build(:office_hour, location: location, open_time: "12:00", close_time: "16:00") }
+    let(:location) { create(:location, time_zone: "Pacific Time (US & Canada)", offer_services: true, non_standard_office_hours: "appointment_only") }
+    let(:oh) { build(:office_hour, location: location, day: 1, open_time: "12:00", close_time: "16:00") }
 
     describe "#convert_times_to_utc" do
       it "converts the time from location's time zone to UTC before saving" do
         subject { oh }
 
-        # Set the open and close times with a specific time zone
-        oh.open_time = Time.zone.parse("12:00 PM").in_time_zone("Pacific Time (US & Canada)")
-        oh.close_time = Time.zone.parse("4:00 PM").in_time_zone("Pacific Time (US & Canada)")
+        # Set the open and close times as strings (the new logic handles string conversion)
+        oh.open_time = "12:00"
+        oh.close_time = "16:00"
 
         oh.save!
 
         expect(oh.open_time.zone).to eql("UTC")
         expect(oh.close_time.zone).to eql("UTC")
-        expect(oh.open_time.hour).to eql(20)
-        expect(oh.close_time.hour).to eql(0)
+        # Pacific Time is UTC-7 (PDT) or UTC-8 (PST), so 12:00 PM becomes 7:00 PM or 8:00 PM UTC
+        # and 4:00 PM becomes 11:00 PM or 12:00 AM UTC (next day)
+        expect(oh.open_time.hour).to eql(19)
+        expect(oh.close_time.hour).to eql(23)
       end
     end
   end

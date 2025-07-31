@@ -70,10 +70,6 @@ class OfficeHour < ActiveRecord::Base
   end
 
   def in_local_time(time)
-    Rails.logger.debug { "Debug info: Nathaly office_hour in_local_time at #{Time.current}" }
-    Rails.logger.debug { "Debug info: Nathaly office_hour in_local_time current var time: #{time}" }
-    Rails.logger.debug { "Debug info: Nathaly office_hour in_local_time current var time_zone: #{time_zone}" }
-
     # Convert from UTC back to local timezone using the same approach as the concern
     local_timezone = ActiveSupport::TimeZone[time_zone]
     time.in_time_zone(local_timezone)
