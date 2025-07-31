@@ -22,10 +22,14 @@ module SpreadsheetImport
           "zip": "...",
           "country": "USA"
         }
+      Respond ONLY with valid JSON, no extra text.
       PROMPT
 
       chat = RubyLLM.chat
       response = chat.ask(prompt)
+      
+      content = response.respond_to?(:content) ? response.content : response.output_text
+      content = content.gsub(/```json|```/, "").strip
 
       begin
         JSON.parse(response.content)

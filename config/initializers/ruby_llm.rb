@@ -1,8 +1,9 @@
 require "ruby_llm"
 
-openai_key = Rails.application.credentials.dig(:openai, :api_key)
-raise "Missing api key" unless openai_key
+api_key = Rails.application.credentials.dig(:ruby_llm, :gemini)
+raise "Missing api key" unless api_key
 
 RubyLLM.configure do |config|
-  config.openai_api_key = openai_key
+  config.provider = :google_gemini
+  config.api_key = api_key
 end
