@@ -5,7 +5,7 @@ class SearchesController < ApplicationController
 
   def show
     set_search_pills_data
-    
+
     if !request.referrer&.include?(search_url) && params["search"].blank?
       @search = Search.new(location_params)
       @search.save

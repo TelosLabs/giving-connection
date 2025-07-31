@@ -4,7 +4,7 @@
 # It includes nonprofit names, descriptions, location information, and contact details.
 #
 class SearchResultsExporter < ApplicationService
-  require 'csv'
+  require "csv"
 
   def initialize(search_results, search_params = {})
     @search_results = search_results
@@ -44,7 +44,7 @@ class SearchResultsExporter < ApplicationService
 
   def build_row_data(result)
     organization = result.organization
-    
+
     [
       result.name,
       organization&.scope_of_work || "",
@@ -62,8 +62,8 @@ class SearchResultsExporter < ApplicationService
   end
 
   def extract_city(address)
-    return nil unless address.present?
-    
+    return nil if address.blank?
+
     # Parse address like "123 Main St, Nashville, TN 37201"
     parts = address.split(",").map(&:strip)
     return parts[1] if parts.length >= 2
@@ -71,8 +71,8 @@ class SearchResultsExporter < ApplicationService
   end
 
   def extract_state(address)
-    return nil unless address.present?
-    
+    return nil if address.blank?
+
     # Parse address like "123 Main St, Nashville, TN 37201"
     parts = address.split(",").map(&:strip)
     if parts.length >= 3
@@ -88,8 +88,8 @@ class SearchResultsExporter < ApplicationService
   end
 
   def extract_zipcode(address)
-    return nil unless address.present?
-    
+    return nil if address.blank?
+
     # Parse address like "123 Main St, Nashville, TN 37201"
     parts = address.split(",").map(&:strip)
     if parts.length >= 3
@@ -108,4 +108,4 @@ class SearchResultsExporter < ApplicationService
   rescue
     ""
   end
-end 
+end

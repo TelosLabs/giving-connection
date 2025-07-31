@@ -2,7 +2,7 @@
 
 class SearchExportsController < ApplicationController
   include Locationable
-  
+
   skip_before_action :verify_authenticity_token, only: [:create, :test, :test_no_auth]
   skip_before_action :authenticate_user!, only: [:test_no_auth]
   before_action :authenticate_user!, only: [:create]
@@ -11,12 +11,12 @@ class SearchExportsController < ApplicationController
   def test
     # Simple test to verify download works
     csv_content = "Nonprofit Name,Description,Address,City,State,Zip Code,Phone Number,Email,Website,Causes,Verified,Profile Link\nTest Organization,Test Description,123 Test St,Test City,TN,12345,555-1234,test@example.com,http://test.com,Health,Yes,http://localhost:3000/locations/1"
-    
+
     send_data(
       csv_content,
-      filename: "test_download_#{Time.current.strftime('%Y%m%d_%H%M%S')}.csv",
-      type: 'text/csv',
-      disposition: 'attachment'
+      filename: "test_download_#{Time.current.strftime("%Y%m%d_%H%M%S")}.csv",
+      type: "text/csv",
+      disposition: "attachment"
     )
   end
 
@@ -24,67 +24,67 @@ class SearchExportsController < ApplicationController
     # Test method that doesn't require authentication
     Rails.logger.info "=== TEST NO AUTH CALLED ==="
     Rails.logger.info "Params: #{params.inspect}"
-    
+
     # Skip authorization for test method
     skip_authorization
-    
+
     csv_content = "Test CSV Content\nRow 1,Value 1\nRow 2,Value 2"
-    
+
     send_data(
       csv_content,
-      filename: "test_no_auth_#{Time.current.strftime('%Y%m%d_%H%M%S')}.csv",
-      type: 'text/csv',
-      disposition: 'attachment'
+      filename: "test_no_auth_#{Time.current.strftime("%Y%m%d_%H%M%S")}.csv",
+      type: "text/csv",
+      disposition: "attachment"
     )
   end
 
   def test_simple
     Rails.logger.info "=== TEST SIMPLE CALLED ==="
     Rails.logger.info "Params: #{params.inspect}"
-    
+
     # Skip authorization for test method
     skip_authorization
-    
+
     render plain: "Test simple endpoint works! Params: #{params.inspect}"
   end
 
   def download
     Rails.logger.info "=== DOWNLOAD ACTION CALLED ==="
     Rails.logger.info "Params: #{params.inspect}"
-    
+
     # Skip authorization for download action
     skip_authorization
-    
+
     begin
       # Get search parameters from URL params
       search_params = extract_search_params_from_url
-      
+
       # Recreate the search to get the same results as the current page
       search_params_with_location = search_params.merge(location_params)
       @search = Search.new(search_params_with_location)
       @search.save
-      
+
       # Get all results (not paginated) for export
       @search_results = @search.results.includes(
         organization: [:causes],
         phone_number: []
       )
-      
+
       # Generate CSV content
       csv_content = SearchResultsExporter.call(@search_results, search_params)
-      
+
       # Generate filename with timestamp
       filename = generate_filename(search_params)
-      
+
       Rails.logger.info "Generated filename: #{filename}"
       Rails.logger.info "CSV content length: #{csv_content.length}"
-      
+
       # Send CSV file
       send_data(
         csv_content,
         filename: filename,
-        type: 'text/csv',
-        disposition: 'attachment'
+        type: "text/csv",
+        disposition: "attachment"
       )
     rescue => e
       Rails.logger.error "Error in search export: #{e.message}"
@@ -101,26 +101,26 @@ class SearchExportsController < ApplicationController
     Rails.logger.info "Request path: #{request.path}"
     Rails.logger.info "Content-Type: #{request.content_type}"
     Rails.logger.info "Accept: #{request.accept}"
-    
+
     # Skip authorization for download action - user is already authenticated
     skip_authorization
-    
+
     begin
       # Generate CSV content
       csv_content = SearchResultsExporter.call(@search_results, search_params)
-      
+
       # Generate filename with timestamp
       filename = generate_filename(search_params)
-      
+
       Rails.logger.info "Generated filename: #{filename}"
       Rails.logger.info "CSV content length: #{csv_content.length}"
-      
+
       # Send CSV file
       send_data(
         csv_content,
         filename: filename,
-        type: 'text/csv',
-        disposition: 'attachment'
+        type: "text/csv",
+        disposition: "attachment"
       )
     rescue => e
       Rails.logger.error "Error in search export: #{e.message}"
@@ -136,7 +136,7 @@ class SearchExportsController < ApplicationController
     search_params_with_location = search_params.merge(location_params)
     @search = Search.new(search_params_with_location)
     @search.save
-    
+
     # Get all results (not paginated) for export
     @search_results = @search.results.includes(
       organization: [:causes],
@@ -208,10 +208,10 @@ class SearchExportsController < ApplicationController
 
   def generate_filename(search_params = nil)
     timestamp = Time.current.strftime("%Y%m%d_%H%M%S")
-    if search_params && search_params[:keyword].present?
-      keyword = "_#{search_params[:keyword].parameterize}"
+    keyword = if search_params && search_params[:keyword].present?
+      "_#{search_params[:keyword].parameterize}"
     else
-      keyword = ""
+      ""
     end
     "search_results#{keyword}_#{timestamp}.csv"
   end
@@ -243,4 +243,4 @@ class SearchExportsController < ApplicationController
       :zipcode, causes: [], services: {}, beneficiary_groups: {}
     )
   end
-end 
+end
