@@ -5,7 +5,7 @@ module Admin
       locations = Location.includes(
         organization: [:causes, :beneficiary_subcategories, :tags, :social_media]
       ).order(:name)
-      
+
       # Create a comprehensive export with all organization data
       file_path = LocationsExporter.call(locations, location_url(":id"))
 

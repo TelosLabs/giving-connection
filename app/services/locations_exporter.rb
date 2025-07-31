@@ -1,5 +1,5 @@
 # LocationsExporter
-# 
+#
 # This service exports comprehensive organization and location data to Excel format.
 # It includes all organization fields, associated data, and location information.
 # Note: This service has been enhanced to export all fields instead of just name and profile link.
@@ -16,13 +16,13 @@ class LocationsExporter < ApplicationService
 
     workbook.add_worksheet(name: "Giving Connection Nonprofits") do |sheet|
       title_style = sheet.styles.add_style(bg_color: "FF0782D0", fg_color: "FFFFFFFF")
-      
+
       # Enhanced headers - original columns first, then all additional data
       headers = [
         "Name",  # Original column
         "GC profile link",  # Original column
         "Organization ID",
-        "Organization Name", 
+        "Organization Name",
         "Second Name",
         "EIN Number",
         "IRS NTEE Code",
@@ -30,7 +30,7 @@ class LocationsExporter < ApplicationService
         "Scope of Work",
         "Mission Statement (EN)",
         "Mission Statement (ES)",
-        "Vision Statement (EN)", 
+        "Vision Statement (EN)",
         "Vision Statement (ES)",
         "Tagline (EN)",
         "Tagline (ES)",
@@ -48,7 +48,7 @@ class LocationsExporter < ApplicationService
         "Beneficiary Subcategories",
         "Tags",
         "Social Media - Facebook",
-        "Social Media - Instagram", 
+        "Social Media - Instagram",
         "Social Media - Twitter",
         "Social Media - LinkedIn",
         "Social Media - YouTube",
@@ -70,14 +70,14 @@ class LocationsExporter < ApplicationService
         "Location Created At",
         "Location Updated At"
       ]
-      
+
       sheet.add_row headers, style: title_style
 
       # Process each location individually (maintaining original order and count)
       @locations.each do |location|
         organization = location.organization
         next unless organization # Skip if no organization associated
-        
+
         # Enhanced data - original columns first, then all additional data
         row_data = [
           location.name,  # Original column - location name
@@ -131,7 +131,7 @@ class LocationsExporter < ApplicationService
           location.created_at,
           location.updated_at
         ]
-        
+
         sheet.add_row row_data
       end
     end
