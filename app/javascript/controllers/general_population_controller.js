@@ -23,10 +23,16 @@ export default class extends Controller {
         population.dispatchEvent(clickEvent);
       });
 
-      this.specificPopulationsContainerTarget.classList.add(this.disabledClass);
+      const classes = this.data.get("disabledClass").split(' ');
+      classes.forEach(className => {
+        this.specificPopulationsContainerTarget.classList.add(className);
+      });
     }
     else {
-      this.specificPopulationsContainerTarget.classList.remove(this.disabledClass);
+      const classes = this.data.get("disabledClass").split(' ');
+      classes.forEach(className => {
+        this.specificPopulationsContainerTarget.classList.remove(className);
+      });
     }
   }
 
