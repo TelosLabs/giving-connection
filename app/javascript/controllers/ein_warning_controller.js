@@ -5,7 +5,8 @@ export default class extends UniquenessWarningController {
 
     connect() {
         super.connect?.()
-        this.inputTarget.addEventListener("input", this.validateFormat.bind(this))
+        this.validateFormat()
+        //this.inputTarget.addEventListener("input", this.validateFormat.bind(this))
     }
 
     validateFormat() {
