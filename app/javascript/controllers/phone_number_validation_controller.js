@@ -4,8 +4,7 @@ export default class extends Controller {
     static targets = ["input", "formatError"]
 
     connect() {
-        this.inputTarget.addEventListener("input", this.validatePhoneNumber.bind(this));
-        this.inputTarget.addEventListener("keypress", this.filterInput.bind(this));
+        this.validatePhoneNumber()
     }
 
     validatePhoneNumber() {

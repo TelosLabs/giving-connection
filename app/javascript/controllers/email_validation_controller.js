@@ -4,7 +4,7 @@ export default class extends Controller {
     static targets = ["input", "formatError"]
 
     connect() {
-        this.inputTarget.addEventListener("input", this.validateEmail.bind(this));
+        this.validateEmail()
     }
 
     validateEmail() {
