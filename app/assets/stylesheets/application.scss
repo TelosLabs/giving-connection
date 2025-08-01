@@ -41,11 +41,6 @@
   scroll-margin-top: 6.25rem;
 }
 
-
-.tagify__input::before{
-  position:static;
-}
-
 .tagify-look {
  //@apply bg-blue-medium py-1.5 pl-2 pr-1 min-h-7 inline-flex items-center text-xs text-white flex-shrink-0 rounded-6px;
   --tag-bg                  : #0782d0;
