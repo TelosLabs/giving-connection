@@ -398,19 +398,19 @@
                                   - Date::DAYNAMES.each_with_index do |day, index|
                                     = location_form.fields_for :office_hours, location_form.object.office_hours.find_or_initialize_by(day: index) do |sched|
                                       // rows
-                                      tr
-                                        th class="p-3 font-medium" scope="row"
+                                      tr data-controller="office-hours"
+                                        th class="p-3 font-medium" scope="row" 
                                           = day
                                           = sched.hidden_field :day, value: index
                                         td
                                           = sched.label :open_time, class: "sr-only"
-                                          = sched.time_field :open_time, class:"rounded-md p-1", value: sched&.object&.formatted_open_time&.strftime("%H:%M")
-                                        td
+                                          = sched.time_field :open_time, class:"rounded-md p-1", value: sched&.object&.formatted_open_time&.strftime("%H:%M"), data: { "office-hours-target": "openTime"}
+                                        td 
                                           = sched.label :close_time, class: "sr-only"
-                                          = sched.time_field :close_time, class:"rounded-md p-1", value: sched&.object&.formatted_close_time&.strftime("%H:%M")
-                                        td class="text-center"
-                                          = sched.check_box :closed, class: "rounded-md"
-                                          = sched.label :closed, class: "sr-only"
+                                          = sched.time_field :close_time, class:"rounded-md p-1", value: sched&.object&.formatted_close_time&.strftime("%H:%M"), data: { "office-hours-target": "closeTime"}
+                                        td class="text-center" 
+                                          = sched.check_box :closed, class: "rounded-md", data: { "office-hours-target": "closedCheckbox", action: "change->office-hours#toggleTimeFields" }
+                                          = sched.label :closed, class: "sr-only" 
                             button type="button" class="block px-5 py-2.5 mx-auto w-1/3 text-white rounded-md transition bg-blue-medium hover:bg-seafoam" data-action="click->modal#submitAndClose"
                               | Submit
 
