@@ -37,7 +37,6 @@ export default class extends Controller {
   }
 
   error(err) {
-    console.log('Geolocation error:', err)
     if (err.code === 1) {
       // User denied access to location services
       console.warn(`ERROR(${err.code}): ${err.message}`)
