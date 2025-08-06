@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_01_17_173849) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_23_171704) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -130,6 +130,29 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_17_173849) do
     t.datetime "updated_at", null: false
   end
 
+<<<<<<< Updated upstream
+=======
+  create_table "events", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.datetime "start_time", precision: nil, null: false
+    t.datetime "end_time", precision: nil
+    t.string "link"
+    t.string "image_link"
+    t.string "location"
+    t.boolean "published", default: false
+    t.boolean "isRecurring", default: false
+    t.string "type_of_event", default: [], array: true
+    t.string "tags", default: [], array: true
+    t.string "categories", default: [], array: true
+    t.string "subcategories", default: [], array: true
+    t.bigint "organization_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_events_on_organization_id"
+  end
+
+>>>>>>> Stashed changes
   create_table "favorite_locations", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "location_id", null: false

@@ -3,7 +3,7 @@ REDIS_URL = if Rails.env.production?
 elsif Rails.env.staging?
   ENV["REDIS_URL"] || Rails.application.credentials.staging[:redis_url]
 else
-  ENV["REDISCLOUD_URL"] || Rails.application.credentials.development[:redis_url]
+  ENV["REDISCLOUD_URL"] || Rails.application.credentials.development&.dig(:redis_url) || "redis://localhost:6379"
 end
 
 Sidekiq.configure_server do |config|
