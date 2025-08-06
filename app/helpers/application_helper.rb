@@ -17,8 +17,10 @@ module ApplicationHelper
 
   def load_webpack_manifest
     JSON.parse(File.read("public/packs/manifest.json"))
-  rescue Errno::ENOENT
-    fail "The webpack manifest file does not exist." unless Rails.configuration.assets.compile
+  rescue Errno::ENOENT, JSON::ParserError
+    Rails.logger.warn "Webpack manifest file missing or invalid" if Rails.env.development?
+    return {} unless Rails.configuration.assets.compile
+    {}
   end
 
   def webpack_manifest
@@ -30,6 +32,9 @@ module ApplicationHelper
   end
 
   def webpack_asset_urls(asset_name, asset_type)
-    webpack_manifest["entrypoints"][asset_name]["assets"][asset_type]
+    manifest = webpack_manifest
+    return [] unless manifest&.dig("entrypoints", asset_name, "assets", asset_type)
+
+    manifest["entrypoints"][asset_name]["assets"][asset_type]
   end
 end
