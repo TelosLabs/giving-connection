@@ -130,8 +130,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_23_171704) do
     t.datetime "updated_at", null: false
   end
 
-<<<<<<< Updated upstream
-=======
   create_table "events", force: :cascade do |t|
     t.string "title", null: false
     t.text "description"
@@ -147,12 +145,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_23_171704) do
     t.string "categories", default: [], array: true
     t.string "subcategories", default: [], array: true
     t.bigint "organization_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["organization_id"], name: "index_events_on_organization_id"
   end
 
->>>>>>> Stashed changes
   create_table "favorite_locations", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "location_id", null: false
@@ -389,6 +386,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_23_171704) do
   add_foreign_key "alert_services", "services"
   add_foreign_key "alerts", "users"
   add_foreign_key "beneficiary_subcategories", "beneficiary_groups"
+  add_foreign_key "events", "organizations"
   add_foreign_key "favorite_locations", "locations"
   add_foreign_key "favorite_locations", "users"
   add_foreign_key "location_services", "locations"

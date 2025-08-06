@@ -65,11 +65,21 @@ Rails.application.routes.draw do
   get "discover/:name" => "causes#show", :as => :discover_show
   resource :my_account, only: %i[show]
   resource :about_us, only: %i[show]
+  resource :review_and_publish, controller: "review_and_publish"
   resource :faqs, only: %i[show]
   resource :donate, only: %i[show]
   resource :privacy_policy, only: %i[show]
   resource :infowindow, only: :new
   resources :autocomplete, only: %i[index]
+
+  get "events/explore(/:id)", to: "events#discover", as: :discover_events
+
+  resources :events, only: [:index, :new, :create, :destroy, :edit, :update, :show],
+    constraints: {id: /\d+/} do
+    member do
+      post :publish
+    end
+  end
 
   root to: "home#index"
 
@@ -79,4 +89,15 @@ Rails.application.routes.draw do
   get "/los-angeles", to: "cities#show", city: "Los Angeles", as: :los_angeles
 
   get "redirect", to: "redirection#notice_external_link", as: :redirect
+
+  # Non-profit events listing route (accepts orgId as query parameter)
+  get "/events", to: "events#index"
+
+  # Non-profit Event Calendar
+  get "event_calendar", to: "event_calendar#index"
+
+  # non-profit events
+  post "/events/:org_id", to: "events#create"
+  delete "/events/:id", to: "events#destroy"
+  put "/events/:id", to: "events#update"
 end

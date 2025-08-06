@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
   after_action :verify_authorized, except: :index, unless: :skip_pundit?
   after_action :verify_policy_scoped, only: :index, unless: :skip_pundit?
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :set_user_timezone
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   private
@@ -58,5 +59,9 @@ class ApplicationController < ActionController::Base
   def user_not_authorized
     flash[:error] = "You are not allowed to perform this action"
     redirect_to root_path
+  end
+
+  def set_user_timezone
+    @user_timezone = request.env["user_timezone"] || cookies["user_timezone"] || "UTC"
   end
 end

@@ -1,0 +1,167 @@
+<div class="flex flex-col align-items-start gap-3 self-stretch py-5 px-3 border-b-2 border-[#E6E6E6]">
+  <div class="flex justify-between items-center gap-10 self-stretch">
+    <div class="flex-none">
+      <% adjusted_start = event.start_time.in_time_zone(helpers.get_timezone()) %>
+      <% month = adjusted_start.strftime("%b").upcase %>
+      <% day = adjusted_start.strftime("%-d") %>
+
+      <div class="flex flex-col justify-center text-center font-bold leading-6">
+        <div class="month"><%= month %></div>
+        <div class="day"><%= day %></div>
+      </div>
+    </div>
+    
+    <div class="flex flex-col items-start gap-4 grow">
+      <% if !@small %>
+        <div class="text-xs font-['Inter'] font-semibold leading-none"><%= helpers.format_event_time(event.start_time) %></div>
+      <% end %>
+      
+      <div class="flex flex-col gap-0">
+        <h2 class="text-black text-base font-bold leading-normal font-['Inter'] hover:underline"><a href="/events/explore/<%= event.id %>"><%= event.title %></a></h2>
+
+        <% if event.organization && !@small %>
+            <div class="text-xs font-medium leading-tight font-['Inter']"><%= event.organization.name %></div>
+        <% end %>
+        
+        <% if event.location.present? %>
+            <div class="event-location">
+                <i class="location-icon"></i>
+                <p class="text-[#6B7280] text-xs font-medium leading-none font-['Inter']"><%= event.location %></p>
+                
+            </div>
+        <% else %>
+            <div class="event-location">
+                <i class="location-icon"></i>
+                <p class="text-[#6B7280] text-xs font-medium leading-none font-['Inter']">Virtual Event</p>
+            </div>
+        <% end %>
+
+        <% if @small %>
+            <div class="text-xs font-['Inter'] text-[#6B7280] font-semibold leading-none"><%= helpers.format_event_time(event.start_time) %></div>
+        <% end %>
+      </div>
+      
+      <div class="text-black text-xs font-normal leading-none font-['Inter']">
+        <%= truncate(event.description, length: 150) %>
+      </div>
+      
+      <% if event.type_of_event.present? %>
+        <% badge_bg_colors = { "Fundraiser" => "#E1F3FF", "Volunteer" => "#E0E7FF", "Outreach" => "#DBFFE5", "Other" => "#EDEDED" } %>
+        <% badge_text_colors = { "Fundraiser" => "#113C7B", "Volunteer" => "#4338CA", "Outreach" => "#08543D", "Other" => "#1F2C3D" } %>
+        <div class="flex gap-2">
+            <% event.type_of_event.each do |type| %>
+                <span style="background-color: <%= badge_bg_colors[type] %>; color: <%= badge_text_colors[type] %>; border: 1px solid <%= badge_text_colors[type] %>;"  class="text-xs font-medium leading-none font-['Inter'] px-4 py-2 rounded-full "><%= type %></span>
+            <% end %>
+        </div>
+    <% end %>
+    </div>
+
+    <% if !@small %>
+        <div class="flex-none">
+            <% if @event.image.attached? %>
+                <%= image_tag url_for(@event.image), alt: @event.title, class: 'shadow rounded logo-size bg-white' %>
+            <% end %>
+        </div>
+    <% end %>
+
+  
+    
+    <% if @admin %>
+        <div class="flex-none w-12 text-center">
+            <p class="text-[#6B7280] text-xs font-medium leading-tight font-['Inter']">
+                <% if event.published %>
+                    <strong>Published</strong>
+                <% else %>
+                    <span>Draft</span>
+                <% end %>
+            </p>
+        </div>
+        <div class="cursor-pointer relative group">
+            <div onclick="showEllipseOptions(this);">
+                <%= inline_svg_tag "ellipses.svg", size:"3*3", class:"h-7 mr-2 fill-current text-gray-3" %>
+            </div>
+            <div class="absolute hidden bg-white border border-gray-300 rounded-md shadow-lg z-10" id="ellipse-options">
+                <input type="hidden" id="event_id" name="event_id" value="<%= event.id %>" />
+                <ul class="py-2">
+                    <% if !event.published %>
+                        <li>
+                            <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="onPublishEvent('<%= event.id %>', '<%= event.title %>')">Publish</a>
+                        </li>
+                    <% end %>
+                    <li>
+                        <a href="<%= @edit_url %>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
+                    </li>
+                    <li>
+                        <a href="<%= @view_url %>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View</a>
+                    </li>
+                    <li>
+                        <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-red-400" onclick="onDeleteEvent('<%= event.id %>', '<%= event.title %>')">Delete</a>
+                    </li>
+                </ul>
+            </div>
+        </div>  
+    <% end %>
+  </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Check if we need to close the options menu
+        document.addEventListener("click", (event) => {
+            const target = event.target;
+            // Close any open options menu if the click is outside of it
+            document.querySelectorAll("#ellipse-options").forEach((options) => {
+                if (!target.closest(".group") && !target.closest("#ellipse-options")) {
+                    options.classList.add("hidden");
+                }
+            });
+        });
+    });
+
+    function showEllipseOptions(ellipse) {
+        const options = ellipse.parentElement.querySelector('#ellipse-options');
+        options.classList.toggle('hidden');
+    }
+
+    function onPublishEvent(eventId, title) {
+        const confirmation = confirm(`Are you sure you want to publish the event "${title}"? This cannot be undone.`);
+        if (!confirmation) {
+            return;
+        }
+        
+        fetch(`/events/${eventId}/publish`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Error publishing event');
+            }
+        });
+    }
+
+    function onDeleteEvent(eventId, title) {
+        const confirmation = confirm(`Are you sure you want to delete the event "${title}"? This action cannot be undone.`);
+        if (!confirmation) {
+            return;
+        }
+        
+        fetch(`/events/${eventId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Error deleting event');
+            }
+        });
+    }
+</script>

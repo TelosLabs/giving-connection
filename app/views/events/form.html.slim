@@ -1,0 +1,302 @@
+style
+  | .required::before {
+  |   content: "* ";
+  |   font-weight: bold;
+  | }
+
+div.flex.justify-center.mt-16.h-full style="background-color: #F9FAFC"
+  div.flex.gap-4.bg-white.w-3/4
+
+    = form_with model: @event, class: "w-full h-full m-12 flex flex-col items-start gap-4" do |f|
+      = hidden_field_tag 'org_id', params[:org_id] if params[:org_id].present?
+      
+      = hidden_field_tag 'timezone', @user_timezone
+
+      h2.text-2xl.font-bold style="color: #3B4958;"
+        = @event.new_record? ? "Create Event" : @readonly ? "View Event" : "Edit Event"
+
+      h3.text-xl 
+        = @organization&.name || "[Organization Name]"
+
+      hr.w-full.border.border-gray-300
+
+      div
+        h3.text-xl.mb-2 
+          | General Event Information 
+        p.opacity-70.text-sm
+          | General information about your nonprofit event.
+
+      div.w-full
+        = f.label :title, class: "required"
+        = f.text_field :title, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", readonly: @readonly
+
+      div.w-full
+        = f.label :description, class: "required"
+        = f.text_area :description, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", rows: 5, readonly: @readonly
+
+      div.w-full.flex.justify-start.gap-3
+        div.w-full
+          = f.label :date, class: "text-base required"
+          = f.date_field :date, value: @event_date, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", disabled: @readonly
+          
+        div.w-full
+          = f.label :start_time, "Start Time", class: "text-base required"
+          = f.time_field :start_time, value: @event_start_time, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", disabled: @readonly
+
+        div.w-full.relative
+          = f.label :end_time, "End Time", class: "text-base"
+          = f.time_field :end_time, value: @event_end_time, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", onchange: "shouldShowClearButton()", disabled: @readonly
+          button.hidden.absolute.right-3.bottom-3 type="button" id="clear-end-time" onclick="clearEndTime()"
+            | x
+
+      i.font-light.text-sm.text-slate-500 id="timezone-info" 
+        | (Your selected times will be based on your browser's timezone - ?).
+
+      / Event Recurring Type
+      div.w-full
+        label.text-base.mb-2.font-medium.text-slate-700.required
+          | Is this a recurring event?
+
+      div.flex.justify-start.gap-2
+        = f.radio_button :isRecurring, false, class: @readonly ? "mt-1 cursor-not-allowed" : "mt-1", id: "recurring-no", disabled: @readonly
+        = f.label :recurring_false, "One-time", class: "text-base font-medium text-slate-700"
+
+      div.flex.justify-start.gap-2
+        = f.radio_button :isRecurring, true, class: @readonly ? "mt-1 cursor-not-allowed" : "mt-1", id: "recurring-yes", disabled: @readonly
+        = f.label :recurring_true, "Recurring", class: "text-base font-medium text-slate-700"
+
+      / Location
+      div.w-full
+        label.text-base.mb-2.font-medium.text-slate-700.required
+          | Location
+
+      div.flex.justify-start.gap-2
+        = f.radio_button :remote, true, checked: @event_is_remote, class: @readonly ? "mt-1 cursor-not-allowed": "mt-1", id: "remote-yes", onclick: "toggleLocation(false)", disabled: @readonly
+        = f.label :remote_true, "Remote/Online", class: "text-base font-medium text-slate-700"
+
+      div.flex.justify-start.gap-2
+        = f.radio_button :remote, false, checked: !@event_is_remote, class: @readonly ? "mt-1 cursor-not-allowed": "mt-1", id: "remote-no", onclick: "toggleLocation(true)", disabled: @readonly
+        = f.label :remote_false, "In-Person", class: "text-base font-medium text-slate-700"
+
+      / Location Container, appears when In-Person is selected
+      div.hidden.flex-between.w-full.gap-10 id="location-container"
+        div.w-1/2
+          = f.label :address, class: "text-base font-medium text-slate-700 required"
+          = f.text_field :address, value: @event_is_remote ? '' : @event.location, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", readonly: @readonly, disabled: @readonly
+
+        div.w-1/2
+          label.text-base.font-medium.text-slate-700
+            | Map View
+          img.outline.outline-1.outline-gray-700.w-full style="background: #E6E6E6; height: 200px;" id="uploaded-img"
+          
+      -# Attachment for users to insert image
+      div.text-base.mt-4.font-medium.text-slate-700
+          | Attach Flyer/Photo    
+      div.flex.justify-start
+          div.flex.flex-col.items-center
+              img.outline.outline-1.outline-gray-700 style="background: #E6E6E6; height: 148px; width:148px;" id="uploaded-img2"
+              - if @event.image.attached?
+                javascript:
+                  document.addEventListener("DOMContentLoaded", function() {
+                    document.getElementById("uploaded-img2").src = "#{url_for(@event.image)}";
+                  });
+          div.flex.flex-col.items-start style="margin-left:27px; margin-top:50px;"    
+              label.bg-white.hover:bg-gray-100.text-gray-700.py-2.px-4.border.border-gray-400.rounded-md.cursor-pointer for="event_image"
+                  b Upload
+              = f.file_field :image, accept: "image/png, image/jpeg", class:  @readonly ? "hidden cursor-not-allowed" : "hidden", id: "event_image", disabled: @readonly
+              p.text-s.mt-1
+                  | Maximum size of 5MB
+
+      div.w-full
+        = f.label :link, "External Link for RSVP (if applicable)"
+        = f.text_field :link, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", readonly: @readonly, disabled: @readonly
+
+      div.w-full
+        label
+          | Event Type
+        br
+        div.flex.flex-col.gap-2.mt-1
+            - for type in ["Fundraiser", "Volunteer", "Outreach", "Other"]
+                div.flex.gap-2
+                    = f.radio_button :type_of_event, type, class: "mt-1", checked: @event.type_of_event.include?(type), disabled: @readonly
+                    = f.label :"type_of_event_#{type.downcase}", type, class: "text-base font-medium text-slate-700"
+   
+      div.flex.justify-center.gap-4.w-full.mb-4
+        - if @readonly
+            = f.button 'Edit', type: 'button', class: 'rounded-md text-xl py-2 px-4 bg-gray-300 hover:bg-gray-400 text-white font-semibold', onclick: "window.location.href='#{edit_event_path(@event)}'"
+            - if !@event.published
+                = f.button 'Publish', type: 'button', class: 'rounded-md text-xl py-2 px-4 bg-gray-300 hover:bg-gray-400 text-white font-semibold', onclick: "onPublishEvent('#{@event.id}', '#{@event.title}')"
+        - elsif !@readonly && !@event.new_record?
+            = f.button 'Save', type: 'button', class: 'rounded-md text-xl py-2 px-4 bg-gray-400 hover:bg-gray-500 text-white font-semibold', onclick: "return submitForm('#{!@event.published}');"
+        - else
+            = f.button 'Save as Draft', type: 'button', class: 'rounded-md text-xl py-2 px-4 bg-gray-300 hover:bg-gray-400 text-white font-semibold', onclick: "return submitForm(true);"
+            = f.button 'Save and Review', type: 'button', class: 'rounded-md text-xl py-2 px-4 bg-gray-400 hover:bg-gray-500 text-white font-semibold', onclick: "return submitForm(false);"
+
+javascript defer: 
+    const MAX_SIZE_IN_BYTES = 5 * 1024 * 1024; // 5MB
+    const USER_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get today's date
+        const today = new Date();
+        
+        // Format today's date as YYYY-MM-DD for the input element
+        const formattedDate = today.toISOString().split('T')[0];
+        
+        // Set the min attribute to today's date
+        document.getElementById('event_date').setAttribute('min', formattedDate);
+
+        // Set the timezone info text helper
+        document.getElementById("timezone-info").textContent = document.getElementById("timezone-info").textContent.replaceAll("?", USER_TZ);
+        
+        // Initialize location toggle based on current value
+        toggleLocation(document.querySelector('input[name="event[remote]"]:checked').value === "false");
+    });
+
+    // Upload function for uploading photo 
+    document.getElementById("event_image").addEventListener("change", function() {
+        const img = document.getElementById("uploaded-img2");
+        const file = this.files[0];  
+
+        if (file) { 
+            if(file.size > MAX_SIZE_IN_BYTES){
+                alert("The file size exceeds the 5MB limit. Please upload a smaller image."); 
+                this.value = ""; // Clear the file input 
+                return;
+            } 
+            const reader = new FileReader(); 
+            reader.onload = (e) => img.src = e.target.result; 
+            reader.readAsDataURL(file); 
+        }
+    });
+
+    function toggleLocation(isInPerson) {
+        const locationContainer = document.getElementById("location-container");
+        locationContainer.style.display = isInPerson ? "flex" : "none";
+    }
+
+    function clearEndTime() {
+        const endTimeInput = document.getElementById("event_end_time");
+        const clearButton = document.getElementById("clear-end-time");
+        clearButton.style.display = "none";
+        endTimeInput.value = "";
+    }
+
+    function shouldShowClearButton() {
+        const endTimeInput = document.getElementById("event_end_time");
+        const clearButton = document.getElementById("clear-end-time");
+        clearButton.style.display = endTimeInput.value ? "block" : "none";
+    }
+
+    function validateForm() {
+        const title = document.getElementById("event_title").value;
+        const description = document.getElementById("event_description").value;
+        const date = document.getElementById("event_date").value;
+        const startTime = document.getElementById("event_start_time").value;
+        const endTime = document.getElementById("event_end_time").value;
+        const isRecurring = document.querySelector('input[name="event[isRecurring]"]:checked').value;
+        const isInPerson = document.querySelector('input[name="event[remote]"]:checked').value === "false";
+        const address = isInPerson ? document.getElementById("event_address").value : null;
+
+        // Validate required fields
+        if (!title || !description || !date || !startTime) {
+            return "Please fill in all required fields.";
+        }
+
+        // Make sure an address is provided if the event is in-person
+        if (isInPerson && !address) {
+            return "Please provide an address for in-person events.";
+        }
+
+        // Make sure the start time is before the end time if end time is provided
+        if (endTime) {
+            const startDateTime = new Date(`${date}T${startTime}`);
+            const endDateTime = new Date(`${date}T${endTime}`);
+            if (startDateTime >= endDateTime) {
+                return "Start time must be before end time. If you've entered an end time by mistake, please clear it and re-submit.";
+            }
+        }
+
+        return null; // No validation errors
+    }
+
+    function onPublishEvent(eventId, title) {
+        const confirmation = confirm(`Are you sure you want to publish the event "${title}"? This cannot be undone.`);
+        if (!confirmation) {
+            return;
+        }
+        
+        fetch(`/events/${eventId}/publish`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Error publishing event');
+            }
+        });
+    }
+
+    function submitForm(isDraft) {
+        // Validate the form
+        let validityMessage = validateForm();
+        if (validityMessage) {
+            alert(validityMessage);
+            return;
+        }
+
+        const form = document.querySelector("form");
+        const formData = new FormData(form);
+        formData.append("event[is_draft]", isDraft);
+
+        let eventTypes = [...document.querySelectorAll('input[name="event[type_of_event]"]:checked')].map(el => el.value);
+        formData.append("event[type_of_event]", JSON.stringify(eventTypes));
+
+        // Get date and times from form
+        const date = document.getElementById("event_date").value;
+        let startTime = document.getElementById("event_start_time").value;
+        let endTime = document.getElementById("event_end_time").value;
+        
+        // Keep the original date and time values for the backend to handle
+        if (date && startTime) {
+            formData.set("event[date]", date);
+            formData.set("event[start_time]", startTime);
+        }
+        
+        if (endTime) {
+            formData.set("event[end_time]", endTime);
+        }
+        
+        if (!isDraft) {
+            const confirmation = confirm(`Are you sure you want to create and publish this event? This cannot be undone.`);
+            if (!confirmation) {
+                return;
+            }
+        }
+
+        fetch(form.action, {
+            method: form.method,
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.event) {
+                // Redirect to account page on success
+                window.location.href = '/my_account';
+            } else {
+                // Display errors
+                alert(data.message + (data.errors ? ': ' + data.errors.join(', ') : ''));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while submitting the form.');
+        });
+    }
