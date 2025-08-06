@@ -11,7 +11,6 @@ const application = Application.start()
 application.register('carousel', Carousel)
 application.register('autocomplete', Autocomplete)
 application.register('dropdown', Dropdown)
-application.register("calendar-component", CalendarComponentController)
 const context = require.context(".", true, /_controller\.js$/)
 const contextComponents = require.context("../../components", true, /_controller\.js$/)
 application.load(
