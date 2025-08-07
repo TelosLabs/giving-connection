@@ -130,7 +130,7 @@ div.flex.justify-center.mt-16.h-full style="background-color: #F9FAFC"
             = f.button 'Save', type: 'button', class: 'rounded-md text-xl py-2 px-4 bg-gray-400 hover:bg-gray-500 text-white font-semibold', onclick: "return submitForm('#{!@event.published}');"
         - else
             = f.button 'Save as Draft', type: 'button', class: 'rounded-md text-xl py-2 px-4 bg-gray-300 hover:bg-gray-400 text-white font-semibold', onclick: "return submitForm(true);"
-            = f.button 'Save and Review', type: 'button', class: 'rounded-md text-xl py-2 px-4 bg-gray-400 hover:bg-gray-500 text-white font-semibold', onclick: "return submitForm(false);"
+            = f.button 'Publish', type: 'button', class: 'rounded-md text-xl py-2 px-4 bg-gray-400 hover:bg-gray-500 text-white font-semibold', onclick: "return submitForm(false);"
 
 javascript defer: 
     const MAX_SIZE_IN_BYTES = 5 * 1024 * 1024; // 5MB
