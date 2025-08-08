@@ -37,7 +37,7 @@ class AlertsController < ApplicationController
     return unless @alert.update(alert_params)
 
     flash[:notice] = "Alert updated!"
-    redirect_to my_account_path
+    redirect_to my_account_path()
   end
 
   def destroy
