@@ -7,7 +7,7 @@ style
 div.flex.justify-center.mt-16.h-full style="background-color: #F9FAFC"
   div.flex.gap-4.bg-white.w-3/4
 
-    = form_with model: @event, class: "w-full h-full m-12 flex flex-col items-start gap-4" do |f|
+    = form_with model: @event, class: "w-full h-full m-12 flex flex-col items-start gap-4", data: { controller: "event-form" } do |f|
       = hidden_field_tag 'org_id', params[:org_id] if params[:org_id].present?
       
       = hidden_field_tag 'timezone', @user_timezone
@@ -34,20 +34,24 @@ div.flex.justify-center.mt-16.h-full style="background-color: #F9FAFC"
         = f.label :description, class: "required"
         = f.text_area :description, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", rows: 5, readonly: @readonly
 
-      div.w-full.flex.justify-start.gap-3
-        div.w-full
+      div.w-full.flex.justify-start.gap-3.items-center
+        div.w-full.flex.flex-col
           = f.label :date, class: "text-base required"
           = f.date_field :date, value: @event_date, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", disabled: @readonly
           
-        div.w-full
+        div.w-full.flex.flex-col
           = f.label :start_time, "Start Time", class: "text-base required"
-          = f.time_field :start_time, value: @event_start_time, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", disabled: @readonly
+          = f.time_field :start_time, value: @event_start_time, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", disabled: @readonly, data: { "event-form-target": "startTime" }
 
-        div.w-full.relative
+        div.w-full.flex.flex-col.relative
           = f.label :end_time, "End Time", class: "text-base"
-          = f.time_field :end_time, value: @event_end_time, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", onchange: "shouldShowClearButton()", disabled: @readonly
-          button.hidden.absolute.right-3.bottom-3 type="button" id="clear-end-time" onclick="clearEndTime()"
+          = f.time_field :end_time, value: @event_end_time, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", disabled: @readonly, data: { "event-form-target": "endTime", action: "input->event-form#handleEndTimeInput" }
+          button.hidden.absolute.right-3.bottom-3 type="button" id="clear-end-time", data: {"event-form-target": "clearEndButton", action: "click->event-form#clearEndTime" }
             | x
+          
+        div.ml-4.flex.flex-col.items-center
+          = f.label :all_day, "All Day", class: "text-base whitespace-nowrap mb-1 cursor-pointer select-none"
+          = f.check_box :all_day, class: "h-4 w-4 rounded-md text-blue-medium focus:ring-0 focus:ring-transparent", data: { "event-form-target": "allDayCheckbox", action: "change->event-form#toggleTimeInputs" }
 
       i.font-light.text-sm.text-slate-500 id="timezone-info" 
         | (Your selected times will be based on your browser's timezone - ?).
@@ -71,15 +75,15 @@ div.flex.justify-center.mt-16.h-full style="background-color: #F9FAFC"
           | Location
 
       div.flex.justify-start.gap-2
-        = f.radio_button :remote, true, checked: @event_is_remote, class: @readonly ? "mt-1 cursor-not-allowed": "mt-1", id: "remote-yes", onclick: "toggleLocation(false)", disabled: @readonly
+        = f.radio_button :remote, true, checked: @event_is_remote, class: @readonly ? "mt-1 cursor-not-allowed": "mt-1", id: "remote-yes", disabled: @readonly, data: { action: "change->event-form#toggleLocation" }
         = f.label :remote_true, "Remote/Online", class: "text-base font-medium text-slate-700"
 
       div.flex.justify-start.gap-2
-        = f.radio_button :remote, false, checked: !@event_is_remote, class: @readonly ? "mt-1 cursor-not-allowed": "mt-1", id: "remote-no", onclick: "toggleLocation(true)", disabled: @readonly
+        = f.radio_button :remote, false, checked: !@event_is_remote, class: @readonly ? "mt-1 cursor-not-allowed": "mt-1", id: "remote-no", disabled: @readonly, data: { action: "change->event-form#toggleLocation" }
         = f.label :remote_false, "In-Person", class: "text-base font-medium text-slate-700"
 
       / Location Container, appears when In-Person is selected
-      div.hidden.flex-between.w-full.gap-10 id="location-container"
+      div.hidden.flex-between.w-full.gap-10 id="location-container" data-event-form-target="locationContainer"
         div.w-1/2
           = f.label :address, class: "text-base font-medium text-slate-700 required"
           = f.text_field :address, value: @event_is_remote ? '' : @event.location, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", readonly: @readonly, disabled: @readonly
@@ -92,18 +96,13 @@ div.flex.justify-center.mt-16.h-full style="background-color: #F9FAFC"
       -# Attachment for users to insert image
       div.text-base.mt-4.font-medium.text-slate-700
           | Attach Flyer/Photo    
-      div.flex.justify-start
+      div.flex.justify-start 
           div.flex.flex-col.items-center
-              img.outline.outline-1.outline-gray-700 style="background: #E6E6E6; height: 148px; width:148px;" id="uploaded-img2" src=asset_path("default_logo_1.svg")
-              - if @event.image.attached?
-                javascript:
-                  document.addEventListener("DOMContentLoaded", function() {
-                    document.getElementById("uploaded-img2").src = "#{url_for(@event.image)}";
-                  });
+              = image_tag asset_path("default_logo_1.svg"), id: "uploaded-img2", data: { "event-form-target": "imagePreview" }, class: "outline outline-1 outline-gray-700", style: "background: #E6E6E6; height: 148px; width: 148px; object-fit: contain;"
           div.flex.flex-col.items-start style="margin-left:27px; margin-top:50px;"    
               label.bg-white.hover:bg-gray-100.text-gray-700.py-2.px-4.border.border-gray-400.rounded-md.cursor-pointer for="event_image"
                   b Upload
-              = f.file_field :image, accept: "image/png, image/jpeg", class:  @readonly ? "hidden cursor-not-allowed" : "hidden", id: "event_image", disabled: @readonly
+              = f.file_field :image, accept: "image/png, image/jpeg", class:  @readonly ? "hidden cursor-not-allowed" : "hidden", id: "event_image", disabled: @readonly, data: { action: "change->event-form#previewImage" }
               p.text-s.mt-1
                   | Maximum size of 5MB
 
