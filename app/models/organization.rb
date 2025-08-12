@@ -40,6 +40,7 @@ class Organization < ApplicationRecord
   has_many :beneficiary_subcategories, through: :organization_beneficiaries
   has_many :locations, dependent: :destroy
   has_many :additional_locations, -> { where(main: false) }, class_name: "Location", foreign_key: :organization_id
+  has_many :events, dependent: :destroy
   has_one :main_location, -> { where(main: true) }, class_name: "Location", foreign_key: :organization_id
   has_one :social_media, dependent: :destroy
   has_one_attached :logo
