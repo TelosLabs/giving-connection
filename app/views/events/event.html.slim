@@ -1,4 +1,4 @@
-div class="w-[75vw] mx-auto mt-6 p-3 flex justify-between gap-4 mb-24"
+div class="w-[75vw] mx-auto mt-6 p-3 flex justify-between gap-4 mb-24" data-controller="event-logo"  data-event-logo-profile-url-value=location_path(@event.organization.locations.first)
     div class="flex flex-col gap-3 w-2/3 rounded-md bg-white"
         img src="/assets/cover-default.png" alt="Cover Image" class="w-full h-24 object-cover rounded-t-md"        
         - if current_user.administrated_organizations.include?(@event.organization)
@@ -14,7 +14,7 @@ div class="w-[75vw] mx-auto mt-6 p-3 flex justify-between gap-4 mb-24"
                             style="background-color: #{badge_bg_colors[type]}; color: #{badge_text_colors[type]}; border: 1px solid #{badge_text_colors[type]};"
                             class="mx-auto font-['Inter'] px-4 py-2 rounded-full"
                         ] = type
-        h2 class="self-stretch h-7 text-center justify-center text-slate-800 text-lg font-bold font-['Inter'] leading-7"
+        h2 class="self-stretch h-7 text-center justify-center text-slate-800 text-lg font-bold font-['Inter'] leading-7 cursor-pointer" data-action="click->event-logo#redirectToProfile"
             = @event.title + " by " + @event.organization.name
         div class="flex mx-auto justify-center"
             button class="h-12 px-32 py-3 bg-indigo-100 text-[#4338CA] rounded-md flex justify-center items-center gap-2 whitespace-nowrap"
@@ -67,15 +67,15 @@ div class="w-[75vw] mx-auto mt-6 p-3 flex justify-between gap-4 mb-24"
         
         / TODO: Replace with event image if available
         - if @event.image.present?
-            = image_tag url_for(@event.image), class: "w-full object-cover rounded-b-md", data: { target: "logo.output" }
+            = image_tag url_for(@event.image), class: "w-full object-cover rounded-b-md cursor-pointer"
 
 
     div class="w-1/3 flex flex-col gap-4"
         div class="flex flex-col gap-4 rounded-md bg-white"
             div class="w-full flex flex-col gap-2 p-3 justify-center items-center"
                 / TODO: check org logo
-                = image_tag url_for(@organization.logo), class: "h-24 w-24 border border-gray-8 rounded border-2 border-gray-5 object-contain", data: { target: "logo.output" }
-                h2 class="w-72 h-7 text-center justify-center text-black text-lg font-bold font-['Inter'] leading-7"
+                = image_tag url_for(@organization.logo), class: "h-24 w-24 border border-gray-8 rounded border-2 border-gray-5 object-contain cursor-pointer", data: { action: "click->event-logo#redirectToProfile" }
+                h2 class="w-72 h-7 text-center justify-center text-black text-lg font-bold font-['Inter'] leading-7 cursor-pointer" data-action="click->event-logo#redirectToProfile"
                     = @event.organization.name
                 = render CausesList::Component.new( \
                     causes: @event.organization.causes.uniq, \
