@@ -1,4 +1,4 @@
-<div class="flex flex-col align-items-start gap-3 self-stretch py-5 px-3 border-b-2 border-[#E6E6E6]">
+<div class="flex flex-col align-items-start gap-3 self-stretch py-5 px-3 border-b-2 border-[#E6E6E6] hover:shadow-lg hover:bg-gray-50 transition duration-200 ease-in-out" onclick="window.location.href='/events/explore/<%= event.id %>'" style="cursor: pointer;">
   <div class="flex justify-between items-center gap-10 self-stretch">
     <div class="flex-none">
       <% adjusted_start = event.start_time.in_time_zone(helpers.get_timezone()) %>
@@ -17,7 +17,7 @@
       <% end %>
       
       <div class="flex flex-col gap-0">
-        <h2 class="text-black text-base font-bold leading-normal font-['Inter'] hover:underline"><a href="/events/explore/<%= event.id %>"><%= event.title %></a></h2>
+        <h2 class="text-black text-base font-bold leading-normal font-['Inter'] hover:underline"><%= event.title %></h2>
 
         <% if event.organization && !@small %>
             <div class="text-xs font-medium leading-tight font-['Inter']"><%= event.organization.name %></div>
