@@ -1,0 +1,104 @@
+Advocacy:
+advocacy, lobbying, grassroots organizing, civic engagement, policy change, public awareness, activism, coalition building, social justice, community mobilization
+
+Animals:
+animal welfare, animal rescue, wildlife conservation, endangered species, animal rights, humane society, pet adoption, veterinary care, animal shelters, biodiversity
+
+Arts & Culture:
+arts, culture, museums, performing arts, visual arts, music, theater, dance, literature, cultural heritage, public art, creative expression
+
+Children & Family Services:
+child welfare, foster care, adoption, family support, parenting, childcare, youth mentoring, family counseling, early childhood, child protection, child advocacy
+
+Clothing & Living Essentials:
+basic needs, clothing drives, hygiene products, shelter supplies, winter coats, essentials distribution, donation centers, household goods, blankets, survival kits
+
+Community & Economic Development:
+community development, economic empowerment, small business support, workforce training, financial literacy, entrepreneurship, neighborhood revitalization, capacity building, community planning, local economy
+
+Disability Services:
+disability rights, accessibility, assistive technology, special education, inclusion, independent living, rehabilitation, developmental disabilities, adaptive programs, support services
+
+Disaster Relief & Preparedness:
+emergency response, disaster recovery, crisis management, humanitarian aid, natural disasters, preparedness training, relief supplies, emergency shelter, first responders, resilience building
+
+Drug & Alcohol Treatment:
+substance abuse, addiction recovery, detox programs, rehabilitation, sober living, prevention programs, harm reduction, counseling, support groups, treatment centers
+
+Education:
+literacy, tutoring, STEM education, school readiness, college access, scholarships, lifelong learning, teacher training, curriculum development, after-school programs
+
+Emergency & Safety:
+emergency services, first aid, disaster preparedness, crisis hotlines, fire prevention, public safety, law enforcement support, emergency shelters, search and rescue, community safety
+
+Employment:
+job training, workforce development, career counseling, job placement, apprenticeships, resume support, unemployment services, vocational training, economic opportunity, job fairs
+
+Environment:
+sustainability, climate change, renewable energy, conservation, recycling, environmental justice, pollution prevention, green spaces, clean water, reforestation
+
+Faith-Based:
+religion, spirituality, worship, interfaith, ministry, faith communities, religious outreach, faith-based services, chaplaincy, spiritual development
+
+Health:
+healthcare access, medical services, public health, preventive care, chronic illness, primary care, hospitals, wellness programs, vaccinations, health equity
+
+Housing & Homelessness:
+affordable housing, homelessness prevention, transitional housing, shelters, housing assistance, supportive housing, eviction prevention, housing rights, rent assistance, safe housing
+
+Human & Social Services:
+case management, counseling, crisis intervention, social work, welfare programs, support services, outreach, wraparound services, human needs, service delivery
+
+Hunger & Food Security:
+food banks, hunger relief, school meals, food pantries, nutrition programs, food distribution, food insecurity, meal programs, emergency food, sustainable agriculture
+
+Immigration & Refugee:
+immigrant rights, refugee resettlement, asylum support, citizenship, immigration policy, cultural integration, migrant workers, legal aid for immigrants, refugee protection, language services
+
+Inmate & Formerly Incarcerated:
+prison reform, reentry programs, criminal justice reform, restorative justice, inmate education, rehabilitation, parole support, transitional services, formerly incarcerated support, second chance programs
+
+International:
+global development, foreign aid, humanitarian relief, international relations, peacebuilding, cultural exchange, international education, diplomacy, global health, cross-border initiatives
+
+Justice & Legal Services:
+legal aid, civil rights, pro bono services, criminal defense, human rights law, legal advocacy, access to justice, mediation, legal education, public defenders
+
+LGBTQ+:
+LGBTQ rights, queer advocacy, gender identity, sexual orientation, inclusivity, pride, LGBTQ youth, transgender support, marriage equality, safe spaces
+
+Media & Broadcasting:
+journalism, broadcasting, media literacy, public radio, investigative reporting, communications, film, digital media, storytelling, independent media
+
+Mental Health:
+mental health services, counseling, therapy, suicide prevention, peer support, psychiatric care, trauma recovery, mental health awareness, crisis intervention, wellness programs
+
+Philanthropy:
+charitable giving, donor engagement, grantmaking, fundraising, corporate social responsibility, foundation support, nonprofit funding, volunteerism, major gifts, social impact
+
+Race & Ethnicity:
+racial justice, diversity, equity, inclusion, anti-racism, multiculturalism, minority rights, ethnic studies, racial equity, heritage, cultural identity
+
+Research & Public Policy:
+policy analysis, academic research, social policy, public affairs, think tanks, program evaluation, data-driven policy, advocacy research, government studies, impact assessment
+
+Science & Technology:
+STEM, research, innovation, scientific discovery, technology access, digital equity, AI ethics, space exploration, biotechnology, open science
+
+Seniors:
+elder care, aging services, senior housing, gerontology, retirement, caregiver support, senior health, senior centers, dementia care, aging in place
+
+Social Sciences:
+sociology, anthropology, economics, political science, psychology, public administration, social research, criminology, demographics, cultural studies
+
+Sports & Recreation:
+sports programs, physical fitness, youth leagues, outdoor recreation, adaptive sports, athletics, wellness activities, community sports, physical education, sports mentoring
+
+Transportation:
+public transit, mobility services, transportation access, sustainable transport, paratransit, commuting, transportation equity, infrastructure, rural transit, traffic safety
+
+Veteran & Military:
+veteran services, military families, VA benefits, post-service support, PTSD programs, employment for veterans, military transition, veteran housing, wounded warriors, veteran healthcare
+
+Youth Development:
+youth leadership, after-school programs, teen mentoring, positive youth development, youth employment, youth empowerment, civic engagement for youth, life skills, youth sports, service learning
