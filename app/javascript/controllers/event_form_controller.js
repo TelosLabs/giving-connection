@@ -4,9 +4,15 @@ import { Controller } from "@hotwired/stimulus"
 const MAX_SIZE_IN_BYTES = 5 * 1024 * 1024
 
 export default class extends Controller {
-  static targets = ["startTime", "endTime", "clearEndButton", "allDayCheckbox", "imagePreview", "locationContainer"]
+  static targets = ["startTime", "endTime", "startDate", "endDate", "clearEndButton", "allDayCheckbox", "imagePreview", "locationContainer"]
+
+    setEndDate() {
+        if (this.startDateTarget.value && !this.endDateTarget.value) {
+            this.endDateTarget.value = this.startDateTarget.value
+        }
+    }
   
-    handleEndTimeInput() {
+    showClearButton() {
         if (this.endTimeTarget.value) {
             this.clearEndButtonTarget.classList.remove('hidden')
         } else {
