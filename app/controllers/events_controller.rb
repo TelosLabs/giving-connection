@@ -14,6 +14,13 @@ class EventsController < ApplicationController
     if org_id.blank?
       @events = Event.where(published: true).order(:start_time)
       filter_events
+
+      events_json = @events.map do |event|
+        event_hash = event.as_json
+        event_hash["allDay"] = event.all_day?
+        event_hash
+      end
+
       return render json: {events: @events, organizations: Organization.all}, status: :ok
     end
 
@@ -55,8 +62,16 @@ class EventsController < ApplicationController
     times = format_event_times(@event, @user_timezone)
     @event_start_date = times[:start_date]
     @event_end_date = times[:end_date]
-    @event_start_time = times[:start_time].strftime("%H:%M")
-    @event_end_time = times[:end_time].strftime("%H:%M")
+
+    if @event.all_day?
+      @event_start_time = ""
+      @event_end_time = ""
+      @disabled_time_fields = true
+    else 
+      @event_start_time = times[:start_time].strftime("%H:%M")
+      @event_end_time = times[:end_time].strftime("%H:%M")
+      @disabled_time_fields = false
+    end
 
     @event_is_remote = @event.location == "Remote" || @event.location == "Virtual Event" || @event.location.nil? || @event.location == "" 
     render :form
@@ -84,6 +99,7 @@ class EventsController < ApplicationController
         event_json["end_date"] = times[:end_date]
         event_json["start_time"] = times[:start_time].strftime("%H:%M")
         event_json["end_time"] = times[:end_time].strftime("%H:%M")
+        event_json["allDay"] = params[:event][:all_day] == "true"
         render json: event_json
       end
     end
@@ -170,6 +186,9 @@ class EventsController < ApplicationController
     # Set recurring flag
     create_params[:isRecurring] = params[:event][:recurring] == "true"
 
+    create_params[:start_date] = params[:event][:start_date]
+    create_params[:end_date] = params[:event][:end_date].presence || params[:event][:start_date]
+    create_params[:all_day] = params[:event][:all_day] == "true"
     event = organization.events.build(create_params)
 
     if event.save
@@ -178,6 +197,7 @@ class EventsController < ApplicationController
       event_json["start_time"] = times[:start_time]&.in_time_zone(user_timezone)
       event_json["end_time"] = times[:end_time]&.in_time_zone(user_timezone)
       event_json["timezone"] = user_timezone
+      event_json["allDay"] = params[:event][:all_day] == "true"
 
       render json: {message: "Event created successfully", event: event_json}, status: :created
     else
@@ -208,8 +228,10 @@ class EventsController < ApplicationController
     # Use helper method to get properly formatted start_time and end_time
     times = format_event_times(temp_event, user_timezone)
 
-    update_params[:start_time] = times[:start_time].utc if times[:start_time]
-    update_params[:end_time] = times[:end_time].utc if times[:end_time]
+    update_params[:start_date] = params[:event][:start_date]
+    update_params[:end_date] = params[:event][:end_date].presence || params[:event][:start_date]
+    update_params[:start_time] = times[:start_time] ? times[:start_time].utc : nil
+    update_params[:end_time] =  times[:end_time] ? times[:end_time].utc : nil
 
     # Handle the remote/location fields
     if params[:event][:remote] == "true"
@@ -260,11 +282,11 @@ class EventsController < ApplicationController
     if event.all_day?
       start_date = event.start_date
       end_date = event.end_date || start_date
-      start_time = start_date.beginning_of_day
-      end_time = (event.end_date || start_date).beginning_of_day
+      start_time = nil
+      end_time = nil
     elsif event.start_time.present?
       local_start_time = event.start_time.in_time_zone(timezone)
-      local_end_time = event.end_time&.in_time_zone(timezone)
+      local_end_time = event.end_time.in_time_zone(timezone)
 
       start_date = local_start_time.to_date
       end_date = local_end_time&.to_date || start_date

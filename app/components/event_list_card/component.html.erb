@@ -13,7 +13,11 @@
     
     <div class="flex flex-col items-start gap-4 grow">
       <% if !@small %>
-        <div class="text-xs font-['Inter'] font-semibold leading-none"><%= helpers.format_event_time(event.start_time) %></div>
+        <% if event.all_day? %>
+            <div class="text-xs font-['Inter'] font-semibold leading-none"> <%= "ALL DAY" %></div>
+        <% else %>
+            <div class="text-xs font-['Inter'] font-semibold leading-none"><%= helpers.format_event_time(event.start_time) %></div>
+        <% end %>
       <% end %>
       
       <div class="flex flex-col gap-0">
@@ -37,7 +41,11 @@
         <% end %>
 
         <% if @small %>
-            <div class="text-xs font-['Inter'] text-[#6B7280] font-semibold leading-none"><%= helpers.format_event_time(event.start_time) %></div>
+            <% if event.all_day? %>
+                <div class="text-xs font-['Inter'] font-semibold leading-none"> <%= "ALL DAY" %></div>
+            <% else %>
+                <div class="text-xs font-['Inter'] font-semibold leading-none"><%= helpers.format_event_time(event.start_time) %></div>
+            <% end %>
         <% end %>
       </div>
       

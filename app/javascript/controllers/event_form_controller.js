@@ -30,8 +30,10 @@ export default class extends Controller {
         const isAllDay = this.allDayCheckboxTarget.checked
         if (isAllDay) {
             this.startTimeTarget.disabled = true
+            this.startTimeTarget.value = "";
             this.startTimeTarget.classList.add('opacity-50', 'cursor-not-allowed')
             this.endTimeTarget.disabled = true
+            this.endTimeTarget.value = "";
             this.endTimeTarget.classList.add('opacity-50', 'cursor-not-allowed')
         } else {
             this.startTimeTarget.disabled = false

@@ -3,6 +3,12 @@ style
   |   content: "* ";
   |   font-weight: bold;
   | }
+  | .c-input:disabled {
+  |    background-color: #f3f4f6; 
+  |    opacity: 0.5;
+  |    cursor: not-allowed;
+  | }
+
 
 div.flex.justify-center.mt-16.h-full style="background-color: #F9FAFC"
   div.flex.gap-4.bg-white.w-3/4
@@ -46,11 +52,11 @@ div.flex.justify-center.mt-16.h-full style="background-color: #F9FAFC"
       div.w-full.flex.justify-start.gap-3.items-center.mt-3
         div.w-full.flex.flex-col
           = f.label :start_time, "Start Time", class: "text-base required"
-          = f.time_field :start_time, value: @event_start_time, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", disabled: @readonly, data: { "event-form-target": "startTime" }
+          = f.time_field :start_time, value: @event_start_time, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", disabled: @readonly || @disabled_time_fields, data: { "event-form-target": "startTime" }
 
         div.w-full.flex.flex-col.relative
           = f.label :end_time, "End Time", class: "text-base required"
-          = f.time_field :end_time, value: @event_end_time, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", disabled: @readonly, data: { "event-form-target": "endTime", action: "input->event-form#showClearButton" }
+          = f.time_field :end_time, value: @event_end_time, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", disabled: @readonly || @disabled_time_fields, data: { "event-form-target": "endTime", action: "input->event-form#showClearButton" }
           button.hidden.absolute.right-3.bottom-3 type="button" id="clear-end-time", data: {"event-form-target": "clearEndButton", action: "click->event-form#clearEndTime" }
             | x
           
