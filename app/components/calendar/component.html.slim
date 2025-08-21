@@ -36,14 +36,19 @@ style
   | .fc .fc-event-title {
   |   white-space: normal !important;
   |   font: 'Inter';
+  |   color: #1F2D3D !important; 
+  |   font-weight: 500;
   | }
   | .fc .fc-event {
   |   padding: 2px 4px !important;
   | }
   | .fc .fc-daygrid-day-events .fc-event {
   |   background-color: rgba(0, 0, 0, 0.02) !important; 
-  |   
   | }
+  | .fc-event-time {
+  |     color: #1F2D3D !important; 
+  | }
+  |
   | .fc-daygrid-day-number {
   |    color: #1F2D3D !important;
   | }
@@ -120,6 +125,17 @@ javascript:
     var calendarEl = document.getElementById('calendar');
     const isAdminCalendar = "#{@admin}" == "true";
     var events = [];
+
+    function isAllDay(event) {
+      return event.allDay;
+    }
+
+    function formatEventTimeForTooltip(start, end, allDay) {
+      if (allDay) return "ALL DAY";
+
+      return start.toLocaleTimeString([], { timeStyle: 'short' }) + 
+            (start.getTime() !== end.getTime() ? ' - ' + end.toLocaleTimeString([], { timeStyle: 'short' }) : '');
+    }
     
     if (isAdminCalendar) {
       let orgIds = document.getElementById('org_ids').value.split(' ');
@@ -142,6 +158,7 @@ javascript:
             title: event.title,
             start: event.start_time,
             end: event.end_time,
+            allDay: event.all_day,
             description: event.description,
             location: event.location,
             url: `/events/explore/${event.id}`,
@@ -173,6 +190,7 @@ javascript:
           title: event.title,
           start: event.start_time,
           end: event.end_time,
+          allDay: event.all_day,
           description: event.description,
           location: event.location,
           url: `/events/explore/${event.id}`,
@@ -192,6 +210,12 @@ javascript:
         right: 'dayGridMonth,timeGridWeek,timeGridDay'
       },
       events,
+
+      eventContent: function(arg) {
+        const timeText = isAllDay(arg.event) ? "ALL DAY" : arg.timeText;
+        return { html: `<div class="fc-event-time">${timeText}</div><div class="fc-event-title">${arg.event.title}</div>` };
+      },
+
       eventDidMount: function(info) {
         // Set href of the event element to the event URL
         info.el.setAttribute('href', info.event.url);
@@ -215,20 +239,19 @@ javascript:
                 ${
                   singleDay 
                   ?
-                    eventStart.toLocaleDateString() + ' ' + eventStart.toLocaleTimeString([], { timeStyle: 'short' })
+                    eventStart.toLocaleDateString() + ' ' + formatEventTimeForTooltip(eventStart, eventEnd, isAllDay(info.event))
                   :
-                    eventStart.toLocaleDateString() + ' ' + eventStart.toLocaleTimeString([], { timeStyle: 'short' }) + ' - ' +
-                    eventEnd.toLocaleDateString() + ' ' + eventEnd.toLocaleTimeString([], { timeStyle: 'short' })
+                    eventStart.toLocaleDateString() + ' - ' + eventEnd.toLocaleDateString()
                 }
               </div>
               <div class="self-stretch flex flex-col justify-start items-start gap-1">
-                <div class="self-stretch h-4 justify-center text-black text-base font-['Inter'] font-bold leading-none">
+                <div class="self-stretch h-auto justify-center text-black text-base font-['Inter'] font-bold leading-none">
                   ${eventTitle}
                 </div>
-                <div class="text-sm self-stretch h-4 justify-center text-black font-['Inter'] font-medium leading-none">
+                <div class="text-sm self-stretch h-auto justify-center text-black font-['Inter'] font-medium leading-none">
                   ${orgName}
                 </div>
-                <div class="self-stretch h-2.5 inline-flex justify-start items-center gap-0.5">
+                <div class="self-stretch h-auto inline-flex justify-start items-center gap-0.5">
                   <div class="w-48 h-3 justify-center text-color-grey-46 text-xs text-[#6B7280] font-['Inter'] leading-none">
                     ${location}
                   </div>

@@ -51,7 +51,10 @@ div class="w-[75vw] mx-auto mt-6 p-3 flex justify-between gap-4 mb-24" data-cont
             div class="flex justify-start gap-2 items-center"
                 h3 class="text-[#3B4958] text-base font-bold font-['Inter'] leading-7"
                     | Time: 
-                - if @event.end_time.present? && @event.start_time.to_date == @event.end_time.to_date
+                - if @event.all_day?
+                     p class="text-gray-700 text-base font-normal font-['Inter'] leading-normal"
+                        | ALL DAY
+                - elsif @event.end_time.present? 
                     p class="text-gray-700 text-base font-normal font-['Inter'] leading-normal"
                         = @event.start_time.in_time_zone(@user_timezone).strftime("%I:%M %p") + " - " + @event.end_time.in_time_zone(@user_timezone).strftime("%I:%M %p")
                 - else

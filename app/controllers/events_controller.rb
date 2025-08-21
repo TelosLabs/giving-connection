@@ -1,3 +1,5 @@
+require 'ostruct'
+
 class EventsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :create, :update, :destroy]
   skip_before_action :verify_authenticity_token, only: [:index, :create, :update, :destroy]
@@ -7,11 +9,17 @@ class EventsController < ApplicationController
 
   def index
     org_id = params[:org_id] || params[:orgId] || ""
-
     # If no org_id is provided, return all events. Called from the discover page's calendar component
     if org_id.blank?
       @events = Event.where(published: true).order(:start_time)
       filter_events
+
+      events_json = @events.map do |event|
+        event_hash = event.as_json
+        event_hash["allDay"] = event.all_day?
+        event_hash
+      end
+
       return render json: {events: @events, organizations: Organization.all}, status: :ok
     end
 
@@ -26,8 +34,8 @@ class EventsController < ApplicationController
     if @user_timezone.present?
       events_with_timezone = events.map do |event|
         event_hash = event.as_json
-        event_hash["start_time"] = event.start_time&.in_time_zone(params[:timezone])
-        event_hash["end_time"] = event.end_time&.in_time_zone(params[:timezone])
+        event_hash["start_time"] = event.start_time&.in_time_zone(@user_timezone)
+        event_hash["end_time"] = event.end_time&.in_time_zone(@user_timezone)
         event_hash["timezone"] = @user_timezone
         event_hash
       end
@@ -50,17 +58,21 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     @organization = @event.organization
 
-    if @event.start_time.present?
-      # Convert UTC times to user's timezone for display
-      local_start_time = @event.start_time.in_time_zone(@user_timezone)
-      local_end_time = @event.end_time&.in_time_zone(@user_timezone)
+    times = format_event_times(@event, @user_timezone)
+    @event_start_date = times[:start_date]
+    @event_end_date = times[:end_date]
 
-      @event_date = local_start_time.to_date
-      @event_start_time = local_start_time.strftime("%H:%M")
-      @event_end_time = local_end_time&.strftime("%H:%M")
+    if @event.all_day?
+      @event_start_time = ""
+      @event_end_time = ""
+      @disabled_time_fields = true
+    else 
+      @event_start_time = times[:start_time].strftime("%H:%M")
+      @event_end_time = times[:end_time].strftime("%H:%M")
+      @disabled_time_fields = false
     end
 
-    @event_is_remote = @event.location == "Remote" || @event.location == "Virtual Event" || @event.location.nil? || @event.location == ""
+    @event_is_remote = @event.location == "Remote" || @event.location == "Virtual Event" || @event.location.nil? || @event.location == "" 
     render :form
   end
 
@@ -68,30 +80,27 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     @organization = @event.organization
 
-    if @event.start_time.present?
-      # Convert UTC times to user's timezone for display
-      local_start_time = @event.start_time.in_time_zone(@user_timezone)
-      local_end_time = @event.end_time&.in_time_zone(@user_timezone)
-
-      @event_date = local_start_time.to_date
-      @event_start_time = local_start_time.strftime("%H:%M")
-      @event_end_time = local_end_time&.strftime("%H:%M")
-    end
+    times = format_event_times(@event, @user_timezone)
+    @event_start_date = times[:start_date]
+    @event_end_date = times[:end_date]
+    @event_start_time = times[:start_time].strftime("%H:%M")
+    @event_end_time = times[:end_time].strftime("%H:%M")
 
     @event_is_remote = @event.location == "Remote" || @event.location == "Virtual Event" || @event.location.nil? || @event.location == ""
     @readonly = true
 
     respond_to do |format|
       format.html { render :form }
-      format.json {
-        # For JSON response, convert times to the user's timezone
+      format.json do
         event_json = @event.as_json
-        event_json["start_time"] = @event.start_time&.in_time_zone(@user_timezone)
-        event_json["end_time"] = @event.end_time&.in_time_zone(@user_timezone)
-        event_json["timezone"] = @user_timezone
-
-        render json: {event: event_json}
-      }
+        event_json["all_day"] = @event.all_day?
+        event_json["start_date"] = times[:start_date]
+        event_json["end_date"] = times[:end_date]
+        event_json["start_time"] = times[:start_time].strftime("%H:%M")
+        event_json["end_time"] = times[:end_time].strftime("%H:%M")
+        event_json["allDay"] = params[:event][:all_day] == "true"
+        render json: event_json
+      end
     end
   end
 
@@ -110,6 +119,7 @@ class EventsController < ApplicationController
       # Logic for discover with specific event
       @event = Event.find(params[:id])
       @organization = @event.organization
+
       # Take next 3 upcoming events for this org
       @upcoming_events = Event.where(organization_id: @organization.id, published: true)
         .where("start_time > ?", Time.zone.now)
@@ -118,8 +128,10 @@ class EventsController < ApplicationController
       render :event
     else
       # Logic for discover without specific event
-      @events = Event.where(published: true).order(:start_time)
-      @events = @events.select { |event| event.start_time > Time.zone.now }
+      @events = Event.where(published: true)
+               .where("start_time > ? OR (all_day = ? AND start_date >= ?)", 
+                      Time.zone.now, true, Date.today)
+               .order(:start_time)
 
       if params[:ein].present?
         @organization = Organization.find_by(ein_number: params[:ein])
@@ -142,51 +154,19 @@ class EventsController < ApplicationController
     # Create a copy of the parameters we can modify
     create_params = event_params.to_h
 
-    # Process the date and time fields from the form if they exist
-    if params[:event][:date].present? && params[:event][:start_time].present?
-      date = params[:event][:date]
-      start_time = params[:event][:start_time]
-
-      # Parse the local time with the user's timezone
-      local_start_time = Time.use_zone(user_timezone) do
-        Time.zone.parse("#{date} #{start_time}")
-      end
-
-      # Convert to UTC for storage
-      create_params[:start_time] = local_start_time.utc
-
-      # Handle end time if present
-      if params[:event][:end_time].present?
-        end_time = params[:event][:end_time]
-
-        # Parse the local time with the user's timezone
-        local_end_time = Time.use_zone(user_timezone) do
-          Time.zone.parse("#{date} #{end_time}")
-        end
-
-        # Convert to UTC for storage
-        create_params[:end_time] = local_end_time.utc
-      end
-    elsif params[:event][:start_time].present? # For JSON API
-      # Try to parse ISO8601 format with timezone info
-      begin
-        create_params[:start_time] = Time.parse(params[:event][:start_time]).utc
-        create_params[:end_time] = Time.parse(params[:event][:end_time]).utc if params[:event][:end_time].present?
-      rescue ArgumentError
-        # If the time string doesn't include timezone info, use the provided timezone
-        start_time = Time.use_zone(user_timezone) do
-          Time.zone.parse(params[:event][:start_time])
-        end
-        create_params[:start_time] = start_time.utc
-
-        if params[:event][:end_time].present?
-          end_time = Time.use_zone(user_timezone) do
-            Time.zone.parse(params[:event][:end_time])
-          end
-          create_params[:end_time] = end_time.utc
-        end
-      end
-    end
+    # build a temporary event object with the params to process times
+    temp_event = OpenStruct.new(
+    start_date: params[:event][:start_date],
+    end_date: params[:event][:end_date],
+    start_time: params[:event][:start_time],
+    end_time: params[:event][:end_time],
+    all_day: params[:event][:all_day] == "true"
+    )
+    
+    # Use helper method to get properly formatted start_time and end_time
+    times = format_event_times(temp_event, user_timezone)
+    create_params[:start_time] = times[:start_time].utc if times[:start_time]
+    create_params[:end_time] = times[:end_time].utc if times[:end_time]
 
     # Handle the remote/location fields
     if params[:event][:remote] == "true"
@@ -204,14 +184,18 @@ class EventsController < ApplicationController
     # Set recurring flag
     create_params[:isRecurring] = params[:event][:recurring] == "true"
 
+    create_params[:start_date] = params[:event][:start_date]
+    create_params[:end_date] = params[:event][:end_date].presence || params[:event][:start_date]
+    create_params[:all_day] = params[:event][:all_day] == "true"
     event = organization.events.build(create_params)
 
     if event.save
       # Convert times back to user's timezone for the response
       event_json = event.as_json
-      event_json["start_time"] = event.start_time&.in_time_zone(user_timezone)
-      event_json["end_time"] = event.end_time&.in_time_zone(user_timezone)
+      event_json["start_time"] = times[:start_time]&.in_time_zone(user_timezone)
+      event_json["end_time"] = times[:end_time]&.in_time_zone(user_timezone)
       event_json["timezone"] = user_timezone
+      event_json["allDay"] = params[:event][:all_day] == "true"
 
       render json: {message: "Event created successfully", event: event_json}, status: :created
     else
@@ -230,51 +214,22 @@ class EventsController < ApplicationController
     update_params = event_params.to_h
     user_timezone = @user_timezone
 
-    # Process the date and time fields from the form if they exist
-    if params[:event][:date].present? && params[:event][:start_time].present?
-      date = params[:event][:date]
-      start_time = params[:event][:start_time]
+    # build a temp event object to handle all_day / time formatting
+    temp_event = OpenStruct.new(
+      start_date: params[:event][:start_date],
+      end_date: params[:event][:end_date],
+      start_time: params[:event][:start_time],
+      end_time: params[:event][:end_time],
+      all_day: params[:event][:all_day] == "true"
+    )
 
-      # Parse the local time with the user's timezone
-      local_start_time = Time.use_zone(user_timezone) do
-        Time.zone.parse("#{date} #{start_time}")
-      end
+    # Use helper method to get properly formatted start_time and end_time
+    times = format_event_times(temp_event, user_timezone)
 
-      # Convert to UTC for storage
-      update_params[:start_time] = local_start_time.utc
-
-      # Handle end time if present
-      if params[:event][:end_time].present?
-        end_time = params[:event][:end_time]
-
-        # Parse the local time with the user's timezone
-        local_end_time = Time.use_zone(user_timezone) do
-          Time.zone.parse("#{date} #{end_time}")
-        end
-
-        # Convert to UTC for storage
-        update_params[:end_time] = local_end_time.utc
-      end
-    elsif params[:event][:start_time].present? # For JSON API
-      # Try to parse ISO8601 format with timezone info
-      begin
-        update_params[:start_time] = Time.parse(params[:event][:start_time]).utc
-        update_params[:end_time] = Time.parse(params[:event][:end_time]).utc if params[:event][:end_time].present?
-      rescue ArgumentError
-        # If the time string doesn't include timezone info, use the provided timezone
-        start_time = Time.use_zone(user_timezone) do
-          Time.zone.parse(params[:event][:start_time])
-        end
-        update_params[:start_time] = start_time.utc
-
-        if params[:event][:end_time].present?
-          end_time = Time.use_zone(user_timezone) do
-            Time.zone.parse(params[:event][:end_time])
-          end
-          update_params[:end_time] = end_time.utc
-        end
-      end
-    end
+    update_params[:start_date] = params[:event][:start_date]
+    update_params[:end_date] = params[:event][:end_date].presence || params[:event][:start_date]
+    update_params[:start_time] = times[:start_time] ? times[:start_time].utc : nil
+    update_params[:end_time] =  times[:end_time] ? times[:end_time].utc : nil
 
     # Handle the remote/location fields
     if params[:event][:remote] == "true"
@@ -295,8 +250,8 @@ class EventsController < ApplicationController
     if event.update(update_params)
       # Convert times back to user's timezone for the response
       event_json = event.as_json
-      event_json["start_time"] = event.start_time&.in_time_zone(user_timezone)
-      event_json["end_time"] = event.end_time&.in_time_zone(user_timezone)
+      event_json["start_time"] = times[:start_time]&.in_time_zone(user_timezone)
+      event_json["end_time"] = times[:end_time]&.in_time_zone(user_timezone)
       event_json["timezone"] = user_timezone
 
       render json: {message: "Event updated successfully", event: event_json}, status: :ok
@@ -320,6 +275,24 @@ class EventsController < ApplicationController
   end
 
   private
+
+  def format_event_times(event, timezone)
+    start_date = event.start_date
+    end_date = event.end_date || start_date
+  
+    if event.all_day?
+      start_time = nil
+      end_time = nil
+    else
+      # assumes event.start_time and event.end_time are always set; this should be alright because it's checking allDay first
+      start_time = Time.zone.parse("#{start_date} #{event.start_time}").in_time_zone(timezone)
+      end_time = Time.zone.parse("#{end_date} #{event.end_time}").in_time_zone(timezone)
+      # start_time = event.start_time&.in_time_zone(timezone)
+      # end_time = event.end_time&.in_time_zone(timezone)
+    end
+  
+    { start_date: start_date, end_date: end_date, start_time: start_time, end_time: end_time }
+  end
 
   # Used for discover events to filter events based on query params
   def filter_events
@@ -369,11 +342,20 @@ class EventsController < ApplicationController
     # Filter by date range
     if params[:daterange].present?
       date_range = parse_date_range(params[:daterange])
+      start_range = date_range[:start]
+      end_range = date_range[:end]
+
       if date_range[:start].present? && date_range[:end].present?
         @events = @events.select do |event|
-          event.start_time.present? &&
-            event.start_time >= date_range[:start] &&
-            event.start_time <= date_range[:end]
+          # For timed events: check if any part of the event overlaps the range
+          timed_overlap = event.start_time.present? && event.end_time.present? &&
+          event.end_time >= start_range && event.start_time <= end_range
+
+          # For all-day events: check if the date range overlaps with start_date / end_date
+          all_day_overlap = event.all_day? && event.start_date.present? && event.end_date.present? &&
+          event.end_date >= start_range.to_date && event.start_date <= end_range.to_date
+
+          timed_overlap || all_day_overlap
         end
       end
     end

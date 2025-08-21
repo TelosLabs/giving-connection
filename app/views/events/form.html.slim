@@ -3,11 +3,17 @@ style
   |   content: "* ";
   |   font-weight: bold;
   | }
+  | .c-input:disabled {
+  |    background-color: #f3f4f6; 
+  |    opacity: 0.5;
+  |    cursor: not-allowed;
+  | }
+
 
 div.flex.justify-center.mt-16.h-full style="background-color: #F9FAFC"
   div.flex.gap-4.bg-white.w-3/4
 
-    = form_with model: @event, class: "w-full h-full m-12 flex flex-col items-start gap-4" do |f|
+    = form_with model: @event, class: "w-full h-full m-12 flex flex-col items-start gap-4", data: { controller: "event-form" } do |f|
       = hidden_field_tag 'org_id', params[:org_id] if params[:org_id].present?
       
       = hidden_field_tag 'timezone', @user_timezone
@@ -34,20 +40,29 @@ div.flex.justify-center.mt-16.h-full style="background-color: #F9FAFC"
         = f.label :description, class: "required"
         = f.text_area :description, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", rows: 5, readonly: @readonly
 
-      div.w-full.flex.justify-start.gap-3
-        div.w-full
-          = f.label :date, class: "text-base required"
-          = f.date_field :date, value: @event_date, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", disabled: @readonly
-          
-        div.w-full
+      div.w-full.flex.justify-start.gap-3.items-center
+        div.w-full.flex.flex-col
+          = f.label :start_date, class: "text-base required"
+          = f.date_field :start_date, value: @event_start_date, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", disabled: @readonly, data: { "event-form-target": "startDate", action: "input->event-form#setEndDate" }
+        
+        div.w-full.flex.flex-col
+          = f.label :end_date, class: "text-base required"
+          = f.date_field :end_date, value: @event_end_date, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", disabled: @readonly, data: { "event-form-target": "endDate" }
+        
+      div.w-full.flex.justify-start.gap-3.items-center.mt-3
+        div.w-full.flex.flex-col
           = f.label :start_time, "Start Time", class: "text-base required"
-          = f.time_field :start_time, value: @event_start_time, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", disabled: @readonly
+          = f.time_field :start_time, value: @event_start_time, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", disabled: @readonly || @disabled_time_fields, data: { "event-form-target": "startTime" }
 
-        div.w-full.relative
-          = f.label :end_time, "End Time", class: "text-base"
-          = f.time_field :end_time, value: @event_end_time, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", onchange: "shouldShowClearButton()", disabled: @readonly
-          button.hidden.absolute.right-3.bottom-3 type="button" id="clear-end-time" onclick="clearEndTime()"
+        div.w-full.flex.flex-col.relative
+          = f.label :end_time, "End Time", class: "text-base required"
+          = f.time_field :end_time, value: @event_end_time, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", disabled: @readonly || @disabled_time_fields, data: { "event-form-target": "endTime", action: "input->event-form#showClearButton" }
+          button.hidden.absolute.right-3.bottom-3 type="button" id="clear-end-time", data: {"event-form-target": "clearEndButton", action: "click->event-form#clearEndTime" }
             | x
+          
+        div.ml-4.flex.flex-col.items-center
+          = f.label :all_day, "All Day", class: "text-base whitespace-nowrap mb-1 cursor-pointer select-none"
+          = f.check_box :all_day, class: "h-4 w-4 rounded-md text-blue-medium focus:ring-0 focus:ring-transparent", data: { "event-form-target": "allDayCheckbox", action: "change->event-form#toggleTimeInputs" }
 
       i.font-light.text-sm.text-slate-500 id="timezone-info" 
         | (Your selected times will be based on your browser's timezone - ?).
@@ -71,15 +86,15 @@ div.flex.justify-center.mt-16.h-full style="background-color: #F9FAFC"
           | Location
 
       div.flex.justify-start.gap-2
-        = f.radio_button :remote, true, checked: @event_is_remote, class: @readonly ? "mt-1 cursor-not-allowed": "mt-1", id: "remote-yes", onclick: "toggleLocation(false)", disabled: @readonly
+        = f.radio_button :remote, true, checked: @event_is_remote, class: @readonly ? "mt-1 cursor-not-allowed": "mt-1", id: "remote-yes", disabled: @readonly, data: { action: "change->event-form#toggleLocation" }
         = f.label :remote_true, "Remote/Online", class: "text-base font-medium text-slate-700"
 
       div.flex.justify-start.gap-2
-        = f.radio_button :remote, false, checked: !@event_is_remote, class: @readonly ? "mt-1 cursor-not-allowed": "mt-1", id: "remote-no", onclick: "toggleLocation(true)", disabled: @readonly
+        = f.radio_button :remote, false, checked: !@event_is_remote, class: @readonly ? "mt-1 cursor-not-allowed": "mt-1", id: "remote-no", disabled: @readonly, data: { action: "change->event-form#toggleLocation" }
         = f.label :remote_false, "In-Person", class: "text-base font-medium text-slate-700"
 
       / Location Container, appears when In-Person is selected
-      div.hidden.flex-between.w-full.gap-10 id="location-container"
+      div.hidden.flex-between.w-full.gap-10 id="location-container" data-event-form-target="locationContainer"
         div.w-1/2
           = f.label :address, class: "text-base font-medium text-slate-700 required"
           = f.text_field :address, value: @event_is_remote ? '' : @event.location, class: @readonly ? "c-input bg-gray-100 cursor-not-allowed" : "c-input", readonly: @readonly, disabled: @readonly
@@ -92,18 +107,13 @@ div.flex.justify-center.mt-16.h-full style="background-color: #F9FAFC"
       -# Attachment for users to insert image
       div.text-base.mt-4.font-medium.text-slate-700
           | Attach Flyer/Photo    
-      div.flex.justify-start
+      div.flex.justify-start 
           div.flex.flex-col.items-center
-              img.outline.outline-1.outline-gray-700 style="background: #E6E6E6; height: 148px; width:148px;" id="uploaded-img2" src=asset_path("default_logo_1.svg")
-              - if @event.image.attached?
-                javascript:
-                  document.addEventListener("DOMContentLoaded", function() {
-                    document.getElementById("uploaded-img2").src = "#{url_for(@event.image)}";
-                  });
+              = image_tag asset_path("default_logo_1.svg"), id: "uploaded-img2", data: { "event-form-target": "imagePreview" }, class: "outline outline-1 outline-gray-700", style: "background: #E6E6E6; height: 148px; width: 148px; object-fit: contain;"
           div.flex.flex-col.items-start style="margin-left:27px; margin-top:50px;"    
               label.bg-white.hover:bg-gray-100.text-gray-700.py-2.px-4.border.border-gray-400.rounded-md.cursor-pointer for="event_image"
                   b Upload
-              = f.file_field :image, accept: "image/png, image/jpeg", class:  @readonly ? "hidden cursor-not-allowed" : "hidden", id: "event_image", disabled: @readonly
+              = f.file_field :image, accept: "image/png, image/jpeg", class:  @readonly ? "hidden cursor-not-allowed" : "hidden", id: "event_image", disabled: @readonly, data: { action: "change->event-form#previewImage" }
               p.text-s.mt-1
                   | Maximum size of 5MB
 
@@ -191,16 +201,30 @@ javascript defer:
     function validateForm() {
         const title = document.getElementById("event_title").value;
         const description = document.getElementById("event_description").value;
-        const date = document.getElementById("event_date").value;
+        const startDate = document.getElementById("event_start_date").value;
+        const endDate = document.getElementById("event_end_date").value;
         const startTime = document.getElementById("event_start_time").value;
         const endTime = document.getElementById("event_end_time").value;
+        const allDay = document.getElementById("event_all_day").checked;
         const isRecurring = document.querySelector('input[name="event[isRecurring]"]:checked').value;
         const isInPerson = document.querySelector('input[name="event[remote]"]:checked').value === "false";
         const address = isInPerson ? document.getElementById("event_address").value : null;
 
         // Validate required fields
-        if (!title || !description || !date || !startTime) {
-            return "Please fill in all required fields.";
+        if (!title || !description) {
+          return "Please fill in all required fields.";
+        }
+
+        if (!allDay) {
+          // Timed event -> both date and time required
+          if (!startDate || !startTime) {
+            return "Please select a start date and time.";
+          }
+        } else {
+          // All-day event -> only date required
+          if (!startDate) {
+            return "Please select a start date.";
+          }
         }
 
         // Make sure an address is provided if the event is in-person
@@ -208,14 +232,19 @@ javascript defer:
             return "Please provide an address for in-person events.";
         }
 
-        // Make sure the start time is before the end time if end time is provided
-        if (endTime) {
-            const startDateTime = new Date(`${date}T${startTime}`);
-            const endDateTime = new Date(`${date}T${endTime}`);
-            if (startDateTime >= endDateTime) {
-                return "Start time must be before end time. If you've entered an end time by mistake, please clear it and re-submit.";
-            }
+        // if end date is provided, make sure it's before the start date
+        const start = new Date(startDate);
+        const end = new Date(endDate || startDate);
+        if (end < start) {
+          return "End date must be after or on the start date.";
         }
+        if (endTime && !allDay) {
+          const startDateTime = new Date(`${startDate}T${startTime}`);
+          const endDateTime = new Date(`${startDate}T${endTime}`);
+          if (startDateTime >= endDateTime) {
+              return "Start time must be before end time. If you've entered an end time by mistake, please clear it and re-submit.";
+          }
+        } 
 
         return null; // No validation errors
     }
@@ -257,18 +286,26 @@ javascript defer:
         formData.append("event[type_of_event]", JSON.stringify(eventTypes));
 
         // Get date and times from form
-        const date = document.getElementById("event_date").value;
+        const startDate = document.getElementById("event_start_date").value;
+        const endDate = document.getElementById("event_end_date")?.value || startDate;
+        const allDay = document.getElementById("event_all_day").checked;
         let startTime = document.getElementById("event_start_time").value;
         let endTime = document.getElementById("event_end_time").value;
         
-        // Keep the original date and time values for the backend to handle
-        if (date && startTime) {
-            formData.set("event[date]", date);
-            formData.set("event[start_time]", startTime);
-        }
+        // Always submit dates
+        if (startDate) formData.set("event[start_date]", startDate);
+        if (endDate) formData.set("event[end_date]", endDate);
         
-        if (endTime) {
-            formData.set("event[end_time]", endTime);
+        // Only submit times only if not all-day
+        if (!allDay) {
+            if (startTime) formData.set("event[start_time]", startTime);
+            if (endTime) formData.set("event[end_time]", endTime);
+        } else {
+            const startDateTime = new Date(`${startDate}T00:00:00`).toISOString();
+            const endDateTime = new Date(`${endDate}T00:00:00`).toISOString();
+            formData.set("event[all_day]", true);
+            formData.set("event[start_time]", startDateTime)
+            formData.set("event[end_time]", endDateTime)
         }
         
         if (!isDraft) {

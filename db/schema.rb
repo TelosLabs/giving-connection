@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_04_04_165614) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_19_195918) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -133,8 +133,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_04_165614) do
   create_table "events", force: :cascade do |t|
     t.string "title", null: false
     t.text "description"
-    t.datetime "start_time", null: false
-    t.datetime "end_time"
+    t.datetime "start_time", precision: nil, null: false
+    t.datetime "end_time", precision: nil
     t.string "link"
     t.string "image_link"
     t.string "location"
@@ -145,8 +145,11 @@ ActiveRecord::Schema[7.0].define(version: 2025_04_04_165614) do
     t.string "categories", default: [], array: true
     t.string "subcategories", default: [], array: true
     t.bigint "organization_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "all_day"
+    t.date "start_date"
+    t.date "end_date"
     t.index ["organization_id"], name: "index_events_on_organization_id"
   end
 
