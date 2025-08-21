@@ -9,7 +9,6 @@ class EventsController < ApplicationController
 
   def index
     org_id = params[:org_id] || params[:orgId] || ""
-
     # If no org_id is provided, return all events. Called from the discover page's calendar component
     if org_id.blank?
       @events = Event.where(published: true).order(:start_time)
@@ -35,8 +34,8 @@ class EventsController < ApplicationController
     if @user_timezone.present?
       events_with_timezone = events.map do |event|
         event_hash = event.as_json
-        event_hash["start_time"] = event.start_time&.in_time_zone(params[:timezone])
-        event_hash["end_time"] = event.end_time&.in_time_zone(params[:timezone])
+        event_hash["start_time"] = event.start_time&.in_time_zone(@user_timezone)
+        event_hash["end_time"] = event.end_time&.in_time_zone(@user_timezone)
         event_hash["timezone"] = @user_timezone
         event_hash
       end
@@ -163,10 +162,9 @@ class EventsController < ApplicationController
     end_time: params[:event][:end_time],
     all_day: params[:event][:all_day] == "true"
     )
-
+    
     # Use helper method to get properly formatted start_time and end_time
     times = format_event_times(temp_event, user_timezone)
-
     create_params[:start_time] = times[:start_time].utc if times[:start_time]
     create_params[:end_time] = times[:end_time].utc if times[:end_time]
 
@@ -279,23 +277,20 @@ class EventsController < ApplicationController
   private
 
   def format_event_times(event, timezone)
+    start_date = event.start_date
+    end_date = event.end_date || start_date
+  
     if event.all_day?
-      start_date = event.start_date
-      end_date = event.end_date || start_date
       start_time = nil
       end_time = nil
-    elsif event.start_time.present?
-      local_start_time = event.start_time.in_time_zone(timezone)
-      local_end_time = event.end_time.in_time_zone(timezone)
-
-      start_date = local_start_time.to_date
-      end_date = local_end_time&.to_date || start_date
-      start_time = local_start_time
-      end_time = local_end_time
     else
-      start_date = end_date = start_time = end_time = nil
+      # assumes event.start_time and event.end_time are always set; this should be alright because it's checking allDay first
+      start_time = Time.zone.parse("#{start_date} #{event.start_time}").in_time_zone(timezone)
+      end_time = Time.zone.parse("#{end_date} #{event.end_time}").in_time_zone(timezone)
+      # start_time = event.start_time&.in_time_zone(timezone)
+      # end_time = event.end_time&.in_time_zone(timezone)
     end
-
+  
     { start_date: start_date, end_date: end_date, start_time: start_time, end_time: end_time }
   end
 
@@ -347,14 +342,20 @@ class EventsController < ApplicationController
     # Filter by date range
     if params[:daterange].present?
       date_range = parse_date_range(params[:daterange])
-      if date_range[:start].present? && date_range[:end].present?
+      start_range = date_range[:start]
+      end_range = date_range[:end]
 
+      if date_range[:start].present? && date_range[:end].present?
         @events = @events.select do |event|
-          # Include events where:
-          # - Timed events fall within the range
-          # - All-day events overlap the range based on start_date
-          (event.start_time && event.start_time >= start_range && event.start_time <= end_range) ||
-          (event.all_day? && event.start_date && event.start_date >= start_range.to_date && event.start_date <= end_range.to_date)
+          # For timed events: check if any part of the event overlaps the range
+          timed_overlap = event.start_time.present? && event.end_time.present? &&
+          event.end_time >= start_range && event.start_time <= end_range
+
+          # For all-day events: check if the date range overlaps with start_date / end_date
+          all_day_overlap = event.all_day? && event.start_date.present? && event.end_date.present? &&
+          event.end_date >= start_range.to_date && event.start_date <= end_range.to_date
+
+          timed_overlap || all_day_overlap
         end
       end
     end

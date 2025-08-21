@@ -1,14 +1,23 @@
 <div class="flex flex-col align-items-start gap-3 self-stretch py-5 px-3 border-b-2 border-[#E6E6E6] hover:shadow-lg hover:bg-gray-50 transition duration-200 ease-in-out" onclick="window.location.href='/events/explore/<%= event.id %>'" style="cursor: pointer;">
   <div class="flex justify-between items-center gap-10 self-stretch">
     <div class="flex-none">
-      <% adjusted_start = event.start_time.in_time_zone(helpers.get_timezone()) %>
-      <% month = adjusted_start.strftime("%b").upcase %>
-      <% day = adjusted_start.strftime("%-d") %>
+        <% 
+            start_date = event.start_date
+            end_date = event.end_date || start_date
 
-      <div class="flex flex-col justify-center text-center font-bold leading-6">
-        <div class="month"><%= month %></div>
-        <div class="day"><%= day %></div>
-      </div>
+            start_date_str = start_date.strftime("%b %-d")
+            end_date_str = end_date.strftime("%b %-d")
+        %>
+
+        <div class="flex flex-col justify-center text-center font-bold leading-6">
+            <% if start_date_str == end_date_str %>
+            <!-- Single-day event -->
+                <div class="date"><%= start_date_str %></div>
+            <% else %>
+            <!-- Multi-day event -->
+                <div class="date"><%= start_date_str %> <br>-<br> <%= end_date_str %></div>
+            <% end %>
+        </div>
     </div>
     
     <div class="flex flex-col items-start gap-4 grow">
@@ -16,7 +25,14 @@
         <% if event.all_day? %>
             <div class="text-xs font-['Inter'] font-semibold leading-none"> <%= "ALL DAY" %></div>
         <% else %>
-            <div class="text-xs font-['Inter'] font-semibold leading-none"><%= helpers.format_event_time(event.start_time) %></div>
+            <div class="text-xs font-['Inter'] font-semibold leading-none">
+                <%= helpers.format_event_time(event.start_time) %>
+                <% combined_end = event.end_date.to_datetime %>
+                <% combined_end = combined_end.change(hour: event.end_time.hour, min: event.end_time.min) if event.end_time.present? %>
+                <% if event.end_date.present? && event.end_date != event.start_date %>
+                    - <%= helpers.format_event_time(event.end_time) %>
+                <% end %>
+            </div>
         <% end %>
       <% end %>
       
@@ -44,7 +60,13 @@
             <% if event.all_day? %>
                 <div class="text-xs font-['Inter'] font-semibold leading-none"> <%= "ALL DAY" %></div>
             <% else %>
-                <div class="text-xs font-['Inter'] font-semibold leading-none"><%= helpers.format_event_time(event.start_time) %></div>
+                <% if event.end_time.present? %>
+                    <div class="text-xs font-['Inter'] font-semibold leading-none">
+                        <%= event.start_time.strftime("%I:%M %p") %> - <%= event.end_time.strftime("%I:%M %p") %>
+                    </div>
+                <% else %>
+                    <div class="text-xs font-['Inter'] font-semibold leading-none"><%= helpers.format_event_time(event.start_time) %></div>
+                <% end %>
             <% end %>
         <% end %>
       </div>

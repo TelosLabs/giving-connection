@@ -241,18 +241,17 @@ javascript:
                   ?
                     eventStart.toLocaleDateString() + ' ' + formatEventTimeForTooltip(eventStart, eventEnd, isAllDay(info.event))
                   :
-                    eventStart.toLocaleDateString() + ' ' + formatEventTimeForTooltip(eventStart, eventEnd, isAllDay(info.event)) + ' - ' + 
-                    eventEnd.toLocaleDateString() + ' ' + formatEventTimeForTooltip(eventStart, eventEnd, isAllDay(info.event))
+                    eventStart.toLocaleDateString() + ' - ' + eventEnd.toLocaleDateString()
                 }
               </div>
               <div class="self-stretch flex flex-col justify-start items-start gap-1">
-                <div class="self-stretch h-4 justify-center text-black text-base font-['Inter'] font-bold leading-none">
+                <div class="self-stretch h-auto justify-center text-black text-base font-['Inter'] font-bold leading-none">
                   ${eventTitle}
                 </div>
-                <div class="text-sm self-stretch h-4 justify-center text-black font-['Inter'] font-medium leading-none">
+                <div class="text-sm self-stretch h-auto justify-center text-black font-['Inter'] font-medium leading-none">
                   ${orgName}
                 </div>
-                <div class="self-stretch h-2.5 inline-flex justify-start items-center gap-0.5">
+                <div class="self-stretch h-auto inline-flex justify-start items-center gap-0.5">
                   <div class="w-48 h-3 justify-center text-color-grey-46 text-xs text-[#6B7280] font-['Inter'] leading-none">
                     ${location}
                   </div>
