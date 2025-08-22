@@ -58,6 +58,9 @@ export default class extends Controller {
       e.target.blur();
     }
 
+    // Save scroll position BEFORE locking scroll
+    this.savedScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
     // Lock the scroll and save current scroll position
     this.lockScroll();
 
@@ -67,7 +70,6 @@ export default class extends Controller {
     if (!this.containerTarget || this.containerTarget.classList.contains(this.toggleClass)) {
       return;
     }
-
 
     // Insert the background
     if (!this.data.get("disable-backdrop") && this.containerTarget) {
@@ -80,18 +82,18 @@ export default class extends Controller {
 
   close(event, options = {}) {
     if (event) event.preventDefault();
-  
+
     const skipUnsaved = options.skipUnsaved || false;
-  
+
     if (!this.skipUnsavedCheck && !skipUnsaved && this.hasUnsavedChanges()) {
       this.triggerUnsavedChangesModal();
       return;
     }
-  
+
     this._actuallyCloseModal();
     this.skipUnsavedCheck = false;
   }
-  
+
 
   clearUnappliedFilters() {
     // gets the query string of the url
@@ -113,8 +115,8 @@ export default class extends Controller {
       this.close(event);
       this.clearUnappliedFilters();
     }
-  }  
-  
+  }
+
   closeWithKeyboard(event) {
     if (
       event.keyCode === 27 &&
@@ -122,7 +124,7 @@ export default class extends Controller {
     ) {
       this.close(event);
     }
-  }  
+  }
 
   _backgroundHTML() {
     return `<div id="${this.backgroundId}" class="fixed top-0 left-0 w-full h-full" style="background-color: ${this.backdropColorValue}; z-index: 9998;"></div>`;
@@ -210,25 +212,25 @@ export default class extends Controller {
     const checkboxes = [
       ...this.containerTarget.querySelectorAll("[type='checkbox']"),
     ];
-  
+
     const timeboxes = [
       ...this.containerTarget.querySelectorAll("[type='time']"),
     ];
-  
+
     checkboxes.forEach((checkbox, index) => {
       const originalState = this.checkboxesOriginalState?.[index];
       if (originalState !== undefined && checkbox.checked !== originalState) {
         checkbox.checked = originalState;
       }
     });
-  
+
     timeboxes.forEach((timebox, index) => {
       const originalState = this.timeboxesOriginalState?.[index];
       if (originalState !== undefined && timebox.value !== originalState) {
         timebox.value = originalState;
       }
     });
-  }  
+  }
 
   hasUnsavedChanges() {
     const checkboxes = [
@@ -237,10 +239,10 @@ export default class extends Controller {
     const timeboxes = [
       ...this.containerTarget.querySelectorAll("[type='time']"),
     ];
-  
+
     const currentCheckboxes = checkboxes.map((checkbox) => checkbox.checked);
     const currentTimeboxes = timeboxes.map((timebox) => timebox.value);
-  
+
     return (
       JSON.stringify(currentCheckboxes) !== JSON.stringify(this.checkboxesOriginalState) ||
       JSON.stringify(currentTimeboxes) !== JSON.stringify(this.timeboxesOriginalState)
@@ -252,7 +254,7 @@ export default class extends Controller {
       bubbles: true,
       detail: { url: "javascript:void(0)" }
     });
-  
+
     this.element.dispatchEvent(event);
   }
 
@@ -262,20 +264,67 @@ export default class extends Controller {
     if (this.background) this.background.remove();
   }
 
-  
+
   submitAndClose(event) {
+    // Prevent default form submission behavior
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+    }
+
+    // Prevent any form submission from happening
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    // Add a beforeunload listener to prevent page refresh
+    const beforeUnloadHandler = (e) => {
+      e.preventDefault();
+      e.returnValue = '';
+      return '';
+    };
+    window.addEventListener('beforeunload', beforeUnloadHandler);
+
+    // Also prevent any form submission events
+    const formSubmitHandler = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    };
+    document.addEventListener('submit', formSubmitHandler, true);
+
     this.skipUnsavedCheck = true;
     this.readCheckboxesState();
-    
-    // Find the main form and submit it via AJAX
+
+    // Use the saved scroll position from when modal was opened
+    const currentScrollPosition = this.savedScrollPosition || 0;
+
+    // Find the main form to get the action URL
     const form = document.getElementById('organization-form');
     if (form) {
-      // Create a FormData object from the form
-      const formData = new FormData(form);
-      
+      // Disable Turbo for this form
+      form.setAttribute('data-turbo', 'false');
+
+      // Prevent the form from submitting
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }, { once: true });
+
+      // Create a new FormData object with all the form data
+      const formData = new FormData();
+
+      // Get all the form data from the main form
+      const mainFormData = new FormData(form);
+      for (let [key, value] of mainFormData.entries()) {
+        formData.append(key, value);
+      }
+
       // Get CSRF token from meta tag
       const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-      
+
       // Submit the form via fetch
       fetch(form.action, {
         method: 'POST',
@@ -286,28 +335,49 @@ export default class extends Controller {
           'X-CSRF-Token': csrfToken
         }
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          // Close the modal after successful submission
-          this._actuallyCloseModal();
-          
-          // Show a success message
-          this.showSuccessMessage(data.message || 'Opening hours saved successfully!');
-        } else {
-          // Handle validation errors
-          const errorMessage = data.errors ? data.errors.join(', ') : 'There was an error saving the opening hours.';
-          this.showErrorMessage(errorMessage);
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        this.showErrorMessage('There was an error saving the opening hours. Please try again.');
-      });
+        .then(response => {
+          return response.json();
+        })
+        .then(data => {
+          if (data.success) {
+            // Remove the event listeners
+            window.removeEventListener('beforeunload', beforeUnloadHandler);
+            document.removeEventListener('submit', formSubmitHandler, true);
+
+            // Re-enable Turbo for the form
+            form.removeAttribute('data-turbo');
+
+            // Close the modal after successful submission
+            this._actuallyCloseModal();
+
+            // Restore scroll position
+            setTimeout(() => {
+              window.scrollTo(0, currentScrollPosition);
+            }, 100);
+
+            // Show a success message
+            this.showSuccessMessage(data.message || 'Opening hours saved successfully!');
+          } else {
+            // Handle validation errors
+            const errorMessage = data.errors ? data.errors.join(', ') : 'There was an error saving the opening hours.';
+            this.showErrorMessage(errorMessage);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          this.showErrorMessage('There was an error saving the opening hours. Please try again.');
+        });
     } else {
       // Fallback: just close the modal if form not found
       this._actuallyCloseModal();
+      // Restore scroll position
+      setTimeout(() => {
+        window.scrollTo(0, currentScrollPosition);
+      }, 100);
     }
+
+    // Return false to prevent any further event handling
+    return false;
   }
 
   showSuccessMessage(message) {
@@ -316,7 +386,7 @@ export default class extends Controller {
     messageDiv.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-md shadow-lg z-50';
     messageDiv.textContent = message;
     document.body.appendChild(messageDiv);
-    
+
     // Remove the message after 3 seconds
     setTimeout(() => {
       if (messageDiv.parentNode) {
@@ -331,7 +401,7 @@ export default class extends Controller {
     messageDiv.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-md shadow-lg z-50';
     messageDiv.textContent = message;
     document.body.appendChild(messageDiv);
-    
+
     // Remove the message after 5 seconds
     setTimeout(() => {
       if (messageDiv.parentNode) {
@@ -342,29 +412,29 @@ export default class extends Controller {
 
   leave(event) {
     event.preventDefault();
-  
+
     const targetHref = event.currentTarget.getAttribute("href");
-  
+
     this.skipUnsavedCheck = true;
     this.close();
-  
+
     document.querySelectorAll('[data-controller~="modal"]').forEach((el) => {
       if (el === this.element) return;
-  
+
       const modalController = this.application.getControllerForElementAndIdentifier(el, "modal");
-  
+
       if (modalController) {
         modalController.restoreCheckboxesState();
         modalController.skipUnsavedCheck = true;
         modalController.close();
       }
     });
-  
+
     setTimeout(() => {
       if (targetHref && targetHref !== "javascript:void(0)") {
         window.location.href = targetHref;
       }
     }, 100);
-  }  
-  
+  }
+
 }

@@ -15,6 +15,11 @@ export default class extends Controller {
   captureUserInput(event) {
     const input = event.target;
 
+    // Ignore changes in modal fields
+    if (this.isInModal(input)) {
+      return;
+    }
+
     if (this.utilityInputTargets.includes(input) || this.eventAndInputIncompatible(event, input)) {
       return;
     }
@@ -31,7 +36,7 @@ export default class extends Controller {
     const currentFormInputs = [...form.querySelectorAll(this.inputTypesValue)];
 
     return (this.validInputsLength(currentFormInputs) !== form.initialNumberOfInputs) ||
-      currentFormInputs.some(input => this.inputValueChanged(input));
+      currentFormInputs.some(input => this.inputValueChanged(input) && !this.isInModal(input));
   }
 
   inputValueChanged(input) {
@@ -63,6 +68,12 @@ export default class extends Controller {
 
     return (event.type === "input" && inputIsSelectable) ||
       (event.type === "change" && !inputIsSelectable);
+  }
+
+  isInModal(input) {
+    // Check if the input is inside a modal
+    const modalContainer = input.closest('[data-modal-target="container"]');
+    return modalContainer !== null;
   }
 
   // users can add or remove inputs
