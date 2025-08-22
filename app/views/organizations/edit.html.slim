@@ -83,7 +83,9 @@
 
               div class="col-span-12 lg:col-span-6 md:col-span-7" data-controller="ein-warning" data-ein-warning-url-value="#{check_ein_organizations_path}" data-action="change->ein-warning#checkUniqueness"
                 = f.label :ein_number, "* EIN Number", class: "block text-sm text-gray-3 font-medium"
-                = f.text_field :ein_number, { class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", data: { ein_warning_target: "input" } }
+                = f.text_field :ein_number, { class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", data: { ein_warning_target: "input", action:"input->ein-warning#validateFormat" } }
+                p.text-sm.text-red-500.mt-1.hidden data-ein-warning-target="formatError"
+                  | Invalid EIN Format. Use 12-3456789
 
               div class="hidden col-span-3 md:flex"
 
@@ -124,7 +126,7 @@
 
               div class="hidden col-span-3 md:flex"
 
-              fieldset  class="col-span-12 lg:col-span-7 md:col-span-6" data-controller="toggle"
+              fieldset  class="col-span-12 lg:col-span-7 md:col-span-6 mt-6" data-controller="toggle"
                 legend class="text-sm font-medium leading-4 text-gray-2"
                   | Do you have volunteer opportunities available?
                 div class='flex items-center gap-12 mt-3'
@@ -218,10 +220,10 @@
                 | Email
                 a href="mailto:admin@givingconnection.org"
                   |  admin@givingconnection.org
-                | if you would like to add a population you serve that is not currently found in the list below.
+                |  if you would like to add a population you serve that is not currently found in the list below.
 
               div class="grid grid-cols-12 gap-6 mt-8"
-                div class="col-span-12 lg:col-span-6 md:col-span-7" data-controller="options general-population" data-options-options-value=@beneficiaries data-general-population-disabled-class="pointer-events-none"
+                div class="col-span-12 lg:col-span-6 md:col-span-7" data-controller="options general-population" data-options-options-value=@beneficiaries data-general-population-disabled-class="opacity-50 pointer-events-none"
                   = f.label :beneficiary_subcategories, "Which target populations (beneficiaries) does your organization serve?", class: "block text-sm text-gray-3 font-medium"
                   p class="mt-2 mb-5 text-sm text-gray-4"
                     | Selections should only be made if your organization specifically serves that group through your programs. If your organization generally serves all populations, check the box 
