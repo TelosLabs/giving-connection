@@ -69,7 +69,6 @@ export default class extends Controller {
 
     for (const [city, coords] of Object.entries(CITIES)) {
       const distance = this.calculateDistance(coordinates, coords)
-      console.log(`Distance from ${city}:`, distance)
       if (distance < minDistance) {
         minDistance = distance
         closestCity = city
