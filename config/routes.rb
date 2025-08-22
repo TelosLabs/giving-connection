@@ -72,6 +72,7 @@ Rails.application.routes.draw do
   resource :infowindow, only: :new
   resources :autocomplete, only: %i[index]
 
+  get "events/explore/:ein/:id", to: "events#discover", as: :discover_event
   get "events/explore(/:id)", to: "events#discover", as: :discover_events
 
   resources :events, only: [:index, :new, :create, :destroy, :edit, :update, :show],

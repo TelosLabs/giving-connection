@@ -1,4 +1,4 @@
-<div class="flex flex-col align-items-start gap-3 self-stretch py-5 px-3 border-b-2 border-[#E6E6E6] hover:shadow-lg hover:bg-gray-50 transition duration-200 ease-in-out" onclick="window.location.href='/events/explore/<%= event.id %>'" style="cursor: pointer;">
+<div class="flex flex-col align-items-start gap-3 self-stretch py-5 px-3 border-b-2 border-[#E6E6E6] hover:shadow-lg hover:bg-gray-50 transition duration-200 ease-in-out" onclick="window.location.href='/events/explore/<%= event.organization.ein_number %>/<%= event.id %>'" style="cursor: pointer;">
   <div class="flex justify-between items-center gap-10 self-stretch">
     <div class="flex-none">
         <% 
@@ -115,7 +115,7 @@
                 <ul class="py-2">
                     <% if !event.published %>
                         <li>
-                            <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="onPublishEvent('<%= event.id %>', '<%= event.title %>')">Publish</a>
+                            <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="onPublishEvent('<%= event.organization.ein_number%>', '<%= event.id %>', '<%= j event.title %>')">Publish</a>
                         </li>
                     <% end %>
                     <li>
@@ -125,7 +125,7 @@
                         <a href="<%= @view_url %>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View</a>
                     </li>
                     <li>
-                        <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-red-400" onclick="onDeleteEvent('<%= event.id %>', '<%= event.title %>')">Delete</a>
+                        <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 text-red-400" onclick="onDeleteEvent('<%= event.organization.ein_number%>', '<%= event.id %>', '<%= event.title %>')">Delete</a>
                     </li>
                 </ul>
             </div>
@@ -153,13 +153,13 @@
         options.classList.toggle('hidden');
     }
 
-    function onPublishEvent(eventId, title) {
+    function onPublishEvent(eventEin, eventId, title) {
         const confirmation = confirm(`Are you sure you want to publish the event "${title}"? This cannot be undone.`);
         if (!confirmation) {
             return;
         }
         
-        fetch(`/events/${eventId}/publish`, {
+        fetch(`/events/${eventEin}/${eventId}/publish`, {
             method: 'POST',
             headers: {
                 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
@@ -174,13 +174,13 @@
         });
     }
 
-    function onDeleteEvent(eventId, title) {
+    function onDeleteEvent(eventEin, eventId, title) {
         const confirmation = confirm(`Are you sure you want to delete the event "${title}"? This action cannot be undone.`);
         if (!confirmation) {
             return;
         }
         
-        fetch(`/events/${eventId}`, {
+        fetch(`/event/${eventEin}/${eventId}`, {
             method: 'DELETE',
             headers: {
                 'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
