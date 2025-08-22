@@ -9,7 +9,17 @@ export default class extends Controller {
 
     validateEmail() {
         const email = this.inputTarget.value.trim();
-        const isValidFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        // Basic format check: local@domain
+        const basicFormat = /^[^\s@]+@[^\s@]+$/.test(email);
+        let isValidFormat = false;
+        if (basicFormat) {
+            const [local, domain] = email.split('@');
+            // Domain must contain exactly one period, not start/end with period, and no consecutive periods
+            const periodCount = (domain.match(/\./g) || []).length;
+            const hasConsecutivePeriods = domain.includes('..');
+            const startsOrEndsWithPeriod = domain.startsWith('.') || domain.endsWith('.');
+            isValidFormat = periodCount === 1 && !hasConsecutivePeriods && !startsOrEndsWithPeriod;
+        }
 
         if (!isValidFormat && email.length > 0) {
             this.inputTarget.classList.add(
