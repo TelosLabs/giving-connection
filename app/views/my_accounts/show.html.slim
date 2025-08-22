@@ -3,16 +3,16 @@ div class="w-full h-full bg-white"
     h2 class="mb-6 text-2xl font-bold text-center text-grey-2 md:text-left"
       | My Account
     div
-      div data-controller="tabs" data-tabs-active-tab="border-blue-medium text-blue-medium"
-        nav class="flex overflow-x-auto px-6 -mb-px space-x-6 text-grey-5" aria-label="Tabs"
+      div data-controller="tabs" data-tabs-active-tab="border-blue-medium text-blue-medium" 
+        nav class="flex overflow-x-auto px-6 -mb-px space-x-6 text-grey-5" aria-label="Tabs" data-turbo="false"
           /! Current: "border-indigo-500 text-indigo-600", Default: "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab"
+          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab" data-tab-name="profile"
             | My Profile
-          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab"
+          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab" data-tab-name="bookmarks"
             | Saved Pages
-          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" aria-current="page" href="#" data-action="click->tabs#change" data-tabs-target="tab"
+          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" aria-current="page" href="#alerts" data-action="click->tabs#change" data-tabs-target="tab" data-tab-name="alerts"
             | Alerts
-          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab"
+          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab" data-tab-name="my-nonprofit"
             | My Nonprofit Pages
 
         div class="hidden px-6" data-tabs-target="panel"
