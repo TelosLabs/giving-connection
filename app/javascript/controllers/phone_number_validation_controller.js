@@ -10,7 +10,12 @@ export default class extends Controller {
     validatePhoneNumber() {
         const number = this.inputTarget.value.trim();
         const cleanedNumber = number.replace(/-/g, '');
-        const isValidFormat = /^\+?\d{10,15}$/.test(cleanedNumber);
+        // Ensure only one '+' at the beginning
+        const plusCount = (number.match(/\+/g) || []).length;
+        const hasLeadingPlus = number.startsWith('+');
+        const validPlus = (plusCount === 0) || (plusCount === 1 && hasLeadingPlus);
+        const cleanedNumber = number.replace(/-/g, '');
+        const isValidFormat = validPlus && /^\+?\d{10,15}$/.test(cleanedNumber);
 
         if (!isValidFormat && number.length > 0) {
             this.inputTarget.classList.add(
