@@ -1,15 +1,27 @@
 - system_params = ["controller", "action", "format"]
 - num_params = request.params.count { |key, val| key != "query" && val.present? && val != "" && !system_params.include?(key) }
 
-div class="w-full h-64 relative bg-gradient-to-r from-teal-200 via-teal-300/75 to-teal-200 overflow-hidden"
-    div class="w-96 h-20 left-[505px] top-[91px] absolute text-center justify-start text-blue-900 text-3xl font-extrabold font-['Poppins'] leading-10"
+div class="w-full h-64 relative bg-gradient-to-r from-teal-200 via-teal-300/75 to-teal-200 overflow-hidden flex flex-col items-center justify-center text-center"
+
+    div class="absolute inset-0 flex justify-around h-64 overflow-hidden"
+      div
+        = inline_svg_tag 'new-blur-left.svg', size:'723*288'
+      div
+        = inline_svg_tag 'new-blur-right.svg', size:'723*288'
+
+    div class="w-96 h-20 text-center absolute justify-start text-blue-900 text-3xl font-extrabold font-['Poppins'] leading-10"
         - if params[:ein].present? && params[:ein] != ""
             | Explore events for <br>#{@organization.name}
         - else
             | Explore nonprofit events in your community
-    img class="w-8 h-6 left-[1114px] top-[51px] absolute" src="/assets/gc-heart.png" width="32" height="24"
-    img class="w-8 h-8 left-[1244px] top-[165px] absolute" src="/assets/gc-star.png" width="32" height="32"
-    img class="w-8 h-8 left-[257px] top-[77px] absolute" src="/assets/gc-star.png" width="32" height="32"
+    div class="absolute hidden fill-current top-20 left-80 text-blue-dark lg:block"
+      = inline_svg_tag 'simple-star.svg', size: '22*22'
+
+    div class="absolute hidden fill-current top-12 right-96 text-blue-dark lg:block"
+      = inline_svg_tag 'simple-heart.svg', size: '22*22'
+
+    div class="absolute hidden fill-current bottom-12 right-64 text-blue-dark lg:block"
+      = inline_svg_tag 'simple-star.svg', size: '22*22'
 
 div class="y-12 mx-auto max-w-6xl md:px-28 md:py-20 mt-6" data-controller="events" data-events-num-params-value="#{num_params}" data-events-daterange-param-value="#{params[:daterange]}"
     = form_with url: "/events/explore", method: :get, local: true, class: "flex justify-between items-center items-stretch" do |f|
