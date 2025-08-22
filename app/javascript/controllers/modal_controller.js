@@ -266,7 +266,78 @@ export default class extends Controller {
   submitAndClose(event) {
     this.skipUnsavedCheck = true;
     this.readCheckboxesState();
-    this._actuallyCloseModal();
+    
+    // Find the main form and submit it via AJAX
+    const form = document.getElementById('organization-form');
+    if (form) {
+      // Create a FormData object from the form
+      const formData = new FormData(form);
+      
+      // Get CSRF token from meta tag
+      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+      
+      // Submit the form via fetch
+      fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'Accept': 'application/json',
+          'X-CSRF-Token': csrfToken
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Close the modal after successful submission
+          this._actuallyCloseModal();
+          
+          // Show a success message
+          this.showSuccessMessage(data.message || 'Opening hours saved successfully!');
+        } else {
+          // Handle validation errors
+          const errorMessage = data.errors ? data.errors.join(', ') : 'There was an error saving the opening hours.';
+          this.showErrorMessage(errorMessage);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        this.showErrorMessage('There was an error saving the opening hours. Please try again.');
+      });
+    } else {
+      // Fallback: just close the modal if form not found
+      this._actuallyCloseModal();
+    }
+  }
+
+  showSuccessMessage(message) {
+    // Create a temporary success message
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-md shadow-lg z-50';
+    messageDiv.textContent = message;
+    document.body.appendChild(messageDiv);
+    
+    // Remove the message after 3 seconds
+    setTimeout(() => {
+      if (messageDiv.parentNode) {
+        messageDiv.parentNode.removeChild(messageDiv);
+      }
+    }, 3000);
+  }
+
+  showErrorMessage(message) {
+    // Create a temporary error message
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-md shadow-lg z-50';
+    messageDiv.textContent = message;
+    document.body.appendChild(messageDiv);
+    
+    // Remove the message after 5 seconds
+    setTimeout(() => {
+      if (messageDiv.parentNode) {
+        messageDiv.parentNode.removeChild(messageDiv);
+      }
+    }, 5000);
   }
 
   leave(event) {

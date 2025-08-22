@@ -23,12 +23,22 @@ class OrganizationsController < ApplicationController
     authorize @organization
     if @organization.update(organization_params)
       update_tags(@organization, JSON.parse(params["organization"]["tags_attributes"])) unless params["organization"]["tags_attributes"].strip.empty?
-      redirect_to my_account_path
-      flash[:notice] = "The Organization was successfully updated"
+
+      # Handle AJAX requests differently
+      if request.xhr?
+        render json: {success: true, message: "The Organization was successfully updated"}
+      else
+        redirect_to my_account_path
+        flash[:notice] = "The Organization was successfully updated"
+      end
     else
       set_form_data
-      flash.now[:alert] = "The Organization was not updated"
-      render "edit", status: :unprocessable_entity
+      if request.xhr?
+        render json: {success: false, errors: @organization.errors.full_messages}, status: :unprocessable_entity
+      else
+        flash.now[:alert] = "The Organization was not updated"
+        render "edit", status: :unprocessable_entity
+      end
     end
   end
 
