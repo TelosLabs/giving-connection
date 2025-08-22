@@ -5,6 +5,8 @@
 
 # View Component to display flash alerts
 class Alert::Component < ApplicationViewComponent
+  include InlineSvg::ActionView::Helpers
+  
   def initialize(type:, message:)
     @type = type
     @message = message

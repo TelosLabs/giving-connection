@@ -1,4 +1,6 @@
 class CausesList::Component < ApplicationViewComponent
+  include InlineSvg::ActionView::Helpers
+
   def initialize(causes:, tooltip: false, list_options: {}, cause_options: {}, icon_wrapper_options: {}, tooltip_options: {}, icon_svg_options: {})
     @causes = causes
     @list_options = list_options

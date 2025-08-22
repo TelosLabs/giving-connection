@@ -1,5 +1,7 @@
 class DiscoverNonprofitCard::ActionsMenu::Component < ApplicationViewComponent
   include ActionButtonHelper
+  include InlineSvg::ActionView::Helpers
+
 
   def initialize(user:, location:)
     @user = user

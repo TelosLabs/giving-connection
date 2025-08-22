@@ -1,4 +1,6 @@
 class DesignationTag::Component < ApplicationViewComponent
+  include InlineSvg::ActionView::Helpers
+
   attr_reader :organization, :container_options, :designation_map
 
   def initialize(organization, container_options: {})

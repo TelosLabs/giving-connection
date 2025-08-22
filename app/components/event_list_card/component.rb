@@ -1,5 +1,5 @@
 module EventListCard
-  class Component < ViewComponent::Base
+  class Component < ApplicationViewComponent
     include Rails.application.routes.url_helpers
 
     def initialize(admin:, small:, event:, edit_url: nil, view_url: nil)
