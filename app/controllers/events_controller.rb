@@ -115,27 +115,29 @@ class EventsController < ApplicationController
 
   # Main search point for fetching events from the events discover page
   def discover
-    if params[:id]
-      # Logic for discover with specific event
+    if params[:ein].present? && params[:id].present?
       @event = Event.find(params[:id])
-      @organization = @event.organization
+      @organization = Organization.find_by(ein_number: params[:ein]) || @event.organization
 
       # Take next 3 upcoming events for this org
       @upcoming_events = Event.where(organization_id: @organization.id, published: true)
         .where("start_time > ?", Time.zone.now)
         .order(:start_time)
         .limit(3)
+
       render :event
+
     else
-      # Logic for discover without specific event
+      # Redirect if EIN is present but ID missing
+      if params[:ein].present?
+        redirect_to discover_events_path and return
+      end
+
+      # List page logic 
       @events = Event.where(published: true)
                .where("start_time > ? OR (all_day = ? AND start_date >= ?)", 
                       Time.zone.now, true, Date.today)
                .order(:start_time)
-
-      if params[:ein].present?
-        @organization = Organization.find_by(ein_number: params[:ein])
-      end
 
       # If search query is present, filter events based on the query
       filter_events

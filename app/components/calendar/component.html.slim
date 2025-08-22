@@ -153,6 +153,9 @@ javascript:
         }
         const data = await response.json();
         data.events.forEach(event => {
+          const org = data.organizations?.find(org => org.id == event.organization_id);
+          const einSegment = org && org.ein_number ? `${org.ein_number}/` : '';
+
           events.push({
             id: event.id,
             title: event.title,
@@ -161,9 +164,9 @@ javascript:
             allDay: event.all_day,
             description: event.description,
             location: event.location,
-            url: `/events/explore/${event.id}`,
+            url: `/events/explore/${einSegment}${event.id}`,
             eventType: event.type_of_event,
-            orgName: data.organization.name,
+            orgName: org ? org.name : '',
             color: event.published ? cal_colors[event.type_of_event[0]] || 'grey' : 'red',
             editable: false,
           });
@@ -185,6 +188,9 @@ javascript:
       }
       const data = await response.json();
       data.events.forEach(event => {
+        const org = data.organizations?.find(org => org.id == event.organization_id);
+        const einSegment = org && org.ein_number ? `${org.ein_number}/` : '';
+
         events.push({
           id: event.id,
           title: event.title,
@@ -193,9 +199,9 @@ javascript:
           allDay: event.all_day,
           description: event.description,
           location: event.location,
-          url: `/events/explore/${event.id}`,
+          url: `/events/explore/${einSegment}${event.id}`,
           eventType: event.type_of_event,
-          orgName: data.organizations.find(org => org.id == event.organization_id).name,
+          orgName: org ? org.name : '',
           color: cal_colors[event.type_of_event[0]] || 'grey',
           editable: false,
         });
