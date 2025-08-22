@@ -1,6 +1,7 @@
 require "securerandom"
 
 class SearchPills::Button::Component < ApplicationViewComponent
+  
   def initialize(name:, value:, checked:, copy:, options: {})
     @name = name
     @value = value

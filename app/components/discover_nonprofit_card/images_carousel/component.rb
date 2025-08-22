@@ -1,4 +1,6 @@
 class DiscoverNonprofitCard::ImagesCarousel::Component < ApplicationViewComponent
+  include InlineSvg::ActionView::Helpers
+
   def initialize(images:, image_styles: "", placeholder_options: {}, carousel_container_options: {})
     @images = images
     @image_styles = image_styles
