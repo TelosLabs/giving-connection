@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_01_17_173849) do
+ActiveRecord::Schema[7.2].define(version: 2025_07_23_171704) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -217,6 +217,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_17_173849) do
     t.datetime "updated_at", null: false
     t.bigint "location_id"
     t.index ["location_id"], name: "index_office_hours_on_location_id"
+    t.index ["location_id", "day"], name: "index_office_hours_on_location_id_and_day_unique", unique: true
   end
 
   create_table "organization_admins", force: :cascade do |t|
