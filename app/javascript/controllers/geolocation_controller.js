@@ -31,7 +31,7 @@ export default class extends Controller {
     const coordinates = position.coords;
     this.latitude = coordinates.latitude
     this.longitude = coordinates.longitude
-    this.currentCity = await this.findNearestCity(coordinates)
+    this.currentCity = this.findNearestCity(coordinates)
     this.rememberLocation()
     this.updateCityAndForm()
   }
@@ -44,16 +44,38 @@ export default class extends Controller {
     }
   }
 
-  async findNearestCity(coordinates) {
-    let response;
-    const geocoder = new google.maps.Geocoder()
-    const coords= { lat: coordinates.latitude, lng: coordinates.longitude }
-    response = await geocoder.geocode({ location: coords })
-    if (response.results[0]) {
-     return response.results[0].address_components[3].long_name
-    } else {
-      console.warning('No location found');
+  calculateDistance(coords1, coords2) {
+    // Use Haversine formula for accurate distance calculating
+    const R = 6371 // Earth's radius in kilometers
+    const toRadians = (degrees) => degrees * (Math.PI / 180)
+
+    const lat1 = toRadians(coords1.latitude)
+    const lat2 = toRadians(coords2.latitude)
+    const deltaLat = toRadians(coords2.latitude - coords1.latitude)
+    const deltaLon = toRadians(coords2.longitude - coords1.longitude)
+
+    const a =
+      Math.sin(deltaLat / 2) ** 2 +
+      Math.cos(lat1) * Math.cos(lat2) * Math.sin(deltaLon / 2) ** 2
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+
+    return R * c // Distance in kilometers
+  }
+
+  findNearestCity(coordinates) {
+    let closestCity = "Search all" // fallback
+    let minDistance = Infinity
+
+    for (const [city, coords] of Object.entries(CITIES)) {
+      const distance = this.calculateDistance(coordinates, coords)
+      if (distance < minDistance) {
+        minDistance = distance
+        closestCity = city
+      }
     }
+
+    return closestCity
   }
 
   rememberLocation() {
