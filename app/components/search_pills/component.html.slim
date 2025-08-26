@@ -1,6 +1,15 @@
-div class="w-full bg-gray-9" id="tabs-wrapper" data-search-target="tabsWrapper"
+javascript:
+  function showTooltip(tooltipId, element) {
+    const tooltip = document.getElementById(tooltipId);
+    const rect = element.getBoundingClientRect();
+    tooltip.style.left = (rect.left + rect.width/2 - 96) + 'px'; // 96px = half of w-48
+    tooltip.style.top = (rect.top - 45) + 'px';
+    tooltip.style.opacity = '1';
+  }
+
+div class="w-full bg-gray-9 overflow-visible" id="tabs-wrapper" data-search-target="tabsWrapper"
   div data-controller="tabs" data-tabs-active-tab="underline-on-hover" data-tabs-inactive-tab="underline-on-hover"
-    div class="flex"
+    div class="flex overflow-visible"
       / Clear-Counter button
       span class="flex justify-center items-center py-3 pr-2 pl-5 w-14 text-xs bg-blue-pale"
         span class="inline-flex hidden items-center px-1 py-0.5 bg-white rounded-full border border-blue-medium" data-search-target="pillsCounterWrapper"
@@ -9,10 +18,17 @@ div class="w-full bg-gray-9" id="tabs-wrapper" data-search-target="tabsWrapper"
             = inline_svg_tag "x-icon.svg", class: 'h-2 w-2 fill-current stroke-current stroke-1 text-blue-medium ml-1 relative'
         = inline_svg_tag "solid_filters.svg", class: 'h-4 w-4 fill-current text-gray-2 -ml-0.5 relative', data: { 'search-target': "filtersIcon" }
       / Tabs
-      ul class="flex overflow-x-auto overflow-y-hidden flex-1 gap-x-6 pr-6 pl-5 text-sm list-none bg-blue-pale text-gray-2"
+      ul class="flex overflow-x-auto overflow-y-visible flex-1 gap-x-6 pr-6 pl-5 text-sm list-none bg-blue-pale text-gray-2"
         - @tabs_labels.each do |tab_label|
-          li data-action="mouseover->search#handleTabHover click->search#toggleFilterCategory" data-search-target="tab" data-tabs-target="tab"
-            a class="inline-block py-3 whitespace-nowrap" href="#" = tab_label
+          li data-action="mouseover->search#handleTabHover click->search#toggleFilterCategory" data-search-target="tab" data-tabs-target="tab" class="relative"
+            - if has_tooltip?(tab_label)
+              - tooltip_id = "tooltip-#{tab_label.downcase.gsub(' ', '-')}"
+              a class="inline-block py-3 whitespace-nowrap" href="#" onmouseenter="showTooltip('#{tooltip_id}', this)" onmouseleave="document.getElementById('#{tooltip_id}').style.opacity='0'"
+                = tab_label
+              span role="tooltip" id="#{tooltip_id}" class="fixed px-3 py-1 w-48 text-xs text-white bg-gray-2 rounded-lg pointer-events-none transition-opacity duration-200 text-center" style="opacity: 0; z-index: 9999;"
+                = tooltip_for(tab_label)
+            - else
+              a class="inline-block py-3 whitespace-nowrap" href="#" = tab_label
         li data-action="click->modal#open" class="underline-on-hover"
           button class="inline-block py-3 whitespace-nowrap" type="button" id="advanced-filters-button"
             | Advanced Filters

@@ -4,7 +4,7 @@ div data-controller="read-more" data-action="click->read-more#toggleVisibility"
       = image_tag @img_url, class: 'rounded-md w-full h-auto object-cover grayscale filter transition duration-500 group-hover:grayscale-0 group-hover:filter-none', alt: @name
       div class="absolute inset-0 mix-blend-screen bg-[#113C7B] opacity-100 transition duration-500 group-hover:opacity-0 rounded-md"
     div class="p-8"
-      h2 class="mb-3 text-2xl font-bold text-gray-2" data-read-more-target="anchor"
+      h2 class="mb-3 text-2xl font-bold text-black" data-read-more-target="anchor"
         | #{@name}
       p class="text-lg font-medium text-blue-medium"
         | #{@job_title}
