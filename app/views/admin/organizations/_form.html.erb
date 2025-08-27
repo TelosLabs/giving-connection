@@ -18,7 +18,10 @@ and renders all form fields for a resource's editable attributes.
   [namespace, page.resource],
   html: {
     class: "form",
-    data: { controller: "general-population" }
+    data: { 
+      controller: "general-population admin-unsaved-changes-modal",
+      admin_unsaved_changes_modal_target: "form"
+    }
   }
 ) do |f| %>
   <% if page.resource.errors.any? %>
