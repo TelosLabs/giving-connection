@@ -24,9 +24,5 @@ class DesignationTag::Component < ApplicationViewComponent
     if ["National", "International"].include? organization.scope_of_work
       designation_map[designation_copies[:tag_copy]] = "Services offered #{designation_copies[:desc_copy]}"
     end
-
-    if organization.volunteer_availability
-      designation_map["Volunteer"] = "Volunteer opportunities available"
-    end
   end
 end

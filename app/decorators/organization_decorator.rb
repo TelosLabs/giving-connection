@@ -15,7 +15,7 @@ class OrganizationDecorator < ApplicationDecorator
     case object.scope_of_work
     when "National"
       {
-        tag_copy: "Nationwide",
+        tag_copy: "Nationwide Services",
         desc_copy: "nationwide"
       }
     when "International"
