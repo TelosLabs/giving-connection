@@ -1,0 +1,636 @@
+@import "/settings/variables";
+
+.smart-match {
+    &__container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    &__header {
+        background-color: $primary-dark-blue;
+        color: $copy-white;
+        padding: 1rem 0;
+    }
+
+    &__progress {
+        &-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        &-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: $var-gray-4;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        &-step {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: bold;
+            position: relative;
+            z-index: 10;
+
+            &--completed {
+                background-color: $primary-dark-blue;
+                color: $copy-white;
+            }
+
+            &--current {
+                background-color: $state-success;
+                color: $copy-white;
+            }
+
+            &--pending {
+                background-color: $var-gray-4;
+                color: $copy-gray-7;
+            }
+
+            // Clickable step styles
+            &.clickable {
+                cursor: pointer;
+                transition: all 0.2s ease;
+                border: 2px solid #3b82f6;
+
+                &:hover {
+                    transform: scale(1.1);
+                    box-shadow: 0 2px 8px rgba(30, 64, 175, 0.3);
+                    border-color: #1d4ed8;
+                }
+
+                &:active {
+                    transform: scale(1.05);
+                }
+            }
+        }
+    }
+
+    &__choice-card {
+        border: 2px solid $primary-light-blue;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background-color: $copy-white;
+
+        &:hover {
+            border-color: $primary-dark-blue;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        &--selected {
+            border-color: $primary-dark-blue;
+            background-color: $primary-pale-blue;
+        }
+
+        &-illustration {
+            width: 6rem;
+            height: 6rem;
+            margin: 0 auto 1rem;
+        }
+
+        &-text {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: $primary-dark-blue;
+            text-align: center;
+        }
+
+        // Blue background cards (for identity options, help categories, etc.)
+        &.bg-blue-dark {
+            background-color: $primary-dark-blue;
+            color: $copy-white;
+            border-color: $primary-dark-blue;
+
+            &:hover {
+                background-color: $primary-medium-blue;
+                border-color: $primary-medium-blue;
+            }
+
+            &.selected {
+                background-color: $primary-medium-blue;
+                border-color: $primary-medium-blue;
+            }
+        }
+
+        // Salmon background cards (for situation options)
+        &.bg-salmon {
+            background-color: $secondary-salmon;
+            color: $copy-white;
+            border-color: $secondary-salmon;
+
+            &:hover {
+                background-color: darken($secondary-salmon, 10%);
+                border-color: darken($secondary-salmon, 10%);
+            }
+        }
+
+        // White background cards with blue borders
+        &.border-blue-light {
+            background-color: $copy-white;
+            color: $primary-dark-blue;
+            border-color: $primary-light-blue;
+
+            &:hover {
+                border-color: $primary-dark-blue;
+            }
+
+            &.selected {
+                border-color: $primary-dark-blue;
+                background-color: $primary-pale-blue;
+            }
+        }
+    }
+
+    &__fab {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background-color: $state-success;
+        color: $copy-white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.125rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 50;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+
+        &--center {
+            right: 50%;
+            transform: translateX(50%);
+        }
+    }
+
+    &__language-selector {
+        .c-input {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+    }
+
+    &__age-options {
+        .choice-card {
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+    }
+
+    &__gender-options,
+    &__ethnicity-options {
+        .choice-card {
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+    }
+}
+
+// Progress indicator styles
+.progress-indicator {
+    .progress-bar {
+        position: relative;
+        margin: 2rem 0;
+    }
+
+    .progress-line {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: $var-gray-4;
+        transform: translateY(-50%);
+        z-index: 1;
+    }
+
+    .step-circle {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.875rem;
+        font-weight: bold;
+        position: relative;
+        z-index: 10;
+        transition: all 0.3s ease;
+
+        &.bg-blue-dark {
+            background-color: $primary-dark-blue;
+            color: $copy-white;
+        }
+
+        &.bg-green-500 {
+            background-color: $state-success;
+            color: $copy-white;
+        }
+
+        &.bg-gray-300 {
+            background-color: $var-gray-4;
+            color: $copy-gray-7;
+        }
+    }
+}
+
+// Choice cards grid layouts
+.choice-cards {
+    &.grid-cols-1 {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    &.grid-cols-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    &.grid-cols-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+
+    &.grid-cols-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+    }
+}
+
+// Floating action buttons
+.floating-action-buttons {
+    .fab-container {
+        position: fixed;
+        z-index: 50;
+    }
+
+    .fab {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        background-color: $state-success;
+        color: $copy-white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.125rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        cursor: pointer;
+        transition: transform 0.2s ease;
+
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+}
+
+// Smart Match Results Page Specific Styles
+.smart-match-results {
+    // Ensure proper stacking context
+    position: relative;
+    z-index: 1;
+
+    // Handle scrolling behavior
+    .container {
+        position: relative;
+        z-index: 1;
+    }
+
+    // Match Quality Summary - Ensure all 4 components in one row
+    .bg-gray-50.border.border-gray-200.p-6.rounded-lg {
+        .grid.grid-cols-4 {
+            display: grid !important;
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 1rem;
+            grid-auto-flow: row;
+            grid-template-rows: 1fr;
+
+            // Force all items to be in the same row
+            >* {
+                grid-row: 1;
+            }
+
+            // Ensure proper spacing and alignment
+            .text-center {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-width: 0; // Allow shrinking if needed
+
+                .text-2xl {
+                    font-size: 1.5rem;
+                    line-height: 2rem;
+                    font-weight: 700;
+                    margin-bottom: 0.25rem;
+                }
+
+                .text-sm {
+                    font-size: 0.875rem;
+                    line-height: 1.25rem;
+                    color: #6b7280;
+                }
+            }
+        }
+
+        // Responsive adjustments for Match Quality Summary
+        @media (max-width: 640px) {
+            .grid.grid-cols-4 {
+                grid-template-columns: repeat(4, 1fr) !important;
+                gap: 0.5rem;
+
+                .text-center {
+                    .text-2xl {
+                        font-size: 1.25rem;
+                        line-height: 1.75rem;
+                    }
+
+                    .text-sm {
+                        font-size: 0.75rem;
+                        line-height: 1rem;
+                    }
+                }
+            }
+        }
+    }
+
+    // Override any Tailwind CSS grid conflicts
+    .grid.grid-cols-4 {
+        display: grid !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        grid-template-rows: 1fr !important;
+        grid-auto-flow: row !important;
+
+        >* {
+            grid-row: 1 !important;
+        }
+    }
+
+    // Ensure proper grid layout
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 1.5rem;
+
+        @media (min-width: 768px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media (min-width: 1024px) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    // Fix card layout issues
+    .bg-white.rounded-lg.shadow-md {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+        min-height: 400px; // Ensure minimum height
+
+        // Ensure proper z-index stacking
+        .absolute {
+            z-index: 20;
+        }
+
+        .relative {
+            z-index: 10;
+        }
+
+        // Prevent text overflow
+        .break-words {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+
+        // Ensure proper spacing
+        .p-6 {
+            padding: 1.5rem;
+        }
+
+        // Fix button positioning
+        .mt-auto {
+            margin-top: auto;
+        }
+
+        // Ensure proper text rendering
+        h3,
+        p {
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        // Fix any potential overflow issues
+        .overflow-hidden {
+            overflow: hidden;
+        }
+    }
+
+    // Fix match badge positioning
+    .absolute.top-4.right-4 {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        z-index: 10; // Lower z-index to stay below navigation
+
+        .whitespace-nowrap {
+            white-space: nowrap;
+        }
+    }
+
+    // Ensure match badges don't overlap with navigation
+    .bg-green-500.text-white.px-3.py-1.rounded-full.text-xs.font-semibold,
+    .bg-yellow-500.text-white.px-3.py-1.rounded-full.text-xs.font-semibold,
+    .bg-orange-500.text-white.px-3.py-1.rounded-full.text-xs.font-semibold,
+    .bg-red-500.text-white.px-3.py-1.rounded-full.text-xs.font-semibold {
+        position: relative;
+        z-index: 10;
+        pointer-events: auto;
+        // Ensure badges stay within their card boundaries
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    // Ensure cards don't interfere with navigation
+    .bg-white.rounded-lg.shadow-md {
+        position: relative;
+        z-index: 1; // Very low z-index for cards
+    }
+
+    // Ensure proper image container
+    .h-48.bg-blue-100 {
+        height: 12rem;
+        position: relative;
+        z-index: 10;
+        flex-shrink: 0; // Prevent shrinking
+    }
+
+    // Additional fixes for text elements
+    .text-center {
+        text-align: center;
+    }
+
+    .text-lg {
+        font-size: 1.125rem;
+        line-height: 1.75;
+    }
+
+    .text-sm {
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+    }
+
+    .text-xs {
+        font-size: 0.75rem;
+        line-height: 1rem;
+    }
+
+    // Ensure proper button styling
+    .inline-flex {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    // Fix any potential grid issues
+    .grid-cols-1 {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid-cols-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    // Ensure proper gap spacing
+    .gap-6 {
+        gap: 1.5rem;
+    }
+
+    // Fix any potential flex issues
+    .flex {
+        display: flex;
+    }
+
+    .flex-col {
+        flex-direction: column;
+    }
+
+    .flex-1 {
+        flex: 1 1 0%;
+    }
+
+    .h-full {
+        height: 100%;
+    }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .smart-match {
+        &__choice-cards {
+            grid-template-columns: 1fr;
+        }
+
+        &__progress-indicator {
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+    }
+
+    .choice-cards {
+
+        &.grid-cols-2,
+        &.grid-cols-3,
+        &.grid-cols-4 {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .floating-action-buttons {
+        .fab-container {
+            bottom: 1rem;
+            right: 1rem;
+        }
+    }
+
+    // Mobile-specific fixes for results page
+    .smart-match-results {
+        .grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .bg-white.rounded-lg.shadow-md {
+            .p-6 {
+                padding: 1rem;
+            }
+        }
+    }
+}
+
+// Animation classes
+.transition-colors {
+    transition: all 0.3s ease;
+}
+
+.hover\:border-blue-dark:hover {
+    border-color: $primary-dark-blue;
+}
+
+.hover\:bg-blue-medium:hover {
+    background-color: $primary-medium-blue;
+}
+
+.hover\:bg-red-400:hover {
+    background-color: lighten($secondary-salmon, 10%);
+}
+
+.hover\:transform:hover {
+    transform: translateY(-2px);
+}
+
+.hover\:scale-110:hover {
+    transform: scale(1.1);
+}
