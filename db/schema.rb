@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_27_190254) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_27_203226) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -326,6 +326,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_27_190254) do
     t.string "session_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["feedback_type"], name: "index_recommendation_feedbacks_on_feedback_type"
+    t.index ["session_id", "nonprofit_id"], name: "index_recommendation_feedbacks_on_session_id_and_nonprofit_id", unique: true
     t.index ["user_id"], name: "index_recommendation_feedbacks_on_user_id"
   end
 

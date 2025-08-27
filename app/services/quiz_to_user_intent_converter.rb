@@ -304,8 +304,6 @@ class QuizToUserIntentConverter
       step_8_answers = @quiz_answers["8"]
       if step_8_answers.is_a?(Array) && step_8_answers.include?("spanish_language")
         "spanish"
-      else
-        nil
       end
     else
       # For donors and volunteers, language is not collected
