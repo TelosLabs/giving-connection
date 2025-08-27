@@ -6,6 +6,8 @@
   padding: 0 24px;
   color: $copy-white;
   background-color: $primary-dark-blue;
+  position: relative;
+  z-index: 1000; // High z-index to stay above other elements
 
   @media (min-width: 768px) {
     height: 91px;
@@ -29,7 +31,7 @@
     }
 
     @media (min-width: 1024px) {
-      padding: 0 49px 0 39px ;
+      padding: 0 49px 0 39px;
     }
 
     @media (min-width: 1280px) {
@@ -43,20 +45,22 @@
 }
 
 @keyframes slide-in {
-	0% {
-		transform: translateX(-300%);
-		visibility: hidden;
+  0% {
+    transform: translateX(-300%);
+    visibility: hidden;
     opacity: 0;
-	}
+  }
+
   30% {
     transform: translateX(-150%);
     opacity: 0.5;
   }
-	100% {
-		transform: translateX(0);
-		visibility: visible;
+
+  100% {
+    transform: translateX(0);
+    visibility: visible;
     opacity: 1;
-	}
+  }
 }
 
 .sidebar-slide-out {
@@ -68,9 +72,11 @@
     transform: translateX(0);
     visibility: visible;
   }
+
   70% {
     transform: translateX(-150%);
   }
+
   100% {
     transform: translateX(-300%);
     visibility: hidden;

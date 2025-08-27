@@ -1,0 +1,8 @@
+nav class="flex justify-between"
+  // Nonprofit website
+  - website_url = (@location.website rescue "#")
+  = link_to website_url, class: action_button_styles[:button], target: "_blank" do
+    = render CauseIcon::Component.new(svg_name: "non_profit_cards/website.svg", \
+                                        wrapper_options: {class: action_button_styles[:icon_wrapper]}, \
+                                        svg_options: {class: "w-1/2", aria_hidden: true})
+    span class="#{action_button_styles[:copy]}" Visit Website 

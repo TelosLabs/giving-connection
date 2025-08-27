@@ -1,0 +1,31 @@
+div class="flex gap-x-5"
+  - link_url = @location.is_a?(Location) && @location.to_key.present? ? location_path(@location) : (@location.website rescue "#")
+  = link_to link_url, class: "flex-shrink-0 self-center rounded", target: '_blank' do
+    - logo = (@location.organization.logo rescue nil)
+    - if logo.present?
+      - if logo.to_s.end_with?('.svg')
+        = inline_svg_tag "causes_categories/#{logo}", class: "w-20 h-20 object-contain"
+      - else
+        - logo_src = logo.to_s rescue ""
+        img src=logo_src class="w-20 h-20 object-contain" alt="logo"
+    - else
+      = inline_svg_tag "causes_categories/human_social_services.svg", class: "w-20 h-20 object-contain"
+  div class="flex flex-col"
+    // name and verified icon
+    div class="flex items-start mb-1.5"
+      h4 class="text-lg font-semibold leading-6 text-gray-2 break-words"
+        = link_to(@location.name, link_url, target: "_blank")
+      - if (@location.organization.verified? rescue false)
+        = render partial: "shared/popover", locals: { position: "right-0", copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg" }
+    // maps and phone
+    - if (@location.formatted_address rescue nil).present?
+      - maps_link = (@location.link_to_google_maps rescue @location.website rescue "#")
+      = link_to(@location.formatted_address, maps_link, class: "pop-out w-full break-words", target: "_blank")
+    - if (@location.phone_number rescue nil)
+      a href="tel:#{@location.phone_number.number}" = @location.phone_number.number
+    // Designations
+    - begin
+      - if (@location.organization.designations rescue nil)
+        = render DesignationTag::Component.new(@location.organization)
+    - rescue
+      - # Skip designations if there's an error 

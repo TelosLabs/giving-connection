@@ -1,0 +1,21 @@
+div class="relative" data-controller="carousel"
+  div class="overflow-hidden rounded-sm" data-carousel-target="container" class=@carousel_container_options[:class]
+    - @images.each_with_index do |image, index|
+      div class="w-full h-52 flex-shrink-0 #{index == 0 ? '' : 'hidden'}" data-carousel-target="slide" data-index=index
+        - if image.to_s.end_with?('.svg')
+          = inline_svg_tag "causes_categories/#{image}", class: "w-full h-full object-contain"
+        - else
+          img src=image.to_s alt="carousel image" class="w-full h-full object-cover"
+  
+  - if @images.length > 1
+    // Navigation arrows
+    button type="button" class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-2 shadow-md hover:bg-opacity-100 transition-opacity" data-action="click->carousel#previous"
+      = inline_svg_tag "non_profit_cards/arrow_left.svg", class: "w-4 h-4"
+    
+    button type="button" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-2 shadow-md hover:bg-opacity-100 transition-opacity" data-action="click->carousel#next"
+      = inline_svg_tag "non_profit_cards/arrow_right.svg", class: "w-4 h-4"
+    
+    // Dots indicator
+    div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1"
+      - @images.each_with_index do |_, index|
+        button type="button" class="w-2 h-2 rounded-full #{index == 0 ? 'bg-white' : 'bg-white bg-opacity-50'}" data-action="click->carousel#goToSlide" data-index=index 

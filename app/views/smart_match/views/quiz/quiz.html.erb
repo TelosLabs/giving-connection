@@ -1,0 +1,114 @@
+<div class="container mx-auto px-4 py-8 max-w-4xl" data-controller="smart-match">
+
+  <div class="progress-indicator mb-8">
+    <% if @current_step > 1 && @user_intent.present? %>
+      <div class="progress-bar flex items-center justify-between relative overflow-x-auto">
+        <div class="progress-line absolute top-4 left-0 right-0 h-0.5 bg-gray-300"></div>
+        <% if @user_intent == "seeking_help" %>
+
+          <% step_sequence = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] %>
+        <% elsif @user_intent == "donating" %>
+          <% step_sequence = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11] %>
+        <% elsif @user_intent == "volunteering" %>
+          <% step_sequence = [2, 3, 4, 5, 6, 7, 8, 9, 10] %>
+        <% else %>
+          <% step_sequence = [] %>
+        <% end %>
+        <% step_sequence.each_with_index do |step_number, index| %>
+          <% display_number = index + 1 %>
+          <% is_current_step = @current_step == step_number %>
+          <% has_been_answered = session[:smart_match_answers]&.key?(step_number) %>
+          <% can_navigate_to = step_number < @current_step %>
+          
+          <% if can_navigate_to %>
+            <%= link_to smart_match_quiz_path(step: step_number, intent: @user_intent), 
+                class: "step-circle clickable w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold relative z-10 flex-shrink-0", 
+                style: "background-color: #1e40af; color: white; cursor: pointer;",
+                data: { turbo: false },
+                title: "Click to go back to step #{display_number}" do %>
+              <%= display_number %>
+            <% end %>
+          <% else %>
+            <div class="step-circle w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold relative z-10 flex-shrink-0" style="background-color: <%= is_current_step ? '#1e40af' : (has_been_answered ? '#1e40af' : '#d1d5db') %>; color: <%= is_current_step ? 'white' : (has_been_answered ? 'white' : '#6b7280') %>;">
+              <%= display_number %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+    
+    <div class="navigation mt-4">
+      <% if @current_step > 1 %>
+        <%= link_to "Back", smart_match_quiz_path(step: get_previous_step(@current_step, @user_intent), intent: @user_intent), class: "text-blue-dark underline", data: { turbo_method: :get } %>
+      <% end %>
+    </div>
+  </div>
+  
+  <div class="quiz-content text-center">
+    <% case @current_step %>
+    <% when 1 %>
+      <!-- ======================================== -->
+      <!-- STEP 1: INTENT SELECTION (COMMON) -->
+      <!-- ======================================== -->
+      <h1 class="text-3xl font-bold text-blue-dark mb-4">
+        What are you here to do today?
+      </h1>
+      <p class="text-lg text-gray-600 mb-8">
+        (Single choice).
+      </p>
+      
+      <div class="choice-cards grid grid-cols-3 gap-6 mb-8 justify-center">
+        <div class="choice-card border-2 border-blue-light rounded-lg p-6 cursor-pointer transition-colors" data-action="click->smart-match#selectChoice" data-choice="seeking_help" data-smart-match-target="choiceCard">
+          <div class="illustration mb-4">
+            <%= inline_svg_tag 'search-needs.svg', class: "w-24 h-24 mx-auto", aria_hidden: true %>
+          </div>
+          <p class="text-lg font-bold text-blue-dark">
+            I'm here seeking help from a nonprofit.
+          </p>
+        </div>
+        
+        <div class="choice-card border-2 border-blue-light rounded-lg p-6 cursor-pointer transition-colors" data-action="click->smart-match#selectChoice" data-choice="donating" data-smart-match-target="choiceCard">
+          <div class="illustration mb-4">
+            <%= inline_svg_tag 'connect.svg', class: "w-24 h-24 mx-auto", aria_hidden: true %>
+          </div>
+          <p class="text-lg font-bold text-blue-dark">
+            I want to donate to a cause I care about.
+          </p>
+        </div>
+        
+        <div class="choice-card border-2 border-blue-light rounded-lg p-6 cursor-pointer transition-colors" data-action="click->smart-match#selectChoice" data-choice="volunteering" data-smart-match-target="choiceCard">
+          <div class="illustration mb-4">
+            <%= inline_svg_tag 'receive-help.svg', class: "w-24 h-24 mx-auto", aria_hidden: true %>
+          </div>
+          <p class="text-lg font-bold text-blue-dark">
+            I want to volunteer my time.
+          </p>
+        </div>
+      </div>
+    
+    <% else %>
+      <!-- ======================================== -->
+      <!-- ROUTE TO APPROPRIATE PATH BASED ON INTENT -->
+      <!-- ======================================== -->
+      <% if @user_intent == "donating" %>
+        <%= render 'smart_match/components/paths/donor_path' %>
+      <% elsif @user_intent == "seeking_help" %>
+        <%= render 'smart_match/components/paths/service_seeker_path' %>
+      <% elsif @user_intent == "volunteering" %>
+        <%= render 'smart_match/components/paths/volunteer_path' %>
+      <% end %>
+    <% end %>
+  </div>
+  
+  <div class="navigation-buttons text-center">
+    <% if @current_step == 12 && @user_intent == "seeking_help" %>
+      <%= link_to "SEE RESULTS", "#", class: "inline-block bg-blue-dark text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-medium transition-colors", data: { action: "click->smart-match#nextStep", smart_match_target: "nextButton" } %>
+    <% elsif @current_step == 10 && @user_intent == "donating" %>
+      <%= link_to "SEE RESULTS", "#", class: "inline-block bg-blue-dark text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-medium transition-colors", data: { action: "click->smart-match#nextStep", smart_match_target: "nextButton" } %>
+    <% elsif @current_step == 10 && @user_intent == "volunteering" %>
+      <%= link_to "SEE RESULTS", "#", class: "inline-block bg-blue-dark text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-medium transition-colors", data: { action: "click->smart-match#nextStep", smart_match_target: "nextButton" } %>
+    <% else %>
+      <%= link_to "NEXT", "#", class: "inline-block bg-blue-dark text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-medium transition-colors", data: { action: "click->smart-match#nextStep", smart_match_target: "nextButton" } %>
+    <% end %>
+  </div>
+</div>

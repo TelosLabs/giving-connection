@@ -1,0 +1,588 @@
+/ ========================================
+/ SERVICE SEEKER PATH - ALL STEPS
+/ ========================================
+
+- case @current_step
+- when 2
+  / ========================================
+  / SERVICE SEEKER PATH - STEP 2: WHO FOR
+  / ========================================
+  h1.text-3xl.font-bold.text-blue-dark.mb-4
+    | Who are you filling this out for?
+  p.text-lg.text-gray-600.mb-8
+    | (Single choice).
+  
+  .choice-cards.grid.grid-cols-3.gap-6.mb-8.justify-center data-style="white"
+    .choice-card.border-2.border-blue-light.rounded-lg.p-6.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="myself" data-smart-match-target="choiceCard"
+      .illustration.mb-4.flex.justify-center.items-center
+        = inline_svg_tag 'Myself.svg', class: "w-48 h-48", aria_hidden: true
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Myself
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-6.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="someone_else" data-smart-match-target="choiceCard"
+      .illustration.mb-4.flex.justify-center.items-center
+        = inline_svg_tag 'Someoneelse.svg', class: "w-48 h-48", aria_hidden: true
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Someone else
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-6.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="organization" data-smart-match-target="choiceCard"
+      .illustration.mb-4.flex.justify-center.items-center
+        = inline_svg_tag 'Organization.svg', class: "w-48 h-48", aria_hidden: true
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | On behalf of an organization
+
+- when 3
+  / ========================================
+  / SERVICE SEEKER PATH - STEP 3: IDENTITY
+  / ========================================
+  h1.text-3xl.font-bold.text-blue-dark.mb-4
+    | What best describes you?
+  p.text-lg.text-gray-600.mb-8
+    | (Optional: This helps us find nonprofits who center your identity and experience.)
+  
+  .choice-cards.grid.grid-cols-4.gap-4.mb-8.justify-center data-style="blue"
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectChoice" data-choice="student" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'Student.svg', class: "w-32 h-32 mx-auto", aria_hidden: true, style: "filter: brightness(0) invert(1);"
+      p.text-sm.font-bold.text-white.text-center.px-2.break-words
+        | Student
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectChoice" data-choice="veteran_military" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/veteran_military.svg', class: "w-24 h-24 mx-auto", aria_hidden: true, style: "filter: brightness(0) invert(1);"
+      p.text-sm.font-bold.text-white.text-center.px-2.break-words
+        | Veteran or in the military
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectChoice" data-choice="caregiver" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'Caregiver.svg', class: "w-32 h-32 mx-auto", aria_hidden: true, style: "filter: brightness(0) invert(1);"
+      p.text-sm.font-bold.text-white.text-center.px-2.break-words
+        | Caregiver
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectChoice" data-choice="lgbtqia" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'lgbtqia.svg', class: "w-32 h-32 mx-auto", aria_hidden: true, style: "filter: brightness(0) invert(1);"
+      p.text-sm.font-bold.text-white.text-center.px-2.break-words
+        | LGBTQIA+
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectChoice" data-choice="disabilities" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'disability.svg', class: "w-32 h-32 mx-auto", aria_hidden: true, style: "filter: brightness(0) invert(1);"
+      p.text-sm.font-bold.text-white.text-center.px-2.break-words
+        | Living with disabilities
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectChoice" data-choice="crisis_hardships" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'Hardship.svg', class: "w-32 h-32 mx-auto", aria_hidden: true, style: "filter: brightness(0) invert(1);"
+      p.text-sm.font-bold.text-white.text-center.px-2.break-words
+        | Facing crisis or hardships
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectChoice" data-choice="business_partner" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'Partnership.svg', class: "w-28 h-28 mx-auto", aria_hidden: true, style: "filter: brightness(0) invert(1);"
+      p.text-sm.font-bold.text-white.text-center.px-2.break-words
+        | Business looking for a partner
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectChoice" data-choice="prefer_not_to_say" data-smart-match-target="choiceCard"
+      p.text-sm.font-bold.text-white.text-center.px-2.break-words
+        | Prefer not to say
+
+- when 4
+  / ========================================
+  / SERVICE SEEKER PATH - STEP 4: HELP TYPE
+  / ========================================
+  h1.text-3xl.font-bold.text-blue-dark.mb-4
+    | What type of help are you looking for?
+  p.text-lg.text-gray-600.mb-8
+    | (Multiple choice)
+
+  .choice-cards.grid.grid-cols-5.gap-4.mb-8.justify-center data-style="seafoam"
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="food_groceries" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/hunger_food_security.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Food or groceries
+  
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="housing_shelter" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/housing_homelessness.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Housing or shelter
+  
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="mental_health_services" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/mental_health.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Mental health services
+  
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="disability_support" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/disability_services.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Support for a disability
+  
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="financial_assistance" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'Moneydonation.svg', class: "w-20 h-20 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Financial assistance
+  
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="medical_healthcare" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/health.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Medical or health care
+  
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="employment_job_training" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/employment.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Employment or job training
+  
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="legal_help" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/justice_legal_services.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Legal help
+  
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="children_family_support" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/children_family_services.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Support for my children or family
+  
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="transportation" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/transportation.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Help with transportation
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="education_tutoring" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/education.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Education or tutoring
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="substance_abuse" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/health.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Substance abuse support
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="domestic_violence" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/human_social_services.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Domestic violence support
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="advocacy" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/advocacy.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Advocacy
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="animals" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/animals.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Animal services
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="arts_culture" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/arts_culture.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Arts & culture
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="clothing_essentials" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/clothing_living_essentials.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Clothing & living essentials
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="community_development" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/community_economic_development.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Community & economic development
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="disaster_relief" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/disaster_relief_preparedness.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Disaster relief & preparedness
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="emergency_safety" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/emergency_safety.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Emergency & safety
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="environment" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/environment.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Environment
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="faith_based" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/faith_based.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Faith-based services
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="inmate_formerly_incarcerated" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/inmate_formerly_incarcerated.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Inmate & formerly incarcerated
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="international" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/international.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | International services
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="immigrant_refugee" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/immigrant_refugee.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Immigrant & refugee services
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="lgbtqia_services" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'lgbtqia.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | LGBTQIA+ services
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="media_broadcasting" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/media_broadcasting.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Media & broadcasting
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="philanthropy" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/philanthropy.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Philanthropy
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="race_ethnicity" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/race_ethnicity.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Race & ethnicity services
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="research_policy" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/research_public_policy.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Research & public policy
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="science_technology" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/science_technology.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Science & technology
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="seniors" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/seniors.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Senior services
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="social_sciences" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/social_sciences.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Social sciences
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="sports_recreation" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/sports_recreation.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Sports & recreation
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="veteran_military" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/veteran_military.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Veteran & military services
+
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.hidden style="background-color: #3682D0;" data-action="click->smart-match#selectMultipleChoice" data-choice="youth_development" data-smart-match-target="hiddenCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/youth_development.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Youth development
+
+  .more-options-container.text-center.mb-8
+    button.more-options-btn.bg-blue-light.text-blue-dark.px-6.py-3.rounded-lg.font-medium.hover:bg-blue-medium.transition-colors data-action="click->smart-match#toggleMoreOptions" data-smart-match-target="moreOptionsBtn"
+      | More Options
+
+- when 5
+  / ========================================
+  / SERVICE SEEKER PATH - STEP 5: SITUATION
+  / ========================================
+  h1.text-3xl.font-bold.text-blue-dark.mb-4
+    | What best describes your situation?
+  p.text-lg.text-gray-600.mb-8
+    | (Single choice)
+
+  .choice-cards.grid.grid-cols-3.gap-6.mb-8.justify-center data-style="pink"
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #F2A29E;" data-action="click->smart-match#selectChoice" data-choice="urgent_services" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'Urgent.svg', class: "w-32 h-32 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | I need services urgently
+  
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #F2A29E;" data-action="click->smart-match#selectChoice" data-choice="long_term_support" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'Longterm.svg', class: "w-28 h-28 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | I am looking for long-term support
+  
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #F2A29E;" data-action="click->smart-match#selectChoice" data-choice="exploring_options" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'Explore.svg', class: "w-32 h-32 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | I am exploring my options
+
+- when 6
+  / ========================================
+  / SERVICE SEEKER PATH - STEP 6: LOCATION
+  / ========================================
+  h1.text-3xl.font-bold.text-blue-dark.mb-4
+    | Which area are you located at?
+  p.text-lg.text-gray-600.mb-8
+    | (Single choice)
+
+  .choice-cards.grid.grid-cols-3.gap-6.mb-8.justify-center data-style="blue"
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectChoice" data-choice="atlantic_city" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'Atlanticcity.svg', class: "w-32 h-32 mx-auto", aria_hidden: true, style: "filter: brightness(0) invert(1);"
+      p.text-sm.font-bold.text-white.text-center.px-2.break-words
+        | Atlantic City
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectChoice" data-choice="los_angeles" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'California.svg', class: "w-32 h-32 mx-auto", aria_hidden: true, style: "filter: brightness(0) invert(1);"
+      p.text-sm.font-bold.text-white.text-center.px-2.break-words
+        | Los Angeles
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #3682D0;" data-action="click->smart-match#selectChoice" data-choice="nashville" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'Tennesse.svg', class: "w-40 h-40 mx-auto", aria_hidden: true, style: "filter: brightness(0) invert(1);"
+      p.text-sm.font-bold.text-white.text-center.px-2.break-words
+        | Nashville
+
+- when 7
+  / ========================================
+  / SERVICE SEEKER PATH - STEP 7: TRAVEL DISTANCE
+  / ========================================
+  h1.text-3xl.font-bold.text-blue-dark.mb-4
+    | How far are you willing or able to travel to access services?
+  p.text-lg.text-gray-600.mb-8
+    | (Multiple choice)
+
+  .choice-cards.grid.grid-cols-3.gap-6.mb-8.justify-center data-style="white"
+    .choice-card.border-2.border-blue-light.rounded-lg.p-6.cursor-pointer.transition-colors data-action="click->smart-match#selectMultipleChoice" data-choice="walking_distance" data-smart-match-target="choiceCard"
+      .illustration.mb-4
+        = inline_svg_tag 'Walking.svg', class: "w-24 h-24 mx-auto", aria_hidden: true
+      p.text-lg.font-bold.text-blue-dark
+        | I can only access places within walking distance (less than 5 miles)
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-6.cursor-pointer.transition-colors data-action="click->smart-match#selectMultipleChoice" data-choice="public_transportation" data-smart-match-target="choiceCard"
+      .illustration.mb-4
+        = inline_svg_tag 'Bus.svg', class: "w-24 h-24 mx-auto", aria_hidden: true
+      p.text-lg.font-bold.text-blue-dark
+        | I can take public transportation or get a ride (within 5-10 miles)
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-6.cursor-pointer.transition-colors data-action="click->smart-match#selectMultipleChoice" data-choice="car_access" data-smart-match-target="choiceCard"
+      .illustration.mb-4
+        = inline_svg_tag 'Car.svg', class: "w-24 h-24 mx-auto", aria_hidden: true
+      p.text-lg.font-bold.text-blue-dark
+        | I have access to a car or ride share (+10 miles)
+
+- when 8
+  / ========================================
+  / SERVICE SEEKER PATH - STEP 8: SPECIAL NEEDS
+  / ========================================
+  h1.text-3xl.font-bold.text-blue-dark.mb-4
+    | Do you need any of the following?
+  p.text-lg.text-gray-600.mb-8
+    | (Multiple choice)
+
+  .choice-cards.grid.grid-cols-3.gap-4.mb-8.justify-center data-style="seafoam"
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #C7F0EF;" data-action="click->smart-match#selectMultipleChoice" data-choice="free_sliding_scale" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'scale_free.svg', class: "w-20 h-20 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Free or sliding-scale services
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #C7F0EF;" data-action="click->smart-match#selectMultipleChoice" data-choice="no_id_required" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'no_id.svg', class: "w-20 h-20 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | No ID or documentation required
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #C7F0EF;" data-action="click->smart-match#selectMultipleChoice" data-choice="spanish_language" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'other_languages.svg', class: "w-20 h-20 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Spanish or another language available
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #C7F0EF;" data-action="click->smart-match#selectMultipleChoice" data-choice="lgbtqia_affirming" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'lgbtqia.svg', class: "w-20 h-20 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | LGBTQIA+ affirming services
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #C7F0EF;" data-action="click->smart-match#selectMultipleChoice" data-choice="wheelchair_accessible" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'disability.svg', class: "w-20 h-20 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Wheelchair accessible locations
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #C7F0EF;" data-action="click->smart-match#selectMultipleChoice" data-choice="women_bipoc_led" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'women_bipoc.svg', class: "w-20 h-20 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Women- or BIPOC-led organizations
+
+  .choice-card.rounded-lg.p-4.cursor-pointer.transition-colors.h-24.flex.flex-col.items-center.justify-center.mx-auto.mb-8 style="background-color: #C7F0EF; max-width: 200px;" data-action="click->smart-match#selectMultipleChoice" data-choice="no_special_needs" data-smart-match-target="choiceCard"
+    p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+      | No need of any option
+
+  .language-input-container.text-center.mb-8.hidden data-smart-match-target="languageInputContainer"
+    input.language-input.border-2.border-blue-light.rounded-lg.px-4.py-3.w-full.max-w-md.text-lg.text-blue-dark.placeholder-blue-light type="text" placeholder="Enter your preferred language" data-action="input->smart-match#updateLanguageChoice" data-smart-match-target="languageInput"
+
+- when 9
+  / ========================================
+  / SERVICE SEEKER PATH - STEP 9: AGE RANGE
+  / ========================================
+  h1.text-3xl.font-bold.text-blue-dark.mb-4
+    | What is your age range?
+  p.text-lg.text-gray-600.mb-8
+    | (Single choice)
+
+  .choice-cards.grid.grid-cols-1.gap-4.mb-8.max-w-md.mx-auto data-style="white"
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="under_18" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Under 18
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="19_24" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | 19-24
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="25_34" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | 25-34
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="35_44" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | 35-44
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="45_54" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | 45-54
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="55_64" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | 55-64
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="over_65" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Over 65+
+
+- when 10
+  / ========================================
+  / SERVICE SEEKER PATH - STEP 10: GENDER IDENTITY
+  / ========================================
+  h1.text-3xl.font-bold.text-blue-dark.mb-4
+    | What is your gender identity?
+  p.text-lg.text-gray-600.mb-8
+    | If you prefer to self-describe: please select other and indicate your gender identity in the space provided.
+
+  .choice-cards.grid.grid-cols-1.gap-4.mb-8.max-w-md.mx-auto data-style="white"
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="female" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Female
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="male" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Male
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="non_binary" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Non-binary or gender diverse
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="other" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Other
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="prefer_not_to_say" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Prefer not to say
+
+  .gender-description-container.text-center.mb-8.hidden data-smart-match-target="genderDescriptionContainer"
+    input.gender-description-input.border-2.border-blue-light.rounded-lg.px-4.py-3.w-full.max-w-md.text-lg.text-blue-dark.placeholder-blue-light type="text" placeholder="Please describe your gender identity" data-action="input->smart-match#updateGenderDescription" data-smart-match-target="genderDescriptionInput"
+
+- when 11
+  / ========================================
+  / SERVICE SEEKER PATH - STEP 11: RACE/ETHNICITY
+  / ========================================
+  h1.text-3xl.font-bold.text-blue-dark.mb-4
+    | What is your race or ethnicity?
+  p.text-lg.text-gray-600.mb-8
+    | (Single choice)
+
+  .choice-cards.grid.grid-cols-1.gap-4.mb-8.max-w-md.mx-auto data-style="white"
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="black_african_american" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Black or African American
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="hispanic_latino" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Hispanic or Latino/a/x
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="white" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | White
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="asian" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Asian
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="native_american_alaska_native" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Native American or Alaska Native
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="native_hawaiian_pacific_islander" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Native Hawaiian or Pacific Islander
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="middle_eastern_north_african" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Middle Eastern or North African
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="prefer_not_to_say" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Prefer not to say
+
+- when 12
+  / ========================================
+  / SERVICE SEEKER PATH - STEP 12: COMPLETION
+  / ========================================
+  h1.text-3xl.font-bold.text-blue-dark.mb-4
+    | Quiz Complete!
+  p.text-lg.text-gray-600.mb-8
+    | Thank you for completing the quiz. Your results will be available soon.
+
+  .results-placeholder.text-center.py-12
+    .placeholder-content.max-w-2xl.mx-auto
+      h2.text-2xl.font-bold.text-blue-dark.mb-4
+        | Results Coming Soon
+      p.text-lg.text-gray-600.mb-8
+        | We're working on generating your personalized nonprofit recommendations based on your quiz answers.
+      .placeholder-icon.mb-6
+        = inline_svg_tag 'search-needs.svg', class: "w-24 h-24 mx-auto text-blue-light", aria_hidden: true
+
+ 
