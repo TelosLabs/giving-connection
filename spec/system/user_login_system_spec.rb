@@ -23,7 +23,7 @@ RSpec.describe "User Login", type: :system do
     sign_in(@user)
     visit my_account_path
 
-    click_link "user_logout_link"
+    find(:test_id, "user_logout_link").click
 
     within(:test_id, "flash_messages") do
       expect(page).to have_text("Signed out successfully.")
