@@ -41,7 +41,7 @@ main
                 - @locations.each do |location|
                   li  class="block px-4 py-2 text-gray-3 hover:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#updateLocation" data-dropdown-target="menuItem"
                     = location
-                li class="block flex items-center px-4 py-1 font-medium text-gray-3 border-gray-5 hover:bg-seafoam focus:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#updateLocation" data-dropdown-target="menuItem"
+                li class="block flex items-center px-4 py-1 font-medium text-gray-3 border-gray-5 hover:bg-seafoam focus:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#getCurrentPosition" data-dropdown-target="menuItem"
                   = inline_svg_tag "my-location.svg", size:"12*12", class:"h-7 mr-2 fill-current text-gray-3"
                   | Search near me
         div
@@ -76,7 +76,7 @@ main
           | Found a nonprofit that meets your needs criteria? Reach out through the contact information provided on their individual profiles.
   section class="flex overflow-hidden flex-col items-center px-6"
     div class="relative pt-32 mb-14 max-w-xl"
-      h2 class="mb-6 text-2xl font-bold text-center uppercase text-gray-2 dark:text-white"
+      h2 class="mb-6 text-2xl font-bold text-center uppercase text-black dark:text-white"
         | Browse by causes
       p class="text-center"
         | Use our discovery feature to find nonprofits serving your community. 
@@ -95,7 +95,7 @@ main
   section class="flex flex-col justify-evenly mx-auto max-w-7xl md:flex-row sm:mb-1 525px:pb-20 md:px-8"
     div class="flex relative flex-col justify-center mb-16 text-center md:mx-0 md:mb-0"
       div class="py-4 mx-auto max-w-sm"
-        h2 class="px-10 pb-4 text-2xl font-bold text-center text-gray-2"
+        h2 class="px-10 pb-4 text-2xl font-bold text-center text-black"
           | We want to make living and giving simpler.
         p class="px-4 pt-3 pb-6 md:pb-10"
           | We are a nonprofit search tool connecting you with resources in your community.
