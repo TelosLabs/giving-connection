@@ -16,16 +16,6 @@ import "../controllers"
 Rails.start()
 ActiveStorage.start()
 
-
-window.initMap = function (...args) {
-  const event = new CustomEvent("google-maps-callback", {
-    detail: args,
-    bubbles: true,
-    cancelable: true
-  });
-  window.dispatchEvent(event);
-}
-
 document.addEventListener("turbo:load", function (event) {
   window.dataLayer = window.dataLayer || [];
 
