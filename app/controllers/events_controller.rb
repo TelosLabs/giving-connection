@@ -107,17 +107,14 @@ class EventsController < ApplicationController
   # Main search point for fetching events from the events discover page
   def discover
     if params[:id]
-      # Logic for discover with specific event
       @event = Event.find(params[:id])
       @organization = @event.organization
-      # Take next 3 upcoming events for this org
       @upcoming_events = Event.where(organization_id: @organization.id, published: true)
         .where("start_time > ?", Time.zone.now)
         .order(:start_time)
         .limit(3)
       render :event
     else
-      # Logic for discover without specific event
       @events = Event.where(published: true).order(:start_time)
       @events = @events.select { |event| event.start_time > Time.zone.now }
 
@@ -125,7 +122,6 @@ class EventsController < ApplicationController
         @organization = Organization.find_by(ein_number: params[:ein])
       end
 
-      # If search query is present, filter events based on the query
       filter_events
       render :explore
     end
@@ -318,6 +314,41 @@ class EventsController < ApplicationController
       render json: {error: "Failed to delete event"}, status: :unprocessable_entity
     end
   end
+
+  # Helper method to categorize event types
+  def categorize_event_type(event_type)
+    return "Other" if event_type.blank?
+
+    type = event_type.first.to_s.downcase
+
+    # Fundraiser events
+    if type.include?("fundraiser") || type.include?("fundraising")
+      return "Fundraiser"
+    end
+
+    # Volunteer events
+    if type.include?("volunteer") || type.include?("volunteering")
+      return "Volunteer"
+    end
+
+    # Outreach events (community, education, awareness, etc.)
+    if type.include?("community") || type.include?("outreach") ||
+        type.include?("awareness") || type.include?("education") ||
+        type.include?("workshop") || type.include?("training") ||
+        type.include?("class") || type.include?("program") ||
+        type.include?("event") || type.include?("meeting") ||
+        type.include?("cultural") || type.include?("art") ||
+        type.include?("music") || type.include?("sports") ||
+        type.include?("recreation") || type.include?("job") ||
+        type.include?("technology")
+      return "Outreach"
+    end
+
+    # Everything else
+    "Other"
+  end
+
+  helper_method :categorize_event_type
 
   private
 

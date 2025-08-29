@@ -3,18 +3,18 @@ div class="w-full h-full bg-white"
     h2 class="mb-6 text-2xl font-bold text-center text-grey-2 md:text-left"
       | My Account
     div
-      div data-controller="tabs" data-tabs-active-tab="border-blue-medium text-blue-medium"
+      div data-controller="tabs" data-tabs-active-tab="border-blue-medium text-blue-medium" data-tabs-inactive-tab="border-transparent text-grey-5"
         nav class="flex overflow-x-auto px-6 -mb-px space-x-6 text-grey-5" aria-label="Tabs"
           /! Current: "border-indigo-500 text-indigo-600", Default: "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab"
+          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab" data-index="0"
             | My Profile
-          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab"
+          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab" data-index="1"
             | My Events
-          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab"
+          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab" data-index="2"
             | Saved Pages
-          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" aria-current="page" href="#" data-action="click->tabs#change" data-tabs-target="tab"
+          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" aria-current="page" href="#" data-action="click->tabs#change" data-tabs-target="tab" data-index="3"
             | Alerts
-          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab"
+          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab" data-index="4"
             | My Nonprofit Pages
 
         div class="hidden px-6" data-tabs-target="panel"
@@ -60,12 +60,11 @@ div class="w-full h-full bg-white"
               div class="col-span-12 py-4 border-t border-gray-8"
                 = link_to "Log out", destroy_user_session_path, method: :delete, class:'hover:text-blue-medium text-xl font-bold text-blue-dark', data: { turbo: false , test_id: "user_logout_link"}
 
-        - if !current_user.administrated_organizations.blank?
-
-          div class="px-6" data-tabs-target="panel"
-            h4 class="my-7 text-xl text-grey-2"
-              | My Events
-
+        div class="hidden px-6" data-tabs-target="panel"
+          h4 class="my-7 text-xl text-grey-2"
+            | My Events
+          
+          - if !current_user.administrated_organizations.blank?
             div.w-full.flex.justify-between.place-items-center
               div
                 div.inline-flex.rounded-md.shadow-xs role="group"
@@ -110,6 +109,14 @@ div class="w-full h-full bg-white"
 
             div id="events_calendar" class="hidden h-0 w-0"
               = render Calendar::Component.new(admin: true)
+          - else
+            div class="flex justify-center my-16 w-full"
+              = inline_svg_tag 'empty_state_2.svg', size:'294*145'
+            div class="flex flex-col gap-4 justify-center items-center my-4 mb-16 w-full text-grey-2"
+              p class="text-xl font-bold text-center"
+                | You don't have any organizations to manage events for.
+              p class="px-4 max-w-xs text-base text-center"
+                | Contact us to add or claim a nonprofit page.
 
         div class="hidden" data-tabs-target="panel"
           h4 class="px-6 my-7 text-xl text-grey-2"
@@ -221,3 +228,5 @@ javascript:
       }
     }
   }
+
+

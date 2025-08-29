@@ -147,7 +147,19 @@ javascript:
       listBtn.classList.remove('bg-gray-200');
       calendarBtn.classList.add('bg-gray-200');
 
-      window.calendar.render();
+      // Wait a bit for the DOM to update, then render the calendar
+      setTimeout(() => {
+        if (window.calendar && typeof window.calendar.render === 'function') {
+          window.calendar.render();
+          window.calendar.updateSize();
+        } else {
+          console.error('Calendar not properly initialized');
+          // Try to reinitialize the calendar
+          if (typeof setupCalendar === 'function') {
+            setupCalendar();
+          }
+        }
+      }, 200);
     }
   }
 

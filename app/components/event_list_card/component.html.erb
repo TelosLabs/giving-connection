@@ -13,7 +13,7 @@
     
     <div class="flex flex-col items-start gap-4 grow">
       <% if !@small %>
-        <div class="text-xs font-['Inter'] font-semibold leading-none"><%= helpers.format_event_time(event.start_time) %></div>
+        <div class="text-xs font-['Inter'] font-semibold leading-none whitespace-nowrap"><%= helpers.format_event_time(event.start_time) %></div>
       <% end %>
       
       <div class="flex flex-col gap-0">
@@ -37,7 +37,7 @@
         <% end %>
 
         <% if @small %>
-            <div class="text-xs font-['Inter'] text-[#6B7280] font-semibold leading-none"><%= helpers.format_event_time(event.start_time) %></div>
+            <div class="text-xs font-['Inter'] text-[#6B7280] font-semibold leading-none whitespace-nowrap"><%= helpers.format_event_time(event.start_time) %></div>
         <% end %>
       </div>
       
@@ -46,11 +46,52 @@
       </div>
       
       <% if event.type_of_event.present? %>
-        <% badge_bg_colors = { "Fundraiser" => "#E1F3FF", "Volunteer" => "#E0E7FF", "Outreach" => "#DBFFE5", "Other" => "#EDEDED" } %>
-        <% badge_text_colors = { "Fundraiser" => "#113C7B", "Volunteer" => "#4338CA", "Outreach" => "#08543D", "Other" => "#1F2C3D" } %>
+        <% 
+          # Helper method to categorize event types
+          def categorize_event_type(event_type)
+            return "Other" if event_type.blank?
+            
+            type = event_type.first.to_s.downcase
+            
+            # Fundraiser events
+            if type.include?('fundraiser') || type.include?('fundraising')
+              return "Fundraiser"
+            end
+            
+            # Volunteer events
+            if type.include?('volunteer') || type.include?('volunteering')
+              return "Volunteer"
+            end
+            
+            # Outreach events (community, education, awareness, etc.)
+            if type.include?('community') || type.include?('outreach') || 
+               type.include?('awareness') || type.include?('education') ||
+               type.include?('workshop') || type.include?('training') ||
+               type.include?('class') || type.include?('program') ||
+               type.include?('event') || type.include?('meeting') ||
+               type.include?('cultural') || type.include?('art') ||
+               type.include?('music') || type.include?('sports') ||
+               type.include?('recreation') || type.include?('job') ||
+               type.include?('technology')
+              return "Outreach"
+            end
+            
+            # Everything else
+            return "Other"
+          end
+          
+          badge_bg_colors = { 
+            "Fundraiser" => "#9ae2e0", 
+            "Volunteer" => "#fc8383", 
+            "Outreach" => "#113c7b", 
+            "Other" => "#0782d0"
+          } 
+        %>
+        <% badge_text_colors = { "Fundraiser" => "#ffffff", "Volunteer" => "#ffffff", "Outreach" => "#ffffff", "Other" => "#ffffff" } %>
         <div class="flex gap-2">
             <% event.type_of_event.each do |type| %>
-                <span style="background-color: <%= badge_bg_colors[type] %>; color: <%= badge_text_colors[type] %>; border: 1px solid <%= badge_text_colors[type] %>;"  class="text-xs font-medium leading-none font-['Inter'] px-4 py-2 rounded-full "><%= type %></span>
+                <% category = categorize_event_type([type]) %>
+                <span style="background-color: <%= badge_bg_colors[category] %>; color: <%= badge_text_colors[category] %>; border: 1px solid <%= badge_text_colors[category] %>;"  class="text-xs font-medium leading-none font-['Inter'] px-4 py-2 rounded-full "><%= type %></span>
             <% end %>
         </div>
     <% end %>

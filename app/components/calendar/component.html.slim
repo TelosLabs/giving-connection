@@ -1,7 +1,5 @@
 / FullCalendar JS
 script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"
-script src='https://unpkg.com/popper.js/dist/umd/popper.min.js'
-script src="https://unpkg.com/tooltip.js/dist/umd/tooltip.min.js"
 
 div data-controller="calendar-component" data-calendar-component-target="calendar" class="calendar-container"
     div class="flex align-center justify-center"
@@ -36,13 +34,59 @@ style
   | .fc .fc-event-title {
   |   white-space: normal !important;
   |   font: 'Inter';
+  |   font-size: 11px !important;
+  |   line-height: 1.2 !important;
+  |   overflow: hidden !important;
+  |   text-overflow: ellipsis !important;
+  |   display: -webkit-box !important;
+  |   -webkit-line-clamp: 2 !important;
+  |   -webkit-box-orient: vertical !important;
+  |   color: #000000 !important;
+  |   font-weight: 500 !important;
+  |   order: 2 !important; /* Position title after time */
+  | }
+  | .fc-event-time {
+  |   color: #000000 !important;
+  |   font-size: 10px !important; /* Slightly larger font size for readability */
+  |   font-weight: 400 !important;
+  |   order: 1 !important; /* Position time before title */
+  |   white-space: nowrap !important; /* Prevent time from wrapping */
+  |   overflow: visible !important; /* Ensure time is not cut off */
+  |   min-width: fit-content !important; /* Ensure time has enough space */
+  |   margin-bottom: 1px !important; /* Add space between time and title */
+  | }
+  | .fc-event-main {
+  |   color: #000000 !important;
+  |   display: flex !important; /* Enable flexbox */
+  |   flex-direction: column !important; /* Stack items vertically */
   | }
   | .fc .fc-event {
-  |   padding: 2px 4px !important;
+  |   padding: 3px 6px !important; /* Increased padding for better spacing */
+  |   min-height: 24px !important; /* Increased height for time display */
+  |   margin-bottom: 2px !important; /* Increased margin for better separation */
+  |   overflow: visible !important; /* Ensure content is not cut off */
+  | }
+  | .fc-daygrid-event {
+  |   max-width: 100% !important;
+  |   word-wrap: break-word !important;
   | }
   | .fc .fc-daygrid-day-events .fc-event {
   |   background-color: rgba(0, 0, 0, 0.02) !important; 
-  |   
+  |   border-radius: 3px !important;
+  |   border-left: 3px solid !important;
+  |   border-top: none !important;
+  |   border-right: none !important;
+  |   border-bottom: none !important;
+  |   border-left-color: var(--fc-event-border-color) !important;
+  | }
+  | .fc-daygrid-day-frame {
+  |   min-height: 160px !important; /* Increased cell height for time display */
+  | }
+  | .fc-daygrid-day-events {
+  |   margin: 1px !important;
+  | }
+  | .fc-daygrid-day {
+  |   min-height: 180px !important; /* Increased cell height for time display */
   | }
   | .fc-daygrid-day-number {
   |    color: #1F2D3D !important;
@@ -82,33 +126,142 @@ style
   |   border: none !important;
   |   color: #1F2D3D !important;
   | }
+  |
+  | /* Custom tooltip styling */
+  | .event-tooltip {
+  |   position: fixed;
+  |   z-index: 9999;
+  |   display: none;
+  |   pointer-events: none;
+  |   border: none !important;
+  |   outline: none !important;
+  | }
+  | 
+  | .tooltip-content {
+  |   background: white;
+  |   border-radius: 5px;
+  |   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  |   padding: 16px;
+  |   width: 256px;
+  |   max-width: 300px;
+  |   border: none !important;
+  |   outline: none !important;
+  |   box-sizing: border-box;
+  | }
+  | 
+  | .tooltip-date {
+  |   color: #113c7b;
+  |   font-size: 12px;
+  |   font-weight: 600;
+  |   margin-bottom: 12px;
+  |   font-family: 'Inter', sans-serif;
+  | }
+  | 
+  | .tooltip-title {
+  |   color: black;
+  |   font-size: 16px;
+  |   font-weight: bold;
+  |   margin-bottom: 4px;
+  |   font-family: 'Inter', sans-serif;
+  | }
+  | 
+  | .tooltip-org {
+  |   color: black;
+  |   font-size: 14px;
+  |   font-weight: 500;
+  |   margin-bottom: 4px;
+  |   font-family: 'Inter', sans-serif;
+  | }
+  | 
+  | .tooltip-location {
+  |   color: #6B7280;
+  |   font-size: 12px;
+  |   margin-bottom: 12px;
+  |   font-family: 'Inter', sans-serif;
+  | }
+  | 
+  | .tooltip-description {
+  |   color: black;
+  |   font-size: 12px;
+  |   margin-bottom: 12px;
+  |   font-family: 'Inter', sans-serif;
+  |   line-height: 1.4;
+  | }
+  | 
+  | .tooltip-badges {
+  |   display: flex;
+  |   gap: 8px;
+  |   flex-wrap: wrap;
+  | }
+  | 
+  | .tooltip-badge {
+  |   font-size: 12px;
+  |   font-weight: 500;
+  |   padding: 4px 12px;
+  |   border-radius: 16px;
+  |   font-family: 'Inter', sans-serif;
+  |   border: none;
+  | }
 
 
 javascript:
   document.addEventListener('DOMContentLoaded', setupCalendar);
 
   async function setupCalendar() {
-    // Background Colors (HSL)
+    // Background Colors (Brand Colors) - use categorization function
     const badge_bg_colors = { 
-      "Fundraiser": "hsl(204, 100%, 94%)", 
-      "Volunteer": "hsl(226, 100%, 94%)", 
-      "Outreach": "hsl(137, 100%, 93%)", 
-      "Other": "hsl(0, 0%, 93%)" 
+      "Fundraiser": "#9ae2e0", // Seafoam green
+      "Volunteer": "#fc8383", // Salmon
+      "Outreach": "#113c7b", // Dark Blue
+      "Other": "#0782d0" // Medium Blue
     };
 
-    // Text Colors (HSL)
+    // Text Colors (White text on brand colors)
     const badge_text_colors = { 
-      "Fundraiser": "hsl(216, 76%, 27%)", 
-      "Volunteer": "hsl(245, 58%, 51%)", 
-      "Outreach": "hsl(162, 83%, 18%)", 
-      "Other": "hsl(214, 33%, 18%)" 
+      "Fundraiser": "#ffffff", 
+      "Volunteer": "#ffffff", 
+      "Outreach": "#ffffff", 
+      "Other": "#ffffff" 
     };
+
+    // Function to categorize event types into four main buckets
+    function categorizeEventType(eventType) {
+      if (!eventType || eventType.length === 0) return "Other";
+      
+      const type = eventType[0].toLowerCase();
+      
+      // Fundraiser events
+      if (type.includes('fundraiser') || type.includes('fundraising')) {
+        return "Fundraiser";
+      }
+      
+      // Volunteer events
+      if (type.includes('volunteer') || type.includes('volunteering')) {
+        return "Volunteer";
+      }
+      
+      // Outreach events (community, education, awareness, etc.)
+      if (type.includes('community') || type.includes('outreach') || 
+          type.includes('awareness') || type.includes('education') ||
+          type.includes('workshop') || type.includes('training') ||
+          type.includes('class') || type.includes('program') ||
+          type.includes('event') || type.includes('meeting') ||
+          type.includes('cultural') || type.includes('art') ||
+          type.includes('music') || type.includes('sports') ||
+          type.includes('recreation') || type.includes('job') ||
+          type.includes('technology')) {
+        return "Outreach";
+      }
+      
+      // Everything else
+      return "Other";
+    }
 
     const cal_colors = {
-      "Fundraiser": "hsl(204, 100%, 45%)",
-      "Volunteer": "hsl(226, 100%, 45%)",
-      "Outreach": "hsl(137, 100%, 45%)",
-      "Other": "hsl(0, 0%, 45%)"
+      "Fundraiser": "#9ae2e0", // Seafoam green
+      "Volunteer": "#fc8383", // Salmon
+      "Outreach": "#113c7b", // Dark Blue
+      "Other": "#0782d0" // Medium Blue
     };
 
     // Update legend colors
@@ -139,7 +292,7 @@ javascript:
         data.events.forEach(event => {
           events.push({
             id: event.id,
-            title: event.title,
+            title: event.title.length > 25 ? event.title.substring(0, 25) + '...' : event.title,
             start: event.start_time,
             end: event.end_time,
             description: event.description,
@@ -147,8 +300,11 @@ javascript:
             url: `/events/explore/${event.id}`,
             eventType: event.type_of_event,
             orgName: data.organization.name,
-            color: event.published ? cal_colors[event.type_of_event[0]] || 'grey' : 'red',
+            color: event.published ? cal_colors[categorizeEventType(event.type_of_event)] || 'grey' : 'red',
             editable: false,
+            extendedProps: {
+              title: event.title // Store full title for tooltip
+            }
           });
         });
       }
@@ -170,7 +326,7 @@ javascript:
       data.events.forEach(event => {
         events.push({
           id: event.id,
-          title: event.title,
+          title: event.title.length > 25 ? event.title.substring(0, 25) + '...' : event.title,
           start: event.start_time,
           end: event.end_time,
           description: event.description,
@@ -178,11 +334,43 @@ javascript:
           url: `/events/explore/${event.id}`,
           eventType: event.type_of_event,
           orgName: data.organizations.find(org => org.id == event.organization_id).name,
-          color: cal_colors[event.type_of_event[0]] || 'grey',
+          color: cal_colors[categorizeEventType(event.type_of_event)] || 'grey',
           editable: false,
+          extendedProps: {
+            title: event.title // Store full title for tooltip
+          }
         });
       });
     }
+
+    // Global function to hide all tooltips
+    window.hideAllTooltips = function() {
+      const tooltips = document.querySelectorAll('.event-tooltip');
+      tooltips.forEach(tooltip => {
+        tooltip.style.display = 'none';
+      });
+    };
+
+    // Global function to remove all tooltips completely
+    window.removeAllTooltips = function() {
+      const tooltips = document.querySelectorAll('.event-tooltip');
+      tooltips.forEach(tooltip => {
+        tooltip.remove();
+      });
+    };
+
+    // Clean up any existing tooltips before creating new ones
+    window.removeAllTooltips();
+
+    // Add global event listeners to hide tooltips when page loses focus or user clicks elsewhere
+    document.addEventListener('click', window.hideAllTooltips);
+    document.addEventListener('blur', window.hideAllTooltips);
+    window.addEventListener('beforeunload', window.hideAllTooltips);
+    
+    // Turbo-specific cleanup for navigation
+    document.addEventListener('turbo:before-visit', window.hideAllTooltips);
+    document.addEventListener('turbo:before-cache', window.hideAllTooltips);
+    document.addEventListener('turbo:before-render', window.hideAllTooltips);
 
     window.calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
@@ -192,14 +380,27 @@ javascript:
         right: 'dayGridMonth,timeGridWeek,timeGridDay'
       },
       events,
+      height: 'auto',
+      dayMaxEvents: 4,
+      eventDisplay: 'block',
+      eventTimeFormat: {
+        hour: 'numeric',
+        minute: '2-digit',
+        meridiem: 'short'
+      },
       eventDidMount: function(info) {
+        // Set the left border color to match the event color
+        const eventColor = info.event.backgroundColor || info.event.color;
+        info.el.style.borderLeftColor = eventColor;
+        info.el.style.setProperty('--fc-event-border-color', eventColor);
+        
         // Set href of the event element to the event URL
         info.el.setAttribute('href', info.event.url);
 
-        // Initialize the tooltip with custom options
+        // Add tooltip functionality with CSS hover
         const eventStart = info.event.start;
         const eventEnd = info.event.end || eventStart;
-        const eventTitle = info.event.title;
+        const eventTitle = info.event.extendedProps.title || info.event.title;
         const location = info.event.extendedProps.location || 'Remote';
         const description = info.event.extendedProps.description || '';
         const orgName = info.event.extendedProps.orgName || '?';
@@ -208,55 +409,85 @@ javascript:
         const singleDay = eventStart.getDate() === eventEnd.getDate();
         const truncateLength = 250;
         
-        const tooltipContent = `
-          <div class="p-4 z-10 bg-white rounded-[5px] shadow-[5px_5px_10px_5px_rgba(0,0,0,0.05)] outline outline-1 outline-offset-[-1px] outline-neutral-300 inline-flex justify-start items-start gap-2.5 overflow-hidden">
-            <div class="w-56 inline-flex flex-col justify-start items-start gap-4">
-              <div class="self-stretch h-3.5 justify-center text-color-azure-18 text-xs font-semibold font-['Inter'] leading-tight">
-                ${
-                  singleDay 
-                  ?
-                    eventStart.toLocaleDateString() + ' ' + eventStart.toLocaleTimeString([], { timeStyle: 'short' })
-                  :
-                    eventStart.toLocaleDateString() + ' ' + eventStart.toLocaleTimeString([], { timeStyle: 'short' }) + ' - ' +
-                    eventEnd.toLocaleDateString() + ' ' + eventEnd.toLocaleTimeString([], { timeStyle: 'short' })
-                }
-              </div>
-              <div class="self-stretch flex flex-col justify-start items-start gap-1">
-                <div class="self-stretch h-4 justify-center text-black text-base font-['Inter'] font-bold leading-none">
-                  ${eventTitle}
-                </div>
-                <div class="text-sm self-stretch h-4 justify-center text-black font-['Inter'] font-medium leading-none">
-                  ${orgName}
-                </div>
-                <div class="self-stretch h-2.5 inline-flex justify-start items-center gap-0.5">
-                  <div class="w-48 h-3 justify-center text-color-grey-46 text-xs text-[#6B7280] font-['Inter'] leading-none">
-                    ${location}
-                  </div>
-                </div>
-              </div>
-              <div class="justify-center text-black text-xs font-normal font-['Inter'] leading-none">
-                ${description.length > truncateLength ? description.substring(0, truncateLength) + '...' : description}
-              </div>
-              <div>
-                ${eventTypes.map(type => `
-                  <span style="background-color: ${badge_bg_colors[type]}; color: ${badge_text_colors[type]}; border: 1px solid ${badge_text_colors[type]};" class="text-xs font-medium leading-none font-['Inter'] px-4 py-2 rounded-full">${type}</span>
-                `)}
-              </div>
+        // Create tooltip element
+        const tooltip = document.createElement('div');
+        tooltip.className = 'event-tooltip';
+        tooltip.innerHTML = `
+          <div class="tooltip-content">
+            <div class="tooltip-date">
+              ${
+                singleDay 
+                ?
+                  eventStart.toLocaleDateString() + ' ' + eventStart.toLocaleTimeString([], { timeStyle: 'short' })
+                :
+                  eventStart.toLocaleDateString() + ' ' + eventStart.toLocaleTimeString([], { timeStyle: 'short' }) + ' - ' +
+                  eventEnd.toLocaleDateString() + ' ' + eventEnd.toLocaleTimeString([], { timeStyle: 'short' })
+              }
+            </div>
+            <div class="tooltip-info">
+              <div class="tooltip-title">${eventTitle}</div>
+              <div class="tooltip-org">${orgName}</div>
+              <div class="tooltip-location">${location}</div>
+            </div>
+            <div class="tooltip-description">
+              ${description.length > truncateLength ? description.substring(0, truncateLength) + '...' : description}
+            </div>
+            <div class="tooltip-badges">
+              ${eventTypes.map(type => `
+                <span style="background-color: ${badge_bg_colors[categorizeEventType([type])]}; color: ${badge_text_colors[categorizeEventType([type])]};" class="tooltip-badge">${type}</span>
+              `).join('')}
             </div>
           </div>
         `;
         
-        // Initialize the tooltip with custom options
-        new Tooltip(info.el, {
-          title: tooltipContent,
-          placement: 'right', // Position to the right of the event
-          html: true, // Allow HTML content
-          template: '<div class="tooltip z-10" role="tooltip"><div class="tooltip-inner"></div></div>',
-          container: 'body', // Append to body to avoid z-index issues
-          trigger: 'hover'
-        });
+        // Add tooltip to body and position it
+        document.body.appendChild(tooltip);
+        
+        // Show/hide tooltip on hover
+        const showTooltip = (e) => {
+          e.stopPropagation();
+          // Hide all other tooltips first
+          window.hideAllTooltips();
+          const rect = info.el.getBoundingClientRect();
+          tooltip.style.left = rect.right + 10 + 'px';
+          tooltip.style.top = rect.top + 'px';
+          tooltip.style.display = 'block';
+        };
+        
+        const hideTooltip = (e) => {
+          e.stopPropagation();
+          tooltip.style.display = 'none';
+        };
+        
+        info.el.addEventListener('mouseenter', showTooltip);
+        info.el.addEventListener('mouseleave', hideTooltip);
+        
+        // Also hide tooltip when clicking on the event
+        info.el.addEventListener('click', hideTooltip);
+        
+        // Store tooltip reference for cleanup
+        info.el.tooltip = tooltip;
       },
+      eventWillUnmount: function(info) {
+        // Clean up tooltip when event is unmounted
+        if (info.el.tooltip) {
+          info.el.tooltip.remove();
+          info.el.tooltip = null;
+        }
+      }
     });
+    
+    // Always render the calendar initially
     window.calendar.render();
     window.calendar.updateSize();
+    
+    // Clean up tooltips when calendar is destroyed
+    const originalDestroy = window.calendar.destroy;
+    window.calendar.destroy = function() {
+      window.hideAllTooltips();
+      window.removeAllTooltips();
+      if (originalDestroy) {
+        originalDestroy.call(this);
+      }
+    };
   }
