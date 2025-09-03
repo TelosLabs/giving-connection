@@ -1,16 +1,41 @@
 div class="main"
 
-  div class="flex flex-col px-6 mx-auto mt-14 md:mt-28 md:flex-row max-w-7xl justify-evenly md:items-end lg:px-16"
-    div class="relative flex flex-col justify-center mb-8 text-center md:mx-0 md:mb-8"
-      div class="max-w-sm mx-auto"
-        h2 class="pb-8 text-2xl font-bold text-center"
+  div class="flex flex-col px-6 mx-auto bg-[#DCEEF8] bg-opacity-70 md:flex-row justify-evenly md:items-end"
+    div class="relative flex flex-col justify-center py-20 text-center"
+      div class="mx-auto"
+        h2 class="text-2xl font-bold text-cente text-blue-dark"
           | FREQUENTLY ASKED QUESTIONS
-        p class=""
-          ' Can't find what you are looking for below? Please reach us at
-          span
-            = link_to 'info@givingconnection.org', 'mailto:info@givingconnection.org', class:'text-blue-medium underline'
-          '  if you cannot find an answer to your question. We will get back
-          ' to you within 3 - 5 business days.
+        p class="font-light"
+          | Everything you need to know about Giving Connection
+        div class="flex items-center gap-2 px-4 py-3 mt-8 bg-white rounded-lg text-start text-gray-4"
+          span aria-hidden="true"
+            = inline_svg_tag 'magnifying-glass.svg', class: "text-blue-dark"
+          | Search FAQs...
+        div class="flex gap-2 pt-4"
+          a class="flex gap-1 px-3 py-2 text-xs bg-white border-[1px] border-gray-5 border-solid rounded-full text-gray-2" href="#getting-started"
+            span aria-hidden="true"
+                  = inline_svg_tag 'rocket.svg', size: '15*15', class: "text-blue-dark"
+            | Getting Started
+          a class="flex gap-1 px-3 py-2 text-xs bg-white border-[1px] border-gray-5 border-solid rounded-full text-gray-2" href="#using-platform"
+            span aria-hidden="true"
+                  = inline_svg_tag 'mouse.svg', size: '15*15', class: "text-blue-dark"
+            | Using the platform
+          a class="flex gap-1 px-3 py-2 text-xs bg-white border-[1px] border-gray-5 border-solid rounded-full text-gray-2" href="#how-it-works"
+            span aria-hidden="true"
+                  = inline_svg_tag 'bubble-question.svg', size: '15*15', class: "text-blue-dark"
+            | How it works
+          a class="flex gap-1 px-3 py-2 text-xs bg-white border-[1px] border-gray-5 border-solid rounded-full text-gray-2" href="#for-nonprofits"
+            span aria-hidden="true"
+                  = inline_svg_tag 'heart2.svg', size: '15*15', class: "text-blue-dark"
+            | For Nonprofits
+          a class="flex gap-1 px-3 py-2 text-xs bg-white border-[1px] border-gray-5 border-solid rounded-full text-gray-2" href="#support-contact"
+            span aria-hidden="true"
+                  = inline_svg_tag 'email.svg', size: '15*15', class: "text-blue-dark"
+            | Support & Contact
+          a class="flex gap-1 px-3 py-2 text-xs bg-white border-[1px] border-gray-5 border-solid rounded-full text-gray-2" href="#quick-links"
+            span aria-hidden="true"
+                  = inline_svg_tag 'chain-link.svg', size: '15*15', class: "text-blue-dark"
+            | Quick Links
       div class="hidden md:block md:absolute -top-56 -left-36 -z-1"
         = inline_svg_tag 'faq-desk-blur-left.svg'
       div class="right-0 hidden overflow-hidden md:block md:absolute -top-56 md:-right-20 -z-1"
@@ -21,77 +46,135 @@ div class="main"
       div class="absolute overflow-visible -right-6 -top-40 -z-1 md:hidden"
         = inline_svg_tag 'faq-mob-blur-right.svg'
 
-    div class="flex justify-center px-0"
-      = image_tag 'pablita-looking-for.svg', class:"object-cover h-full"
+  section class="flex flex-col max-w-4xl gap-16 px-5 mx-auto my-20"
+    div class="flex flex-col gap-2" id="getting-started"
+      div class="flex gap-2 pb-4"
+        span aria-hidden="true"
+          = inline_svg_tag 'rocket.svg', class: "text-blue-dark h-full fill-seafoam", size: '24*24'
+        p class="text-2xl font-bold text-blue-dark"
+          | Getting Started
+      = render Accordion::Component.new(title: "What is Giving Connection?", description: "Giving Connection is a free platform that helps people discover and connect with local nonprofits based on the causes they care about. Whether you're looking for support, ways to give back, or to spread the word about your organization, we make it easier to find the right match.")
+      = render Accordion::Component.new(title: "Is Giving Connection free to use?", description: "Yes. Our platform is completely free for individuals and nonprofits.")
+      = render Accordion::Component.new(title: "Who is Giving Connection for?", description: "Giving Connection is for anyone who wants to get involved, find help, or make a difference: \
+        <ul class='pl-4 list-disc'> \
+          <li>Community members seeking local resources or services</li> \
+          <li>Volunteers and donors looking for meaningful ways to give back</li> \
+          <li>Nonprofits that want to increase visibility and connect with supporters</li> \
+        </ul> ")
+
+    div class="flex flex-col gap-2" id="using-platform"
+      div class="flex gap-2 pb-4"
+        span aria-hidden="true"
+          = inline_svg_tag 'mouse.svg', class: "text-blue-dark h-full fill-seafoam", size: '24*24'
+        p class="text-2xl font-bold text-blue-dark"
+          | Using the Platform
+      = render Accordion::Component.new(title: "How do I apply and use search filters?", description: "Start by typing your keywords into the search bar. Then, click the search pills or the Advanced Filters option  to refine your results. You can filter by Causes, Services, Populations Served, Location, and more to find nonprofits that best match your needs.")
+      = render Accordion::Component.new(title: "How do I save a nonprofit page?", description: "To save a nonprofit, click the ribbon icon on its profile. You’ll be prompted to log in or create a free account. Once saved, it will appear in your Saved Pages.")
+      = render Accordion::Component.new(title: "What is an email alert and how do I create one?", description: "Email alerts notify you when new nonprofits or opportunities match your search preferences. <br> \
+        To create one: \
+        <ol class='pl-6 list-decimal'> \
+          <li>Run a search with your preferred filters</li> \
+          <li>Click “Create Search Alert” next to your results</li> \
+          <li>You’ll get updates sent to your inbox</li> \
+        </ol>")
+      = render Accordion::Component.new(title: "How do I access my saved pages and alerts?", description: "Log into your Giving Connection account and go to your dashboard. From there, you can view: \
+        <ul class='pl-4 list-disc'> \
+          <li>Saved nonprofit pages</li> \
+          <li>Active email alerts</li> \
+        </ul>")
+      = render Accordion::Component.new(title: "How do I remove a nonprofit from my Saved Pages?", description: "Log into your account, visit your Saved Pages, and click the ribbon icon again or select 'Remove' to delete it from your list.")
+
+    div class="flex flex-col gap-2" id="how-it-works"
+      div class="flex gap-2 pb-4"
+        span aria-hidden="true"
+          = inline_svg_tag 'bubble-question.svg', class: "text-blue-dark h-full fill-seafoam", size: '24*24'
+        p class="text-2xl font-bold text-blue-dark"
+          | Understanding How it Works
+      = render Accordion::Component.new(title: "How are nonprofits categorized? What if I can't find a category meeting my needs?", description: "Nonprofits on our platform select their own categories from a list of causes and services inspired by the IRS’s National Taxonomy of Exempt Entities (NTEE) system. This helps ensure consistency while allowing organizations to represent their work accurately. <br><br> \
+        If you don’t see a specific cause or service that matches your needs, please email us at <a href='mailto:info@givingconnection.org' class='underline text-blue-dark'>info@givingconnection.org</a>. We’re always open to feedback and may be able to add new categories over time.")
+      = render Accordion::Component.new(title: "What does the green check mark mean?", description: "The green check mark next to a nonprofit’s name indicates that the information listed has been reviewed and verified by that nonprofit. When reviewing a nonprofit profile without a green check mark, we encourage users to visit the nonprofit’s website to verify the information listed and ensure it’s up to date. <br> \
+        We do not guarantee outcomes and are not responsible for the services, conduct, or performance of any referred organizations. Please use your own judgment when engaging with any third-party organization.")
+
+    div class="flex flex-col gap-2" id="for-nonprofits"
+      div class="flex gap-2 pb-4"
+        span aria-hidden="true"
+          = inline_svg_tag 'heart2.svg', class: "text-blue-dark h-full fill-seafoam", size: '24*24'
+        p class="text-2xl font-bold text-blue-dark"
+          | For Nonprofits
+      = render Accordion::Component.new(title: "How do I create a nonprofit profile?", description: "Click <a href='/nonprofit' class='underline text-blue-dark' target='_blank'>“Add a Nonprofit”</a> at the top of the page to get started. A representative from your organization should complete the form, including the name and email of the designated Profile Admin who will manage your nonprofit’s listing. <br><br> \
+        Once we verify your organization, we’ll reach out to the Profile Admin to set up your account. You can expect to hear from us within 3–5 business days.")
+      = render Accordion::Component.new(title: "How do you verify a nonprofit?", description: "We verify nonprofits by confirming their 501(c)(3) status and reviewing the information provided against publicly available sources such as the IRS database and the organization’s website. <br><br> \
+        Once a nonprofit has been verified by its own representative and reviewed by our team, a green check mark appears next to its name. This indicates the information has been reviewed and confirmed by the organization itself. <br><br> \
+        Please note: While we verify basic eligibility and accuracy, we do not guarantee outcomes or the quality of services provided. Always use your own judgment when engaging with any third-party organization.")
+      = render Accordion::Component.new(title: "How do I delete a nonprofit profile?", description: "Email us at <a href='mailto:info@givingconnection.org' class='underline text-blue-dark'>info@givingconnection.org</a> with your request and verification details. We will process the removal within 3–5 business days.")
+
+    div class="flex flex-col gap-2" id="support-contact"
+      div class="flex gap-2 pb-4"
+        span aria-hidden="true"
+          = inline_svg_tag 'email.svg', class: "text-blue-dark h-full fill-seafoam", size: '24*24'
+        p class="text-2xl font-bold text-blue-dark"
+          | Support & Contact
+      = render Accordion::Component.new(title: "Is my information safe?", description: "Yes. We take data privacy seriously and comply with applicable data protection laws. For details, read our <a href='/privacy_policy' class='underline text-blue-dark' target='_blank'>Privacy Policy</a>.")
+      = render Accordion::Component.new(title: "What if I need legal or emergency help?", description: "We are not a legal aid or emergency response service. We connect people to organizations that may provide these services, but we do not offer legal advice or emergency assistance. <br><br> \
+        <b>Important Disclaimer:</b> Giving Connection is not a legal service provider and does not offer legal advice or representation. The information we provide is for general informational purposes only and should not be considered legal or professional advice. We refer users to nonprofit organizations based on their submitted needs but do not guarantee outcomes and are not responsible for the services, conduct, or performance of any referred organizations. Please use your own judgment when engaging with any third-party organization.")
+      = render Accordion::Component.new(title: "How can I contact the Giving Connection team?", description: "Email us at <a href='mailto:info@givingconnection.org' class='underline text-blue-dark'>info@givingconnection.org</a> or use our <a href='/contact' class='underline text-blue-dark' target='_blank'>Contact Form</a>. We respond within 3–5 business days.")
+
+    div class="flex flex-col gap-2" id="quick-links"
+      div class="flex gap-2"
+        span aria-hidden="true"
+          = inline_svg_tag 'chain-link.svg', class: "text-blue-dark h-full", size: '24*24'
+        p class="text-2xl font-bold text-blue-dark"
+          | Quick Links
+      p
+        | If you are experiencing a medical or life-threatening emergency, please call <b>911</b>.
+      p 
+        | If you are in immediate crisis, contact these national hotlines:
+      div class="flex flex-col py-8 font-light divide-y divide-gray-7 text-blue-dark"
+        div class="py-4"
+          div class="inline-block p-2 rounded-full bg-salmon bg-opacity-15"
+            = inline_svg_tag 'brain2.svg'
+          p class="text-lg font-medium"
+            | Suicide Prevention & Emotional Support:
+          ul class="pl-4 list-disc"
+            li <u>National Suicide Prevention Lifeline:</u> (800) 273-8255
+            li <u>National Suicide Prevention Lifeline (Spanish):</u> (888) 628-9454
+            li <u>National Suicide Prevention Lifeline (Deaf and Hard of Hearing):</u> For TTY users, use your preferred relay service or dial 711 then 1-800-273-8255
+            li <u>Crisis Text Line:</u> Text HOME to 741741
+            li <u>Veterans Crisis Line:</u> (800) 273-8255, press 1 — Text: 838255 — Online chat available
+            li <u>National Grad Crisis Line:</u> (877) 472-3457
+        div class="py-4"
+          div class="inline-block p-2 rounded-full bg-salmon bg-opacity-15"
+            = inline_svg_tag 'home.svg'
+          p class="text-lg font-medium"
+            | Domestic Violence & Sexual Assault
+          ul class="pl-4 list-disc"
+            li <u>National Domestic Violence Hotline:</u> (800) 799-7233
+            li <u>National Sexual Assault Hotline:</u> (800) 656-4673
+            li <u>Childhelp National Child Abuse Hotline:</u> (800) 422-4453
+        div class="py-4"
+          div class="inline-block p-2 rounded-full bg-salmon bg-opacity-15"
+            = inline_svg_tag 'heart-beat.svg'
+          p class="text-lg font-medium"
+            | Health, Substance Abuse & HIV/AIDS
+          ul class="pl-4 list-disc"
+            li <u>CDC National HIV and AIDS Hotline:</u> (800) 232-4636
+            li <u>SAMHSA National Helpline (Substance Abuse and Mental Health Services Administration):</u> (800) 662-4357
+        div class="py-4"
+          div class="inline-block p-2 rounded-full bg-salmon bg-opacity-15"
+            = inline_svg_tag 'people.svg'
+          p class="text-lg font-medium"
+            | Support Groups
+          ul class="pl-4 list-disc"
+            li <u>Alcoholics Anonymous (AA)</u>
+            li <u>Narcotics Anonymous (NA)</u>
+            li <u>Gamblers Anonymous (GA)</u>
 
 
-  section class='flex flex-col max-w-xl gap-6 px-5 pt-6 pb-24 mx-auto divide-y md:mt-6 divide-gray-7 text-gray-2'
-    = render Accordion::Component.new(title: "How can I get help right away?",
-                                      description: "If you are having a medical or life threatening emergency, call 911. If you are in need of immediate crisis services, \
-                                      please visit or call the resources listed below.<br/> <br/> \
-                                      <a class='underline text-blue-medium' href='https://suicidepreventionlifeline.org/'>National Suicide Prevention Lifeline</a> \
-                                      <p>(800) 273-8255</p><br/> \
-                                      <a class='underline text-blue-medium' href='https://suicidepreventionlifeline.org/help-yourself/en-espanol/'>Nacional de Prevención del Suicidio</a> \
-                                      <p>(888) 628-9454</p><br/> \
-                                      <a class='underline text-blue-medium' href='https://suicidepreventionlifeline.org/help-yourself/for-deaf-hard-of-hearing/'>National Suicide Prevention Lifeline (Options for Deaf and Hard of Hearing)</a> \
-                                      <p>For TTY Users: Use your preferred relay service or dial 711 then 1-800-273-8255</p><br/> \
-                                      <a class='underline text-blue-medium' href='https://www.crisistextline.org/'>Crisis Text Line</a> \
-                                      <p>Text HOME to 741741</p><br/> \
-                                      <a class='underline text-blue-medium' href='https://www.thehotline.org/'>National Domestic Violence Hotline</a> \
-                                      <p>(800) 799-7233</p><br/> \
-                                      <a class='underline text-blue-medium' href='https://www.veteranscrisisline.net/'>Veterans Crisis Line</a> \
-                                      <p>(800) 273-8255, PRESS 1</p> \
-                                      <p>Text 838255</p> \
-                                      <a class='underline text-blue-medium' href='https://www.veteranscrisisline.net/get-help/chat'>Chat online</a><br/> \
-                                      <a class='underline text-blue-medium' href='https://gradresources.org/crisis/'>National Grad Crisis Line</a> \
-                                      <p>(877) 472-3457</p> \
-                                      <a class='underline text-blue-medium' href='https://www.rainn.org/'>National Sexual Assault Hotline</a> \
-                                      <p>(800) 656-4673</p><br/> \
-                                      <a class='underline text-blue-medium' href='https://childhelphotline.org/'>Childhelp National Child Abuse Hotline</a> \
-                                      <p>(800) 422-4453</p><br/> \
-                                      <a class='underline text-blue-medium' href='https://www.cdc.gov/hiv/library/hotlines.html'>CDC National HIV and AIDS Hotline</a> \
-                                      <p>(800) 232-4636</p><br/> \
-                                      <a class='underline text-blue-medium' href='https://www.samhsa.gov/find-help/national-helpline'>Substance Abuse and Mental Health Services Administration National Helpline</a>\
-                                      <p>(800) 662-4357</p><br/> \
-                                      <ul class='pl-10 list-disc'> \
-                                        <li><a class='underline text-blue-medium' href='https://aa.org/'>Alcoholics Anonymous</a></li> \
-                                        <li><a class='underline text-blue-medium' href='https://na.org/'>Narcotics Anonymous</a></li> \
-                                        <li><a class='underline text-blue-medium' href='https://www.gamblersanonymous.org/ga/'>Gamblers Anonymous</a></li> \
-                                      </ul>")
-    = render Accordion::Component.new(title: "How do I apply and use search filters?",
-                                      description: "Type your desired keywords into the search box. Click the filters icon in the top left corner of the platform. Select any filters you would \
-                                      like applied to your nonprofit search results such as Causes & Services, Populations Served, or Location.")
-    = render Accordion::Component.new(title: "How do I save a nonprofit page?",
-                                      description: "Once you have found a nonprofit that meets your needs, we want to make it easy for you to return to that nonprofit profile. Click the ribbon on \
-                                      the top right corner of the nonprofit profile in the results or in the individual nonprofit page to save it your account. You will be prompted to sign into your \
-                                      account in order to save the nonprofit profile.")
-    = render Accordion::Component.new(title: "What is an email alert and how do I create one?",
-                                      description: "An email alert can be created to receive an email whenever a new nonprofit meeting your specified needs joins the Giving Connection platform.<br/><br> \
-                                      Type in your desired relevant keywords into the search box. Click the filters icon in the top left corner of the platform. Select any filters you would \
-                                      like to use related to cause categories, populations served, or location. If you would like to create an email alert using this criteria, click the bell icon \
-                                      which says 'Create Search Alert' located at the top right corner of the nonprofit search results. You can select a custom frequency to receive that email of new \
-                                      nonprofits either daily, weekly, or monthly.")
-    = render Accordion::Component.new(title: "How do I access my saved pages and alerts?",
-                                      description: "Once signed in, click on My Account in the top right corner of the screen. In the drop down menu, you will see “Saved Page” and “Alerts” where \
-                                      you can edit or delete them.")
-    = render Accordion::Component.new(title: "How do I remove a nonprofit from my Saved Pages?",
-                                      description: "Go to My Account > Saved Pages. Click the ribbon on the top right corner of the nonprofit to remove the nonprofit from your saved pages.")
-    = render Accordion::Component.new(title: "How are nonprofits categorized? What if I can't find a category meeting my needs?",
-                                      description: "Nonprofits self categorize using a list of causes and services we created using inspiration from the IRS NTEE codes.  The National Taxonomy of \
-                                      Exempt Entities (NTEE) system is used by the IRS to classify nonprofit organizations. If you cannot find a particular cause category or service, please \
-                                      contact <a class='underline text-blue-medium' href='mailto:info@givingconnection.reg'>info@givingconnection.org.</a> We will consider adding the category or service to our list.")
-    = render Accordion::Component.new(title: "How do I create a nonprofit profile?",
-                                      description: "Click “Add a Nonprofit” on the toolbar at the top of the page. A representative from your nonprofit should fill out the form, including the name and email of the \
-                                      Profile Admin who will be updating the nonprofit’s profile. After we verify the nonprofit organization, we will contact the Profile Admin listed on the completed form to set \ 
-                                      up an account. You should expect to hear back from us within 3-5 business days.")
-    = render Accordion::Component.new(title: "How do you verify a nonprofit?",
-                                      description: "We use the organization name and EIN to make sure they are a 501(c)(3) nonprofit organization. We use sources like the \
-                                      <a class='underline text-blue-medium' href='https://www.irs.gov/charities-non-profits/search-for-tax-exempt-organizations'>IRS Tax Exempt Org Search Tool.</a> \
-                                      If your organization is not yet published on the IRS website, we may ask for your IRS determination. If you are still pending approval from the IRS, we \
-                                      will make an individual determination whether to add you to the platform based on your IRS application.")
-    = render Accordion::Component.new(title: "How do I delete a nonprofit profile?",
-                                      description: "You must be the listed representative in order to delete a nonprofit page. To unpublish a nonprofit listing, email \
-                                      <a class='underline text-blue-medium' href='mailto:info@givingconnection.reg'>info@givingconnection.org</a> \
-                                      or go to the “Contact Us” link below to send us a message requesting that we unpublish your nonprofit page.")
-    = render Accordion::Component.new(title: "What does the green check mark mean?",
-                                      description: "The green check mark next to a nonprofit’s name indicates that the information listed has been reviewed and verified by that nonprofit. When reviewing a nonprofit profile without a green check mark, users should visit the nonprofit’s website to verify the listed information.")
+  div class="flex flex-col bg-seafoam"
+    div class="flex items-center max-w-4xl mx-auto my-10"
+      div class=""
+        = inline_svg_tag 'pablita-looking-for.svg', class:"w-3/4"
+      div class="text-gray-2"
+        p class="text-2xl font-bold" Can't find what you're looking for?
+        p Please reach us at <a href="mailto:info@givingconnection.org" class="underline text-blue-dark">info@givingconnection.org</a> if you cannot find an answer to your question.
+        p We will get back to you within 3–5 business days.
