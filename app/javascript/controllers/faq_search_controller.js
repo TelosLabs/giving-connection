@@ -5,19 +5,33 @@ export default class extends Controller {
   static targets = ["input", "results"];
 
   connect() {
-    this.items = Array.from(this.element.querySelectorAll('[data-controller~="toggle"]')).map((accordion, id) => {
+    const accordionSection = this.element.querySelectorAll('[data-controller~="toggle"]');
+    const accordionItems = Array.from(accordionSection).map((accordion) => {
       const trigger = accordion.querySelector('button[data-action*="toggle#toggle"]');
       const question = trigger?.querySelector("h5");
       const panel = accordion.querySelector('[data-toggle-target~="toggleable"]');
       const answer = panel?.querySelector(":scope > div");
-      return { id, el: accordion, trigger, question, answer, panel };
+      return { type: "accordion", el: accordion, trigger, question, answer, panel };
     });
 
-    this.docs = this.items.map(({ id, question, answer }) => ({
-      id,
-      title: (question?.textContent || "").trim(),
-      body: (answer?.textContent || "").trim(),
-    }));
+    const quickLinksSection = this.element.querySelector("#quick-links");
+    const quickItems = Array.from(quickLinksSection.querySelectorAll("ul li")).map((li) => {
+      const anchor = li.querySelector("a");
+      const title = (anchor?.textContent || "").trim().replace(/[:：]\s*$/, "");
+      const body = (li.textContent || "").trim();
+      const href = anchor?.getAttribute("href") || null;
+      return { type: "quick", el: li, section: quickLinksSection, anchor, title, body, href };
+    });
+
+    this.items = [...accordionItems, ...quickItems];
+    this.items.forEach((it, id) => (it.id = id));
+
+    this.docs = this.items.map((it) => {
+      if (it.type === "quick") {
+        return { id: it.id, type: it.type, title: it.title, body: it.body };
+      }
+      return { id: it.id, type: it.type, title: (it.question?.textContent || "").trim(), body: (it.answer?.textContent || "").trim() };
+    });
 
     this.fuse = new Fuse(this.docs, {
       keys: [
@@ -42,10 +56,20 @@ export default class extends Controller {
     this._renderResults(items);
   }
 
-  goTo(event) {
+  goTo = (event) => {
     const id = Number(event.currentTarget.dataset.id);
     const it = this.items.find(x => x.id === id);
     if (!it) return;
+
+    if (it.type === "quick") {
+      it.section?.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (it.anchor) {
+        it.anchor.focus({ preventScroll: true });
+        it.anchor.classList.add("ring-2", "ring-offset-2", "text-lg", "font-bold", "transition-all");
+        setTimeout(() => { it.anchor.classList.remove("ring-2", "ring-offset-2", "text-lg", "font-bold") }, 3000);
+      }
+      return;
+    }
 
     if (it.panel?.classList.contains("hidden")) it.trigger?.click();
     it.el.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
@@ -60,9 +84,10 @@ export default class extends Controller {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.dataset.id = String(it.id);
+      const label = it.type === "quick" ? it.title : (it.question?.textContent || "").trim();
       btn.className = "w-full px-3 py-2 text-left bg-white rounded-lg hover:bg-gray-7";
-      btn.textContent = (it.question?.textContent || "").trim();
-      btn.addEventListener("click", this.goTo.bind(this));
+      btn.textContent = label;
+      btn.addEventListener("click", this.goTo);
       resultDiv.appendChild(btn);
     });
     this.resultsTarget.appendChild(resultDiv);
