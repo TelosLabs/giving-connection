@@ -1,6 +1,8 @@
-div class="main" data-controller="faq-search" data-faq-search-debounce-value="200"
+div class="overflow-x-hidden main" data-controller="faq-search" data-faq-search-debounce-value="200"
 
-  div class="flex flex-col px-6 mx-auto bg-[#DCEEF8] bg-opacity-70 md:flex-row justify-evenly md:items-end"
+  div class="relative flex flex-col px-6 mx-auto bg-[#DCEEF8] bg-opacity-70 md:flex-row justify-evenly md:items-end"
+    div class="absolute -translate-x-1/2 top-100 left-1/2"
+      = inline_svg_tag 'blur-background-4.svg', class: "w-[300px] h-[300px] md:w-[600px] md:h-[600px]"
     div class="relative flex flex-col justify-center py-10 text-center md:py-20"
       div class="mx-auto"
         h2 class="text-2xl font-bold text-cente text-blue-dark"
@@ -37,15 +39,6 @@ div class="main" data-controller="faq-search" data-faq-search-debounce-value="20
                   = inline_svg_tag 'chain-link.svg', size: '15*15', class: "text-blue-dark"
             | Quick Links
         ul data-faq-search-target="results" class="flex flex-col gap-2 mt-4"
-      div class="hidden md:block md:absolute -top-56 -left-36 -z-1"
-        = inline_svg_tag 'faq-desk-blur-left.svg'
-      div class="right-0 hidden overflow-hidden md:block md:absolute -top-56 md:-right-20 -z-1"
-        = inline_svg_tag 'faq-desk-blur-right.svg'
-
-      div class="absolute -left-6 -z-1 md:hidden"
-        = inline_svg_tag 'faq-mob-blur-left.svg', size:'320*428'
-      div class="absolute overflow-visible -right-6 -top-40 -z-1 md:hidden"
-        = inline_svg_tag 'faq-mob-blur-right.svg'
 
   section class="flex flex-col max-w-4xl gap-16 px-5 mx-auto my-10 md:my-20"
     div class="flex flex-col gap-2" id="getting-started"
@@ -172,9 +165,14 @@ div class="main" data-controller="faq-search" data-faq-search-debounce-value="20
 
 
   div class="flex flex-col px-8 bg-seafoam"
-    div class="flex flex-col items-center max-w-4xl mx-auto my-10 md:flex-row"
-      div class="flex w-1/4"
-        = inline_svg_tag 'pablita-looking-for.svg', class:""
-      div class="text-gray-2"
-        p class="text-2xl font-bold" Can't find what you're looking for?
-        p Please reach us at <a href="mailto:info@givingconnection.org" class="underline text-blue-dark">info@givingconnection.org</a> if you cannot find an answer to your question. We will get back to you within 3–5 business days.
+    div class="flex flex-col items-center w-full max-w-4xl mx-auto my-10 md:flex-row"
+      div class="flex w-full md:w-1/4"
+        = inline_svg_tag 'pablita-looking-for.svg', class:"max-w-full h-auto"
+      div class="flex-1 min-w-0 text-gray-2"
+        p class="text-2xl font-bold break-words"
+          | Can't find what you're looking for?
+        p class="break-words"
+          | Please reach us at 
+          a href="mailto:info@givingconnection.org" class="underline text-blue-dark break-all [overflow-wrap:anywhere] inline-block max-w-full"
+            | info@givingconnection.org
+          |  if you cannot find an answer to your question. We will get back to you within 3–5 business days.
