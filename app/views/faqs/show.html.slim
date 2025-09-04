@@ -1,17 +1,17 @@
 div class="main"
 
   div class="flex flex-col px-6 mx-auto bg-[#DCEEF8] bg-opacity-70 md:flex-row justify-evenly md:items-end"
-    div class="relative flex flex-col justify-center py-20 text-center"
+    div class="relative flex flex-col justify-center py-10 text-center md:py-20"
       div class="mx-auto"
         h2 class="text-2xl font-bold text-cente text-blue-dark"
           | FREQUENTLY ASKED QUESTIONS
         p class="font-light"
           | Everything you need to know about Giving Connection
-        div class="flex items-center gap-2 px-4 py-3 mt-8 bg-white rounded-lg text-start text-gray-4"
+        div class="flex items-center gap-2 px-4 py-1 mt-8 bg-white rounded-lg md:py-3 text-start text-gray-4"
           span aria-hidden="true"
             = inline_svg_tag 'magnifying-glass.svg', class: "text-blue-dark"
           input type="search" placeholder="Search FAQs..." class="w-full border-0"
-        div class="flex gap-2 pt-4"
+        div class="flex flex-wrap items-center justify-center gap-2 pt-4"
           a class="flex gap-1 px-3 py-2 text-xs bg-white border-[1px] border-gray-5 border-solid rounded-full text-gray-2" href="#getting-started"
             span aria-hidden="true"
                   = inline_svg_tag 'rocket.svg', size: '15*15', class: "text-blue-dark"
@@ -46,7 +46,7 @@ div class="main"
       div class="absolute overflow-visible -right-6 -top-40 -z-1 md:hidden"
         = inline_svg_tag 'faq-mob-blur-right.svg'
 
-  section class="flex flex-col max-w-4xl gap-16 px-5 mx-auto my-20"
+  section class="flex flex-col max-w-4xl gap-16 px-5 mx-auto my-10 md:my-20"
     div class="flex flex-col gap-2" id="getting-started"
       div class="flex gap-2 pb-4"
         span aria-hidden="true"
@@ -170,8 +170,8 @@ div class="main"
             li <u>Gamblers Anonymous (GA)</u>
 
 
-  div class="flex flex-col bg-seafoam"
-    div class="flex items-center max-w-4xl mx-auto my-10"
+  div class="flex flex-col px-8 bg-seafoam"
+    div class="flex flex-col items-center max-w-4xl mx-auto my-10 md:flex-row"
       div class=""
         = inline_svg_tag 'pablita-looking-for.svg', class:"w-3/4"
       div class="text-gray-2"
