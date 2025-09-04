@@ -55,7 +55,7 @@ div class="main" data-controller="faq-search" data-faq-search-debounce-value="20
         p class="text-2xl font-bold text-blue-dark"
           | Getting Started
       = render Accordion::Component.new(title: "What is Giving Connection?", description: "Giving Connection is a free platform that helps people discover and connect with local nonprofits based on the causes they care about. Whether you're looking for support, ways to give back, or to spread the word about your organization, we make it easier to find the right match.")
-      = render Accordion::Component.new(title: "Is Giving Connection free to use?", description: "Yes. Our platform is completely free for individuals and nonprofits.")
+      = render Accordion::Component.new(title: "Is Giving Connection free to use?", description: "Yes! Our platform is completely free for individuals and nonprofits.")
       = render Accordion::Component.new(title: "Who is Giving Connection for?", description: "Giving Connection is for anyone who wants to get involved, find help, or make a difference: \
         <ul class='pl-4 list-disc'> \
           <li>Community members seeking local resources or services</li> \
@@ -93,7 +93,7 @@ div class="main" data-controller="faq-search" data-faq-search-debounce-value="20
           | Understanding How it Works
       = render Accordion::Component.new(title: "How are nonprofits categorized? What if I can't find a category meeting my needs?", description: "Nonprofits on our platform select their own categories from a list of causes and services inspired by the IRS’s National Taxonomy of Exempt Entities (NTEE) system. This helps ensure consistency while allowing organizations to represent their work accurately. <br><br> \
         If you don’t see a specific cause or service that matches your needs, please email us at <a href='mailto:info@givingconnection.org' class='underline text-blue-dark'>info@givingconnection.org</a>. We’re always open to feedback and may be able to add new categories over time.")
-      = render Accordion::Component.new(title: "What does the green check mark mean?", description: "The green check mark next to a nonprofit’s name indicates that the information listed has been reviewed and verified by that nonprofit. When reviewing a nonprofit profile without a green check mark, we encourage users to visit the nonprofit’s website to verify the information listed and ensure it’s up to date. <br> \
+      = render Accordion::Component.new(title: "What does the green check mark mean?", description: "The green check mark next to a nonprofit’s name indicates that the information listed has been reviewed and verified by that nonprofit. When reviewing a nonprofit profile without a green check mark, we encourage users to visit the nonprofit’s website to verify the information listed and ensure it’s up to date. <br><br> \
         We do not guarantee outcomes and are not responsible for the services, conduct, or performance of any referred organizations. Please use your own judgment when engaging with any third-party organization.")
 
     div class="flex flex-col gap-2" id="for-nonprofits"
@@ -137,45 +137,44 @@ div class="main" data-controller="faq-search" data-faq-search-debounce-value="20
           p class="text-lg font-medium"
             | Suicide Prevention & Emotional Support:
           ul class="pl-4 list-disc"
-            li <u>National Suicide Prevention Lifeline:</u> (800) 273-8255
-            li <u>National Suicide Prevention Lifeline (Spanish):</u> (888) 628-9454
-            li <u>National Suicide Prevention Lifeline (Deaf and Hard of Hearing):</u> For TTY users, use your preferred relay service or dial 711 then 1-800-273-8255
-            li <u>Crisis Text Line:</u> Text HOME to 741741
-            li <u>Veterans Crisis Line:</u> (800) 273-8255, press 1 — Text: 838255 — Online chat available
-            li <u>National Grad Crisis Line:</u> (877) 472-3457
+            li <a href="https://suicidepreventionlifeline.org" class='underline' target='_blank'>National Suicide Prevention Lifeline:</a> (800) 273-8255
+            li <a href="https://suicidepreventionlifeline.org/help-yourself/en-espanol" class='underline' target='_blank'>National Suicide Prevention Lifeline (Spanish):</a> (888) 628-9454
+            li <a href="https://suicidepreventionlifeline.org/help-yourself/for-deaf-hard-of-hearing" class='underline' target='_blank'>National Suicide Prevention Lifeline (Deaf and Hard of Hearing):</a> For TTY users, use your preferred relay service or dial 711 then 1-800-273-8255
+            li <a href="https://www.crisistextline.org" class='underline' target='_blank'>Crisis Text Line:</a> Text HOME to 741741
+            li <a href="https://www.veteranscrisisline.net" class='underline' target='_blank'>Veterans Crisis Line:</a> (800) 273-8255, press 1 — Text: 838255 — Online chat available
+            li <a href="https://gradresources.org/crisis" class='underline' target='_blank'>National Grad Crisis Line:</a> (877) 472-3457
         div class="py-4"
           div class="inline-block p-2 rounded-full bg-salmon bg-opacity-15"
             = inline_svg_tag 'home.svg'
           p class="text-lg font-medium"
             | Domestic Violence & Sexual Assault
           ul class="pl-4 list-disc"
-            li <u>National Domestic Violence Hotline:</u> (800) 799-7233
-            li <u>National Sexual Assault Hotline:</u> (800) 656-4673
-            li <u>Childhelp National Child Abuse Hotline:</u> (800) 422-4453
+            li <a href="https://www.thehotline.org/" class='underline' target='_blank'>National Domestic Violence Hotline:</a> (800) 799-7233
+            li <a href="https://www.rainn.org/" class='underline' target='_blank'>National Sexual Assault Hotline:</a> (800) 656-4673
+            li <a href="https://childhelphotline.org/" class='underline' target='_blank'>Childhelp National Child Abuse Hotline:</a> (800) 422-4453
         div class="py-4"
           div class="inline-block p-2 rounded-full bg-salmon bg-opacity-15"
             = inline_svg_tag 'heart-beat.svg'
           p class="text-lg font-medium"
             | Health, Substance Abuse & HIV/AIDS
           ul class="pl-4 list-disc"
-            li <u>CDC National HIV and AIDS Hotline:</u> (800) 232-4636
-            li <u>SAMHSA National Helpline (Substance Abuse and Mental Health Services Administration):</u> (800) 662-4357
+            li <a href="https://www.cdc.gov/hiv/library/hotlines.html" class='underline' target='_blank'>CDC National HIV and AIDS Hotline:</a> (800) 232-4636
+            li <a href="https://www.samhsa.gov/find-help/national-helpline" class='underline' target='_blank'>SAMHSA National Helpline (Substance Abuse and Mental Health Services Administration):</a> (800) 662-4357
         div class="py-4"
           div class="inline-block p-2 rounded-full bg-salmon bg-opacity-15"
             = inline_svg_tag 'people.svg'
           p class="text-lg font-medium"
             | Support Groups
           ul class="pl-4 list-disc"
-            li <u>Alcoholics Anonymous (AA)</u>
-            li <u>Narcotics Anonymous (NA)</u>
-            li <u>Gamblers Anonymous (GA)</u>
+            li <a href="https://www.aa.org" class='underline' target='_blank'>Alcoholics Anonymous (AA)</a>
+            li <a href="https://www.na.org" class='underline' target='_blank'>Narcotics Anonymous (NA)</a>
+            li <a href="https://www.gamblersanonymous.org" class='underline' target='_blank'>Gamblers Anonymous (GA)</a>
 
 
   div class="flex flex-col px-8 bg-seafoam"
     div class="flex flex-col items-center max-w-4xl mx-auto my-10 md:flex-row"
-      div class=""
-        = inline_svg_tag 'pablita-looking-for.svg', class:"w-3/4"
+      div class="flex w-1/4"
+        = inline_svg_tag 'pablita-looking-for.svg', class:""
       div class="text-gray-2"
         p class="text-2xl font-bold" Can't find what you're looking for?
-        p Please reach us at <a href="mailto:info@givingconnection.org" class="underline text-blue-dark">info@givingconnection.org</a> if you cannot find an answer to your question.
-        p We will get back to you within 3–5 business days.
+        p Please reach us at <a href="mailto:info@givingconnection.org" class="underline text-blue-dark">info@givingconnection.org</a> if you cannot find an answer to your question. We will get back to you within 3–5 business days.
