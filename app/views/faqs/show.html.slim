@@ -1,11 +1,11 @@
 div class="overflow-x-hidden main" data-controller="faq-search" data-faq-search-debounce-value="200"
 
   div class="relative flex flex-col px-6 mx-auto bg-[#DCEEF8] bg-opacity-70 md:flex-row justify-evenly md:items-end"
-    div class="absolute -translate-x-1/2 top-100 left-1/2"
+    div class="absolute -translate-x-1/2 left-1/2"
       = inline_svg_tag 'blur-background-4.svg', class: "w-[300px] h-[300px] md:w-[600px] md:h-[600px]"
-    div class="relative flex flex-col justify-center py-10 text-center md:py-20"
+    div class="relative flex flex-col justify-center pt-10 text-center md:pt-20"
       div class="mx-auto"
-        h2 class="text-2xl font-bold text-cente text-blue-dark"
+        h2 class="text-2xl font-bold text-center text-blue-dark"
           | FREQUENTLY ASKED QUESTIONS
         p class="font-light"
           | Everything you need to know about Giving Connection
@@ -38,7 +38,9 @@ div class="overflow-x-hidden main" data-controller="faq-search" data-faq-search-
             span aria-hidden="true"
                   = inline_svg_tag 'chain-link.svg', size: '15*15', class: "text-blue-dark"
             | Quick Links
-        ul data-faq-search-target="results" class="flex flex-col gap-2 mt-4"
+  
+  div class="mx-auto bg-[#DCEEF8] bg-opacity-70 pb-10 md:pb-20 flex flex-col items-center"
+    ul data-faq-search-target="results" class="flex flex-col w-full max-w-4xl gap-2 px-6 mt-4"
 
   section class="flex flex-col max-w-4xl gap-16 px-5 mx-auto my-10 md:my-20"
     div class="flex flex-col gap-2" id="getting-started"
