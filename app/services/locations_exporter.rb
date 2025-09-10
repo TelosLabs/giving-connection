@@ -2,10 +2,10 @@
 #
 # This service exports comprehensive organization and location data to Excel format.
 # It includes all organization fields, associated data, and location information.
-# 
+#
 # Note: This service has been enhanced to export all fields instead of just name and profile link.
 # Maintains backward compatibility by exporting ALL locations, using nil values for missing organizations.
-# 
+#
 # Performance: Uses preloaded associations with map(&:name) instead of pluck(:name) to avoid N+1 queries.
 # Ensure controller uses: Location.includes(organization: [:causes, :beneficiary_subcategories, :tags, :social_media])
 #
