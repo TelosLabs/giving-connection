@@ -38,17 +38,13 @@ module SpreadsheetImport
 
     def load_presets
       CSV.foreach(@csv_file_paths[:presets_csv_file], headers: :first_row) do |row|
-        # Each cell can have a value or be blank. We'll skip blank ones and only import unique values.
 
-        # 1. Causes
         cause = row["causes"]&.strip
         Cause.find_or_create_by!(name: cause) if cause.present?
 
-        # 2. Beneficiaries
         beneficiary = row["beneficiaries"]&.strip
         BeneficiarySubcategory.find_or_create_by!(name: beneficiary) if beneficiary.present?
 
-        # 3. Services
         service = row["services"]&.strip
         Service.find_or_create_by!(name: service) if service.present?
       end
@@ -61,20 +57,42 @@ module SpreadsheetImport
       organizations.each do |entry|
         row_number = entry[:row_number]
         org = entry[:org]
-        entry[:org_row]
+        label = "Row #{row_number} — #{org.name.presence || "Unnamed Org"}"
 
-        org_import_result = Organization.import([org], recursive: true, track_validation_failures: true)
+        org_import_result =
+          Organization.import([org],
+            recursive: true,
+            validate: true,
+            track_validation_failures: true
+          )
 
-        if org_import_result&.ids&.any?
-          org.run_callbacks(:create) { true }
-          Rails.logger.warn "Import SUCCESSFUL for organization at row #{row_number} (name: #{org.name})"
+        failed =
+          if org_import_result.respond_to?(:failed_instances_with_indexes)
+            org_import_result.failed_instances_with_indexes
+          else
+            org_import_result.failed_instances
+          end
+
+        if failed.present?
+          @import_log&.increment!(:error_count)
+          Rails.logger.warn "Import FAILED for organization at row #{row_number} (name: #{org.name})"
+
+          Array(failed).each do |item|
+            idx, inst = item.is_a?(Array) ? item : [nil, item]
+            if inst.respond_to?(:errors) && inst.errors.any?
+              inst.errors.full_messages.each { |msg| @error_messages_by_row[label] << msg }
+            else
+              @error_messages_by_row[label] << "Database/association error on #{inst.class.name}#{idx ? " (index #{idx})" : ""}"
+            end
+          end
         else
-          Rails.logger.warn "Import failed for organization at row #{row_number} (name: #{org.name})"
+          @import_log&.increment!(:success_count)
+          Rails.logger.info "Import SUCCESSFUL for organization at row #{row_number} (name: #{org.name})"
         end
       end
 
-      formatted_errors = @error_messages_by_row.map do |label, messages|
-        ["#{label}:", *messages.map { |msg| "• #{msg}" }].join("\n")
+      formatted_errors = @error_messages_by_row.map do |row_label, messages|
+        ["#{row_label}:", *messages.map { |msg| "• #{msg}" }].join("\n")
       end.join("\n\n")
 
       @import_log.update!(
@@ -99,7 +117,6 @@ module SpreadsheetImport
         new_organization.creator = @creator
         new_organization.build_social_media(build_social_media_hash(org_row))
         build_location_from_org_row(new_organization, org_row)
-
         build_org_associations(new_organization, org_row)
 
         has_errors = log_organization_errors(row_number, org_row, new_organization)
@@ -107,15 +124,14 @@ module SpreadsheetImport
           Rails.logger.warn "❌ Skipping row #{row_number} due to missing data (#{org_name || "Unnamed Org"})"
           @import_log&.increment!(:error_count)
           next
-        else
-          @import_log&.increment!(:success_count)
         end
 
         organizations << {row_number: row_number, org: new_organization, org_row: org_row}
         Rails.logger.info "Prepared organization: #{new_organization.name} (row #{row_number})"
-      rescue
+      rescue => e
         organizations << {row_number: row_number, org: new_organization, org_row: org_row}
         @import_log&.increment!(:error_count)
+        Rails.logger.error "Exception preparing row #{row_number}: #{e.message}"
       end
       organizations
     end

@@ -40,7 +40,8 @@ module SpreadsheetImport
       begin
         data = JSON.parse(json_str)
 
-        data["country"] = "USA" %w[address_line1 city state zip country].each { |k| data[k] = nil unless data.key?(k) }
+        data["country"] = "USA" 
+        %w[address_line1 city state zip country].each { |k| data[k] = nil unless data.key?(k) }
 
         data
       rescue JSON::ParserError
