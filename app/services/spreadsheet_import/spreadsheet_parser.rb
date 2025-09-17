@@ -169,14 +169,20 @@ module SpreadsheetImport
       }
     end
 
-    def safe_non_standard_office_hours(value)
-      valid_values = Location.non_standard_office_hours.keys
+    def normalize_non_standard_office_hours(value)
+      valid = Location.non_standard_office_hours.keys
+      v = clean_na(value)&.to_s&.strip&.downcase
+      return nil if v.blank?
+      return v if valid.include?(v)
 
-      cleaned = value.to_s.strip.downcase
-      return cleaned if valid_values.include?(cleaned)
+      return "appointment_only"      if v.include?("appointment")
+      return "always_open"           if v.include?("always open")
+      return "no_set_business_hours" if v.include?("NA")
 
       nil
     end
+
+
 
     def build_location_from_org_row(organization, org_row)
       if org_row["Website link"].to_s.strip.downcase == "not found"
@@ -216,7 +222,7 @@ module SpreadsheetImport
         email: clean_na(org_row["Email"]),
         time_zone: timezone,
         offer_services: true,
-        non_standard_office_hours: hours_string.present? ? safe_non_standard_office_hours(org_row["Hours of Operation"]) : "no_set_business_hours",
+        non_standard_office_hours: normalize_non_standard_office_hours(org_row["Hours of Operation"]) || "no_set_business_hours",
         youtube_video_link: clean_na(org_row["YouTube Video Link"]),
         website: clean_na(org_row["Website link"]),
         latitude: geo_result&.latitude,
