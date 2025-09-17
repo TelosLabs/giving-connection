@@ -38,7 +38,6 @@ module SpreadsheetImport
 
     def load_presets
       CSV.foreach(@csv_file_paths[:presets_csv_file], headers: :first_row) do |row|
-
         cause = row["causes"]&.strip
         Cause.find_or_create_by!(name: cause) if cause.present?
 
@@ -63,8 +62,7 @@ module SpreadsheetImport
           Organization.import([org],
             recursive: true,
             validate: true,
-            track_validation_failures: true
-          )
+            track_validation_failures: true)
 
         failed =
           if org_import_result.respond_to?(:failed_instances_with_indexes)
@@ -175,14 +173,12 @@ module SpreadsheetImport
       return nil if v.blank?
       return v if valid.include?(v)
 
-      return "appointment_only"      if v.include?("appointment")
-      return "always_open"           if v.include?("always open")
+      return "appointment_only" if v.include?("appointment")
+      return "always_open" if v.include?("always open")
       return "no_set_business_hours" if v.include?("NA")
 
       nil
     end
-
-
 
     def build_location_from_org_row(organization, org_row)
       if org_row["Website link"].to_s.strip.downcase == "not found"

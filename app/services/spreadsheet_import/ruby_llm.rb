@@ -31,7 +31,8 @@ module SpreadsheetImport
       text =
         if response.respond_to?(:content) then response.content.to_s
         elsif response.respond_to?(:output_text) then response.output_text.to_s
-        else response.to_s
+        else
+          response.to_s
         end
 
       cleaned = text.gsub(/```json|```/i, "").strip
@@ -40,7 +41,7 @@ module SpreadsheetImport
       begin
         data = JSON.parse(json_str)
 
-        data["country"] = "USA" 
+        data["country"] = "USA"
         %w[address_line1 city state zip country].each { |k| data[k] = nil unless data.key?(k) }
 
         data
