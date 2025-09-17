@@ -19,7 +19,7 @@ module SpreadsheetImport
 
         parsed_address = build_parsed_address(llm_result)
 
-        result = try_geocode(parsed_address)
+        result = try_geocode(parsed_address) || try_geocode(@raw_address)
 
         unless result
           Rails.logger.warn "📍 Geocoding failed for parsed input: '#{parsed_address}'"
@@ -52,6 +52,8 @@ module SpreadsheetImport
 
       if address_line1.nil?
         [city, state, zip].compact.join(", ")
+      elsif zip.nil?
+        [address_line1, city, state].compact.join(", ")
       else
         [address_line1, city, state, zip].compact.join(", ")
       end
