@@ -33,16 +33,15 @@ class OfficeHour < ActiveRecord::Base
 
   def formatted_open_time
     return nil unless open_time
-    now = current_time_in_zone
-    open_time.change({year: now.year, month: now.month, day: now.day})
+
+    # Convert stored UTC time to local timezone for display
     in_local_time(open_time)
   end
 
   def formatted_close_time
     return nil unless close_time
 
-    now = current_time_in_zone
-    close_time.change({year: now.year, month: now.month, day: now.day})
+    # Convert stored UTC time to local timezone for display
     in_local_time(close_time)
   end
 
