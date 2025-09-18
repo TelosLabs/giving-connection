@@ -1,6 +1,10 @@
 require "rails_helper"
 
 RSpec.describe SpreadsheetImport::AddressLocationParser do
+  before(:each) do
+    skip "Skipping API tests in CI environment" if !ENV['development']
+  end
+
   it "returns the correct coordinates for an example place" do
     result = described_class.new("5800 MARMION WAY, LOS ANGELES, CA, 90042").call
     expect(result.latitude).to eq(34.1110080)
