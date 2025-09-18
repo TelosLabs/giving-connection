@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe SpreadsheetImport::AddressLocationParser do
   before do
-    skip "Skipping API tests in CI environment" unless ENV['development']
+    skip "Skipping API tests in CI environment" if ENV['CI']
   end
 
   it "returns the correct coordinates for an example place" do
