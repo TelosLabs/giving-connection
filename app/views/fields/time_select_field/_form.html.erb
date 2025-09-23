@@ -2,6 +2,16 @@
   <%= f.label field.attribute %>
 </div>
 <div class="field-unit__field">
-  <% time_zone = f.object.location.time_zone  %>
-  <%= f.time_field field.attribute, value: field&.data&.in_time_zone(time_zone)&.strftime("%H:%M") || "" %>
+  <% 
+    # Use the object's formatted time methods to get the correct local time
+    time_value = case field.attribute
+                 when :open_time
+                   f.object.formatted_open_time&.strftime("%H:%M") || ""
+                 when :close_time
+                   f.object.formatted_close_time&.strftime("%H:%M") || ""
+                 else
+                   ""
+                 end
+  %>
+  <%= f.time_field field.attribute, value: time_value %>
 </div>

@@ -46,7 +46,7 @@ It renders the `_table` partial to display details about the resources.
       [:new, namespace, page.resource_path.to_sym],
       class: "button mt-1",
     ) if valid_action?(:new) && show_action?(:new, new_resource) %>
-    <%= link_to 'Download list', new_admin_export_locations_path, class: 'button mt-1' %>
+    <%= link_to 'Download Complete Data', new_admin_export_locations_path, class: 'button mt-1' %>
   </div>
 </header>
 <section class="main-content__body main-content__body--flush">
