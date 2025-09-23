@@ -30,15 +30,33 @@
           // Search result cards
           = turbo_frame_tag "pagy" do
             div class="flex flex-col w-full bg-white md:h-85vh md:overflow-y-auto"
-              div class="flex flex-row justify-between items-center p-4 w-full bg-white border-b border-gray-8"
+              div class="flex flex-row gap-1 justify-between items-center p-4 w-full bg-white border-b border-gray-8"
                 span class="text-xs text-gray-3"
                   | #{pluralize(@pagy.count, 'result')} found
+                div class="flex gap-2"
+                  / Download Results Button
+                  - if user_signed_in? && @pagy.count > 0
+                    div data-controller="download" data-download-url-value=search_exports_path data-download-result-ids-value="#{@all_result_ids.to_json}"
+                      button type="button" data-action="click->download#submit" class="inline-flex justify-center items-center px-3 py-1 text-xs bg-white rounded-full border cursor-pointer text-gray-3 border-gray-5 hover:bg-gray-5"
+                        span class="flex items-center"
+                          span class="mr-1" ⬇
+                          span Download Results
+                  - elsif !user_signed_in? && @pagy.count > 0
+                    - download_tooltip_id = SecureRandom.hex(8)
+                    div class="relative"
+                      div class="inline-flex px-3 py-1 text-xs text-gray-400 bg-gray-100 rounded-full border cursor-not-allowed border-gray-5" aria-labelledby=download_tooltip_id data-tooltip-target="tooltip"
+                        span class="flex items-center"
+                          span ⬇
+                          span Download Results
+                      span role="tooltip" id=download_tooltip_id class="hidden absolute right-0 z-10 px-3 py-1 mt-8 w-48 text-white bg-opacity-90 rounded-lg transform translate-x-1/2 bg-gray-2"
+                        | Sign in to download search results
+                  / Create Search Alert Button
                 - if params.dig('search', 'keyword').present? || list_of_filters(@search).present?
                   = link_to( \
                       new_alert_path( \
                         filters: parse_filters(@search), \
                         filters_list: list_of_filters(@search)), \
-                      class: "inline-flex items-center px-3 py-1 text-xs text-gray-3 cursor-pointer border border-gray-5 hover:bg-gray-5 rounded-full", \
+                      class: "inline-flex text-center items-center px-3 py-1 text-xs text-gray-3 cursor-pointer border border-gray-5 hover:bg-gray-5 rounded-full", \
                       data: { turbo_stream: true } ) do
                         = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-2 -ml-0.5'
                         | Create Search Alert
