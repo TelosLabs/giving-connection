@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_01_17_173849) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_19_202222) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -122,6 +122,13 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_17_173849) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["beneficiary_group_id"], name: "index_beneficiary_subcategories_on_beneficiary_group_id"
+  end
+
+  create_table "blogs", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "causes", force: :cascade do |t|

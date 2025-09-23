@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :blogs
   require "sidekiq/web"
   mount Sidekiq::Web => "/sidekiq"
 
