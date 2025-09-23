@@ -1,9 +1,12 @@
 import { Controller } from "@hotwired/stimulus";
+import { useDebounce } from "stimulus-use";
 
 export default class extends Controller {
     static targets = ["input", "formatError"]
+    static debounces = ["validateEmail"]
 
     connect() {
+        useDebounce(this)
         this.validateEmail()
     }
 

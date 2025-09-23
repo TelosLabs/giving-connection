@@ -1,9 +1,12 @@
 import { Controller } from "@hotwired/stimulus";
+import { useDebounce } from "stimulus-use";
 
 export default class extends Controller {
     static targets = ["input", "formatError"]
+    static debounces = ["validatePhoneNumber"]
 
     connect() {
+        useDebounce(this)
         this.validatePhoneNumber()
     }
 
@@ -14,7 +17,6 @@ export default class extends Controller {
         const plusCount = (number.match(/\+/g) || []).length;
         const hasLeadingPlus = number.startsWith('+');
         const validPlus = (plusCount === 0) || (plusCount === 1 && hasLeadingPlus);
-        const cleanedNumber = number.replace(/-/g, '');
         const isValidFormat = validPlus && /^\+?\d{10,15}$/.test(cleanedNumber);
 
         if (!isValidFormat && number.length > 0) {

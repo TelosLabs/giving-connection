@@ -303,7 +303,7 @@
 
                     div class="col-span-12 lg:col-span-6 md:col-span-7" id="location-specific-fields"
                       = location_form.fields_for :phone_number, PhoneNumber.find_or_initialize_by(location: location_form.object) do |phone_form|
-                        div data-controller = "phone-number-validation"
+                        div data-controller="phone-number-validation"
                           = phone_form.label :number, "Phone", class: "block text-sm text-gray-3 font-medium"
                           = phone_form.text_field :number, { class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", data: { "phone-number-validation-target": "input", action: "input->phone-number-validation#validatePhoneNumber keypress->phone-number-validation#filterInput" } }
                           p.text-sm.text-red-500.mt-1.hidden data-phone-number-validation-target="formatError"
