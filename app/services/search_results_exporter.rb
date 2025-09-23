@@ -52,7 +52,7 @@ class SearchResultsExporter < ApplicationService
       extract_city(result.address),
       extract_state(result.address),
       extract_zipcode(result.address),
-      result.organization&.phone_number || "",
+      result.phone_number&.number || "",
       result.email || organization&.email || "",
       result.website || organization&.website || "",
       organization&.causes&.pluck(:name)&.join(", ") || "",
