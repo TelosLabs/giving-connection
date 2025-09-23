@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe SearchResultsExporter, type: :service do
   let(:organization) { create(:organization, scope_of_work: "National", verified: true) }
-  let(:cause) { create(:cause, name: "Health") }
+  let(:cause) { Cause.find_or_create_by(name: "Health") }
   let!(:location) do
     create(:location, :with_office_hours,
       name: "Test Nonprofit",
