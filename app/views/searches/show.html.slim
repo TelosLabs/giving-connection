@@ -43,10 +43,10 @@
                           span Download Results
                   - elsif !user_signed_in? && @pagy.count > 0
                     - download_tooltip_id = SecureRandom.hex(8)
-                    div class="relative"
-                      div class="inline-flex px-3 py-1 text-xs text-gray-400 bg-gray-100 rounded-full border cursor-not-allowed border-gray-5" aria-labelledby=download_tooltip_id data-tooltip-target="tooltip"
+                    div class="relative text-xs text-center"
+                      div class="inline-flex items-center px-3 py-1 text-xs text-gray-400 bg-gray-100 rounded-full border cursor-not-allowed border-gray-5 labelled-icon" aria-labelledby=download_tooltip_id
                         span class="flex items-center"
-                          span ⬇
+                          span class="mr-1" ⬇
                           span Download Results
                       span role="tooltip" id=download_tooltip_id class="hidden absolute right-0 z-10 px-3 py-1 mt-8 w-48 text-white bg-opacity-90 rounded-lg transform translate-x-1/2 bg-gray-2"
                         | Sign in to download search results
