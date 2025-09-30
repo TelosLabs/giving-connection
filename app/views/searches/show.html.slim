@@ -86,7 +86,7 @@
                                                         description: "",\
                                                         phone_number: result.phone_number&.number,\
                                                         current_user: current_user,\
-                                                        verified: result.organization.verified?,\
+                                                        verified: result&.organization&.verified?,\
                                                         po_box: result.po_box?,\
                                                         causes: result&.causes,\
                                                         turbo_frame: {id: "map-left-popup", src: new_map_popup_path(location_id: result&.id)})

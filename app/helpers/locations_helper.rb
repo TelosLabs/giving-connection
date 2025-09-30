@@ -1,5 +1,8 @@
 module LocationsHelper
   def logo_link(turbo_frame, id, image_url)
+    # Handle nil images gracefully
+    return "" if image_url.nil?
+
     if device == "mobile" || turbo_frame[:src].blank?
       link_to(
         location_path(id),
