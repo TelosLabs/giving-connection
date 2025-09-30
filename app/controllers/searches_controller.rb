@@ -13,7 +13,23 @@ class SearchesController < ApplicationController
     @search = params["search"].present? ? Search.new(create_params.to_h.merge(location_params)) : Search.new(location_params)
     @search.save
     @all_result_ids = @search.results.pluck(:id)  # Capture all IDs before pagination
-    @pagy, @results = pagy(@search.results)
+
+    begin
+      @pagy, @results = pagy(@search.results)
+    rescue Pagy::OverflowError
+      # Log pagination overflow for debugging
+      Rails.logger.warn "Pagination overflow: page #{params[:page]} requested, but only #{@search.results.count} results (#{(@search.results.count / Pagy::DEFAULT[:items].to_f).ceil} pages available)"
+      Rails.logger.warn "Search params: #{params.except(:controller, :action)}"
+
+      # Redirect to page 1 instead of showing error
+      redirect_to request.path + "?" + request.query_string.gsub(/page=\d+/, "").gsub("&&", "&").gsub(/^&|&$/, ""), status: 302 and return
+    rescue => e
+      # Log other errors for debugging
+      Rails.logger.error "Search pagination error: #{e.message}"
+      Rails.logger.error "Search params: #{params}"
+      raise e
+    end
+
     puts @search.errors.full_messages if @search.results.any?
 
     authorize @search

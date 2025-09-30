@@ -28,7 +28,6 @@ export default class extends Controller {
   handlePaginationClick (event) {
     // Check if clicked element is a pagination link
     if (event.target.tagName === 'A' && event.target.href) {
-      console.log('Pagination clicked:', event.target.href)
       this.showSpinner()
 
       // Hide spinner after a delay as fallback
