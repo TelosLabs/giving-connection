@@ -33,6 +33,8 @@ export default class extends Controller {
       localStorage.setItem('activeTab', tabName)
       this.updateActiveTab()
       window.dispatchEvent(new CustomEvent('tsc:tab-change'))
+    } else {
+      console.warn(`Tab with name "${tabName}" not found`)
     }
   }
 
