@@ -1,7 +1,7 @@
 nav class="flex gap-4 justify-center my-5" role="navigation" aria-label="pager"
   - pagy.series.each do |item|        # series example: [1, :gap, 7, 8, "9", 10, 11, :gap, 36]
     - if item.is_a?(Integer)          # page link
-      a class="px-3 py-1 text-sm font-extrabold leading-6 transition cursor-pointer rounded-6px text-gray-3 bg-gray-7 hover:bg-gray-4" href="#{pagy_url_for(pagy, item)}" data-turbo-frame="pagy" ==> item
+      a class="px-3 py-1 text-sm font-extrabold leading-6 transition cursor-pointer rounded-6px text-gray-3 bg-gray-7 hover:bg-gray-4" href="#{pagy_url_for(pagy, item)}" data-turbo-frame="search-locations" ==> item
 
     - elsif item.is_a?(String)        # current page
       span class="px-3 py-1 text-sm font-extrabold leading-6 text-white transition cursor-pointer hover:bg-blue-medium rounded-6px bg-blue-dark" ==> item
