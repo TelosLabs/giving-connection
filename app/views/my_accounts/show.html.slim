@@ -1,22 +1,24 @@
 div class="w-full h-full bg-white"
-  div class="py-12 mx-auto max-w-6xl md:px-28 md:py-20"
+  div class="max-w-6xl py-12 mx-auto md:px-28 md:py-20"
     h2 class="mb-6 text-2xl font-bold text-center text-grey-2 md:text-left"
       | My Account
     div
       div data-controller="tabs" data-tabs-active-tab="border-blue-medium text-blue-medium"
-        nav class="flex overflow-x-auto px-6 -mb-px space-x-6 text-grey-5" aria-label="Tabs"
+        nav class="flex px-6 -mb-px space-x-6 overflow-x-auto text-grey-5" aria-label="Tabs"
           /! Current: "border-indigo-500 text-indigo-600", Default: "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab"
+          a class="px-1 py-4 mb-4 text-sm font-medium border-b-2 border-transparent whitespace-nowrap hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab"
             | My Profile
-          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab"
+          a class="px-1 py-4 mb-4 text-sm font-medium border-b-2 border-transparent whitespace-nowrap hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab"
             | Saved Pages
-          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" aria-current="page" href="#" data-action="click->tabs#change" data-tabs-target="tab"
+          a class="px-1 py-4 mb-4 text-sm font-medium border-b-2 border-transparent whitespace-nowrap hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab"
+            | Saved Blogs
+          a class="px-1 py-4 mb-4 text-sm font-medium border-b-2 border-transparent whitespace-nowrap hover:text-blue-medium hover:border-blue-medium" aria-current="page" href="#" data-action="click->tabs#change" data-tabs-target="tab"
             | Alerts
-          a class="px-1 py-4 mb-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab"
+          a class="px-1 py-4 mb-4 text-sm font-medium border-b-2 border-transparent whitespace-nowrap hover:text-blue-medium hover:border-blue-medium" href="#" data-action="click->tabs#change" data-tabs-target="tab"
             | My Nonprofit Pages
 
         div class="hidden px-6" data-tabs-target="panel"
-          h4 class="my-7 text-xl text-grey-2"
+          h4 class="text-xl my-7 text-grey-2"
             | My Profile Information
           = form_with model: current_user, url: user_path(current_user), html: { method: :put } do |form|
             div class="grid grid-cols-12 gap-6" data-controller="toggle"
@@ -29,7 +31,7 @@ div class="w-full h-full bg-white"
                 = form.email_field :email, { value: current_user.email, class: "c-input" }
               div class="hidden col-span-3 md:flex"
               div class="col-span-12 py-0 border-t border-gray-8"
-              div class="flex flex-row col-span-12 justify-between"
+              div class="flex flex-row justify-between col-span-12"
                 span class="text-sm font-medium text-grey-4"
                   | Password
                 button class="text-blue-medium hover:text-blue-dark" type="button" data-action=("click->toggle#toggle touch->toggle#toggle")
@@ -53,14 +55,14 @@ div class="w-full h-full bg-white"
                     ' Can't remember your current password?
                     = link_to "Reset via email", new_reset_password_path, class:'text-blue-medium'
               div class="col-span-12 py-0 border-b border-gray-8"
-              div class="flex flex-row col-span-12 justify-center"
+              div class="flex flex-row justify-center col-span-12"
                 = form.submit "Update", class: "hover:bg-seafoam-light transition mx-auto py-2.5 px-5 text-sm font-bold text-blue-dark bg-seafoam uppercase rounded-6px"
               div class="col-span-12 py-4 border-t border-gray-8"
                 = link_to "Log out", destroy_user_session_path, method: :delete, class:'hover:text-blue-medium text-xl font-bold text-blue-dark', data: { turbo: false , test_id: "user_logout_link"}
         div class="hidden" data-tabs-target="panel"
-          h4 class="px-6 my-7 text-xl text-grey-2"
+          h4 class="px-6 text-xl my-7 text-grey-2"
             | My Saved Nonprofit Pages
-          div class="flex flex-col px-2 w-full h-full md:overflow-y-auto"
+          div class="flex flex-col w-full h-full px-2 md:overflow-y-auto"
             - if @saved_pages.present?
               ul class="flex flex-col divide-y divide-gray-8"
                 - @saved_pages.each do |page|
@@ -80,22 +82,41 @@ div class="w-full h-full bg-white"
                     = link_to favorite_location_path(FavoriteLocation.find_by(user: current_user, location: page)), method: :delete, class: "absolute top-6 right-14 text-blue-medium hover:text-blue-dark", data: { turbo_stream: true } do
                       = inline_svg_tag 'trash.svg', class: 'w-5 h-5 stroke-salmon'
             - else
-              div class="flex justify-center my-16 w-full"
+              div class="flex justify-center w-full my-16"
                 = inline_svg_tag 'empty_state_1.svg', size:'298*153'
-              div class="flex flex-col gap-4 justify-center items-center my-4 mb-16 w-full text-grey-2"
+              div class="flex flex-col items-center justify-center w-full gap-4 my-4 mb-16 text-grey-2"
                 p class="text-xl font-bold text-center"
                   | You haven't saved any Nonprofit Pages.
-                p class="px-4 max-w-xs text-base text-center"
+                p class="max-w-xs px-4 text-base text-center"
                   | Click on the top right ribbon to save pages when you are browsing through nonprofit listings.
 
+        div class="hidden" data-tabs-target="panel"
+          h4 class="px-6 text-xl my-7 text-grey-2"
+            | My Saved Blogs
+          div class="flex flex-col w-full h-full px-2 md:overflow-y-auto"
+            - if @saved_blogs.present?
+              ul class="flex flex-col gap-16"
+                - @saved_blogs.each do |blog|
+                  li id="saved-blog-#{blog.id}" class="relative"
+                    = render "blogs/blog", blog: blog
+            - else
+              div class="flex justify-center w-full my-16"
+                = inline_svg_tag 'empty_state_1.svg', size:'298*153'
+              div class="flex flex-col items-center justify-center w-full gap-4 my-4 mb-16 text-grey-2"
+                p class="text-xl font-bold text-center"
+                  | You haven't saved any Blogs.
+                p class="max-w-xs px-4 text-base text-center"
+                  | Click on the top right ribbon to save pages when you are browsing through blogs listings.
+
+
         div class="hidden px-6" data-tabs-target="panel"
-          h4 class="mt-7 text-xl text-grey-2"
+          h4 class="text-xl mt-7 text-grey-2"
             | Manage Alerts
           div class="flex flex-col w-full h-full md:overflow-y-auto"
             - if @alerts.present?
               ul class="flex flex-col divide-y divide-gray-8"
                 - @alerts.each_with_index do |alert, index|
-                  li class="flex flex-col py-10 w-full"
+                  li class="flex flex-col w-full py-10"
                     div class="flex flex-row justify-between w-full"
                       span class="text-lg font-bold text-black capitalize"
                         | #{alert.decorate.title(index)}
@@ -107,20 +128,20 @@ div class="w-full h-full bg-white"
                       p
                         | Frequency: #{alert.frequency.capitalize}
             - else
-              div class="flex justify-center my-16 w-full"
+              div class="flex justify-center w-full my-16"
                 = inline_svg_tag 'empty_state_2.svg', size:'294*145'
-              div class="flex flex-col gap-4 justify-center items-center my-4 mb-16 w-full text-grey-2"
+              div class="flex flex-col items-center justify-center w-full gap-4 my-4 mb-16 text-grey-2"
                 p class="text-xl font-bold text-center"
                   | You haven't created any search alerts.
-                p class="px-4 max-w-xs text-base text-center"
+                p class="max-w-xs px-4 text-base text-center"
                   | Create an email alert by clicking on "Create Alert" after making a search.
 
         div class="hidden px-6" data-tabs-target="panel"
-          h4 class="my-7 text-xl text-grey-2"
+          h4 class="text-xl my-7 text-grey-2"
             | My Nonprofit Pages
           div class="flex flex-col w-full h-full md:overflow-y-auto"
             - if @my_organizations.present?
-              ul class="flex flex-col gap-11 divide-y divide-gray-8"
+              ul class="flex flex-col divide-y gap-11 divide-gray-8"
                 - @my_organizations.each do |organization|
                   li class="flex flex-col w-full"
                     div class="flex flex-row justify-between w-full"
@@ -131,10 +152,10 @@ div class="w-full h-full bg-white"
                       = link_to "Edit", edit_organization_path(organization), class:"text-blue-medium hover:text-blue-dark"
 
             - else
-              div class="flex justify-center my-16 w-full"
+              div class="flex justify-center w-full my-16"
                 = inline_svg_tag 'empty_state_3.svg', size:'321*169'
-              div class="flex flex-col gap-4 justify-center items-center my-4 mb-16 w-full text-grey-2"
+              div class="flex flex-col items-center justify-center w-full gap-4 my-4 mb-16 text-grey-2"
                 p class="text-xl font-bold text-center"
                   | You haven't claimed or added any Nonprofit Pages.
-                p class="px-4 max-w-xs text-base text-center"
+                p class="max-w-xs px-4 text-base text-center"
                   | Click "Add A Nonprofit" on the top menu bar to contact us about adding or claiming a nonprofit page.

@@ -12,6 +12,8 @@ import "../components"
 import "../channels"
 import filterStore from "../utils/filterStore"
 import "../controllers"
+import "trix"
+import "@rails/actiontext"
 
 Rails.start()
 ActiveStorage.start()

@@ -1,0 +1,13 @@
+<%= turbo_stream.replace "save-blog-#{@blog.id}" do %>
+  <div class="flex items-center" id="save-blog-<%= @blog.id %>">
+    <div class="p-2 rounded-md hover:bg-gray-300">
+      <%= link_to blog_favorite_blogs_path(@blog),
+                  method: :post,
+                  data: { turbo_stream: true },
+                  title: "Save to favorites",
+                  aria: { label: "Save to favorites" } do %>
+        <%= inline_svg_tag 'bookmark.svg', class: 'w-5 h-5 fill-none' %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

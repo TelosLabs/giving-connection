@@ -62,6 +62,6 @@ class BlogsController < ApplicationController
 
   # Strong parameters - only allow these fields
   def blog_params
-    params.require(:blog).permit(:title, :content, :author, :published)
+    params.require(:blog).permit(:title, :content, :name, :email, :impact_tag, :cover_image)
   end
 end

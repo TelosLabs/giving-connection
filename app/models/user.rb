@@ -45,7 +45,9 @@ class User < ApplicationRecord
   has_many :organizations, as: :creator
   has_many :alerts
   has_many :fav_locs, class_name: "FavoriteLocation"
+  has_many :fav_blogs, class_name: "FavoriteBlog"
   has_many :favorited_locations, through: :fav_locs, source: :location
+  has_many :favorited_blogs, through: :fav_blogs, source: :blog
   has_many :organization_admin
   has_many :administrated_organizations, through: :organization_admin, source: :organization
 

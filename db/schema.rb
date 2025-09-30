@@ -10,12 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_19_202222) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_30_194007) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
   enable_extension "postgis"
+
+  create_table "action_text_rich_texts", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "body"
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
+  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -126,15 +136,24 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_19_202222) do
 
   create_table "blogs", force: :cascade do |t|
     t.string "title"
-    t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
+    t.string "email"
+    t.string "impact_tag"
   end
 
   create_table "causes", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "favorite_blogs", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "blog_id", null: false
+    t.index ["blog_id"], name: "index_favorite_blogs_on_blog_id"
+    t.index ["user_id"], name: "index_favorite_blogs_on_user_id"
   end
 
   create_table "favorite_locations", force: :cascade do |t|
@@ -373,6 +392,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_19_202222) do
   add_foreign_key "alert_services", "services"
   add_foreign_key "alerts", "users"
   add_foreign_key "beneficiary_subcategories", "beneficiary_groups"
+  add_foreign_key "favorite_blogs", "blogs"
+  add_foreign_key "favorite_blogs", "users"
   add_foreign_key "favorite_locations", "locations"
   add_foreign_key "favorite_locations", "users"
   add_foreign_key "location_services", "locations"

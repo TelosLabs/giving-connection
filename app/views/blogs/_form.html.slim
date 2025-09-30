@@ -11,14 +11,14 @@
       | Name*
     p class="font-light text-md"
       | Enter your name here. If you would like to remain anonymous, only provide your first name or simply write anonymous.
-    input type="text" id="blog_author_name" class="w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Jane Doe"
+    = form.text_field :name, class: 'w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent', placeholder:"Jane Doe"
   
   div class="mb-4"
     p class="font-bold text-md"
       | Email
     p class="font-light text-md"
       | Enter your email address.
-    input type="text" id="blog_author_email" class="w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="jane@domain.com"
+    = form.text_field :email, class: 'w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent', placeholder:"jane@domain.com"
 
   div class="mb-4"
     p class="font-bold text-md"
@@ -32,19 +32,27 @@
       | Impact Tag
     p class="font-light text-md"
       | Select an impact tag to help us determine how Giving Connection was able to help you.
-    input type="text" id="blog_impact_tag" class="w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Select..."
+    = form.text_field :impact_tag, class: 'w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent', placeholder:"Select..."
+
+  div class="mb-4"
+    p class="font-bold text-md"
+      | Cover Image
+    p class="font-light text-md"
+      | Upload a cover image for your blog post
+    = form.file_field :cover_image, accept: 'image/*', class: 'w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
 
   div class="mb-4"
     p class="font-bold text-md"
       | Story*
     p class="font-light text-md"
-      | Please share your story with us! If you’re not sure where to begin, here are a few questions to help guide you:
+      | Please share your story with us! If you're not sure where to begin, here are a few questions to help guide you:
     p class="text-sm font-light text-gray-500"
       | What challenges did you face before Giving Connection? <br>
       | How has your life changed since connecting with Giving Connection? <br>
       | How has this experience impacted you? <br>
-    = form.text_area :content, rows: 10, class: 'form-control w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent', placeholder: "Write your story here..."
-  
+    .trix-form-field
+      = form.rich_text_area :content, placeholder: "Write your story here..."
+
   div class="mb-4"
     p class="text-sm font-medium"
       | Allow Giving Connection to share my story

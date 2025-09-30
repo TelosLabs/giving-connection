@@ -1,7 +1,46 @@
-h1 = @blog.title
+div class="overflow-x-hidden main"
+  section class="flex flex-col bg-[#DCEEF8] bg-opacity-70 justify-cente gap-2"
+    - if @blog.cover_image.attached?
+      = image_tag @blog.cover_image, class: "w-full h-96 object-cover"
 
-p = @blog.content
+  section class="flex flex-col max-w-4xl gap-8 px-5 mx-auto my-8"
+    div class="flex flex-col gap-2" id="getting-started"
+      p class="text-3xl font-bold text-blue-dark"
+        = @blog.title
+      div class="flex justify-between"
+        div class="flex items-center divide-x-2"
+          div class="flex gap-2 pr-2"
+            img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Author Avatar" class="object-cover w-6 h-6 rounded-full"
+            p class="font-light text-md"
+              = @blog.name
+          p class="px-2 font-light text-md"
+            = @blog.created_at.strftime("%B %d, %Y")
+          p class="px-2 font-light text-md"
+            | Topic
+        div class="flex items-center divide-x-2"
+          p class="px-2 font-light text-md"
+            | 4 comments
+          p class="px-2 font-light text-md"
+            | 12 appreciations
+          div class="flex gap-2 px-2 text-gray-3"
+            button class="p-2 rounded-md hover:bg-gray-300"
+              = inline_svg_tag 'like_heart.svg', size: '25*25'
+            - fav = current_user&.fav_blogs&.find_by(blog: @blog)
+            div class="flex items-center" id="save-blog-#{@blog.id}"
+              - if fav
+                div class="p-2 rounded-md hover:bg-gray-300"
+                  = link_to favorite_blog_path(fav), method: :delete, data: { turbo_stream: true }, title: "Remove from favorites", aria: { label: "Remove from favorites" } do
+                    = inline_svg_tag 'bookmark.svg', size: '20*20', class:'fill-red'
+              - else
+                div class="p-2 rounded-md hover:bg-gray-300"
+                  = link_to blog_favorite_blogs_path(@blog), params: { blog_id: @blog.id }, method: :post, data: { turbo_stream: true }, title: "Save to favorites", aria: { label: "Save to favorites" } do
+                    = inline_svg_tag 'bookmark.svg', size: '20*20', class: 'fill-none'
+            button class="p-2 rounded-md hover:bg-gray-300"
+              = inline_svg_tag 'share.svg', size: '20*20'
+      p class="text-lg font-light blog-content"
+        = @blog.content
 
-= link_to 'Edit', edit_blog_path(@blog)
-| | 
-= link_to 'Back', blogs_path
+.actions
+  = link_to 'Edit', edit_blog_path(@blog), class: 'btn btn-secondary'
+  = link_to 'Delete', @blog, method: :delete, confirm: 'Are you sure?', class: 'btn btn-danger'
+  = link_to 'Back to All Blogs', blogs_path, class: 'btn btn-light'
