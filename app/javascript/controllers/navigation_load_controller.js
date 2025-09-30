@@ -1,18 +1,18 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ["spinner"]
+  static targets = ['spinner']
   static values = {
     delay: { type: Number, default: 1000 },
-    hiddenClass: { type: String, default: "hidden" }
+    hiddenClass: { type: String, default: 'hidden' }
   }
 
-  connect() {
+  connect () {
     document.addEventListener('turbo:before-fetch-request', this.handleFetchRequest)
     document.addEventListener('turbo:before-render', this.handleBeforeRender)
   }
 
-  disconnect() {
+  disconnect () {
     document.removeEventListener('turbo:before-fetch-request', this.handleFetchRequest)
     document.removeEventListener('turbo:before-render', this.handleBeforeRender)
 
@@ -25,7 +25,19 @@ export default class extends Controller {
     const target = event.target
     const isFullPageReload = target === document.documentElement || target === document.body || target === document
 
-    if (isFullPageReload) {
+    // Check if this is a form submission by looking at the fetch method
+    const isFormSubmission = event.detail?.fetchOptions?.method &&
+                             event.detail.fetchOptions.method !== 'GET'
+
+    // Check if this is a modal request by looking at Turbo frame target
+    const requestUrl = event.detail?.url?.href || ''
+    const isModalRequest = event.detail?.fetchOptions?.headers?.['Turbo-Frame'] ||
+                          requestUrl.includes('/edit') ||
+                          requestUrl.includes('/new') ||
+                          target !== document.documentElement
+
+    // Only show spinner for actual page navigation (GET requests that aren't modals or forms)
+    if (isFullPageReload && !isFormSubmission && !isModalRequest) {
       // Clear any existing timeout to prevent race conditions
       clearTimeout(this.spinnerTimeout)
 
@@ -33,7 +45,7 @@ export default class extends Controller {
         if (this.hasSpinnerTarget) {
           this.spinnerTarget.classList.remove(this.hiddenClassValue)
         } else {
-          console.warn("Navigation spinner target not found")
+          console.warn('Navigation spinner target not found')
         }
       }, this.delayValue) // show spinner if page doesn't load after configured delay
     }
@@ -46,5 +58,4 @@ export default class extends Controller {
       this.spinnerTarget.classList.add(this.hiddenClassValue)
     }
   }
-
 }
