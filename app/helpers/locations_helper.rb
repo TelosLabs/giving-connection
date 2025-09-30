@@ -1,7 +1,9 @@
 module LocationsHelper
   def logo_link(turbo_frame, id, image_url)
-    # Handle nil images gracefully
-    return "" if image_url.nil?
+    # Handle nil images gracefully - return empty div instead of image
+    if image_url.nil?
+      return content_tag(:div, "", class: "w-full h-20 bg-gray-100 rounded")
+    end
 
     if device == "mobile" || turbo_frame[:src].blank?
       link_to(
@@ -37,7 +39,7 @@ module LocationsHelper
   end
 
   def has_donation_or_volunteer_link?(location)
-    location.organization.donation_link.present? ||
-      (location.organization.volunteer_availability? && location.organization.volunteer_link.present?)
+    location&.organization&.donation_link.present? ||
+      (location&.organization&.volunteer_availability? && location&.organization&.volunteer_link.present?)
   end
 end
