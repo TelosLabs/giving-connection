@@ -44,6 +44,7 @@ Rails.application.routes.draw do
   get "termsofuse" => "terms_and_conditions#show", :as => :terms_of_use
   resource :map_popup, only: [:new]
   resource :search_preview, only: [:show]
+  resources :search_exports, only: [:create]
 
   resources :users, only: [:update]
   resources :reset_password, only: %i[new]

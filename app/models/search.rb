@@ -27,6 +27,24 @@ class Search
     @results = keyword.present? ? Locations::KeywordQuery.call({keyword: keyword}, @results) : @results
   end
 
+  def to_params
+    {
+      keyword: keyword,
+      city: city,
+      state: state,
+      lat: lat,
+      lon: lon,
+      distance: distance,
+      causes: causes,
+      services: services,
+      beneficiary_groups: beneficiary_groups,
+      open_now: open_now,
+      open_weekends: open_weekends,
+      scope_of_work: scope_of_work,
+      zipcode: zipcode
+    }.compact
+  end
+
   private
 
   def geolocation_query
