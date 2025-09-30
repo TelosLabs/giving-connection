@@ -1,7 +1,7 @@
 module LocationsHelper
   def logo_link(turbo_frame, id, image_url)
     # Handle nil images gracefully - return empty div instead of image
-    if image_url.nil?
+    if image_url.nil? || !image_url.attached?
       return content_tag(:div, "", class: "w-full h-20 bg-gray-100 rounded")
     end
 
