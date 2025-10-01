@@ -64,6 +64,12 @@ Rails.application.routes.draw do
   end
   resources :favorite_blogs, only: :destroy
 
+  resources :blogs, only: [] do
+    resources :blog_likes, only: :create
+  end
+  resources :blog_likes, only: :destroy
+
+
   resources :favorite_locations, only: %i[create destroy]
   resources :alerts, only: %i[new create edit update destroy]
   resources :causes, param: :name

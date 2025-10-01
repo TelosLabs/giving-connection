@@ -51,6 +51,9 @@ class User < ApplicationRecord
   has_many :organization_admin
   has_many :administrated_organizations, through: :organization_admin, source: :organization
 
+  has_many :blog_likes, dependent: :destroy
+  has_many :liked_blogs, through: :blog_likes, source: :blog
+
   private
 
   def no_urls_in_name

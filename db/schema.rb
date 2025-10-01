@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_30_194007) do
+ActiveRecord::Schema[7.2].define(version: 2025_09_30_234026) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -132,6 +132,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_30_194007) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["beneficiary_group_id"], name: "index_beneficiary_subcategories_on_beneficiary_group_id"
+  end
+
+  create_table "blog_likes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "blog_id", null: false
+    t.index ["blog_id"], name: "index_blog_likes_on_blog_id"
+    t.index ["user_id"], name: "index_blog_likes_on_user_id"
   end
 
   create_table "blogs", force: :cascade do |t|
@@ -392,6 +399,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_30_194007) do
   add_foreign_key "alert_services", "services"
   add_foreign_key "alerts", "users"
   add_foreign_key "beneficiary_subcategories", "beneficiary_groups"
+  add_foreign_key "blog_likes", "blogs"
+  add_foreign_key "blog_likes", "users"
   add_foreign_key "favorite_blogs", "blogs"
   add_foreign_key "favorite_blogs", "users"
   add_foreign_key "favorite_locations", "locations"

@@ -1,0 +1,13 @@
+<%= turbo_stream.replace "like-blog-#{@blog.id}" do %>
+  <div class="flex items-center" id="like-blog-<%= @blog.id %>">
+    <div class="p-2 rounded-md hover:bg-gray-300">
+      <%= link_to blog_blog_likes_path(@blog),
+                  method: :post,
+                  data: { turbo_stream: true },
+                  title: "Like Blog",
+                  aria: { label: "Like Blog" } do %>
+        <%= inline_svg_tag 'like_heart.svg', size: '25*25', class: 'fill-none' %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
