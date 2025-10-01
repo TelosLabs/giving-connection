@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_09_30_234026) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_01_221958) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -148,6 +148,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_30_234026) do
     t.string "name"
     t.string "email"
     t.string "impact_tag"
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_blogs_on_user_id"
   end
 
   create_table "causes", force: :cascade do |t|
@@ -383,6 +385,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_30_234026) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.text "bio"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -401,6 +404,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_09_30_234026) do
   add_foreign_key "beneficiary_subcategories", "beneficiary_groups"
   add_foreign_key "blog_likes", "blogs"
   add_foreign_key "blog_likes", "users"
+  add_foreign_key "blogs", "users"
   add_foreign_key "favorite_blogs", "blogs"
   add_foreign_key "favorite_blogs", "users"
   add_foreign_key "favorite_locations", "locations"

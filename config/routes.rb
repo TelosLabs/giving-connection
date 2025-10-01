@@ -69,6 +69,10 @@ Rails.application.routes.draw do
   end
   resources :blog_likes, only: :destroy
 
+  resources :users, only: [:show] do
+    resources :blogs, only: [:index], module: :users
+  end
+
 
   resources :favorite_locations, only: %i[create destroy]
   resources :alerts, only: %i[new create edit update destroy]

@@ -30,6 +30,12 @@ div class="w-full h-full bg-white"
                 = form.label :email, "Email", class: "block text-sm text-grey-3 font-medium"
                 = form.email_field :email, { value: current_user.email, class: "c-input" }
               div class="hidden col-span-3 md:flex"
+              
+              div class="col-span-12 lg:col-span-5 md:col-span-7"
+                = form.label :bio, "Bio", class: "block text-sm text-grey-3 font-medium"
+                = form.text_area :bio, { value: current_user.bio, class: "c-input" }
+              div class="hidden col-span-3 md:flex"
+
               div class="col-span-12 py-0 border-t border-gray-8"
               div class="flex flex-row justify-between col-span-12"
                 span class="text-sm font-medium text-grey-4"

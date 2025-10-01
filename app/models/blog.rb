@@ -1,4 +1,5 @@
 class Blog < ApplicationRecord
+  belongs_to :user, optional: true
   has_rich_text :content
   has_many_attached :images
   has_one_attached :cover_image

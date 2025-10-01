@@ -4,6 +4,11 @@ class UsersController < ApplicationController
   skip_after_action :verify_authorized
   before_action :not_password_change
 
+  def show
+    @user  = User.find(params[:id])
+    @blogs = @user.blogs.order(created_at: :desc).includes(cover_image_attachment: :blob)
+  end
+
   def update
     @user = current_user
 
@@ -44,11 +49,11 @@ class UsersController < ApplicationController
   end
 
   def update_params
-    params.require(:user).permit(:name, :email)
+    params.require(:user).permit(:name, :email, :bio)
   end
 
   def password_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.fetch(:user, {}).permit(:password, :password_confirmation)
   end
 
   def old_password_params

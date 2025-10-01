@@ -11,8 +11,11 @@ div class="overflow-x-hidden main"
         div class="flex items-center divide-x-2"
           div class="flex gap-2 pr-2"
             img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="Author Avatar" class="object-cover w-6 h-6 rounded-full"
-            p class="font-light text-md"
-              = @blog.name
+            - author = @blog.user
+            - display_name = author&.name || @blog.name || "Anonymous"
+            p class="font-light text-md hover:underline"
+              = link_to display_name, user_path(author) if author
+              = display_name unless author
           p class="px-2 font-light text-md"
             = @blog.created_at.strftime("%B %d, %Y")
           p class="px-2 font-light text-md"
@@ -21,8 +24,7 @@ div class="overflow-x-hidden main"
           p class="px-2 font-light text-md"
             | 4 comments
           p class="px-2 font-light text-md"
-            = @blog.blog_likes.count
-            |  appreciations
+            = pluralize(@blog.blog_likes.count, "appreciation")
           div class="flex gap-2 px-2 text-gray-3"
             
             - like = current_user&.blog_likes&.find_by(blog: @blog)
