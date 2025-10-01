@@ -14,7 +14,6 @@ class SearchesController < ApplicationController
     @search.save
     @all_result_ids = @search.results.pluck(:id)  # Capture all IDs before pagination
     @pagy, @results = pagy(@search.results)
-    puts @search.errors.full_messages if @search.results.any?
 
     authorize @search
   end

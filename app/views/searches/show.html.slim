@@ -12,10 +12,10 @@
   = render SearchBar::Component.new(form: f, search: @search, current_location: @current_location, locations: @locations)
   = turbo_frame_tag "search-pills" do
     = render SearchPills::Component.new(causes: @top_10_causes, services: @top_10_services, beneficiary_subcategories: @top_10_beneficiary_subcategories, params: params, current_location: @current_location)
-  = turbo_frame_tag "search-locations" do
+  = turbo_frame_tag "search-locations", data: { controller: "search-loading" } do
     div class="flex flex-row justify-center w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3 underline-on-hover"
       div class="flex flex-row justify-center w-full min-h-full"
-        div class="flex flex-col w-full max-w-sm md:border-r border-gray-7"
+        div class="flex relative flex-col w-full max-w-sm md:border-r border-gray-7"
           div class="flex hidden overflow-y-auto fixed inset-0 justify-center items-center min-h-screen animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;")
             div class="relative w-full max-h-full max-w-375px"
               = render partial: 'filter', locals: { form: f, search: @search, services: @services, causes: @causes, beneficiary_groups: @beneficiary_groups }
@@ -25,10 +25,13 @@
               / inactive bg-white text-gray-3
               button class="inline-flex relative items-center px-5 py-1 text-sm border rounded-l-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="0"
                 | List
-              button class="inline-flex relative items-center px-5 py-1 -ml-px text-sm border rounded-r-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="1"
+              button class="inline-flex relative px-5 py-1 -ml-px text-sm border itemst-center rounded-r-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="1"
                 | Map
           // Search result cards
-          = turbo_frame_tag "pagy" do
+          = turbo_frame_tag "pagy", class: "relative" do
+            // Loading spinner for pagination - inside pagy frame so it doesn't get replaced
+            div class="flex hidden absolute inset-0 z-10 justify-center items-center bg-white bg-opacity-70" data-search-loading-target="spinner"
+              div class="spinner"
             div class="flex flex-col w-full bg-white md:h-85vh md:overflow-y-auto"
               div class="flex flex-row gap-1 justify-between items-center p-4 w-full bg-white border-b border-gray-8"
                 span class="text-xs text-gray-3"
@@ -83,7 +86,7 @@
                                                         description: "",\
                                                         phone_number: result.phone_number&.number,\
                                                         current_user: current_user,\
-                                                        verified: result.organization.verified?,\
+                                                        verified: result&.organization&.verified?,\
                                                         po_box: result.po_box?,\
                                                         causes: result&.causes,\
                                                         turbo_frame: {id: "map-left-popup", src: new_map_popup_path(location_id: result&.id)})
