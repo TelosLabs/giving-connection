@@ -7,7 +7,7 @@ div class="overflow-x-hidden main"
             p class="font-light text-center text-md text-blue-dark"
                 = @user.bio if @user.bio.present?
     section class="flex flex-col max-w-5xl gap-16 px-5 mx-auto md:my-20"
-        section class="flex flex-col gap-16"
+        section class="flex flex-col gap-16 pb-8"
             - if @blogs.any?
                 - @user.blogs.reverse_each do |blog|
                     = render "/blogs/blog", blog: blog

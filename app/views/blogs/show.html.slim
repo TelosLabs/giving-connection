@@ -7,26 +7,25 @@ div class="overflow-x-hidden main"
     div class="flex flex-col gap-2" id="getting-started"
       p class="text-3xl font-bold text-blue-dark"
         = @blog.title
-      div class="flex justify-between"
+      div class="flex flex-col justify-between md:items-center md:flex-row"
         div class="flex items-center divide-x-2"
           div class="flex items-center gap-2 pr-2"
             - author = @blog.user
             = image_tag author.avatar, alt: "Author Avatar", class: "object-cover w-8 h-8 rounded-full" if author
             - display_name = author&.name.presence || @blog.name.presence || "Anonymous"
-            p class="font-light text-md"
+            p class="text-sm font-light md:text-md"
               = link_to display_name, user_path(author), class: "hover:underline" if author
               = display_name unless author
-          p class="px-2 font-light text-md"
+          p class="px-2 text-sm font-light md:text-md"
             = @blog.created_at.strftime("%B %d, %Y")
-          p class="px-2 font-light text-md"
+          p class="px-2 text-sm font-light md:text-md"
             | Topic
         div class="flex items-center divide-x-2"
-          p class="px-2 font-light text-md"
+          p class="pr-2 text-sm font-light md:text-md"
             | 4 comments
-          p class="px-2 font-light text-md"
+          p class="px-2 text-sm font-light md:text-md"
             = pluralize(@blog.blog_likes.count, "appreciation")
           div class="flex gap-2 px-2 text-gray-3"
-            
             - like = current_user&.blog_likes&.find_by(blog: @blog)
             div class="flex items-center" id="like-blog-#{@blog.id}"
               - if like
