@@ -50,7 +50,7 @@ div class="overflow-x-hidden main"
                 div class="p-2 rounded-md hover:bg-gray-300"
                   = link_to blog_favorite_blogs_path(@blog), params: { blog_id: @blog.id }, method: :post, data: { turbo_stream: true }, title: "Save to favorites", aria: { label: "Save to favorites" } do
                     = inline_svg_tag 'bookmark.svg', size: '20*20', class: 'fill-none'
-            button class="p-2 rounded-md hover:bg-gray-300"
+            button class="p-2 rounded-md hover:bg-gray-300" data-controller="copy-to-clipboard" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="#{blog_url(@blog)}"
               = inline_svg_tag 'share.svg', size: '20*20'
       p class="text-lg font-light blog-content"
         = @blog.content
