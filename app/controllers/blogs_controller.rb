@@ -2,6 +2,7 @@
 class BlogsController < ApplicationController
   after_action :verify_policy_scoped, only: [:index]
   before_action :set_blog, only: [:show, :edit, :update, :destroy]
+  skip_before_action :authenticate_user!, only: [:index, :show, :new, :create]
 
   # GET /blogs
   def index

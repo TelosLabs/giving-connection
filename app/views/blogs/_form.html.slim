@@ -5,20 +5,20 @@
       ul
         - blog.errors.full_messages.each do |message|
           li = message
-
-  div class="mb-4"
-    p class="font-bold text-md"
-      | Name*
-    p class="font-light text-md"
-      | Enter your name here. If you would like to remain anonymous, only provide your first name or simply write anonymous.
-    = form.text_field :name, class: 'w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent', placeholder:"Jane Doe"
-  
-  div class="mb-4"
-    p class="font-bold text-md"
-      | Email
-    p class="font-light text-md"
-      | Enter your email address.
-    = form.text_field :email, class: 'w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent', placeholder:"jane@domain.com"
+  - unless user_signed_in?
+    div class="mb-4"
+      p class="font-bold text-md"
+        | Name*
+      p class="font-light text-md"
+        | Enter your name here. If you would like to remain anonymous, only provide your first name or simply write anonymous.
+      = form.text_field :name, class: 'w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent', placeholder:"Jane Doe"
+    
+    div class="mb-4"
+      p class="font-bold text-md"
+        | Email
+      p class="font-light text-md"
+        | Enter your email address.
+      = form.text_field :email, class: 'w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent', placeholder:"jane@domain.com"
 
   div class="mb-4"
     p class="font-bold text-md"

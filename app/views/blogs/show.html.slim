@@ -4,7 +4,7 @@ div class="overflow-x-hidden main"
       = image_tag @blog.cover_image, class: "w-full h-96 object-cover"
 
   section class="flex flex-col max-w-4xl gap-8 px-5 mx-auto my-8"
-    div class="flex flex-col gap-2" id="getting-started"
+    div class="flex flex-col gap-2"
       p class="text-3xl font-bold text-blue-dark"
         = @blog.title
       div class="flex flex-col justify-between md:items-center md:flex-row"
@@ -51,6 +51,19 @@ div class="overflow-x-hidden main"
               = inline_svg_tag 'share.svg', size: '20*20'
       p class="text-lg font-light blog-content"
         = @blog.content
+    
+    - if @blog.user
+      section class="flex flex-col items-center justify-center gap-2 py-16"
+          = image_tag @blog.user.avatar, alt: "Author Avatar", class: "object-cover w-[150px] h-[150px] rounded-full" if @blog.user.avatar.attached?
+          div class="flex flex-col max-w-4xl gap-5"
+              h2 class="text-2xl font-bold text-center text-blue-dark"
+                  = @blog.user.name
+              p class="font-light text-center text-md text-blue-dark"
+                  - maxLength = 250
+                  = @blog.user.bio.length > maxLength ? truncate(@blog.user.bio, length: maxLength, separator: ' ') : @blog.user.bio if @blog.user.bio.present?
+                  - if @blog.user.bio.length > maxLength
+                    = " "
+                    = link_to "See full bio and posts", user_path(@blog.user), class: "hover:underline font-bold text-blue-dark"
 
 .actions
   = link_to 'Edit', edit_blog_path(@blog), class: 'btn btn-secondary'
