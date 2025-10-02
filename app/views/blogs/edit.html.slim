@@ -1,8 +1,10 @@
-h1 Edit Blog Post
+div class="overflow-x-hidden main"
 
-= render 'form', blog: @blog
-
-.actions
-  = link_to 'Show', @blog
-  | |
-  = link_to 'Back', blogs_path
+  section class="flex flex-col max-w-4xl gap-8 px-6 mx-auto my-8"
+    div class="flex flex-col gap-2" id="getting-started"
+        div class="flex justify-between"
+          = link_to '<- Back to All Blogs', blogs_path, class: 'btn btn-light'
+          = link_to 'Delete', @blog, method: :delete, class: 'bg-red rounded-lg py-2 px-4 text-white' if current_user == @blog.user
+        p class="text-xl font-bold text-blue-dark"
+            | Edit your blog post
+    = render 'form', blog: @blog

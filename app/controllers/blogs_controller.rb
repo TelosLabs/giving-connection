@@ -65,8 +65,7 @@ class BlogsController < ApplicationController
     @blog = Blog.find(params[:id])
   end
 
-  # Do NOT permit :user_id; author gets set from current_user when present.
   def blog_params
-    params.require(:blog).permit(:title, :content, :name, :email, :impact_tag, :cover_image)
+    params.require(:blog).permit(:title, :content, :name, :email, :impact_tag, :cover_image, :share_consent)
   end
 end

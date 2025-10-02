@@ -6,6 +6,10 @@ class Blog < ApplicationRecord
 
   has_many :blog_likes, dependent: :destroy
   has_many :likers, through: :blog_likes, source: :user
-
+  
+  attr_accessor :share_consent
+  
   validates :title, presence: true
+  validates :share_consent, acceptance: { accept: "1", message: "must be accepted to publish your story" }
+
 end
