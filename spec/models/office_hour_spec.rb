@@ -37,23 +37,88 @@ RSpec.describe OfficeHour, type: :model do
   end
 
   describe "callbacks" do
-    let(:location) { create(:location, :with_office_hours, time_zone: "Pacific Time (US & Canada)") }
-    let(:oh) { build(:office_hour, location: location, open_time: "12:00", close_time: "16:00") }
+    let(:location) { build(:location, time_zone: "Pacific Time (US & Canada)", offer_services: true, non_standard_office_hours: nil) }
+    let(:oh) { build(:office_hour, location: location, day: 1) }
 
     describe "#convert_times_to_utc" do
       it "converts the time from location's time zone to UTC before saving" do
-        subject { oh }
+        # Set times as strings (like form input)
+        oh.open_time = "12:00"
+        oh.close_time = "16:00"
 
-        # Set the open and close times with a specific time zone
-        oh.open_time = Time.zone.parse("12:00 PM").in_time_zone("Pacific Time (US & Canada)")
-        oh.close_time = Time.zone.parse("4:00 PM").in_time_zone("Pacific Time (US & Canada)")
+        oh.save!
+
+        # Verify times are stored in UTC
+        expect(oh.open_time.zone).to eql("UTC")
+        expect(oh.close_time.zone).to eql("UTC")
+
+        # Pacific Time is UTC-8 (PST) or UTC-7 (PDT)
+        # 12:00 PM PST/PDT becomes 20:00/19:00 UTC
+        # 4:00 PM PST/PDT becomes 00:00/23:00 UTC (next day/same day)
+        expect([19, 20]).to include(oh.open_time.hour)
+        expect([23, 0]).to include(oh.close_time.hour)
+      end
+
+      it "handles Time objects correctly" do
+        # Set times as Time objects in Pacific timezone
+        pacific_tz = ActiveSupport::TimeZone["Pacific Time (US & Canada)"]
+        oh.open_time = pacific_tz.parse("12:00")
+        oh.close_time = pacific_tz.parse("16:00")
 
         oh.save!
 
         expect(oh.open_time.zone).to eql("UTC")
         expect(oh.close_time.zone).to eql("UTC")
-        expect(oh.open_time.hour).to eql(20)
-        expect(oh.close_time.hour).to eql(0)
+      end
+    end
+
+    describe "formatted time methods" do
+      it "stores times in UTC and displays in local timezone" do
+        # Set and save times
+        oh.open_time = "09:00"
+        oh.close_time = "17:00"
+        oh.save!
+
+        # Get formatted times
+        formatted_open = oh.formatted_open_time
+        formatted_close = oh.formatted_close_time
+
+        # Verify storage in UTC
+        expect(oh.open_time.zone).to eq("UTC")
+        expect(oh.close_time.zone).to eq("UTC")
+
+        # Should be displayed in Pacific timezone
+        expect(formatted_open.zone).to match(/P[DS]T/)
+        expect(formatted_close.zone).to match(/P[DS]T/)
+
+        # Verify that formatting returns valid Time objects
+        expect(formatted_open).to be_a(Time)
+        expect(formatted_close).to be_a(Time)
+      end
+
+      it "handles string input consistently" do
+        # Test the most common use case: string input from forms
+        oh.open_time = "10:30"
+        oh.close_time = "18:45"
+        oh.save!
+
+        # Verify storage in UTC
+        expect(oh.open_time.zone).to eq("UTC")
+        expect(oh.close_time.zone).to eq("UTC")
+
+        # Verify formatted times are in correct timezone and represent reasonable times
+        formatted_open = oh.formatted_open_time
+        formatted_close = oh.formatted_close_time
+
+        expect(formatted_open.zone).to match(/P[DS]T/)
+        expect(formatted_close.zone).to match(/P[DS]T/)
+
+        # The formatted times should be reasonable office hours (between 6 AM and 11 PM)
+        expect(formatted_open.hour).to be_between(6, 23)
+        expect(formatted_close.hour).to be_between(6, 23)
+
+        # Close time should be after open time on the same day
+        expect(formatted_close.hour).to be >= formatted_open.hour
       end
     end
   end

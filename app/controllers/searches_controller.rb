@@ -10,10 +10,10 @@ class SearchesController < ApplicationController
     end
 
     set_search_pills_data
-    @search = params["search"].present? ? Search.new(create_params.merge(location_params)) : Search.new(location_params)
+    @search = params["search"].present? ? Search.new(create_params.to_h.merge(location_params)) : Search.new(location_params)
     @search.save
+    @all_result_ids = @search.results.pluck(:id)  # Capture all IDs before pagination
     @pagy, @results = pagy(@search.results)
-    puts @search.errors.full_messages if @search.results.any?
 
     authorize @search
   end
