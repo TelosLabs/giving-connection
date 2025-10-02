@@ -1,240 +1,247 @@
-import { Controller } from "@hotwired/stimulus";
+import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
-  static targets = ["form"];
+  static targets = ['form']
   static values = {
-    inputTypes: { type: String, default: "input, select, textarea" }
-  };
+    inputTypes: { type: String, default: 'input, select, textarea' }
+  }
 
-  connect() {
-    console.log('Admin unsaved changes modal controller connected');
-    this.hasUnsavedChanges = false;
-    this.initialFormState = this.captureFormState();
-    this.pendingNavigationUrl = null;
+  connect () {
+    this.hasUnsavedChanges = false
+    this.initialFormState = this.captureFormState()
+    this.pendingNavigationUrl = null
+    this.boundHandlers = {}
 
-    // Add initial history state to enable popstate detection
-    window.history.pushState(null, '', window.location.href);
+    // Store bound handlers for proper cleanup
+    this.boundHandlers.formChange = this.handleFormChange.bind(this)
+    this.boundHandlers.formSubmit = this.handleFormSubmit.bind(this)
+    this.boundHandlers.linkClick = this.handleLinkClick.bind(this)
+    this.boundHandlers.popState = this.handlePopState.bind(this)
+    this.boundHandlers.keyDown = this.handleKeyDown.bind(this)
+    this.boundHandlers.beforeUnload = this.handleBeforeUnload.bind(this)
 
     // Listen for form changes
-    this.formTarget.addEventListener('input', this.handleFormChange.bind(this));
-    this.formTarget.addEventListener('change', this.handleFormChange.bind(this));
+    this.formTarget.addEventListener('input', this.boundHandlers.formChange)
+    this.formTarget.addEventListener('change', this.boundHandlers.formChange)
 
     // Listen for form submission to reset the flag
-    this.formTarget.addEventListener('submit', this.handleFormSubmit.bind(this));
+    this.formTarget.addEventListener('submit', this.boundHandlers.formSubmit)
 
     // Listen for link clicks and form submissions that might navigate away
-    document.addEventListener('click', this.handleLinkClick.bind(this));
+    document.addEventListener('click', this.boundHandlers.linkClick)
 
     // Listen for popstate (back/forward button)
-    window.addEventListener('popstate', this.handlePopState.bind(this));
+    window.addEventListener('popstate', this.boundHandlers.popState)
 
     // Listen for keyboard shortcuts that might refresh the page
-    document.addEventListener('keydown', this.handleKeyDown.bind(this));
+    document.addEventListener('keydown', this.boundHandlers.keyDown)
 
-    // Listen for beforeunload (page refresh/close) - fallback for browser refresh button
-    window.addEventListener('beforeunload', this.handleBeforeUnload.bind(this));
+    // Listen for beforeunload (page refresh/close)
+    window.addEventListener('beforeunload', this.boundHandlers.beforeUnload)
   }
 
-  disconnect() {
-    document.removeEventListener('click', this.handleLinkClick.bind(this));
-    window.removeEventListener('popstate', this.handlePopState.bind(this));
-    document.removeEventListener('keydown', this.handleKeyDown.bind(this));
-    window.removeEventListener('beforeunload', this.handleBeforeUnload.bind(this));
+  disconnect () {
+    // Clean up all event listeners using stored bound handlers
+    if (this.boundHandlers) {
+      this.formTarget.removeEventListener('input', this.boundHandlers.formChange)
+      this.formTarget.removeEventListener('change', this.boundHandlers.formChange)
+      this.formTarget.removeEventListener('submit', this.boundHandlers.formSubmit)
+      document.removeEventListener('click', this.boundHandlers.linkClick)
+      window.removeEventListener('popstate', this.boundHandlers.popState)
+      window.removeEventListener('keydown', this.boundHandlers.keyDown)
+      window.removeEventListener('beforeunload', this.boundHandlers.beforeUnload)
+    }
   }
 
-  handleKeyDown(event) {
-    console.log('Key pressed:', event.key, 'Ctrl:', event.ctrlKey, 'Meta:', event.metaKey);
+  handleKeyDown (event) {
     // Intercept Ctrl+R, F5, and Cmd+R (Mac) to show custom modal
     if (this.hasUnsavedChanges &&
       ((event.ctrlKey && event.key === 'r') ||
         event.key === 'F5' ||
         (event.metaKey && event.key === 'r'))) {
-      console.log('Refresh shortcut detected, showing modal');
-      event.preventDefault();
-      this.pendingNavigationUrl = window.location.href; // Refresh current page
-      this.showModal();
+      event.preventDefault()
+      this.pendingNavigationUrl = window.location.href // Refresh current page
+      this.showModal()
     }
   }
 
-  handleFormChange(event) {
+  handleFormChange (event) {
     // Ignore utility inputs or specific input types that shouldn't trigger the warning
     if (this.shouldIgnoreInput(event.target)) {
-      return;
+      return
     }
 
-    const currentFormState = this.captureFormState();
-    this.hasUnsavedChanges = this.hasFormChanged(this.initialFormState, currentFormState);
-    console.log('Form changed, hasUnsavedChanges:', this.hasUnsavedChanges);
+    const currentFormState = this.captureFormState()
+    this.hasUnsavedChanges = this.hasFormChanged(this.initialFormState, currentFormState)
   }
 
-  handleBeforeUnload(event) {
+  handleBeforeUnload (event) {
     if (this.hasUnsavedChanges) {
-      event.preventDefault();
-      event.returnValue = 'You have unsaved changes. Are you sure you want to leave this page? Your changes will be lost.';
-      return 'You have unsaved changes. Are you sure you want to leave this page? Your changes will be lost.';
+      event.preventDefault()
+      event.returnValue = 'You have unsaved changes. Are you sure you want to leave this page? Your changes will be lost.'
+      return 'You have unsaved changes. Are you sure you want to leave this page? Your changes will be lost.'
     }
   }
 
-  handlePopState(event) {
-    console.log('Popstate event triggered, hasUnsavedChanges:', this.hasUnsavedChanges);
-    console.log('Event details:', event);
+  handlePopState () {
     if (this.hasUnsavedChanges) {
-      console.log('Preventing navigation and showing modal');
-      event.preventDefault();
-      this.pendingNavigationUrl = null; // Will use history.back() in leavePage
-      this.showModal();
-
       // Push the current state back to prevent navigation
-      window.history.pushState(null, '', window.location.href);
-    } else {
-      console.log('No unsaved changes, allowing navigation');
+      window.history.pushState(null, '', window.location.href)
+
+      this.pendingNavigationUrl = null // Will use history.back() in leavePage
+      this.showModal()
     }
   }
 
-  handleLinkClick(event) {
-    const link = event.target.closest('a');
+  handleLinkClick (event) {
+    const link = event.target.closest('a')
     if (link && this.hasUnsavedChanges && !this.shouldIgnoreLink(link)) {
-      console.log('Link click detected, showing modal');
-      event.preventDefault();
-      this.pendingNavigationUrl = link.href;
-      this.showModal();
+      event.preventDefault()
+      this.pendingNavigationUrl = link.href
+      this.showModal()
     }
   }
 
-  handleFormSubmit() {
+  handleFormSubmit () {
     // Reset the flag when form is submitted
-    this.hasUnsavedChanges = false;
-    console.log('Form submitted, resetting hasUnsavedChanges');
+    this.hasUnsavedChanges = false
   }
 
-  showModal() {
-    console.log('Showing modal');
-    const modalContainer = document.getElementById('unsaved-changes-modal');
-    console.log('Modal container:', modalContainer);
+  showModal () {
+    const modalContainer = document.getElementById('unsaved-changes-modal')
 
     if (modalContainer) {
-      modalContainer.classList.remove('hidden');
-      modalContainer.classList.add('flex');
-      document.body.style.overflow = 'hidden';
+      modalContainer.classList.remove('hidden')
+      modalContainer.classList.add('flex')
+      document.body.style.overflow = 'hidden'
 
       // Add event listeners to the buttons
-      const stayButton = modalContainer.querySelector('button:first-of-type');
-      const leaveButton = modalContainer.querySelector('button:last-of-type');
+      const stayButton = modalContainer.querySelector('button:first-of-type')
+      const leaveButton = modalContainer.querySelector('button:last-of-type')
 
       if (stayButton) {
-        stayButton.addEventListener('click', this.stayOnPage.bind(this), { once: true });
+        stayButton.addEventListener('click', this.stayOnPage.bind(this), { once: true })
       }
       if (leaveButton) {
-        leaveButton.addEventListener('click', this.leavePage.bind(this), { once: true });
+        leaveButton.addEventListener('click', this.leavePage.bind(this), { once: true })
       }
-    } else {
-      console.error('Modal container not found!');
     }
   }
 
-  hideModal() {
-    console.log('Hiding modal');
-    const modalContainer = document.getElementById('unsaved-changes-modal');
+  hideModal () {
+    const modalContainer = document.getElementById('unsaved-changes-modal')
     if (modalContainer) {
-      modalContainer.classList.add('hidden');
-      modalContainer.classList.remove('flex');
-      document.body.style.overflow = '';
+      modalContainer.classList.add('hidden')
+      modalContainer.classList.remove('flex')
+      document.body.style.overflow = ''
     }
-    this.pendingNavigationUrl = null;
+    this.pendingNavigationUrl = null
   }
 
-  stayOnPage() {
-    console.log('Staying on page');
-    this.hideModal();
+  stayOnPage () {
+    this.hideModal()
   }
 
-  leavePage() {
-    console.log('Leaving page');
-    this.hasUnsavedChanges = false;
+  leavePage () {
+    this.hasUnsavedChanges = false
     if (this.pendingNavigationUrl) {
       if (this.pendingNavigationUrl === window.location.href) {
         // This is a refresh request
-        window.location.reload();
+        window.location.reload()
       } else {
         // This is navigation to a different page
-        window.location.href = this.pendingNavigationUrl;
+        window.location.href = this.pendingNavigationUrl
       }
     } else {
-      window.history.back();
+      window.history.back()
     }
   }
 
-  captureFormState() {
-    const formData = new FormData(this.formTarget);
-    const state = {};
+  captureFormState () {
+    const state = {}
+    const inputs = this.formTarget.querySelectorAll('input, select, textarea')
 
-    for (let [key, value] of formData.entries()) {
-      if (state[key]) {
-        // Handle multiple values (like checkboxes)
-        if (Array.isArray(state[key])) {
-          state[key].push(value);
-        } else {
-          state[key] = [state[key], value];
+    inputs.forEach(input => {
+      // Skip ignored inputs
+      if (this.shouldIgnoreInput(input) || !input.name) {
+        return
+      }
+
+      if (input.type === 'checkbox') {
+        if (!state[input.name]) {
+          state[input.name] = []
+        }
+        if (input.checked) {
+          state[input.name].push(input.value)
+        }
+      } else if (input.type === 'radio') {
+        if (input.checked) {
+          state[input.name] = input.value
         }
       } else {
-        state[key] = value;
+        state[input.name] = input.value || ''
       }
-    }
+    })
 
-    return state;
+    return state
   }
 
-  hasFormChanged(initialState, currentState) {
-    const initialKeys = Object.keys(initialState);
-    const currentKeys = Object.keys(currentState);
+  hasFormChanged (initialState, currentState) {
+    // Get all unique keys from both states
+    const allKeys = new Set([...Object.keys(initialState), ...Object.keys(currentState)])
 
-    // Check if any keys were added or removed
-    if (initialKeys.length !== currentKeys.length) {
-      return true;
-    }
+    for (const key of allKeys) {
+      const initialValue = initialState[key]
+      const currentValue = currentState[key]
 
-    // Check if any values changed
-    for (let key of initialKeys) {
-      if (!currentState.hasOwnProperty(key)) {
-        return true;
-      }
+      // Handle arrays (checkboxes)
+      if (Array.isArray(initialValue) || Array.isArray(currentValue)) {
+        const initArray = Array.isArray(initialValue) ? initialValue : []
+        const currArray = Array.isArray(currentValue) ? currentValue : []
 
-      const initialValue = initialState[key];
-      const currentValue = currentState[key];
-
-      if (Array.isArray(initialValue) && Array.isArray(currentValue)) {
-        if (initialValue.length !== currentValue.length) {
-          return true;
+        if (initArray.length !== currArray.length) {
+          return true
         }
-        for (let i = 0; i < initialValue.length; i++) {
-          if (initialValue[i] !== currentValue[i]) {
-            return true;
+
+        // Sort and compare to handle order differences
+        const sortedInit = [...initArray].sort()
+        const sortedCurr = [...currArray].sort()
+
+        for (let i = 0; i < sortedInit.length; i++) {
+          if (sortedInit[i] !== sortedCurr[i]) {
+            return true
           }
         }
-      } else if (initialValue !== currentValue) {
-        return true;
+      } else {
+        // Normalize empty values
+        const normalizedInit = initialValue || ''
+        const normalizedCurr = currentValue || ''
+
+        if (normalizedInit !== normalizedCurr) {
+          return true
+        }
       }
     }
 
-    return false;
+    return false
   }
 
-  shouldIgnoreInput(input) {
+  shouldIgnoreInput (input) {
     // Ignore utility inputs, hidden inputs, or specific input types
-    const ignoredTypes = ['hidden', 'submit', 'button', 'reset'];
-    const ignoredClasses = ['utility-input', 'ignore-unsaved-changes'];
+    const ignoredTypes = ['hidden', 'submit', 'button', 'reset']
+    const ignoredClasses = ['utility-input', 'ignore-unsaved-changes']
 
     return ignoredTypes.includes(input.type) ||
-      ignoredClasses.some(className => input.classList.contains(className));
+      ignoredClasses.some(className => input.classList.contains(className))
   }
 
-  shouldIgnoreLink(link) {
+  shouldIgnoreLink (link) {
     // Ignore links that shouldn't trigger the warning
-    const ignoredClasses = ['ignore-unsaved-changes'];
-    const ignoredHrefs = ['#', 'javascript:void(0)'];
+    const ignoredClasses = ['ignore-unsaved-changes']
+    const ignoredHrefs = ['#', 'javascript:void(0)']
 
     return ignoredClasses.some(className => link.classList.contains(className)) ||
       ignoredHrefs.includes(link.href) ||
-      link.target === '_blank';
+      link.target === '_blank'
   }
 }
