@@ -40,14 +40,23 @@ class User < ApplicationRecord
     length: {minimum: 2, maximum: 50},
     format: {with: /\A[a-zA-Z\s\-']+\z/, message: "can only contain letters, spaces, hyphens and apostrophes"}
 
+  validates :bio, length: { maximum: 1000 }, allow_blank: true
+  has_one_attached :avatar
+
   validate :no_urls_in_name
 
   has_many :organizations, as: :creator
   has_many :alerts
   has_many :fav_locs, class_name: "FavoriteLocation"
+  has_many :fav_blogs, class_name: "FavoriteBlog"
   has_many :favorited_locations, through: :fav_locs, source: :location
+  has_many :favorited_blogs, through: :fav_blogs, source: :blog
   has_many :organization_admin
   has_many :administrated_organizations, through: :organization_admin, source: :organization
+
+  has_many :blogs, dependent: :nullify
+  has_many :blog_likes, dependent: :destroy
+  has_many :liked_blogs, through: :blog_likes, source: :blog
 
   private
 
