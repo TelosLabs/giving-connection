@@ -30,12 +30,14 @@ class BlogsController < ApplicationController
   # POST /blogs
   def create
     @blog = Blog.new(blog_params)
-    # Author is optional: set it only if there's a current_user
     @blog.user = current_user if user_signed_in?
     authorize @blog
 
     if @blog.save
-      redirect_to @blog, notice: 'Blog was successfully created.'
+      respond_to do |f|
+        f.turbo_stream
+        f.html { redirect_to blogs_path, notice: "Thanks for sharing your story!" }
+      end
     else
       render :new, status: :unprocessable_entity
     end
