@@ -25,6 +25,8 @@ Rails.application.routes.draw do
       end
     end
     resource :export_locations, only: :new
+    resources :blogs
+    #root to: "blogs#index"
   end
 
   devise_for :admin_users
