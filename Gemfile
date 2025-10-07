@@ -72,6 +72,7 @@ gem "image_processing", "~> 1.13"
 gem "bootsnap", require: false
 gem "city-state"
 gem "timezone", "~> 1.0" #  Timezone lookup based on geolocation
+gem "timezone_finder"
 gem "momentjs-rails"
 
 # Geolocation

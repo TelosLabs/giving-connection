@@ -595,6 +595,7 @@ GEM
     timeout (0.4.3)
     timezone (1.3.27)
       ostruct (~> 0.6)
+    timezone_finder (1.5.7)
     trix-rails (2.4.0)
       rails (> 4.1)
     turbo-rails (2.0.13)
@@ -719,6 +720,7 @@ DEPENDENCIES
   test-prof (~> 1.0)
   timecop
   timezone (~> 1.0)
+  timezone_finder
   turbo-rails
   tzinfo-data
   view_component
