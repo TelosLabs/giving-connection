@@ -42,5 +42,21 @@ module Admin
 
     # See https://administrate-demo.herokuapp.com/customizing_controller_actions
     # for more information
+
+    def publish
+      blog.update!(published: true)
+      redirect_back fallback_location: admin_blogs_path, notice: "Published"
+    end
+
+    def unpublish
+      blog.update!(published: false)
+      redirect_back fallback_location: admin_blogs_path, notice: "Unpublished"
+    end
+
+    private
+    def blog
+      @blog ||= Blog.find(params[:id])
+    end
+
   end
 end

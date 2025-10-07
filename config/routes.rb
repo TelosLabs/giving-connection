@@ -25,7 +25,12 @@ Rails.application.routes.draw do
       end
     end
     resource :export_locations, only: :new
-    resources :blogs
+    resources :blogs do
+        member do
+        patch :publish
+        patch :unpublish
+      end
+    end
     #root to: "blogs#index"
   end
 

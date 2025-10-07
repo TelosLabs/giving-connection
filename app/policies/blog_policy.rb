@@ -1,7 +1,7 @@
 class BlogPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      scope.all  # For now, show all blogs to everyone
+      scope.where(published: true)
     end
   end
 

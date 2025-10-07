@@ -1,0 +1,25 @@
+<td class="cell-data cell-data--actions">
+  <%= link_to "Show", polymorphic_path([namespace, resource]), class: "action-show" %>
+  <%= link_to "Edit",  edit_polymorphic_path([namespace, resource]), class: "action-edit" %>
+  <%= link_to "Destroy",
+              polymorphic_path([namespace, resource]),
+              method: :delete,
+              data: { confirm: "Are you sure?" },
+              class: "action-destroy" %>
+
+  <% if resource.respond_to?(:published?) %>
+    <% if resource.published? %>
+      <%= button_to "Unpublish",
+                    unpublish_admin_blog_path(resource),
+                    method: :patch,
+                    class: "button button--warning",
+                    form: { data: { turbo: false }, onclick: "event.stopPropagation();" } %>
+    <% else %>
+      <%= button_to "Publish",
+                    publish_admin_blog_path(resource),
+                    method: :patch,
+                    class: "button button--secondary",
+                    form: { data: { turbo: false }, onclick: "event.stopPropagation();" } %>
+    <% end %>
+  <% end %>
+</td>

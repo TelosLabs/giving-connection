@@ -9,18 +9,19 @@ class BlogDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     id: Field::Number,
-    blog_likes: Field::HasMany,
+    #blog_likes: Field::HasMany,
     #cover_image_attachment: Field::HasOne,
     #cover_image_blob: Field::HasOne,
 
     cover_image: Field::ActiveStorage,
     images: Field::ActiveStorage,
+    published: Field::Boolean,
 
     email: Field::String,
     #images_attachments: Field::HasMany,
     #images_blobs: Field::HasMany,
     impact_tag: Field::String,
-    likers: Field::HasMany,
+    #likers: Field::HasMany,
     name: Field::String,
     #rich_text_content: Field::HasOne,
 
@@ -38,25 +39,22 @@ class BlogDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = %i[
-    id
     title
-    user
-    cover_image
+    content
+    published
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = %i[
-    id
-    blog_likes
-    cover_image
-    email
-    impact_tag
-    likers
-    name
-    content
     title
+    name
+    email
     user
+    content
+    impact_tag
+    published
+    cover_image
     created_at
     updated_at
   ].freeze
@@ -65,12 +63,13 @@ class BlogDashboard < Administrate::BaseDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = %i[
-    cover_image
+    title
+    name
     email
     impact_tag
-    name
-    title
-    user
+    published
+    cover_image
+    
   ].freeze
 
   # COLLECTION_FILTERS

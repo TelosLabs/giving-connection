@@ -12,4 +12,6 @@ class Blog < ApplicationRecord
   validates :title, presence: true
   validates :share_consent, acceptance: { accept: "1", message: "must be accepted to publish your story" }
 
+  scope :published, -> { where(published: true) }
+
 end
