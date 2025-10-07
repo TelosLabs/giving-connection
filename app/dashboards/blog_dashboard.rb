@@ -69,7 +69,6 @@ class BlogDashboard < Administrate::BaseDashboard
     email
     impact_tag
     name
-    content
     title
     user
   ].freeze
