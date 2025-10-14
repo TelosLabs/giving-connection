@@ -57,7 +57,7 @@ gem "view_component"
 gem "turbo-rails"
 
 gem "rack", "~> 2.2.20"
-gem "uri", ">= 1.0.4" 
+gem "uri", ">= 1.0.4"
 
 gem "net-imap", require: false
 gem "net-pop", require: false
