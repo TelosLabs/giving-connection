@@ -9,28 +9,28 @@ class BlogDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     id: Field::Number,
-    #blog_likes: Field::HasMany,
-    #cover_image_attachment: Field::HasOne,
-    #cover_image_blob: Field::HasOne,
+    # blog_likes: Field::HasMany,
+    # cover_image_attachment: Field::HasOne,
+    # cover_image_blob: Field::HasOne,
 
     cover_image: Field::ActiveStorage,
     images: Field::ActiveStorage,
     published: Field::Boolean,
 
     email: Field::String,
-    #images_attachments: Field::HasMany,
-    #images_blobs: Field::HasMany,
+    # images_attachments: Field::HasMany,
+    # images_blobs: Field::HasMany,
     impact_tag: Field::String,
-    #likers: Field::HasMany,
+    # likers: Field::HasMany,
     name: Field::String,
-    #rich_text_content: Field::HasOne,
+    # rich_text_content: Field::HasOne,
 
     content: Field::Text,
 
     title: Field::String,
     user: Field::BelongsTo,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -69,7 +69,7 @@ class BlogDashboard < Administrate::BaseDashboard
     impact_tag
     published
     cover_image
-    
+
   ].freeze
 
   # COLLECTION_FILTERS

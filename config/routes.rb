@@ -31,7 +31,6 @@ Rails.application.routes.draw do
         patch :unpublish
       end
     end
-    #root to: "blogs#index"
   end
 
   devise_for :admin_users
@@ -84,7 +83,6 @@ Rails.application.routes.draw do
   resources :blogs do
     resources :comments, only: [:create, :edit, :update, :destroy, :show]
   end
-
 
   resources :favorite_locations, only: %i[create destroy]
   resources :alerts, only: %i[new create edit update destroy]

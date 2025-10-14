@@ -54,9 +54,9 @@ module Admin
     end
 
     private
+
     def blog
       @blog ||= Blog.find(params[:id])
     end
-
   end
 end

@@ -1,12 +1,10 @@
-# frozen_string_literal: true
-
 class UsersController < ApplicationController
   skip_after_action :verify_authorized
   before_action :not_password_change
   skip_before_action :authenticate_user!, only: [:show]
 
   def show
-    @user  = User.find(params[:id])
+    @user = User.find(params[:id])
     @blogs = @user.blogs.order(created_at: :desc).includes(cover_image_attachment: :blob)
   end
 

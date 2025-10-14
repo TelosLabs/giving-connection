@@ -40,7 +40,7 @@ class User < ApplicationRecord
     length: {minimum: 2, maximum: 50},
     format: {with: /\A[a-zA-Z\s\-']+\z/, message: "can only contain letters, spaces, hyphens and apostrophes"}
 
-  validates :bio, length: { maximum: 1000 }, allow_blank: true
+  validates :bio, length: {maximum: 1000}, allow_blank: true
   has_one_attached :avatar
 
   validate :no_urls_in_name

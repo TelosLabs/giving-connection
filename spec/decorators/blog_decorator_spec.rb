@@ -1,4 +1,1 @@
-require 'rails_helper'
-
-RSpec.describe BlogDecorator do
-end
+require "rails_helper"

@@ -7,12 +7,11 @@ class Blog < ApplicationRecord
   has_many :blog_likes, dependent: :destroy
   has_many :likers, through: :blog_likes, source: :user
   has_many :comments, dependent: :destroy
-  
+
   attr_accessor :share_consent
-  
+
   validates :title, presence: true
-  validates :share_consent, acceptance: { accept: "1", message: "must be accepted to publish your story" }
+  validates :share_consent, acceptance: {accept: "1", message: "must be accepted to publish your story"}
 
   scope :published, -> { where(published: true) }
-
 end

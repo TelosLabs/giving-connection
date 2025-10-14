@@ -18,7 +18,7 @@ class CommentsController < ApplicationController
   end
 
   def show
-    render partial: "comments/comment", locals: { comment: @comment }
+    render partial: "comments/comment", locals: {comment: @comment}
   end
 
   def edit
@@ -29,7 +29,7 @@ class CommentsController < ApplicationController
     authorize @comment
     if @comment.update(comment_params)
       if turbo_frame_request?
-        render partial: "comments/comment", locals: { comment: @comment }, status: :ok
+        render partial: "comments/comment", locals: {comment: @comment}, status: :ok
       else
         redirect_to blog_path(@blog), notice: "Comment updated."
       end
