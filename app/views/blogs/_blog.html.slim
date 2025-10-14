@@ -23,7 +23,7 @@ div class="flex flex-col w-full gap-4 md:flex-row"
             div class="flex gap-2"
                 div class="flex gap-2 divide-gray-300 text-gray-3 divide-x-[1px] text-center font-light text-xs md:text-sm items-center"
                     p class="pr-2" 32 views
-                    p class="px-2" 8 comments
+                    p class="px-2" = pluralize(blog.comments.count, "comment")
                     p class="px-2" = pluralize(blog.blog_likes.count, "appreciation")
                 div class="flex items-center gap-1 text-gray-3"
                     - like = current_user&.blog_likes&.find_by(blog: blog)

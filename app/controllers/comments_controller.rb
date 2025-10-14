@@ -1,7 +1,8 @@
 class CommentsController < ApplicationController
-  before_action :require_login
+  skip_before_action :authenticate_user!, only: [:show]
+  before_action :require_login, only: [:create, :edit, :update, :destroy]
   before_action :set_blog
-  before_action :set_comment, only: [:edit, :update, :destroy]
+  before_action :set_comment, only: [:show, :edit, :update, :destroy]
   before_action :authorize_owner!, only: [:edit, :update, :destroy]
 
   def create
@@ -12,13 +13,12 @@ class CommentsController < ApplicationController
       redirect_to blog_path(@blog), notice: "Comment posted."
     else
       @comments = @blog.comments.includes(:user).order(created_at: :desc)
-      flash.now[:alert] = "Could not post comment."
       render "blogs/show", status: :unprocessable_entity
     end
   end
 
   def show
-    authorize @comment
+    render partial: "comments/comment", locals: { comment: @comment }
   end
 
   def edit
@@ -28,9 +28,10 @@ class CommentsController < ApplicationController
   def update
     authorize @comment
     if @comment.update(comment_params)
-      respond_to do |f|
-        f.turbo_stream { render turbo_stream: turbo_stream.replace(dom_id(@comment), partial: "comments/comment", locals: { comment: @comment }) }
-        f.html { redirect_to blog_path(@blog), notice: "Comment updated." }
+      if turbo_frame_request?
+        render partial: "comments/comment", locals: { comment: @comment }, status: :ok
+      else
+        redirect_to blog_path(@blog), notice: "Comment updated."
       end
     else
       render :edit, status: :unprocessable_entity

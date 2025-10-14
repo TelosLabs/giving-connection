@@ -25,7 +25,7 @@ div class="overflow-x-hidden main"
             | Topic
         div class="flex items-center divide-x-2"
           p class="pr-2 text-sm font-light md:text-md"
-            | 4 comments
+            = pluralize(@blog.comments.count, "comment")
           p class="px-2 text-sm font-light md:text-md"
             = pluralize(@blog.blog_likes.count, "appreciation")
           div class="flex gap-2 px-2 text-gray-3"

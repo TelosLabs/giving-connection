@@ -35,7 +35,7 @@ div class="overflow-x-hidden main"
                 | Staff
       
     section class="flex flex-col gap-16 pb-8"
-        - @blogs.reverse_each do |blog|
+        - @blogs.each do |blog|
             = render "blog", blog: blog
 
 div class="flex flex-col px-8 bg-blue-dark "

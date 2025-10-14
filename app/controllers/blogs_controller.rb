@@ -6,7 +6,7 @@ class BlogsController < ApplicationController
 
   # GET /blogs
   def index
-    @blogs = policy_scope(Blog)
+    @blogs = policy_scope(Blog).order(created_at: :desc)
   end
 
   # GET /blogs/1
