@@ -26,7 +26,7 @@ Rails.application.routes.draw do
     end
     resource :export_locations, only: :new
     resources :blogs do
-        member do
+      member do
         patch :publish
         patch :unpublish
       end
@@ -79,6 +79,10 @@ Rails.application.routes.draw do
 
   resources :users, only: [:show] do
     resources :blogs, only: [:index], module: :users
+  end
+
+  resources :blogs do
+    resources :comments, only: [:create, :edit, :update, :destroy, :show]
   end
 
 

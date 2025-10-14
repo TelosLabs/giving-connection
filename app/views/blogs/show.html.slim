@@ -68,3 +68,10 @@ div class="overflow-x-hidden main"
                     - if @blog.user.bio.length > maxLength
                       = " "
                       = link_to "See full bio and posts", user_path(@blog.user), class: "hover:underline font-bold text-blue-dark"
+
+      section class="flex flex-col max-w-4xl gap-5 my-8" id="comments"
+        h2 class="text-2xl font-bold text-blue-dark"
+          | Comments
+        = render 'comments/form', blog: @blog, comment: @comment
+        - @comments.each do |comment|
+          = render 'comments/comment', comment: comment

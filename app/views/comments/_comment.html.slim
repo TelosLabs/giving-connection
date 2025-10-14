@@ -1,0 +1,12 @@
+div class="mb-3"
+    div class="flex items-center justify-between gap-1 mb-2 text-sm text-gray-3"
+        div class="flex items-center divide-x-2"
+            div class="flex items-center gap-1 pr-2"
+                = comment.user.avatar.attached? ? image_tag(comment.user.avatar, alt: "User Avatar", class: "object-cover w-10 h-10 rounded-full") : inline_svg_tag('default_avatar.svg', size: '40*40', class: 'w-10 h-10')
+                p = comment.user.try(:name) || 'Anonymous'
+            div class="pl-2"
+                p = comment.created_at.strftime("%B %d, %Y")
+        div class="flex items-center gap-4"
+            = link_to "Edit", edit_blog_comment_path(comment.blog, comment), class: "text-blue-600 hover:underline"
+            = button_to "Delete", blog_comment_path(comment.blog, comment), method: :delete, form: { data: { turbo_confirm: "Delete this comment?" } }, class: "text-red-600 hover:underline"
+    p = comment.body

@@ -6,6 +6,7 @@ class Blog < ApplicationRecord
 
   has_many :blog_likes, dependent: :destroy
   has_many :likers, through: :blog_likes, source: :user
+  has_many :comments, dependent: :destroy
   
   attr_accessor :share_consent
   

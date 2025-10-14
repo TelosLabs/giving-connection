@@ -12,6 +12,8 @@ class BlogsController < ApplicationController
   # GET /blogs/1
   def show
     authorize @blog
+    @comment  = @blog.comments.build
+    @comments = @blog.comments.includes(:user).order(created_at: :desc)
   end
 
   # GET /blogs/new
