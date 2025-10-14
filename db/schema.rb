@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_14_222724) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_14_225232) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -148,7 +148,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_14_222724) do
   create_table "blog_likes", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "blog_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["blog_id"], name: "index_blog_likes_on_blog_id"
+    t.index ["user_id", "blog_id"], name: "idx_blog_likes_user_blog", unique: true
     t.index ["user_id"], name: "index_blog_likes_on_user_id"
   end
 
@@ -185,7 +188,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_14_222724) do
   create_table "favorite_blogs", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "blog_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["blog_id"], name: "index_favorite_blogs_on_blog_id"
+    t.index ["user_id", "blog_id"], name: "idx_favorite_blogs_user_blog", unique: true
     t.index ["user_id"], name: "index_favorite_blogs_on_user_id"
   end
 

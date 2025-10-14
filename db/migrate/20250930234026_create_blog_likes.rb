@@ -1,3 +1,4 @@
+# rubocop:disable Rails/CreateTableWithTimestamps
 class CreateBlogLikes < ActiveRecord::Migration[7.2]
   def change
     create_table :blog_likes do |t|
@@ -6,3 +7,4 @@ class CreateBlogLikes < ActiveRecord::Migration[7.2]
     end
   end
 end
+# rubocop:enable Rails/CreateTableWithTimestamps
