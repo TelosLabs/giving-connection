@@ -25,7 +25,7 @@ module SpreadsheetImport
         Respond ONLY with valid JSON, no extra text.
       PROMPT
 
-      chat = RubyLLM.chat(model: "gemini-2.0-flash")
+      chat = RubyLLM.chat(model: "gemini-2.5-flash")
       response = chat.ask(prompt)
 
       text =
