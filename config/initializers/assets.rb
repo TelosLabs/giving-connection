@@ -14,3 +14,5 @@ Rails.application.config.assets.version = "1.0"
 # Rails.application.config.assets.precompile += %w( admin.js admin.css )
 Rails.application.config.assets.precompile += %w[administrate-field-nested_has_many/application.css]
 Rails.application.config.assets.precompile += %w[administrate/application.scss]
+Rails.application.config.assets.precompile += %w[administrate-field-trix/application.css]
+Rails.application.config.assets.precompile += %w[administrate-field-trix/application.js]

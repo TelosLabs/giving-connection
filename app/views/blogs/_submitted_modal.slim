@@ -1,0 +1,12 @@
+div id="success-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+  div class="max-w-md mx-auto text-center bg-white rounded-lg"
+    div class="flex flex-col items-center p-6 rounded-t-lg bg-gray-6"
+      = inline_svg_tag 'send.svg', class:"max-w-full h-auto"
+      h2 class="mt-4 text-2xl font-bold text-blue-dark"
+        | Thank you for submitting!
+    div class="p-6 "
+      p class="mb-4"
+        | We received your story and truly appreciate you sharing it with us.
+      div class="w-full"
+      = link_to "Got it!", blogs_path, class: "block w-full px-4 py-2 font-bold uppercase rounded-md text-blue-dark bg-seafoam text-center"
+      

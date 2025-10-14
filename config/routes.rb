@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :blogs
   require "sidekiq/web"
   mount Sidekiq::Web => "/sidekiq"
 
@@ -24,6 +25,12 @@ Rails.application.routes.draw do
       end
     end
     resource :export_locations, only: :new
+    resources :blogs do
+      member do
+        patch :publish
+        patch :unpublish
+      end
+    end
   end
 
   devise_for :admin_users
@@ -57,6 +64,24 @@ Rails.application.routes.draw do
     member do
       get "delete_upload/:upload_id", action: :delete_upload
     end
+  end
+
+  resources :blogs, only: [] do
+    resources :favorite_blogs, only: :create
+  end
+  resources :favorite_blogs, only: :destroy
+
+  resources :blogs, only: [] do
+    resources :blog_likes, only: :create
+  end
+  resources :blog_likes, only: :destroy
+
+  resources :users, only: [:show] do
+    resources :blogs, only: [:index], module: :users
+  end
+
+  resources :blogs do
+    resources :comments, only: [:create, :edit, :update, :destroy, :show]
   end
 
   resources :favorite_locations, only: %i[create destroy]
