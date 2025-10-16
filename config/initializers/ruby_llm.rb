@@ -7,3 +7,5 @@ RubyLLM.configure do |config|
   config.openai_api_key = openai_api_key
   config.gemini_api_key = gemini_api_key
 end
+
+RubyLLM.models.refresh!

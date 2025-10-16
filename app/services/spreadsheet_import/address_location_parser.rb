@@ -11,18 +11,18 @@ module SpreadsheetImport
 
     def call
       Timeout.timeout(DEFAULT_TIMEOUT) do
-        llm_result = RubyLlm.format_address(@raw_address)
+        #llm_result = RubyLlm.format_address(@raw_address)
 
-        if llm_result.is_a?(Hash) && llm_result[:error]
-          Rails.logger.warn "❌ LLM failed to parse address: #{@raw_address}"
-        end
+        #if llm_result.is_a?(Hash) && llm_result[:error]
+        #  Rails.logger.warn "❌ LLM failed to parse address: #{@raw_address}"
+        #end
 
-        parsed_address = build_parsed_address(llm_result)
-
-        result = try_geocode(parsed_address) || try_geocode(@raw_address)
+        #parsed_address = build_parsed_address(llm_result)
+        #result = try_geocode(parsed_address) || try_geocode(@raw_address)
+        result = try_geocode(@raw_address)
 
         unless result
-          Rails.logger.warn "📍 Geocoding failed for parsed input: '#{parsed_address}'"
+          Rails.logger.warn "📍 Geocoding failed for parsed input: '#{@raw_address}'"
         end
 
         result
