@@ -56,6 +56,9 @@ gem "view_component"
 # Use Turbo for rails
 gem "turbo-rails"
 
+gem "rack", "~> 2.2.20"
+gem "uri", ">= 1.0.4"
+
 gem "net-imap", require: false
 gem "net-pop", require: false
 gem "net-smtp", require: false
@@ -75,6 +78,11 @@ gem "momentjs-rails"
 
 # Geolocation
 gem "activerecord-postgis-adapter"
+gem "timezone_finder"
+gem "geocoder"
+
+# AI for text formatting
+gem "ruby_llm"
 
 # Instagram feed
 gem "koala"
