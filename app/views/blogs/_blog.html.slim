@@ -1,3 +1,13 @@
+javascript:
+  function showTooltip(tooltipId, element) {
+    const tooltip = document.getElementById(tooltipId);
+    const rect = element.getBoundingClientRect();
+    tooltip.style.left = (rect.left - rect.width/3) + 'px'; // 96px = half of w-48
+    tooltip.style.top = (rect.top - rect.height) + 'px';
+    tooltip.style.opacity = '1';
+  }
+
+
 div class="flex flex-col w-full gap-4 md:flex-row"
     div class="flex-none w-full h-48 md:w-1/3"
         = image_tag blog.cover_image, class: "object-cover w-full h-full rounded-lg" if blog.cover_image.attached?
@@ -29,26 +39,36 @@ div class="flex flex-col w-full gap-4 md:flex-row"
                     - like = current_user&.blog_likes&.find_by(blog: blog)
                     div class="flex items-center" id="like-blog-#{blog.id}"
                         - if like
-                            div class="p-2 rounded-md hover:bg-gray-300"
-                                = link_to blog_like_path(like), method: :delete, data: { turbo_stream: true }, title: "Remove like", aria: { label: "Remove like" } do
+                            div class="relative p-2 rounded-md hover:bg-gray-300" onmouseenter="showTooltip('tooltip-remove-like', this)" onmouseleave="document.getElementById('tooltip-remove-like').style.opacity='0'"
+                                = link_to blog_like_path(like), method: :delete, data: { turbo_stream: true }, aria: { label: "Remove like" } do
                                     = inline_svg_tag 'like_heart.svg', size: '25*25', class: 'fill-red'
+                                span class="fixed px-3 py-1 text-xs text-center text-white transition-opacity duration-200 rounded-lg pointer-events-none bg-gray-2" id="tooltip-remove-like" role="tooltip" style="opacity: 0; z-index: 9999;"
+                                    | Remove like
                         - else
-                            div class="p-2 rounded-md hover:bg-gray-300"
-                                = link_to blog_blog_likes_path(blog), params: { blog_id: blog.id }, method: :post, data: { turbo_stream: true }, title: "Save to favorites", aria: { label: "Save to favorites" } do
+                            div class="relative p-2 rounded-md hover:bg-gray-300" onmouseenter="showTooltip('tooltip-add-like', this)" onmouseleave="document.getElementById('tooltip-add-like').style.opacity='0'"
+                                = link_to blog_blog_likes_path(blog), method: :post, data: { turbo_stream: true }, aria: { label: "Add like" } do
                                     = inline_svg_tag 'like_heart.svg', size: '25*25', class: 'fill-none'
+                                span class="fixed px-3 py-1 text-xs text-center text-white transition-opacity duration-200 rounded-lg pointer-events-none bg-gray-2" id="tooltip-add-like" role="tooltip" style="opacity: 0; z-index: 9999;"
+                                    | Like this post!
                             
                     - fav = current_user&.fav_blogs&.find_by(blog: blog)
                     div class="flex items-center" id="save-blog-#{blog.id}"
                         - if fav
-                            div class="p-2 rounded-md hover:bg-gray-300"
-                                = link_to favorite_blog_path(fav), method: :delete, data: { turbo_stream: true }, title: "Remove from favorites", aria: { label: "Remove from favorites" } do
+                            div class="relative p-2 rounded-md hover:bg-gray-300" onmouseenter="showTooltip('tooltip-remove-fav-#{blog.id}', this)" onmouseleave="document.getElementById('tooltip-remove-fav-#{blog.id}').style.opacity='0'"
+                                = link_to favorite_blog_path(fav), method: :delete, data: { turbo_stream: true }, aria: { label: "Remove from favorites" } do
                                     = inline_svg_tag 'bookmark.svg', size: '20*20', class:'fill-red'
+                                span class="fixed px-3 py-1 text-xs text-center text-white transition-opacity duration-200 rounded-lg pointer-events-none bg-gray-2" id="tooltip-remove-fav-#{blog.id}" role="tooltip" style="opacity: 0; z-index: 9999;"
+                                    | Remove from favorites
                         - else
-                            div class="p-2 rounded-md hover:bg-gray-300"
-                                = link_to blog_favorite_blogs_path(blog), params: { blog_id: blog.id }, method: :post, data: { turbo_stream: true }, title: "Save to favorites", aria: { label: "Save to favorites" } do
+                            div class="relative p-2 rounded-md hover:bg-gray-300" onmouseenter="showTooltip('tooltip-add-fav-#{blog.id}', this)" onmouseleave="document.getElementById('tooltip-add-fav-#{blog.id}').style.opacity='0'"
+                                = link_to blog_favorite_blogs_path(blog), params: { blog_id: blog.id }, method: :post, data: { turbo_stream: true }, aria: { label: "Save to favorites" } do
                                     = inline_svg_tag 'bookmark.svg', size: '20*20', class: 'fill-none'
+                                span class="fixed px-3 py-1 text-xs text-center text-white transition-opacity duration-200 rounded-lg pointer-events-none bg-gray-2" id="tooltip-add-fav-#{blog.id}" role="tooltip" style="opacity: 0; z-index: 9999;"
+                                    | Save this post!
                     
-                    button class="p-1 rounded-md hover:bg-gray-300" data-controller="copy-to-clipboard" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="#{blog_url(blog)}"
+                    button class="relative p-1 rounded-md hover:bg-gray-300" data-controller="copy-to-clipboard" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="#{blog_url(blog)}" onmouseenter="showTooltip('tooltip-share-#{blog.id}', this)" onmouseleave="document.getElementById('tooltip-share-#{blog.id}').style.opacity='0'"
                         = inline_svg_tag 'share.svg', size: '20*20'
+                        span class="fixed px-3 py-1 text-xs text-center text-white transition-opacity duration-200 rounded-lg pointer-events-none bg-gray-2" id="tooltip-share-#{blog.id}" role="tooltip" style="opacity: 0; z-index: 9999;"
+                            | Share this post!
         div class="w-full px-6 py-2 mt-4 text-sm text-center text-white uppercase rounded-md bg-blue-dark md:hidden"
             = link_to 'Continue Reading', blog_path(blog), class:"w-full"

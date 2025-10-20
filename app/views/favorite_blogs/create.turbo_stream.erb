@@ -1,13 +1,12 @@
 <%= turbo_stream.replace "save-blog-#{@blog.id}" do %>
   <div class="flex items-center" id="save-blog-<%= @blog.id %>">
-    <div class="p-2 rounded-md hover:bg-gray-300">
-      <%= link_to favorite_blog_path(@new_favorite_blog),
-                  method: :delete,
-                  data: { turbo_stream: true },
-                  title: "Remove from favorites",
-                  aria: { label: "Remove from favorites" } do %>
+    <div class="relative p-2 rounded-md hover:bg-gray-300" onmouseenter="showTooltip('tooltip-remove-fav-<%= @blog.id %>', this)" onmouseleave="document.getElementById('tooltip-remove-fav-<%= @blog.id %>').style.opacity='0'">
+      <%= link_to favorite_blog_path(@new_favorite_blog), method: :delete, data: { turbo_stream: true }, aria: { label: "Remove from favorites" } do %>
         <%= inline_svg_tag 'bookmark.svg', class: 'w-5 h-5 fill-red' %>
       <% end %>
+      <span class="fixed px-3 py-1 text-xs text-center text-white transition-opacity duration-200 rounded-lg pointer-events-none bg-gray-2" id="tooltip-remove-fav-<%= @blog.id %>" role="tooltip" style="opacity: 0; z-index: 9999;">
+        Remove from favorites
+      </span>
     </div>
   </div>
 <% end %>
