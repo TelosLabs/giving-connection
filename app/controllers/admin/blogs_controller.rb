@@ -55,6 +55,11 @@ module Admin
 
     private
 
+    def resource_params
+      params.require(resource_class.model_name.param_key)
+        .permit(dashboard.permitted_attributes(action_name) + [:content])
+    end
+
     def blog
       @blog ||= Blog.find(params[:id])
     end

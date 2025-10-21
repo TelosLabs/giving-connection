@@ -19,7 +19,8 @@ and renders all form fields for a resource's editable attributes.
 <% end %>
 
 <% content_for :javascript do %>
-  <%= javascript_include_tag "trix" %>
+  <%= javascript_include_tag "trix", "data-turbo-track": "reload" %>
+  <%= javascript_include_tag "actiontext", "data-turbo-track": "reload" %>
 <% end %>
 
 <%= form_for([namespace, page.resource], html: { class: "form" }) do |f| %>
