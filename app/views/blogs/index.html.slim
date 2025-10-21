@@ -1,13 +1,14 @@
 div class="overflow-x-hidden main"
-  div class="relative flex flex-col px-6 mx-auto bg-[#DCEEF8] bg-opacity-70 md:flex-row justify-evenly md:items-end"
-    div class="absolute -translate-x-1/2 left-1/2"
-      = inline_svg_tag 'blur-background-4.svg', class: "w-[300px] h-[300px] md:w-[600px] md:h-[600px]"
+  div class="relative flex flex-col px-6 mx-auto overflow-hidden md:flex-row justify-evenly md:items-end"
+    div class="absolute inset-0 z-0"
+      = image_tag 'blog-header.jpg', alt: "Blog Header Background", class: "w-full h-full object-cover"
+    div class="absolute inset-0 z-0 bg-gradient-to-t from-[#9AE2E099] to-[#9AE2E0]"
     div class="relative flex flex-col justify-center py-10 text-center md:py-20"
       div class="mx-auto"
-        = inline_svg_tag 'heart.svg', class: "text-blue-dark w-full h-[30px]"
-        h2 class="text-2xl font-bold text-center text-blue-dark"
+        = inline_svg_tag 'like_heart.svg', class: 'w-full h-[40px] fill-red border-white stroke-1'
+        h2 class="text-3xl font-bold text-center text-blue-dark"
           | Giving Connection Blog
-        p class="text-xl italic font-medium text-blue-dark"
+        p class="text-2xl italic font-medium text-blue-dark"
           | Stories from the Heart of Giving
 
   section class="flex flex-col max-w-5xl gap-4 px-5 mx-auto md:gap-16 md:my-20"

@@ -34,11 +34,11 @@ div class="overflow-x-hidden main"
               - if like
                 div class="p-2 rounded-md hover:bg-gray-300"
                   = link_to blog_like_path(like), method: :delete, data: { turbo_stream: true }, title: "Remove like", aria: { label: "Remove like" } do
-                    = inline_svg_tag 'like_heart.svg', size: '25*25', class: 'fill-red'
+                    = inline_svg_tag 'like_heart.svg', size: '25*25', class: 'fill-red stroke-2'
               - else
                 div class="p-2 rounded-md hover:bg-gray-300"
                   = link_to blog_blog_likes_path(@blog), params: { blog_id: @blog.id }, method: :post, data: { turbo_stream: true }, title: "Save to favorites", aria: { label: "Save to favorites" } do
-                    = inline_svg_tag 'like_heart.svg', size: '25*25', class: 'fill-none'
+                    = inline_svg_tag 'like_heart.svg', size: '25*25', class: 'fill-none stroke-2'
 
             - fav = current_user&.fav_blogs&.find_by(blog: @blog)
             div class="flex items-center" id="save-blog-#{@blog.id}"
