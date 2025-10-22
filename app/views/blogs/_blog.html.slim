@@ -14,8 +14,8 @@ div class="flex flex-col w-full gap-4 md:flex-row"
     div class="w-full"
         div class="flex text-sm font-light divide-gray-300 divide-x-[1px] text-gray-3 items-center"
             div class="flex items-center gap-2 pr-2" 
+                - author = blog.user
                 - if author&.avatar&.attached?
-                    - author = blog.user
                     = image_tag author.avatar, alt: "Author Avatar", class: "object-cover w-8 h-8 rounded-full" if author.avatar.attached?
                     - display_name = author&.name.presence || blog.name.presence || "Anonymous"
                     p class="font-light text-md"
