@@ -5,3 +5,4 @@
 //= link administrate-field-active_storage/application.css
 //= link actiontext.css
 //= link trix.css
+//= link tom-select.css
