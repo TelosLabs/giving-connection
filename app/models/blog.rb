@@ -30,4 +30,10 @@ class Blog < ApplicationRecord
     'Supported disaster relief or recovery',
     'Other'
   ].freeze
+
+  BLOG_TAG_OPTIONS = [
+    'Nonprofits',
+    'Community',
+    'Staff'
+  ].freeze
 end
