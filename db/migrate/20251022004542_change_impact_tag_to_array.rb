@@ -9,7 +9,7 @@ class ChangeImpactTagToArray < ActiveRecord::Migration[7.2]
         ELSE ARRAY[impact_tag]::text[]
       END
     SQL
-    
+
     change_column_default :blogs, :impact_tag, []
   end
 
@@ -20,7 +20,7 @@ class ChangeImpactTagToArray < ActiveRecord::Migration[7.2]
       TYPE varchar 
       USING impact_tag[1]
     SQL
-    
+
     change_column_default :blogs, :impact_tag, nil
   end
 end

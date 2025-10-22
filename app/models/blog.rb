@@ -17,25 +17,25 @@ class Blog < ApplicationRecord
 
   scope :published, -> { where(published: true) }
 
-  attribute :impact_tag, :string, array: true, default: []
+  attribute :impact_tag, :string, array: true, default: -> { [] }
 
   IMPACT_TAG_OPTIONS = [
-    'Found a nonprofit to support',
-    'Received help or resources',
-    'Discovered a volunteer opportunity',
-    'Made a community connection',
-    'Found inspiration or purpose',
-    'Reached new clients or volunteers',
-    'Built a partnership or collaboration',
-    'Promoted an event or program',
-    'Increased visibility or awareness',
-    'Supported disaster relief or recovery',
-    'Other'
+    "Found a nonprofit to support",
+    "Received help or resources",
+    "Discovered a volunteer opportunity",
+    "Made a community connection",
+    "Found inspiration or purpose",
+    "Reached new clients or volunteers",
+    "Built a partnership or collaboration",
+    "Promoted an event or program",
+    "Increased visibility or awareness",
+    "Supported disaster relief or recovery",
+    "Other"
   ].freeze
 
   BLOG_TAG_OPTIONS = [
-    'Nonprofits',
-    'Community',
-    'Staff'
+    "Nonprofits",
+    "Community",
+    "Staff"
   ].freeze
 end
