@@ -17,10 +17,12 @@ class BlogsController < ApplicationController
   def new
     @blog = Blog.new
     @blog.user = current_user if user_signed_in?
+    @impact_tag_options = Blog::IMPACT_TAG_OPTIONS
     authorize @blog
   end
 
   def edit
+    @impact_tag_options = Blog::IMPACT_TAG_OPTIONS
     authorize @blog
   end
 

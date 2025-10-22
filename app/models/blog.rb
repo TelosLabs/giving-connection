@@ -8,10 +8,26 @@ class Blog < ApplicationRecord
   has_many :likers, through: :blog_likes, source: :user
   has_many :comments, dependent: :destroy
 
+  has_many :favorite_blogs, dependent: :destroy
+
   attr_accessor :share_consent
 
   validates :title, presence: true
   validates :share_consent, acceptance: {accept: "1", message: "must be accepted to publish your story"}
 
   scope :published, -> { where(published: true) }
+
+  IMPACT_TAG_OPTIONS = [
+    'Found a nonprofit to support',
+    'Received help or resources',
+    'Discovered a volunteer opportunity',
+    'Made a community connection',
+    'Found inspiration or purpose',
+    'Reached new clients or volunteers',
+    'Built a partnership or collaboration',
+    'Promoted an event or program',
+    'Increased visibility or awareness',
+    'Supported disaster relief or recovery',
+    'Other'
+  ].freeze
 end
