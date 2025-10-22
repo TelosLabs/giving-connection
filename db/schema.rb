@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_10_22_003555) do
+ActiveRecord::Schema[7.2].define(version: 2025_10_22_004542) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -161,7 +161,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_22_003555) do
     t.datetime "updated_at", null: false
     t.string "name"
     t.string "email"
-    t.string "impact_tag"
+    t.text "impact_tag", default: [], array: true
     t.bigint "user_id"
     t.boolean "published", default: false, null: false
     t.integer "views_count", default: 0, null: false

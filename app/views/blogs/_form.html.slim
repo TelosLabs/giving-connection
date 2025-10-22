@@ -31,7 +31,8 @@
         | Impact Tag
       p class="font-light text-md"
         | Select an impact tag to help us determine how Giving Connection was able to help you.
-      = form.select :impact_tag, options_for_select(Blog::IMPACT_TAG_OPTIONS, form.object.impact_tag), { prompt: 'Select...' }, { class: 'w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent', required: true }
+      = form.select :impact_tag, options_for_select(Blog::IMPACT_TAG_OPTIONS, form.object.impact_tag), {}, { multiple: true, class: 'w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent', size: 10 }
+      p class="mt-1 text-xs text-gray-500" Hold Ctrl (Cmd on Mac) to select multiple options
 
   div class="mb-4"
     p class="font-bold text-md"

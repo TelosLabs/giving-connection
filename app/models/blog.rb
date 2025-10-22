@@ -17,6 +17,8 @@ class Blog < ApplicationRecord
 
   scope :published, -> { where(published: true) }
 
+  attribute :impact_tag, :string, array: true, default: []
+
   IMPACT_TAG_OPTIONS = [
     'Found a nonprofit to support',
     'Received help or resources',
