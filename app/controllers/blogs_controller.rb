@@ -63,7 +63,7 @@ class BlogsController < ApplicationController
   end
 
   def blog_params
-    params.require(:blog).permit(:title, :content, :name, :email, :impact_tag, :blog_tag, :cover_image, :share_consent)
+    params.require(:blog).permit(:title, :content, :name, :email, :impact_tag, :blog_tag, :topic, :cover_image, :share_consent)
   end
 
   def track_blog_view

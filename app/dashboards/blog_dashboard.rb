@@ -22,6 +22,7 @@ class BlogDashboard < Administrate::BaseDashboard
     # images_blobs: Field::HasMany,
     impact_tag: Field::Select.with_options(collection: Blog::IMPACT_TAG_OPTIONS),
     blog_tag: Field::Select.with_options(collection: Blog::BLOG_TAG_OPTIONS),
+    topic: Field::String,
     # likers: Field::HasMany,
     name: Field::String,
     # rich_text_content: Field::HasOne,
@@ -55,6 +56,7 @@ class BlogDashboard < Administrate::BaseDashboard
     content
     impact_tag
     blog_tag
+    topic
     published
     cover_image
     created_at
@@ -70,6 +72,7 @@ class BlogDashboard < Administrate::BaseDashboard
     email
     impact_tag
     blog_tag
+    topic
     published
     cover_image
 

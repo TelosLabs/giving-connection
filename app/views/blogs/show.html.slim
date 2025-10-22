@@ -22,7 +22,7 @@ div class="overflow-x-hidden main"
           p class="px-2 text-sm font-light md:text-md"
             = @blog.created_at.strftime("%B %d, %Y")
           p class="px-2 text-sm font-light md:text-md"
-            | Topic
+            = @blog.topic if @blog.topic.present?
         div class="flex items-center divide-x-2"
           p class="pr-2 text-sm font-light md:text-md"
             = pluralize(@blog.comments.count, "comment")
