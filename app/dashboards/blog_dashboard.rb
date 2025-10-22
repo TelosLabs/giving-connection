@@ -20,7 +20,7 @@ class BlogDashboard < Administrate::BaseDashboard
     email: Field::String,
     # images_attachments: Field::HasMany,
     # images_blobs: Field::HasMany,
-    impact_tag: Field::Select.with_options(collection: Blog::IMPACT_TAG_OPTIONS),
+    impact_tag: MultiSelectField.with_options(collection: Blog::IMPACT_TAG_OPTIONS),
     blog_tag: Field::Select.with_options(collection: Blog::BLOG_TAG_OPTIONS),
     topic: Field::String,
     # likers: Field::HasMany,

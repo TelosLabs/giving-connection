@@ -16,6 +16,7 @@ and renders all form fields for a resource's editable attributes.
 
 <% content_for :stylesheet do %>
   <%= stylesheet_link_tag "trix", "actiontext" %>
+  <%= stylesheet_link_tag "tom-select", "data-turbo-track": "reload" %>
 <% end %>
 
 <% content_for :javascript do %>
