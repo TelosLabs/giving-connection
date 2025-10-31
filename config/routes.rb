@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :blogs
   require "sidekiq/web"
   mount Sidekiq::Web => "/sidekiq"
 
@@ -53,7 +52,9 @@ Rails.application.routes.draw do
   resource :search_preview, only: [:show]
   resources :search_exports, only: [:create]
 
-  resources :users, only: [:update]
+  resources :users, only: [:update, :show] do
+    resources :blogs, only: [:index], module: :users
+  end
   resources :reset_password, only: %i[new]
 
   resources :locations, only: %i[index new show destroy]
@@ -66,23 +67,14 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :blogs, only: [] do
-    resources :favorite_blogs, only: :create
-  end
-  resources :favorite_blogs, only: :destroy
-
-  resources :blogs, only: [] do
-    resources :blog_likes, only: :create
-  end
-  resources :blog_likes, only: :destroy
-
-  resources :users, only: [:show] do
-    resources :blogs, only: [:index], module: :users
-  end
-
   resources :blogs do
     resources :comments, only: [:create, :edit, :update, :destroy, :show]
+    resources :favorite_blogs, only: :create
+    resources :blog_likes, only: :create
   end
+
+  resources :favorite_blogs, only: :destroy
+  resources :blog_likes, only: :destroy
 
   resources :favorite_locations, only: %i[create destroy]
   resources :alerts, only: %i[new create edit update destroy]
