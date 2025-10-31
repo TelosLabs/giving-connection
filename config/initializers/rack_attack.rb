@@ -17,19 +17,22 @@ class Rack::Attack
     {
       registration_ip: 5.minutes,      # Instead of 1 hour
       suspicious_domain: 5.minutes,    # Instead of 1 hour
-      login: 20.seconds               # Keep as is for login
+      login: 20.seconds,               # Keep as is for login
+      blog_anonymous: 5.minutes
     }.freeze
   elsif Rails.env.test?
     {
       registration_ip: 1.second,      # Effectively disable throttling
       suspicious_domain: 1.second,    # Effectively disable throttling
-      login: 1.second                 # Effectively disable throttling
+      login: 1.second,                # Effectively disable throttling
+      blog_anonymous: 1.second
     }.freeze
   else
     {
       registration_ip: 1.hour,
       suspicious_domain: 1.hour,
-      login: 20.seconds
+      login: 20.seconds,
+      blog_anonymous: 1.hour
     }.freeze
   end
 
@@ -159,6 +162,21 @@ class Rack::Attack
   throttle("logins/email", limit: 5, period: THROTTLE_PERIODS[:login]) do |req|
     if req.path == "/login" && req.post?
       req.params["email"].to_s.downcase.gsub(/\s+/, "").presence
+    end
+  end
+
+
+  ### Prevent Blog Spam ###
+  # Stricter throttle for anonymous users (no session/auth)
+  throttle("blogs/anonymous", limit: 3, period: THROTTLE_PERIODS[:blog_anonymous]) do |req|
+    if req.path == "/blogs" && req.post?
+      # Check if user is authenticated by looking for Devise session
+      is_authenticated = req.env['warden']&.authenticated?
+      
+      unless is_authenticated
+        Rails.logger.info "[Rack::Attack] Anonymous blog creation from IP: #{req.ip}" if Rails.env.development?
+        req.ip
+      end
     end
   end
 
