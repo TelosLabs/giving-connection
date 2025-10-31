@@ -1,4 +1,8 @@
 class CommentPolicy < ApplicationPolicy
+  def show?
+    true
+  end
+
   def create?
     user.present?
   end
@@ -8,6 +12,10 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def destroy?
+    user.present? && (record.user_id == user.id || user.try(:admin?))
+  end
+
+  def edit?
     user.present? && (record.user_id == user.id || user.try(:admin?))
   end
 

@@ -1,9 +1,8 @@
 class CommentsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show]
-  before_action :require_login, only: [:create, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:create, :edit, :update, :destroy]
   before_action :set_blog
   before_action :set_comment, only: [:show, :edit, :update, :destroy]
-  before_action :authorize_owner!, only: [:edit, :update, :destroy]
 
   def create
     @comment = @blog.comments.build(comment_params.merge(user: current_user))
@@ -18,6 +17,7 @@ class CommentsController < ApplicationController
   end
 
   def show
+    authorize @comment
     render partial: "comments/comment", locals: {comment: @comment}
   end
 
@@ -56,13 +56,5 @@ class CommentsController < ApplicationController
 
   def comment_params
     params.require(:comment).permit(:body)
-  end
-
-  def require_login
-    redirect_to new_session_path, alert: "Please sign in." unless current_user
-  end
-
-  def authorize_owner!
-    redirect_to blog_path(@blog), alert: "Not authorized." unless @comment.user_id == current_user&.id
   end
 end
