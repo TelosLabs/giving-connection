@@ -6,18 +6,22 @@ class BlogPolicy < ApplicationPolicy
   end
 
   def show?
-    true  # Anyone can view blogs
+    true 
   end
 
   def create?
-    true  # Anyone can create blogs (adjust as needed)
+    true 
   end
 
   def update?
-    true  # Anyone can update blogs (adjust as needed)
+    user.present? && (record.user_id == user.id || user.admin?)
   end
 
   def destroy?
-    true  # Anyone can delete blogs (adjust as needed)
+    user.present? && (record.user_id == user.id || user.admin?)
+  end
+
+  def edit?
+    user.present? && (record.user_id == user.id || user.admin?)
   end
 end
