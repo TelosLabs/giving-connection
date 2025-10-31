@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class FavoriteBlogsController < ApplicationController
-  skip_before_action :authenticate_user!
-  before_action :set_session_favorite
+  before_action :authenticate_user!
+  
+  before_action :save_intended_blog, only: [:create]
 
   include Pundit
   skip_after_action :verify_policy_scoped
@@ -25,10 +26,7 @@ class FavoriteBlogsController < ApplicationController
 
   private
 
-  def set_session_favorite
-    unless user_signed_in?
-      session[:fav_blog_blog_id] = params[:blog_id]
-      redirect_to user_session_path
-    end
+  def save_intended_blog
+    session[:intended_blog_id] = params[:blog_id] if params[:blog_id].present?
   end
 end
