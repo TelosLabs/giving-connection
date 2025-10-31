@@ -134,17 +134,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_22_004542) do
     t.index ["beneficiary_group_id"], name: "index_beneficiary_subcategories_on_beneficiary_group_id"
   end
 
-  create_table "blog_comments", force: :cascade do |t|
-    t.text "body", null: false
-    t.bigint "user_id", null: false
-    t.bigint "blog_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["blog_id", "created_at"], name: "index_blog_comments_on_blog_id_and_created_at"
-    t.index ["blog_id"], name: "index_blog_comments_on_blog_id"
-    t.index ["user_id"], name: "index_blog_comments_on_user_id"
-  end
-
   create_table "blog_likes", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "blog_id", null: false
@@ -448,8 +437,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_10_22_004542) do
   add_foreign_key "alert_services", "services"
   add_foreign_key "alerts", "users"
   add_foreign_key "beneficiary_subcategories", "beneficiary_groups"
-  add_foreign_key "blog_comments", "blogs"
-  add_foreign_key "blog_comments", "users"
   add_foreign_key "blog_likes", "blogs"
   add_foreign_key "blog_likes", "users"
   add_foreign_key "blogs", "users"
