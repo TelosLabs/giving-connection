@@ -5,6 +5,10 @@
       ul
         - blog.errors.full_messages.each do |message|
           li = message
+  - if user_signed_in?
+    p class="mb-4 text-sm text-blue-dark"
+      | You are currently logged in as <b>#{current_user.name} (#{current_user.email})</b>. <br>
+      | If you would like to submit your story under a different name or anonymously, please log out.
   - unless user_signed_in?
     div class="mb-4"
       p class="font-bold text-md"
