@@ -32,14 +32,16 @@ div class="w-full h-full bg-white"
               div class="hidden col-span-3 md:flex"
               
               div class="col-span-12 lg:col-span-5 md:col-span-7"
-                = form.label :bio, "Bio", class: "block text-sm text-grey-3 font-medium"
+                = form.label :bio, "Tell us about yourself!", class: "block text-sm text-grey-3 font-medium"
                 = form.text_area :bio, { value: current_user.bio, class: "c-input h-[250px]" }
               div class="hidden col-span-3 md:flex"
 
               div class="flex items-center col-span-12 lg:col-span-5 md:col-span-7"
                 = image_tag current_user.avatar, alt: "Author Avatar", class: "object-cover w-[100px] h-[100px] rounded-full" if current_user.avatar.attached?
                 div class="flex flex-col"
-                  = form.label :avatar, "Avatar", class: "block text-sm text-grey-3 font-medium"
+                  = form.label :avatar, "Profile Photo", class: "block text-sm text-grey-3 font-medium"
+                  p class="text-sm text-grey-4"
+                    | Your photo will appear next to your name when you leave comments in the blog section.
                   = form.file_field :avatar, class: "w-full"
               div class="hidden col-span-3 md:flex"
 
