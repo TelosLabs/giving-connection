@@ -31,6 +31,7 @@ class BlogDashboard < Administrate::BaseDashboard
 
     title: Field::String,
     user: Field::BelongsTo,
+    author_email: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime
   }.freeze
@@ -53,6 +54,7 @@ class BlogDashboard < Administrate::BaseDashboard
     name
     email
     user
+    author_email
     content
     impact_tag
     blog_tag
@@ -70,6 +72,7 @@ class BlogDashboard < Administrate::BaseDashboard
     title
     name
     email
+    author_email
     impact_tag
     blog_tag
     topic
