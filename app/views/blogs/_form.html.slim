@@ -30,18 +30,19 @@
     p class="font-light text-md"
       | Enter the name of your story.
     = form.text_field :title, class: 'w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent', placeholder:"A second chance through Giving Connection"
-    div class="mb-4"
-      p class="font-bold text-md"
-        | Impact Tag
-      p class="font-light text-md"
-        | Select an impact tag to help us determine how Giving Connection was able to help you.
-      = form.select :impact_tag, options_for_select(Blog::IMPACT_TAG_OPTIONS, form.object.impact_tag), {}, { multiple: true, data: { controller: "multiple-select", placeholder: "Select impact tags..." }, class: "w-full" }
+  
+  div class="mb-4"
+    p class="font-bold text-md"
+      | Impact Tag
+    p class="font-light text-md"
+      | Select an impact tag to help us determine how Giving Connection was able to help you.
+    = form.select :impact_tag, options_for_select(Blog::IMPACT_TAG_OPTIONS, form.object.impact_tag), {}, { multiple: true, data: { controller: "multiple-select", placeholder: "Select impact tags..." }, class: "w-full" }
 
   div class="mb-4"
     p class="font-bold text-md"
-      | Cover Image
+      | Images
     p class="font-light text-md"
-      | Upload a cover image for your blog post
+      | Share any relevant images here.
     = form.file_field :cover_image, accept: 'image/*', class: 'w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
 
   div class="mb-4"
