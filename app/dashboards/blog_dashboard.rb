@@ -54,7 +54,6 @@ class BlogDashboard < Administrate::BaseDashboard
     title
     name
     email
-    user
     author_email
     content
     impact_tag
