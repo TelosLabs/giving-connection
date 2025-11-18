@@ -14,6 +14,7 @@ class BlogDashboard < Administrate::BaseDashboard
     # cover_image_blob: Field::HasOne,
 
     cover_image: Field::ActiveStorage,
+    thumbnail_image: Field::ActiveStorage,
     images: Field::ActiveStorage,
     published: Field::Boolean,
 
@@ -60,7 +61,6 @@ class BlogDashboard < Administrate::BaseDashboard
     blog_tag
     topic
     published
-    cover_image
     created_at
     updated_at
   ].freeze
@@ -76,9 +76,6 @@ class BlogDashboard < Administrate::BaseDashboard
     impact_tag
     blog_tag
     topic
-    published
-    cover_image
-
   ].freeze
 
   # COLLECTION_FILTERS

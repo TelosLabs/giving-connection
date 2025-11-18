@@ -28,6 +28,8 @@ Rails.application.routes.draw do
       member do
         patch :publish
         patch :unpublish
+        post :set_cover
+        post :set_thumbnail
       end
     end
   end

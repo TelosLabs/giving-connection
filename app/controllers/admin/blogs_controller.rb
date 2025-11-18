@@ -53,6 +53,18 @@ module Admin
       redirect_back fallback_location: admin_blogs_path, notice: "Unpublished"
     end
 
+    def set_cover
+      image = blog.images.attachments.find(params[:attachment_id])
+      blog.cover_image.attach(image.blob)
+      redirect_back fallback_location: admin_blog_path(blog), notice: "Cover image updated"
+    end
+
+    def set_thumbnail
+      image = blog.images.attachments.find(params[:attachment_id])
+      blog.thumbnail_image.attach(image.blob)
+      redirect_back fallback_location: admin_blog_path(blog), notice: "Thumbnail image updated"
+    end
+
     private
 
     def resource_params

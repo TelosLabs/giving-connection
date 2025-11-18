@@ -43,7 +43,7 @@
       | Images
     p class="font-light text-md"
       | Share any relevant images here.
-    = form.file_field :cover_image, accept: 'image/*', class: 'w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+    = form.file_field :images, accept: 'image/*', multiple: true, class: 'w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
 
   div class="mb-4"
     p class="font-bold text-md"
