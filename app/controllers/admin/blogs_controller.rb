@@ -68,7 +68,17 @@ module Admin
     private
 
     def resource_params
-      params.require(resource_class.model_name.param_key).permit(dashboard.permitted_attributes(action_name) + [:content], impact_tag: [])
+      raw_params = params.require(resource_class.model_name.param_key).permit(dashboard.permitted_attributes(action_name) + [:content], impact_tag: [])
+
+      email = raw_params.delete(:author_email)
+
+      if email.present?
+        if (user = User.find_by(email: email))
+          raw_params[:user_id] = user.id
+        end
+      end
+
+      raw_params
     end
 
     def blog
