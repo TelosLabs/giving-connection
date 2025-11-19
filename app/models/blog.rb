@@ -15,7 +15,7 @@ class Blog < ApplicationRecord
   attr_accessor :share_consent
 
   validates :title, presence: true
-  validates :share_consent, acceptance: {accept: "1", message: "must be accepted to publish your story"}, if: -> { !share_consent.nil? }
+  validates :share_consent, acceptance: {accept: "1", message: "must be accepted to publish your story"}
 
   scope :published, -> { where(published: true) }
 
@@ -46,28 +46,6 @@ class Blog < ApplicationRecord
       @author_email
     else
       user&.email
-    end
-  end
-
-  before_validation :assign_user_from_author_email, if: :author_email_from_form_present?
-
-  private
-
-  def author_email_from_form_present?
-    defined?(@author_email) && @author_email.present?
-  end
-
-  def assign_user_from_author_email
-    return if @author_email.blank?
-
-    found_user = User.find_by(email: @author_email)
-
-    if found_user
-      self.user = found_user
-      self.name ||= found_user.name
-      self.email ||= found_user.email
-    else
-      errors.add(:author_email, "no user found with that email")
     end
   end
 
