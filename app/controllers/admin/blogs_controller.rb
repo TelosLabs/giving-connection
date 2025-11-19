@@ -68,7 +68,7 @@ module Admin
     private
 
     def resource_params
-      raw_params = params.require(resource_class.model_name.param_key).permit(dashboard.permitted_attributes(action_name) + [:content], impact_tag: [])
+      raw_params = params.require(resource_class.model_name.param_key).permit(dashboard.permitted_attributes(action_name) + [:content], impact_tag: [], images: [])
 
       email = raw_params.delete(:author_email)
 
