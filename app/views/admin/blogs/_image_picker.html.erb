@@ -7,8 +7,8 @@
         <div class="text-center">
           <%= image_tag url_for(img.variant(resize_to_limit: [200, 200])) %>
           <div class="flex mt-2">
-            <%= button_to "Set as cover", set_cover_admin_blog_path(page.resource, attachment_id: img.id), method: :post, class: "button" %>
-            <%= button_to "Set as thumbnail", set_thumbnail_admin_blog_path(page.resource, attachment_id: img.id), method: :post, class: "button" %>
+            <%= link_to "Set as cover", set_cover_admin_blog_path(page.resource, attachment_id: img.id), method: :post, class: "button" %>
+            <%= link_to "Set as thumbnail", set_thumbnail_admin_blog_path(page.resource, attachment_id: img.id), method: :post, class: "button" %>
           </div>
         </div>
       <% end %>
