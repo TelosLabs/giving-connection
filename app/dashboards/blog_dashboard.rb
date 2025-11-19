@@ -45,7 +45,6 @@ class BlogDashboard < Administrate::BaseDashboard
   COLLECTION_ATTRIBUTES = %i[
     title
     author_email
-    email
     created_at
   ].freeze
 
