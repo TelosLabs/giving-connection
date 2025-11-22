@@ -18,22 +18,10 @@ div class="overflow-x-hidden main"
             = inline_svg_tag 'magnifying-glass.svg', class: "text-blue-dark"
             input type="search" placeholder="Search blogs..." class="w-full border-0"
         div class="flex-wrap items-center hidden gap-2 md:flex"
-            a class="flex gap-1 px-3 py-2 text-xs bg-white border-[1px] border-gray-5 border-solid rounded-full text-gray-2" href="#getting-started"
-                span aria-hidden="true"
-                    = inline_svg_tag 'comment.svg', size: '15*15', class: "text-blue-dark"
-                | All posts
-            a class="flex gap-1 px-3 py-2 text-xs bg-white border-[1px] border-gray-5 border-solid rounded-full text-gray-2" href="#getting-started"
-                span aria-hidden="true"
-                    = inline_svg_tag 'comment_heart.svg', size: '15*15', class: "text-blue-dark"
-                | Nonprofits
-            a class="flex gap-1 px-3 py-2 text-xs bg-white border-[1px] border-gray-5 border-solid rounded-full text-gray-2" href="#getting-started"
-                span aria-hidden="true"
-                    = inline_svg_tag 'hand_heart.svg', size: '15*15', class: "text-blue-dark"
-                | Community
-            a class="flex gap-1 px-3 py-2 text-xs bg-white border-[1px] border-gray-5 border-solid rounded-full text-gray-2" href="#getting-started"
-                span aria-hidden="true"
-                    = inline_svg_tag 'staff.svg', size: '15*15', class: "text-blue-dark"
-                | Staff
+            = blog_filter_button('All posts', 'all', 'comment.svg')
+            = blog_filter_button('Nonprofits', 'Nonprofits', 'comment_heart.svg')
+            = blog_filter_button('Community', 'Community', 'hand_heart.svg')
+            = blog_filter_button('Staff', 'Staff', 'staff.svg')
       
     section class="flex flex-col gap-16 pb-8"
         - @blogs.each do |blog|

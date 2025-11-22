@@ -15,4 +15,14 @@ module BlogsHelper
       content_tag(:div, initials, class: "#{size} rounded-full #{color} text-white flex items-center justify-center font-semibold text-sm")
     end
   end
+
+  def blog_filter_button(label, tag, icon)
+    is_active = (@selected_tag == tag)
+    count = (tag == 'all') ? Blog.published.count : Blog.published.where(blog_tag: tag).count
+    
+    link_to blogs_path(blog_tag: tag), class: "flex gap-1 px-3 py-2 text-xs border-[1px] border-solid rounded-full transition-colors #{is_active ? 'bg-blue-dark text-white border-blue-dark' : 'bg-white border-gray-5 text-gray-2 hover:border-blue-dark'}" do
+      concat content_tag(:span, inline_svg_tag(icon, size: '15*15', class: (is_active ? 'fill-white' : 'text-blue-dark')),'aria-hidden': 'true')
+      concat "#{label} (#{count})"
+    end
+  end
 end
