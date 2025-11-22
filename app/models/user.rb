@@ -71,15 +71,15 @@ class User < ApplicationRecord
 
   def sanitize_bio
     return if bio.blank?
-    
-    self.bio = ActionController::Base.helpers.sanitize( bio, tags: [], attributes: [] ).strip
-    
+
+    self.bio = ActionController::Base.helpers.sanitize(bio, tags: [], attributes: []).strip
+
     self.bio = bio.squeeze(" ").gsub(/\n{3,}/, "\n\n").strip
   end
 
   def no_html_in_bio
     return if bio.blank?
-    
+
     if bio.match?(/<[^>]+>/)
       errors.add(:bio, "cannot contain HTML tags")
     end

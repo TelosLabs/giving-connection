@@ -7,11 +7,11 @@ class BlogsController < ApplicationController
   def index
     @blogs = policy_scope(Blog).order(created_at: :desc)
 
-    if params[:blog_tag].present? && params[:blog_tag] != 'all'
+    if params[:blog_tag].present? && params[:blog_tag] != "all"
       @blogs = @blogs.where(blog_tag: params[:blog_tag])
     end
-    
-    @selected_tag = params[:blog_tag] || 'all'
+
+    @selected_tag = params[:blog_tag] || "all"
   end
 
   def show

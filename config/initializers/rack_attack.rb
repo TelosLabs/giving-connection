@@ -165,14 +165,13 @@ class Rack::Attack
     end
   end
 
-
   ### Prevent Blog Spam ###
   # Stricter throttle for anonymous users (no session/auth)
   throttle("blogs/anonymous", limit: 3, period: THROTTLE_PERIODS[:blog_anonymous]) do |req|
     if req.path == "/blogs" && req.post?
       # Check if user is authenticated by looking for Devise session
-      is_authenticated = req.env['warden']&.authenticated?
-      
+      is_authenticated = req.env["warden"]&.authenticated?
+
       unless is_authenticated
         Rails.logger.info "[Rack::Attack] Anonymous blog creation from IP: #{req.ip}" if Rails.env.development?
         req.ip

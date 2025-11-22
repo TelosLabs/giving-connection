@@ -6,11 +6,11 @@ class BlogPolicy < ApplicationPolicy
   end
 
   def show?
-    true 
+    true
   end
 
   def create?
-    true 
+    true
   end
 
   def update?

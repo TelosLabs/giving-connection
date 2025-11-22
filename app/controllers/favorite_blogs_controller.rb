@@ -2,7 +2,7 @@
 
 class FavoriteBlogsController < ApplicationController
   before_action :authenticate_user!
-  
+
   before_action :save_intended_blog, only: [:create]
 
   include Pundit
