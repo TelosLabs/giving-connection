@@ -11,6 +11,7 @@
 #
 class BeneficiaryGroup < ApplicationRecord
   include PgSearch::Model
+
   multisearchable against: :name
   has_many :beneficiary_subcategories, dependent: :destroy
 end

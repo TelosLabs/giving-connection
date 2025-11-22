@@ -12,6 +12,7 @@
 #
 class Service < ApplicationRecord
   include PgSearch::Model
+
   multisearchable against: :name
 
   belongs_to :cause

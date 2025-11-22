@@ -16,6 +16,7 @@
 class OfficeHour < ActiveRecord::Base
   include OfficeHours::Searchable
   include TimeZoneConvertible
+
   validates_with OfficeHoursValidator
 
   belongs_to :location, touch: true

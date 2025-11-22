@@ -1,5 +1,6 @@
 module Locationable
   extend ActiveSupport::Concern
+
   LOCAL_HOST_IP = "127.0.0.1"
   DEFAULT_LATITUDE = 36.16404968727089
   DEFAULT_LONGITUDE = -86.78125827725053

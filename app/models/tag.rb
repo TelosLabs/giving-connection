@@ -12,6 +12,7 @@
 #
 class Tag < ApplicationRecord
   include PgSearch::Model
+
   belongs_to :organization
   multisearchable against: :name
 end

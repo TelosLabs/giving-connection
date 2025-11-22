@@ -12,6 +12,7 @@
 #
 class BeneficiarySubcategory < ApplicationRecord
   include PgSearch::Model
+
   multisearchable against: :name
 
   belongs_to :beneficiary_group

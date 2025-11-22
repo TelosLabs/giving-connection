@@ -23,9 +23,11 @@ class Location < ActiveRecord::Base
   include Locations::Searchable
   include Locations::Officeable
   include PgSearch::Model
+
   multisearchable against: [:name]
 
   extend FriendlyId
+
   friendly_id :slug_candidates, use: [:slugged, :finders]
 
   def slug_candidates
