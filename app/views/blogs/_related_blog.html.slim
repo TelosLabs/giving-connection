@@ -14,7 +14,7 @@ div class="flex flex-col w-full gap-4"
     div class="flex items-center gap-2 pr-2 text-gray-3 text-sm font-light" 
         - author = blog.user
         - if author&.avatar&.attached?
-            = image_tag author.avatar, alt: "Author Avatar", class: "object-cover w-8 h-8 rounded-full" if author.avatar.attached?
+            = user_avatar(author)
             - display_name = author&.name.presence || blog.name.presence || "Anonymous"
             p class="font-light text-md"
                 = link_to display_name, user_path(author), class: "hover:underline" if author

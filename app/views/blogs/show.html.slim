@@ -14,7 +14,7 @@ div class="overflow-x-hidden main"
           div class="flex items-center gap-2 pr-2"
             - author = @blog.user
             - if author&.avatar&.attached?
-              = image_tag author.avatar, alt: "Author Avatar", class: "object-cover w-8 h-8 rounded-full" if author.avatar.attached?
+              = user_avatar(author)
               - display_name = author&.name.presence || @blog.name.presence || "Anonymous"
               p class="text-sm font-light md:text-md"
                 = link_to display_name, user_path(author), class: "hover:underline" if author
@@ -57,7 +57,7 @@ div class="overflow-x-hidden main"
     
     - if @blog.user
       section class="flex flex-col items-center justify-center gap-2 py-16"
-          = image_tag @blog.user.avatar, alt: "Author Avatar", class: "object-cover w-[150px] h-[150px] rounded-full" if @blog.user.avatar.attached?
+          = user_avatar(@blog.user, size: "150x150")
           div class="flex flex-col max-w-4xl gap-5"
               h2 class="text-2xl font-bold text-center text-blue-dark"
                   = @blog.user.name
