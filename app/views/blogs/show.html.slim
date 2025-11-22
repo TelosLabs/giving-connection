@@ -13,7 +13,7 @@ div class="overflow-x-hidden main"
         div class="flex items-center divide-x-2"
           div class="flex items-center gap-2 pr-2"
             - display_name = @blog.user&.name.presence || @blog.name.presence || "Anonymous"
-            = user_avatar(@blog.user)
+            = user_avatar(@blog.user, fallback_name: @blog.name)
             p class="font-light text-md"
                 = link_to display_name, user_path(@blog.user), class: "hover:underline" if @blog.user
                 = display_name unless @blog.user
@@ -55,7 +55,7 @@ div class="overflow-x-hidden main"
     
     - if @blog.user
       section class="flex flex-col items-center justify-center gap-2 py-16"
-          = user_avatar(@blog.user, size: "w-[150px] h-[150px]")
+          = user_avatar(@blog.user, fallback_name: @blog.name, size: "w-[150px] h-[150px]")
           div class="flex flex-col max-w-4xl gap-5"
               h2 class="text-2xl font-bold text-center text-blue-dark"
                   = @blog.user.name

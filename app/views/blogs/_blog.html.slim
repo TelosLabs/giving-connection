@@ -14,7 +14,7 @@ div class="flex flex-col w-full gap-4 md:flex-row" data-blog-search-target="blog
         div class="flex text-sm font-light divide-gray-300 divide-x-[1px] text-gray-3 items-center"
             div class="flex items-center gap-2 pr-2" 
                 - display_name = blog.user&.name.presence || blog.name.presence || "Anonymous"
-                = user_avatar(blog.user)
+                = user_avatar(blog.user, fallback_name: blog.name)
                 p class="font-light text-md"
                     = link_to display_name, user_path(blog.user), class: "hover:underline" if blog.user
                     = display_name unless blog.user
