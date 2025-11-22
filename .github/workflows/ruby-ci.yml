@@ -93,9 +93,7 @@ jobs:
           BUNDLE_GEMS__CONTRIBSYS__COM: ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
       - name: Create DB
         run: |
-          bin/rails db:drop
-          bin/rails db:create
-          bin/rails db:migrate
+          bin/rails db:prepare
       - name: Install Node packages
         run: |
           bin/yarn install --ignore-engines
