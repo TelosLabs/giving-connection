@@ -41,14 +41,6 @@ class Blog < ApplicationRecord
     "Staff"
   ].freeze
 
-  def author_email
-    if defined?(@author_email) && !@author_email.nil?
-      @author_email
-    else
-      user&.email
-    end
-  end
-
   def related_blogs(limit: 3)
     base_scope = Blog.published.where.not(id: id)
     related = []
