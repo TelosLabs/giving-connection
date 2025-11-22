@@ -1,9 +1,9 @@
 class EnablePostgis < ActiveRecord::Migration[7.2]
   def up
-    enable_extension 'postgis'
+    enable_extension "postgis"
   end
 
   def down
-    disable_extension 'postgis'
+    disable_extension "postgis"
   end
 end
