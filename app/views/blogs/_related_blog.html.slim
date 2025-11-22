@@ -1,0 +1,23 @@
+javascript:
+  function showTooltip(tooltipId, element) {
+    const tooltip = document.getElementById(tooltipId);
+    const rect = element.getBoundingClientRect();
+    tooltip.style.left = (rect.left - rect.width/3) + 'px'; // 96px = half of w-48
+    tooltip.style.top = (rect.top - rect.height) + 'px';
+    tooltip.style.opacity = '1';
+  }
+
+
+div class="flex flex-col w-full gap-4"
+    div class="flex-none w-full h-48"
+        = image_tag blog.thumbnail_image, class: "object-cover w-full h-full rounded-lg" if blog.thumbnail_image.attached?
+    div class="flex items-center gap-2 pr-2 text-gray-3 text-sm font-light" 
+        - author = blog.user
+        - if author&.avatar&.attached?
+            = image_tag author.avatar, alt: "Author Avatar", class: "object-cover w-8 h-8 rounded-full" if author.avatar.attached?
+            - display_name = author&.name.presence || blog.name.presence || "Anonymous"
+            p class="font-light text-md"
+                = link_to display_name, user_path(author), class: "hover:underline" if author
+                = display_name unless author
+    h3 class="text-2xl font-bold text-blue-dark"
+        = link_to blog.title, blog_path(blog), class: "hover:underline"

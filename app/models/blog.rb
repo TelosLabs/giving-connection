@@ -49,4 +49,57 @@ class Blog < ApplicationRecord
     end
   end
 
+  def related_blogs(limit: 3)
+    base_scope = Blog.published.where.not(id: id)
+    related = []
+    
+    if topic.present?
+      related += base_scope.where(topic: topic).limit(limit).to_a
+    end
+    
+    return related.take(limit) if related.size >= limit
+    
+    if impact_tag.present? && impact_tag.any?
+      remaining = limit - related.size
+      matching_impact = base_scope
+        .where.not(id: related.map(&:id))
+        .select { |blog| (blog.impact_tag & impact_tag).any? }
+        .take(remaining)
+      related += matching_impact
+    end
+    
+    return related.take(limit) if related.size >= limit
+    
+    if blog_tag.present?
+      remaining = limit - related.size
+      related += base_scope
+        .where(blog_tag: blog_tag)
+        .where.not(id: related.map(&:id))
+        .limit(remaining)
+        .to_a
+    end
+    
+    return related.take(limit) if related.size >= limit
+    
+    if user_id.present?
+      remaining = limit - related.size
+      related += base_scope
+        .where(user_id: user_id)
+        .where.not(id: related.map(&:id))
+        .limit(remaining)
+        .to_a
+    end
+    
+    if related.size < limit
+      remaining = limit - related.size
+      related += base_scope
+        .where.not(id: related.map(&:id))
+        .order(created_at: :desc)
+        .limit(remaining)
+        .to_a
+    end
+    
+    related.take(limit)
+  end
+
 end

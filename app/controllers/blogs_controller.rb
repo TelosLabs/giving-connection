@@ -12,6 +12,7 @@ class BlogsController < ApplicationController
     authorize @blog
     @comment = @blog.comments.build
     @comments = @blog.comments.includes(:user).order(created_at: :desc)
+    @related_blogs = @blog.related_blogs(limit: 3)
   end
 
   def new
