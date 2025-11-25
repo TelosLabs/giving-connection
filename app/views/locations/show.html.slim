@@ -162,7 +162,7 @@ div class=""
       - if @location.website.present? || @location.organization.website.present? || @location.organization.donation_link.present? || @location.organization.volunteer_link.present?
        = render "locations/donate_volunteer_buttons", location: @location, container_styles: "flex flex-col gap-y-4 pb-7 mb-7 border-b border-gray-8", find_help_link: @location.website || @location.organization.website
 
-      h3 class="mb-3.5 text-sm font-bold uppercase"
+      h3 class="my-4 text-sm font-bold uppercase"
         | Causes
       = render CausesList::Component.new( \
         causes: @location.causes.uniq, \
