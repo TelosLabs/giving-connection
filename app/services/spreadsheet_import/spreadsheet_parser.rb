@@ -283,28 +283,6 @@ module SpreadsheetImport
         had_errors = true
       end
 
-      if clean_na(organization&.locations).blank?
-        @error_messages_by_row[label] << "Missing location"
-        had_errors = true
-      else
-        location = organization.locations.first
-
-        if clean_na(location.address).blank?
-          @error_messages_by_row[label] << "Missing address"
-          had_errors = true
-        end
-
-        if clean_na(location.latitude).blank? || clean_na(location.longitude).blank?
-          @error_messages_by_row[label] << "Missing geolocation data"
-          had_errors = true
-        end
-
-        if clean_na(location.time_zone).blank?
-          @error_messages_by_row[label] << "Missing time zone"
-          had_errors = true
-        end
-      end
-
       had_errors
     end
 

@@ -6,7 +6,7 @@ class OrganizationValidator < ActiveModel::Validator
   def validate(record)
     @record = record
     single_main_location
-    at_least_one_main_location
+    #at_least_one_main_location
     valid_website_url
     valid_donation_url
     valid_volunteer_url
