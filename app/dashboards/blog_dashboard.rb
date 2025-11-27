@@ -72,7 +72,6 @@ class BlogDashboard < Administrate::BaseDashboard
     name
     email
     author_email
-    impact_tag
     blog_tag
     topic
     cover_image
