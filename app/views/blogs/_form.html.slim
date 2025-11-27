@@ -1,0 +1,70 @@
+= form_with model: blog, data: { controller: "consent" } do |form|
+  - if blog.errors.any?
+    .alert.alert-danger
+      h4 = pluralize(blog.errors.count, "error") + " prohibited this blog from being saved:"
+      ul
+        - blog.errors.full_messages.each do |message|
+          li = message
+  - if user_signed_in?
+    p class="mb-4 text-sm text-blue-dark"
+      | You are currently logged in as <b>#{current_user.name} (#{current_user.email})</b>. <br>
+      | If you would like to submit your story under a different name or anonymously, please log out.
+  - unless user_signed_in?
+    div class="mb-4"
+      p class="font-bold text-md"
+        | Name*
+      p class="font-light text-md"
+        | Enter your name here. If you would like to remain anonymous, only provide your first name or simply write anonymous.
+      = form.text_field :name, class: 'w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent', placeholder:"Jane Doe"
+    
+    div class="mb-4"
+      p class="font-bold text-md"
+        | Email
+      p class="font-light text-md"
+        | Enter your email address.
+      = form.text_field :email, class: 'w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent', placeholder:"jane@domain.com"
+
+  div class="mb-4"
+    p class="font-bold text-md"
+      | Title*
+    p class="font-light text-md"
+      | Enter the name of your story.
+    = form.text_field :title, class: 'w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent', placeholder:"A second chance through Giving Connection"
+  
+  div class="mb-4"
+    p class="font-bold text-md"
+      | Impact Tag
+    p class="font-light text-md"
+      | Select an impact tag to help us determine how Giving Connection was able to help you.
+    = form.select :impact_tag, options_for_select(Blog::IMPACT_TAG_OPTIONS, form.object.impact_tag), {}, { multiple: true, data: { controller: "multiple-select", placeholder: "Select impact tags..." }, class: "w-full" }
+
+  div class="mb-4"
+    p class="font-bold text-md"
+      | Images
+    p class="font-light text-md"
+      | Share any relevant images here.
+    = form.file_field :images, accept: 'image/*', multiple: true, class: 'w-full p-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+
+  div class="mb-4"
+    p class="font-bold text-md"
+      | Story*
+    p class="font-light text-md"
+      | Please share your story with us! If you're not sure where to begin, here are a few questions to help guide you:
+    p class="text-sm font-light text-gray-500"
+      | What challenges did you face before Giving Connection? <br>
+      | How has your life changed since connecting with Giving Connection? <br>
+      | How has this experience impacted you? <br>
+    .trix-form-field
+      = form.rich_text_area :content, placeholder: "Write your story here..."
+
+  div class="flex mb-4"
+    = form.check_box :share_consent, required: true, class: "mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600", data: { action: "consent#toggle", consent_target: "checkbox" }
+    = form.label :share_consent
+      div class="ml-2"
+        p class="text-sm font-medium"
+          | Allow Giving Connection to share my story
+        p class="text-sm font-light"
+          | By checking this text your are allowing Giving Connection to publish your story.
+  
+  = form.submit class: 'bg-blue-dark text-white px-8 py-3 rounded-md hover:bg-blue-700', value: 'SUBMIT MY STORY'
+  
