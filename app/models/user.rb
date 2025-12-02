@@ -40,7 +40,7 @@ class User < ApplicationRecord
     length: {minimum: 2, maximum: 50},
     format: {with: /\A[a-zA-Z\s\-']+\z/, message: "can only contain letters, spaces, hyphens and apostrophes"}
 
-  validates :bio, length: {maximum: 250}, allow_blank: true
+  validate :bio_word_count
   has_one_attached :avatar
 
   validate :no_urls_in_name
@@ -62,6 +62,15 @@ class User < ApplicationRecord
   has_many :comments, dependent: :destroy
 
   private
+
+  def bio_word_count
+    return if bio.blank?
+    
+    word_count = bio.strip.split(/\s+/).length
+    if word_count > 250
+      errors.add(:bio, "Bio is too long (maximum is 250 words)")
+    end
+  end
 
   def no_urls_in_name
     if name.present? && name.match?(/https?:\/\/|\.[a-z]{2,}/i)
