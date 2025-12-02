@@ -65,7 +65,7 @@ class User < ApplicationRecord
 
   def bio_word_count
     return if bio.blank?
-    
+
     word_count = bio.strip.split(/\s+/).length
     if word_count > 250
       errors.add(:bio, "Bio is too long (maximum is 250 words)")
