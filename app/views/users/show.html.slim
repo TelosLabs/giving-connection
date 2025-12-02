@@ -1,0 +1,16 @@
+div class="overflow-x-hidden main"
+    section class="flex items-center flex-col bg-[#DCEEF8] bg-opacity-70 justify-center py-16 gap-2"
+        = user_avatar(@user, size: "h-[100px] w-[100px]")
+        div class="flex flex-col max-w-4xl gap-5"
+            h2 class="text-2xl font-bold text-center text-blue-dark"
+                = @user.name
+            p class="font-light text-center text-md text-blue-dark"
+                = @user.bio if @user.bio.present?
+    section class="flex flex-col max-w-5xl gap-16 px-5 mx-auto md:my-20"
+        section class="flex flex-col gap-16 pb-8"
+            - if @blogs.any?
+                - @user.blogs.reverse_each do |blog|
+                    = render "/blogs/blog", blog: blog
+            - else
+                p class="mt-6 text-gray-500" 
+                    | This user hasn’t posted yet.
