@@ -15,6 +15,9 @@ Rails.application.routes.draw do
     resources :messages, only: %i[index show]
     resources :organization_admins
     resources :phone_numbers, except: %i[index]
+    resources :newsletters do
+      post :mark_all_as_added, on: :collection
+    end
     root to: "admin_users#index"
     resources :organizations do
       collection do
@@ -36,6 +39,9 @@ Rails.application.routes.draw do
 
   get "/contact" => "contact_messages#new", :as => :new_contact_message
   post "/contact" => "contact_messages#create", :as => :create_contact_message
+
+  post 'newsletter/signup', to: 'newsletters#create', as: :newsletter_signup
+  get 'newsletter/verify/:token', to: 'newsletters#verify', as: :verify_newsletter_subscription
 
   get "/nonprofit" => "nonprofit_requests#new", :as => :new_nonprofit_request
   post "/nonprofit" => "nonprofit_requests#create", :as => :create_nonprofit_request

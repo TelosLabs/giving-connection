@@ -724,12 +724,12 @@ div class="relative flex flex-col px-8 py-10 overflow-hidden" style="background:
       | Subscribe to our newsletter
     p class="text-lg break-words"
       | Don't miss a thing! Get all the latest news about Giving Connection.
-    = form_with url: signup_path, method: :post, class: "flex flex-col gap-4 items-center w-full max-w-lg my-4" do |f|
+    = form_with url: newsletter_signup_path, method: :post, class: "flex flex-col gap-4 items-center w-full max-w-lg my-4" do |f|
       = invisible_captcha
       = recaptcha_tags
-      div class="flex flex-col gap-1 w-full"
+      div class="flex flex-col w-full gap-1"
         = f.label :email, "Email", class: "text-white font-medium"
-        div class="flex gap-4 w-full"
+        div class="flex w-full gap-4"
           = f.email_field :email, required: true, class: "px-3 py-2 rounded text-black w-full", placeholder: "jane@email.com"
           = f.submit "Join", class: "px-8 py-2 bg-red-400 text-white font-bold rounded hover:bg-red-500 transition-colors"
 
