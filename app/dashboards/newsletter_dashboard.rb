@@ -14,7 +14,7 @@ class NewsletterDashboard < Administrate::BaseDashboard
     verification_token: Field::String,
     verified: Field::Boolean,
     created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    updated_at: Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES

@@ -13,7 +13,7 @@ class NonprofitRequestsController < ApplicationController
     @message = build_message
     if verify_recaptcha(model: @message) && @message.save
       handle_newsletter_subscription if params[:subscribe_to_newsletter] == "1"
-      
+
       flash[:notice] = "Your message was successfully sent!"
       redirect_to root_path
     else
@@ -40,10 +40,10 @@ class NonprofitRequestsController < ApplicationController
 
   def handle_newsletter_subscription
     email = params.dig(:message, :email)&.downcase&.strip
-    return unless email.present?
+    return if email.blank?
 
     newsletter = Newsletter.find_or_initialize_by(email: email)
-    
+
     if newsletter.new_record?
       newsletter.save
       NewsletterMailer.verification_email(newsletter).deliver_later

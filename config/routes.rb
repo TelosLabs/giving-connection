@@ -40,8 +40,8 @@ Rails.application.routes.draw do
   get "/contact" => "contact_messages#new", :as => :new_contact_message
   post "/contact" => "contact_messages#create", :as => :create_contact_message
 
-  post 'newsletter/signup', to: 'newsletters#create', as: :newsletter_signup
-  get 'newsletter/verify/:token', to: 'newsletters#verify', as: :verify_newsletter_subscription
+  post "newsletter/signup", to: "newsletters#create", as: :newsletter_signup
+  get "newsletter/verify/:token", to: "newsletters#verify", as: :verify_newsletter_subscription
 
   get "/nonprofit" => "nonprofit_requests#new", :as => :new_nonprofit_request
   post "/nonprofit" => "nonprofit_requests#create", :as => :create_nonprofit_request

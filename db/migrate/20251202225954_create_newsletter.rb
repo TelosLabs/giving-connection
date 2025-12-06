@@ -8,7 +8,7 @@ class CreateNewsletter < ActiveRecord::Migration[7.2]
 
       t.timestamps
     end
-    
+
     add_index :newsletters, :email, unique: true
     add_index :newsletters, :verification_token, unique: true
   end
