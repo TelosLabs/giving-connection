@@ -1,0 +1,12 @@
+<% content_for(:title) { "Newsletter Subscriptions" } %>
+
+<% if @ready_to_add.any? %>
+  <div class="p-4 mb-4 border border-blue-400 rounded bg-blue-50">
+    <h3>Ready to Add (Verified, Not Added Yet)</h3>
+    <p><strong><%= @ready_to_add.count %></strong> emails ready to copy:</p>
+    <textarea readonly class="w-100 h-[120px] font-mono p-2" onclick="this.select()"><%= @ready_to_add.join(', ') %></textarea>
+    <p class="text-sm text-gray-600">Click the text area to select all emails, then copy (Ctrl+C or Cmd+C)</p>
+  </div>
+<% end %>
+
+<%= render "index", page: page, resources: resources, search_term: search_term, show_search_bar: show_search_bar %>

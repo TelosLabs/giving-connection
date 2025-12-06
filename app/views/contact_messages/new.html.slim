@@ -2,7 +2,7 @@
   h2 class="pt-6 pb-4 text-2xl font-bold text-center md:pt-16 md:mt-2 md:pb-9 text-gray-3"
     | Get in Touch
 
-  p class="px-8 pb-7 mx-auto max-w-lg text-center sm:text-lg sm:pb-9 text-gray-3"
+  p class="max-w-lg px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
     | Send us a message and we'll get back to you within 3-5 business days.
 
   div class="md:hidden -z-1"
@@ -45,6 +45,12 @@
       div class="w-full"
         = f.label :content, "*Message"
         = f.text_area :content, class:"c-input h-40", required: true, data: { 'contact-form-target': 'message'}
+      
+      div class="flex items-start w-full gap-3 py-2"
+        = check_box_tag :subscribe_to_newsletter, "1", false, id: "subscribe_to_newsletter", class: "mt-1"
+        = label_tag :subscribe_to_newsletter, class: "text-sm text-gray-3 cursor-pointer" do
+          | Subscribe to our newsletter to receive updates about Giving Connection
+      
       // Honeypot
       = invisible_captcha
       div class="w-full"

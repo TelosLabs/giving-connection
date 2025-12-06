@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+</head>
+<body>
+  <p>Hi there,</p>
+  
+  <p>Thank you for subscribing to the Giving Connection newsletter! To complete your newsletter subscription, please confirm your email address by clicking the button below:</p>
+  
+  <div style="margin: 20px 0;">
+    <a href="<%= @verification_url %>" style="background-color: #0782D0; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">Confirm Subscription</a>
+  </div>
+  
+  <p>Or copy and paste this link into your browser:</p>
+  <p style="color: #0782D0; word-break: break-all;"><%= @verification_url %></p>
+  
+  <p style="margin-top: 10px;">With gratitude,<br>The Giving Connection Team</p>
+  
+  <div style="background-color: #EFF2F7; padding: 10px; border-radius: 5px; margin-top: 10px;">
+    <p style="margin-top: 10px; font-style: normal; font-size: 14px; line-height: 20px;">
+      <span style="font-weight: 700;">Email:</span> <%= @newsletter.email %><br />
+      <br>
+      If you didn't sign up for this newsletter, you can safely ignore this email and your address will not be added to our mailing list.
+    </p>
+  </div>
+</body>
+</html>

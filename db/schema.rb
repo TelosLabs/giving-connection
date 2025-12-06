@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_01_17_173849) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_02_225954) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -206,6 +206,17 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_17_173849) do
     t.text "content"
     t.string "profile_admin_name"
     t.string "profile_admin_email"
+  end
+
+  create_table "newsletters", force: :cascade do |t|
+    t.string "email", null: false
+    t.boolean "verified", default: false, null: false
+    t.boolean "added", default: false, null: false
+    t.string "verification_token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_newsletters_on_email", unique: true
+    t.index ["verification_token"], name: "index_newsletters_on_verification_token", unique: true
   end
 
   create_table "office_hours", force: :cascade do |t|

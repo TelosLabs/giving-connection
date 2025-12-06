@@ -12,6 +12,8 @@ class NonprofitRequestsController < ApplicationController
   def create
     @message = build_message
     if verify_recaptcha(model: @message) && @message.save
+      handle_newsletter_subscription if params[:subscribe_to_newsletter] == "1"
+
       flash[:notice] = "Your message was successfully sent!"
       redirect_to root_path
     else
@@ -34,5 +36,19 @@ class NonprofitRequestsController < ApplicationController
       :organization_website, :organization_ein, :profile_admin_name,
       :profile_admin_email, :content
     )
+  end
+
+  def handle_newsletter_subscription
+    email = params.dig(:message, :email)&.downcase&.strip
+    return if email.blank?
+
+    newsletter = Newsletter.find_or_initialize_by(email: email)
+
+    if newsletter.new_record?
+      newsletter.save
+      NewsletterMailer.verification_email(newsletter).deliver_later
+    elsif !newsletter.verified?
+      NewsletterMailer.verification_email(newsletter).deliver_later
+    end
   end
 end
