@@ -8,6 +8,7 @@ module SpreadsheetImport
       @import_log = import_log
       @file_path = File.open(Rails.root.join("db/uploads").to_s)
       @csv_file_paths = csv_file_paths
+      @imported_names = Set.new
     end
 
     def call
@@ -85,6 +86,7 @@ module SpreadsheetImport
           end
         else
           @import_log&.increment!(:success_count)
+          @imported_names.add(org.name) if org.name.present?
           Rails.logger.info "Import SUCCESSFUL for organization at row #{row_number} (name: #{org.name})"
         end
       end
@@ -111,6 +113,12 @@ module SpreadsheetImport
           next
         end
 
+        if @imported_names.include?(org_name)
+          Rails.logger.warn "⚠️ Skipping duplicate organization in batch: #{org_name} (row #{row_number})"
+          @import_log&.increment!(:skipped_count)
+          next
+        end
+
         new_organization = Organization.new(build_organization_hash(org_row))
         new_organization.creator = @creator
         new_organization.build_social_media(build_social_media_hash(org_row))
@@ -124,6 +132,7 @@ module SpreadsheetImport
           next
         end
 
+        @imported_names.add(org_name) if org_name.present?
         organizations << {row_number: row_number, org: new_organization, org_row: org_row}
         Rails.logger.info "Prepared organization: #{new_organization.name} (row #{row_number})"
       rescue => e
