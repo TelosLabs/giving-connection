@@ -1,3 +1,7 @@
+- content_for :head do
+  - if @blog.seo_keywords_list.any?
+    = tag.meta name: "keywords", content: @blog.seo_keywords_list.join(", ")
+
 div class="overflow-x-hidden main"
   section class="flex flex-col bg-[#DCEEF8] bg-opacity-70 justify-center gap-2"
     - if @blog.cover_image.attached?

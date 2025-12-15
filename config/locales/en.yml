@@ -51,3 +51,7 @@ en:
       office_hour:
         local_open_time: Opening Time
         local_close_time: Closing Time
+  administrate:
+    field_hints:
+      blog:
+        seo_keywords: "Comma-separated keywords (e.g. rails, seo, content marketing)"

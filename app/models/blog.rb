@@ -93,4 +93,13 @@ class Blog < ApplicationRecord
 
     related.take(limit)
   end
+
+  def seo_keywords_list
+    return [] if seo_keywords.blank?
+
+    seo_keywords
+      .split(",")
+      .map(&:strip)
+      .reject(&:blank?)
+  end
 end

@@ -17,7 +17,7 @@ class BlogDashboard < Administrate::BaseDashboard
     thumbnail_image: ImageUploadField,
     images: Field::ActiveStorage,
     published: Field::Boolean,
-
+    seo_keywords: Field::Text,
     email: Field::String,
     # images_attachments: Field::HasMany,
     # images_blobs: Field::HasMany,
@@ -59,6 +59,7 @@ class BlogDashboard < Administrate::BaseDashboard
     impact_tag
     blog_tag
     topic
+    seo_keywords
     published
     created_at
     updated_at
@@ -74,6 +75,7 @@ class BlogDashboard < Administrate::BaseDashboard
     author_email
     blog_tag
     topic
+    seo_keywords
     cover_image
     thumbnail_image
   ].freeze
