@@ -1,11 +1,11 @@
 module BlogsHelper
   def user_avatar(user, size: "w-8 h-8", fallback_name: nil)
     if user&.avatar&.attached?
-      image_tag(user.avatar, alt: "User Avatar", class: "object-cover #{size} rounded-full")
+      image_tag(user.avatar, alt: "User Avatar", class: "object-cover #{size} rounded-full flex-shrink-0")
     else
       name = user&.name.presence || fallback_name.presence || "Anonymous"
       if name == "Anonymous"
-        image_tag("anonymous-user.jpg", alt: "Anonymous User", class: "object-cover #{size} rounded-full")
+        image_tag("anonymous-user.jpg", alt: "Anonymous User", class: "object-cover #{size} rounded-full flex-shrink-0")
       else
         initials = name.split.map(&:first).join.upcase.first(2)
 
@@ -15,7 +15,7 @@ module BlogsHelper
         ]
         color = colors[name.sum % colors.length]
 
-        content_tag(:div, initials, class: "#{size} rounded-full #{color} text-white flex items-center justify-center font-semibold text-sm select-none")
+        content_tag(:div, initials, class: "#{size} rounded-full #{color} text-white flex items-center justify-center font-semibold text-sm select-none flex-shrink-0")
       end
     end
   end
