@@ -100,6 +100,6 @@ class Blog < ApplicationRecord
     seo_keywords
       .split(",")
       .map(&:strip)
-      .reject(&:blank?)
+      .compact_blank
   end
 end
