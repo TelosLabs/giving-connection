@@ -718,22 +718,4 @@ div class="flex flex-col text-gray-2"
         = inline_svg_tag "connect.svg", size:"full"
   
   /* Newsletter */
-div class="relative flex flex-col px-8 py-10 overflow-hidden bg-center bg-contain sm:bg-cover" style="background-image: url(#{asset_path('star-footer.png')});"
-  div class="relative z-10 flex flex-col items-center w-full max-w-4xl mx-auto text-white"
-    p class="text-2xl font-bold break-words"
-      | Subscribe to our newsletter
-    p class="text-lg break-words"
-      | Don't miss a thing! Get all the latest news about Giving Connection.
-    = form_with url: newsletter_signup_path, method: :post, class: "flex flex-col gap-4 items-center w-full max-w-lg my-4" do |f|
-      = invisible_captcha
-      = recaptcha_tags
-      div class="flex flex-col w-full gap-1"
-        = f.label :email, "Email", class: "text-white font-medium"
-        div class="flex w-full gap-4"
-          = f.email_field :email, required: true, class: "px-3 py-2 rounded text-black w-full", placeholder: "jane@email.com"
-          = f.submit "Join", class: "px-8 py-2 bg-red-400 text-white font-bold rounded hover:bg-red-500 transition-colors"
-
-
-
-          
-
+  = render "shared/newsletter"
