@@ -3,7 +3,9 @@
     | Get in Touch
 
   p class="max-w-lg px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
-    | Send us a message and we'll get back to you within 3-5 business days.
+    | If you’re looking for support—such as help with food, housing, holiday needs, or other services—please select “I need help finding support from a nonprofit organization” in the subject line. We'll reply with a short form to better understand your situation and connect you with the right resources. <br>
+    | If you have questions while using this form, feel free to email us at <a href="mailto:info@givingconnection.org" class="text-blue-600 underline">info@givingconnection.org</a>.<br>
+    | <i>If this is an emergency, please call 911 or contact local emergency services, as we are not able to respond in real time.</i>
 
   div class="md:hidden -z-1"
     div class="absolute top-0 left-0 -z-1"
@@ -37,9 +39,9 @@
         = f.label :phone
         = f.telephone_field :phone, class: "c-input"
       div class="w-full"
-        = f.label :subject, "*Subject"
+        = f.label :subject, "*Subject/Purpose of Contact"
         = f.select :subject,\
-        [['I want to add a nonprofit to Giving Connection.', '1'],['I want to claim ownership of a nonprofit profile on Giving Connection.', '2'], ['Other', '3']],\
+        [['I want to add a nonprofit to Giving Connection.', '1'],['I want to claim ownership of a nonprofit profile on Giving Connection.', '2'], ['I’m looking for help from a nonprofit organization.', '3'], ['Other', '4']],\
         {include_blank: "Select a subject"}, {class: "c-input pr-7 bg-white", required: true, data: { action: "change->contact-form#subjectSelected",'contact-form-target': 'subject'}}
 
       div class="w-full"
