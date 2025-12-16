@@ -184,6 +184,7 @@ GEM
     crass (1.0.6)
     cssbundling-rails (1.4.1)
       railties (>= 6.0.0)
+    csv (3.2.6)
     cuprite (0.15.1)
       capybara (~> 3.0)
       ferrum (~> 0.15.0)
@@ -209,6 +210,7 @@ GEM
       ruby2_keywords
     drb (2.2.3)
     erubi (1.13.1)
+    event_stream_parser (1.0.0)
     factory_bot (6.5.1)
       activesupport (>= 6.1.0)
     factory_bot_rails (6.4.4)
@@ -224,6 +226,8 @@ GEM
       multipart-post (~> 2.0)
     faraday-net_http (3.4.0)
       net-http (>= 0.5.0)
+    faraday-retry (2.3.2)
+      faraday (~> 2.0)
     ferrum (0.15)
       addressable (~> 2.5)
       concurrent-ruby (~> 1.1)
@@ -235,6 +239,9 @@ GEM
     formatador (1.1.0)
     friendly_id (5.5.1)
       activerecord (>= 4.0.0)
+    geocoder (1.8.5)
+      base64 (>= 0.1.0)
+      csv (>= 3.0.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     guard (2.19.1)
@@ -520,6 +527,15 @@ GEM
       ffi (~> 1.12)
       logger
     ruby2_keywords (0.0.5)
+    ruby_llm (1.3.1)
+      base64
+      event_stream_parser (~> 1)
+      faraday (>= 1.10.0)
+      faraday-multipart (>= 1)
+      faraday-net_http (>= 1)
+      faraday-retry (>= 1)
+      marcel (~> 1.0)
+      zeitwerk (~> 2)
     rubyzip (2.4.1)
     sassc (2.4.0)
       ffi (~> 1.9)
@@ -591,6 +607,7 @@ GEM
     timeout (0.4.3)
     timezone (1.3.27)
       ostruct (~> 0.6)
+    timezone_finder (1.5.7)
     turbo-rails (2.0.13)
       actionpack (>= 7.1.0)
       railties (>= 7.1.0)
@@ -664,6 +681,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   friendly_id (~> 5.5)
+  geocoder
   guard-rspec
   image_processing (~> 1.13)
   inline_svg
@@ -686,6 +704,7 @@ DEPENDENCIES
   pry-rails
   puma (~> 5.6)
   pundit
+  rack (~> 2.2.20)
   rack-attack
   rack-mini-profiler (~> 2.0)
   rails (~> 7.2.2.1)
@@ -699,6 +718,7 @@ DEPENDENCIES
   rspec-sidekiq
   rubocop-rails (~> 2)!
   rubocop-rspec (~> 2)!
+  ruby_llm
   scout_apm
   shoulda-matchers (~> 4.0)
   sidekiq (< 7)
@@ -712,8 +732,10 @@ DEPENDENCIES
   test-prof (~> 1.0)
   timecop
   timezone (~> 1.0)
+  timezone_finder
   turbo-rails
   tzinfo-data
+  uri (>= 1.0.4)
   view_component
   web-console (>= 4.1.0)
   webdrivers (~> 5.2)
