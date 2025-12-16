@@ -81,9 +81,6 @@ gem "activerecord-postgis-adapter"
 gem "timezone_finder"
 gem "geocoder"
 
-# AI for text formatting
-gem "ruby_llm"
-
 # Instagram feed
 gem "koala"
 
