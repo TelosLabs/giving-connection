@@ -1,7 +1,5 @@
 <p>Hi <%= @message.name %>, </p>
-<% if @message.organization_name.nil?  %>
-  <p>Thank you for contacting us. We will get back to you with a response in the next 3-5 business days.</p>
-<% elsif @message.subject == '3' %>
+<% if @message.subject == '3' %>
   <p>
     Thank you for reaching out to <a href="https://givingconnection.org" class="text-blue-600 underline">Giving Connection</a>. We’re so glad you found us and we’re here to help connect you with the support you need.<br><br>
 
@@ -15,6 +13,8 @@
 
     Thank you again for reaching out. You are not alone and we are honored to be part of your support journey.<br><br>
   </p>
+<% elsif @message.organization_name.nil?  %>
+  <p>Thank you for contacting us. We will get back to you with a response in the next 3-5 business days.</p>
 <% else %>
   <p>Thank you for contacting us about adding or claiming a nonprofit on the Giving Connection platform. After we verify the nonprofit organization you specified in your message, we will contact you to set up an account. You should expect to hear back from us within 3-5 business days.</p>
 <% end %>
