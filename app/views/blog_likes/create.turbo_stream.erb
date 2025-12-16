@@ -1,0 +1,12 @@
+<%= turbo_stream.replace "like-blog-#{@blog.id}" do %>
+  <div class="flex items-center" id="like-blog-<%= @blog.id %>">
+    <div class="relative p-2 rounded-md hover:bg-gray-300" onmouseenter="showTooltip('tooltip-add-like-<%= @blog.id %>', this)" onmouseleave="document.getElementById('tooltip-add-like-<%= @blog.id %>').style.opacity='0'">
+      <%= link_to blog_like_path(@blog_like), method: :delete, data: { turbo_stream: true }, aria: { label: "Remove like" } do %>
+        <%= inline_svg_tag 'like_heart.svg', size: '25*25', class: 'fill-red stroke-2' %>
+      <% end %>
+      <span class="fixed px-3 py-1 text-xs text-center text-white transition-opacity duration-200 rounded-lg pointer-events-none bg-gray-2" id="tooltip-add-like-<%= @blog.id %>" role="tooltip" style="opacity: 0; z-index: 9999;">
+        Remove like
+      </span>
+    </div>
+  </div>
+<% end %>

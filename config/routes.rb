@@ -24,6 +24,14 @@ Rails.application.routes.draw do
       end
     end
     resource :export_locations, only: :new
+    resources :blogs do
+      member do
+        patch :publish
+        patch :unpublish
+        post :set_cover
+        post :set_thumbnail
+      end
+    end
   end
 
   devise_for :admin_users
@@ -46,7 +54,9 @@ Rails.application.routes.draw do
   resource :search_preview, only: [:show]
   resources :search_exports, only: [:create]
 
-  resources :users, only: [:update]
+  resources :users, only: [:update, :show] do
+    resources :blogs, only: [:index], module: :users
+  end
   resources :reset_password, only: %i[new]
 
   resources :locations, only: %i[index new show destroy]
@@ -58,6 +68,15 @@ Rails.application.routes.draw do
       get "delete_upload/:upload_id", action: :delete_upload
     end
   end
+
+  resources :blogs do
+    resources :comments, only: [:create, :edit, :update, :destroy, :show]
+    resources :favorite_blogs, only: :create
+    resources :blog_likes, only: :create
+  end
+
+  resources :favorite_blogs, only: :destroy
+  resources :blog_likes, only: :destroy
 
   resources :favorite_locations, only: %i[create destroy]
   resources :alerts, only: %i[new create edit update destroy]

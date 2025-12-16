@@ -1,0 +1,38 @@
+div class="overflow-x-hidden main"
+  div class="relative flex flex-col px-6 mx-auto overflow-hidden md:flex-row justify-evenly md:items-end"
+    div class="absolute inset-0 z-0"
+      = image_tag 'blog-header.jpg', alt: "Blog Header Background", class: "w-full h-full object-cover"
+    div class="absolute inset-0 z-0 bg-gradient-to-t from-[#9AE2E099] to-[#9AE2E0]"
+    div class="relative flex flex-col justify-center py-10 text-center md:py-20"
+      div class="mx-auto"
+        = inline_svg_tag 'like_heart.svg', class: 'w-full h-[40px] fill-red border-white stroke-1'
+        h2 class="text-3xl font-bold text-center text-blue-dark"
+          | Giving Connection Blog
+        p class="text-2xl italic font-medium text-blue-dark"
+          | Stories from the Heart of Giving
+
+  section class="flex flex-col max-w-5xl gap-4 px-5 mx-auto md:gap-16 md:my-20" data-controller="blog-search"
+    div class="flex flex-col gap-2" id="getting-started"
+        div class="flex items-center gap-2 px-4 py-1 mt-4 md:mt-0 bg-white rounded-lg md:py-3 text-start text-gray-4 border-[1px] border-gray-5 border-solid"
+            span aria-hidden="true" = inline_svg_tag 'magnifying-glass.svg', class: "text-blue-dark"
+            input type="search" placeholder="Search blogs..." class="w-full border-0" data-blog-search-target="input" data-action="input->blog-search#onInput keydown->blog-search#onKeydown"
+
+        div class="flex-wrap items-center hidden gap-2 md:flex"
+            = blog_filter_button('All posts', 'all', 'comment.svg')
+            = blog_filter_button('Nonprofits', 'Nonprofits', 'comment_heart.svg')
+            = blog_filter_button('Community', 'Community', 'hand_heart.svg')
+            = blog_filter_button('Staff', 'Staff', 'staff.svg')
+      
+    section class="flex flex-col gap-16 pb-8"
+        - @blogs.each do |blog|
+            = render "blog", blog: blog
+
+div class="relative flex flex-col px-8 py-10 overflow-hidden bg-center bg-contain sm:bg-cover" style="background-image: url(#{asset_path('star-footer.png')});"
+  div class="relative z-10 flex flex-col items-center w-full max-w-4xl mx-auto text-center text-white"
+    p class="text-2xl font-bold break-words"
+      | Has Giving Connection made an impact on you?
+    p class="text-2xl font-bold break-words"
+      | Share your story!
+    = link_to new_blog_path, class: 'flex items-center gap-2 px-8 py-2 my-4 bg-red-400 rounded-md hover:bg-red-500 transition-colors font-bold' do
+      = inline_svg_tag 'like_heart.svg', size: '25*25', class: 'fill-white stroke-2'
+      | SHARE

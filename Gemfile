@@ -68,17 +68,18 @@ gem "administrate", "~> 0.20.0"
 gem "administrate-field-active_storage"
 gem "administrate-field-nested_has_many", git: "https://github.com/TelosLabs/administrate-field-nested_has_many.git", branch: "feature/stimulus-controller"
 gem "administrate-field-select", "~> 2.0", require: "administrate/field/select_basic"
+gem "administrate-field-trix"
 gem "image_processing", "~> 1.13"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 gem "city-state"
 gem "timezone", "~> 1.0" #  Timezone lookup based on geolocation
+gem "timezone_finder"
 gem "momentjs-rails"
 
 # Geolocation
 gem "activerecord-postgis-adapter"
-gem "timezone_finder"
 gem "geocoder"
 
 # AI for text formatting

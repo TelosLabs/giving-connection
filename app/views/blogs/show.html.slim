@@ -1,0 +1,87 @@
+- content_for :head do
+  - if @blog.seo_keywords_list.any?
+    = tag.meta name: "keywords", content: @blog.seo_keywords_list.join(", ")
+
+div class="overflow-x-hidden main"
+  section class="flex flex-col bg-[#DCEEF8] bg-opacity-70 justify-center gap-2"
+    - if @blog.cover_image.attached?
+      = image_tag @blog.cover_image, class: "w-full h-96 object-cover"
+
+  section class="flex flex-col max-w-4xl gap-8 px-5 mx-auto my-8"
+    div class="flex flex-col gap-2"
+      div class="flex justify-between"
+        = link_to '<- Back to All Blogs', blogs_path, class: 'btn btn-light'
+      p class="text-3xl font-bold text-blue-dark"
+        = @blog.title
+      div class="flex flex-col justify-between md:items-center md:flex-row"
+        div class="flex items-center divide-x-2"
+          div class="flex items-center gap-2 pr-2"
+            - display_name = @blog.user&.name.presence || @blog.name.presence || "Anonymous"
+            = user_avatar(@blog.user, fallback_name: @blog.name)
+            p class="font-light text-md"
+                = link_to display_name, user_path(@blog.user), class: "hover:underline" if @blog.user
+                = display_name unless @blog.user
+          p class="px-2 text-sm font-light md:text-md"
+            = @blog.created_at.strftime("%B %d, %Y")
+          p class="px-2 text-sm font-light md:text-md"
+            = @blog.topic if @blog.topic.present?
+        div class="flex items-center divide-x-2"
+          p class="pr-2 text-sm font-light md:text-md"
+            = pluralize(@blog.comments.count, "comment")
+          p class="px-2 text-sm font-light md:text-md"
+            = pluralize(@blog.blog_likes.count, "appreciation")
+          div class="flex gap-2 px-2 text-gray-3"
+            - like = current_user&.blog_likes&.find_by(blog: @blog)
+            div class="flex items-center" id="like-blog-#{@blog.id}"
+              - if like
+                div class="p-2 rounded-md hover:bg-gray-300"
+                  = link_to blog_like_path(like), method: :delete, data: { turbo_stream: true }, title: "Remove like", aria: { label: "Remove like" } do
+                    = inline_svg_tag 'like_heart.svg', size: '25*25', class: 'fill-red stroke-2'
+              - else
+                div class="p-2 rounded-md hover:bg-gray-300"
+                  = link_to blog_blog_likes_path(@blog), params: { blog_id: @blog.id }, method: :post, data: { turbo_stream: true }, title: "Save to favorites", aria: { label: "Save to favorites" } do
+                    = inline_svg_tag 'like_heart.svg', size: '25*25', class: 'fill-none stroke-2'
+
+            - fav = current_user&.fav_blogs&.find_by(blog: @blog)
+            div class="flex items-center" id="save-blog-#{@blog.id}"
+              - if fav
+                div class="p-2 rounded-md hover:bg-gray-300"
+                  = link_to favorite_blog_path(fav), method: :delete, data: { turbo_stream: true }, title: "Remove from favorites", aria: { label: "Remove from favorites" } do
+                    = inline_svg_tag 'bookmark.svg', size: '20*20', class:'fill-red'
+              - else
+                div class="p-2 rounded-md hover:bg-gray-300"
+                  = link_to blog_favorite_blogs_path(@blog), params: { blog_id: @blog.id }, method: :post, data: { turbo_stream: true }, title: "Save to favorites", aria: { label: "Save to favorites" } do
+                    = inline_svg_tag 'bookmark.svg', size: '20*20', class: 'fill-none'
+            button class="p-2 rounded-md hover:bg-gray-300" data-controller="copy-to-clipboard" data-action="click->copy-to-clipboard#copyContent" data-copy-to-clipboard-content-param="#{blog_url(@blog)}"
+              = inline_svg_tag 'share.svg', size: '20*20'
+      p class="text-lg font-light blog-content"
+        = @blog.content
+    
+    - if @blog.user
+      section class="flex flex-col items-center justify-center gap-2 py-16"
+          = user_avatar(@blog.user, fallback_name: @blog.name, size: "w-[150px] h-[150px]")
+          div class="flex flex-col max-w-4xl gap-5"
+              h2 class="text-2xl font-bold text-center text-blue-dark"
+                  = @blog.user.name
+              - if @blog.user.bio.present?
+                p class="font-light text-center text-md text-blue-dark"
+                    - maxLength = 250
+                    = @blog.user.bio.length > maxLength ? truncate(@blog.user.bio, length: maxLength, separator: ' ') : @blog.user.bio
+                    - if @blog.user.bio.length > maxLength
+                      = " "
+                      = link_to "See full bio and posts", user_path(@blog.user), class: "hover:underline font-bold text-blue-dark"
+
+      section class="flex flex-col max-w-4xl gap-5 my-8" id="comments"
+        h2 class="text-2xl font-bold text-blue-dark"
+          | Comments
+        = render 'comments/form', blog: @blog, comment: @comment
+        - @comments.each do |comment|
+          = render 'comments/comment', comment: comment
+
+    section class="flex flex-col gap-8"
+      h2 class="text-2xl font-bold text-blue-dark"
+        | Related blog posts
+      div class="grid grid-cols-1 gap-8 md:grid-cols-3"
+        - @related_blogs.each do |blog|
+            = render 'related_blog', blog: blog
+        
