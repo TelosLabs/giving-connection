@@ -1,0 +1,14 @@
+= turbo_frame_tag dom_id(comment) do
+    div class="mb-3"
+        div class="flex items-center justify-between gap-1 mb-2 text-sm text-gray-3"
+            div class="flex items-center divide-x-2"
+                div class="flex items-center gap-1 pr-2"
+                    = user_avatar(comment.user)
+                    p = comment.user.try(:name) || 'Anonymous'
+                div class="pl-2"
+                    p = comment.created_at.strftime("%B %d, %Y")
+            - if policy(comment).update? || policy(comment).destroy?
+                div class="flex items-center gap-4"
+                    = link_to "Edit", edit_blog_comment_path(comment.blog, comment), class: "text-blue-600 hover:underline"
+                    = button_to "Delete", blog_comment_path(comment.blog, comment), method: :delete, form: { data: { turbo: false, turbo_confirm: "Delete this comment?" } }, class: "text-red-600 hover:underline"
+        p = comment.body

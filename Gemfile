@@ -56,6 +56,9 @@ gem "view_component"
 # Use Turbo for rails
 gem "turbo-rails"
 
+gem "rack", "~> 2.2.20"
+gem "uri", ">= 1.0.4"
+
 gem "net-imap", require: false
 gem "net-pop", require: false
 gem "net-smtp", require: false
@@ -65,16 +68,22 @@ gem "administrate", "~> 0.20.0"
 gem "administrate-field-active_storage"
 gem "administrate-field-nested_has_many", git: "https://github.com/TelosLabs/administrate-field-nested_has_many.git", branch: "feature/stimulus-controller"
 gem "administrate-field-select", "~> 2.0", require: "administrate/field/select_basic"
+gem "administrate-field-trix"
 gem "image_processing", "~> 1.13"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 gem "city-state"
 gem "timezone", "~> 1.0" #  Timezone lookup based on geolocation
+gem "timezone_finder"
 gem "momentjs-rails"
 
 # Geolocation
 gem "activerecord-postgis-adapter"
+gem "geocoder"
+
+# AI for text formatting
+gem "ruby_llm"
 
 # Instagram feed
 gem "koala"

@@ -11,13 +11,35 @@ module Admin
     # end
 
     def upload
+      @import_logs = ImportLog.order(created_at: :desc).limit(10)
+      @latest_import_log = ImportLog.last
     end
 
     def import
-      @creator = current_admin_user
-      results = SpreadsheetParse.new(params[:file], @creator).import
-      flash.now[:notice] = log_results(results)
-      render :upload, status: :unprocessable_entity
+      if params[:file].blank?
+        redirect_to upload_admin_organizations_path, alert: "Please upload a file." and return
+      end
+
+      filename = File.basename(params[:file].original_filename.gsub(/[^0-9A-Za-z.\-]/, "_"))
+
+      if ImportLog.where(status: "in_progress", file_name: filename).exists?
+        redirect_to upload_admin_organizations_path, alert: "An import is already in progress for this file." and return
+      end
+
+      begin
+        blob = ActiveStorage::Blob.create_and_upload!(
+          io: params[:file],
+          filename: filename,
+          content_type: params[:file].content_type
+        )
+
+        SpreadsheetImportJob.perform_later(blob.signed_id, current_admin_user.id, filename)
+
+        redirect_to upload_admin_organizations_path, notice: "Import started in background. This may take several minutes."
+      rescue => e
+        Rails.logger.error("File upload error: #{e.message}")
+        redirect_to upload_admin_organizations_path, alert: "Failed to process the uploaded file. Please try again."
+      end
     end
 
     def new
@@ -107,8 +129,12 @@ module Admin
     private
 
     def log_results(results)
-      "#{results[:ids].size} organizations succesfully created. <br>" \
-      "#{results[:failed_instances].size} organizations failed: <br>"
+      successful = results[:ids].size
+      failed = results[:failed_instances].size
+      failed_names = results[:failed_instances].map(&:name).join(", ")
+
+      "#{successful} organization(s) successfully created.<br>" \
+      "#{failed} organization(s) failed: #{failed_names.presence || "None"}<br>".html_safe
     end
   end
 end
