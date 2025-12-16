@@ -1,0 +1,41 @@
+<% content_for(:title) { "Newsletter Subscriptions" } %>
+
+<header class="main-content__header" role="banner">
+  <h1 class="main-content__page-title">
+    <%= content_for(:title) %>
+  </h1>
+
+  <div>
+    <% if valid_action?(:index) %>
+      <%= link_to("All", admin_newsletters_path(filter: 'verified'), class: "button #{'bg-blue-400' if params[:filter] != 'verified'}") %>
+      <%= link_to("Pending", admin_newsletters_path(filter: 'ready'), class: "button #{'bg-blue-400' if params[:filter] != 'ready'}") %>
+    <% end %>
+  </div>
+</header>
+
+<% if @emails_to_display.any? %>
+  <div class="p-4 mb-4 border border-blue-500 rounded bg-blue-50">
+    <div class="flex items-center justify-between mb-2">
+      <h3>
+        <% if params[:filter] == 'ready' %>
+          All Pending Emails (Not Added Yet)
+        <% else %>
+          All Verified Newsletter Emails
+        <% end %>
+      </h3>
+      
+      <% if params[:filter] == 'ready' && @newsletter_ids_to_mark.any? %>
+        <%= button_to "Mark All as Added", mark_all_as_added_admin_newsletters_path, method: :post, params: { ids: @newsletter_ids_to_mark }, data: { confirm: "Mark all #{@emails_to_display.count} emails as added?" } %>
+      <% end %>
+    </div>
+    
+    <p><strong><%= @emails_to_display.count %></strong> email(s):</p>
+    <textarea readonly class="w-100 h-[120px] p-2" onclick="this.select()"><%= @emails_to_display.join(', ') %></textarea>
+    <p class="text-sm font-light text-gray-3">Click the text area to select all emails, then copy (Ctrl+C or Cmd+C)</p>
+  </div>
+<% end %>
+
+<section class="main-content__body main-content__body--flush">
+  <%= render( "collection", collection_presenter: page, collection_field_name: resource_name, page: page, resources: resources, table_title: "page-title" ) %>
+  <%= paginate resources, param_name: '_page' %>
+</section>

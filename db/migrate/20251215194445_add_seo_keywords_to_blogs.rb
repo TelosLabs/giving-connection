@@ -1,5 +1,5 @@
 class AddSeoKeywordsToBlogs < ActiveRecord::Migration[7.2]
   def change
-    add_column :blogs, :seo_keywords, :text
+    add_column :blogs, :seo_keywords, :text unless column_exists?(:blogs, :seo_keywords)
   end
 end

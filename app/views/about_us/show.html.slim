@@ -717,19 +717,5 @@ div class="flex flex-col text-gray-2"
       div class="flex justify-center w-full h-full px-10 sm:w-2/3"
         = inline_svg_tag "connect.svg", size:"full"
   
-  /* Footer */
-  div class="relative h-96 bg-seafoam"
-    div class="justify-around hidden overflow-hidden h-100 flew-row sm:flex"
-      div
-        = inline_svg_tag 'new-blur-left.svg', size:'1004*400'
-      div
-        = inline_svg_tag 'new-blur-right.svg', size:'1004*400'
-    div class="flex justify-around overflow-hidden h-100 flew-row sm:hidden"
-      div
-        = inline_svg_tag 'new-blur-left.svg', size:'1004*700'
-      div
-        = inline_svg_tag 'new-blur-right.svg', size:'1004*700'
-    div class="absolute top-0 left-0 right-0 max-w-5xl px-10 mx-auto text-center"
-      h2 class="px-5 py-10 text-xl font-bold text-center sm:text-2xl pb-11 sm:px-0 md:pt-28 text-blue-dark"
-        | Looking to connect with like-minded changemakers and make a bigger impact in your community? Join Community Connectors today!
-      = link_to "LEARN MORE", "https://network-17946832.mn.co/share/NCOJH27WAwaTSz4w?utm_source=manual", class:'c-button inline-block my-1 text-white bg-blue-dark hover:bg-blue-medium transition', target: "_blank"
+  /* Newsletter */
+  = render "shared/newsletter"
