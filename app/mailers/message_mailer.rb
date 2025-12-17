@@ -2,7 +2,7 @@
 
 class MessageMailer < ApplicationMailer
   default to: -> { AdminUser.pluck(:email) },
-    bcc: 'stephanie@givingconnection.org',
+    bcc: "stephanie@givingconnection.org",
     from: Rails.application.credentials.dig(:mailer, :from)
 
   def default_response(message)
