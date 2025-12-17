@@ -3,9 +3,14 @@
     | Get in Touch
 
   p class="max-w-lg px-8 mx-auto text-center pb-7 sm:text-lg sm:pb-9 text-gray-3"
-    | If you’re looking for support—such as help with food, housing, holiday needs, or other services—please select “I need help finding support from a nonprofit organization” in the subject line. We'll reply with a short form to better understand your situation and connect you with the right resources. <br>
-    | If you have questions while using this form, feel free to email us at <a href="mailto:info@givingconnection.org" class="text-blue-600 underline">info@givingconnection.org</a>.<br>
-    | <i>If this is an emergency, please call 911 or contact local emergency services, as we are not able to respond in real time.</i>
+    |  Please select the option that best fits your reason for reaching out. We respond to all inquiries within <b>3 to 5 business days</b>.<br><br>
+    |  • <b>Nonprofits looking to join:</b> Select <i>“I want to add a nonprofit to Giving Connection.”</i><br>
+    |  • <b>Nonprofits claiming a profile:</b> Select <i>“I want to claim ownership of a nonprofit profile on Giving Connection.”</i><br>
+    |  • <b>Individuals looking for support:</b> If you need help finding nonprofits for food, housing, or other services, select <i>“I'm looking for help from a nonprofit organization.”</i> We’ll follow up with a short form to better understand your needs and connect you to the right resources.<br><br>
+
+    |  Questions? Email <a href="mailto:info@givingconnection.org" class="text-blue-600 underline">info@givingconnection.org</a>.<br><br>
+
+    |  If this is an emergency, please call <b>911</b> or contact local emergency services. This form is not monitored in real time.
 
   div class="md:hidden -z-1"
     div class="absolute top-0 left-0 -z-1"
@@ -41,7 +46,7 @@
       div class="w-full"
         = f.label :subject, "*Subject/Purpose of Contact"
         = f.select :subject,\
-        [['I want to add a nonprofit to Giving Connection.', '1'],['I want to claim ownership of a nonprofit profile on Giving Connection.', '2'], ['I’m looking for help from a nonprofit organization.', '3'], ['Other', '4']],\
+        [['I’m looking for help from a nonprofit organization.', '1'], ['I want to add a nonprofit to Giving Connection.', '2'],['I want to claim ownership of a nonprofit profile on Giving Connection.', '3'], ['Other', '4']],\
         {include_blank: "Select a subject"}, {class: "c-input pr-7 bg-white", required: true, data: { action: "change->contact-form#subjectSelected",'contact-form-target': 'subject'}}
 
       div class="w-full"
