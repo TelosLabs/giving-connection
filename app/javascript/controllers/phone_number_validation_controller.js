@@ -12,7 +12,7 @@ export default class extends Controller {
 
     validatePhoneNumber() {
         const number = this.inputTarget.value.trim();
-        const cleanedNumber = number.replace(/-/g, '');
+        const cleanedNumber = number.replace(/[^\d+]/g, '');
         // Ensure only one '+' at the beginning
         const plusCount = (number.match(/\+/g) || []).length;
         const hasLeadingPlus = number.startsWith('+');
