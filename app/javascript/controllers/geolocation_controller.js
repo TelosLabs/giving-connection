@@ -24,23 +24,45 @@ export default class extends Controller {
   }
 
   async getCurrentPosition() {
-    navigator.geolocation.getCurrentPosition(this.success.bind(this), this.error, options);
+    navigator.geolocation.getCurrentPosition(this.success.bind(this), this.error.bind(this), options);
   }
+
+  async applyLocation(coordinates, city = null) {
+    this.latitude = coordinates.latitude;
+    this.longitude = coordinates.longitude;
+    this.currentCity = city ? city : await this.findNearestCity(coordinates);
+    this.rememberLocation();
+    this.updateCityAndForm();
+  }
+
 
   async success(position) {
     const coordinates = position.coords;
-    this.latitude = coordinates.latitude
-    this.longitude = coordinates.longitude
-    this.currentCity = await this.findNearestCity(coordinates)
-    this.rememberLocation()
-    this.updateCityAndForm()
+    await this.applyLocation(coordinates);
   }
 
-  error(err) {
+  async error(err) {
     if (err.code === 1) {
       // User denied access to location services
       console.warn(`ERROR(${err.code}): ${err.message}`)
       window.alert('Please enable location services to use this feature. Visit your browser settings to enable location services.') 
+      await this.getLocationFromIP();
+    }
+  }
+
+  async getLocationFromIP() {
+    try {
+      const response = await fetch("https://ipapi.co/json/");
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const locationData = await response.json();
+      const coordinates = { latitude: locationData.latitude, longitude: locationData.longitude }
+      await this.applyLocation(coordinates, locationData.city);
+    } catch (error) {
+      console.warn("Failed to fetch location via IP:", error);
     }
   }
 
