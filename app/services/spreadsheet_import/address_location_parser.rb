@@ -11,7 +11,7 @@ module SpreadsheetImport
 
     def call
       Timeout.timeout(DEFAULT_TIMEOUT) do
-        result = Geocoder.search(@raw_address).first if @raw_address.blank?
+        result = Geocoder.search(@raw_address).first unless @raw_address.blank?
 
         unless result
           Rails.logger.warn "📍 Geocoding failed for parsed input: '#{@raw_address}'"
