@@ -35,7 +35,6 @@ export default class extends Controller {
     this.updateCityAndForm();
   }
 
-
   async success(position) {
     const coordinates = position.coords;
     await this.applyLocation(coordinates);
@@ -46,8 +45,14 @@ export default class extends Controller {
       // User denied access to location services
       console.warn(`ERROR(${err.code}): ${err.message}`)
       window.alert('Please enable location services to use this feature. Visit your browser settings to enable location services.') 
-      await this.getLocationFromIP();
     }
+    await this.getLocationFromIP();
+  }
+
+  async applySearchAllFallback() {
+    const coordinates = CITIES["Search all"];
+    const city = "Search all";
+    await this.applyLocation(coordinates, city);
   }
 
   async getLocationFromIP() {
@@ -63,6 +68,7 @@ export default class extends Controller {
       await this.applyLocation(coordinates, locationData.city);
     } catch (error) {
       console.warn("Failed to fetch location via IP:", error);
+      await this.applySearchAllFallback();
     }
   }
 
