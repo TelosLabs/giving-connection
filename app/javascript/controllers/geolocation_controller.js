@@ -13,6 +13,9 @@ import { useCookies } from "./mixins/useCookies";
     "Search all": { latitude: 37.0902, longitude: -95.7129 },
     "Los Angeles": { latitude: 34.0522, longitude: -118.2437 },
   }
+
+  const IP_LOOKUP_COOLDOWN_MS = 12 * 60 * 60 * 1000;
+
 export default class extends Controller { 
   static targets = [ "currentLocation", "formLatitude", "formLongitude" ]
 
@@ -55,7 +58,25 @@ export default class extends Controller {
     await this.applyLocation(coordinates, city);
   }
 
+  canUseIPLookup() {
+    const lastLookup = this.getCookie("last_ip_lookup_at");
+    if (!lastLookup) return true;
+
+    return (Date.now() - parseInt(lastLookup, 10)) > IP_LOOKUP_COOLDOWN_MS;
+  }
+
   async getLocationFromIP() {
+    if (!this.canUseIPLookup()) {
+      console.warn("Skipping IP lookup due to rate limiting");
+
+      if (this.latitude && this.longitude && this.currentCity) {
+        this.updateCityAndForm();
+      } else {
+        await this.applySearchAllFallback();
+      }
+      return;
+    }
+
     try {
       const response = await fetch("https://ipapi.co/json/");
 
@@ -65,6 +86,7 @@ export default class extends Controller {
 
       const locationData = await response.json();
       const coordinates = { latitude: locationData.latitude, longitude: locationData.longitude }
+      this.setCookie("last_ip_lookup_at", Date.now());
       await this.applyLocation(coordinates, locationData.city);
     } catch (error) {
       console.warn("Failed to fetch location via IP:", error);
