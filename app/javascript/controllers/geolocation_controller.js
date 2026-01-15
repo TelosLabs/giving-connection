@@ -14,7 +14,7 @@ import { useCookies } from "./mixins/useCookies";
     "Los Angeles": { latitude: 34.0522, longitude: -118.2437 },
   }
 
-  const IP_LOOKUP_COOLDOWN_MS = 12 * 60 * 60 * 1000;
+  const IP_LOOKUP_COOLDOWN_MS = 12 * 60 * 60 * 1000; // 12 hours in miliseconds (12h * 60m * 60s * 1000ms)
 
 export default class extends Controller { 
   static targets = [ "currentLocation", "formLatitude", "formLongitude" ]
