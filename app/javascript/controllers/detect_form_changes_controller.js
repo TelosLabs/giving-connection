@@ -10,6 +10,13 @@ export default class extends Controller {
     const initialFormInputs = [...this.formTarget.querySelectorAll(this.inputTypesValue)];
     this.formTarget.initialNumberOfInputs = this.validInputsLength(initialFormInputs);
     this.formTarget.changed = false;
+    
+    this.boundBeforeUnload = this.handleBeforeUnload.bind(this);
+    window.addEventListener("beforeunload", this.boundBeforeUnload);
+  }
+
+  disconnect() {
+    window.removeEventListener("beforeunload", this.boundBeforeUnload);
   }
 
   captureUserInput(event) {
@@ -68,5 +75,16 @@ export default class extends Controller {
   // users can add or remove inputs
   captureDOMUpdate(event) {
     this.detectChanges(event.currentTarget, event.detail.newInputAdded);
+  }
+
+  // Handle browser navigation (refresh, close tab, back button)
+  handleBeforeUnload(event) {
+    const haltController = this.application.getControllerForElementAndIdentifier(this.element, "halt-navigation-on-change");
+    
+    if (this.formTarget.changed && !haltController?.isSavingValue) {
+      event.preventDefault();
+      event.returnValue = "";
+      return "";
+    }
   }
 }
