@@ -1,0 +1,24 @@
+div class="overflow-x-hidden main"
+  section class="flex flex-col bg-[#DCEEF8] bg-opacity-70 justify-center py-16 gap-2 px-6"
+    div class="flex items-center justify-center gap-16"
+        = inline_svg_tag 'send.svg', class: "text-blue-dark w-40 h-40 hidden md:block"
+        div class="text-center"
+            = inline_svg_tag 'email.svg', class: "text-blue-dark w-full h-[30px] fill-seafoam"
+            h2 class="text-2xl font-bold text-blue-dark"
+                | Tell us your story
+            p class="font-light text-md text-blue-dark"
+                | We would love to hear how Giving Connection made an impact on you.
+        = inline_svg_tag 'upload_type.svg', class: "text-blue-dark w-40 h-40 hidden md:block"
+
+  section class="flex flex-col max-w-4xl gap-8 px-6 mx-auto my-8"
+    div class="flex flex-col gap-2"
+        p class="text-xl font-bold text-blue-dark"
+            | Thanks for sharing your story with us!
+        p class="mb-2 text-lg font-light"
+            | One connection can change everything. If Giving Connection helped you find support, discover a cause, or give back in a new way, we’d love to hear about it.
+        p class="text-lg font-light"
+            | Your story can inspire others to take their first step, show nonprofits the difference they make, and help us grow a community built on generosity and action.
+
+    = render 'form', blog: @blog
+
+div id="modal-root"

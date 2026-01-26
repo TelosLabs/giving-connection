@@ -1,0 +1,12 @@
+<%= turbo_stream.replace "save-blog-#{@blog.id}" do %>
+  <div class="flex items-center" id="save-blog-<%= @blog.id %>">
+    <div class="relative p-2 rounded-md hover:bg-gray-300" onmouseenter="showTooltip('tooltip-add-fav-<%= @blog.id %>', this)" onmouseleave="document.getElementById('tooltip-add-fav-<%= @blog.id %>').style.opacity='0'">
+      <%= link_to blog_favorite_blogs_path(@blog), method: :post, data: { turbo_stream: true }, aria: { label: "Save to favorites" } do %>
+        <%= inline_svg_tag 'bookmark.svg', class: 'w-5 h-5 fill-none' %>
+      <% end %>
+      <span class="fixed px-3 py-1 text-xs text-center text-white transition-opacity duration-200 rounded-lg pointer-events-none bg-gray-2" id="tooltip-add-fav-<%= @blog.id %>" role="tooltip" style="opacity: 0; z-index: 9999;">
+        Save this post!
+      </span>
+    </div>
+  </div>
+<% end %>

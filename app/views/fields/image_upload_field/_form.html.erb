@@ -1,0 +1,13 @@
+<%# app/views/fields/image_upload_field/_form.html.erb %>
+
+<div class="field-unit__label">
+  <%= f.label field.attribute %>
+</div>
+
+<div class="field-unit__field">
+  <% if field.data.respond_to?(:attached?) && field.data.attached? %>
+    <%= image_tag field.data.attachment.variant(resize_to_limit: [150, 150]) %>
+  <% end %>
+
+  <%= f.file_field field.attribute, accept: "image/*" %>
+</div>

@@ -10,12 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_27_203226) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_15_194445) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
   enable_extension "postgis"
+
+  create_table "action_text_rich_texts", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "body"
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
+  end
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -124,6 +134,33 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_27_203226) do
     t.index ["beneficiary_group_id"], name: "index_beneficiary_subcategories_on_beneficiary_group_id"
   end
 
+  create_table "blog_likes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "blog_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["blog_id"], name: "index_blog_likes_on_blog_id"
+    t.index ["user_id", "blog_id"], name: "idx_blog_likes_user_blog", unique: true
+    t.index ["user_id"], name: "index_blog_likes_on_user_id"
+  end
+
+  create_table "blogs", force: :cascade do |t|
+    t.string "title", null: false
+    t.string "name"
+    t.string "email"
+    t.text "impact_tag", default: [], array: true
+    t.string "blog_tag"
+    t.string "topic"
+    t.boolean "published", default: false, null: false
+    t.integer "views_count", default: 0, null: false
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "seo_keywords"
+    t.index ["published"], name: "index_blogs_on_published"
+    t.index ["user_id"], name: "index_blogs_on_user_id"
+  end
+
   create_table "causes", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -148,6 +185,24 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_27_203226) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["organization_id"], name: "index_events_on_organization_id"
+  create_table "comments", force: :cascade do |t|
+    t.text "body", null: false
+    t.bigint "blog_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["blog_id"], name: "index_comments_on_blog_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "favorite_blogs", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "blog_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["blog_id"], name: "index_favorite_blogs_on_blog_id"
+    t.index ["user_id", "blog_id"], name: "idx_favorite_blogs_user_blog", unique: true
+    t.index ["user_id"], name: "index_favorite_blogs_on_user_id"
   end
 
   create_table "favorite_locations", force: :cascade do |t|
@@ -168,6 +223,20 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_27_203226) do
     t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
+  end
+
+  create_table "import_logs", force: :cascade do |t|
+    t.bigint "admin_user_id", null: false
+    t.string "file_name"
+    t.integer "total_rows"
+    t.integer "success_count"
+    t.integer "error_count"
+    t.integer "skipped_count"
+    t.string "status"
+    t.text "error_messages"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_user_id"], name: "index_import_logs_on_admin_user_id"
   end
 
   create_table "instagram_posts", force: :cascade do |t|
@@ -226,6 +295,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_27_203226) do
     t.text "content"
     t.string "profile_admin_name"
     t.string "profile_admin_email"
+  end
+
+  create_table "newsletters", force: :cascade do |t|
+    t.string "email", null: false
+    t.boolean "verified", default: false, null: false
+    t.boolean "added", default: false, null: false
+    t.string "verification_token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_newsletters_on_email", unique: true
+    t.index ["verification_token"], name: "index_newsletters_on_verification_token", unique: true
   end
 
   create_table "office_hours", force: :cascade do |t|
@@ -392,6 +472,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_27_203226) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.text "bio"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -409,8 +490,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_27_203226) do
   add_foreign_key "alerts", "users"
   add_foreign_key "beneficiary_subcategories", "beneficiary_groups"
   add_foreign_key "events", "organizations"
+  add_foreign_key "blog_likes", "blogs"
+  add_foreign_key "blog_likes", "users"
+  add_foreign_key "blogs", "users"
+  add_foreign_key "comments", "blogs"
+  add_foreign_key "comments", "users"
+  add_foreign_key "favorite_blogs", "blogs"
+  add_foreign_key "favorite_blogs", "users"
   add_foreign_key "favorite_locations", "locations"
   add_foreign_key "favorite_locations", "users"
+  add_foreign_key "import_logs", "admin_users"
   add_foreign_key "location_services", "locations"
   add_foreign_key "location_services", "services"
   add_foreign_key "locations", "organizations"

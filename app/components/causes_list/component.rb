@@ -10,10 +10,8 @@ class CausesList::Component < ApplicationViewComponent
     @tooltip_id = SecureRandom.hex
   end
 
-  def path(cause)
-    {
-      href: discover_show_path(cause)
-    }
+  def link_url(cause)
+    discover_show_url(cause)
   end
 
   def cause_options
@@ -32,6 +30,32 @@ class CausesList::Component < ApplicationViewComponent
     {
       class: ""
     }.merge(@icon_svg_options) { |_duplicate_key, existing_value, new_value| "#{existing_value} #{new_value}" }
+  end
+
+  def icon_svg_options_for_cause(cause)
+    base_options = {
+      class: ""
+    }.merge(@icon_svg_options) { |_duplicate_key, existing_value, new_value| "#{existing_value} #{new_value}" }
+
+    # Increase size for specific causes
+    if ["Emergency & Safety", "Justice & Legal Services", "Transportation", "Social Sciences", "Seniors"].include?(cause.name)
+      base_options[:class] = base_options[:class].gsub("w-1/2", "w-3/4")
+    end
+
+    # Medium size for Community & Economic Development
+    if cause.name == "Community & Economic Development"
+      base_options[:class] = base_options[:class].gsub("w-1/2", "w-3/5")
+    end
+
+    # Fix alignment for Arts & Culture icon
+    if cause.name == "Arts & Culture"
+      # Make it smaller and center it better within the circular container
+      base_options[:class] = base_options[:class].gsub("w-1/2", "w-2/5")
+      base_options[:class] = "#{base_options[:class]} mx-auto my-auto block"
+      base_options[:style] = "transform: translateX(-3px) translateY(-1px);"
+    end
+
+    base_options
   end
 
   def tooltip_options

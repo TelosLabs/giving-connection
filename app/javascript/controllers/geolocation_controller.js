@@ -13,6 +13,9 @@ import { useCookies } from "./mixins/useCookies";
     "Search all": { latitude: 37.0902, longitude: -95.7129 },
     "Los Angeles": { latitude: 34.0522, longitude: -118.2437 },
   }
+
+  const IP_LOOKUP_COOLDOWN_MS = 12 * 60 * 60 * 1000; // 12 hours in miliseconds (12h * 60m * 60s * 1000ms)
+
 export default class extends Controller { 
   static targets = [ "currentLocation", "formLatitude", "formLongitude" ]
 
@@ -24,23 +27,70 @@ export default class extends Controller {
   }
 
   async getCurrentPosition() {
-    navigator.geolocation.getCurrentPosition(this.success.bind(this), this.error, options);
+    navigator.geolocation.getCurrentPosition(this.success.bind(this), this.error.bind(this), options);
+  }
+
+  async applyLocation(coordinates, city = null) {
+    this.latitude = coordinates.latitude;
+    this.longitude = coordinates.longitude;
+    this.currentCity = city ? city : await this.findNearestCity(coordinates);
+    this.rememberLocation();
+    this.updateCityAndForm();
   }
 
   async success(position) {
     const coordinates = position.coords;
-    this.latitude = coordinates.latitude
-    this.longitude = coordinates.longitude
-    this.currentCity = await this.findNearestCity(coordinates)
-    this.rememberLocation()
-    this.updateCityAndForm()
+    await this.applyLocation(coordinates);
   }
 
-  error(err) {
+  async error(err) {
     if (err.code === 1) {
       // User denied access to location services
       console.warn(`ERROR(${err.code}): ${err.message}`)
       window.alert('Please enable location services to use this feature. Visit your browser settings to enable location services.') 
+    }
+    await this.getLocationFromIP();
+  }
+
+  async applySearchAllFallback() {
+    const coordinates = CITIES["Search all"];
+    const city = "Search all";
+    await this.applyLocation(coordinates, city);
+  }
+
+  canUseIPLookup() {
+    const lastLookup = this.getCookie("last_ip_lookup_at");
+    if (!lastLookup) return true;
+
+    return (Date.now() - parseInt(lastLookup, 10)) > IP_LOOKUP_COOLDOWN_MS;
+  }
+
+  async getLocationFromIP() {
+    if (!this.canUseIPLookup()) {
+      console.warn("Skipping IP lookup due to rate limiting");
+
+      if (this.latitude && this.longitude && this.currentCity) {
+        this.updateCityAndForm();
+      } else {
+        await this.applySearchAllFallback();
+      }
+      return;
+    }
+
+    try {
+      const response = await fetch("https://ipapi.co/json/");
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const locationData = await response.json();
+      const coordinates = { latitude: locationData.latitude, longitude: locationData.longitude }
+      this.setCookie("last_ip_lookup_at", Date.now());
+      await this.applyLocation(coordinates, locationData.city);
+    } catch (error) {
+      console.warn("Failed to fetch location via IP:", error);
+      await this.applySearchAllFallback();
     }
   }
 

@@ -1,24 +1,5 @@
 main
   section id="search" class="relative py-20 gradient-blue sm:py-24"
-    section class="flex hidden absolute top-0 z-20 w-full text-white bg-salmon" data-controller="banner" data-banner-target="banner"
-      div class="flex items-center py-2 mx-auto max-w-3xl md:py-2"
-        div class="block ml-2"
-          = inline_svg_tag 'megaphone.svg', size: '24'
-        div class="pr-2 pl-2 text-gray-1"
-          div class="pl-0 text-[10px] md:text-xs font-bold md:text-sm text-wrap md:text-base text-white pr-4"
-            | We've launched an emergency response for those affected by the Los Angeles wildfires. 
-            | Search 
-            a href="/search" target='_blank'  class="text-white underline cursor-pointer hover:text-seafoam decoration-2"
-              | here
-            |  to find nonprofits in LA or access the full resource list 
-            a href="https://docs.google.com/spreadsheets/d/10_UtQ6bcGx93liGP6AgSrrY7taSjbaM4xAI7lsJeSSQ/edit?gid=0#gid=0" target='_blank'  class="text-white underline cursor-pointer hover:text-seafoam decoration-2"
-              | here
-            | .
-        div class="flex absolute inset-y-0 right-0 items-start pt-1 pr-1 ml-2 sm:pt-1.5 sm:pr-5 sm:items-start"
-          button class="flex p-2 rounded-md hover:bg-gray" type="button" data-action="banner#closeBanner"
-            span.sr-only Dismiss
-            = inline_svg_tag 'x-icon.svg', size: '14*14'
-
     div class ="absolute inset-0"
       = render "stars_background"
     h2 class="z-20 px-12 pb-10 text-3xl font-bold text-center text-white md:mt-8 fade-in md:text-6xl xs:px-20"
@@ -26,22 +7,22 @@ main
     div class="hidden px-6 pb-6 text-2xl text-center text-white sm:block"
       | Search for nonprofits in Nashville, Atlantic City, & Los Angeles.
     = form_with model: @search, url: search_path, method: :get do |f|
-      .c-form class="relative py-0 mx-auto max-w-3xl z-25 c-form sm:px-3 sm:flex-col sm:justify-center sm:max-w-4xl"
-        div class="flex relative p-0 mb-7 w-full h-14 rounded-md divide-x c-input sm:mb-0"
-          div class="flex relative w-full"
+      .c-form class="relative max-w-3xl py-0 mx-auto z-25 c-form sm:px-3 sm:flex-col sm:justify-center sm:max-w-4xl"
+        div class="relative flex w-full p-0 divide-x rounded-md mb-7 h-14 c-input sm:mb-0"
+          div class="relative flex w-full"
             = f.text_field :keyword, autocomplete: "search", class:"border-none rounded-l-md pl-10 m-0 w-full", placeholder: "Try \"Mental Health Nonprofits\"", data: { test_id: "home_search_input"  }
             = inline_svg_tag 'search-icon.svg', class:"absolute top-1/3 left-4"
-          div class="flex m-0 w-52 font-medium bg-white rounded-r-md cursor-pointer" data-controller="dropdown" data-action="click@window->dropdown#hide touchstart@window->dropdown#hide keydown.up->dropdown#previousItem keydown.down->dropdown#nextItem keydown.esc->dropdown#hide" 
+          div class="flex m-0 font-medium bg-white cursor-pointer w-52 rounded-r-md" data-controller="dropdown" data-action="click@window->dropdown#hide touchstart@window->dropdown#hide keydown.up->dropdown#previousItem keydown.down->dropdown#nextItem keydown.esc->dropdown#hide" 
             button type="button" class="flex items-center pl-2 md:w-52 border-l-gray" data-action="dropdown#toggle:stop"
               = inline_svg_tag "location-dot.svg", size:"9*9", class:"h-7 mr-2 fill-current"
               p data-geolocation-target="currentLocation"
                 = @current_location[:city]&.presence || "Location not found"
-            div data-dropdown-target="menu" class="flex absolute right-0 top-14 z-10 w-52"
-              ul class="overflow-hidden w-full text-sm bg-white rounded border shadow-lg"
+            div data-dropdown-target="menu" class="absolute right-0 z-10 flex top-14 w-52"
+              ul class="w-full overflow-hidden text-sm bg-white border rounded shadow-lg"
                 - @locations.each do |location|
                   li  class="block px-4 py-2 text-gray-3 hover:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#updateLocation" data-dropdown-target="menuItem"
                     = location
-                li class="block flex items-center px-4 py-1 font-medium text-gray-3 border-gray-5 hover:bg-seafoam focus:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#updateLocation" data-dropdown-target="menuItem"
+                li class="flex items-center block px-4 py-1 font-medium text-gray-3 border-gray-5 hover:bg-seafoam focus:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#getCurrentPosition" data-dropdown-target="menuItem"
                   = inline_svg_tag "my-location.svg", size:"12*12", class:"h-7 mr-2 fill-current text-gray-3"
                   | Search near me
         div
@@ -52,8 +33,8 @@ main
   section class="pt-6 text-gray-2 sm:pt-10" data-controller="fade-in"
     h2 class="pb-8 text-2xl font-bold text-center uppercase sm:pb-5"
       | How it works
-    div class="flex flex-col justify-evenly mx-auto max-w-7xl lg:flex-row xl:px-16"
-      div class="mx-auto mb-9 max-w-xs text-center opacity-0 lg:mb-0" data-fade-in-target="fadeInElement" data-delay="500"
+    div class="flex flex-col mx-auto justify-evenly max-w-7xl lg:flex-row xl:px-16"
+      div class="max-w-xs mx-auto text-center opacity-0 mb-9 lg:mb-0" data-fade-in-target="fadeInElement" data-delay="500"
         div class="flex items-end mb-2 h-36"
           = inline_svg_tag 'search-needs.svg', class:'mx-auto' 
         h5 class="pb-3 font-bold uppercase md:pb-1"
@@ -67,16 +48,16 @@ main
           | 2. Connect with organizations
         p.px-8
           | Browse through nonprofit profiles to find the one that matches your needs.
-      div class="mx-auto max-w-xs text-center opacity-0" data-fade-in-target="fadeInElement" data-delay="2100"
+      div class="max-w-xs mx-auto text-center opacity-0" data-fade-in-target="fadeInElement" data-delay="2100"
         div class="flex items-end mb-2 h-36"
           = inline_svg_tag 'help.svg', class:'mx-auto'
         h5 class="pb-3 font-bold uppercase md:pb-1"
           | 3. Receive help
         p class="px-5"
           | Found a nonprofit that meets your needs criteria? Reach out through the contact information provided on their individual profiles.
-  section class="flex overflow-hidden flex-col items-center px-6"
-    div class="relative pt-32 mb-14 max-w-xl"
-      h2 class="mb-6 text-2xl font-bold text-center uppercase text-gray-2 dark:text-white"
+  section class="flex flex-col items-center px-6 overflow-hidden"
+    div class="relative max-w-xl pt-32 mb-14"
+      h2 class="mb-6 text-2xl font-bold text-center text-black uppercase dark:text-white"
         | Browse by causes
       p class="text-center"
         | Use our discovery feature to find nonprofits serving your community. 
@@ -84,7 +65,7 @@ main
         | Scroll through listings to browse for nonprofits meeting your needs.
       = inline_svg_tag "browse-causes-green-blur.svg", class: "absolute -left-1/4 top-0 -z-1 w-full", aria_hidden: true
       = inline_svg_tag "browse-causes-purple-blur.svg", class: "absolute -right-1/4 top-0 -z-1 w-full", aria_hidden: true
-    nav class="mb-9 w-full max-w-5xl"
+    nav class="w-full max-w-5xl mb-9"
       = render CausesList::Component.new(causes: Cause.top(limit: 9), \
         icon_svg_options: {class: "w-1/2", aria_hidden: true}, \
         list_options: { class: "grid grid-cols-auto-fill-6.75 justify-items-center gap-y-6"}, \
@@ -92,32 +73,34 @@ main
         icon_wrapper_options: { class: "thick-icon w-20 h-20 transition-colors group-hover:bg-blue-medium", aria_hidden: true})
 
     = link_to "see more", discover_path << "/#causes-section", class: "px-10 py-4 rounded-md mb-32 text-white leading-5 uppercase tracking-wider font-bold bg-blue-dark transition-colors hover:bg-blue-medium"
-  section class="flex flex-col justify-evenly mx-auto max-w-7xl md:flex-row sm:mb-1 525px:pb-20 md:px-8"
-    div class="flex relative flex-col justify-center mb-16 text-center md:mx-0 md:mb-0"
-      div class="py-4 mx-auto max-w-sm"
-        h2 class="px-10 pb-4 text-2xl font-bold text-center text-gray-2"
+  section class="flex flex-col mx-auto justify-evenly max-w-7xl md:flex-row sm:mb-1 525px:pb-20 md:px-8"
+    div class="relative flex flex-col justify-center mb-16 text-center md:mx-0 md:mb-0"
+      div class="max-w-sm py-4 mx-auto"
+        h2 class="px-10 pb-4 text-2xl font-bold text-center text-black"
           | We want to make living and giving simpler.
         p class="px-4 pt-3 pb-6 md:pb-10"
           | We are a nonprofit search tool connecting you with resources in your community.
         = link_to "Start your search", '#search', class:'bg-blue-dark transition-colors hover:bg-blue-medium c-button inline-block text-white'
       div class="hidden -top-20 -left-32 sm:block sm:absolute -z-1"
         = inline_svg_tag 'lw-desk-blur-left.svg'
-      div class="hidden overflow-hidden right-0 -top-40 sm:block sm:absolute xl:-right-28 -z-1"
+      div class="right-0 hidden overflow-hidden -top-40 sm:block sm:absolute xl:-right-28 -z-1"
         = inline_svg_tag 'lw-desk-blur-right.svg'
       div class="absolute -left-6 -z-1 sm:hidden"
         = inline_svg_tag 'lw-mob-blur-left.svg', size:'320*428'
-      div class="overflow-visible absolute right-0 -top-40 -z-1 sm:hidden"
+      div class="absolute right-0 overflow-visible -top-40 -z-1 sm:hidden"
         = inline_svg_tag 'lw-mob-blur-right.svg'
     div class="flex justify-center px-0"
       = image_tag 'board-members.png', class:"525px:rounded-xl object-cover h-350px sm:h-full"
   section class="relative bg-seafoam"
-    div class="relative pb-20 mx-auto max-w-md text-center"
-      h2 class="px-5 pt-20 pb-11 text-2xl font-bold text-center sm:px-0 md:pt-28 text-blue-dark"
+    div class="relative max-w-md pb-20 mx-auto text-center"
+      h2 class="px-5 pt-20 text-2xl font-bold text-center pb-11 sm:px-0 md:pt-28 text-blue-dark"
         | Are you a nonprofit organization interested in joining our listings?
       = link_to 'Add or Claim a Nonprofit', new_nonprofit_request_path, class:'c-button inline-block my-1 text-white bg-blue-dark transition-colors hover:bg-blue-medium '
-    div class="hidden top-0 left-0 -z-1 sm:block sm:absolute"
+    div class="top-0 left-0 hidden -z-1 sm:block sm:absolute"
       = inline_svg_tag 'lc-desk-blur-left.svg'
-    div class="hidden top-0 right-0 -z-1 sm:block sm:absolute"
+    div class="top-0 right-0 hidden -z-1 sm:block sm:absolute"
       = inline_svg_tag 'lc-desk-blur-right.svg'
-    div class="absolute right-0 bottom-0 -z-1 sm:hidden"
+    div class="absolute bottom-0 right-0 -z-1 sm:hidden"
       = inline_svg_tag 'lc-mob-blur-right.svg'
+  = render "shared/newsletter"
+

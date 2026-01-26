@@ -15,6 +15,9 @@ Rails.application.routes.draw do
     resources :messages, only: %i[index show]
     resources :organization_admins
     resources :phone_numbers, except: %i[index]
+    resources :newsletters do
+      post :mark_all_as_added, on: :collection
+    end
     root to: "admin_users#index"
     resources :organizations do
       collection do
@@ -24,6 +27,14 @@ Rails.application.routes.draw do
       end
     end
     resource :export_locations, only: :new
+    resources :blogs do
+      member do
+        patch :publish
+        patch :unpublish
+        post :set_cover
+        post :set_thumbnail
+      end
+    end
   end
 
   devise_for :admin_users
@@ -37,6 +48,9 @@ Rails.application.routes.draw do
   get "/contact" => "contact_messages#new", :as => :new_contact_message
   post "/contact" => "contact_messages#create", :as => :create_contact_message
 
+  post "newsletter/signup", to: "newsletters#create", as: :newsletter_signup
+  get "newsletter/verify/:token", to: "newsletters#verify", as: :verify_newsletter_subscription
+
   get "/nonprofit" => "nonprofit_requests#new", :as => :new_nonprofit_request
   post "/nonprofit" => "nonprofit_requests#create", :as => :create_nonprofit_request
 
@@ -44,8 +58,11 @@ Rails.application.routes.draw do
   get "termsofuse" => "terms_and_conditions#show", :as => :terms_of_use
   resource :map_popup, only: [:new]
   resource :search_preview, only: [:show]
+  resources :search_exports, only: [:create]
 
-  resources :users, only: [:update]
+  resources :users, only: [:update, :show] do
+    resources :blogs, only: [:index], module: :users
+  end
   resources :reset_password, only: %i[new]
 
   resources :locations, only: %i[index new show destroy]
@@ -57,6 +74,15 @@ Rails.application.routes.draw do
       get "delete_upload/:upload_id", action: :delete_upload
     end
   end
+
+  resources :blogs do
+    resources :comments, only: [:create, :edit, :update, :destroy, :show]
+    resources :favorite_blogs, only: :create
+    resources :blog_likes, only: :create
+  end
+
+  resources :favorite_blogs, only: :destroy
+  resources :blog_likes, only: :destroy
 
   resources :favorite_locations, only: %i[create destroy]
   resources :alerts, only: %i[new create edit update destroy]

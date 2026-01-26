@@ -1,67 +1,62 @@
 import { Controller } from '@hotwired/stimulus'
 
+/* global localStorage */
+
 export default class extends Controller {
   static targets = ['tab', 'panel']
-
-  connect() {
-    this.activeTabClasses = (this.data.get('activeTab') || 'active').split(' ')
-    this.inactiveTabClasses = (this.data.get('inactiveTab') || 'inactive').split(' ')
-    if (this.anchor) this.index = this.tabTargets.findIndex((tab) => tab.id === this.anchor)
-    if (localStorage.getItem('tab')) this.index = localStorage.getItem('tab')
-    this.showTab()
+  static values = {
+    activeClasses: { type: String, default: 'border-blue-medium text-blue-medium' },
+    hiddenClass: { type: String, default: 'hidden' }
   }
 
-  change(event) {
+  connect () {
+    // Restore active tab from localStorage or default to first tab
+    const savedTabName = localStorage.getItem('activeTab')
+    if (savedTabName) {
+      const tabIndex = this.tabTargets.findIndex(tab => tab.dataset.tabName === savedTabName)
+      this.index = tabIndex >= 0 ? tabIndex : 0 // in case no saved tab matches
+    } else {
+      this.index = 0
+    }
+    this.updateActiveTab()
+  }
+
+  change (event) {
     event.preventDefault()
 
-    // If target specifies an index, use that
-    if (event.currentTarget.dataset.index) {
-      this.index = event.currentTarget.dataset.index
-      localStorage.setItem('tab', this.index)
-      // If target specifies an id, use that
-    } else if (event.currentTarget.dataset.id) {
-      this.index = this.tabTargets.findIndex((tab) => tab.id == event.currentTarget.dataset.id)
+    const clickedTab = event.currentTarget
+    const tabName = clickedTab.dataset.tabName
+    const tabIndex = this.tabTargets.findIndex(tab => tab.dataset.tabName === tabName)
 
-      // Otherwise, use the index of the current target
+    if (tabIndex >= 0) {
+      this.index = tabIndex
+      localStorage.setItem('activeTab', tabName)
+      this.updateActiveTab()
+      window.dispatchEvent(new CustomEvent('tsc:tab-change'))
     } else {
-      this.index = this.tabTargets.indexOf(event.currentTarget)
+      console.warn(`Tab with name "${tabName}" not found`)
     }
-
-    window.dispatchEvent(new CustomEvent('tsc:tab-change'))
   }
 
-  showTab() {
-    this.tabTargets.forEach((tab, index) => {
-      const panel = this.panelTargets[index]
+  updateActiveTab () {
+    const activeClasses = this.activeClassesValue.split(' ')
 
-      if (index === this.index) {
-        panel.classList.remove('hidden')
-        tab.classList.remove(...this.inactiveTabClasses)
-        tab.classList.add(...this.activeTabClasses)
-
-        // Update URL with the tab ID if it has one
-        // This will be automatically selected on page load
-        if (tab.id) {
-          location.hash = tab.id
-        }
+    this.tabTargets.forEach((tab, i) => {
+      if (i === this.index) {
+        tab.classList.add(...activeClasses)
+        tab.setAttribute('aria-current', 'page')
       } else {
-        panel.classList.add('hidden')
-        tab.classList.remove(...this.activeTabClasses)
-        tab.classList.add(...this.inactiveTabClasses)
+        tab.classList.remove(...activeClasses)
+        tab.removeAttribute('aria-current')
       }
     })
-  }
 
-  get index() {
-    return parseInt(this.data.get('index') || 0)
-  }
-
-  set index(value) {
-    this.data.set('index', (value >= 0 ? value : 0))
-    this.showTab()
-  }
-
-  get anchor() {
-    return (document.URL.split('#').length > 1) ? document.URL.split('#')[1] : null;
+    this.panelTargets.forEach((panel, i) => {
+      if (i === this.index) {
+        panel.classList.remove(this.hiddenClassValue)
+      } else {
+        panel.classList.add(this.hiddenClassValue)
+      }
+    })
   }
 }
