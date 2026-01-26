@@ -23,9 +23,9 @@
             span class="inline-flex relative z-0 shadow-sm md:hidden rounded-6px"
               / active bg-blue-dark.focus:text-white
               / inactive bg-white text-gray-3
-              button class="inline-flex relative items-center px-5 py-1 text-sm border rounded-l-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="0"
+              button class="inline-flex relative items-center px-5 py-1 text-sm border rounded-l-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-tab-name="list"
                 | List
-              button class="inline-flex relative px-5 py-1 -ml-px text-sm border itemst-center rounded-r-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-index="1"
+              button class="inline-flex relative px-5 py-1 -ml-px text-sm border itemst-center rounded-r-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-tab-name="map"
                 | Map
           // Search result cards
           = turbo_frame_tag "pagy", class: "relative" do
