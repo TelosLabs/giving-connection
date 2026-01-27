@@ -95,6 +95,9 @@ export default class extends Controller {
 
   handleLinkClick (event) {
     const link = event.target.closest('a')
+    if (link && link.closest('form') === this.formTarget) {
+      return
+    }
     if (link && this.hasUnsavedChanges && !this.shouldIgnoreLink(link)) {
       event.preventDefault()
       this.pendingNavigationUrl = link.href
