@@ -1,0 +1,503 @@
+# City Centroids for Smart Match Recommendation System
+# Maps (city, state) to (latitude, longitude) coordinates
+
+city_centroids:
+  # New Jersey (NJ)
+  "Atlantic City":
+    NJ: [39.3643, -74.4229]
+  
+  # California (CA)
+  "Los Angeles":
+    CA: [34.0522, -118.2437]
+  
+  # Tennessee (TN)
+  "Nashville":
+    TN: [36.1627, -86.7816]
+
+# Additional cities in supported states for fallback
+additional_cities:
+  # New Jersey
+  "Jersey City":
+    NJ: [40.7178, -74.0431]
+  "Newark":
+    NJ: [40.7357, -74.1724]
+  "Paterson":
+    NJ: [40.9168, -74.1718]
+  "Elizabeth":
+    NJ: [40.6639, -74.2107]
+  "Edison":
+    NJ: [40.5187, -74.4121]
+  "Woodbridge":
+    NJ: [40.5605, -74.2904]
+  "Lakewood":
+    NJ: [40.0968, -74.2179]
+  "Toms River":
+    NJ: [39.9538, -74.1979]
+  "Hamilton":
+    NJ: [40.2271, -74.6529]
+  "Trenton":
+    NJ: [40.2206, -74.7597]
+  "Camden":
+    NJ: [39.9259, -75.1196]
+  "Cherry Hill":
+    NJ: [39.9348, -75.0303]
+  "Vineland":
+    NJ: [39.4862, -75.0257]
+  "New Brunswick":
+    NJ: [40.4862, -74.4518]
+  "Middletown":
+    NJ: [40.3943, -74.1171]
+  "Union City":
+    NJ: [40.7795, -74.0238]
+  "Passaic":
+    NJ: [40.8568, -74.1285]
+  "Union":
+    NJ: [40.6976, -74.2632]
+  "Clifton":
+    NJ: [40.8584, -74.1638]
+  "East Orange":
+    NJ: [40.7673, -74.2049]
+  "Bayonne":
+    NJ: [40.6687, -74.1143]
+  "Franklin":
+    NJ: [41.1220, -74.5804]
+  "North Bergen":
+    NJ: [40.8043, -74.0121]
+  "Vineland":
+    NJ: [39.4862, -75.0257]
+  "Hoboken":
+    NJ: [40.7439, -74.0324]
+  "Perth Amboy":
+    NJ: [40.5068, -74.2654]
+  "New Brunswick":
+    NJ: [40.4862, -74.4518]
+  "West New York":
+    NJ: [40.7879, -74.0143]
+  "Plainfield":
+    NJ: [40.6337, -74.4074]
+  "Hackensack":
+    NJ: [40.8859, -74.0435]
+  "Sayreville":
+    NJ: [40.4594, -74.3601]
+  "Linden":
+    NJ: [40.6220, -74.2446]
+  "Fort Lee":
+    NJ: [40.8509, -73.9701]
+  "Carteret":
+    NJ: [40.5773, -74.2282]
+  "Rahway":
+    NJ: [40.6082, -74.2776]
+  "Newark":
+    NJ: [40.7357, -74.1724]
+  "Jersey City":
+    NJ: [40.7178, -74.0431]
+  "Paterson":
+    NJ: [40.9168, -74.1718]
+  "Elizabeth":
+    NJ: [40.6639, -74.2107]
+  "Edison":
+    NJ: [40.5187, -74.4121]
+  "Woodbridge":
+    NJ: [40.5605, -74.2904]
+  "Lakewood":
+    NJ: [40.0968, -74.2179]
+  "Toms River":
+    NJ: [39.9538, -74.1979]
+  "Hamilton":
+    NJ: [40.2271, -74.6529]
+  "Trenton":
+    NJ: [40.2206, -74.7597]
+  "Camden":
+    NJ: [40.9259, -75.1196]
+  "Cherry Hill":
+    NJ: [39.9348, -75.0303]
+  "Vineland":
+    NJ: [39.4862, -75.0257]
+  "New Brunswick":
+    NJ: [40.4862, -74.4518]
+  "Middletown":
+    NJ: [40.3943, -74.1171]
+  "Union City":
+    NJ: [40.7795, -74.0238]
+  "Passaic":
+    NJ: [40.8568, -74.1285]
+  "Union":
+    NJ: [40.6976, -74.2632]
+  "Clifton":
+    NJ: [40.8584, -74.1638]
+  "East Orange":
+    NJ: [40.7673, -74.2049]
+  "Bayonne":
+    NJ: [40.6687, -74.1143]
+  "Franklin":
+    NJ: [41.1220, -74.5804]
+  "North Bergen":
+    NJ: [40.8043, -74.0121]
+  "Hoboken":
+    NJ: [40.7439, -74.0324]
+  "Perth Amboy":
+    NJ: [40.5068, -74.2654]
+  "West New York":
+    NJ: [40.7879, -74.0143]
+  "Plainfield":
+    NJ: [40.6337, -74.4074]
+  "Hackensack":
+    NJ: [40.8859, -74.0435]
+  "Sayreville":
+    NJ: [40.4594, -74.3601]
+  "Linden":
+    NJ: [40.6220, -74.2446]
+  "Fort Lee":
+    NJ: [40.8509, -73.9701]
+  "Carteret":
+    NJ: [40.5773, -74.2282]
+  "Rahway":
+    NJ: [40.6082, -74.2776]
+
+  # California
+  "San Diego":
+    CA: [32.7157, -117.1611]
+  "San Jose":
+    CA: [37.3382, -121.8863]
+  "San Francisco":
+    CA: [37.7749, -122.4194]
+  "Fresno":
+    CA: [36.7378, -119.7871]
+  "Sacramento":
+    CA: [38.5816, -121.4944]
+  "Long Beach":
+    CA: [33.7701, -118.1937]
+  "Oakland":
+    CA: [37.8044, -122.2711]
+  "Bakersfield":
+    CA: [35.3733, -119.0187]
+  "Anaheim":
+    CA: [33.8366, -117.9143]
+  "Santa Ana":
+    CA: [33.7455, -117.8677]
+  "Riverside":
+    CA: [33.9533, -117.3962]
+  "Stockton":
+    CA: [37.9577, -121.2908]
+  "Irvine":
+    CA: [33.6846, -117.8265]
+  "Fremont":
+    CA: [37.5485, -121.9886]
+  "San Bernardino":
+    CA: [34.1083, -117.2898]
+  "Modesto":
+    CA: [37.6391, -120.9969]
+  "Fontana":
+    CA: [34.0922, -117.4350]
+  "Oxnard":
+    CA: [34.1975, -119.1771]
+  "Moreno Valley":
+    CA: [33.9425, -117.2297]
+  "Huntington Beach":
+    CA: [33.6603, -118.0098]
+  "Glendale":
+    CA: [34.1425, -118.2551]
+  "Santa Clarita":
+    CA: [34.3917, -118.5426]
+  "Garden Grove":
+    CA: [33.7739, -117.9414]
+  "Oceanside":
+    CA: [33.1959, -117.3795]
+  "Rancho Cucamonga":
+    CA: [34.1064, -117.5931]
+  "Santa Rosa":
+    CA: [38.4404, -122.7141]
+  "Ontario":
+    CA: [34.0633, -117.6509]
+  "Lancaster":
+    CA: [34.6868, -118.1542]
+  "Elk Grove":
+    CA: [38.4088, -121.3716]
+  "Corona":
+    CA: [33.8753, -117.5664]
+  "Palmdale":
+    CA: [34.5794, -118.1165]
+  "Salinas":
+    CA: [36.6777, -121.6555]
+  "Hayward":
+    CA: [37.6688, -122.0808]
+  "Pomona":
+    CA: [34.0551, -117.7499]
+  "Escondido":
+    CA: [33.1192, -117.0864]
+  "Sunnyvale":
+    CA: [37.3688, -122.0363]
+  "Torrance":
+    CA: [33.8358, -118.3406]
+  "Pasadena":
+    CA: [34.1478, -118.1445]
+  "Fullerton":
+    CA: [33.8704, -117.9242]
+  "Orange":
+    CA: [33.7879, -117.8531]
+  "Thousand Oaks":
+    CA: [34.1706, -118.8376]
+  "Visalia":
+    CA: [36.3302, -119.2921]
+  "Simi Valley":
+    CA: [34.2694, -118.7815]
+  "Concord":
+    CA: [37.9722, -122.0016]
+  "Roseville":
+    CA: [38.7521, -121.2880]
+  "Santa Clara":
+    CA: [37.3541, -121.9552]
+  "Vallejo":
+    CA: [38.1041, -122.2566]
+  "Victorville":
+    CA: [34.5361, -117.2928]
+  "El Monte":
+    CA: [34.0686, -118.0276]
+  "Berkeley":
+    CA: [37.8716, -122.2727]
+  "Downey":
+    CA: [33.9401, -118.1332]
+  "Costa Mesa":
+    CA: [33.6411, -117.9187]
+  "Inglewood":
+    CA: [33.9617, -118.3531]
+  "Carlsbad":
+    CA: [33.1581, -117.3506]
+  "Fairfield":
+    CA: [38.2494, -122.0400]
+  "West Covina":
+    CA: [34.0686, -117.9389]
+  "Murrieta":
+    CA: [33.5539, -117.2139]
+  "Richmond":
+    CA: [37.9358, -122.3477]
+  "Norwalk":
+    CA: [33.9022, -118.0817]
+  "Antioch":
+    CA: [38.0049, -121.8058]
+  "Temecula":
+    CA: [33.4936, -117.1484]
+  "Burbank":
+    CA: [34.1808, -118.3089]
+  "Daly City":
+    CA: [37.6879, -122.4702]
+  "Rialto":
+    CA: [34.1064, -117.3703]
+  "Santa Maria":
+    CA: [34.9530, -120.4357]
+  "El Cajon":
+    CA: [32.7948, -116.9625]
+  "San Mateo":
+    CA: [37.5629, -122.3255]
+  "Clovis":
+    CA: [36.8252, -119.7029]
+  "Compton":
+    CA: [33.8958, -118.2201]
+  "Jurupa Valley":
+    CA: [33.9525, -117.5848]
+  "Vista":
+    CA: [33.2000, -117.2425]
+  "South Gate":
+    CA: [33.9547, -118.2120]
+  "Mission Viejo":
+    CA: [33.6000, -117.6720]
+  "Vacaville":
+    CA: [38.3566, -121.9877]
+  "Carson":
+    CA: [33.8314, -118.2820]
+  "Hesperia":
+    CA: [34.4264, -117.3009]
+  "Santa Monica":
+    CA: [34.0195, -118.4912]
+  "Westminster":
+    CA: [33.7592, -118.0067]
+  "Redding":
+    CA: [40.5865, -122.3917]
+  "Santa Barbara":
+    CA: [34.4208, -119.6982]
+  "Chico":
+    CA: [39.7285, -121.8375]
+  "Newport Beach":
+    CA: [33.6189, -117.9289]
+  "San Leandro":
+    CA: [37.7249, -122.1561]
+  "Indio":
+    CA: [33.7206, -116.2156]
+  "Whittier":
+    CA: [33.9792, -118.0328]
+  "Citrus Heights":
+    CA: [38.7071, -121.2811]
+  "Livermore":
+    CA: [37.6819, -121.7680]
+  "Tracy":
+    CA: [37.7397, -121.4252]
+  "Alhambra":
+    CA: [34.0953, -118.1270]
+  "Menifee":
+    CA: [33.6971, -117.1853]
+  "Buena Park":
+    CA: [33.8675, -118.0001]
+  "Lakewood":
+    CA: [33.8536, -118.1339]
+  "Merced":
+    CA: [37.3022, -120.4829]
+  "Chino":
+    CA: [34.0122, -117.6889]
+  "Turlock":
+    CA: [37.4947, -120.8466]
+  "Lake Forest":
+    CA: [33.6469, -117.6891]
+  "Napa":
+    CA: [38.2975, -122.2869]
+  "Redwood City":
+    CA: [37.4852, -122.2364]
+  "Bellflower":
+    CA: [33.8817, -118.1170]
+  "Upland":
+    CA: [34.0975, -117.6484]
+  "San Ramon":
+    CA: [37.7799, -121.9780]
+  "Union City":
+    CA: [37.5934, -122.0438]
+  "Perris":
+    CA: [33.7825, -117.2286]
+  "Manteca":
+    CA: [37.7974, -121.2161]
+  "Lynwood":
+    CA: [33.9303, -118.2115]
+  "Apple Valley":
+    CA: [34.5008, -117.1859]
+  "Redlands":
+    CA: [34.0556, -117.1825]
+  "Tustin":
+    CA: [33.7459, -117.8261]
+  "Folsom":
+    CA: [38.6779, -121.1761]
+
+  # Tennessee
+  "Memphis":
+    TN: [35.1495, -90.0490]
+  "Knoxville":
+    TN: [35.9606, -83.9207]
+  "Chattanooga":
+    TN: [35.0456, -85.3097]
+  "Clarksville":
+    TN: [36.5298, -87.3595]
+  "Murfreesboro":
+    TN: [35.8456, -86.3903]
+  "Franklin":
+    TN: [35.9251, -86.8689]
+  "Jackson":
+    TN: [35.6145, -88.8139]
+  "Johnson City":
+    TN: [36.3134, -82.3535]
+  "Kingsport":
+    TN: [36.5484, -82.5618]
+  "Collierville":
+    TN: [35.0420, -89.6645]
+  "Cleveland":
+    TN: [35.1595, -84.8766]
+  "Smyrna":
+    TN: [35.9828, -86.5186]
+  "Germantown":
+    TN: [35.0867, -89.8101]
+  "Columbia":
+    TN: [35.6151, -87.0353]
+  "La Vergne":
+    TN: [36.0156, -86.5819]
+  "Cookeville":
+    TN: [36.1628, -85.5016]
+  "Hendersonville":
+    TN: [36.3048, -86.6200]
+  "Lebanon":
+    TN: [36.2081, -86.2911]
+  "Brentwood":
+    TN: [36.0331, -86.7828]
+  "Oak Ridge":
+    TN: [36.0104, -84.2696]
+  "Maryville":
+    TN: [35.7565, -83.9705]
+  "Gallatin":
+    TN: [36.3884, -86.4467]
+  "Morristown":
+    TN: [36.2139, -83.2949]
+  "Mount Juliet":
+    TN: [36.2001, -86.5186]
+  "Bristol":
+    TN: [36.5951, -82.1887]
+  "Farragut":
+    TN: [35.8845, -84.1535]
+  "Soddy-Daisy":
+    TN: [35.2359, -85.1908]
+  "East Ridge":
+    TN: [34.9959, -85.2352]
+  "Athens":
+    TN: [35.4428, -84.5927]
+  "Dyersburg":
+    TN: [36.0345, -89.3856]
+  "Goodlettsville":
+    TN: [36.3231, -86.7133]
+  "Sevierville":
+    TN: [35.8681, -83.5618]
+  "Pigeon Forge":
+    TN: [35.7884, -83.5543]
+  "Spring Hill":
+    TN: [35.7512, -86.9300]
+  "Oakland":
+    TN: [35.2290, -89.5151]
+  "Arlington":
+    TN: [35.2962, -89.6615]
+  "Bartlett":
+    TN: [35.2045, -89.8735]
+  "Collierville":
+    TN: [35.0420, -89.6645]
+  "Germantown":
+    TN: [35.0867, -89.8101]
+  "Lakeland":
+    TN: [35.2306, -89.7404]
+  "Millington":
+    TN: [35.3415, -89.9023]
+  "Cordova":
+    TN: [35.1559, -89.7765]
+  "East Memphis":
+    TN: [35.1045, -89.8493]
+  "Midtown":
+    TN: [35.1495, -90.0490]
+  "Downtown":
+    TN: [35.1495, -90.0490]
+  "West Memphis":
+    TN: [35.1495, -90.0490]
+  "North Memphis":
+    TN: [35.1495, -90.0490]
+  "South Memphis":
+    TN: [35.1495, -90.0490]
+  "East Nashville":
+    TN: [36.1627, -86.7816]
+  "West Nashville":
+    TN: [36.1627, -86.7816]
+  "North Nashville":
+    TN: [36.1627, -86.7816]
+  "South Nashville":
+    TN: [36.1627, -86.7816]
+  "Downtown Nashville":
+    TN: [36.1627, -86.7816]
+  "Midtown Nashville":
+    TN: [36.1627, -86.7816]
+  "Green Hills":
+    TN: [36.1627, -86.7816]
+  "Belle Meade":
+    TN: [36.1627, -86.7816]
+  "Brentwood":
+    TN: [36.0331, -86.7828]
+  "Franklin":
+    TN: [35.9251, -86.8689]
+  "Murfreesboro":
+    TN: [35.8456, -86.3903]
+  "Clarksville":
+    TN: [36.5298, -87.3595]
+  "Chattanooga":
+    TN: [35.0456, -85.3097]
+  "Knoxville":
+    TN: [35.9606, -83.9207]
+  "Memphis":
+    TN: [35.1495, -90.0490]
