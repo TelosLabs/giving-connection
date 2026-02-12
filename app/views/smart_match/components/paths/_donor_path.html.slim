@@ -1,0 +1,421 @@
+/ ========================================
+/ DONOR PATH - ALL STEPS
+/ ========================================
+
+- case @current_step
+- when 2
+  / ========================================
+  / DONOR PATH - STEP 2: CAUSES SELECTION
+  / ========================================
+  h1.text-3xl.font-bold.text-blue-dark.mb-4
+    | What causes are close to your heart?
+  p.text-lg.text-gray-600.mb-8
+    | (Multiple choice)
+  
+  .choice-cards.grid.grid-cols-7.gap-4.mb-8.justify-center data-style="seafoam"
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #C7F0EF;" data-action="click->smart-match#selectMultipleChoice" data-choice="advocacy_civil_rights" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/advocacy.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Advocacy & Civil Rights
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #C7F0EF;" data-action="click->smart-match#selectMultipleChoice" data-choice="animal_welfare" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/animals.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Animal Welfare
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #C7F0EF;" data-action="click->smart-match#selectMultipleChoice" data-choice="arts_culture" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/arts_culture.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Arts & Culture
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #C7F0EF;" data-action="click->smart-match#selectMultipleChoice" data-choice="children_family_services" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/children_family_services.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Children & Family Services
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #C7F0EF;" data-action="click->smart-match#selectMultipleChoice" data-choice="community_economic_development" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/community_economic_development.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Community & Economic Development
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #C7F0EF;" data-action="click->smart-match#selectMultipleChoice" data-choice="disaster_relief_preparedness" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/disaster_relief_preparedness.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Disaster Relief & Preparedness
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #C7F0EF;" data-action="click->smart-match#selectMultipleChoice" data-choice="education" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/education.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Education
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #C7F0EF;" data-action="click->smart-match#selectMultipleChoice" data-choice="environment" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/environment.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Environment
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #C7F0EF;" data-action="click->smart-match#selectMultipleChoice" data-choice="faith_based" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/faith_based.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Faith-Based
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #C7F0EF;" data-action="click->smart-match#selectMultipleChoice" data-choice="health" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/health.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Health
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #C7F0EF;" data-action="click->smart-match#selectMultipleChoice" data-choice="housing_homelessness" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/housing_homelessness.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Housing & Homelessness
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #C7F0EF;" data-action="click->smart-match#selectMultipleChoice" data-choice="human_services" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/human_social_services.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Human Services
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #C7F0EF;" data-action="click->smart-match#selectMultipleChoice" data-choice="hunger_food_security" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/hunger_food_security.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Hunger & Food Security
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center style="background-color: #C7F0EF;" data-action="click->smart-match#selectMultipleChoice" data-choice="global_relief" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/international.svg', class: "w-16 h-16 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Global Relief
+
+- when 3
+  / ========================================
+  / DONOR PATH - STEP 3: DONATION STYLE
+  / ========================================
+  h1.text-3xl.font-bold.text-blue-dark.mb-4
+    | What's your preferred donation style?
+  p.text-lg.text-gray-600.mb-8
+    | (Single choice)
+  
+  .choice-cards.grid.grid-cols-5.gap-6.mb-8.justify-center data-style="pink"
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.col-span-1 data-action="click->smart-match#selectChoice" data-choice="general_donation" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'general_donation.svg', class: "w-24 h-24 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | General donation
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.col-span-1 data-action="click->smart-match#selectChoice" data-choice="specific_project" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'specific_project.svg', class: "w-24 h-24 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Support a specific project
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.col-span-1 data-action="click->smart-match#selectChoice" data-choice="donate_goods" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'goods_items.svg', class: "w-24 h-24 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Donate goods or items
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.col-span-1 data-action="click->smart-match#selectChoice" data-choice="recurring_giving" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'recurring.svg', class: "w-24 h-24 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | Set up recurring giving
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center.col-span-1 data-action="click->smart-match#selectChoice" data-choice="exploring" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'Explore.svg', class: "w-24 h-24 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | I'm just exploring for now
+
+- when 4
+  / ========================================
+  / DONOR PATH - STEP 4: MOTIVATION
+  / ========================================
+  h1.text-3xl.font-bold.text-blue-dark.mb-4
+    | What motivates you to give?
+  p.text-lg.text-gray-600.mb-8
+    | (Single choice)
+  
+  .choice-cards.flex.flex-wrap.justify-center.gap-4.mb-8 data-style="white"
+    .choice-card.rounded-lg.p-4.cursor-pointer.transition-colors.w-64 data-action="click->smart-match#selectChoice" data-choice="local_community" data-smart-match-target="choiceCard"
+      p.text-sm.font-bold.text-center
+        | I want to make a difference in my local community
+    
+    .choice-card.rounded-lg.p-4.cursor-pointer.transition-colors.w-64 data-action="click->smart-match#selectChoice" data-choice="personally_affected" data-smart-match-target="choiceCard"
+      p.text-sm.font-bold.text-center
+        | I've been personally affected by a cause
+    
+    .choice-card.rounded-lg.p-4.cursor-pointer.transition-colors.w-64 data-action="click->smart-match#selectChoice" data-choice="support_underserved" data-smart-match-target="choiceCard"
+      p.text-sm.font-bold.text-center
+        | I want to support people who are underserved
+    
+    .choice-card.rounded-lg.p-4.cursor-pointer.transition-colors.w-64 data-action="click->smart-match#selectChoice" data-choice="honor_memory" data-smart-match-target="choiceCard"
+      p.text-sm.font-bold.text-center
+        | I want to donate in someone's honor or memory
+    
+    .choice-card.rounded-lg.p-4.cursor-pointer.transition-colors.w-64 data-action="click->smart-match#selectChoice" data-choice="real_impact" data-smart-match-target="choiceCard"
+      p.text-sm.font-bold.text-center
+        | I want to give where my dollars will have real impact
+    
+    .choice-card.rounded-lg.p-4.cursor-pointer.transition-colors.w-64 data-action="click->smart-match#selectChoice" data-choice="exploring_meaningful" data-smart-match-target="choiceCard"
+      p.text-sm.font-bold.text-center
+        | I'm exploring meaningful ways to give back
+    
+    .choice-card.rounded-lg.p-4.cursor-pointer.transition-colors.w-64 data-action="click->smart-match#selectChoice" data-choice="faith_values" data-smart-match-target="choiceCard"
+      p.text-sm.font-bold.text-center
+        | I give as part of my faith or personal values
+
+- when 5
+  / ========================================
+  / DONOR PATH - STEP 5: COMMUNITY FOCUS
+  / ========================================
+  h1.text-3xl.font-bold.text-blue-dark.mb-4
+    | Do you want your gift to support a specific community or population?
+  p.text-lg.text-gray-600.mb-8
+    | (Multiple choice)
+  
+  .choice-cards.grid.grid-cols-4.gap-4.mb-8.justify-center data-style="blue"
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center data-action="click->smart-match#selectMultipleChoice" data-choice="seniors" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'seniors2.svg', class: "w-24 h-24 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-center.px-2.break-words
+        | Seniors
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center data-action="click->smart-match#selectMultipleChoice" data-choice="veterans_military" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/veteran_military.svg', class: "w-24 h-24 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-center.px-2.break-words
+        | Veterans and military families
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center data-action="click->smart-match#selectMultipleChoice" data-choice="spanish_speaking" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'other_languages.svg', class: "w-24 h-24 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-center.px-2.break-words
+        | Spanish-speaking communities
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center data-action="click->smart-match#selectMultipleChoice" data-choice="bipoc_communities" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'women_bipoc.svg', class: "w-24 h-24 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-center.px-2.break-words
+        | BIPOC communities
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center data-action="click->smart-match#selectMultipleChoice" data-choice="disabilities" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'causes_categories/disability_services.svg', class: "w-24 h-24 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-center.px-2.break-words
+        | People with disabilities
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center data-action="click->smart-match#selectMultipleChoice" data-choice="lgbtqia" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'lgbtqia.svg', class: "w-24 h-24 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-center.px-2.break-words
+        | LGBTQIA+ community
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center data-action="click->smart-match#selectMultipleChoice" data-choice="children_families" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'family.svg', class: "w-24 h-24 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-center.px-2.break-words
+        | Children and families
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center data-action="click->smart-match#selectMultipleChoice" data-choice="no_preference" data-smart-match-target="choiceCard"
+      p.text-sm.font-bold.text-center.px-2.break-words
+        | No preference, I trust the match
+
+- when 6
+  / ========================================
+  / DONOR PATH - STEP 6: LOCATION PREFERENCE
+  / ========================================
+  h1.text-3xl.font-bold.text-blue-dark.mb-4
+    | Where would you like your gift to go?
+  p.text-lg.text-gray-600.mb-8
+    | (Single choice)
+  
+  .choice-cards.grid.grid-cols-3.gap-6.mb-8.justify-center data-style="pink"
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center data-action="click->smart-match#selectChoice" data-choice="near_me" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'near_me.svg', class: "w-24 h-24 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-center.px-2.break-words
+        | Near me
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center data-action="click->smart-match#selectChoice" data-choice="specific_location" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'specific_place.svg', class: "w-24 h-24 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-center.px-2.break-words
+        | A specific city or zip code
+    
+    .choice-card.rounded-lg.p-6.cursor-pointer.transition-colors.h-48.flex.flex-col.items-center.justify-center data-action="click->smart-match#selectChoice" data-choice="anywhere" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'anywhere.svg', class: "w-24 h-24 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-center.px-2.break-words
+        | Anywhere – I just want to support a good cause
+
+  .city-selection-container.text-center.mb-8.hidden data-smart-match-target="citySelectionContainer"
+    h3.text-xl.font-bold.text-blue-dark.mb-4
+      | Select a city:
+    .city-options.grid.grid-cols-3.gap-6.mb-4.max-w-2xl.mx-auto data-style="white"
+      .city-option.border-2.border-blue-light.rounded-lg.p-6.cursor-pointer.transition-colors data-action="click->smart-match#selectCity" data-city="atlanta" data-smart-match-target="cityOption"
+        p.text-lg.font-bold.text-blue-dark.text-center.whitespace-nowrap
+          | Atlantic City
+      .city-option.border-2.border-blue-light.rounded-lg.p-6.cursor-pointer.transition-colors data-action="click->smart-match#selectCity" data-city="los_angeles" data-smart-match-target="cityOption"
+        p.text-lg.font-bold.text-blue-dark.text-center.whitespace-nowrap
+          | Los Angeles
+      .city-option.border-2.border-blue-light.rounded-lg.p-6.cursor-pointer.transition-colors data-action="click->smart-match#selectCity" data-city="nashville" data-smart-match-target="cityOption"
+        p.text-lg.font-bold.text-blue-dark.text-center.whitespace-nowrap
+          | Nashville
+
+- when 7
+  / ========================================
+  / DONOR PATH - STEP 7: INVOLVEMENT LEVEL
+  / ========================================
+  h1.text-3xl.font-bold.text-blue-dark.mb-4
+    | How involved do you want to be?
+  p.text-lg.text-gray-600.mb-8
+    | (Multiple choice)
+  
+  .choice-cards.grid.grid-cols-4.gap-4.mb-8.justify-center data-style="seafoam"
+    .choice-card.border-2.border-blue-light.rounded-lg.p-6.cursor-pointer.transition-colors data-action="click->smart-match#selectMultipleChoice" data-choice="just_donation" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'donation_donors.svg', class: "w-20 h-20 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | I'm just looking to make a donation
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-6.cursor-pointer.transition-colors data-action="click->smart-match#selectMultipleChoice" data-choice="learn_updates" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'updates.svg', class: "w-20 h-20 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | I might want to learn more or get updates
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-6.cursor-pointer.transition-colors data-action="click->smart-match#selectMultipleChoice" data-choice="volunteer_events" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'open_volunteering.svg', class: "w-20 h-20 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | I'd be open to volunteering or attending events
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-6.cursor-pointer.transition-colors data-action="click->smart-match#selectMultipleChoice" data-choice="recurring_deeper" data-smart-match-target="choiceCard"
+      .illustration.mb-3
+        = inline_svg_tag 'recurring_giving.svg', class: "w-20 h-20 mx-auto", aria_hidden: true
+      p.text-sm.font-bold.text-blue-dark.text-center.px-2.break-words
+        | I'm interested in recurring giving or deeper engagement
+
+- when 8
+  / ========================================
+  / DONOR PATH - STEP 8: AGE RANGE
+  / ========================================
+  h1.text-3xl.font-bold.text-blue-dark.mb-4
+    | What is your age range?
+  p.text-lg.text-gray-600.mb-8
+    | (Single choice)
+
+  .choice-cards.grid.grid-cols-1.gap-4.mb-8.max-w-md.mx-auto data-style="white"
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="under_18" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Under 18
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="19_24" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | 19-24
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="25_34" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | 25-34
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="35_44" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | 35-44
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="45_54" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | 45-54
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="55_64" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | 55-64
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="over_65" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Over 65+
+
+- when 9
+  / ========================================
+  / DONOR PATH - STEP 9: GENDER IDENTITY
+  / ========================================
+  h1.text-3xl.font-bold.text-blue-dark.mb-4
+    | What is your gender identity?
+  p.text-lg.text-gray-600.mb-8
+    | If you prefer to self-describe: please select other and indicate your gender identity in the space provided.
+
+  .choice-cards.grid.grid-cols-1.gap-4.mb-8.max-w-md.mx-auto data-style="white"
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="female" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Female
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="male" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Male
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="non_binary" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Non-binary or gender diverse
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="other" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Other
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="prefer_not_to_say" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Prefer not to say
+
+  .gender-description-container.text-center.mb-8.hidden data-smart-match-target="genderDescriptionContainer"
+    input.gender-description-input.border-2.border-blue-light.rounded-lg.px-4.py-3.w-full.max-w-md.text-lg.text-blue-dark.placeholder-blue-light type="text" placeholder="Please describe your gender identity" data-action="input->smart-match#updateGenderDescription" data-smart-match-target="genderDescriptionInput"
+
+- when 10
+  / ========================================
+  / DONOR PATH - STEP 10: RACE/ETHNICITY
+  / ========================================
+  h1.text-3xl.font-bold.text-blue-dark.mb-4
+    | What is your race or ethnicity?
+  p.text-lg.text-gray-600.mb-8
+    | (Single choice)
+
+  .choice-cards.grid.grid-cols-1.gap-4.mb-8.max-w-md.mx-auto data-style="white"
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="black_african_american" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Black or African American
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="hispanic_latino" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Hispanic or Latino/a/x
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="white" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | White
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="asian" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Asian
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="native_american_alaska_native" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Native American or Alaska Native
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="native_hawaiian_pacific_islander" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Native Hawaiian or Pacific Islander
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="middle_eastern_north_african" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Middle Eastern or North African
+    
+    .choice-card.border-2.border-blue-light.rounded-lg.p-4.cursor-pointer.transition-colors data-action="click->smart-match#selectChoice" data-choice="prefer_not_to_say" data-smart-match-target="choiceCard"
+      p.text-lg.font-bold.text-blue-dark.text-center
+        | Prefer not to say 
