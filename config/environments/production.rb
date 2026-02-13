@@ -40,13 +40,14 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :amazon
+  # Use local storage during Docker builds (no AWS credentials available)
+  config.active_storage.service = ENV["SECRET_KEY_BASE"] == "placeholder_for_build" ? :local : :amazon
 
   # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil
   # config.action_cable.url = 'wss://example.com/cable'
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
-  config.action_cable.allowed_request_origins = Rails.application.credentials.dig(Rails.env.to_sym)[:app_host]
+  config.action_cable.allowed_request_origins = Rails.application.credentials.dig(Rails.env.to_sym, :app_host)
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = false
@@ -59,7 +60,9 @@ Rails.application.configure do
   config.log_tags = [:request_id]
 
   # Use a different cache store in production.
-  config.cache_store = :redis_cache_store, {url: ENV["REDIS_URL"], ssl_params: {verify_mode: OpenSSL::SSL::VERIFY_NONE}}
+  redis_cache_options = {url: ENV["REDIS_URL"]}
+  redis_cache_options[:ssl_params] = {verify_mode: OpenSSL::SSL::VERIFY_NONE} if ENV["REDIS_URL"]&.start_with?("rediss://")
+  config.cache_store = :redis_cache_store, redis_cache_options
 
   config.action_mailer.perform_caching = false
 
@@ -156,6 +159,6 @@ Rails.application.configure do
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.default_url_options = {host: Rails.application.credentials.dig(Rails.env.to_sym)[:host]}
-  config.action_mailer.asset_host = {host: Rails.application.credentials.dig(Rails.env.to_sym)[:host]}
+  config.action_mailer.default_url_options = {host: Rails.application.credentials.dig(Rails.env.to_sym, :host)}
+  config.action_mailer.asset_host = {host: Rails.application.credentials.dig(Rails.env.to_sym, :host)}
 end

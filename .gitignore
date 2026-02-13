@@ -53,3 +53,6 @@ database_consistency*
 !/app/assets/builds/.keep
 
 .env
+
+# Kamal deployment secrets
+/.kamal/secrets*

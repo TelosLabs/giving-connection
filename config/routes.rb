@@ -105,4 +105,7 @@ Rails.application.routes.draw do
   get "/los-angeles", to: "cities#show", city: "Los Angeles", as: :los_angeles
 
   get "redirect", to: "redirection#notice_external_link", as: :redirect
+
+  # Health check for load balancer / Kamal
+  get "up", to: "health#show", as: :health_check
 end

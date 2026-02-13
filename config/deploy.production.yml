@@ -1,0 +1,50 @@
+# Production destination — deploy with: kamal deploy -d production
+
+servers:
+  web:
+    hosts:
+      - REPLACE_WITH_PRODUCTION_DROPLET_IP
+    cmd: bundle exec puma -C config/puma.rb
+    labels:
+      role: web
+    options:
+      memory: 2g
+
+  worker:
+    hosts:
+      - REPLACE_WITH_PRODUCTION_DROPLET_IP
+    cmd: bundle exec sidekiq
+    labels:
+      role: worker
+    options:
+      memory: 1g
+
+  clock:
+    hosts:
+      - REPLACE_WITH_PRODUCTION_DROPLET_IP
+    cmd: bundle exec clockwork config/clock.rb
+    labels:
+      role: clock
+    options:
+      memory: 512m
+
+proxy:
+  ssl: true
+  host: REPLACE_WITH_PRODUCTION_DOMAIN
+  app_port: 3000
+
+env:
+  clear:
+    RAILS_ENV: production
+    WEB_CONCURRENCY: "2"
+
+# Python embedding service for Smart Match feature.
+# SECURITY: Bound to 127.0.0.1 only — not accessible from the public internet.
+accessories:
+  embedding-api:
+    image: ghcr.io/teloslabs/gc-embedding-api
+    host: REPLACE_WITH_PRODUCTION_DROPLET_IP
+    port: "127.0.0.1:8000:8000"
+    env:
+      clear:
+        PYTHONUNBUFFERED: "1"
