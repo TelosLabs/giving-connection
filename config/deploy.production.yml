@@ -3,34 +3,28 @@
 servers:
   web:
     hosts:
-      - REPLACE_WITH_PRODUCTION_DROPLET_IP
+      - 161.35.179.50
     cmd: bundle exec puma -C config/puma.rb
-    labels:
-      role: web
     options:
       memory: 2g
 
   worker:
     hosts:
-      - REPLACE_WITH_PRODUCTION_DROPLET_IP
+      - 161.35.179.50
     cmd: bundle exec sidekiq
-    labels:
-      role: worker
     options:
       memory: 1g
 
   clock:
     hosts:
-      - REPLACE_WITH_PRODUCTION_DROPLET_IP
+      - 161.35.179.50
     cmd: bundle exec clockwork config/clock.rb
-    labels:
-      role: clock
     options:
       memory: 512m
 
 proxy:
   ssl: true
-  host: REPLACE_WITH_PRODUCTION_DOMAIN
+  host: https://www.givingconnection.org/
   app_port: 3000
 
 env:
@@ -43,7 +37,7 @@ env:
 accessories:
   embedding-api:
     image: ghcr.io/teloslabs/gc-embedding-api
-    host: REPLACE_WITH_PRODUCTION_DROPLET_IP
+    host: 161.35.179.50
     port: "127.0.0.1:8000:8000"
     env:
       clear:
