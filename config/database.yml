@@ -57,13 +57,13 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  url: <%= ENV.fetch('DATABASE_URL', '').sub(/^postgres/, "postgis") %>
+  url: <%= ENV.fetch('DATABASE_URL', '').sub(/^postgres(ql)?/, "postgis") %>
   database: giving_connection_test
 
 
 staging:
   <<: *default
-  url: <%= ENV.fetch('DATABASE_URL', '').sub(/^postgres/, "postgis") %>
+  url: <%= ENV.fetch('DATABASE_URL', '').sub(/^postgres(ql)?/, "postgis") %>
   database: giving_connection_staging
   username: giving_connection
   password: <%= ENV['GIVING_CONNECTION_DATABASE_PASSWORD'] %>
@@ -90,7 +90,7 @@ staging:
 #
 production:
   <<: *default
-  url: <%= ENV.fetch('DATABASE_URL', '').sub(/^postgres/, "postgis") %>
+  url: <%= ENV.fetch('DATABASE_URL', '').sub(/^postgres(ql)?/, "postgis") %>
   database: giving_connection_production
   username: giving_connection
   password: <%= ENV['GIVING_CONNECTION_DATABASE_PASSWORD'] %>

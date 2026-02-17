@@ -6,26 +6,30 @@ servers:
       - 161.35.179.50
     cmd: bundle exec puma -C config/puma.rb
     options:
-      memory: 2g
+      memory: 1.5g
 
   worker:
     hosts:
       - 161.35.179.50
     cmd: bundle exec sidekiq
     options:
-      memory: 1g
+      memory: 768m
 
   clock:
     hosts:
       - 161.35.179.50
     cmd: bundle exec clockwork config/clock.rb
     options:
-      memory: 512m
+      memory: 256m
 
 proxy:
   ssl: true
-  host: https://www.givingconnection.org/
+  host: www.givingconnection.org
   app_port: 3000
+  healthcheck:
+    interval: 3
+    path: /up
+    timeout: 10
 
 env:
   clear:

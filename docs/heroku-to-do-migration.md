@@ -33,14 +33,13 @@ and simple. The tradeoff is no managed backups — use manual `pg_dump` if neede
 Postgres and Redis are DO Managed services with automated backups,
 trusted source access control, and patching handled by DO.
 
-- [ ] Provision DO droplet for production (4 vCPU / 8GB RAM, Ubuntu 24.04)
-- [ ] Provision DO Managed PostgreSQL for production (enable PostGIS, pgvector) (~$15/mo)
-- [ ] Provision DO Managed Redis for production (~$15/mo)
-- [ ] Configure DO Cloud Firewall for production droplet (see Security section)
+- [x] Provision DO droplet for production (4 vCPU / 8GB RAM, Ubuntu 24.04)
+- [x] Provision DO Managed PostgreSQL for production (enable PostGIS, pgvector) (~$15/mo)
+- [x] Provision DO Managed Redis for production (self-hosted)
+- [x] Configure DO Cloud Firewall for production droplet (see Security section)
 - [ ] Create `deploy` user on production droplet with SSH key access
-- [ ] Install Docker on production droplet
-- [ ] Configure Managed Postgres trusted sources → production droplet private IP only
-- [ ] Configure Managed Redis trusted sources → production droplet private IP only
+- [x] Install Docker on production droplet
+- [x] Configure Managed Postgres trusted sources → production droplet private IP only
 - [ ] Disable public access on both managed databases
 
 **Shared:**
@@ -324,7 +323,7 @@ Apply the same firewall rules to **both** staging and production droplets:
 
 **Staging (self-hosted on droplet):**
 - PostgreSQL listens on 127.0.0.1 only (default pg_hba.conf)
-- Port 5432 is NOT exposed in the firewall
+- Port 5432 is NOT exposed in the **firewall**
 - Use a strong password for the `giving_connection` database user
 
 **Production (DO Managed Postgres):**
