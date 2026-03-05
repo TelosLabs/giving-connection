@@ -56,3 +56,7 @@ database_consistency*
 
 # Kamal deployment secrets
 /.kamal/secrets*
+
+# Ignore backup dumps
+production_backup.dump
+staging_backup.dump
