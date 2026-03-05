@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class HealthController < ActionController::Base
+class HealthController < ApplicationController
   # Skip Rack::Attack throttling for health checks
   if defined?(Rack::Attack)
     Rack::Attack.safelist("health-check") do |req|
@@ -11,7 +11,7 @@ class HealthController < ActionController::Base
   def show
     ActiveRecord::Base.connection.execute("SELECT 1")
     render plain: "OK", status: :ok
-  rescue StandardError => e
+  rescue => e
     Rails.logger.error("[HealthCheck] #{e.class}: #{e.message}")
     render plain: "Service Unavailable", status: :service_unavailable
   end
