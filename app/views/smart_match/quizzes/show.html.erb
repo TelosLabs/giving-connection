@@ -1,0 +1,92 @@
+<%
+  # Section mapping based on step and user_type
+  section_map = case @user_type
+  when "service_seeker"
+    {
+      1 => { number: 1, name: "About You", title: "I want to...", subtitle: "Single Choice" },
+      2 => { number: 2, name: "Your Location", title: "Where are you located?", subtitle: nil },
+      3 => { number: 2, name: "Type of Support", title: "What type of support are you looking for?", subtitle: "Multiple Choice" },
+      4 => { number: 3, name: "Preferences", title: "Tell us more about your preferences", subtitle: nil },
+      5 => { number: 4, name: "Personal Details", title: "Almost done!", subtitle: nil }
+    }
+  when "volunteer"
+    {
+      1 => { number: 1, name: "About You", title: "I want to...", subtitle: "Single Choice" },
+      2 => { number: 2, name: "Your Location", title: "Where are you located?", subtitle: nil },
+      3 => { number: 2, name: "Type of Support", title: "What causes would you like to support?", subtitle: "Multiple Choice" },
+      4 => { number: 3, name: "Preferences & Accessibility", title: "Tell us more about your preferences", subtitle: nil }
+    }
+  else # donor
+    {
+      1 => { number: 1, name: "About You", title: "I want to...", subtitle: "Single Choice" },
+      2 => { number: 2, name: "Your Location", title: "Where are you located?", subtitle: nil },
+      3 => { number: 2, name: "Type of Support", title: "What causes would you like to support?", subtitle: "Multiple Choice" },
+      4 => { number: 3, name: "Preferences & Accessibility", title: "Tell us more about your preferences", subtitle: nil }
+    }
+  end
+
+  current_section = section_map[@step] || section_map[1]
+  section_number = current_section[:number]
+  section_name = current_section[:name]
+  step_title = current_section[:title]
+  step_subtitle = current_section[:subtitle]
+
+  step_partial_map = {
+    1 => "smart_match/quizzes/steps/user_type",
+    2 => "smart_match/quizzes/steps/location",
+    3 => {
+      "service_seeker" => "smart_match/quizzes/service_seeker_path",
+      "volunteer" => "smart_match/quizzes/volunteer_path",
+      "donor" => "smart_match/quizzes/donor_path"
+    },
+    4 => {
+      "service_seeker" => "smart_match/quizzes/steps/preferences",
+      "volunteer" => "smart_match/quizzes/steps/final",
+      "donor" => "smart_match/quizzes/steps/final"
+    },
+    5 => "smart_match/quizzes/steps/final"
+  }
+
+  partial_entry = step_partial_map[@step]
+  step_partial = partial_entry.is_a?(Hash) ? partial_entry[@user_type] : partial_entry
+  step_partial ||= "smart_match/quizzes/steps/user_type"
+
+  is_final_step = @step == @total_steps
+%>
+
+<section class="flex flex-col min-h-screen bg-white sm-wizard"
+         data-controller="smart-match-quiz"
+         data-smart-match-quiz-step-value="<%= @step %>"
+         data-smart-match-quiz-total-steps-value="<%= @total_steps %>">
+
+  <%# Wizard content area %>
+  <div class="flex-1 overflow-y-auto">
+    <div class="max-w-4xl px-6 py-8 mx-auto lg:px-36">
+
+      <%# Section label %>
+      <div class="mb-4">
+        <span class="text-xl text-blue-dark">Section <%= section_number %>: </span>
+        <span class="text-lg font-bold text-blue-dark"><%= section_name %></span>
+      </div>
+
+      <%# Segmented progress bar %>
+      <%= render "smart_match/quizzes/progress_bar", step: @step, total_steps: @total_steps %>
+
+      <%# Step title %>
+      <div class="mt-8 mb-2">
+        <h1 class="text-4xl font-bold text-gray-2"><%= step_title %></h1>
+        <% if step_subtitle %>
+          <p class="mt-1 text-base text-gray-4"><%= step_subtitle %></p>
+        <% end %>
+      </div>
+
+      <%# Step content %>
+      <turbo-frame id="quiz-step" class="block mt-6 sm-step-enter">
+        <%= render step_partial %>
+      </turbo-frame>
+    </div>
+  </div>
+
+  <%# Wizard footer %>
+  <%= render "smart_match/quizzes/wizard_footer", step: @step, is_final_step: is_final_step %>
+</section>

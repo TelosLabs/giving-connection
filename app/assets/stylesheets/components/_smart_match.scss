@@ -1,0 +1,215 @@
+// Smart Match Quiz & Results styles
+
+// ---------------------------------------------------------------------------
+// Hero gradient
+// ---------------------------------------------------------------------------
+.sm-gradient-hero {
+  background: linear-gradient(to right, #0782D0, #113C7B);
+}
+
+// ---------------------------------------------------------------------------
+// Wizard layout
+// ---------------------------------------------------------------------------
+.sm-wizard {
+  background-color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+// Progress bar segments
+.sm-wizard__progress-segment {
+  height: 11px;
+  border-radius: 9999px;
+  background-color: #D3DCE6;
+  flex: 1;
+  transition: background 300ms ease;
+
+  &--full {
+    background-color: #113C7B;
+  }
+
+  &--half {
+    background: linear-gradient(to right, #113C7B 50%, #D3DCE6 50%);
+  }
+}
+
+// Sticky footer
+.sm-wizard__footer {
+  position: sticky;
+  bottom: 0;
+  background-color: #fff;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.06);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 20;
+}
+
+// ---------------------------------------------------------------------------
+// Selectable icon card (desktop grid)
+// ---------------------------------------------------------------------------
+.sm-card-option {
+  background-color: #9AE2E0;
+  border: 2px solid #C2CEDB;
+  border-radius: 0.5rem;
+  height: 224px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: border-color 200ms, box-shadow 200ms;
+  text-align: center;
+
+  &:hover {
+    border-color: #0782D0;
+  }
+
+  &.selected,
+  &:has(input:checked) {
+    border-color: #0782D0;
+    box-shadow: 0px 0px 15px 0px #0782D0;
+  }
+
+  @media (max-width: 639px) {
+    height: auto;
+  }
+}
+
+// List variant for mobile
+.sm-card-option--list {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  height: auto;
+  padding: 1rem 1.25rem;
+  background-color: #9AE2E0;
+  border: 2px solid #C2CEDB;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: border-color 200ms, box-shadow 200ms;
+
+  &:hover {
+    border-color: #0782D0;
+  }
+
+  &.selected,
+  &:has(input:checked) {
+    border-color: #0782D0;
+    box-shadow: 0px 0px 15px 0px #0782D0;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Category accordion ("more options")
+// ---------------------------------------------------------------------------
+.sm-category-accordion {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 350ms ease;
+
+  &.open {
+    max-height: 2000px;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Result card
+// ---------------------------------------------------------------------------
+.sm-result-card {
+  background-color: #fff;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 200ms;
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+}
+
+// Match badges
+.sm-match-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+
+  &--strong {
+    background-color: #ADF7F5;
+    color: #113C7B;
+  }
+
+  &--good {
+    background-color: #e2ecf7;
+    color: #0782D0;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Cause pill selection (icon-based)
+// ---------------------------------------------------------------------------
+.pill-label {
+  transition: border-color 150ms, background-color 150ms, box-shadow 150ms;
+
+  &:has(input:checked) {
+    border-color: #0782D0;
+    background-color: #e2ecf7;
+    box-shadow: 0 0 0 1px #0782D0;
+  }
+
+  &:hover {
+    border-color: #0782D0;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Step transitions & animations
+// ---------------------------------------------------------------------------
+[data-controller="smart-match-quiz"] {
+  turbo-frame {
+    display: block;
+  }
+}
+
+.sm-step-enter {
+  animation: smFadeSlideIn 350ms ease both;
+}
+
+@keyframes smFadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.sm-step-exit {
+  animation: smFadeSlideOut 200ms ease both;
+}
+
+@keyframes smFadeSlideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+}

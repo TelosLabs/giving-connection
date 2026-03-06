@@ -1,0 +1,20 @@
+<div class="sm-wizard__footer">
+  <% if step > 1 %>
+    <button type="submit"
+            name="direction"
+            value="back"
+            form="quiz-form"
+            class="text-base font-semibold cursor-pointer text-blue-dark hover:underline">
+      Go Back
+    </button>
+  <% else %>
+    <div></div>
+  <% end %>
+
+  <button type="submit"
+          form="quiz-form"
+          class="px-10 py-3 text-sm font-bold tracking-wider text-white uppercase rounded-md cursor-pointer bg-blue-dark hover:bg-blue-medium disabled:bg-gray-5 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+          data-smart-match-quiz-target="submitBtn">
+    <%= is_final_step ? "FIND MY MATCHES" : "NEXT" %>
+  </button>
+</div>

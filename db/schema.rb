@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_15_194445) do
+ActiveRecord::Schema[7.2].define(version: 2026_03_05_000005) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
   enable_extension "postgis"
+  enable_extension "vector"
 
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
@@ -329,6 +330,29 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_15_194445) do
     t.index ["organization_id"], name: "index_organization_causes_on_organization_id"
   end
 
+  create_table "organization_embeddings", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.vector "embedding", limit: 1024, null: false
+    t.text "text_snapshot", null: false
+    t.jsonb "metadata", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["embedding"], name: "idx_org_embeddings_hnsw_cosine", opclass: :vector_cosine_ops, using: :hnsw
+    t.index ["organization_id"], name: "index_organization_embeddings_on_organization_id", unique: true
+  end
+
+  create_table "organization_matches", force: :cascade do |t|
+    t.bigint "quiz_submission_id", null: false
+    t.bigint "organization_id", null: false
+    t.decimal "score", precision: 5, scale: 4, null: false
+    t.jsonb "score_breakdown", default: {}
+    t.integer "rank", null: false
+    t.datetime "created_at", null: false
+    t.index ["organization_id"], name: "index_organization_matches_on_organization_id"
+    t.index ["quiz_submission_id", "organization_id"], name: "idx_org_matches_on_submission_and_org", unique: true
+    t.index ["quiz_submission_id"], name: "index_organization_matches_on_quiz_submission_id"
+  end
+
   create_table "organizations", force: :cascade do |t|
     t.string "name", null: false
     t.string "ein_number", null: false
@@ -379,6 +403,19 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_15_194445) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_phone_numbers_on_location_id"
+  end
+
+  create_table "quiz_submissions", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "session_id", null: false
+    t.jsonb "answers", default: {}
+    t.string "user_type", null: false
+    t.vector "embedding", limit: 1024, null: false
+    t.text "text_snapshot", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_quiz_submissions_on_session_id"
+    t.index ["user_id"], name: "index_quiz_submissions_on_user_id"
   end
 
   create_table "services", force: :cascade do |t|
@@ -468,7 +505,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_15_194445) do
   add_foreign_key "organization_beneficiaries", "organizations"
   add_foreign_key "organization_causes", "causes"
   add_foreign_key "organization_causes", "organizations"
+  add_foreign_key "organization_embeddings", "organizations"
+  add_foreign_key "organization_matches", "organizations"
+  add_foreign_key "organization_matches", "quiz_submissions"
   add_foreign_key "phone_numbers", "locations"
+  add_foreign_key "quiz_submissions", "users"
   add_foreign_key "services", "causes"
   add_foreign_key "social_medias", "organizations"
   add_foreign_key "tags", "organizations"

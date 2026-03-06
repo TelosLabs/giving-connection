@@ -97,6 +97,12 @@ Rails.application.routes.draw do
   resource :infowindow, only: :new
   resources :autocomplete, only: %i[index]
 
+  namespace :smart_match do
+    root to: "landing#show"
+    resource :quiz, only: [:show, :update]
+    resources :results, only: [:index]
+  end
+
   root to: "home#index"
 
   # Custom routes for city-based search

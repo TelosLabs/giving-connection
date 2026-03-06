@@ -1,0 +1,41 @@
+<article class="overflow-hidden bg-white rounded-lg shadow-md">
+  <%# Cover image with match badge %>
+  <div class="relative bg-gradient-to-br h-48 from-blue-dark to-blue-medium">
+    <% if logo_url %>
+      <%= image_tag logo_url, alt: organization.name, class: "object-cover w-full h-full" %>
+    <% end %>
+    <% if match_badge_text %>
+      <span class="absolute top-3 right-3 px-3 py-1 text-xs font-bold rounded-full <%= match_badge_class %>">
+        <%= match_badge_text %>
+      </span>
+    <% end %>
+  </div>
+
+  <%# Card body %>
+  <div class="p-5">
+    <h3 class="text-lg font-bold text-gray-2"><%= organization.name %></h3>
+    <% if location_display %>
+      <p class="mt-1 text-sm text-gray-4"><%= location_display %></p>
+    <% end %>
+
+    <%# CTA button %>
+    <% if cta_url %>
+      <%= link_to cta_text, cta_url,
+            class: "block mt-4 py-3 text-center text-white font-bold uppercase rounded-md bg-salmon hover:bg-salmon-medium transition-colors" %>
+    <% end %>
+
+    <%# Causes grid %>
+    <% if top_causes.any? %>
+      <div class="mt-4">
+        <p class="mb-2 text-xs font-bold tracking-wider text-gray-4 uppercase">Causes</p>
+        <div class="grid grid-cols-2 gap-2">
+          <% top_causes.each do |cause| %>
+            <div class="flex items-center gap-2 p-2 text-xs rounded bg-seafoam bg-opacity-30">
+              <span class="text-blue-dark"><%= cause %></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</article>

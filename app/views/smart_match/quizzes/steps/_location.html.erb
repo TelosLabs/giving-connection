@@ -1,0 +1,40 @@
+<%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
+             data: { smart_match_quiz_target: "form" } do |f| %>
+  <div class="max-w-md mt-4 space-y-5">
+    <div>
+      <%= f.label :state, "State", class: "block mb-1 text-sm font-semibold text-gray-2" %>
+      <%= f.select :state,
+            options_for_select(
+              [["New Jersey", "NJ"], ["California", "CA"], ["Tennessee", "TN"]],
+              session[:smart_match_state]
+            ),
+            { include_blank: "Select a state" },
+            class: "w-full px-4 py-3 text-gray-2 border border-gray-5 rounded-md focus:border-blue-medium focus:ring-1 focus:ring-blue-medium focus:outline-none" %>
+    </div>
+
+    <div>
+      <%= f.label :city, "City", class: "block mb-1 text-sm font-semibold text-gray-2" %>
+      <%= f.text_field :city,
+            value: session[:smart_match_city],
+            placeholder: "Enter your city",
+            class: "w-full px-4 py-3 text-gray-2 border border-gray-5 rounded-md focus:border-blue-medium focus:ring-1 focus:ring-blue-medium focus:outline-none" %>
+    </div>
+
+    <div>
+      <%= f.label :travel_bucket, "How far are you willing to travel?",
+            class: "block mb-1 text-sm font-semibold text-gray-2" %>
+      <%= f.select :travel_bucket,
+            options_for_select(
+              [
+                ["Close to me (5 miles)", "nearby"],
+                ["Within a short drive (15 miles)", "moderate"],
+                ["I'll travel for the right org (30 miles)", "far"],
+                ["Anywhere in my state", "statewide"]
+              ],
+              session[:smart_match_travel_bucket]
+            ),
+            { include_blank: "Select distance" },
+            class: "w-full px-4 py-3 text-gray-2 border border-gray-5 rounded-md focus:border-blue-medium focus:ring-1 focus:ring-blue-medium focus:outline-none" %>
+    </div>
+  </div>
+<% end %>
