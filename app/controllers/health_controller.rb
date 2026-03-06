@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-class HealthController < ActionController::Base
+# Inherits from ActionController::Base intentionally to bypass
+# Devise authentication and Pundit authorization for health checks.
+class HealthController < ActionController::Base # rubocop:disable Rails/ApplicationController
   def show
     ActiveRecord::Base.connection.execute("SELECT 1")
     render plain: "OK", status: :ok
