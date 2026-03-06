@@ -6,11 +6,14 @@ class Rack::Attack
   CACHE_PREFIX = "rack::attack".freeze
 
   # Use Redis as our cache backend
-  Rack::Attack.cache.store = Redis.new(
-    url: ENV.fetch("REDISCLOUD_URL", "redis://localhost:6379/1"),
+  rack_attack_redis_url = ENV["REDIS_URL"] || ENV["REDISCLOUD_URL"] || "redis://localhost:6379/1"
+  rack_attack_redis_options = {
+    url: rack_attack_redis_url,
     reconnect_attempts: 1,
     timeout: 1
-  )
+  }
+  rack_attack_redis_options[:ssl_params] = {verify_mode: OpenSSL::SSL::VERIFY_NONE} if rack_attack_redis_url.start_with?("rediss://")
+  Rack::Attack.cache.store = Redis.new(**rack_attack_redis_options)
 
   # Development-specific settings for easier testing
   THROTTLE_PERIODS = if Rails.env.development?
@@ -193,10 +196,18 @@ class Rack::Attack
   #    ['']] # body
   # end
 
+  # Safelist health check endpoint from throttling
+  safelist("health-check") do |req|
+    req.path == "/up"
+  end
+
   # Clean up expired keys periodically (runs async in Redis)
-  if defined?(Rails.cache) && Rails.cache.respond_to?(:redis)
-    Rails.cache.redis.with do |redis|
-      redis.expire(CACHE_PREFIX, 24.hours.to_i)
+  # Skip during Docker builds (e.g., assets:precompile) where Redis isn't available
+  unless ENV["SECRET_KEY_BASE"] == "placeholder_for_build"
+    if defined?(Rails.cache) && Rails.cache.respond_to?(:redis)
+      Rails.cache.redis.with do |redis|
+        redis.expire(CACHE_PREFIX, 24.hours.to_i)
+      end
     end
   end
 end
