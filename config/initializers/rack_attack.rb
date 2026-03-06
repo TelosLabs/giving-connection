@@ -196,9 +196,14 @@ class Rack::Attack
   #    ['']] # body
   # end
 
+  # Safelist health check endpoint from throttling
+  safelist("health-check") do |req|
+    req.path == "/up"
+  end
+
   # Clean up expired keys periodically (runs async in Redis)
-  # Skip during rake tasks (e.g., assets:precompile) where Redis isn't available
-  unless defined?(Rake)
+  # Skip during Docker builds (e.g., assets:precompile) where Redis isn't available
+  unless ENV["SECRET_KEY_BASE"] == "placeholder_for_build"
     if defined?(Rails.cache) && Rails.cache.respond_to?(:redis)
       Rails.cache.redis.with do |redis|
         redis.expire(CACHE_PREFIX, 24.hours.to_i)

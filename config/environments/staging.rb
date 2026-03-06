@@ -130,5 +130,5 @@ Rails.application.configure do
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = {host: Rails.application.credentials.dig(Rails.env.to_sym, :host)}
-  config.action_mailer.asset_host = {host: Rails.application.credentials.dig(Rails.env.to_sym, :host)}
+  config.action_mailer.asset_host = Rails.application.credentials.dig(Rails.env.to_sym, :host)
 end

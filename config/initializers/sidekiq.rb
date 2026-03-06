@@ -8,13 +8,16 @@ end
 
 REDIS_SSL_PARAMS = REDIS_URL&.start_with?("rediss://") ? {verify_mode: OpenSSL::SSL::VERIFY_NONE} : nil
 
-redis_config = {url: REDIS_URL}
-redis_config[:ssl_params] = REDIS_SSL_PARAMS if REDIS_SSL_PARAMS
+def sidekiq_redis_config
+  config = {url: REDIS_URL}
+  config[:ssl_params] = REDIS_SSL_PARAMS if REDIS_SSL_PARAMS
+  config
+end
 
 Sidekiq.configure_server do |config|
-  config.redis = redis_config
+  config.redis = sidekiq_redis_config
 end
 
 Sidekiq.configure_client do |config|
-  config.redis = redis_config
+  config.redis = sidekiq_redis_config
 end
