@@ -12,7 +12,6 @@ class Rack::Attack
     reconnect_attempts: 1,
     timeout: 1
   }
-  rack_attack_redis_options[:ssl_params] = {verify_mode: OpenSSL::SSL::VERIFY_NONE} if rack_attack_redis_url.start_with?("rediss://")
   Rack::Attack.cache.store = Redis.new(**rack_attack_redis_options)
 
   # Development-specific settings for easier testing
