@@ -2,7 +2,7 @@
 
 class ApplicationMailer < ActionMailer::Base
   before_action :attach_logos
-  default from: Rails.application.credentials.dig(:mailer, :from)
+  default from: Rails.application.credentials.dig(:mailer, :from) || "no-reply@givingconnection.test"
   layout "mailer"
 
   private
