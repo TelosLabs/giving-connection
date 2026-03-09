@@ -1,0 +1,60 @@
+# Git
+.git
+.gitignore
+
+# Docker
+.dockerdev
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# CI/CD
+.github
+.gitlab-ci.yml
+
+# Dependencies (rebuilt in container)
+node_modules
+vendor/bundle
+
+# Logs and temp files
+log/*
+tmp/*
+!tmp/.keep
+!log/.keep
+
+# Storage (use object storage in production)
+storage/*
+!storage/.keep
+
+# Test / dev files
+spec
+test
+coverage
+
+# IDE / editor
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files and secrets
+.env*
+!.env.example
+config/master.key
+.kamal/secrets
+
+# Documentation
+*.md
+!README.md
+
+# Dev tooling
+.rubocop*
+.rspec
+.brakeman*
+.byebug_history
+Procfile.dev
