@@ -162,6 +162,15 @@
   }
 }
 
+// Contextual hint banner — shown when any card in the form is selected
+.sm-selection-hint {
+  display: none;
+}
+
+form:has(input:checked) .sm-selection-hint {
+  display: block;
+}
+
 // ---------------------------------------------------------------------------
 // Category accordion ("more options")
 // ---------------------------------------------------------------------------
