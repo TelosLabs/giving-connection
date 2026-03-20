@@ -100,7 +100,7 @@
   <div class="flex-1 overflow-y-auto">
 
     <%# Top bar: section label + close button %>
-    <div class="w-3/4 mx-auto pt-8 mb-4">
+    <div class="px-4 sm:w-3/4 sm:mx-auto sm:px-0 pt-8 mb-4">
     <div class="flex items-center justify-between">
       <div>
         <span class="text-xl text-blue-dark">Section <%= section_number %>: </span>
@@ -118,17 +118,17 @@
     </div>
 
     <%# Segmented progress bar — same horizontal reach as footer buttons %>
-    <div class="w-3/4 mx-auto">
+    <div class="px-4 sm:w-3/4 sm:mx-auto sm:px-0">
       <%= render "smart_match/quizzes/progress_bar", step: @step, total_steps: @total_steps, section_map: section_map, current_section_number: section_number %>
     </div>
 
-    <div class="w-[56.25%] mx-auto py-8">
+    <div class="px-4 sm:w-[56.25%] sm:mx-auto sm:px-0 py-8">
 
       <%# Step title %>
-      <div class="mt-8 mb-2 text-center">
-        <h1 class="text-4xl font-bold text-gray-2"><%= step_title %></h1>
+      <div class="mt-4 sm:mt-8 mb-2 text-center">
+        <h1 class="text-2xl sm:text-4xl font-bold text-gray-2"><%= step_title %></h1>
         <% if step_subtitle %>
-          <p class="mt-1 text-base text-gray-4"><%= step_subtitle %></p>
+          <p class="mt-1 text-sm sm:text-base text-gray-4"><%= step_subtitle %></p>
         <% end %>
       </div>
 
