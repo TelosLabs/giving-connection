@@ -1,0 +1,56 @@
+<%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
+             data: { smart_match_quiz_target: "form" } do |f| %>
+  <div class="grid grid-cols-2 gap-4 mt-4 sm:grid-cols-3" data-card-group="donation_style">
+
+    <%# General donation %>
+    <label class="sm-card-option bg-red-400"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="donation_style[]" value="general_donation"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-white text-center">General donation</span>
+      <%= image_tag "smart_match/donate.svg", class: "w-20 h-20 mt-2", alt: "General donation", "aria-hidden": "true" %>
+    </label>
+
+    <%# Support a specific project %>
+    <label class="sm-card-option bg-red-400"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="donation_style[]" value="specific_project"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-white text-center">Support a specific project</span>
+      <%= image_tag "smart_match/goal.svg", class: "w-20 h-20 mt-2", alt: "Support a specific project", "aria-hidden": "true" %>
+    </label>
+
+    <%# Donate goods or items %>
+    <label class="sm-card-option bg-red-400"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="donation_style[]" value="goods_items"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-white text-center">Donate goods or items</span>
+      <%= image_tag "smart_match/groceries.svg", class: "w-20 h-20 mt-2", alt: "Donate goods or items", "aria-hidden": "true" %>
+    </label>
+
+    <%# Set up recurring giving %>
+    <label class="sm-card-option bg-red-400"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="donation_style[]" value="recurring_giving"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-white text-center">Set up recurring giving</span>
+      <%= image_tag "smart_match/monthly.svg", class: "w-20 h-20 mt-2", alt: "Set up recurring giving", "aria-hidden": "true" %>
+    </label>
+
+    <%# Just exploring for now %>
+    <label class="sm-card-option bg-red-400"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="donation_style[]" value="just_exploring"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-white text-center">Just exploring for now</span>
+      <%= inline_svg_tag "smart_match/map.svg", class: "w-20 h-20 mt-2 text-white", alt: "Just exploring for now", "aria-hidden": "true" %>
+    </label>
+
+  </div>
+<% end %>

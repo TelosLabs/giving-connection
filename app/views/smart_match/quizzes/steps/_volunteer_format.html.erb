@@ -1,0 +1,36 @@
+<%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
+             data: { smart_match_quiz_target: "form" } do |f| %>
+  <div class="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-3" data-card-group="volunteer_format">
+
+    <%# Only in-person %>
+    <label class="sm-card-option bg-white"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="single">
+      <input type="radio" name="volunteer_format" value="in_person"
+             class="sr-only" data-smart-match-quiz-target="radio" />
+      <span class="text-base font-bold text-gray-2 text-center">Only in-person</span>
+      <%= image_tag "smart_match/walk.svg", class: "w-20 h-20 mt-2", alt: "", "aria-hidden": "true" %>
+    </label>
+
+    <%# Only remote %>
+    <label class="sm-card-option bg-white"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="single">
+      <input type="radio" name="volunteer_format" value="remote"
+             class="sr-only" data-smart-match-quiz-target="radio" />
+      <span class="text-base font-bold text-gray-2 text-center">Only remote</span>
+      <%= inline_svg_tag "smart_match/computer.svg", class: "w-20 h-20 mt-2 text-blue-dark", alt: "", "aria-hidden": "true" %>
+    </label>
+
+    <%# Both %>
+    <label class="sm-card-option bg-white"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="single">
+      <input type="radio" name="volunteer_format" value="both"
+             class="sr-only" data-smart-match-quiz-target="radio" />
+      <span class="text-base font-bold text-gray-2 text-center">Both</span>
+      <%= inline_svg_tag "smart_match/justice.svg", class: "w-20 h-20 mt-2 text-blue-dark", alt: "", "aria-hidden": "true" %>
+    </label>
+
+  </div>
+<% end %>

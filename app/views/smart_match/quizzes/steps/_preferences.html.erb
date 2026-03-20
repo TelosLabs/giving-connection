@@ -1,29 +1,66 @@
 <%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
              data: { smart_match_quiz_target: "form" } do |f| %>
-  <div class="max-w-md mt-4 space-y-5">
-    <div>
-      <p class="mb-3 text-sm font-semibold text-gray-2">What matters most to you?</p>
-      <div class="space-y-3" data-card-group="prefs">
-        <% [
-          ["wheelchair_accessible", "Wheelchair accessible locations"],
-          ["spanish_speaking", "Spanish-speaking staff"],
-          ["evening_hours", "Evening or weekend hours"],
-          ["free_services", "Free services only"],
-          ["telehealth", "Telehealth / remote options"]
-        ].each do |value, label| %>
-          <label class="flex items-center gap-3 p-3 border-2 rounded-lg cursor-pointer border-gray-6 transition-colors pill-label hover:border-blue-medium"
-                 data-action="click->smart-match-quiz#toggleCause">
-            <%= f.check_box "prefs[]", { multiple: true, checked: false, class: "sr-only pill",
-                  data: { smart_match_quiz_target: "causeCheckbox" } }, value, nil %>
-            <div class="flex items-center justify-center flex-shrink-0 w-5 h-5 border-2 rounded border-gray-5">
-              <svg class="hidden w-3 h-3 text-blue-medium check-icon" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-              </svg>
-            </div>
-            <span class="text-sm text-gray-2"><%= label %></span>
-          </label>
-        <% end %>
-      </div>
-    </div>
+  <div class="grid grid-cols-2 gap-4 mt-4 sm:grid-cols-3" data-card-group="prefs">
+
+    <%# Free or sliding-scale %>
+    <label class="sm-card-option"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="prefs[]" value="free_sliding_scale"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center">Free or sliding-scale services</span>
+      <%= image_tag "smart_match/free.svg", class: "w-20 h-20 mt-2", alt: "Free or sliding-scale services", "aria-hidden": "true" %>
+    </label>
+
+    <%# No ID required %>
+    <label class="sm-card-option"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="prefs[]" value="no_id_required"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center">No ID or documentation required</span>
+      <%= image_tag "smart_match/no_id.svg", class: "w-20 h-20 mt-2", alt: "ID card with a line through it", "aria-hidden": "true" %>
+    </label>
+
+    <%# Spanish or another language %>
+    <label class="sm-card-option"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="prefs[]" value="multilingual"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center">Spanish or another language available</span>
+      <%= inline_svg_tag "smart_match/languages.svg", class: "w-20 h-20 mt-2 text-blue-dark", alt: "Language", "aria-hidden": "true" %>
+    </label>
+
+    <%# LGBTQIA+ affirming %>
+    <label class="sm-card-option"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="prefs[]" value="lgbtqia_affirming"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center">LGBTQIA+ affirming services</span>
+      <%= image_tag "smart_match/rainbow_pride.svg", class: "w-20 h-20 mt-2", alt: "LGBTQIA+", "aria-hidden": "true" %>
+    </label>
+
+    <%# Wheelchair accessible %>
+    <label class="sm-card-option"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="prefs[]" value="wheelchair_accessible"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center">Wheelchair accessible locations</span>
+      <%= image_tag "smart_match/disability2.svg", class: "w-20 h-20 mt-2", alt: "Wheelchair accessibility", "aria-hidden": "true" %>
+    </label>
+
+    <%# Women- or BIPOC-led %>
+    <label class="sm-card-option"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="prefs[]" value="women_bipoc_led"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center">Women- or BIPOC-led organizations</span>
+      <%= image_tag "smart_match/women.svg", class: "w-20 h-20 mt-2", alt: "Diverse leadership", "aria-hidden": "true" %>
+    </label>
+
   </div>
 <% end %>

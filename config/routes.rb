@@ -99,7 +99,8 @@ Rails.application.routes.draw do
 
   namespace :smart_match do
     root to: "landing#show"
-    resource :quiz, only: [:show, :update]
+    resource :quiz, only: [:show, :update, :destroy]
+    resource :confirmation, only: [:show]
     resources :results, only: [:index]
   end
 

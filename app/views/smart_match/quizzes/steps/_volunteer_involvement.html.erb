@@ -1,0 +1,46 @@
+<%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
+             data: { smart_match_quiz_target: "form" } do |f| %>
+  <div class="grid grid-cols-2 gap-4 mt-4 sm:grid-cols-4" data-card-group="volunteer_involvement">
+
+    <%# Volunteer my time %>
+    <label class="sm-card-option bg-blue-medium"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="volunteer_involvement[]" value="volunteer_time"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-white text-center">Volunteer my time</span>
+      <%= inline_svg_tag "smart_match/time.svg", class: "w-20 h-20 mt-2" %>
+    </label>
+
+    <%# Attend an event %>
+    <label class="sm-card-option bg-blue-medium"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="volunteer_involvement[]" value="attend_event"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-white text-center">Attend an event</span>
+      <%= inline_svg_tag "smart_match/calendar.svg", class: "w-20 h-20 mt-2 text-white" %>
+    </label>
+
+    <%# Partner as a business %>
+    <label class="sm-card-option bg-blue-medium"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="volunteer_involvement[]" value="business_partner"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-white text-center">Partner as a business</span>
+      <%= inline_svg_tag "smart_match/hands.svg", class: "w-20 h-20 mt-2 text-white" %>
+    </label>
+
+    <%# Not sure yet / just exploring %>
+    <label class="sm-card-option bg-blue-medium"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="volunteer_involvement[]" value="just_exploring"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-white text-center">Not sure yet / just exploring</span>
+      <%= inline_svg_tag "smart_match/map.svg", class: "w-20 h-20 mt-2 text-white" %>
+    </label>
+
+  </div>
+<% end %>

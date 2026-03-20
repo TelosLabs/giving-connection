@@ -1,0 +1,39 @@
+<%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
+             data: { smart_match_quiz_target: "form" } do |f| %>
+  <div class="grid gap-4 mt-4 sm:grid-cols-3" data-card-group="city-selection">
+
+    <%# Atlantic City %>
+    <label class="sm-card-option bg-blue-medium"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="single">
+      <%= f.radio_button :city_selection, "Atlantic City",
+            class: "sr-only",
+            data: { smart_match_quiz_target: "radio" } %>
+      <span class="text-base font-bold text-white">Atlantic City</span>
+      <%= image_tag "smart_match/atlantic_city.svg", class: "w-24 h-24 mt-2", alt: "Atlantic City", "aria-hidden": "true" %>
+    </label>
+
+    <%# California %>
+    <label class="sm-card-option bg-blue-medium"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="single">
+      <%= f.radio_button :city_selection, "California",
+            class: "sr-only",
+            data: { smart_match_quiz_target: "radio" } %>
+      <span class="text-base font-bold text-white">California</span>
+      <%= image_tag "smart_match/california.svg", class: "w-24 h-24 mt-2", alt: "California", "aria-hidden": "true" %>
+    </label>
+
+    <%# Nashville %>
+    <label class="sm-card-option bg-blue-medium"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="single">
+      <%= f.radio_button :city_selection, "Nashville",
+            class: "sr-only",
+            data: { smart_match_quiz_target: "radio" } %>
+      <span class="text-base font-bold text-white">Nashville</span>
+      <%= image_tag "smart_match/nashville.svg", class: "w-24 h-24 mt-2", alt: "Nashville", "aria-hidden": "true" %>
+    </label>
+
+  </div>
+<% end %>

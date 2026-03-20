@@ -1,0 +1,76 @@
+<%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
+             data: { smart_match_quiz_target: "form" } do |f| %>
+  <div class="grid grid-cols-2 gap-4 mt-4 sm:grid-cols-3" data-card-group="giving_inspiration">
+
+    <%# Supporting my local community %>
+    <label class="sm-card-option bg-white"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="giving_inspiration[]" value="local_community"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center">Supporting my local community</span>
+      <%= inline_svg_tag "smart_match/community.svg", class: "w-20 h-20 mt-2 text-blue-dark", alt: "", "aria-hidden": "true" %>
+    </label>
+
+    <%# A cause that's personal or close to my heart %>
+    <label class="sm-card-option bg-white"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="giving_inspiration[]" value="personal_cause"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center">A cause that's personal or close to my heart</span>
+      <%= inline_svg_tag "smart_match/user.svg", class: "w-20 h-20 mt-2 text-blue-dark", alt: "", "aria-hidden": "true" %>
+    </label>
+
+    <%# Helping underserved or overlooked communities %>
+    <label class="sm-card-option bg-white"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="giving_inspiration[]" value="underserved_communities"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center">Helping underserved or overlooked communities</span>
+      <%= inline_svg_tag "smart_match/categories/care.svg", class: "w-20 h-20 mt-2 text-blue-dark", alt: "", "aria-hidden": "true" %>
+    </label>
+
+    <%# Giving in honor or in memory of someone %>
+    <label class="sm-card-option bg-white"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="giving_inspiration[]" value="honor_memory"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center">Giving in honor or in memory of someone</span>
+      <%= image_tag "causes_categories/mental_health.svg", class: "w-20 h-20 mt-2", alt: "", "aria-hidden": "true" %>
+    </label>
+
+    <%# Making sure my donation has real impact %>
+    <label class="sm-card-option bg-white"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="giving_inspiration[]" value="real_impact"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center">Making sure my donation has real impact</span>
+      <%= image_tag "causes_categories/financial_assistance.svg", class: "w-20 h-20 mt-2", alt: "", "aria-hidden": "true" %>
+    </label>
+
+    <%# Discovering meaningful ways to give %>
+    <label class="sm-card-option bg-white"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="giving_inspiration[]" value="discovering_ways"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center">Discovering meaningful ways to give</span>
+      <%= inline_svg_tag "smart_match/map.svg", class: "w-20 h-20 mt-2 text-blue-dark", alt: "", "aria-hidden": "true" %>
+    </label>
+
+    <%# Giving in alignment with my values %>
+    <label class="sm-card-option bg-white"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="giving_inspiration[]" value="values_aligned"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center">Giving in alignment with my values</span>
+      <%= inline_svg_tag "smart_match/family.svg", class: "w-20 h-20 mt-2 text-blue-dark", alt: "", "aria-hidden": "true" %>
+    </label>
+
+  </div>
+<% end %>

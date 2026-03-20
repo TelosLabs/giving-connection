@@ -1,0 +1,50 @@
+<%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
+             data: { smart_match_quiz_target: "form" } do |f| %>
+  <div class="grid grid-cols-2 gap-4 mt-4 sm:grid-cols-4" data-card-group="travel">
+
+    <%# Walking distance %>
+    <label class="sm-card-option bg-white"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="single">
+      <%= f.radio_button :travel_bucket, "walking",
+            class: "sr-only",
+            data: { smart_match_quiz_target: "radio" } %>
+      <span class="text-base font-bold text-gray-2 text-center">Walking distance only (under 5 miles)</span>
+      <%= image_tag "smart_match/person.svg", class: "w-20 h-20 mt-2", alt: "walking", "aria-hidden": "true" %>
+    </label>
+
+    <%# Public transit %>
+    <label class="sm-card-option bg-white"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="single">
+      <%= f.radio_button :travel_bucket, "transit",
+            class: "sr-only",
+            data: { smart_match_quiz_target: "radio" } %>
+      <span class="text-base font-bold text-gray-2 text-center">Public transit or rides (5–10 miles)</span>
+      <%= image_tag "smart_match/bus.svg", class: "w-20 h-20 mt-2", alt: "Bus", "aria-hidden": "true" %>
+    </label>
+
+    <%# Car or ride share %>
+    <label class="sm-card-option bg-white"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="single">
+      <%= f.radio_button :travel_bucket, "car",
+            class: "sr-only",
+            data: { smart_match_quiz_target: "radio" } %>
+      <span class="text-base font-bold text-gray-2 text-center">Car or ride share available (10+ miles)</span>
+      <%= image_tag "smart_match/car.svg", class: "w-20 h-20 mt-2", alt: "Car", "aria-hidden": "true" %>
+    </label>
+
+    <%# Remote only %>
+    <label class="sm-card-option bg-white"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="single">
+      <%= f.radio_button :travel_bucket, "remote",
+            class: "sr-only",
+            data: { smart_match_quiz_target: "radio" } %>
+      <span class="text-base font-bold text-gray-2 text-center">Remote services only</span>
+      <%= image_tag "smart_match/building.svg", class: "w-20 h-20 mt-2", alt: "Remote", "aria-hidden": "true" %>
+    </label>
+
+  </div>
+<% end %>

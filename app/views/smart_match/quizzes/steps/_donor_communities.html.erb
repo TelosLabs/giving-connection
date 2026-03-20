@@ -1,0 +1,85 @@
+<%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
+             data: { smart_match_quiz_target: "form" } do |f| %>
+  <div class="grid grid-cols-2 gap-4 mt-4 sm:grid-cols-4" data-card-group="donor_communities">
+
+    <%# Seniors %>
+    <label class="sm-card-option bg-blue-dark"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="donor_communities[]" value="seniors"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center text-white">Seniors</span>
+      <%= inline_svg_tag "smart_match/senior.svg", class: "w-20 h-20 mt-2 text-white", alt: "", "aria-hidden": "true" %>
+    </label>
+
+    <%# Veteran & military %>
+    <label class="sm-card-option bg-blue-dark"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="donor_communities[]" value="veteran_military"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center text-white">Veteran & military</span>
+      <%= image_tag "smart_match/categories/medal.svg", class: "w-20 h-20 mt-2", alt: "", "aria-hidden": "true" %>
+    </label>
+
+    <%# Spanish-speaking communities %>
+    <label class="sm-card-option bg-blue-dark"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="donor_communities[]" value="spanish_speaking"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center text-white">Spanish-speaking communities</span>
+       <%= inline_svg_tag "smart_match/languages.svg", class: "w-20 h-20 mt-2 text-white", alt: "", "aria-hidden": "true" %>
+    </label>
+
+    <%# BIPOC communities %>
+    <label class="sm-card-option bg-blue-dark"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="donor_communities[]" value="bipoc"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center text-white">BIPOC communities</span>
+      <%= inline_svg_tag "smart_match/community.svg", class: "w-20 h-20 mt-2 text-white", alt: "", "aria-hidden": "true" %>
+    </label>
+
+    <%# People with disabilities %>
+    <label class="sm-card-option bg-blue-dark"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="donor_communities[]" value="disabilities"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center text-white">People with disabilities</span>
+      <%= inline_svg_tag "smart_match/categories/disability.svg", class: "w-20 h-20 mt-2 text-white", alt: "", "aria-hidden": "true" %>
+    </label>
+
+    <%# LGBTQIA+ community %>
+    <label class="sm-card-option bg-blue-dark"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="donor_communities[]" value="lgbtqia"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center text-white">LGBTQIA+ community</span>
+      <%= inline_svg_tag "smart_match/categories/pride.svg", class: "w-20 h-20 mt-2 text-white", alt: "", "aria-hidden": "true" %>
+    </label>
+
+    <%# Children & family %>
+    <label class="sm-card-option bg-blue-dark"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="donor_communities[]" value="children_family"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center text-white">Children & family</span>
+      <%= inline_svg_tag "smart_match/family.svg", class: "w-20 h-20 mt-2 text-white", alt: "", "aria-hidden": "true" %>
+    </label>
+
+    <%# No preference %>
+    <label class="sm-card-option bg-blue-dark"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="multiple">
+      <input type="checkbox" name="donor_communities[]" value="no_preference"
+             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
+      <span class="text-base font-bold text-gray-2 text-center text-white">No preference</span>
+    </label>
+
+  </div>
+<% end %>

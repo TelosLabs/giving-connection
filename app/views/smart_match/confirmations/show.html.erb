@@ -1,0 +1,37 @@
+<section class="flex flex-col items-center justify-center min-h-screen px-6 bg-white">
+  <div class="w-full max-w-xl text-center">
+
+    <%# Checkmark icon %>
+    <div class="flex items-center justify-center w-20 h-20 mx-auto mb-6 rounded-full bg-blue-light">
+      <svg class="w-10 h-10 text-blue-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+      </svg>
+    </div>
+
+    <h1 class="text-3xl font-bold text-gray-2">Ready to see your results?</h1>
+    <p class="mt-2 text-lg font-semibold text-blue-dark">You've completed Smart Match!</p>
+
+    <p class="mt-4 text-base text-gray-4">
+      Based on your responses, we're ready to show you nonprofit organizations
+      that align with your interests and preferences.
+    </p>
+
+    <div class="p-4 mt-6 text-sm text-left border rounded-lg border-gray-6 text-gray-4">
+      <p>
+        This is your chance to go back and review or update your answers.
+        Once you submit, you'll need to retake the questionnaire to make changes.
+      </p>
+    </div>
+
+    <div class="flex flex-col items-center gap-4 mt-8 sm:flex-row sm:justify-center">
+      <%= link_to "Go Back & Review",
+            smart_match_quiz_path,
+            class: "text-base font-semibold text-blue-dark hover:underline" %>
+
+      <%= link_to "FIND MY MATCHES",
+            smart_match_results_path,
+            class: "px-10 py-3 text-sm font-bold tracking-wider text-white uppercase rounded-md bg-blue-dark hover:bg-blue-medium transition-colors" %>
+    </div>
+
+  </div>
+</section>

@@ -3,25 +3,38 @@
   section_map = case @user_type
   when "service_seeker"
     {
-      1 => { number: 1, name: "About You", title: "I want to...", subtitle: "Single Choice" },
-      2 => { number: 2, name: "Your Location", title: "Where are you located?", subtitle: nil },
-      3 => { number: 2, name: "Type of Support", title: "What type of support are you looking for?", subtitle: "Multiple Choice" },
-      4 => { number: 3, name: "Preferences", title: "Tell us more about your preferences", subtitle: nil },
-      5 => { number: 4, name: "Personal Details", title: "Almost done!", subtitle: nil }
+      1 => { number: 1, name: "About You", title: "How can we support you today?", subtitle: "Single Choice" },
+      2 => { number: 1, name: "About You", title: "Who are you seeking support for?", subtitle: "Single Choice" },
+      3 => { number: 1, name: "About You", title: "How would you describe yourself?", subtitle: "Single Choice" },
+      4 => { number: 2, name: "Type of Support", title: "Which categories best fits your needs?", subtitle: "Multiple Choice" },
+      5 => { number: 2, name: "Type of Support", title: "What best describes your situation?", subtitle: "Single Choice" },
+      6 => { number: 3, name: "Location & Access", title: "Where should we look for support?", subtitle: "Single Choice" },
+      7 => { number: 3, name: "Location & Access", title: "What kind of travel is possible for you?", subtitle: "Single Choice" },
+      8 => { number: 4, name: "Preferences & Accessibility", title: "What should we keep in mind when matching you to services?", subtitle: "Multiple Choice" },
+      9 => { number: 4, name: "Preferences & Accessibility", title: "Personal Details", subtitle: nil }
     }
   when "volunteer"
     {
-      1 => { number: 1, name: "About You", title: "I want to...", subtitle: "Single Choice" },
-      2 => { number: 2, name: "Your Location", title: "Where are you located?", subtitle: nil },
-      3 => { number: 2, name: "Type of Support", title: "What causes would you like to support?", subtitle: "Multiple Choice" },
-      4 => { number: 3, name: "Preferences & Accessibility", title: "Tell us more about your preferences", subtitle: nil }
+      1 => { number: 1, name: "About You", title: "How can we support you today?", subtitle: "Single Choice" },
+      2 => { number: 1, name: "About You", title: "Which causes are close to your heart?", subtitle: "Multiple Choice" },
+      3 => { number: 2, name: "Your Volunteering Preferences", title: "How would you like to help?", subtitle: "Multiple Choice" },
+      4 => { number: 2, name: "Your Volunteering Preferences", title: "What type of volunteering are you looking for?", subtitle: "Multiple Choice" },
+      5 => { number: 3, name: "Your Availability & Location", title: "What format works best for you?", subtitle: "Single Choice" },
+      6 => { number: 3, name: "Where & How You Engage", title: "Which community would you like your giving to focus on?", subtitle: "Single Choice" },
+      7 => { number: 3, name: "Your Availability & Location", title: "How much time do you have to give?", subtitle: "Single Choice" },
+      8 => { number: 4, name: "Preferences & Accessibility", title: "Personal Details", subtitle: nil }
     }
   else # donor
     {
-      1 => { number: 1, name: "About You", title: "I want to...", subtitle: "Single Choice" },
-      2 => { number: 2, name: "Your Location", title: "Where are you located?", subtitle: nil },
-      3 => { number: 2, name: "Type of Support", title: "What causes would you like to support?", subtitle: "Multiple Choice" },
-      4 => { number: 3, name: "Preferences & Accessibility", title: "Tell us more about your preferences", subtitle: nil }
+      1 => { number: 1, name: "About You", title: "How can we support you today?", subtitle: "Single Choice" },
+      2 => { number: 1, name: "About You", title: "What causes are close to your heart?", subtitle: "Multiple Choice" },
+      3 => { number: 2, name: "Your Donation Preferences", title: "What is your preferred donation style?", subtitle: "Multiple Choice" },
+      4 => { number: 2, name: "Your Donation Preferences", title: "What inspires your giving today?", subtitle: "Multiple Choice" },
+      5 => { number: 2, name: "Your Donation Preferences", title: "Are there specific communities or populations you'd like your donation to support?", subtitle: "Multiple Choice" },
+      6 => { number: 3, name: "Where & How You Engage", title: "Where would you like your donation to make an impact?", subtitle: "Single Choice" },
+      7 => { number: 3, name: "Where & How You Engage", title: "Which community would you like your giving to focus on?", subtitle: "Single Choice" },
+      8 => { number: 3, name: "Where & How You Engage", title: "How would you like to be involved?", subtitle: "Single Choice" },
+      9 => { number: 4, name: "Preferences & Accessibility", title: "Personal Details", subtitle: nil }
     }
   end
 
@@ -33,18 +46,42 @@
 
   step_partial_map = {
     1 => "smart_match/quizzes/steps/user_type",
-    2 => "smart_match/quizzes/steps/location",
+    2 => {
+      "service_seeker" => "smart_match/quizzes/steps/support_for",
+      "volunteer" => "smart_match/quizzes/steps/causes",
+      "donor" => "smart_match/quizzes/steps/causes"
+    },
     3 => {
-      "service_seeker" => "smart_match/quizzes/service_seeker_path",
-      "volunteer" => "smart_match/quizzes/volunteer_path",
-      "donor" => "smart_match/quizzes/donor_path"
+      "service_seeker" => "smart_match/quizzes/steps/self_description",
+      "volunteer" => "smart_match/quizzes/steps/volunteer_involvement",
+      "donor" => "smart_match/quizzes/steps/donor_giving_style"
     },
     4 => {
+      "service_seeker" => "smart_match/quizzes/steps/causes",
+      "volunteer" => "smart_match/quizzes/steps/volunteer_type",
+      "donor" => "smart_match/quizzes/steps/donor_giving_inspiration"
+    },
+    5 => {
+      "service_seeker" => "smart_match/quizzes/steps/situation",
+      "volunteer" => "smart_match/quizzes/steps/volunteer_format",
+      "donor" => "smart_match/quizzes/steps/donor_communities"
+    },
+    6 => {
+      "service_seeker" => "smart_match/quizzes/steps/city_selection",
+      "volunteer" => "smart_match/quizzes/steps/city_selection",
+      "donor" => "smart_match/quizzes/steps/donor_impact_location"
+    },
+    7 => {
+      "service_seeker" => "smart_match/quizzes/steps/travel",
+      "volunteer" => "smart_match/quizzes/steps/volunteer_time",
+      "donor" => "smart_match/quizzes/steps/city_selection"
+    },
+    8 => {
       "service_seeker" => "smart_match/quizzes/steps/preferences",
       "volunteer" => "smart_match/quizzes/steps/final",
-      "donor" => "smart_match/quizzes/steps/final"
+      "donor" => "smart_match/quizzes/steps/donor_involvement"
     },
-    5 => "smart_match/quizzes/steps/final"
+    9 => "smart_match/quizzes/steps/final"
   }
 
   partial_entry = step_partial_map[@step]
@@ -63,10 +100,20 @@
   <div class="flex-1 overflow-y-auto">
     <div class="max-w-4xl px-6 py-8 mx-auto lg:px-36">
 
-      <%# Section label %>
-      <div class="mb-4">
-        <span class="text-xl text-blue-dark">Section <%= section_number %>: </span>
-        <span class="text-lg font-bold text-blue-dark"><%= section_name %></span>
+      <%# Top bar: section label + close button %>
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <span class="text-xl text-blue-dark">Section <%= section_number %>: </span>
+          <span class="text-lg font-bold text-blue-dark"><%= section_name %></span>
+        </div>
+        <%= button_to smart_match_quiz_path, method: :delete,
+              class: "p-1 text-gray-4 hover:text-gray-2 transition-colors",
+              title: "Reset quiz",
+              form: { data: { turbo_confirm: "Are you sure? This will reset your progress." } } do %>
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        <% end %>
       </div>
 
       <%# Segmented progress bar %>
@@ -81,7 +128,7 @@
       </div>
 
       <%# Step content %>
-      <turbo-frame id="quiz-step" class="block mt-6 sm-step-enter">
+      <turbo-frame id="quiz-step" class="block mt-6 sm-step-enter" target="_top">
         <%= render step_partial %>
       </turbo-frame>
     </div>

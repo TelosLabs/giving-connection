@@ -132,7 +132,7 @@ export default class extends Controller {
 
     const selects = this.element.querySelectorAll('select')
     if (selects.length > 0) {
-      return Array.from(selects).some(s => s.value !== '')
+      return true
     }
 
     const textareas = this.element.querySelectorAll('textarea')
