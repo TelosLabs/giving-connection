@@ -46,8 +46,8 @@ class SmartMatchCard::Component < ApplicationViewComponent
   end
 
   def logo_url
-    if organization.logo.attached?
-      Rails.application.routes.url_helpers.url_for(organization.logo)
-    end
+    return unless organization.logo.attached?
+
+    helpers.rails_blob_path(organization.logo, only_path: true)
   end
 end

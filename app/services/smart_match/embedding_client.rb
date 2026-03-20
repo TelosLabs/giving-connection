@@ -4,7 +4,7 @@ module SmartMatch
   class EmbeddingUnavailableError < StandardError; end
 
   class EmbeddingClient < ApplicationService
-    TIMEOUT = 5
+    TIMEOUT = 120
     MAX_RETRIES = 1
     BATCH_LIMIT = 64
 

@@ -83,8 +83,16 @@ module SmartMatch
       session[:smart_match_situation] = params[:situation]
     end
 
+    CITY_TO_STATE = {
+      "Atlantic City" => "NJ",
+      "Los Angeles"   => "CA",
+      "Nashville"     => "TN"
+    }.freeze
+
     def store_city_selection
-      session[:smart_match_city] = params[:city_selection]
+      city = params[:city_selection]
+      session[:smart_match_city]  = city
+      session[:smart_match_state] = CITY_TO_STATE[city] if CITY_TO_STATE.key?(city)
     end
 
     def store_donation_style

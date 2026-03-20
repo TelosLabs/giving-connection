@@ -8,8 +8,12 @@ module SmartMatch
 
     class << self
       def call(embedding:, state:, coordinates:, radius_miles: 5)
+        all_scope = global_scope
         base_scope = filtered_scope(state)
-        return state_wide_results(base_scope, embedding) if base_scope.none?
+
+        if base_scope.none?
+          return global_results(all_scope, embedding)
+        end
 
         radii = expansion_radii(radius_miles)
 
@@ -25,6 +29,21 @@ module SmartMatch
       end
 
       private
+
+      def global_scope
+        OrganizationEmbedding
+          .joins(organization: :locations)
+          .where(locations: {main: true})
+          .merge(Location.joins(:organization).where(organizations: {active: true}))
+          .distinct
+      end
+
+      def global_results(scope, embedding)
+        scope
+          .nearest_neighbors(:embedding, embedding, distance: "cosine")
+          .limit(matching_rules["scoring"]["max_results"])
+          .map { |oe| build_result(oe, nil) }
+      end
 
       def filtered_scope(state)
         OrganizationEmbedding

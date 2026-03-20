@@ -60,3 +60,9 @@ database_consistency*
 # Ignore backup dumps
 production_backup.dump
 staging_backup.dump
+
+# Python embedding service
+embedding-service/venv/
+embedding-service/__pycache__/
+embedding-service/*.pyc
+embedding-service/.env
