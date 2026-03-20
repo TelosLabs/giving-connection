@@ -2,6 +2,7 @@
   <% (1..4).each do |seg| %>
     <%
       section_steps = section_map.select { |_, v| v[:number] == seg }.keys.sort
+      is_current = seg == current_section_number
       fill_pct = if section_steps.empty? || seg > current_section_number
         0
       elsif seg < current_section_number
@@ -9,9 +10,16 @@
       else
         (section_steps.count { |s| s <= step }.to_f / section_steps.size * 100).round
       end
+      prev_fill_pct = if is_current
+        (section_steps.count { |s| s < step }.to_f / section_steps.size * 100).round
+      else
+        fill_pct
+      end
     %>
-    <div class="sm-wizard__progress-segment flex-1"
-         style="background: linear-gradient(to right, #113C7B <%= fill_pct %>%, #D3DCE6 <%= fill_pct %>%)">
+    <div class="sm-wizard__progress-segment flex-1">
+      <div class="sm-wizard__progress-fill"
+           style="--fill-pct: <%= fill_pct %>%; --prev-fill-pct: <%= prev_fill_pct %>%"
+           <%= "data-animate=true" if is_current %>></div>
     </div>
   <% end %>
 </div>

@@ -23,14 +23,24 @@
   border-radius: 9999px;
   background-color: #D3DCE6;
   flex: 1;
-  transition: background 300ms ease;
+  overflow: hidden;
+}
 
-  &--full {
-    background-color: #113C7B;
+.sm-wizard__progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  background-color: #113C7B;
+  width: var(--fill-pct, 0%);
+
+  &[data-animate] {
+    width: var(--prev-fill-pct, 0%);
+    transition: width 500ms ease;
   }
+}
 
-  &--half {
-    background: linear-gradient(to right, #113C7B 50%, #D3DCE6 50%);
+:root:has(#quiz-form :is(input[type="radio"]:checked, input[type="checkbox"]:checked)) {
+  .sm-wizard__progress-fill[data-animate] {
+    width: var(--fill-pct, 0%);
   }
 }
 
