@@ -117,7 +117,7 @@
       </div>
 
       <%# Segmented progress bar %>
-      <%= render "smart_match/quizzes/progress_bar", step: @step, total_steps: @total_steps %>
+      <%= render "smart_match/quizzes/progress_bar", step: @step, total_steps: @total_steps, section_map: section_map, current_section_number: section_number %>
 
       <%# Step title %>
       <div class="mt-8 mb-2">

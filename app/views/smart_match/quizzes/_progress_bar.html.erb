@@ -1,26 +1,17 @@
-<%
-  # 4 segments for all quiz flows
-  total_segments = 4
-
-  # Map current step to segment fill state
-  # For 5-step flows: steps 1-2 fill segment 1, step 3 fills segment 2, etc.
-  # For 4-step flows: each step fills one segment
-  progress_ratio = step.to_f / total_steps
-  filled_segments = (progress_ratio * total_segments).floor
-  has_half = (progress_ratio * total_segments) % 1 >= 0.25
-%>
-
 <div class="flex gap-2" role="progressbar" aria-valuenow="<%= step %>" aria-valuemin="1" aria-valuemax="<%= total_steps %>">
-  <% total_segments.times do |i| %>
+  <% (1..4).each do |seg| %>
     <%
-      segment_class = if i < filled_segments
-        "sm-wizard__progress-segment sm-wizard__progress-segment--full"
-      elsif i == filled_segments && has_half
-        "sm-wizard__progress-segment sm-wizard__progress-segment--half"
+      section_steps = section_map.select { |_, v| v[:number] == seg }.keys.sort
+      fill_pct = if section_steps.empty? || seg > current_section_number
+        0
+      elsif seg < current_section_number
+        100
       else
-        "sm-wizard__progress-segment"
+        (section_steps.count { |s| s <= step }.to_f / section_steps.size * 100).round
       end
     %>
-    <div class="<%= segment_class %> flex-1"></div>
+    <div class="sm-wizard__progress-segment flex-1"
+         style="background: linear-gradient(to right, #113C7B <%= fill_pct %>%, #D3DCE6 <%= fill_pct %>%)">
+    </div>
   <% end %>
 </div>
