@@ -48,6 +48,24 @@
 }
 
 // ---------------------------------------------------------------------------
+// Card grid — flex so incomplete last rows are centered
+// ---------------------------------------------------------------------------
+[data-card-group] {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+[data-card-cols="2"] > label   { flex: 0 0 calc(50%      - 0.5rem);  }
+[data-card-cols="3"] > label   { flex: 0 0 calc(33.333%  - 0.667rem); }
+[data-card-cols="4"] > label   {
+  flex: 0 0 calc(25% - 0.75rem);
+  @media (max-width: 639px) { flex: 0 0 calc(50% - 0.5rem); }
+}
+
+// ---------------------------------------------------------------------------
 // Selectable icon card (desktop grid)
 // ---------------------------------------------------------------------------
 .sm-card-option {
@@ -105,15 +123,6 @@
 
     &:hover { background-color: #113C7B; border-color: #113C7B; }
     &.selected, &:has(input:checked) { background-color: #113C7B; }
-  }
-
-  // Blue-dark / navy bg, white text — hover: deeper navy
-  &--navy {
-    background-color: #113C7B;
-    color: #ffffff;
-
-    &:hover { background-color: #0a2b59; border-color: #0a2b59; }
-    &.selected, &:has(input:checked) { background-color: #0a2b59; }
   }
 
   // Red bg, white text — hover: red-500

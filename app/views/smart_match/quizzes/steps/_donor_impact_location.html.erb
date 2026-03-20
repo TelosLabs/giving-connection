@@ -1,6 +1,6 @@
 <%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
              data: { smart_match_quiz_target: "form" } do |f| %>
-  <div class="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-3" data-card-group="impact_location">
+  <div data-card-group="impact_location" data-card-cols="3">
 
     <%# Somewhere near me %>
     <label class="sm-card-option sm-card-option--red"

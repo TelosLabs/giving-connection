@@ -1,6 +1,6 @@
 <%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
              data: { smart_match_quiz_target: "form" } do |f| %>
-  <div class="grid grid-cols-2 gap-4 mt-4 sm:grid-cols-3" data-card-group="prefs">
+  <div data-card-group="prefs" data-card-cols="3">
 
     <%# Free or sliding-scale %>
     <label class="sm-card-option"

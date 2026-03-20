@@ -1,11 +1,11 @@
 <%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
              data: { smart_match_quiz_target: "form" } do |f| %>
-  <p class="mb-6 text-sm text-gray-4">
+  <p class="mb-6 text-sm text-center text-gray-4">
     Sharing this information is optional and only helps us improve the relevance of certain results.
     You may choose "Prefer not to say" in any question.
   </p>
 
-  <div class="max-w-md space-y-6">
+  <div class="max-w-md mx-auto space-y-6">
 
     <div>
       <%= f.label :age_range, "Age Range", class: "block mb-1 text-sm font-semibold text-gray-2" %>

@@ -45,7 +45,7 @@
               data: { smart_match_quiz_target: "form" } do |f| %>
 
   <%# Primary causes grid %>
-  <div class="grid grid-cols-2 gap-4 mt-4 sm:grid-cols-4" data-card-group="causes">
+  <div data-card-group="causes" data-card-cols="4">
     <% causes.each do |cause_name, icon_file| %>
       <label class="sm-card-option <%= 'selected' if selected_causes.include?(cause_name) %>"
              data-action="click->smart-match-quiz#selectCard"
@@ -83,7 +83,7 @@
     </button>
 
     <div class="sm-category-accordion" data-smart-match-quiz-target="accordionContent">
-      <div class="grid grid-cols-2 gap-4 pt-4 sm:grid-cols-4" data-card-group="more-causes">
+      <div data-card-group="more-causes" data-card-cols="4">
         <% more_causes.each do |cause_name, icon_file| %>
           <label class="sm-card-option <%= 'selected' if selected_causes.include?(cause_name) %>"
                  data-action="click->smart-match-quiz#selectCard"
