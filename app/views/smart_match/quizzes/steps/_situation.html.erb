@@ -3,36 +3,36 @@
   <div class="grid gap-4 mt-4 sm:grid-cols-3" data-card-group="situation">
 
     <%# Urgent %>
-    <label class="sm-card-option bg-red-400"
+    <label class="sm-card-option sm-card-option--red"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :situation, "urgent",
             class: "sr-only",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold text-white">I need services urgently</span>
-      <%= image_tag "smart_match/alert.svg", class: "w-2/3 max-w-md h-auto", alt: "I need services urgently" %>
+      <span class="text-base font-bold">I need services urgently</span>
+      <%= inline_svg_tag "smart_match/alert.svg", class: "w-2/3 max-w-md h-auto" %>
     </label>
 
     <%# Long-term %>
-    <label class="sm-card-option bg-red-400"
+    <label class="sm-card-option sm-card-option--red"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :situation, "long_term",
             class: "sr-only",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold text-white">I am looking for long-term support</span>
-      <%= image_tag "smart_match/time.svg", class: "w-2/3 max-w-md h-auto", alt: "I am looking for long-term support" %>
+      <span class="text-base font-bold">I am looking for long-term support</span>
+      <%= inline_svg_tag "smart_match/time.svg", class: "w-2/3 max-w-md h-auto" %>
     </label>
 
     <%# Exploring %>
-    <label class="sm-card-option bg-red-400"
+    <label class="sm-card-option sm-card-option--red"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :situation, "exploring",
             class: "sr-only",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold text-white">I am exploring my options</span>
-      <%= inline_svg_tag "smart_match/map.svg", class: "w-2/3 max-w-md h-auto text-white", alt: "I am exploring my options" %>
+      <span class="text-base font-bold">I am exploring my options</span>
+      <%= inline_svg_tag "smart_match/map.svg", class: "w-2/3 max-w-md h-auto text-white" %>
     </label>
 
   </div>

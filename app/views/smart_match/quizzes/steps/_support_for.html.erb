@@ -3,36 +3,36 @@
   <div class="grid gap-4 mt-4 sm:grid-cols-3" data-card-group="support-for">
 
     <%# Myself %>
-    <label class="sm-card-option bg-white"
+    <label class="sm-card-option sm-card-option--white"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :support_for, "myself",
             class: "sr-only",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold text-gray-2">Myself</span>
-      <%= inline_svg_tag "smart_match/user.svg", class: "w-24 h-24 mt-2 text-blue-dark", alt: "Myself", "aria-hidden": "true" %>
+      <span class="text-base font-bold">Myself</span>
+      <%= inline_svg_tag "smart_match/user.svg", class: "w-24 h-24 mt-2 text-blue-dark", aria_hidden: "true" %>
     </label>
 
     <%# Someone else %>
-    <label class="sm-card-option bg-white"
+    <label class="sm-card-option sm-card-option--white"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :support_for, "someone_else",
             class: "sr-only",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold text-gray-2">Someone else</span>
-      <%= image_tag "smart_match/people.svg", class: "w-24 h-24 mt-2", alt: "Someone else", "aria-hidden": "true" %>
+      <span class="text-base font-bold">Someone else</span>
+      <%= inline_svg_tag "smart_match/people.svg", class: "w-24 h-24 mt-2", aria_hidden: "true" %>
     </label>
 
     <%# On behalf of an organization %>
-    <label class="sm-card-option bg-white"
+    <label class="sm-card-option sm-card-option--white"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :support_for, "organization",
             class: "sr-only",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold text-gray-2">On behalf of an organization</span>
-      <%= image_tag "smart_match/building2.svg", class: "w-24 h-24 mt-2", alt: "Organization", "aria-hidden": "true" %>
+      <span class="text-base font-bold">On behalf of an organization</span>
+      <%= inline_svg_tag "smart_match/building2.svg", class: "w-24 h-24 mt-2", aria_hidden: "true" %>
     </label>
 
   </div>

@@ -3,90 +3,90 @@
   <div class="grid grid-cols-2 gap-4 mt-4 sm:grid-cols-4" data-card-group="self-description">
 
     <%# Student %>
-    <label class="sm-card-option bg-blue-medium"
+    <label class="sm-card-option sm-card-option--blue"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :self_description, "student",
             class: "sr-only",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold text-white">Student</span>
-      <%= image_tag "smart_match/categories/user.svg", class: "w-2/3 max-w-md h-auto", alt: "Student" %>
+      <span class="text-base font-bold">Student</span>
+      <%= inline_svg_tag "smart_match/categories/user.svg", class: "w-2/3 max-w-md h-auto" %>
     </label>
 
     <%# Veteran or in the military %>
-    <label class="sm-card-option bg-blue-medium"
+    <label class="sm-card-option sm-card-option--blue"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :self_description, "veteran",
             class: "sr-only",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold text-white">Veteran or in the military</span>
-      <%= image_tag "smart_match/categories/medal.svg", class: "w-2/3 max-w-md h-auto", alt: "Veteran or in the military" %>
+      <span class="text-base font-bold">Veteran or in the military</span>
+      <%= inline_svg_tag "smart_match/categories/medal.svg", class: "w-2/3 max-w-md h-auto" %>
     </label>
 
     <%# Caregiver %>
-    <label class="sm-card-option bg-blue-medium"
+    <label class="sm-card-option sm-card-option--blue"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :self_description, "caregiver",
             class: "sr-only",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold text-white">Caregiver</span>
-      <%= inline_svg_tag "smart_match/categories/care.svg", class: "w-2/3 max-w-md h-auto text-white", alt: "Caregiver" %>
+      <span class="text-base font-bold">Caregiver</span>
+      <%= inline_svg_tag "smart_match/categories/care.svg", class: "w-2/3 max-w-md h-auto text-white" %>
     </label>
 
     <%# LGBTQIA+ %>
-    <label class="sm-card-option bg-blue-medium"
+    <label class="sm-card-option sm-card-option--blue"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :self_description, "lgbtqia",
             class: "sr-only",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold text-white">LGBTQIA+</span>
-      <%= image_tag "smart_match/categories/pride.svg", class: "w-2/3 max-w-md h-auto", alt: "LGBTQIA+" %>
+      <span class="text-base font-bold">LGBTQIA+</span>
+      <%= inline_svg_tag "smart_match/categories/pride.svg", class: "w-2/3 max-w-md h-auto" %>
     </label>
 
     <%# Living with disabilities %>
-    <label class="sm-card-option bg-blue-medium"
+    <label class="sm-card-option sm-card-option--blue"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :self_description, "disability",
             class: "sr-only",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold text-white">Living with disabilities</span>
-      <%= image_tag "smart_match/categories/disability.svg", class: "w-2/3 max-w-md h-auto", alt: "Living with disabilities" %>
+      <span class="text-base font-bold">Living with disabilities</span>
+      <%= inline_svg_tag "smart_match/categories/disability.svg", class: "w-2/3 max-w-md h-auto" %>
     </label>
 
     <%# Business or nonprofit %>
-    <label class="sm-card-option bg-blue-medium"
+    <label class="sm-card-option sm-card-option--blue"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :self_description, "business_nonprofit",
             class: "sr-only",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold text-white">Business or nonprofit</span>
-      <%= image_tag "smart_match/categories/uphill.svg", class: "w-2/3 max-w-md h-auto", alt: "Business or nonprofit" %>
+      <span class="text-base font-bold">Business or nonprofit</span>
+      <%= inline_svg_tag "smart_match/categories/uphill.svg", class: "w-2/3 max-w-md h-auto" %>
     </label>
 
     <%# Business looking for a partner %>
-    <label class="sm-card-option bg-blue-medium"
+    <label class="sm-card-option sm-card-option--blue"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :self_description, "business_partner",
             class: "sr-only",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold text-white">Business looking for a partner</span>
-      <%= image_tag "smart_match/categories/partnership.svg", class: "w-2/3 max-w-md h-auto", alt: "Business looking for a partner" %>
+      <span class="text-base font-bold">Business looking for a partner</span>
+      <%= inline_svg_tag "smart_match/categories/partnership.svg", class: "w-2/3 max-w-md h-auto" %>
     </label>
 
     <%# Prefer not to say %>
-    <label class="sm-card-option bg-blue-medium"
+    <label class="sm-card-option sm-card-option--blue"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :self_description, "none",
             class: "sr-only",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold text-white">Prefer not to say / none apply</span>
+      <span class="text-base font-bold">Prefer not to say / none apply</span>
     </label>
 
   </div>

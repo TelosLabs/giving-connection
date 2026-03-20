@@ -3,43 +3,43 @@
   <div class="grid grid-cols-2 gap-4 mt-4 sm:grid-cols-4" data-card-group="volunteer_time">
 
     <%# Just one day / one-time event %>
-    <label class="sm-card-option bg-red-400"
+    <label class="sm-card-option sm-card-option--red"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <input type="radio" name="volunteer_time" value="one_time"
              class="sr-only" data-smart-match-quiz-target="radio" />
-      <span class="text-base font-bold text-white text-center">Just one day / one-time event</span>
-      <%= inline_svg_tag "smart_match/calendar.svg", class: "w-20 h-20 mt-2 text-white", alt: "", "aria-hidden": "true" %>
+      <span class="text-base font-bold text-center">Just one day / one-time event</span>
+      <%= inline_svg_tag "smart_match/calendar.svg", class: "w-20 h-20 mt-2 text-white", aria_hidden: "true" %>
     </label>
 
     <%# A few hours a week %>
-    <label class="sm-card-option bg-red-400"
+    <label class="sm-card-option sm-card-option--red"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <input type="radio" name="volunteer_time" value="few_hours"
              class="sr-only" data-smart-match-quiz-target="radio" />
-      <span class="text-base font-bold text-white text-center">A few hours a week</span>
-      <%= inline_svg_tag "smart_match/time.svg", class: "w-20 h-20 mt-2 text-white", alt: "", "aria-hidden": "true" %>
+      <span class="text-base font-bold text-center">A few hours a week</span>
+      <%= inline_svg_tag "smart_match/time.svg", class: "w-20 h-20 mt-2 text-white", aria_hidden: "true" %>
     </label>
 
     <%# An ongoing role %>
-    <label class="sm-card-option bg-red-400"
+    <label class="sm-card-option sm-card-option--red"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <input type="radio" name="volunteer_time" value="ongoing"
              class="sr-only" data-smart-match-quiz-target="radio" />
-      <span class="text-base font-bold text-white text-center">An ongoing role</span>
-      <%= inline_svg_tag "smart_match/recurrent.svg", class: "w-20 h-20 mt-2 text-white", alt: "", "aria-hidden": "true" %>
+      <span class="text-base font-bold text-center">An ongoing role</span>
+      <%= inline_svg_tag "smart_match/recurrent.svg", class: "w-20 h-20 mt-2 text-white", aria_hidden: "true" %>
     </label>
 
     <%# I'm not sure yet %>
-    <label class="sm-card-option bg-red-400"
+    <label class="sm-card-option sm-card-option--red"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <input type="radio" name="volunteer_time" value="not_sure"
              class="sr-only" data-smart-match-quiz-target="radio" />
-      <span class="text-base font-bold text-white text-center">I'm not sure yet</span>
-      <%= inline_svg_tag "smart_match/question.svg", class: "w-20 h-20 mt-2 text-white", alt: "", "aria-hidden": "true" %>
+      <span class="text-base font-bold text-center">I'm not sure yet</span>
+      <%= inline_svg_tag "smart_match/question.svg", class: "w-20 h-20 mt-2 text-white", aria_hidden: "true" %>
     </label>
 
   </div>

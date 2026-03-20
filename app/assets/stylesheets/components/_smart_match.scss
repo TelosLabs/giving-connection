@@ -52,6 +52,7 @@
 // ---------------------------------------------------------------------------
 .sm-card-option {
   background-color: #9AE2E0;
+  color: #113C7B;
   border: 2px solid #C2CEDB;
   border-radius: 0.5rem;
   height: 224px;
@@ -62,21 +63,66 @@
   gap: 0.75rem;
   padding: 1.25rem;
   cursor: pointer;
-  transition: border-color 200ms, box-shadow 200ms;
+  transition: background-color 200ms, border-color 200ms, box-shadow 200ms;
   text-align: center;
 
+  // SVGs inside cards inherit the card's text color
+  svg {
+    path, circle, rect, line, polyline, ellipse {
+      stroke: currentColor;
+    }
+  }
+
   &:hover {
+    background-color: #7BCFCD;
     border-color: #0782D0;
   }
 
   &.selected,
   &:has(input:checked) {
+    background-color: #7BCFCD;
     border-color: #0782D0;
     box-shadow: 0px 0px 15px 0px #0782D0;
   }
 
   @media (max-width: 639px) {
     height: auto;
+  }
+
+  // White bg, blue-dark text — hover: slate-200
+  &--white {
+    background-color: #ffffff;
+    color: #113C7B;
+
+    &:hover { background-color: #e2e8f0; border-color: #0782D0; }
+    &.selected, &:has(input:checked) { background-color: #e2e8f0; }
+  }
+
+  // Blue-medium bg, white text — hover: blue-dark
+  &--blue {
+    background-color: #0782D0;
+    color: #ffffff;
+
+    &:hover { background-color: #113C7B; border-color: #113C7B; }
+    &.selected, &:has(input:checked) { background-color: #113C7B; }
+  }
+
+  // Blue-dark / navy bg, white text — hover: deeper navy
+  &--navy {
+    background-color: #113C7B;
+    color: #ffffff;
+
+    &:hover { background-color: #0a2b59; border-color: #0a2b59; }
+    &.selected, &:has(input:checked) { background-color: #0a2b59; }
+  }
+
+  // Red bg, white text — hover: red-500
+  &--red {
+    background-color: #f87171;
+    color: #ffffff;
+
+    &:hover { background-color: #ef4444; border-color: #ef4444; }
+    &.selected, &:has(input:checked) { background-color: #ef4444; }
   }
 }
 
@@ -89,12 +135,14 @@
   height: auto;
   padding: 1rem 1.25rem;
   background-color: #9AE2E0;
+  color: #113C7B;
   border: 2px solid #C2CEDB;
   border-radius: 0.5rem;
   cursor: pointer;
-  transition: border-color 200ms, box-shadow 200ms;
+  transition: background-color 200ms, border-color 200ms, box-shadow 200ms;
 
   &:hover {
+    background-color: #7BCFCD;
     border-color: #0782D0;
   }
 

@@ -3,33 +3,33 @@
   <div class="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-3" data-card-group="impact_location">
 
     <%# Somewhere near me %>
-    <label class="sm-card-option bg-red-400"
+    <label class="sm-card-option sm-card-option--red"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <input type="radio" name="impact_location" value="near_me"
              class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-white text-center">Somewhere near me</span>
-      <%= inline_svg_tag "smart_match/user.svg", class: "w-20 h-20 mt-2 text-white", alt: "", "aria-hidden": "true" %>
+      <span class="text-base font-bold text-center">Somewhere near me</span>
+      <%= inline_svg_tag "smart_match/user.svg", class: "w-20 h-20 mt-2 text-white", aria_hidden: "true" %>
     </label>
 
     <%# A specific city or zip code %>
-    <label class="sm-card-option bg-red-400"
+    <label class="sm-card-option sm-card-option--red"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <input type="radio" name="impact_location" value="specific_place"
              class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-white text-center">A specific city or zip code</span>
-      <%= inline_svg_tag "smart_match/location.svg", class: "w-20 h-20 mt-2 text-white", alt: "", "aria-hidden": "true" %>
+      <span class="text-base font-bold text-center">A specific city or zip code</span>
+      <%= inline_svg_tag "smart_match/location.svg", class: "w-20 h-20 mt-2 text-white", aria_hidden: "true" %>
     </label>
 
     <%# Anywhere %>
-    <label class="sm-card-option bg-red-400"
+    <label class="sm-card-option sm-card-option--red"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <input type="radio" name="impact_location" value="anywhere"
              class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-white text-center">Anywhere</span>
-      <%= inline_svg_tag "smart_match/path.svg", class: "w-20 h-20 mt-2 text-white", alt: "", "aria-hidden": "true" %>
+      <span class="text-base font-bold text-center">Anywhere</span>
+      <%= inline_svg_tag "smart_match/path.svg", class: "w-20 h-20 mt-2 text-white", aria_hidden: "true" %>
     </label>
 
   </div>
