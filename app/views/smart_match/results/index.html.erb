@@ -12,7 +12,7 @@
 
 <%# Results section %>
 <section class="py-12 px-6 bg-gray-9">
-  <div class="max-w-4xl mx-auto">
+  <div class="max-w-6xl mx-auto">
     <% if @embedding_unavailable %>
       <div class="p-12 text-center bg-white rounded-lg shadow-md">
         <div class="flex justify-center mb-6">
@@ -30,7 +30,7 @@
       </div>
 
     <% elsif @results.present? %>
-      <div class="space-y-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <% @results.each do |match| %>
           <%= render SmartMatchCard::Component.new(
                 organization: match.organization,
@@ -40,11 +40,21 @@
         <% end %>
       </div>
 
-      <div class="mt-10 text-center">
-        <%= link_to "Retake Quiz",
+      <div class="mt-10 flex flex-col items-center gap-4">
+        <%= link_to new_contact_message_path,
+              class: "inline-flex items-center gap-2 px-8 py-3 text-sm font-bold tracking-wider text-white uppercase rounded-md bg-teal-600 hover:bg-teal-700 transition-colors" do %>
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"/>
+          </svg>
+          Still Need Help?
+        <% end %>
+
+        <hr class="w-full border-gray-6">
+
+        <%= button_to "Retake Quiz",
               smart_match_quiz_path,
-              class: "text-blue-dark font-bold underline hover:text-blue-medium transition-colors" %>
-        <hr class="mt-6 border-gray-6">
+              method: :delete,
+              class: "text-sm font-semibold text-gray-4 hover:text-blue-dark underline transition-colors bg-transparent border-0 cursor-pointer" %>
       </div>
 
     <% else %>

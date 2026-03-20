@@ -27,7 +27,7 @@ module SmartMatch
         user: current_user
       )
       @submission = result[:submission]
-      @results = @submission.organization_matches.includes(:organization).order(:rank)
+      @results = @submission.organization_matches.includes(:organization).order(:rank).limit(3)
     end
 
     def quiz_session_answers
