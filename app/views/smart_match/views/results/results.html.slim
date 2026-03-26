@@ -1,0 +1,128 @@
+.container.mx-auto.px-4.py-8.max-w-6xl.smart-match-results data-controller="smart-match"
+  / Header Section
+  .text-center.mb-12
+    h1.text-3xl.font-bold.text-blue-600.mb-4 Your Smart Match Results
+    p.text-lg.text-gray-700 Based on your answers, here are the nonprofits we recommend for you.
+  
+  / Warning Banner - Replaced with Blue Suggestion Box
+  - if @threshold_metrics && @threshold_metrics[:show_warning]
+    .mb-8.max-w-4xl.mx-auto
+      .bg-blue-50.border.border-blue-200.p-6.rounded-lg
+        .flex.items-start
+          svg.w-6.h-6.text-blue-600.mr-3.mt-0.5 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          .flex-1
+            h4.text-lg.font-semibold.text-blue-900.mb-2 Looking for more options?
+            p.text-blue-700.mb-4
+              = @threshold_metrics[:warning_message]
+            = link_to search_path, class: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors" do
+              svg.w-4.h-4.mr-2 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              | Browse All Nonprofits
+  
+  / Match Quality Summary
+  - if @threshold_metrics
+    .mb-8.max-w-4xl.mx-auto
+      .bg-gray-50.border.border-gray-200.p-6.rounded-lg
+        h3.text-lg.font-semibold.text-gray-900.mb-4 Match Quality Summary
+        .grid.grid-cols-4.gap-4
+          .text-center
+            .text-2xl.font-bold.text-blue-600 = number_to_percentage((@threshold_metrics[:max_score] || 0.0) * 100, precision: 1)
+            .text-sm.text-gray-600 Best Match
+          .text-center
+            .text-2xl.font-bold.text-gray-600 = number_to_percentage((@threshold_metrics[:average_score] || 0.0) * 100, precision: 1)
+            .text-sm.text-gray-600 Average Match
+          .text-center
+            .text-2xl.font-bold.text-gray-600 = @recommendations&.length || 0
+            .text-sm.text-gray-600 Organizations
+          .text-center
+            - max_score = @threshold_metrics[:max_score] || 0.0
+            - if max_score >= 0.7
+              .text-2xl.font-bold.text-green-600 Excellent
+            - elsif max_score >= 0.4
+              .text-2xl.font-bold.text-yellow-600 Good
+            - elsif max_score >= 0.2
+              .text-2xl.font-bold.text-orange-600 Fair
+            - else
+              .text-2xl.font-bold.text-red-600 Limited
+            .text-sm.text-gray-600 Quality
+
+  / Results Section
+  - if @recommendations&.any?
+    .mb-12
+      .grid.grid-cols-1.md:grid-cols-2.lg:grid-cols-3.gap-6
+        - @recommendations.each do |recommendation|
+          - next unless recommendation&.dig(:location)
+          - location = recommendation[:location]
+          - score = recommendation[:similarity_score] || 0.0
+          
+          .bg-white.rounded-lg.shadow-md.overflow-hidden.h-full.flex.flex-col.relative
+            / Match Badge - Fixed positioning and z-index
+            .absolute.top-4.right-4.z-20
+              - if score >= 0.7
+                .bg-green-500.text-white.px-3.py-1.rounded-full.text-xs.font-semibold.whitespace-nowrap
+                  = "#{number_to_percentage(score * 100, precision: 0)} Match"
+              - elsif score >= 0.4
+                .bg-yellow-500.text-white.px-3.py-1.rounded-full.text-xs.font-semibold.whitespace-nowrap
+                  = "#{number_to_percentage(score * 100, precision: 0)} Match"
+              - elsif score >= 0.2
+                .bg-orange-500.text-white.px-3.py-1.rounded-full.text-xs.font-semibold.whitespace-nowrap
+                  = "#{number_to_percentage(score * 100, precision: 0)} Match"
+              - else
+                .bg-red-500.text-white.px-3.py-1.rounded-full.text-xs.font-semibold.whitespace-nowrap
+                  = "#{number_to_percentage(score * 100, precision: 0)} Match"
+            
+            / Placeholder Image
+            .h-48.bg-blue-100.flex.items-center.justify-center.relative.z-10
+              svg.w-16.h-16.text-blue-300 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+            
+            / Card Content
+            .p-6.flex-1.flex.flex-col.relative.z-10
+              / Organization Name
+              h3.text-lg.font-semibold.text-gray-900.mb-2.text-center.break-words
+                = location.name || "Unknown Organization"
+              
+              / Location
+              - if location.formatted_address.present?
+                p.text-sm.text-gray-600.mb-4.text-center.break-words = location.formatted_address
+              
+              / Visit Website Button
+              .mt-auto
+                - website_url = location.website.presence || "#"
+                = link_to website_url, target: "_blank", class: "w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors" do
+                  svg.w-4.h-4.mr-2 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  | Visit Website
+              
+              / Relevance Reason
+              - if recommendation[:relevance_reason].present?
+                .mt-4.pt-4.border-t.border-gray-200
+                  p.text-xs.text-gray-500.text-center.break-words = recommendation[:relevance_reason]
+              
+              / Feedback Buttons
+              .mt-4.pt-4.border-t.border-gray-200
+                .flex.justify-center.items-center.space-x-4
+                  button.feedback-btn data-nonprofit-id=location.id data-feedback-type="like" data-action="click->smart-match#submitFeedback" class="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-green-100 hover:text-green-700 transition-colors"
+                    svg.w-4.h-4 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                      path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+                    span Like
+                  button.feedback-btn data-nonprofit-id=location.id data-feedback-type="dislike" data-action="click->smart-match#submitFeedback" class="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-red-100 hover:text-red-700 transition-colors"
+                    svg.w-4.h-4 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                      path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018c.163 0 .326.02.485.06L17 4m-7 10v5a2 2 0 002 2h.095c.5 0 .905-.405.905-.905 0-.714.211-1.412.608-2.006L17 13V4m-7 10h2M17 4h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5"
+                    span Dislike
+    
+    / Action Buttons
+    .text-center.mt-8
+      .flex.flex-col.sm:flex-row.gap-4.justify-center
+        = link_to "Start Over", smart_match_index_path, class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-blue-100 hover:bg-blue-200 transition-colors"
+        = link_to "Browse All Nonprofits", search_path, class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-blue-100 hover:bg-blue-200 transition-colors"
+  
+  / No Results Section
+  - else
+    .text-center.py-16
+      h3.text-xl.font-bold.text-gray-900.mb-4 No matches found
+      p.text-gray-600.mb-8 We couldn't find nonprofits that match your criteria. Try adjusting your preferences or contact us for assistance.
+      .flex.flex-col.sm:flex-row.gap-4.justify-center
+        = link_to "Try Again", smart_match_index_path, class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+        = link_to "Browse All Nonprofits", search_path, class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-blue-100 hover:bg-blue-200 transition-colors"

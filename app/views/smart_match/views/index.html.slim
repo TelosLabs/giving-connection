@@ -1,0 +1,50 @@
+.container.mx-auto.px-4.py-2.max-w-4xl.min-h-screen.flex.flex-col data-controller="smart-match"
+  .text-center.flex-1.flex.flex-col.justify-start.pt-16
+    h1.text-3xl.font-bold.text-blue-dark.mb-1
+      | Welcome to Smart Match
+    h2.text-lg.text-blue-dark.mb-3
+      | A Giving Connection feature that helps you find the right nonprofit faster.
+    
+    .illustration-container.mb-3
+      = inline_svg_tag 'lady-sitting.svg', class: "w-40 h-40 mx-auto", aria_hidden: true
+    
+    .description.mb-4
+      p.text-base.text-gray-700.leading-relaxed.max-w-2xl.mx-auto
+        | Not sure where to begin? Whether you're seeking help, looking to volunteer, or ready to donate, this tool will guide you to nonprofits that match your goals, location, and preferences. All in just a few questions.
+    
+    .how-it-works.mb-4
+      h3.text-xl.font-bold.text-blue-dark.mb-1
+        | HOW IT WORKS
+      p.text-base.text-gray-700.leading-relaxed.max-w-2xl.mx-auto
+        | We ask a few quick questions and recommend the best nonprofits based on your answers.
+    
+    .cta-section
+      h3.text-xl.font-bold.text-blue-dark.mb-3
+        | Ready to find your match?
+      
+      .disclaimer-box.mb-4.p-4.border-2.border-gray-300.rounded-lg.bg-gray-50.max-w-2xl.mx-auto
+        .flex.items-start.space-x-3
+          input#disclaimer-checkbox.w-5.h-5.mt-1.text-blue-dark.border-gray-300.rounded.focus:ring-blue-dark.focus:ring-2 type="checkbox" data-action="change->smart-match#toggleStartButton" data-smart-match-target="disclaimerCheckbox"
+          label.text-xs.text-gray-700.leading-relaxed for="disclaimer-checkbox"
+            | I agree to the 
+            = link_to "Terms of Service", terms_of_use_path, class: "text-blue-dark underline hover:text-blue-medium", target: "_blank"
+            |  and acknowledge that this tool is for informational purposes only.
+        
+        .disclaimer-expandable.mt-3.hidden data-smart-match-target="disclaimerExpandable"
+          .emergency-notice.mb-3.p-3.bg-red-100.border.border-red-300.rounded.text-red-800.text-xs
+            | 🚨 If you are experiencing an emergency, please call 911 or contact local emergency services. This form is not monitored in real time.
+          .disclaimer-details.text-xs.text-gray-700.leading-relaxed
+            p.mb-2
+              strong Disclaimer:
+            p.mb-2
+              | Giving Connection is not a legal service provider and does not offer legal advice or representation. Resource referrals are based on the information you provide and are for general informational purposes only. We do not guarantee outcomes and are not responsible for the services or conduct of referred organizations. Please use your own judgment when engaging with any nonprofit.
+            p.mb-2
+              | Your information is handled securely and will never be shared without your permission. For more details, see our 
+              = link_to "Privacy Policy", privacy_policy_path, class: "text-blue-dark underline hover:text-blue-medium", target: "_blank"
+              |  or contact us to request removal of your information.
+        
+        .disclaimer-toggle.mt-2
+          button.text-xs.text-blue-dark.underline.hover:text-blue-medium data-action="click->smart-match#toggleDisclaimer" data-smart-match-target="disclaimerToggle"
+            | Show full disclaimer
+      
+      = link_to "START", smart_match_quiz_path, class: "c-button c-button--search opacity-50 cursor-not-allowed", id: "start-button", data: { action: "click->smart-match#checkDisclaimer", smart_match_target: "startButton", href: smart_match_quiz_path } 

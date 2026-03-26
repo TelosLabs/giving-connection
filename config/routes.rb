@@ -105,4 +105,11 @@ Rails.application.routes.draw do
   get "/los-angeles", to: "cities#show", city: "Los Angeles", as: :los_angeles
 
   get "redirect", to: "redirection#notice_external_link", as: :redirect
+
+  # Smart Match routes
+  get "smart-match", to: "smart_match#index", as: :smart_match_index
+  get "smart-match/quiz", to: "smart_match#quiz", as: :smart_match_quiz
+  get "smart-match/results", to: "smart_match#results", as: :smart_match_results
+  get "smart-match/current-answers", to: "smart_match#current_answers", as: :smart_match_current_answers
+  post "smart-match/feedback", to: "smart_match#feedback", as: :smart_match_feedback
 end

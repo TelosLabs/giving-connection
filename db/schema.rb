@@ -167,6 +167,24 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_15_194445) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "events", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.datetime "start_time", precision: nil, null: false
+    t.datetime "end_time", precision: nil
+    t.string "link"
+    t.string "image_link"
+    t.string "location"
+    t.boolean "published", default: false
+    t.boolean "isRecurring", default: false
+    t.string "type_of_event", default: [], array: true
+    t.string "tags", default: [], array: true
+    t.string "categories", default: [], array: true
+    t.string "subcategories", default: [], array: true
+    t.bigint "organization_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_events_on_organization_id"
   create_table "comments", force: :cascade do |t|
     t.text "body", null: false
     t.bigint "blog_id", null: false
@@ -381,6 +399,28 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_15_194445) do
     t.index ["location_id"], name: "index_phone_numbers_on_location_id"
   end
 
+  create_table "recommendation_feedbacks", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "nonprofit_id"
+    t.string "feedback_type"
+    t.string "session_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["feedback_type"], name: "index_recommendation_feedbacks_on_feedback_type"
+    t.index ["session_id", "nonprofit_id"], name: "index_recommendation_feedbacks_on_session_id_and_nonprofit_id", unique: true
+    t.index ["user_id"], name: "index_recommendation_feedbacks_on_user_id"
+  end
+
+  create_table "saved_recommendations", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "name", null: false
+    t.string "url", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "url"], name: "index_saved_recommendations_on_user_id_and_url", unique: true
+    t.index ["user_id"], name: "index_saved_recommendations_on_user_id"
+  end
+
   create_table "services", force: :cascade do |t|
     t.string "name"
     t.bigint "cause_id", null: false
@@ -449,6 +489,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_15_194445) do
   add_foreign_key "alert_services", "services"
   add_foreign_key "alerts", "users"
   add_foreign_key "beneficiary_subcategories", "beneficiary_groups"
+  add_foreign_key "events", "organizations"
   add_foreign_key "blog_likes", "blogs"
   add_foreign_key "blog_likes", "users"
   add_foreign_key "blogs", "users"
@@ -469,6 +510,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_15_194445) do
   add_foreign_key "organization_causes", "causes"
   add_foreign_key "organization_causes", "organizations"
   add_foreign_key "phone_numbers", "locations"
+  add_foreign_key "recommendation_feedbacks", "users"
+  add_foreign_key "saved_recommendations", "users"
   add_foreign_key "services", "causes"
   add_foreign_key "social_medias", "organizations"
   add_foreign_key "tags", "organizations"
