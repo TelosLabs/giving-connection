@@ -6,7 +6,7 @@ module SmartMatch
     skip_after_action :verify_authorized
     skip_after_action :verify_policy_scoped
 
-    def index
+    def show
       @user_type = session[:smart_match_user_type]
       process_quiz_results if quiz_completed?
     rescue SmartMatch::EmbeddingUnavailableError

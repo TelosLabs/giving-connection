@@ -9,7 +9,8 @@
               session[:smart_match_state]
             ),
             { include_blank: "Select a state" },
-            class: "w-full px-4 py-3 text-gray-2 border border-gray-5 rounded-md focus:border-blue-medium focus:ring-1 focus:ring-blue-medium focus:outline-none" %>
+            class: "w-full px-4 py-3 text-gray-2 border border-gray-5 rounded-md focus:border-blue-medium focus:ring-1 focus:ring-blue-medium focus:outline-none",
+            data: { action: "change->smart-match-quiz#updateNextButton" } %>
     </div>
 
     <div>
@@ -34,7 +35,8 @@
               session[:smart_match_travel_bucket]
             ),
             { include_blank: "Select distance" },
-            class: "w-full px-4 py-3 text-gray-2 border border-gray-5 rounded-md focus:border-blue-medium focus:ring-1 focus:ring-blue-medium focus:outline-none" %>
+            class: "w-full px-4 py-3 text-gray-2 border border-gray-5 rounded-md focus:border-blue-medium focus:ring-1 focus:ring-blue-medium focus:outline-none",
+            data: { action: "change->smart-match-quiz#updateNextButton" } %>
     </div>
   </div>
 <% end %>

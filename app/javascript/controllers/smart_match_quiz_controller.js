@@ -132,14 +132,14 @@ export default class extends Controller {
 
     const selects = this.element.querySelectorAll('select')
     if (selects.length > 0) {
-      return true
+      return Array.from(selects).every(s => s.value !== '')
     }
 
     const textareas = this.element.querySelectorAll('textarea')
     if (textareas.length > 0) {
-      return true
+      return Array.from(textareas).some(t => t.value.trim() !== '')
     }
 
-    return true
+    return false
   }
 }

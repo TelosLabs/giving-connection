@@ -6,9 +6,18 @@ module SmartMatch
     skip_after_action :verify_authorized
 
     def show
-      @step = current_step
+      @step        = current_step
       @total_steps = total_steps
-      @user_type = session[:smart_match_user_type]
+      @user_type   = session[:smart_match_user_type]
+
+      step_info       = SmartMatch::QuizStepConfig.section_for(@user_type, @step)
+      @section_number = step_info[:number]
+      @section_name   = step_info[:name]
+      @step_title     = step_info[:title]
+      @step_subtitle  = step_info[:subtitle]
+      @step_partial   = SmartMatch::QuizStepConfig.partial_for(@user_type, @step)
+      @is_final_step  = @step == @total_steps
+      @section_map    = SmartMatch::QuizStepConfig.section_map_for(@user_type)
     end
 
     def destroy

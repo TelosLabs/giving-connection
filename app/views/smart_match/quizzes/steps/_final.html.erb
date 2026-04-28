@@ -21,7 +21,8 @@
               ["Prefer not to say", "prefer_not_to_say"]
             ], session[:smart_match_age_range]),
             { include_blank: "Select your age range" },
-            class: "w-full px-4 py-3 text-gray-2 border border-gray-5 rounded-md focus:border-blue-medium focus:ring-1 focus:ring-blue-medium focus:outline-none" %>
+            class: "w-full px-4 py-3 text-gray-2 border border-gray-5 rounded-md focus:border-blue-medium focus:ring-1 focus:ring-blue-medium focus:outline-none",
+            data: { action: "change->smart-match-quiz#updateNextButton" } %>
     </div>
 
     <div>
@@ -35,7 +36,8 @@
               ["Prefer not to say",            "prefer_not_to_say"]
             ], session[:smart_match_gender_identity]),
             { include_blank: "Select your gender identity" },
-            class: "w-full px-4 py-3 text-gray-2 border border-gray-5 rounded-md focus:border-blue-medium focus:ring-1 focus:ring-blue-medium focus:outline-none" %>
+            class: "w-full px-4 py-3 text-gray-2 border border-gray-5 rounded-md focus:border-blue-medium focus:ring-1 focus:ring-blue-medium focus:outline-none",
+            data: { action: "change->smart-match-quiz#updateNextButton" } %>
     </div>
 
     <div>
@@ -52,7 +54,8 @@
               ["Prefer not to say",                    "prefer_not_to_say"]
             ], session[:smart_match_race_ethnicity]),
             { include_blank: "Select your race or ethnicity" },
-            class: "w-full px-4 py-3 text-gray-2 border border-gray-5 rounded-md focus:border-blue-medium focus:ring-1 focus:ring-blue-medium focus:outline-none" %>
+            class: "w-full px-4 py-3 text-gray-2 border border-gray-5 rounded-md focus:border-blue-medium focus:ring-1 focus:ring-blue-medium focus:outline-none",
+            data: { action: "change->smart-match-quiz#updateNextButton" } %>
     </div>
 
   </div>

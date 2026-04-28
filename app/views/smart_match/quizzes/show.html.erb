@@ -1,96 +1,3 @@
-<%
-  # Section mapping based on step and user_type
-  section_map = case @user_type
-  when "service_seeker"
-    {
-      1 => { number: 1, name: "About You", title: "How can we support you today?", subtitle: "Single Choice" },
-      2 => { number: 1, name: "About You", title: "Who are you seeking support for?", subtitle: "Single Choice" },
-      3 => { number: 2, name: "Type of Support", title: "How would you describe yourself?", subtitle: "Single Choice" },
-      4 => { number: 2, name: "Type of Support", title: "Which categories best fits your needs?", subtitle: "Multiple Choice" },
-      5 => { number: 2, name: "Type of Support", title: "What best describes your situation?", subtitle: "Single Choice" },
-      6 => { number: 3, name: "Location & Access", title: "Where should we look for support?", subtitle: "Single Choice" },
-      7 => { number: 3, name: "Location & Access", title: "What kind of travel is possible for you?", subtitle: "Single Choice" },
-      8 => { number: 4, name: "Preferences & Accessibility", title: "What should we keep in mind when matching you to services?", subtitle: "Multiple Choice" },
-      9 => { number: 4, name: "Preferences & Accessibility", title: "Personal Details", subtitle: nil }
-    }
-  when "volunteer"
-    {
-      1 => { number: 1, name: "About You", title: "How can we support you today?", subtitle: "Single Choice" },
-      2 => { number: 1, name: "About You", title: "Which causes are close to your heart?", subtitle: "Multiple Choice" },
-      3 => { number: 2, name: "Your Volunteering Preferences", title: "How would you like to help?", subtitle: "Multiple Choice" },
-      4 => { number: 2, name: "Your Volunteering Preferences", title: "What type of volunteering are you looking for?", subtitle: "Multiple Choice" },
-      5 => { number: 3, name: "Your Availability & Location", title: "What format works best for you?", subtitle: "Single Choice" },
-      6 => { number: 3, name: "Where & How You Engage", title: "Which community would you like your giving to focus on?", subtitle: "Single Choice" },
-      7 => { number: 3, name: "Your Availability & Location", title: "How much time do you have to give?", subtitle: "Single Choice" },
-      8 => { number: 4, name: "Preferences & Accessibility", title: "Personal Details", subtitle: nil }
-    }
-  else # donor
-    {
-      1 => { number: 1, name: "About You", title: "How can we support you today?", subtitle: "Single Choice" },
-      2 => { number: 1, name: "About You", title: "What causes are close to your heart?", subtitle: "Multiple Choice" },
-      3 => { number: 2, name: "Your Donation Preferences", title: "What is your preferred donation style?", subtitle: "Multiple Choice" },
-      4 => { number: 2, name: "Your Donation Preferences", title: "What inspires your giving today?", subtitle: "Multiple Choice" },
-      5 => { number: 2, name: "Your Donation Preferences", title: "Are there specific communities or populations you'd like your donation to support?", subtitle: "Multiple Choice" },
-      6 => { number: 3, name: "Where & How You Engage", title: "Where would you like your donation to make an impact?", subtitle: "Single Choice" },
-      7 => { number: 3, name: "Where & How You Engage", title: "Which community would you like your giving to focus on?", subtitle: "Single Choice" },
-      8 => { number: 3, name: "Where & How You Engage", title: "How would you like to be involved?", subtitle: "Single Choice" },
-      9 => { number: 4, name: "Preferences & Accessibility", title: "Personal Details", subtitle: nil }
-    }
-  end
-
-  current_section = section_map[@step] || section_map[1]
-  section_number = current_section[:number]
-  section_name = current_section[:name]
-  step_title = current_section[:title]
-  step_subtitle = current_section[:subtitle]
-
-  step_partial_map = {
-    1 => "smart_match/quizzes/steps/user_type",
-    2 => {
-      "service_seeker" => "smart_match/quizzes/steps/support_for",
-      "volunteer" => "smart_match/quizzes/steps/causes",
-      "donor" => "smart_match/quizzes/steps/causes"
-    },
-    3 => {
-      "service_seeker" => "smart_match/quizzes/steps/self_description",
-      "volunteer" => "smart_match/quizzes/steps/volunteer_involvement",
-      "donor" => "smart_match/quizzes/steps/donor_giving_style"
-    },
-    4 => {
-      "service_seeker" => "smart_match/quizzes/steps/causes",
-      "volunteer" => "smart_match/quizzes/steps/volunteer_type",
-      "donor" => "smart_match/quizzes/steps/donor_giving_inspiration"
-    },
-    5 => {
-      "service_seeker" => "smart_match/quizzes/steps/situation",
-      "volunteer" => "smart_match/quizzes/steps/volunteer_format",
-      "donor" => "smart_match/quizzes/steps/donor_communities"
-    },
-    6 => {
-      "service_seeker" => "smart_match/quizzes/steps/city_selection",
-      "volunteer" => "smart_match/quizzes/steps/city_selection",
-      "donor" => "smart_match/quizzes/steps/donor_impact_location"
-    },
-    7 => {
-      "service_seeker" => "smart_match/quizzes/steps/travel",
-      "volunteer" => "smart_match/quizzes/steps/volunteer_time",
-      "donor" => "smart_match/quizzes/steps/city_selection"
-    },
-    8 => {
-      "service_seeker" => "smart_match/quizzes/steps/preferences",
-      "volunteer" => "smart_match/quizzes/steps/final",
-      "donor" => "smart_match/quizzes/steps/donor_involvement"
-    },
-    9 => "smart_match/quizzes/steps/final"
-  }
-
-  partial_entry = step_partial_map[@step]
-  step_partial = partial_entry.is_a?(Hash) ? partial_entry[@user_type] : partial_entry
-  step_partial ||= "smart_match/quizzes/steps/user_type"
-
-  is_final_step = @step == @total_steps
-%>
-
 <section class="flex flex-col min-h-screen bg-white sm-wizard"
          data-controller="smart-match-quiz"
          data-smart-match-quiz-step-value="<%= @step %>"
@@ -103,8 +10,8 @@
     <div class="px-4 sm:w-3/4 sm:mx-auto sm:px-0 pt-8 mb-4">
     <div class="flex items-center justify-between">
       <div>
-        <span class="text-xl text-blue-dark">Section <%= section_number %>: </span>
-        <span class="text-lg font-bold text-blue-dark"><%= section_name %></span>
+        <span class="text-xl text-blue-dark">Section <%= @section_number %>: </span>
+        <span class="text-lg font-bold text-blue-dark"><%= @section_name %></span>
       </div>
       <%= button_to smart_match_quiz_path, method: :delete,
             class: "p-1 text-gray-4 hover:text-gray-2 transition-colors",
@@ -119,26 +26,26 @@
 
     <%# Segmented progress bar — same horizontal reach as footer buttons %>
     <div class="px-4 sm:w-3/4 sm:mx-auto sm:px-0">
-      <%= render "smart_match/quizzes/progress_bar", step: @step, total_steps: @total_steps, section_map: section_map, current_section_number: section_number %>
+      <%= render "smart_match/quizzes/progress_bar", step: @step, total_steps: @total_steps, section_map: @section_map, current_section_number: @section_number %>
     </div>
 
     <div class="px-4 sm:w-[56.25%] sm:mx-auto sm:px-0 py-8">
 
       <%# Step title %>
       <div class="mt-4 sm:mt-8 mb-2 text-center">
-        <h1 class="text-2xl sm:text-4xl font-bold text-gray-2"><%= step_title %></h1>
-        <% if step_subtitle %>
-          <p class="mt-1 text-sm sm:text-base text-gray-4"><%= step_subtitle %></p>
+        <h1 class="text-2xl sm:text-4xl font-bold text-gray-2"><%= @step_title %></h1>
+        <% if @step_subtitle %>
+          <p class="mt-1 text-sm sm:text-base text-gray-4"><%= @step_subtitle %></p>
         <% end %>
       </div>
 
       <%# Step content %>
       <turbo-frame id="quiz-step" class="block mt-6 sm-step-enter" target="_top">
-        <%= render step_partial %>
+        <%= render @step_partial %>
       </turbo-frame>
     </div>
   </div>
 
   <%# Wizard footer %>
-  <%= render "smart_match/quizzes/wizard_footer", step: @step, is_final_step: is_final_step %>
+  <%= render "smart_match/quizzes/wizard_footer", step: @step, is_final_step: @is_final_step %>
 </section>
