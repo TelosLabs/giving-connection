@@ -71,7 +71,7 @@ module SmartMatch
 
     def resolve_coordinates(user_intent)
       state_data = SmartMatch::Config.city_centroids[user_intent.state] || {}
-      city_data  = state_data[user_intent.city] || state_data.values.first
+      city_data = state_data[user_intent.city] || state_data.values.first
       return {latitude: 40.7357, longitude: -74.1724} unless city_data
 
       {latitude: city_data["latitude"], longitude: city_data["longitude"]}

@@ -18,13 +18,13 @@ class SmartMatchCard::Component < ApplicationViewComponent
   def match_label
     case match_percentage
     when 80..100 then "Strong Match"
-    when 60..79  then "Good Match"
-    else              "Match"
+    when 60..79 then "Good Match"
+    else "Match"
     end
   end
 
   def match_label_color
-    match_percentage >= 80 ? "text-teal-600" : "text-blue-medium"
+    (match_percentage >= 80) ? "text-teal-600" : "text-blue-medium"
   end
 
   def circle_circumference
@@ -36,16 +36,16 @@ class SmartMatchCard::Component < ApplicationViewComponent
   end
 
   def circle_color
-    match_percentage >= 80 ? "#0d9488" : "#0782D0"
+    (match_percentage >= 80) ? "#0d9488" : "#0782D0"
   end
 
   # CTA
   def cta_text
     case user_type
-    when "donor"          then "Donate"
-    when "volunteer"      then "Volunteer"
+    when "donor" then "Donate"
+    when "volunteer" then "Volunteer"
     when "service_seeker" then "Find Help"
-    else                       "Learn More"
+    else "Learn More"
     end
   end
 

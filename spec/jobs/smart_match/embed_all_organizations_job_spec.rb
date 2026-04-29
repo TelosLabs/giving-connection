@@ -7,8 +7,8 @@ RSpec.describe SmartMatch::EmbedAllOrganizationsJob, type: :job do
 
   describe "#perform" do
     it "creates embeddings for all active organizations" do
-      org1 = create(:organization)
-      org2 = create(:organization, name: "Second Org")
+      create(:organization)
+      create(:organization, name: "Second Org")
 
       allow(SmartMatch::EmbeddingClient).to receive(:embed_batch).and_return([vector, vector])
 
@@ -18,7 +18,7 @@ RSpec.describe SmartMatch::EmbedAllOrganizationsJob, type: :job do
     end
 
     it "skips organizations with nil text" do
-      org = create(:organization)
+      create(:organization)
       allow(SmartMatch::OrganizationTextBuilder).to receive(:call).and_return(nil)
 
       described_class.new.perform

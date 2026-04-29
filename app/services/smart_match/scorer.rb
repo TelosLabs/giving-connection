@@ -16,21 +16,21 @@ module SmartMatch
     private
 
     def score_candidate(candidate)
-      dense     = dense_score(candidate[:cosine_distance])
+      dense = dense_score(candidate[:cosine_distance])
       attribute = attribute_bonus(candidate[:organization_embedding].organization)
-      distance  = distance_score(candidate[:distance_miles])
+      distance = distance_score(candidate[:distance_miles])
 
       total = (weights["embedding_similarity"] * dense) +
-              (weights["attribute_bonus"] * attribute) +
-              (weights["distance"] * distance)
+        (weights["attribute_bonus"] * attribute) +
+        (weights["distance"] * distance)
 
       {
         organization: candidate[:organization_embedding].organization,
         score: total.round(4),
         score_breakdown: {
           dense_similarity: dense.round(4),
-          attribute_bonus:  attribute.round(4),
-          distance_score:   distance.round(4)
+          attribute_bonus: attribute.round(4),
+          distance_score: distance.round(4)
         }
       }
     end
@@ -44,10 +44,10 @@ module SmartMatch
       return 0.0 if total_weight.zero?
 
       earned = 0.0
-      earned += attribute_weights["cause_match"]       if causes_match?(organization)
+      earned += attribute_weights["cause_match"] if causes_match?(organization)
       earned += attribute_weights["beneficiary_match"] if beneficiary_match?(organization)
-      earned += attribute_weights["scope_match"]       if scope_match?(organization)
-      earned += attribute_weights["service_match"]     if service_match?(organization)
+      earned += attribute_weights["scope_match"] if scope_match?(organization)
+      earned += attribute_weights["service_match"] if service_match?(organization)
 
       earned / total_weight
     end
@@ -66,13 +66,13 @@ module SmartMatch
 
     def scope_match?(organization)
       bucket = user_intent.travel_bucket
-      scope  = organization.scope_of_work
+      scope = organization.scope_of_work
       return false if bucket.blank? || scope.blank?
 
       case bucket
       when "statewide" then %w[National International].include?(scope)
-      when "far"       then true
-      else                  scope != "International"
+      when "far" then true
+      else scope != "International"
       end
     end
 
