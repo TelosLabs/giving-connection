@@ -51,8 +51,8 @@ RSpec.describe SmartMatch::QuizStepConfig do
     end
 
     it "returns different partials for different user types on the same step" do
-      volunteer_partial = described_class.partial_for("volunteer", 2)
-      donor_partial = described_class.partial_for("donor", 2)
+      volunteer_partial = described_class.partial_for("volunteer", 3)
+      donor_partial = described_class.partial_for("donor", 3)
       expect(volunteer_partial).not_to eq(donor_partial)
     end
 
