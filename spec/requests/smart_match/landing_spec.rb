@@ -19,7 +19,7 @@ RSpec.describe "SmartMatch::Landing", type: :request do
     it "displays the get started link" do
       get smart_match_root_path
 
-      expect(response.body).to include("Get Started")
+      expect(response.body).to include("START")
     end
   end
 end
