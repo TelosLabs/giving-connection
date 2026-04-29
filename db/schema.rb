@@ -410,12 +410,26 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_05_000005) do
     t.string "session_id", null: false
     t.jsonb "answers", default: {}
     t.string "user_type", null: false
-    t.vector "embedding", limit: 1024, null: false
+    t.vector "embedding", null: false
     t.text "text_snapshot", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["session_id"], name: "index_quiz_submissions_on_session_id"
     t.index ["user_id"], name: "index_quiz_submissions_on_user_id"
+  end
+
+  create_table "recommendation_feedbacks", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "nonprofit_id", null: false
+    t.string "feedback_type", null: false
+    t.string "session_id", null: false
+    t.text "user_answers"
+    t.text "recommendation_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["feedback_type"], name: "index_recommendation_feedbacks_on_feedback_type"
+    t.index ["session_id", "nonprofit_id"], name: "index_recommendation_feedbacks_on_session_id_and_nonprofit_id", unique: true
+    t.index ["user_id"], name: "index_recommendation_feedbacks_on_user_id"
   end
 
   create_table "services", force: :cascade do |t|
@@ -510,6 +524,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_05_000005) do
   add_foreign_key "organization_matches", "quiz_submissions"
   add_foreign_key "phone_numbers", "locations"
   add_foreign_key "quiz_submissions", "users"
+  add_foreign_key "recommendation_feedbacks", "users"
   add_foreign_key "services", "causes"
   add_foreign_key "social_medias", "organizations"
   add_foreign_key "tags", "organizations"
