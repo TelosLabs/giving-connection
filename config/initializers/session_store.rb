@@ -5,7 +5,7 @@ session_redis_url = "#{redis_url.sub(%r{/\d+\z}, "")}/2"
 
 redis_options = {url: session_redis_url}
 
-if session_redis_url.start_with?("rediss://") && (Rails.env.development? || Rails.env.test?)
+if session_redis_url.start_with?("rediss://") && Rails.env.local?
   redis_options[:ssl_params] = {verify_mode: OpenSSL::SSL::VERIFY_NONE}
 end
 

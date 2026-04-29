@@ -47,7 +47,7 @@ module SmartMatch
           response
         rescue EmbeddingUnavailableError
           raise
-        rescue Timeout::Error, Errno::ECONNREFUSED, Errno::ECONNRESET, Net::OpenTimeout => e
+        rescue Timeout::Error, Errno::ECONNREFUSED, Errno::ECONNRESET => e
           retries += 1
           retry if retries <= MAX_RETRIES
           raise EmbeddingUnavailableError, "Embedding service unavailable: #{e.message}"
