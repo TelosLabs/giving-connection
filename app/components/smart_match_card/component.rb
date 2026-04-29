@@ -3,6 +3,8 @@
 class SmartMatchCard::Component < ApplicationViewComponent
   attr_reader :organization, :match, :user_type
 
+  CIRCLE_CIRCUMFERENCE = (2 * Math::PI * 20).round(2)
+
   def initialize(organization:, match:, user_type: nil)
     @organization = organization
     @match = match
@@ -26,7 +28,7 @@ class SmartMatchCard::Component < ApplicationViewComponent
   end
 
   def circle_circumference
-    (2 * Math::PI * 20).round(2)
+    CIRCLE_CIRCUMFERENCE
   end
 
   def circle_dash_offset

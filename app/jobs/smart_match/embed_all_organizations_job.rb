@@ -8,8 +8,10 @@ module SmartMatch
 
     def perform
       Organization.active.find_in_batches(batch_size: BATCH_SIZE) do |batch|
-        texts = batch.map { |org| OrganizationTextBuilder.call(organization: org) }
-        org_text_pairs = batch.zip(texts).reject { |_, text| text.nil? }
+        org_text_pairs = batch.filter_map do |org|
+          text = OrganizationTextBuilder.call(organization: org)
+          [org, text] if text
+        end
 
         next if org_text_pairs.empty?
 

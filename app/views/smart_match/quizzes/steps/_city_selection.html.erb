@@ -2,38 +2,22 @@
              data: { smart_match_quiz_target: "form" } do |f| %>
   <div data-card-group="city-selection" data-card-cols="3">
 
-    <%# Atlantic City %>
-    <label class="sm-card-option sm-card-option--blue"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="single">
-      <%= f.radio_button :city_selection, "Atlantic City",
-            class: "sr-only",
-            data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold">Atlantic City</span>
-      <%= inline_svg_tag "smart_match/atlantic_city.svg", class: "w-24 h-24 mt-2", aria_hidden: "true" %>
-    </label>
-
-    <%# California %>
-    <label class="sm-card-option sm-card-option--blue"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="single">
-      <%= f.radio_button :city_selection, "Los Angeles",
-            class: "sr-only",
-            data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold">Los Angeles</span>
-      <%= inline_svg_tag "smart_match/california.svg", class: "w-24 h-24 mt-2", aria_hidden: "true" %>
-    </label>
-
-    <%# Nashville %>
-    <label class="sm-card-option sm-card-option--blue"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="single">
-      <%= f.radio_button :city_selection, "Nashville",
-            class: "sr-only",
-            data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold">Nashville</span>
-      <%= inline_svg_tag "smart_match/nashville.svg", class: "w-24 h-24 mt-2", aria_hidden: "true" %>
-    </label>
+    <% [
+      ["Atlantic City", "Atlantic City", "smart_match/atlantic_city.svg"],
+      ["Los Angeles",   "Los Angeles",   "smart_match/california.svg"],
+      ["Nashville",     "Nashville",     "smart_match/nashville.svg"]
+    ].each do |label, value, icon| %>
+      <label class="sm-card-option sm-card-option--blue <%= 'selected' if @session_answers[:city] == value %>"
+             data-action="click->smart-match-quiz#selectCard"
+             data-select-mode="single">
+        <%= f.radio_button :city_selection, value,
+              class: "sr-only",
+              checked: @session_answers[:city] == value,
+              data: { smart_match_quiz_target: "radio" } %>
+        <span class="text-base font-bold"><%= label %></span>
+        <%= inline_svg_tag icon, class: "w-24 h-24 mt-2", aria_hidden: "true" %>
+      </label>
+    <% end %>
 
   </div>
 

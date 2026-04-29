@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module SmartMatch
-  class EmbeddingUnavailableError < StandardError; end
+  EmbeddingUnavailableError = Class.new(StandardError)
 
   class EmbeddingClient < ApplicationService
     TIMEOUT = 120

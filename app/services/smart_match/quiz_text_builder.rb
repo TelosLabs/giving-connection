@@ -4,7 +4,6 @@ module SmartMatch
   class QuizTextBuilder < ApplicationService
     MAX_LENGTH = 1500
     PRIMARY_CAUSE_WEIGHT = 3
-    SECONDARY_CAUSE_WEIGHT = 2
 
     attr_reader :user_intent
 

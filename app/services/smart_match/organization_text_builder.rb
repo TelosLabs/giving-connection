@@ -21,7 +21,7 @@ module SmartMatch
         location_text
       ]
 
-      text = parts.map(&:presence).compact.join(" | ")
+      text = parts.compact_blank.join(" | ")
       return nil if text.blank?
 
       text.truncate(MAX_LENGTH)

@@ -71,18 +71,10 @@ module SmartMatch
 
     def resolve_coordinates(user_intent)
       state_data = SmartMatch::Config.city_centroids[user_intent.state] || {}
-      city_data = state_data[user_intent.city]
+      city_data  = state_data[user_intent.city] || state_data.values.first
+      return {latitude: 40.7357, longitude: -74.1724} unless city_data
 
-      if city_data
-        {latitude: city_data["latitude"], longitude: city_data["longitude"]}
-      else
-        first_city = state_data.values.first
-        if first_city
-          {latitude: first_city["latitude"], longitude: first_city["longitude"]}
-        else
-          {latitude: 40.7357, longitude: -74.1724}
-        end
-      end
+      {latitude: city_data["latitude"], longitude: city_data["longitude"]}
     end
 
     def resolve_radius(travel_bucket)
