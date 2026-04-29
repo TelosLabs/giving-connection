@@ -16,6 +16,7 @@ module SmartMatch
       parts.concat(weighted_causes)
       parts << location_text if location_text.present?
       parts.concat(preferences)
+      parts << user_intent.language_input if user_intent.language_input.present?
 
       parts.compact_blank.join(" | ").truncate(MAX_LENGTH)
     end

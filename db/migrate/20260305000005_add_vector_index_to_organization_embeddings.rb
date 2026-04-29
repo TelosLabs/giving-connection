@@ -11,6 +11,6 @@ class AddVectorIndexToOrganizationEmbeddings < ActiveRecord::Migration[7.2]
 
   def down
     remove_index :organization_embeddings, name: "idx_org_embeddings_hnsw_cosine"
-    execute "ALTER TABLE organization_embeddings ALTER COLUMN embedding TYPE vector"
+    execute "ALTER TABLE organization_embeddings ALTER COLUMN embedding TYPE vector(1024)"
   end
 end

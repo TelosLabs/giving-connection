@@ -28,6 +28,7 @@ module SmartMatch
       def base_scope
         OrganizationEmbedding
           .joins(organization: :locations)
+          .includes(organization: [:causes, :beneficiary_subcategories, {locations: :services}])
           .where(locations: {main: true})
           .merge(Location.joins(:organization).where(organizations: {active: true}))
           .distinct
@@ -38,7 +39,7 @@ module SmartMatch
       end
 
       def location_in_state(state)
-        Location.where("address ILIKE ?", "%#{sanitize_like(state)}%")
+        Location.where("address ILIKE ?", "%#{ActiveRecord::Base.sanitize_sql_like(state)}%")
       end
 
       def distance_filtered(scope, coordinates, radius_miles)
@@ -75,10 +76,6 @@ module SmartMatch
 
       def expansion_radii(initial_radius)
         ([initial_radius] + EXPANSION_RADII).uniq.sort
-      end
-
-      def sanitize_like(value)
-        value.to_s.gsub(/[%_\\]/) { |m| "\\#{m}" }
       end
 
       def matching_rules
