@@ -19,7 +19,7 @@
               ["55–64",             "55_64"],
               ["Over 65+",          "over_65"],
               ["Prefer not to say", "prefer_not_to_say"]
-            ], session[:smart_match_age_range]),
+            ], @session_answers[:age_range]),
             { include_blank: "Select your age range" },
             class: "w-full px-4 py-3 text-gray-2 border border-gray-5 rounded-md focus:border-blue-medium focus:ring-1 focus:ring-blue-medium focus:outline-none",
             data: { action: "change->smart-match-quiz#updateNextButton" } %>
@@ -34,7 +34,7 @@
               ["Non-binary or gender diverse", "non_binary"],
               ["Other",                        "other"],
               ["Prefer not to say",            "prefer_not_to_say"]
-            ], session[:smart_match_gender_identity]),
+            ], @session_answers[:gender_identity]),
             { include_blank: "Select your gender identity" },
             class: "w-full px-4 py-3 text-gray-2 border border-gray-5 rounded-md focus:border-blue-medium focus:ring-1 focus:ring-blue-medium focus:outline-none",
             data: { action: "change->smart-match-quiz#updateNextButton" } %>
@@ -52,7 +52,7 @@
               ["Native Hawaiian or Pacific Islander",  "native_hawaiian"],
               ["Middle Eastern or North African",      "middle_eastern_north_african"],
               ["Prefer not to say",                    "prefer_not_to_say"]
-            ], session[:smart_match_race_ethnicity]),
+            ], @session_answers[:race_ethnicity]),
             { include_blank: "Select your race or ethnicity" },
             class: "w-full px-4 py-3 text-gray-2 border border-gray-5 rounded-md focus:border-blue-medium focus:ring-1 focus:ring-blue-medium focus:outline-none",
             data: { action: "change->smart-match-quiz#updateNextButton" } %>

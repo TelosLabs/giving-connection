@@ -2,84 +2,29 @@
              data: { smart_match_quiz_target: "form" } do |f| %>
   <div data-card-group="donor_communities" data-card-cols="4">
 
-    <%# Seniors %>
-    <label class="sm-card-option sm-card-option--blue"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="donor_communities[]" value="seniors"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">Seniors</span>
-      <%= inline_svg_tag "smart_match/senior.svg", class: "w-20 h-20 mt-2 text-white", aria_hidden: "true" %>
-    </label>
-
-    <%# Veteran & military %>
-    <label class="sm-card-option sm-card-option--blue"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="donor_communities[]" value="veteran_military"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">Veteran & military</span>
-      <%= inline_svg_tag "smart_match/categories/medal.svg", class: "w-20 h-20 mt-2", aria_hidden: "true" %>
-    </label>
-
-    <%# Spanish-speaking communities %>
-    <label class="sm-card-option sm-card-option--blue"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="donor_communities[]" value="spanish_speaking"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">Spanish-speaking communities</span>
-       <%= inline_svg_tag "smart_match/languages.svg", class: "w-20 h-20 mt-2 text-white", aria_hidden: "true" %>
-    </label>
-
-    <%# BIPOC communities %>
-    <label class="sm-card-option sm-card-option--blue"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="donor_communities[]" value="bipoc"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">BIPOC communities</span>
-      <%= inline_svg_tag "smart_match/community.svg", class: "w-20 h-20 mt-2 text-white", aria_hidden: "true" %>
-    </label>
-
-    <%# People with disabilities %>
-    <label class="sm-card-option sm-card-option--blue"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="donor_communities[]" value="disabilities"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">People with disabilities</span>
-      <%= inline_svg_tag "smart_match/categories/disability.svg", class: "w-20 h-20 mt-2 text-white", aria_hidden: "true" %>
-    </label>
-
-    <%# LGBTQIA+ community %>
-    <label class="sm-card-option sm-card-option--blue"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="donor_communities[]" value="lgbtqia"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">LGBTQIA+ community</span>
-      <%= inline_svg_tag "smart_match/categories/pride.svg", class: "w-20 h-20 mt-2 text-white", aria_hidden: "true" %>
-    </label>
-
-    <%# Children & family %>
-    <label class="sm-card-option sm-card-option--blue"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="donor_communities[]" value="children_family"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">Children & family</span>
-      <%= inline_svg_tag "smart_match/family.svg", class: "w-20 h-20 mt-2 text-white", aria_hidden: "true" %>
-    </label>
-
-    <%# No preference %>
-    <label class="sm-card-option sm-card-option--blue"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="donor_communities[]" value="no_preference"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">No preference</span>
-    </label>
+    <% [
+      ["Seniors",                    "seniors",          "smart_match/senior.svg",            "text-white"],
+      ["Veteran & military",         "veteran_military", "smart_match/categories/medal.svg",  ""],
+      ["Spanish-speaking communities","spanish_speaking","smart_match/languages.svg",         "text-white"],
+      ["BIPOC communities",          "bipoc",            "smart_match/community.svg",         "text-white"],
+      ["People with disabilities",   "disabilities",     "smart_match/categories/disability.svg","text-white"],
+      ["LGBTQIA+ community",         "lgbtqia",          "smart_match/categories/pride.svg",  "text-white"],
+      ["Children & family",          "children_family",  "smart_match/family.svg",            "text-white"],
+      ["No preference",              "no_preference",    nil,                                 ""]
+    ].each do |label, value, icon, icon_class| %>
+      <label class="sm-card-option sm-card-option--blue <%= 'selected' if @session_answers[:donor_communities].include?(value) %>"
+             data-action="click->smart-match-quiz#selectCard"
+             data-select-mode="multiple">
+        <input type="checkbox" name="donor_communities[]" value="<%= value %>"
+               class="sr-only"
+               <%= "checked" if @session_answers[:donor_communities].include?(value) %>
+               data-smart-match-quiz-target="causeCheckbox" />
+        <span class="text-base font-bold text-center"><%= label %></span>
+        <% if icon %>
+          <%= inline_svg_tag icon, class: "w-20 h-20 mt-2 #{icon_class}", aria_hidden: "true" %>
+        <% end %>
+      </label>
+    <% end %>
 
   </div>
 <% end %>

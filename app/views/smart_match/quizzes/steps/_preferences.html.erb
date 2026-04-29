@@ -2,65 +2,25 @@
              data: { smart_match_quiz_target: "form" } do |f| %>
   <div data-card-group="prefs" data-card-cols="3">
 
-    <%# Free or sliding-scale %>
-    <label class="sm-card-option"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="prefs[]" value="free_sliding_scale"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">Free or sliding-scale services</span>
-      <%= inline_svg_tag "smart_match/free.svg", class: "w-20 h-20 mt-2", aria_hidden: "true" %>
-    </label>
-
-    <%# No ID required %>
-    <label class="sm-card-option"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="prefs[]" value="no_id_required"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">No ID or documentation required</span>
-      <%= inline_svg_tag "smart_match/no_id.svg", class: "w-20 h-20 mt-2", aria_hidden: "true" %>
-    </label>
-
-    <%# Spanish or another language %>
-    <label class="sm-card-option"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="prefs[]" value="multilingual"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">Spanish or another language available</span>
-      <%= inline_svg_tag "smart_match/languages.svg", class: "w-20 h-20 mt-2 text-blue-dark", aria_hidden: "true" %>
-    </label>
-
-    <%# LGBTQIA+ affirming %>
-    <label class="sm-card-option"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="prefs[]" value="lgbtqia_affirming"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">LGBTQIA+ affirming services</span>
-      <%= inline_svg_tag "smart_match/rainbow_pride.svg", class: "w-20 h-20 mt-2", aria_hidden: "true" %>
-    </label>
-
-    <%# Wheelchair accessible %>
-    <label class="sm-card-option"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="prefs[]" value="wheelchair_accessible"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">Wheelchair accessible locations</span>
-      <%= inline_svg_tag "smart_match/disability2.svg", class: "w-20 h-20 mt-2", aria_hidden: "true" %>
-    </label>
-
-    <%# Women- or BIPOC-led %>
-    <label class="sm-card-option"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="prefs[]" value="women_bipoc_led"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">Women- or BIPOC-led organizations</span>
-      <%= inline_svg_tag "smart_match/women.svg", class: "w-20 h-20 mt-2", aria_hidden: "true" %>
-    </label>
+    <% [
+      ["Free or sliding-scale services",            "free_sliding_scale",   "smart_match/free.svg",          ""],
+      ["No ID or documentation required",           "no_id_required",       "smart_match/no_id.svg",         ""],
+      ["Spanish or another language available",     "multilingual",         "smart_match/languages.svg",     ""],
+      ["LGBTQIA+ affirming services",               "lgbtqia_affirming",    "smart_match/rainbow_pride.svg", ""],
+      ["Wheelchair accessible locations",           "wheelchair_accessible","smart_match/disability2.svg",   ""],
+      ["Women- or BIPOC-led organizations",         "women_bipoc_led",      "smart_match/women.svg",         ""]
+    ].each do |label, value, icon, icon_class| %>
+      <label class="sm-card-option <%= 'selected' if @session_answers[:prefs].include?(value) %>"
+             data-action="click->smart-match-quiz#selectCard"
+             data-select-mode="multiple">
+        <input type="checkbox" name="prefs[]" value="<%= value %>"
+               class="sr-only"
+               <%= "checked" if @session_answers[:prefs].include?(value) %>
+               data-smart-match-quiz-target="causeCheckbox" />
+        <span class="text-base font-bold text-center"><%= label %></span>
+        <%= inline_svg_tag icon, class: "w-20 h-20 mt-2 #{icon_class}", aria_hidden: "true" %>
+      </label>
+    <% end %>
 
   </div>
 <% end %>

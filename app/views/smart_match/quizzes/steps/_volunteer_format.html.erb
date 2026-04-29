@@ -2,35 +2,22 @@
              data: { smart_match_quiz_target: "form" } do |f| %>
   <div data-card-group="volunteer_format" data-card-cols="3">
 
-    <%# Only in-person %>
-    <label class="sm-card-option sm-card-option--white"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="single">
-      <input type="radio" name="volunteer_format" value="in_person"
-             class="sr-only" data-smart-match-quiz-target="radio" />
-      <span class="text-base font-bold text-center">Only in-person</span>
-      <%= inline_svg_tag "smart_match/walk.svg", class: "w-20 h-20 mt-2", aria_hidden: "true" %>
-    </label>
-
-    <%# Only remote %>
-    <label class="sm-card-option sm-card-option--white"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="single">
-      <input type="radio" name="volunteer_format" value="remote"
-             class="sr-only" data-smart-match-quiz-target="radio" />
-      <span class="text-base font-bold text-center">Only remote</span>
-      <%= inline_svg_tag "smart_match/computer.svg", class: "w-20 h-20 mt-2 text-blue-dark", aria_hidden: "true" %>
-    </label>
-
-    <%# Both %>
-    <label class="sm-card-option sm-card-option--white"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="single">
-      <input type="radio" name="volunteer_format" value="both"
-             class="sr-only" data-smart-match-quiz-target="radio" />
-      <span class="text-base font-bold text-center">Both</span>
-      <%= inline_svg_tag "smart_match/justice.svg", class: "w-20 h-20 mt-2 text-blue-dark", aria_hidden: "true" %>
-    </label>
+    <% [
+      ["Only in-person", "in_person", "smart_match/walk.svg",     ""],
+      ["Only remote",    "remote",    "smart_match/computer.svg", "text-blue-dark"],
+      ["Both",           "both",      "smart_match/justice.svg",  "text-blue-dark"]
+    ].each do |label, value, icon, icon_class| %>
+      <label class="sm-card-option sm-card-option--white <%= 'selected' if @session_answers[:volunteer_format] == value %>"
+             data-action="click->smart-match-quiz#selectCard"
+             data-select-mode="single">
+        <input type="radio" name="volunteer_format" value="<%= value %>"
+               class="sr-only"
+               <%= "checked" if @session_answers[:volunteer_format] == value %>
+               data-smart-match-quiz-target="radio" />
+        <span class="text-base font-bold text-center"><%= label %></span>
+        <%= inline_svg_tag icon, class: "w-20 h-20 mt-2 #{icon_class}", aria_hidden: "true" %>
+      </label>
+    <% end %>
 
   </div>
 <% end %>

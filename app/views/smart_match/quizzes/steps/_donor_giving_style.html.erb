@@ -2,55 +2,24 @@
              data: { smart_match_quiz_target: "form" } do |f| %>
   <div data-card-group="donation_style" data-card-cols="3">
 
-    <%# General donation %>
-    <label class="sm-card-option sm-card-option--red"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="donation_style[]" value="general_donation"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">General donation</span>
-      <%= inline_svg_tag "smart_match/donate.svg", class: "w-20 h-20 mt-2", aria_hidden: "true" %>
-    </label>
-
-    <%# Support a specific project %>
-    <label class="sm-card-option sm-card-option--red"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="donation_style[]" value="specific_project"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">Support a specific project</span>
-      <%= inline_svg_tag "smart_match/goal.svg", class: "w-20 h-20 mt-2", aria_hidden: "true" %>
-    </label>
-
-    <%# Donate goods or items %>
-    <label class="sm-card-option sm-card-option--red"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="donation_style[]" value="goods_items"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">Donate goods or items</span>
-      <%= inline_svg_tag "smart_match/groceries.svg", class: "w-20 h-20 mt-2", aria_hidden: "true" %>
-    </label>
-
-    <%# Set up recurring giving %>
-    <label class="sm-card-option sm-card-option--red"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="donation_style[]" value="recurring_giving"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">Set up recurring giving</span>
-      <%= inline_svg_tag "smart_match/monthly.svg", class: "w-20 h-20 mt-2", aria_hidden: "true" %>
-    </label>
-
-    <%# Just exploring for now %>
-    <label class="sm-card-option sm-card-option--red"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="donation_style[]" value="just_exploring"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">Just exploring for now</span>
-      <%= inline_svg_tag "smart_match/map.svg", class: "w-20 h-20 mt-2 text-white", aria_hidden: "true" %>
-    </label>
+    <% [
+      ["General donation",        "general_donation",  "smart_match/donate.svg",   ""],
+      ["Support a specific project","specific_project","smart_match/goal.svg",     ""],
+      ["Donate goods or items",   "goods_items",       "smart_match/groceries.svg",""],
+      ["Set up recurring giving", "recurring_giving",  "smart_match/monthly.svg",  ""],
+      ["Just exploring for now",  "just_exploring",    "smart_match/map.svg",      "text-white"]
+    ].each do |label, value, icon, icon_class| %>
+      <label class="sm-card-option sm-card-option--red <%= 'selected' if @session_answers[:donation_style].include?(value) %>"
+             data-action="click->smart-match-quiz#selectCard"
+             data-select-mode="multiple">
+        <input type="checkbox" name="donation_style[]" value="<%= value %>"
+               class="sr-only"
+               <%= "checked" if @session_answers[:donation_style].include?(value) %>
+               data-smart-match-quiz-target="causeCheckbox" />
+        <span class="text-base font-bold text-center"><%= label %></span>
+        <%= inline_svg_tag icon, class: "w-20 h-20 mt-2 #{icon_class}", aria_hidden: "true" %>
+      </label>
+    <% end %>
 
   </div>
 <% end %>

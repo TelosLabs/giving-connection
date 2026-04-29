@@ -89,14 +89,10 @@ class SmartMatchCard::Component < ApplicationViewComponent
   end
 
   def cause_svg_name(cause)
-    cause.name.downcase
-      .delete("&")
-      .split(" ")
-      .join("_")
-      .tr("-", "_") + ".svg"
+    "#{cause.name.parameterize(separator: "_")}.svg"
   end
 
   def verified?
-    organization.respond_to?(:verified?) && organization.verified?
+    organization.verified?
   end
 end

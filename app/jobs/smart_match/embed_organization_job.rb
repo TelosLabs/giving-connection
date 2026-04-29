@@ -19,9 +19,7 @@ module SmartMatch
 
       vector = EmbeddingClient.call(text: text)
 
-      OrganizationEmbedding.find_or_initialize_by(organization: organization).tap do |embedding|
-        embedding.update!(embedding: vector, text_snapshot: text)
-      end
+      OrganizationEmbedding.upsert_for!(organization: organization, embedding: vector, text_snapshot: text)
     end
   end
 end

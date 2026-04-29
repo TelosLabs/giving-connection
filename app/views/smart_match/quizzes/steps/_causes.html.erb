@@ -1,4 +1,6 @@
 <%
+  selected_causes = @session_answers[:causes]
+
   causes = [
     ["Food security", "hunger_food_security.svg"],
     ["Housing & homelessness", "housing_homelessness.svg"],
@@ -38,7 +40,6 @@
     ["Social sciences", "social_sciences.svg"]
   ]
 
-  selected_causes = Array(session[:smart_match_causes])
 %>
 
 <%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",

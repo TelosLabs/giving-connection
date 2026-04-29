@@ -2,45 +2,23 @@
              data: { smart_match_quiz_target: "form" } do |f| %>
   <div data-card-group="donor_involvement" data-card-cols="4">
 
-    <%# Make a one-time donation %>
-    <label class="sm-card-option"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="single">
-      <input type="radio" name="donor_involvement" value="one_time_donation"
-             class="sr-only" data-smart-match-quiz-target="radio" />
-      <span class="text-base font-bold text-center">Make a one-time donation</span>
-      <%= inline_svg_tag "smart_match/donation_hand.svg", class: "w-20 h-20 mt-2 text-blue-dark", aria_hidden: "true" %>
-    </label>
-
-    <%# Learn more and receive updates %>
-    <label class="sm-card-option"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="single">
-      <input type="radio" name="donor_involvement" value="learn_updates"
-             class="sr-only" data-smart-match-quiz-target="radio" />
-      <span class="text-base font-bold text-center">Learn more and receive updates</span>
-      <%= inline_svg_tag "smart_match/alert2.svg", class: "w-20 h-20 mt-2 text-blue-dark", aria_hidden: "true" %>
-    </label>
-
-    <%# Volunteer or attend events %>
-    <label class="sm-card-option"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="single">
-      <input type="radio" name="donor_involvement" value="volunteer_events"
-             class="sr-only" data-smart-match-quiz-target="radio" />
-      <span class="text-base font-bold text-center">Volunteer or attend events</span>
-      <%= inline_svg_tag "smart_match/teamwork.svg", class: "w-20 h-20 mt-2 text-blue-dark", aria_hidden: "true" %>
-    </label>
-
-    <%# Explore ongoing or deeper involvement %>
-    <label class="sm-card-option"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="single">
-      <input type="radio" name="donor_involvement" value="deeper_involvement"
-             class="sr-only" data-smart-match-quiz-target="radio" />
-      <span class="text-base font-bold text-center">Explore ongoing or deeper involvement</span>
-      <%= inline_svg_tag "smart_match/recurrent.svg", class: "w-20 h-20 mt-2 text-blue-dark", aria_hidden: "true" %>
-    </label>
+    <% [
+      ["Make a one-time donation",             "one_time_donation",  "smart_match/donation_hand.svg","text-blue-dark"],
+      ["Learn more and receive updates",        "learn_updates",      "smart_match/alert2.svg",      "text-blue-dark"],
+      ["Volunteer or attend events",            "volunteer_events",   "smart_match/teamwork.svg",    "text-blue-dark"],
+      ["Explore ongoing or deeper involvement", "deeper_involvement", "smart_match/recurrent.svg",   "text-blue-dark"]
+    ].each do |label, value, icon, icon_class| %>
+      <label class="sm-card-option <%= 'selected' if @session_answers[:donor_involvement] == value %>"
+             data-action="click->smart-match-quiz#selectCard"
+             data-select-mode="single">
+        <%= f.radio_button :donor_involvement, value,
+              class: "sr-only",
+              checked: @session_answers[:donor_involvement] == value,
+              data: { smart_match_quiz_target: "radio" } %>
+        <span class="text-base font-bold text-center"><%= label %></span>
+        <%= inline_svg_tag icon, class: "w-20 h-20 mt-2 #{icon_class}", aria_hidden: "true" %>
+      </label>
+    <% end %>
 
   </div>
 <% end %>

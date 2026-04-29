@@ -16,9 +16,7 @@ module SmartMatch
         vectors = EmbeddingClient.embed_batch(texts: org_text_pairs.map(&:last))
 
         org_text_pairs.each_with_index do |(org, text), index|
-          OrganizationEmbedding.find_or_initialize_by(organization: org).tap do |embedding|
-            embedding.update!(embedding: vectors[index], text_snapshot: text)
-          end
+          OrganizationEmbedding.upsert_for!(organization: org, embedding: vectors[index], text_snapshot: text)
         end
       end
     end

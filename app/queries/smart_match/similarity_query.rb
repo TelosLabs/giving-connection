@@ -8,56 +8,37 @@ module SmartMatch
 
     class << self
       def call(embedding:, state:, coordinates:, radius_miles: 5)
-        all_scope = global_scope
-        base_scope = filtered_scope(state)
+        state_scope = filtered_scope(state)
 
-        if base_scope.none?
-          return global_results(all_scope, embedding)
-        end
+        return results_from(base_scope, embedding) if state_scope.none?
 
-        radii = expansion_radii(radius_miles)
-
-        radii.each do |radius|
-          candidates = distance_filtered(base_scope, coordinates, radius)
+        expansion_radii(radius_miles).each do |radius|
+          candidates = distance_filtered(state_scope, coordinates, radius)
           next if candidates.none?
 
-          results = ranked_results(candidates, embedding, coordinates)
+          results = results_from(candidates, embedding, coordinates)
           return results if results.size >= MIN_RESULTS
         end
 
-        state_wide_results(base_scope, embedding)
+        results_from(state_scope, embedding)
       end
 
       private
 
-      def global_scope
+      def base_scope
         OrganizationEmbedding
           .joins(organization: :locations)
           .where(locations: {main: true})
           .merge(Location.joins(:organization).where(organizations: {active: true}))
           .distinct
-      end
-
-      def global_results(scope, embedding)
-        scope
-          .nearest_neighbors(:embedding, embedding, distance: "cosine")
-          .limit(matching_rules["scoring"]["max_results"])
-          .map { |oe| build_result(oe, nil) }
       end
 
       def filtered_scope(state)
-        OrganizationEmbedding
-          .joins(organization: :locations)
-          .where(locations: {main: true})
-          .merge(Location.joins(:organization).where(organizations: {active: true}))
-          .merge(location_in_state(state))
-          .distinct
+        base_scope.merge(location_in_state(state))
       end
 
       def location_in_state(state)
-        Location.where(
-          "address ILIKE ?", "%#{sanitize_like(state)}%"
-        )
+        Location.where("address ILIKE ?", "%#{sanitize_like(state)}%")
       end
 
       def distance_filtered(scope, coordinates, radius_miles)
@@ -68,18 +49,11 @@ module SmartMatch
         )
       end
 
-      def ranked_results(scope, embedding, coordinates)
+      def results_from(scope, embedding, coordinates = nil)
         scope
           .nearest_neighbors(:embedding, embedding, distance: "cosine")
           .limit(matching_rules["scoring"]["max_results"])
           .map { |oe| build_result(oe, coordinates) }
-      end
-
-      def state_wide_results(scope, embedding)
-        scope
-          .nearest_neighbors(:embedding, embedding, distance: "cosine")
-          .limit(matching_rules["scoring"]["max_results"])
-          .map { |oe| build_result(oe, nil) }
       end
 
       def build_result(org_embedding, coordinates)
@@ -108,7 +82,7 @@ module SmartMatch
       end
 
       def matching_rules
-        @matching_rules ||= YAML.load_file(Rails.root.join("config", "matching_rules.yml"))
+        SmartMatch::Config.matching_rules
       end
     end
   end

@@ -70,8 +70,7 @@ module SmartMatch
     end
 
     def resolve_coordinates(user_intent)
-      centroids = city_centroids
-      state_data = centroids[user_intent.state] || {}
+      state_data = SmartMatch::Config.city_centroids[user_intent.state] || {}
       city_data = state_data[user_intent.city]
 
       if city_data
@@ -87,15 +86,7 @@ module SmartMatch
     end
 
     def resolve_radius(travel_bucket)
-      matching_rules.dig("radius_by_travel_bucket", travel_bucket) || 5
-    end
-
-    def city_centroids
-      @city_centroids ||= YAML.load_file(Rails.root.join("config", "city_centroids.yml"))
-    end
-
-    def matching_rules
-      @matching_rules ||= YAML.load_file(Rails.root.join("config", "matching_rules.yml"))
+      SmartMatch::Config.matching_rules.dig("radius_by_travel_bucket", travel_bucket) || 5
     end
   end
 end

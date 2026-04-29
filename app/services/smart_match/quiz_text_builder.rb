@@ -46,13 +46,7 @@ module SmartMatch
     end
 
     def cause_mappings
-      @cause_mappings ||= matching_rules.fetch("cause_mappings", {})
-    end
-
-    def matching_rules
-      @matching_rules ||= YAML.load_file(
-        Rails.root.join("config", "matching_rules.yml")
-      )
+      SmartMatch::Config.matching_rules.fetch("cause_mappings", {})
     end
   end
 end

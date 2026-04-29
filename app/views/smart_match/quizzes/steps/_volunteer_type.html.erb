@@ -2,84 +2,29 @@
              data: { smart_match_quiz_target: "form" } do |f| %>
   <div data-card-group="volunteer_type" data-card-cols="4">
 
-    <%# Kids or seniors %>
-    <label class="sm-card-option"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="volunteer_type[]" value="kids_seniors"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">Kids or seniors</span>
-      <%= inline_svg_tag "smart_match/elderly.svg", class: "w-20 h-20 mt-2", aria_hidden: "true" %>
-    </label>
-
-    <%# Veterans / military families %>
-    <label class="sm-card-option"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="volunteer_type[]" value="veterans_military"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">Veterans / military families</span>
-      <%= inline_svg_tag "causes_categories/veteran_military.svg", class: "w-20 h-20 mt-2", aria_hidden: "true" %>
-    </label>
-
-    <%# Spanish-speaking %>
-    <label class="sm-card-option"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="volunteer_type[]" value="spanish_speaking"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">Spanish-speaking</span>
-      <%= inline_svg_tag "smart_match/languages.svg", class: "w-20 h-20 mt-2 text-blue-dark", aria_hidden: "true" %>
-    </label>
-
-    <%# Grassroots / BIPOC-led %>
-    <label class="sm-card-option"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="volunteer_type[]" value="grassroots_bipoc"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">Grassroots / BIPOC-led</span>
-      <%= inline_svg_tag "smart_match/community.svg", class: "w-20 h-20 mt-2 text-blue-dark", aria_hidden: "true" %>
-    </label>
-
-    <%# Behind the scenes %>
-    <label class="sm-card-option"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="volunteer_type[]" value="behind_scenes"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">Behind the scenes</span>
-      <%= inline_svg_tag "smart_match/activities.svg", class: "w-20 h-20 mt-2 text-blue-dark", aria_hidden: "true" %>
-    </label>
-
-    <%# Accessible or virtual %>
-    <label class="sm-card-option"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="volunteer_type[]" value="accessible_virtual"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">Accessible or virtual</span>
-      <%= inline_svg_tag "smart_match/computer.svg", class: "w-20 h-20 mt-2 text-blue-dark", aria_hidden: "true" %>
-    </label>
-
-    <%# Family or group %>
-    <label class="sm-card-option"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="volunteer_type[]" value="family_group"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">Family or group</span>
-      <%= inline_svg_tag "smart_match/family.svg", class: "w-20 h-20 mt-2 text-blue-dark", aria_hidden: "true" %>
-    </label>
-
-    <%# No preference %>
-    <label class="sm-card-option"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="multiple">
-      <input type="checkbox" name="volunteer_type[]" value="no_preference"
-             class="sr-only" data-smart-match-quiz-target="causeCheckbox" />
-      <span class="text-base font-bold text-center">No preference</span>
-    </label>
+    <% [
+      ["Kids or seniors",          "kids_seniors",        "smart_match/elderly.svg",               ""],
+      ["Veterans / military families","veterans_military", "causes_categories/veteran_military.svg",""],
+      ["Spanish-speaking",         "spanish_speaking",    "smart_match/languages.svg",             "text-blue-dark"],
+      ["Grassroots / BIPOC-led",   "grassroots_bipoc",    "smart_match/community.svg",             "text-blue-dark"],
+      ["Behind the scenes",        "behind_scenes",       "smart_match/activities.svg",            "text-blue-dark"],
+      ["Accessible or virtual",    "accessible_virtual",  "smart_match/computer.svg",              "text-blue-dark"],
+      ["Family or group",          "family_group",        "smart_match/family.svg",                "text-blue-dark"],
+      ["No preference",            "no_preference",       nil,                                     ""]
+    ].each do |label, value, icon, icon_class| %>
+      <label class="sm-card-option <%= 'selected' if @session_answers[:volunteer_type].include?(value) %>"
+             data-action="click->smart-match-quiz#selectCard"
+             data-select-mode="multiple">
+        <input type="checkbox" name="volunteer_type[]" value="<%= value %>"
+               class="sr-only"
+               <%= "checked" if @session_answers[:volunteer_type].include?(value) %>
+               data-smart-match-quiz-target="causeCheckbox" />
+        <span class="text-base font-bold text-center"><%= label %></span>
+        <% if icon %>
+          <%= inline_svg_tag icon, class: "w-20 h-20 mt-2 #{icon_class}", aria_hidden: "true" %>
+        <% end %>
+      </label>
+    <% end %>
 
   </div>
 

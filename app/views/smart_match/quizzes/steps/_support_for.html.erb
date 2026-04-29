@@ -3,33 +3,36 @@
   <div data-card-group="support-for" data-card-cols="3">
 
     <%# Myself %>
-    <label class="sm-card-option sm-card-option--white"
+    <label class="sm-card-option sm-card-option--white <%= 'selected' if @session_answers[:support_for] == 'myself' %>"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :support_for, "myself",
             class: "sr-only",
+            checked: @session_answers[:support_for] == "myself",
             data: { smart_match_quiz_target: "radio" } %>
       <span class="text-base font-bold">Myself</span>
       <%= inline_svg_tag "smart_match/user.svg", class: "w-24 h-24 mt-2 text-blue-dark", aria_hidden: "true" %>
     </label>
 
     <%# Someone else %>
-    <label class="sm-card-option sm-card-option--white"
+    <label class="sm-card-option sm-card-option--white <%= 'selected' if @session_answers[:support_for] == 'someone_else' %>"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :support_for, "someone_else",
             class: "sr-only",
+            checked: @session_answers[:support_for] == "someone_else",
             data: { smart_match_quiz_target: "radio" } %>
       <span class="text-base font-bold">Someone else</span>
       <%= inline_svg_tag "smart_match/people.svg", class: "w-24 h-24 mt-2", aria_hidden: "true" %>
     </label>
 
     <%# On behalf of an organization %>
-    <label class="sm-card-option sm-card-option--white"
+    <label class="sm-card-option sm-card-option--white <%= 'selected' if @session_answers[:support_for] == 'organization' %>"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :support_for, "organization",
             class: "sr-only",
+            checked: @session_answers[:support_for] == "organization",
             data: { smart_match_quiz_target: "radio" } %>
       <span class="text-base font-bold">On behalf of an organization</span>
       <%= inline_svg_tag "smart_match/building2.svg", class: "w-24 h-24 mt-2", aria_hidden: "true" %>

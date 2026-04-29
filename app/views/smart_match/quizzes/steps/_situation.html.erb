@@ -3,33 +3,36 @@
   <div data-card-group="situation" data-card-cols="3">
 
     <%# Urgent %>
-    <label class="sm-card-option sm-card-option--red"
+    <label class="sm-card-option sm-card-option--red <%= 'selected' if @session_answers[:situation] == 'urgent' %>"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :situation, "urgent",
             class: "sr-only",
+            checked: @session_answers[:situation] == "urgent",
             data: { smart_match_quiz_target: "radio" } %>
       <span class="text-base font-bold">I need services urgently</span>
       <%= inline_svg_tag "smart_match/alert.svg", class: "w-2/3 max-w-md h-auto" %>
     </label>
 
     <%# Long-term %>
-    <label class="sm-card-option sm-card-option--red"
+    <label class="sm-card-option sm-card-option--red <%= 'selected' if @session_answers[:situation] == 'long_term' %>"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :situation, "long_term",
             class: "sr-only",
+            checked: @session_answers[:situation] == "long_term",
             data: { smart_match_quiz_target: "radio" } %>
       <span class="text-base font-bold">I am looking for long-term support</span>
       <%= inline_svg_tag "smart_match/time.svg", class: "w-2/3 max-w-md h-auto" %>
     </label>
 
     <%# Exploring %>
-    <label class="sm-card-option sm-card-option--red"
+    <label class="sm-card-option sm-card-option--red <%= 'selected' if @session_answers[:situation] == 'exploring' %>"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :situation, "exploring",
             class: "sr-only",
+            checked: @session_answers[:situation] == "exploring",
             data: { smart_match_quiz_target: "radio" } %>
       <span class="text-base font-bold">I am exploring my options</span>
       <%= inline_svg_tag "smart_match/map.svg", class: "w-2/3 max-w-md h-auto text-white" %>

@@ -2,45 +2,23 @@
              data: { smart_match_quiz_target: "form" } do |f| %>
   <div data-card-group="volunteer_time" data-card-cols="4">
 
-    <%# Just one day / one-time event %>
-    <label class="sm-card-option sm-card-option--red"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="single">
-      <input type="radio" name="volunteer_time" value="one_time"
-             class="sr-only" data-smart-match-quiz-target="radio" />
-      <span class="text-base font-bold text-center">Just one day / one-time event</span>
-      <%= inline_svg_tag "smart_match/calendar.svg", class: "w-20 h-20 mt-2 text-white", aria_hidden: "true" %>
-    </label>
-
-    <%# A few hours a week %>
-    <label class="sm-card-option sm-card-option--red"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="single">
-      <input type="radio" name="volunteer_time" value="few_hours"
-             class="sr-only" data-smart-match-quiz-target="radio" />
-      <span class="text-base font-bold text-center">A few hours a week</span>
-      <%= inline_svg_tag "smart_match/time.svg", class: "w-20 h-20 mt-2 text-white", aria_hidden: "true" %>
-    </label>
-
-    <%# An ongoing role %>
-    <label class="sm-card-option sm-card-option--red"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="single">
-      <input type="radio" name="volunteer_time" value="ongoing"
-             class="sr-only" data-smart-match-quiz-target="radio" />
-      <span class="text-base font-bold text-center">An ongoing role</span>
-      <%= inline_svg_tag "smart_match/recurrent.svg", class: "w-20 h-20 mt-2 text-white", aria_hidden: "true" %>
-    </label>
-
-    <%# I'm not sure yet %>
-    <label class="sm-card-option sm-card-option--red"
-           data-action="click->smart-match-quiz#selectCard"
-           data-select-mode="single">
-      <input type="radio" name="volunteer_time" value="not_sure"
-             class="sr-only" data-smart-match-quiz-target="radio" />
-      <span class="text-base font-bold text-center">I'm not sure yet</span>
-      <%= inline_svg_tag "smart_match/question.svg", class: "w-20 h-20 mt-2 text-white", aria_hidden: "true" %>
-    </label>
+    <% [
+      ["Just one day / one-time event", "one_time",  "smart_match/calendar.svg"],
+      ["A few hours a week",            "few_hours", "smart_match/time.svg"],
+      ["An ongoing role",               "ongoing",   "smart_match/recurrent.svg"],
+      ["I'm not sure yet",              "not_sure",  "smart_match/question.svg"]
+    ].each do |label, value, icon| %>
+      <label class="sm-card-option sm-card-option--red <%= 'selected' if @session_answers[:volunteer_time] == value %>"
+             data-action="click->smart-match-quiz#selectCard"
+             data-select-mode="single">
+        <input type="radio" name="volunteer_time" value="<%= value %>"
+               class="sr-only"
+               <%= "checked" if @session_answers[:volunteer_time] == value %>
+               data-smart-match-quiz-target="radio" />
+        <span class="text-base font-bold text-center"><%= label %></span>
+        <%= inline_svg_tag icon, class: "w-20 h-20 mt-2 text-white", aria_hidden: "true" %>
+      </label>
+    <% end %>
 
   </div>
 <% end %>

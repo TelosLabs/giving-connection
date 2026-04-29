@@ -18,6 +18,7 @@ module SmartMatch
       @step_partial   = SmartMatch::QuizStepConfig.partial_for(@user_type, @step)
       @is_final_step  = @step == @total_steps
       @section_map    = SmartMatch::QuizStepConfig.section_map_for(@user_type)
+      @session_answers = quiz_session_answers
     end
 
     def destroy
@@ -40,6 +41,32 @@ module SmartMatch
     end
 
     private
+
+    def quiz_session_answers
+      {
+        support_for:           session[:smart_match_support_for],
+        self_description:      session[:smart_match_self_description],
+        situation:             session[:smart_match_situation],
+        city:                  session[:smart_match_city],
+        state:                 session[:smart_match_state],
+        travel_bucket:         session[:smart_match_travel_bucket],
+        causes:                Array(session[:smart_match_causes]),
+        prefs:                 Array(session[:smart_match_prefs]),
+        language:              session[:smart_match_language],
+        age_range:             session[:smart_match_age_range],
+        gender_identity:       session[:smart_match_gender_identity],
+        race_ethnicity:        session[:smart_match_race_ethnicity],
+        donation_style:        Array(session[:smart_match_donation_style]),
+        giving_inspiration:    Array(session[:smart_match_giving_inspiration]),
+        donor_communities:     Array(session[:smart_match_donor_communities]),
+        impact_location:       session[:smart_match_impact_location],
+        donor_involvement:     session[:smart_match_donor_involvement],
+        volunteer_involvement: Array(session[:smart_match_volunteer_involvement]),
+        volunteer_type:        Array(session[:smart_match_volunteer_type]),
+        volunteer_format:      session[:smart_match_volunteer_format],
+        volunteer_time:        session[:smart_match_volunteer_time]
+      }
+    end
 
     def quiz_params
       params.permit(:user_type, :support_for, :self_description, :situation, :city_selection, :state, :city, :travel_bucket,
