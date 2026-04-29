@@ -47,11 +47,12 @@ RSpec.describe SmartMatch::QuizNavigator do
 
       it "marks completed on final step for volunteer" do
         session[:smart_match_user_type] = "volunteer"
+        final_step = described_class.total_steps_for("volunteer")
 
         result = described_class.call(
           session: session,
           params: ActionController::Parameters.new(language_input: "help with education").permit!,
-          step: 4
+          step: final_step
         )
 
         expect(result[:completed]).to be true
@@ -101,16 +102,16 @@ RSpec.describe SmartMatch::QuizNavigator do
   end
 
   describe ".total_steps_for" do
-    it "returns 5 for service_seeker" do
-      expect(described_class.total_steps_for("service_seeker")).to eq(5)
+    it "returns 9 for service_seeker" do
+      expect(described_class.total_steps_for("service_seeker")).to eq(9)
     end
 
-    it "returns 4 for volunteer" do
-      expect(described_class.total_steps_for("volunteer")).to eq(4)
+    it "returns 8 for volunteer" do
+      expect(described_class.total_steps_for("volunteer")).to eq(8)
     end
 
-    it "returns 4 for donor" do
-      expect(described_class.total_steps_for("donor")).to eq(4)
+    it "returns 9 for donor" do
+      expect(described_class.total_steps_for("donor")).to eq(9)
     end
 
     it "returns default for unknown type" do
