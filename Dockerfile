@@ -76,6 +76,7 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists/*
 
 # Use jemalloc for better memory performance
+# Path is x86_64-specific — update if builder.arch changes from amd64
 ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
 
 # Create non-root user
