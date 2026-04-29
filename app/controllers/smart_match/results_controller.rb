@@ -20,14 +20,28 @@ module SmartMatch
     end
 
     def process_quiz_results
+      @submission = find_or_create_submission
+      @results = @submission.organization_matches.includes(:organization).order(:rank).limit(3)
+    end
+
+    def find_or_create_submission
+      if (id = session[:smart_match_submission_id])
+        QuizSubmission.find_by(id: id) || create_submission
+      else
+        create_submission
+      end
+    end
+
+    def create_submission
       result = SmartMatch::SubmissionProcessor.call(
         session_answers: quiz_session_answers,
         user_type: session[:smart_match_user_type],
         session_id: session.id.to_s,
         user: current_user
       )
-      @submission = result[:submission]
-      @results = @submission.organization_matches.includes(:organization).order(:rank).limit(3)
+      submission = result[:submission]
+      session[:smart_match_submission_id] = submission.id
+      submission
     end
 
     def quiz_session_answers

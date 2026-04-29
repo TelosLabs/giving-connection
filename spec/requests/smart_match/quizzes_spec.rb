@@ -16,10 +16,10 @@ RSpec.describe "SmartMatch::Quizzes", type: :request do
       expect(response).not_to redirect_to(new_user_session_path)
     end
 
-    it "shows step 1 by default" do
+    it "shows section 1 by default" do
       get smart_match_quiz_path
 
-      expect(response.body).to include("Step 1 of")
+      expect(response.body).to include("About You")
     end
   end
 
@@ -44,14 +44,18 @@ RSpec.describe "SmartMatch::Quizzes", type: :request do
       expect(response).to redirect_to(smart_match_quiz_path)
     end
 
-    it "redirects to results on quiz completion" do
-      # Volunteer has 4 steps
+    it "redirects to confirmation on quiz completion" do
+      # Volunteer has 8 steps
       put smart_match_quiz_path, params: {user_type: "volunteer"}
-      put smart_match_quiz_path, params: {state: "TN", city: "Nashville", travel_bucket: "moderate"}
-      put smart_match_quiz_path, params: {causes: ["Education", "Health"]}
+      put smart_match_quiz_path, params: {causes: ["Education"]}
+      put smart_match_quiz_path, params: {volunteer_involvement: ["Teaching"]}
+      put smart_match_quiz_path, params: {volunteer_type: ["In-person"]}
+      put smart_match_quiz_path, params: {volunteer_format: "in_person"}
+      put smart_match_quiz_path, params: {city_selection: "Nashville"}
+      put smart_match_quiz_path, params: {volunteer_time: "few_hours_week"}
       put smart_match_quiz_path, params: {language_input: "I want to help"}
 
-      expect(response).to redirect_to(smart_match_results_path)
+      expect(response).to redirect_to(smart_match_confirmation_path)
     end
   end
 end

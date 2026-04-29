@@ -44,6 +44,7 @@ module SmartMatch
 
     def quiz_session_answers
       {
+        user_type: session[:smart_match_user_type],
         support_for: session[:smart_match_support_for],
         self_description: session[:smart_match_self_description],
         situation: session[:smart_match_situation],

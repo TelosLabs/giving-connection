@@ -25,15 +25,9 @@ RSpec.describe SmartMatch::SimilarityQuery do
 
     it "returns results with expected keys" do
       org = create(:organization)
+      loc = org.locations.first
+      loc.update_columns(address: "123 Main St, Nashville, TN 37201")
       create(:organization_embedding, organization: org)
-
-      allow(described_class).to receive(:call).and_return([
-        {
-          organization_embedding: OrganizationEmbedding.last,
-          cosine_distance: 0.2,
-          distance_miles: 5.0
-        }
-      ])
 
       results = described_class.call(
         embedding: embedding,
@@ -42,6 +36,7 @@ RSpec.describe SmartMatch::SimilarityQuery do
         radius_miles: 50
       )
 
+      expect(results).to be_an(Array)
       result = results.first
       expect(result).to include(:organization_embedding, :cosine_distance, :distance_miles)
     end

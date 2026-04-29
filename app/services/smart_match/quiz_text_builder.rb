@@ -36,7 +36,7 @@ module SmartMatch
     end
 
     def preferences
-      Array(user_intent.prefs_selected).map(&:presence).compact
+      Array(user_intent.prefs_selected).compact_blank
     end
 
     def location_text

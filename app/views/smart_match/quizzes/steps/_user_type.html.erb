@@ -3,33 +3,36 @@
   <div data-card-group="user-type" data-card-cols="3">
 
     <%# Service seeker %>
-    <label class="sm-card-option sm-card-option--white"
+    <label class="sm-card-option sm-card-option--white <%= 'selected' if @session_answers[:user_type] == 'service_seeker' %>"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :user_type, "service_seeker",
             class: "sr-only",
+            checked: @session_answers[:user_type] == "service_seeker",
             data: { smart_match_quiz_target: "radio" } %>
       <span class="text-base font-bold">I'm here seeking help from a nonprofit</span>
       <%= inline_svg_tag "cloud-laptop.svg", class: "w-2/3 max-w-md h-auto" %>
     </label>
 
     <%# Donor %>
-    <label class="sm-card-option sm-card-option--white"
+    <label class="sm-card-option sm-card-option--white <%= 'selected' if @session_answers[:user_type] == 'donor' %>"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :user_type, "donor",
             class: "sr-only",
+            checked: @session_answers[:user_type] == "donor",
             data: { smart_match_quiz_target: "radio" } %>
       <span class="text-base font-bold">I want to donate to a cause I care about</span>
       <%= inline_svg_tag "e-commerce.svg", class: "w-2/3 max-w-md h-auto" %>
     </label>
 
     <%# Volunteer %>
-    <label class="sm-card-option sm-card-option--white"
+    <label class="sm-card-option sm-card-option--white <%= 'selected' if @session_answers[:user_type] == 'volunteer' %>"
            data-action="click->smart-match-quiz#selectCard"
            data-select-mode="single">
       <%= f.radio_button :user_type, "volunteer",
             class: "sr-only",
+            checked: @session_answers[:user_type] == "volunteer",
             data: { smart_match_quiz_target: "radio" } %>
       <span class="text-base font-bold">I want to volunteer my time</span>
       <%= inline_svg_tag "water-plants.svg", class: "w-2/3 max-w-md h-auto" %>
