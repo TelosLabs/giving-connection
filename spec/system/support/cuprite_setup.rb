@@ -6,15 +6,26 @@ require "capybara/cuprite"
 # NOTE: The name :cuprite is already registered by Rails.
 # See https://github.com/rubycdp/cuprite/issues/180
 Capybara.register_driver(:better_cuprite) do |app|
+  browser_path = ENV["BROWSER_PATH"].presence || [
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    "/opt/homebrew/bin/chromium",
+    "/Applications/Chromium.app/Contents/MacOS/Chromium"
+  ].find { |path| File.exist?(path) }
+
   Capybara::Cuprite::Driver.new(
     app,
     window_size: [1200, 800],
+    browser_path: browser_path,
     # See additional options for Dockerized environment in the respective section of this article
-    browser_options: {},
+    browser_options: {
+      "no-sandbox" => nil,
+      "disable-gpu" => nil,
+      "disable-dev-shm-usage" => nil
+    },
     # Increase Chrome startup wait time (required for stable CI builds)
-    process_timeout: 15,
-    # Enable debugging capabilities
-    inspector: true,
+    process_timeout: 45,
+    # Disable inspector for stability in automated runs
+    inspector: false,
     # Allow running Chrome in a headful mode by setting HEADLESS env
     # var to a falsey value
     headless: !ENV["HEADLESS"].in?(%w[n 0 no false])
