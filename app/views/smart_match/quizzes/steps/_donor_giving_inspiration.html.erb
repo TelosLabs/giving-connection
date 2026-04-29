@@ -1,0 +1,31 @@
+<%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
+             data: { smart_match_quiz_target: "form" } do |f| %>
+  <div data-card-group="giving_inspiration" data-card-cols="4">
+
+    <% [
+      ["Supporting my local community",               "local_community",        "smart_match/community.svg",              "text-blue-dark"],
+      ["A cause that's personal or close to my heart","personal_cause",         "smart_match/user.svg",                   "text-blue-dark"],
+      ["Helping underserved or overlooked communities","underserved_communities","smart_match/categories/care.svg",        "text-blue-dark"],
+      ["Giving in honor or in memory of someone",     "honor_memory",           "causes_categories/mental_health.svg",    ""],
+      ["Making sure my donation has real impact",      "real_impact",            "causes_categories/financial_assistance.svg",""],
+      ["Discovering meaningful ways to give",          "discovering_ways",       "smart_match/map.svg",                   "text-blue-dark"],
+      ["Giving in alignment with my values",           "values_aligned",         "smart_match/family.svg",                "text-blue-dark"]
+    ].each do |label, value, icon, icon_class| %>
+      <label class="sm-card-option sm-card-option--white <%= 'selected' if @session_answers[:giving_inspiration].include?(value) %>"
+             data-action="click->smart-match-quiz#selectCard"
+             data-select-mode="multiple">
+        <input type="checkbox" name="giving_inspiration[]" value="<%= value %>"
+               class="sr-only"
+               <%= "checked" if @session_answers[:giving_inspiration].include?(value) %>
+               data-smart-match-quiz-target="causeCheckbox" />
+        <span class="text-base font-bold text-center"><%= label %></span>
+        <%= inline_svg_tag icon, class: "w-20 h-20 mt-2 #{icon_class}", aria_hidden: "true" %>
+      </label>
+    <% end %>
+
+  </div>
+
+  <div class="sm-selection-hint mt-5 rounded-lg px-5 py-3 text-sm font-medium text-blue-dark text-center" style="background-color: #e2ecf7;">
+    Your answers help us identify donation opportunities that best match your preferences.
+  </div>
+<% end %>

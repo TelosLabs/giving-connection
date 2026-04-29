@@ -57,22 +57,6 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      postgres:
-        image: postgis/postgis:14-3.3
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: test
-        ports:
-          - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        # tmpfs makes DB faster by using RAM
-        options: >-
-          --mount type=tmpfs,destination=/var/lib/postgresql/data
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
       redis:
         image: redis
         ports:
@@ -81,6 +65,25 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Start PostgreSQL with PostGIS + pgvector
+        run: |
+          docker run --name postgres -d \
+            -e POSTGRES_USER=postgres \
+            -e POSTGRES_PASSWORD=postgres \
+            -e POSTGRES_DB=test \
+            -p 5432:5432 \
+            --tmpfs /var/lib/postgresql/data \
+            postgis/postgis:14-3.3
+          until docker exec postgres pg_isready -U postgres; do sleep 1; done
+          docker exec postgres bash -c "
+            apt-get update -qq \
+            && apt-get install -y --no-install-recommends build-essential git postgresql-server-dev-14 clang-11 llvm-11 \
+            && git clone --branch v0.8.0 https://github.com/pgvector/pgvector.git /tmp/pgvector \
+            && cd /tmp/pgvector && make && make install \
+            && rm -rf /tmp/pgvector
+          "
+
       - uses: actions/setup-node@v3
         with:
           node-version: 20.17.0

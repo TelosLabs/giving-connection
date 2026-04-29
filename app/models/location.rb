@@ -82,6 +82,7 @@ class Location < ActiveRecord::Base
   before_validation :lonlat_geo_point
   before_validation :ensure_slug_uniqueness
   after_create :regenerate_org_locations_slugs, if: :multiple_locations?
+  after_commit :schedule_org_embedding_update, on: [:create, :update], if: :saved_change_to_address?
 
   delegate :social_media, to: :organization
 
@@ -165,5 +166,11 @@ class Location < ActiveRecord::Base
     return if organization.nil?
 
     organization.locations.count > 1
+  end
+
+  def schedule_org_embedding_update
+    return unless organization_id
+
+    SmartMatch::EmbedOrganizationJob.perform_later(organization_id)
   end
 end
