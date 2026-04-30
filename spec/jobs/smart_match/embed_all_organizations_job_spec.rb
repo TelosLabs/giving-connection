@@ -7,30 +7,30 @@ RSpec.describe SmartMatch::EmbedAllOrganizationsJob, type: :job do
 
   describe "#perform" do
     it "creates embeddings for all active organizations" do
-      create(:organization)
-      create(:organization, name: "Second Org")
+      org1 = create(:organization)
+      org2 = create(:organization, name: "Second Org")
 
       allow(SmartMatch::OrganizationTextBuilder).to receive(:call).and_return("test embedding text")
-      allow(SmartMatch::EmbeddingClient).to receive(:embed_batch).and_return([vector, vector])
+      allow(SmartMatch::EmbeddingClient).to receive(:embed_batch) { |texts:| texts.map { vector } }
 
       described_class.new.perform
 
-      expect(OrganizationEmbedding.count).to eq(2)
+      expect(OrganizationEmbedding.where(organization: [org1, org2]).count).to eq(2)
     end
 
     it "skips organizations with nil text" do
-      create(:organization)
+      org = create(:organization)
       allow(SmartMatch::OrganizationTextBuilder).to receive(:call).and_return(nil)
 
       described_class.new.perform
 
-      expect(OrganizationEmbedding.count).to eq(0)
+      expect(OrganizationEmbedding.where(organization: org).count).to eq(0)
     end
 
     it "calls embed_batch instead of individual calls" do
       create(:organization)
       allow(SmartMatch::OrganizationTextBuilder).to receive(:call).and_return("test embedding text")
-      allow(SmartMatch::EmbeddingClient).to receive(:embed_batch).and_return([vector])
+      allow(SmartMatch::EmbeddingClient).to receive(:embed_batch) { |texts:| texts.map { vector } }
 
       described_class.new.perform
 
