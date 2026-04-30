@@ -1,0 +1,468 @@
+# Smart Match Engine — Matching Rules Configuration
+#
+# This file defines the rules used by the smart match engine to score and rank
+# organizations against user quiz responses.
+#
+# Cause names MUST match Organizations::Constants::CAUSES_AND_SERVICES keys exactly.
+# NTEE prefixes reference the letter codes from Organizations::Constants::NTEE_CODE.
+
+# ---------------------------------------------------------------------------
+# Allowed states for the quiz location step
+# ---------------------------------------------------------------------------
+allowed_states:
+  - NJ
+  - CA
+  - TN
+
+# ---------------------------------------------------------------------------
+# Radius (in miles) by user-selected travel willingness
+# Used by SimilarityQuery for PostGIS ST_DWithin filtering.
+# Progressive expansion: if fewer than 3 results, expand to next bucket.
+# ---------------------------------------------------------------------------
+radius_by_travel_bucket:
+  nearby: 5        # "Close to me"
+  moderate: 15     # "Within a short drive"
+  far: 30          # "I'll travel for the right org"
+  statewide: 100   # "Anywhere in my state"
+
+# ---------------------------------------------------------------------------
+# Scoring weights — must sum to 1.0
+# ---------------------------------------------------------------------------
+scoring:
+  weights:
+    embedding_similarity: 0.70
+    attribute_bonus: 0.20
+    distance: 0.10
+  # Minimum number of results to return (triggers radius expansion if not met)
+  min_results: 3
+  # Maximum results to display
+  max_results: 20
+
+# ---------------------------------------------------------------------------
+# Attribute bonus weights — applied within the 20% attribute_bonus bucket
+# Each sub-weight is relative (they are normalized internally).
+# ---------------------------------------------------------------------------
+attribute_weights:
+  cause_match: 5        # Org shares a cause the user selected
+  beneficiary_match: 3  # Org serves a beneficiary group matching user profile
+  scope_match: 2        # Org scope_of_work aligns with user travel preference
+  service_match: 1      # Org provides a specific service the user selected
+
+# ---------------------------------------------------------------------------
+# Quiz configuration — defines the cause subsets per user type
+# Service seekers see all 36 causes; volunteers and donors see a curated 14.
+# ---------------------------------------------------------------------------
+quiz:
+  user_types:
+    - service_seeker
+    - volunteer
+    - donor
+
+  # All 36 causes (service seeker path)
+  all_causes:
+    - Advocacy
+    - Animals
+    - Arts & Culture
+    - Children & Family Services
+    - Clothing & Living Essentials
+    - Community & Economic Development
+    - Disability Services
+    - Disaster Relief & Preparedness
+    - Drug & Alcohol Treatment
+    - Education
+    - Emergency & Safety
+    - Employment
+    - Environment
+    - Faith-Based
+    - Health
+    - Housing & Homelessness
+    - Human & Social Services
+    - Hunger & Food Security
+    - Immigrant & Refugee
+    - Inmate & Formerly Incarcerated
+    - International
+    - Justice & Legal Services
+    - LGBTQ+
+    - Media & Broadcasting
+    - Mental Health
+    - Philanthropy
+    - Race & Ethnicity
+    - Research & Public Policy
+    - Science & Technology
+    - Seniors
+    - Social Sciences
+    - Sports & Recreation
+    - Transportation
+    - Veteran & Military
+    - Youth Development
+
+  # TODO: Confirm this 14-cause subset with Nathaly's branch or product team.
+  # These are the causes shown to volunteers and donors.
+  volunteer_donor_causes:
+    - Animals
+    - Arts & Culture
+    - Children & Family Services
+    - Disability Services
+    - Education
+    - Environment
+    - Health
+    - Housing & Homelessness
+    - Hunger & Food Security
+    - Immigrant & Refugee
+    - Mental Health
+    - Seniors
+    - Veteran & Military
+    - Youth Development
+
+# ---------------------------------------------------------------------------
+# Cause synonyms and NTEE prefix mappings
+#
+# Each cause maps to:
+#   ntee_prefixes: NTEE letter codes whose orgs are relevant to this cause
+#   synonyms:      Alternate phrases appended to embedding text for richer matching
+#
+# NTEE prefix reference (from Organizations::Constants::NTEE_CODE):
+#   A=Arts, B=Education, C=Environment, D=Animals, E=Health, F=Mental Health,
+#   G=Diseases, H=Medical Research, I=Crime/Legal, J=Employment, K=Food,
+#   L=Housing, M=Safety, N=Recreation, O=Youth, P=Human Services,
+#   Q=International, R=Civil Rights, S=Community Dev, T=Philanthropy,
+#   U=Science, V=Social Science, W=Public Benefit, X=Religion, Y=Mutual Benefit
+# ---------------------------------------------------------------------------
+cause_mappings:
+  "Advocacy":
+    ntee_prefixes: [R]
+    synonyms:
+      - civil rights
+      - social justice
+      - voter registration
+      - human rights advocacy
+
+  "Animals":
+    ntee_prefixes: [D]
+    synonyms:
+      - animal welfare
+      - pet rescue
+      - wildlife protection
+      - veterinary care
+      - animal shelter
+
+  "Arts & Culture":
+    ntee_prefixes: [A]
+    synonyms:
+      - performing arts
+      - visual arts
+      - museums
+      - cultural programs
+      - art education
+      - music
+
+  "Children & Family Services":
+    ntee_prefixes: [P]
+    synonyms:
+      - child care
+      - foster care
+      - adoption
+      - family counseling
+      - parenting support
+      - child welfare
+
+  "Clothing & Living Essentials":
+    ntee_prefixes: [P]
+    synonyms:
+      - clothing donation
+      - thrift store
+      - basic needs
+      - essential supplies
+      - furniture assistance
+
+  "Community & Economic Development":
+    ntee_prefixes: [S]
+    synonyms:
+      - neighborhood development
+      - economic empowerment
+      - small business
+      - community building
+      - urban development
+
+  "Disability Services":
+    ntee_prefixes: [P]
+    synonyms:
+      - accessibility
+      - developmental disabilities
+      - adaptive services
+      - independent living
+      - disability support
+      - group homes
+
+  "Disaster Relief & Preparedness":
+    ntee_prefixes: [M]
+    synonyms:
+      - emergency response
+      - disaster recovery
+      - first aid
+      - search and rescue
+      - fire prevention
+
+  "Drug & Alcohol Treatment":
+    ntee_prefixes: [F]
+    synonyms:
+      - substance abuse
+      - addiction recovery
+      - rehabilitation
+      - detox
+      - sober living
+      - recovery support
+
+  "Education":
+    ntee_prefixes: [B]
+    synonyms:
+      - schools
+      - tutoring
+      - scholarships
+      - adult education
+      - literacy
+      - special education
+      - libraries
+
+  "Emergency & Safety":
+    ntee_prefixes: [I, M]
+    synonyms:
+      - crime prevention
+      - domestic violence
+      - child abuse prevention
+      - consumer protection
+      - public safety
+
+  "Employment":
+    ntee_prefixes: [J]
+    synonyms:
+      - job training
+      - career services
+      - vocational rehabilitation
+      - workforce development
+      - job placement
+
+  "Environment":
+    ntee_prefixes: [C]
+    synonyms:
+      - conservation
+      - recycling
+      - climate change
+      - sustainability
+      - environmental education
+      - clean energy
+
+  "Faith-Based":
+    ntee_prefixes: [X]
+    synonyms:
+      - religious organizations
+      - church
+      - mosque
+      - synagogue
+      - interfaith
+      - spiritual services
+
+  "Health":
+    ntee_prefixes: [E, G]
+    synonyms:
+      - medical care
+      - community clinic
+      - health services
+      - primary care
+      - public health
+      - hospital
+      - nursing
+
+  "Housing & Homelessness":
+    ntee_prefixes: [L]
+    synonyms:
+      - homeless shelter
+      - affordable housing
+      - housing assistance
+      - rental support
+      - temporary housing
+      - transitional housing
+
+  "Human & Social Services":
+    ntee_prefixes: [P]
+    synonyms:
+      - social services
+      - community outreach
+      - emergency assistance
+      - financial counseling
+      - human services
+      - case management
+
+  "Hunger & Food Security":
+    ntee_prefixes: [K]
+    synonyms:
+      - food bank
+      - food pantry
+      - soup kitchen
+      - nutrition
+      - meals on wheels
+      - food assistance
+
+  "Immigrant & Refugee":
+    ntee_prefixes: [P, Q]
+    synonyms:
+      - immigration services
+      - refugee assistance
+      - citizenship
+      - language learning
+      - multicultural services
+      - human trafficking
+
+  "Inmate & Formerly Incarcerated":
+    ntee_prefixes: [I]
+    synonyms:
+      - reentry services
+      - prison programs
+      - rehabilitation
+      - halfway houses
+      - formerly incarcerated
+      - criminal justice reform
+
+  "International":
+    ntee_prefixes: [Q]
+    synonyms:
+      - international development
+      - foreign affairs
+      - international relief
+      - refugee services
+      - global health
+      - peace and security
+
+  "Justice & Legal Services":
+    ntee_prefixes: [I]
+    synonyms:
+      - legal aid
+      - pro bono
+      - dispute resolution
+      - civil rights law
+      - immigration law
+      - public interest law
+
+  "LGBTQ+":
+    ntee_prefixes: [P, R]
+    synonyms:
+      - LGBTQ community center
+      - LGBTQ advocacy
+      - LGBTQ health
+      - LGBTQ housing
+      - LGBTQ youth
+      - pride
+
+  "Media & Broadcasting":
+    ntee_prefixes: [A]
+    synonyms:
+      - media education
+      - journalism
+      - broadcasting
+      - communications
+      - film and video
+
+  "Mental Health":
+    ntee_prefixes: [F]
+    synonyms:
+      - counseling
+      - therapy
+      - psychiatric care
+      - crisis intervention
+      - suicide prevention
+      - trauma support
+      - mental wellness
+
+  "Philanthropy":
+    ntee_prefixes: [T]
+    synonyms:
+      - grantmaking
+      - foundations
+      - nonprofit support
+      - voluntarism
+      - charitable giving
+      - community foundation
+
+  "Race & Ethnicity":
+    ntee_prefixes: [R]
+    synonyms:
+      - racial equity
+      - diversity and inclusion
+      - anti-discrimination
+      - racial justice
+      - cultural heritage
+
+  "Research & Public Policy":
+    ntee_prefixes: [H, U, V, W]
+    synonyms:
+      - public policy
+      - research institute
+      - policy analysis
+      - think tank
+
+  "Science & Technology":
+    ntee_prefixes: [U]
+    synonyms:
+      - STEM education
+      - computer science
+      - engineering
+      - scientific research
+      - technology development
+
+  "Seniors":
+    ntee_prefixes: [P]
+    synonyms:
+      - senior services
+      - elderly care
+      - aging services
+      - senior center
+      - hospice
+      - retirement
+      - senior housing
+
+  "Social Sciences":
+    ntee_prefixes: [V]
+    synonyms:
+      - sociology
+      - anthropology
+      - political science
+      - economics research
+      - social research
+
+  "Sports & Recreation":
+    ntee_prefixes: [N]
+    synonyms:
+      - youth sports
+      - recreation centers
+      - camps
+      - fitness programs
+      - adaptive sports
+      - parks
+
+  "Transportation":
+    ntee_prefixes: [W]
+    synonyms:
+      - public transit
+      - ride services
+      - transportation assistance
+      - car donation
+
+  "Veteran & Military":
+    ntee_prefixes: [W]
+    synonyms:
+      - veteran services
+      - military families
+      - veteran employment
+      - veteran housing
+      - veteran health
+      - VA benefits
+
+  "Youth Development":
+    ntee_prefixes: [O]
+    synonyms:
+      - after school programs
+      - youth mentoring
+      - scouting
+      - youth clubs
+      - youth leadership
+      - teen programs

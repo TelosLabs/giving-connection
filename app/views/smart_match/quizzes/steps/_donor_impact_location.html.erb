@@ -1,0 +1,23 @@
+<%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
+             data: { smart_match_quiz_target: "form" } do |f| %>
+  <div data-card-group="impact_location" data-card-cols="3">
+
+    <% [
+      ["Somewhere near me",           "near_me",       "smart_match/user.svg",    "text-white"],
+      ["A specific city or zip code", "specific_place", "smart_match/location.svg","text-white"],
+      ["Anywhere",                    "anywhere",       "smart_match/path.svg",    "text-white"]
+    ].each do |label, value, icon, icon_class| %>
+      <label class="sm-card-option sm-card-option--red <%= 'selected' if @session_answers[:impact_location] == value %>"
+             data-action="click->smart-match-quiz#selectCard"
+             data-select-mode="single">
+        <input type="radio" name="impact_location" value="<%= value %>"
+               class="sr-only"
+               <%= "checked" if @session_answers[:impact_location] == value %>
+               data-smart-match-quiz-target="radio" />
+        <span class="text-base font-bold text-center"><%= label %></span>
+        <%= inline_svg_tag icon, class: "w-20 h-20 mt-2 #{icon_class}", aria_hidden: "true" %>
+      </label>
+    <% end %>
+
+  </div>
+<% end %>

@@ -1,0 +1,26 @@
+<%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
+             data: { smart_match_quiz_target: "form" } do |f| %>
+  <div data-card-group="prefs" data-card-cols="3">
+
+    <% [
+      ["Free or sliding-scale services",            "free_sliding_scale",   "smart_match/free.svg",          ""],
+      ["No ID or documentation required",           "no_id_required",       "smart_match/no_id.svg",         ""],
+      ["Spanish or another language available",     "multilingual",         "smart_match/languages.svg",     ""],
+      ["LGBTQIA+ affirming services",               "lgbtqia_affirming",    "smart_match/rainbow_pride.svg", ""],
+      ["Wheelchair accessible locations",           "wheelchair_accessible","smart_match/disability2.svg",   ""],
+      ["Women- or BIPOC-led organizations",         "women_bipoc_led",      "smart_match/women.svg",         ""]
+    ].each do |label, value, icon, icon_class| %>
+      <label class="sm-card-option <%= 'selected' if @session_answers[:prefs].include?(value) %>"
+             data-action="click->smart-match-quiz#selectCard"
+             data-select-mode="multiple">
+        <input type="checkbox" name="prefs[]" value="<%= value %>"
+               class="sr-only"
+               <%= "checked" if @session_answers[:prefs].include?(value) %>
+               data-smart-match-quiz-target="causeCheckbox" />
+        <span class="text-base font-bold text-center"><%= label %></span>
+        <%= inline_svg_tag icon, class: "w-20 h-20 mt-2 #{icon_class}", aria_hidden: "true" %>
+      </label>
+    <% end %>
+
+  </div>
+<% end %>

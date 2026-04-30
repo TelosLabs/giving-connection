@@ -1,0 +1,34 @@
+<%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
+             data: { smart_match_quiz_target: "form" } do |f| %>
+  <div data-card-group="volunteer_type" data-card-cols="4">
+
+    <% [
+      ["Kids or seniors",          "kids_seniors",        "smart_match/elderly.svg",               ""],
+      ["Veterans / military families","veterans_military", "causes_categories/veteran_military.svg",""],
+      ["Spanish-speaking",         "spanish_speaking",    "smart_match/languages.svg",             "text-blue-dark"],
+      ["Grassroots / BIPOC-led",   "grassroots_bipoc",    "smart_match/community.svg",             "text-blue-dark"],
+      ["Behind the scenes",        "behind_scenes",       "smart_match/activities.svg",            "text-blue-dark"],
+      ["Accessible or virtual",    "accessible_virtual",  "smart_match/computer.svg",              "text-blue-dark"],
+      ["Family or group",          "family_group",        "smart_match/family.svg",                "text-blue-dark"],
+      ["No preference",            "no_preference",       nil,                                     ""]
+    ].each do |label, value, icon, icon_class| %>
+      <label class="sm-card-option <%= 'selected' if @session_answers[:volunteer_type].include?(value) %>"
+             data-action="click->smart-match-quiz#selectCard"
+             data-select-mode="multiple">
+        <input type="checkbox" name="volunteer_type[]" value="<%= value %>"
+               class="sr-only"
+               <%= "checked" if @session_answers[:volunteer_type].include?(value) %>
+               data-smart-match-quiz-target="causeCheckbox" />
+        <span class="text-base font-bold text-center"><%= label %></span>
+        <% if icon %>
+          <%= inline_svg_tag icon, class: "w-20 h-20 mt-2 #{icon_class}", aria_hidden: "true" %>
+        <% end %>
+      </label>
+    <% end %>
+
+  </div>
+
+  <div class="sm-selection-hint mt-5 rounded-lg px-5 py-3 text-sm font-medium text-blue-dark text-center" style="background-color: #e2ecf7;">
+    Your response helps us highlight volunteer opportunities that align with your interests and preferences.
+  </div>
+<% end %>

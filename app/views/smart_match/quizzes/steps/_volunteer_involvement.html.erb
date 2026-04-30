@@ -1,0 +1,24 @@
+<%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
+             data: { smart_match_quiz_target: "form" } do |f| %>
+  <div data-card-group="volunteer_involvement" data-card-cols="4">
+
+    <% [
+      ["Volunteer my time",           "volunteer_time",   "smart_match/time.svg",     ""],
+      ["Attend an event",             "attend_event",     "smart_match/calendar.svg", "text-white"],
+      ["Partner as a business",       "business_partner", "smart_match/hands.svg",    "text-white"],
+      ["Not sure yet / just exploring","just_exploring",  "smart_match/map.svg",      "text-white"]
+    ].each do |label, value, icon, icon_class| %>
+      <label class="sm-card-option sm-card-option--blue <%= 'selected' if @session_answers[:volunteer_involvement].include?(value) %>"
+             data-action="click->smart-match-quiz#selectCard"
+             data-select-mode="multiple">
+        <input type="checkbox" name="volunteer_involvement[]" value="<%= value %>"
+               class="sr-only"
+               <%= "checked" if @session_answers[:volunteer_involvement].include?(value) %>
+               data-smart-match-quiz-target="causeCheckbox" />
+        <span class="text-base font-bold text-center"><%= label %></span>
+        <%= inline_svg_tag icon, class: "w-20 h-20 mt-2 #{icon_class}" %>
+      </label>
+    <% end %>
+
+  </div>
+<% end %>

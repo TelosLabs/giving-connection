@@ -34,3 +34,16 @@ env:
   clear:
     RAILS_ENV: staging
     WEB_CONCURRENCY: "1"
+
+# Python embedding service for Smart Match feature.
+# SECURITY: Bound to 127.0.0.1 only — not accessible from the public internet.
+accessories:
+  embedding-api:
+    image: ghcr.io/teloslabs/gc-embedding-api
+    host: 138.197.90.4
+    port: "127.0.0.1:8000:8000"
+    options:
+      memory: 1g
+    env:
+      clear:
+        PYTHONUNBUFFERED: "1"

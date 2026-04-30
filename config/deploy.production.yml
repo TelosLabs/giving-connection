@@ -43,6 +43,8 @@ accessories:
     image: ghcr.io/teloslabs/gc-embedding-api
     host: 161.35.179.50
     port: "127.0.0.1:8000:8000"
+    options:
+      memory: 2.5g
     env:
       clear:
         PYTHONUNBUFFERED: "1"

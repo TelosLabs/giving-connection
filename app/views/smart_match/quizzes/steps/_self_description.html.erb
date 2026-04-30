@@ -1,0 +1,34 @@
+<%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
+             data: { smart_match_quiz_target: "form" } do |f| %>
+  <div data-card-group="self-description" data-card-cols="4">
+
+    <% [
+      ["Student",                        "student",            "smart_match/categories/user.svg",        ""],
+      ["Veteran or in the military",     "veteran",            "smart_match/categories/medal.svg",       ""],
+      ["Caregiver",                      "caregiver",          "smart_match/categories/care.svg",        "text-white"],
+      ["LGBTQIA+",                       "lgbtqia",            "smart_match/categories/pride.svg",       ""],
+      ["Living with disabilities",       "disability",         "smart_match/categories/disability.svg",  ""],
+      ["Business or nonprofit",          "business_nonprofit", "smart_match/categories/uphill.svg",      ""],
+      ["Business looking for a partner", "business_partner",   "smart_match/categories/partnership.svg", ""],
+      ["Prefer not to say / none apply", "none",               nil,                                      ""]
+    ].each do |label, value, icon, icon_class| %>
+      <label class="sm-card-option sm-card-option--blue <%= 'selected' if @session_answers[:self_description] == value %>"
+             data-action="click->smart-match-quiz#selectCard"
+             data-select-mode="single">
+        <%= f.radio_button :self_description, value,
+              class: "sr-only",
+              checked: @session_answers[:self_description] == value,
+              data: { smart_match_quiz_target: "radio" } %>
+        <span class="text-base font-bold"><%= label %></span>
+        <% if icon %>
+          <%= inline_svg_tag icon, class: "w-2/3 max-w-md h-auto #{icon_class}" %>
+        <% end %>
+      </label>
+    <% end %>
+
+  </div>
+
+  <div class="sm-selection-hint mt-5 rounded-lg px-5 py-3 text-sm font-medium text-blue-dark text-center" style="background-color: #e2ecf7;">
+    Your response helps us highlight the services that align with your needs and preferences.
+  </div>
+<% end %>

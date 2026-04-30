@@ -1,0 +1,51 @@
+<section class="flex flex-col min-h-screen bg-white sm-wizard"
+         data-controller="smart-match-quiz"
+         data-smart-match-quiz-step-value="<%= @step %>"
+         data-smart-match-quiz-total-steps-value="<%= @total_steps %>">
+
+  <%# Wizard content area %>
+  <div class="flex-1 overflow-y-auto">
+
+    <%# Top bar: section label + close button %>
+    <div class="px-4 sm:w-3/4 sm:mx-auto sm:px-0 pt-8 mb-4">
+    <div class="flex items-center justify-between">
+      <div>
+        <span class="text-xl text-blue-dark">Section <%= @section_number %>: </span>
+        <span class="text-lg font-bold text-blue-dark"><%= @section_name %></span>
+      </div>
+      <%= button_to smart_match_quiz_path, method: :delete,
+            class: "p-1 text-gray-4 hover:text-gray-2 transition-colors",
+            title: "Reset quiz",
+            form: { data: { turbo_confirm: "Are you sure? This will reset your progress." } } do %>
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      <% end %>
+    </div>
+    </div>
+
+    <%# Segmented progress bar — same horizontal reach as footer buttons %>
+    <div class="px-4 sm:w-3/4 sm:mx-auto sm:px-0">
+      <%= render "smart_match/quizzes/progress_bar", step: @step, total_steps: @total_steps, section_map: @section_map, current_section_number: @section_number %>
+    </div>
+
+    <div class="px-4 sm:w-[56.25%] sm:mx-auto sm:px-0 py-8">
+
+      <%# Step title %>
+      <div class="mt-4 sm:mt-8 mb-2 text-center">
+        <h1 class="text-2xl sm:text-4xl font-bold text-gray-2"><%= @step_title %></h1>
+        <% if @step_subtitle %>
+          <p class="mt-1 text-sm sm:text-base text-gray-4"><%= @step_subtitle %></p>
+        <% end %>
+      </div>
+
+      <%# Step content %>
+      <turbo-frame id="quiz-step" class="block mt-6 sm-step-enter" target="_top">
+        <%= render @step_partial %>
+      </turbo-frame>
+    </div>
+  </div>
+
+  <%# Wizard footer %>
+  <%= render "smart_match/quizzes/wizard_footer", step: @step, is_final_step: @is_final_step %>
+</section>
