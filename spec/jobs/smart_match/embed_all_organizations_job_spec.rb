@@ -29,6 +29,7 @@ RSpec.describe SmartMatch::EmbedAllOrganizationsJob, type: :job do
 
     it "calls embed_batch instead of individual calls" do
       create(:organization)
+      allow(SmartMatch::OrganizationTextBuilder).to receive(:call).and_return("test embedding text")
       allow(SmartMatch::EmbeddingClient).to receive(:embed_batch).and_return([vector])
 
       described_class.new.perform
