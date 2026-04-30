@@ -10,6 +10,7 @@ RSpec.describe SmartMatch::EmbedAllOrganizationsJob, type: :job do
       create(:organization)
       create(:organization, name: "Second Org")
 
+      allow(SmartMatch::OrganizationTextBuilder).to receive(:call).and_return("test embedding text")
       allow(SmartMatch::EmbeddingClient).to receive(:embed_batch).and_return([vector, vector])
 
       described_class.new.perform
