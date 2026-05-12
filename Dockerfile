@@ -3,7 +3,7 @@
 # ============================================================
 # Build stage: compile gems, JS assets, and precompile Rails
 # ============================================================
-FROM ruby:3.2.8-slim AS build
+FROM ruby:3.4.8-slim AS build
 
 ARG NODE_MAJOR=20
 
@@ -61,7 +61,7 @@ RUN rm -rf node_modules tmp/cache vendor/bundle/ruby/*/cache
 # ============================================================
 # Runtime stage: slim image with only what's needed to run
 # ============================================================
-FROM ruby:3.2.8-slim AS runtime
+FROM ruby:3.4.8-slim AS runtime
 
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \

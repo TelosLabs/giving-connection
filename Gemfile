@@ -3,10 +3,10 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.2.8"
+ruby "3.4.8"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
-gem "rails", "~> 7.2.2.1"
+gem "rails", "~> 7.2.3.1"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 # Use Puma as the app server
@@ -26,7 +26,7 @@ gem "redis", "~> 4.0"
 # Use Active Storage variant
 
 # Use Devise for authentication
-gem "devise"
+gem "devise", "~> 5.0"
 
 # User Auth
 gem "invisible_captcha"
@@ -56,7 +56,7 @@ gem "view_component"
 # Use Turbo for rails
 gem "turbo-rails"
 
-gem "rack", "~> 2.2.20"
+gem "rack", "~> 2.2.23"
 gem "uri", ">= 1.0.4"
 
 gem "net-imap", require: false
