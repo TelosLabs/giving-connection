@@ -684,7 +684,7 @@ DEPENDENCIES
   cssbundling-rails
   cuprite
   database_consistency
-  devise
+  devise (~> 5.0)
   dotenv
   draper
   factory_bot_rails

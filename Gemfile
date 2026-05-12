@@ -26,7 +26,7 @@ gem "redis", "~> 4.0"
 # Use Active Storage variant
 
 # Use Devise for authentication
-gem "devise"
+gem "devise", "~> 5.0"
 
 # User Auth
 gem "invisible_captcha"
