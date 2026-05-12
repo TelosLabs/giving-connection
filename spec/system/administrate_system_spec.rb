@@ -11,7 +11,7 @@ RSpec.describe "Administrate", type: :system do
     find(:test_id, "admin_login_email_input").fill_in with: @admin.email
     find(:test_id, "admin_login_password_input").fill_in with: "wrong password"
     click_button "admin_login_submit_btn"
-    expect(page).to have_content("Invalid Email or password.")
+    expect(page).to have_content("Invalid email or password.")
 
     find(:test_id, "admin_login_password_input").fill_in with: @admin.password
     click_button "admin_login_submit_btn"
