@@ -60,6 +60,11 @@ PreCommit:
   MergeConflicts:
     enabled: true
 
+  BundleAudit:
+    enabled: true
+    description: "Check Gemfile.lock for known CVEs"
+    include: "Gemfile.lock"
+
   # --- Anti-footguns ------------------------------------------------------
   # Catch debugger / focused specs / puts before they leave the laptop.
   # These mirror cops in .rubocop/strict.yml but fail faster at commit time.
@@ -74,8 +79,3 @@ PrePush:
     enabled: true
     description: "Security scan (matches CI)"
     command: ["bundle", "exec", "brakeman", "-w3", "-q", "--no-pager"]
-
-  BundleAudit:
-    enabled: true
-    description: "Check Gemfile.lock for known CVEs"
-    command: ["bundle", "exec", "bundle-audit", "check", "--update"]
