@@ -22,8 +22,8 @@ servers:
       memory: 256m
 
 proxy:
-  ssl: false
-  host: 138.197.90.4
+  ssl: true
+  host: staging.givingconnection.org
   app_port: 3000
   healthcheck:
     interval: 3

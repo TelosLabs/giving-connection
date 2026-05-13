@@ -11,7 +11,7 @@ RSpec.describe "User Login", type: :system do
     find(:test_id, "user_login_email_input").fill_in with: @user.email
     find(:test_id, "user_login_password_input").fill_in with: "wrong password"
     click_button "user_login_submit_btn"
-    expect(page).to have_content("Invalid Email or password.")
+    expect(page).to have_content(I18n.t("devise.failure.invalid", authentication_keys: "email"))
 
     find(:test_id, "user_login_password_input").fill_in with: @user.password
     click_button "user_login_submit_btn"
