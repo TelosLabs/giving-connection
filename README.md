@@ -52,7 +52,31 @@ We use Standard Ruby for linting and formatting.
 Run `bundle exec rubocop` to check all ruby files
 Run `bundle exec rubocop -a` to auto-correct offenses
 
-### Testing 
+#### Pre-flight checks
+
+`bin/check` mirrors CI (Rubocop, Brakeman, bundler-audit, RSpec) — run it before pushing.
+See `bin/check --help` for faster subsets (`--fast`, `--lint`, `--security`, `--tests`).
+
+#### Git hooks
+
+Git hooks are managed by [Overcommit](https://github.com/sds/overcommit) and installed
+automatically by `bin/setup`. To install manually after pulling new hook config:
+
+```
+bundle exec overcommit --install
+bundle exec overcommit --sign
+```
+
+Pre-commit runs Rubocop + syntax checks on changed files. Pre-push runs Brakeman +
+bundler-audit. To skip in an emergency: `git commit --no-verify` (use sparingly).
+
+#### AI coding agents
+
+If you use Claude Code, Cursor, Copilot, or similar, they read [`CLAUDE.md`](CLAUDE.md)
+(also exposed as `AGENTS.md` and `.github/copilot-instructions.md`). Keep it current
+when conventions change.
+
+### Testing
 Run tests with `bundle exec rspec`
 
 #### System specs
