@@ -24,7 +24,14 @@ FileUtils.chdir APP_ROOT do
 
   puts '== Setting env variables =='
   system! "cp .env.template .env"
-  
+
+  puts "\n== Installing git hooks (Overcommit) =="
+  system("bundle exec overcommit --install") &&
+    system("bundle exec overcommit --sign") &&
+    system("bundle exec overcommit --sign pre-commit") &&
+    system("bundle exec overcommit --sign pre-push") or
+    puts "(skipped — run `bundle exec overcommit --install` manually if you want pre-commit checks)"
+
   puts '== Done =='
 
   # puts "\n== Copying sample files =="

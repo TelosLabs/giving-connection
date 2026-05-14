@@ -1,0 +1,131 @@
+#!/usr/bin/env bash
+#
+# bin/check — local pre-flight that mirrors CI.
+#
+# Run this before pushing, opening a PR, or telling a reviewer (human or AI) you're done.
+# Each step matches a job in .github/workflows/ruby-ci.yml — if it passes here, CI passes.
+#
+# Usage:
+#   bin/check            # full sweep (rubocop, brakeman, bundle-audit, rspec)
+#   bin/check --fast     # rubocop on changed files only, skip rspec
+#   bin/check --no-tests # everything except rspec
+#   bin/check --lint     # rubocop only
+#   bin/check --security # brakeman + bundle-audit only
+#   bin/check --tests    # rspec only
+
+set -uo pipefail
+
+cd "$(dirname "$0")/.."
+
+# --- colors --------------------------------------------------------------
+if [ -t 1 ]; then
+  bold=$(tput bold); red=$(tput setaf 1); green=$(tput setaf 2)
+  yellow=$(tput setaf 3); blue=$(tput setaf 4); reset=$(tput sgr0)
+else
+  bold=""; red=""; green=""; yellow=""; blue=""; reset=""
+fi
+
+# --- args ----------------------------------------------------------------
+mode="full"
+case "${1:-}" in
+  --fast)     mode="fast" ;;
+  --no-tests) mode="no-tests" ;;
+  --lint)     mode="lint" ;;
+  --security) mode="security" ;;
+  --tests)    mode="tests" ;;
+  -h|--help)
+    sed -n '3,15p' "$0" | sed -E 's/^#( |$)//'
+    exit 0 ;;
+  "")         ;;
+  *)
+    echo "${red}unknown option: $1${reset}" >&2
+    echo "see: bin/check --help" >&2
+    exit 2 ;;
+esac
+
+# --- step runner ---------------------------------------------------------
+failures=()
+run_step() {
+  local name="$1"; shift
+  echo
+  echo "${bold}${blue}==> ${name}${reset}"
+  echo "${yellow}\$ $*${reset}"
+  if "$@"; then
+    echo "${green}✓ ${name} passed${reset}"
+  else
+    echo "${red}✗ ${name} failed${reset}"
+    failures+=("$name")
+  fi
+}
+
+# --- steps ---------------------------------------------------------------
+changed_ruby_files() {
+  # Files changed vs. main (or origin/main if main isn't local), filtered to .rb/.rake
+  local base
+  if git rev-parse --verify --quiet main >/dev/null; then
+    base="main"
+  elif git rev-parse --verify --quiet origin/main >/dev/null; then
+    base="origin/main"
+  else
+    base="HEAD~1"
+  fi
+  git diff --name-only --diff-filter=ACMR "$base"...HEAD -- '*.rb' '*.rake' 'Gemfile' 'Rakefile' 2>/dev/null
+  git diff --name-only --diff-filter=ACMR -- '*.rb' '*.rake' 'Gemfile' 'Rakefile' 2>/dev/null
+  git ls-files --others --exclude-standard -- '*.rb' '*.rake' 2>/dev/null
+}
+
+run_rubocop_full()    { bundle exec rubocop; }
+run_rubocop_changed() {
+  local files
+  files="$(changed_ruby_files | sort -u | tr '\n' ' ')"
+  if [ -z "${files// }" ]; then
+    echo "(no changed Ruby files — skipping)"
+    return 0
+  fi
+  # shellcheck disable=SC2086
+  bundle exec rubocop $files
+}
+run_brakeman()     { bundle exec brakeman -w3 --no-pager; }
+run_bundle_audit() { bundle exec bundle-audit check --update; }
+run_rspec()        { bundle exec rspec; }
+
+# --- dispatch ------------------------------------------------------------
+echo "${bold}bin/check — mode: ${mode}${reset}"
+
+case "$mode" in
+  full)
+    run_step "RuboCop"      run_rubocop_full
+    run_step "Brakeman"     run_brakeman
+    run_step "bundle-audit" run_bundle_audit
+    run_step "RSpec"        run_rspec
+    ;;
+  fast)
+    run_step "RuboCop (changed files)" run_rubocop_changed
+    run_step "Brakeman"                run_brakeman
+    ;;
+  no-tests)
+    run_step "RuboCop"      run_rubocop_full
+    run_step "Brakeman"     run_brakeman
+    run_step "bundle-audit" run_bundle_audit
+    ;;
+  lint)
+    run_step "RuboCop" run_rubocop_full
+    ;;
+  security)
+    run_step "Brakeman"     run_brakeman
+    run_step "bundle-audit" run_bundle_audit
+    ;;
+  tests)
+    run_step "RSpec" run_rspec
+    ;;
+esac
+
+# --- summary -------------------------------------------------------------
+echo
+if [ "${#failures[@]}" -eq 0 ]; then
+  echo "${bold}${green}✓ all checks passed${reset}"
+  exit 0
+else
+  echo "${bold}${red}✗ failed: ${failures[*]}${reset}"
+  exit 1
+fi

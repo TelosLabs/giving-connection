@@ -1,0 +1,81 @@
+# Overcommit configuration — local git hook gates.
+#
+# Setup (once per checkout, after `bundle install`):
+#   bundle exec overcommit --install
+#   bundle exec overcommit --sign
+#
+# Hooks run on changed files only — kept "light" so commits stay fast.
+# Full CI parity lives in bin/check.
+#
+# To temporarily skip hooks for one commit (use sparingly, explain in PR):
+#   SKIP=RuboCop git commit -m "..."        # skip one hook
+#   git commit --no-verify -m "..."          # skip all hooks (avoid)
+
+CommitMsg:
+  ALL:
+    enabled: false
+
+PreCommit:
+  ALL:
+    on_warn: fail
+    problem_on_unmodified_line: ignore  # only flag lines this commit touched
+
+  # --- Style / lint -------------------------------------------------------
+  RuboCop:
+    enabled: true
+    description: "Lint Ruby with RuboCop (Standard preset)"
+    command: ["bundle", "exec", "rubocop", "--force-exclusion"]
+    include:
+      - "**/*.rb"
+      - "**/*.rake"
+      - "Gemfile"
+      - "Rakefile"
+      - "config.ru"
+
+  # --- Safety nets --------------------------------------------------------
+  TrailingWhitespace:
+    enabled: true
+    exclude:
+      - "db/schema.rb"
+      - "**/*.dump"
+      - "tags"
+
+  HardTabs:
+    enabled: true
+    exclude:
+      - "**/Makefile"
+      - "**/*.go"
+
+  YamlSyntax:
+    enabled: true
+    include: "**/*.{yml,yaml}"
+
+  JsonSyntax:
+    enabled: true
+    include: "**/*.json"
+    exclude:
+      - "package-lock.json"
+      - "yarn.lock"
+
+  MergeConflicts:
+    enabled: true
+
+  BundleAudit:
+    enabled: true
+    description: "Check Gemfile.lock for known CVEs"
+    include: "Gemfile.lock"
+
+  # --- Anti-footguns ------------------------------------------------------
+  # Catch debugger / focused specs / puts before they leave the laptop.
+  # These mirror cops in .rubocop/strict.yml but fail faster at commit time.
+  ForbiddenBranches:
+    enabled: false  # enable + configure if you want to block direct commits to main
+
+PrePush:
+  ALL:
+    parallelize: true
+
+  Brakeman:
+    enabled: true
+    description: "Security scan (matches CI)"
+    command: ["bundle", "exec", "brakeman", "-w3", "-q", "--no-pager"]
