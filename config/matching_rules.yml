@@ -4,15 +4,6 @@
 # organizations against user quiz responses.
 #
 # Cause names MUST match Organizations::Constants::CAUSES_AND_SERVICES keys exactly.
-# NTEE prefixes reference the letter codes from Organizations::Constants::NTEE_CODE.
-
-# ---------------------------------------------------------------------------
-# Allowed states for the quiz location step
-# ---------------------------------------------------------------------------
-allowed_states:
-  - NJ
-  - CA
-  - TN
 
 # ---------------------------------------------------------------------------
 # Radius (in miles) by user-selected travel willingness
@@ -49,88 +40,13 @@ attribute_weights:
   service_match: 1      # Org provides a specific service the user selected
 
 # ---------------------------------------------------------------------------
-# Quiz configuration — defines the cause subsets per user type
-# Service seekers see all 36 causes; volunteers and donors see a curated 14.
-# ---------------------------------------------------------------------------
-quiz:
-  user_types:
-    - service_seeker
-    - volunteer
-    - donor
-
-  # All 36 causes (service seeker path)
-  all_causes:
-    - Advocacy
-    - Animals
-    - Arts & Culture
-    - Children & Family Services
-    - Clothing & Living Essentials
-    - Community & Economic Development
-    - Disability Services
-    - Disaster Relief & Preparedness
-    - Drug & Alcohol Treatment
-    - Education
-    - Emergency & Safety
-    - Employment
-    - Environment
-    - Faith-Based
-    - Health
-    - Housing & Homelessness
-    - Human & Social Services
-    - Hunger & Food Security
-    - Immigrant & Refugee
-    - Inmate & Formerly Incarcerated
-    - International
-    - Justice & Legal Services
-    - LGBTQ+
-    - Media & Broadcasting
-    - Mental Health
-    - Philanthropy
-    - Race & Ethnicity
-    - Research & Public Policy
-    - Science & Technology
-    - Seniors
-    - Social Sciences
-    - Sports & Recreation
-    - Transportation
-    - Veteran & Military
-    - Youth Development
-
-  # TODO: Confirm this 14-cause subset with Nathaly's branch or product team.
-  # These are the causes shown to volunteers and donors.
-  volunteer_donor_causes:
-    - Animals
-    - Arts & Culture
-    - Children & Family Services
-    - Disability Services
-    - Education
-    - Environment
-    - Health
-    - Housing & Homelessness
-    - Hunger & Food Security
-    - Immigrant & Refugee
-    - Mental Health
-    - Seniors
-    - Veteran & Military
-    - Youth Development
-
-# ---------------------------------------------------------------------------
-# Cause synonyms and NTEE prefix mappings
+# Cause synonyms
 #
 # Each cause maps to:
-#   ntee_prefixes: NTEE letter codes whose orgs are relevant to this cause
-#   synonyms:      Alternate phrases appended to embedding text for richer matching
-#
-# NTEE prefix reference (from Organizations::Constants::NTEE_CODE):
-#   A=Arts, B=Education, C=Environment, D=Animals, E=Health, F=Mental Health,
-#   G=Diseases, H=Medical Research, I=Crime/Legal, J=Employment, K=Food,
-#   L=Housing, M=Safety, N=Recreation, O=Youth, P=Human Services,
-#   Q=International, R=Civil Rights, S=Community Dev, T=Philanthropy,
-#   U=Science, V=Social Science, W=Public Benefit, X=Religion, Y=Mutual Benefit
+#   synonyms: Alternate phrases appended to embedding text for richer matching
 # ---------------------------------------------------------------------------
 cause_mappings:
   "Advocacy":
-    ntee_prefixes: [R]
     synonyms:
       - civil rights
       - social justice
@@ -138,7 +54,6 @@ cause_mappings:
       - human rights advocacy
 
   "Animals":
-    ntee_prefixes: [D]
     synonyms:
       - animal welfare
       - pet rescue
@@ -147,7 +62,6 @@ cause_mappings:
       - animal shelter
 
   "Arts & Culture":
-    ntee_prefixes: [A]
     synonyms:
       - performing arts
       - visual arts
@@ -157,7 +71,6 @@ cause_mappings:
       - music
 
   "Children & Family Services":
-    ntee_prefixes: [P]
     synonyms:
       - child care
       - foster care
@@ -167,7 +80,6 @@ cause_mappings:
       - child welfare
 
   "Clothing & Living Essentials":
-    ntee_prefixes: [P]
     synonyms:
       - clothing donation
       - thrift store
@@ -176,7 +88,6 @@ cause_mappings:
       - furniture assistance
 
   "Community & Economic Development":
-    ntee_prefixes: [S]
     synonyms:
       - neighborhood development
       - economic empowerment
@@ -185,7 +96,6 @@ cause_mappings:
       - urban development
 
   "Disability Services":
-    ntee_prefixes: [P]
     synonyms:
       - accessibility
       - developmental disabilities
@@ -195,7 +105,6 @@ cause_mappings:
       - group homes
 
   "Disaster Relief & Preparedness":
-    ntee_prefixes: [M]
     synonyms:
       - emergency response
       - disaster recovery
@@ -204,7 +113,6 @@ cause_mappings:
       - fire prevention
 
   "Drug & Alcohol Treatment":
-    ntee_prefixes: [F]
     synonyms:
       - substance abuse
       - addiction recovery
@@ -214,7 +122,6 @@ cause_mappings:
       - recovery support
 
   "Education":
-    ntee_prefixes: [B]
     synonyms:
       - schools
       - tutoring
@@ -225,7 +132,6 @@ cause_mappings:
       - libraries
 
   "Emergency & Safety":
-    ntee_prefixes: [I, M]
     synonyms:
       - crime prevention
       - domestic violence
@@ -234,7 +140,6 @@ cause_mappings:
       - public safety
 
   "Employment":
-    ntee_prefixes: [J]
     synonyms:
       - job training
       - career services
@@ -243,7 +148,6 @@ cause_mappings:
       - job placement
 
   "Environment":
-    ntee_prefixes: [C]
     synonyms:
       - conservation
       - recycling
@@ -253,7 +157,6 @@ cause_mappings:
       - clean energy
 
   "Faith-Based":
-    ntee_prefixes: [X]
     synonyms:
       - religious organizations
       - church
@@ -263,7 +166,6 @@ cause_mappings:
       - spiritual services
 
   "Health":
-    ntee_prefixes: [E, G]
     synonyms:
       - medical care
       - community clinic
@@ -274,7 +176,6 @@ cause_mappings:
       - nursing
 
   "Housing & Homelessness":
-    ntee_prefixes: [L]
     synonyms:
       - homeless shelter
       - affordable housing
@@ -284,7 +185,6 @@ cause_mappings:
       - transitional housing
 
   "Human & Social Services":
-    ntee_prefixes: [P]
     synonyms:
       - social services
       - community outreach
@@ -294,7 +194,6 @@ cause_mappings:
       - case management
 
   "Hunger & Food Security":
-    ntee_prefixes: [K]
     synonyms:
       - food bank
       - food pantry
@@ -304,7 +203,6 @@ cause_mappings:
       - food assistance
 
   "Immigrant & Refugee":
-    ntee_prefixes: [P, Q]
     synonyms:
       - immigration services
       - refugee assistance
@@ -314,7 +212,6 @@ cause_mappings:
       - human trafficking
 
   "Inmate & Formerly Incarcerated":
-    ntee_prefixes: [I]
     synonyms:
       - reentry services
       - prison programs
@@ -324,7 +221,6 @@ cause_mappings:
       - criminal justice reform
 
   "International":
-    ntee_prefixes: [Q]
     synonyms:
       - international development
       - foreign affairs
@@ -334,7 +230,6 @@ cause_mappings:
       - peace and security
 
   "Justice & Legal Services":
-    ntee_prefixes: [I]
     synonyms:
       - legal aid
       - pro bono
@@ -344,7 +239,6 @@ cause_mappings:
       - public interest law
 
   "LGBTQ+":
-    ntee_prefixes: [P, R]
     synonyms:
       - LGBTQ community center
       - LGBTQ advocacy
@@ -354,7 +248,6 @@ cause_mappings:
       - pride
 
   "Media & Broadcasting":
-    ntee_prefixes: [A]
     synonyms:
       - media education
       - journalism
@@ -363,7 +256,6 @@ cause_mappings:
       - film and video
 
   "Mental Health":
-    ntee_prefixes: [F]
     synonyms:
       - counseling
       - therapy
@@ -374,7 +266,6 @@ cause_mappings:
       - mental wellness
 
   "Philanthropy":
-    ntee_prefixes: [T]
     synonyms:
       - grantmaking
       - foundations
@@ -384,7 +275,6 @@ cause_mappings:
       - community foundation
 
   "Race & Ethnicity":
-    ntee_prefixes: [R]
     synonyms:
       - racial equity
       - diversity and inclusion
@@ -393,7 +283,6 @@ cause_mappings:
       - cultural heritage
 
   "Research & Public Policy":
-    ntee_prefixes: [H, U, V, W]
     synonyms:
       - public policy
       - research institute
@@ -401,7 +290,6 @@ cause_mappings:
       - think tank
 
   "Science & Technology":
-    ntee_prefixes: [U]
     synonyms:
       - STEM education
       - computer science
@@ -410,7 +298,6 @@ cause_mappings:
       - technology development
 
   "Seniors":
-    ntee_prefixes: [P]
     synonyms:
       - senior services
       - elderly care
@@ -421,7 +308,6 @@ cause_mappings:
       - senior housing
 
   "Social Sciences":
-    ntee_prefixes: [V]
     synonyms:
       - sociology
       - anthropology
@@ -430,7 +316,6 @@ cause_mappings:
       - social research
 
   "Sports & Recreation":
-    ntee_prefixes: [N]
     synonyms:
       - youth sports
       - recreation centers
@@ -440,7 +325,6 @@ cause_mappings:
       - parks
 
   "Transportation":
-    ntee_prefixes: [W]
     synonyms:
       - public transit
       - ride services
@@ -448,7 +332,6 @@ cause_mappings:
       - car donation
 
   "Veteran & Military":
-    ntee_prefixes: [W]
     synonyms:
       - veteran services
       - military families
@@ -458,7 +341,6 @@ cause_mappings:
       - VA benefits
 
   "Youth Development":
-    ntee_prefixes: [O]
     synonyms:
       - after school programs
       - youth mentoring

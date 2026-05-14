@@ -16,11 +16,14 @@ module SmartMatch
       quiz_text = QuizTextBuilder.call(user_intent: user_intent)
       vector = EmbeddingClient.call(text: quiz_text)
 
-      submission = create_submission(quiz_text, vector)
       candidates = find_candidates(vector, user_intent)
       ranked = Scorer.call(candidates: candidates, user_intent: user_intent)
 
-      save_matches(submission, ranked)
+      submission = ActiveRecord::Base.transaction do
+        s = create_submission(quiz_text, vector)
+        save_matches(s, ranked)
+        s
+      end
 
       {submission: submission, results: ranked}
     end
@@ -69,10 +72,15 @@ module SmartMatch
       end
     end
 
+    # Returns nil when we cannot resolve a city/state to coordinates. Callers
+    # (SimilarityQuery, Scorer.distance_score) treat nil coordinates / nil
+    # distance as "no distance bonus" rather than substituting a default city.
     def resolve_coordinates(user_intent)
-      state_data = SmartMatch::Config.city_centroids[user_intent.state] || {}
-      city_data = state_data[user_intent.city] || state_data.values.first
-      return {latitude: 40.7357, longitude: -74.1724} unless city_data
+      state_data = SmartMatch::Config.city_centroids[user_intent.state]
+      return nil unless state_data
+
+      city_data = state_data[user_intent.city]
+      return nil unless city_data
 
       {latitude: city_data["latitude"], longitude: city_data["longitude"]}
     end

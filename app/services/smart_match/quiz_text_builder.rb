@@ -3,6 +3,9 @@
 module SmartMatch
   class QuizTextBuilder < ApplicationService
     MAX_LENGTH = 1500
+    # Reserve up to this many characters for the user's free-text input so it
+    # is never truncated away by long cause / synonym lists.
+    LANGUAGE_INPUT_BUDGET = 500
     PRIMARY_CAUSE_WEIGHT = 3
 
     attr_reader :user_intent
@@ -12,13 +15,22 @@ module SmartMatch
     end
 
     def call
-      parts = []
-      parts.concat(weighted_causes)
-      parts << location_text if location_text.present?
-      parts.concat(preferences)
-      parts << user_intent.language_input if user_intent.language_input.present?
+      free_text = Array(user_intent.language_input).join(" ").strip
+      free_text = free_text.truncate(LANGUAGE_INPUT_BUDGET) if free_text.length > LANGUAGE_INPUT_BUDGET
 
-      parts.compact_blank.join(" | ").truncate(MAX_LENGTH)
+      remaining_budget = MAX_LENGTH - (free_text.empty? ? 0 : free_text.length + 3) # " | " separator
+
+      structured_parts = []
+      structured_parts.concat(weighted_causes)
+      structured_parts << location_text if location_text.present?
+      structured_parts.concat(preferences)
+
+      structured_text = structured_parts.compact_blank.join(" | ").truncate([remaining_budget, 0].max)
+
+      pieces = []
+      pieces << free_text unless free_text.empty?
+      pieces << structured_text unless structured_text.empty?
+      pieces.join(" | ")
     end
 
     private

@@ -34,7 +34,16 @@ module SmartMatch
       )
 
       if result[:completed]
-        redirect_to smart_match_confirmation_path
+        intent = build_user_intent_for_validation
+        if intent.valid?
+          redirect_to smart_match_confirmation_path
+        else
+          flash[:alert] = intent.errors.full_messages.to_sentence.presence ||
+            "Please answer all required questions."
+          # Send the user back to the first incomplete step (state, then causes).
+          session[:smart_match_step] = first_incomplete_step
+          redirect_to smart_match_quiz_path
+        end
       else
         redirect_to smart_match_quiz_path
       end
@@ -86,6 +95,22 @@ module SmartMatch
       SmartMatch::QuizNavigator.total_steps_for(
         session[:smart_match_user_type]
       )
+    end
+
+    def build_user_intent_for_validation
+      SmartMatch::QuizToUserIntentConverter.call(
+        session_answers: quiz_session_answers,
+        user_type: session[:smart_match_user_type]
+      )
+    end
+
+    # Step the user back to the first required field they did not provide.
+    # Conservative mapping: state is asked early, causes near the end.
+    def first_incomplete_step
+      return 1 if session[:smart_match_user_type].blank?
+      return 2 if session[:smart_match_state].blank?
+      return 3 if Array(session[:smart_match_causes]).empty?
+      1
     end
   end
 end

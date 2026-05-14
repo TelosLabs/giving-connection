@@ -87,7 +87,9 @@ class SmartMatchCard::Component < ApplicationViewComponent
   end
 
   def top_causes
-    organization.causes.limit(4)
+    # Array#first serves from the preloaded association cache; limit() would
+    # issue a fresh SELECT with LIMIT 4 and bypass the preload.
+    organization.causes.first(4)
   end
 
   def cause_svg_name(cause)

@@ -12,4 +12,7 @@ end
 Rails.application.config.session_store :redis_session_store,
   key: "_giving_connection_session",
   expire_after: 1.day,
+  secure: Rails.env.production? || Rails.env.staging?,
+  httponly: true,
+  same_site: :lax,
   redis: redis_options

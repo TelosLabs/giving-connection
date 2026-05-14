@@ -12,6 +12,9 @@ module SmartMatch
 
         return results_from(base_scope, embedding) if state_scope.none?
 
+        # If we couldn't resolve coordinates, skip distance filtering entirely.
+        return results_from(state_scope, embedding) if coordinates.nil?
+
         expansion_radii(radius_miles).each do |radius|
           candidates = distance_filtered(state_scope, coordinates, radius)
           next if candidates.none?
@@ -75,7 +78,10 @@ module SmartMatch
       end
 
       def expansion_radii(initial_radius)
-        ([initial_radius] + EXPANSION_RADII).uniq.sort
+        # Only consider radii >= the initial radius. Expanding *inward* to a
+        # smaller radius after the user's chosen distance failed would
+        # contradict the "broaden the search" intent.
+        ([initial_radius] + EXPANSION_RADII.select { |r| r >= initial_radius }).uniq.sort
       end
 
       def matching_rules

@@ -246,7 +246,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_05_000005) do
     t.string "address"
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
-    t.geography "lonlat", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}, null: false
+    t.geography "lonlat", limit: {srid: 4326, type: "st_point", geographic: true}, null: false
     t.string "website"
     t.boolean "main", default: false, null: false
     t.boolean "offer_services"

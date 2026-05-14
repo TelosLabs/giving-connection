@@ -12,8 +12,4 @@ class OrganizationEmbedding < ApplicationRecord
       record.update!(embedding: embedding, text_snapshot: text_snapshot)
     end
   end
-
-  def stale?
-    text_snapshot != SmartMatch::OrganizationTextBuilder.call(organization: organization)
-  end
 end

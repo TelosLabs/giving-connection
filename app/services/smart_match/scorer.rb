@@ -53,14 +53,16 @@ module SmartMatch
     end
 
     def causes_match?(organization)
-      org_causes = Set.new(organization.causes.pluck(:name))
+      # Use map(&:name) so preloaded :causes association is served from the
+      # ActiveRecord cache instead of issuing a fresh SELECT per candidate.
+      org_causes = Set.new(organization.causes.map(&:name))
       selected_causes.intersect?(org_causes)
     end
 
     def beneficiary_match?(organization)
       return false if user_intent.prefs_selected.blank?
 
-      org_beneficiaries = Set.new(organization.beneficiary_subcategories.pluck(:name))
+      org_beneficiaries = Set.new(organization.beneficiary_subcategories.map(&:name))
       user_intent.prefs_selected.any? { |p| org_beneficiaries.include?(p) }
     end
 
@@ -79,7 +81,7 @@ module SmartMatch
     def service_match?(organization)
       return false if user_intent.prefs_selected.blank?
 
-      org_services = Set.new(organization.locations.flat_map { |l| l.services.pluck(:name) })
+      org_services = Set.new(organization.locations.flat_map { |l| l.services.map(&:name) })
       user_intent.prefs_selected.any? { |p| org_services.include?(p) }
     end
 

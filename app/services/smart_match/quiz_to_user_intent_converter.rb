@@ -16,7 +16,7 @@ module SmartMatch
         city: session_answers[:city],
         travel_bucket: session_answers[:travel_bucket],
         causes_selected: parse_array(:causes),
-        prefs_selected: parse_array(:preferences),
+        prefs_selected: parse_array(:prefs),
         language_input: session_answers[:language_input]
       )
     end

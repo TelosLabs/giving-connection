@@ -36,12 +36,6 @@ module SmartMatch
       race_ethnicity: :smart_match_race_ethnicity
     }.freeze
 
-    CITY_TO_STATE = {
-      "Atlantic City" => "NJ",
-      "Los Angeles" => "CA",
-      "Nashville" => "TN"
-    }.freeze
-
     attr_reader :session, :params, :step
 
     def initialize(session:, params:, step:)
@@ -76,7 +70,10 @@ module SmartMatch
 
     def store_answers
       PARAM_SESSION_MAP.each do |param_key, session_key|
-        session[session_key] = params[param_key] if params[param_key].present?
+        # params.key? (not .present?) so users can deselect multi-selects
+        # by submitting an empty array — .present? would skip empty values
+        # and leave a previous selection in place.
+        session[session_key] = params[param_key] if params.key?(param_key)
       end
 
       store_city_selection if params[:city_selection].present?
@@ -86,7 +83,15 @@ module SmartMatch
     def store_city_selection
       city = params[:city_selection]
       session[:smart_match_city] = city
-      session[:smart_match_state] = CITY_TO_STATE[city] if CITY_TO_STATE.key?(city)
+      session[:smart_match_state] = state_for_city(city) if state_for_city(city)
+    end
+
+    def state_for_city(city)
+      centroids = SmartMatch::Config.city_centroids
+      centroids.each do |state, cities|
+        return state if cities.is_a?(Hash) && cities.key?(city)
+      end
+      nil
     end
 
     def store_location
