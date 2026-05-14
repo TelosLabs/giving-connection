@@ -41,6 +41,8 @@ class Organization < ApplicationRecord
   has_many :locations, dependent: :destroy
   has_many :additional_locations, -> { where(main: false) }, class_name: "Location", foreign_key: :organization_id
   has_one :main_location, -> { where(main: true) }, class_name: "Location", foreign_key: :organization_id
+  has_one :organization_embedding, dependent: :destroy
+  has_many :organization_matches, dependent: :destroy
   has_one :social_media, dependent: :destroy
   has_one_attached :logo
   has_one_attached :cover_photo
@@ -56,6 +58,7 @@ class Organization < ApplicationRecord
     size: {less_than: 5.megabytes, message: "File too large. Must be less than 5MB in size"}
 
   after_create :attach_logo_and_cover
+  after_commit :schedule_embedding_update, on: [:create, :update]
 
   accepts_nested_attributes_for :social_media, allow_destroy: true
   accepts_nested_attributes_for :locations, allow_destroy: true
@@ -78,7 +81,39 @@ class Organization < ApplicationRecord
     end
   end
 
+  # Render this organization as embedding-ready text for Smart Match. Replaces
+  # the SmartMatch::OrganizationTextBuilder service -- the input is one
+  # organization's own fields, so the method belongs on the model.
+  #
+  # Returns nil when no embeddable text exists (org has no name, no statements,
+  # no causes/beneficiaries, no main location). Callers (EmbedOrganizationJob,
+  # EmbedAllOrganizationsJob) skip orgs whose text builds to nil.
+  def smart_match_text
+    parts = [
+      name,
+      mission_statement_en,
+      vision_statement_en,
+      tagline_en,
+      causes.map(&:name).join(", ").presence,
+      beneficiary_subcategories.map(&:name).join(", ").presence,
+      main_location&.address
+    ]
+
+    text = parts.compact_blank.join(" | ")
+    return nil if text.blank?
+
+    text.truncate(SmartMatch::EMBEDDING_TEXT_MAX_LENGTH)
+  end
+
   private
+
+  EMBEDDING_FIELDS = %w[name mission_statement_en vision_statement_en tagline_en].freeze
+
+  def schedule_embedding_update
+    return unless previously_new_record? || previous_changes.keys.intersect?(EMBEDDING_FIELDS)
+
+    SmartMatch::EmbedOrganizationJob.coalesce_for(id)
+  end
 
   def attach_logo_and_cover
     cover_photo.attach(io: File.open("app/assets/images/cover-default.png"), filename: "cover-default.png")

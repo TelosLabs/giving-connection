@@ -20,6 +20,7 @@ gem "cssbundling-rails"
 gem "jbuilder", "~> 2.7"
 # Use Redis adapter to run Action Cable in production
 gem "redis", "~> 4.0"
+gem "redis-session-store"
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -81,6 +82,9 @@ gem "momentjs-rails"
 # Geolocation
 gem "activerecord-postgis-adapter"
 gem "geocoder"
+
+# pgvector for Smart Match embeddings
+gem "neighbor"
 
 # Instagram feed
 gem "koala"

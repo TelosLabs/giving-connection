@@ -13,4 +13,12 @@
 class OrganizationBeneficiary < ApplicationRecord
   belongs_to :organization
   belongs_to :beneficiary_subcategory
+
+  after_commit :schedule_org_embedding_update, on: [:create, :destroy]
+
+  private
+
+  def schedule_org_embedding_update
+    SmartMatch::EmbedOrganizationJob.coalesce_for(organization_id)
+  end
 end

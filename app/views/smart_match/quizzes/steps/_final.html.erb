@@ -1,0 +1,61 @@
+<%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
+             data: { smart_match_quiz_target: "form" } do |f| %>
+  <p class="mb-6 text-sm text-center text-gray-4">
+    <%= t("smart_match.quiz.steps.final.intro") %>
+  </p>
+
+  <div class="max-w-md mx-auto space-y-6">
+
+    <div>
+      <%= f.label :age_range, t("smart_match.quiz.steps.final.age_range.label"), class: "block mb-1 text-sm font-semibold text-gray-2" %>
+      <%= f.select :age_range,
+            options_for_select([
+              [t("smart_match.quiz.steps.final.age_range.options.under_18"),          "under_18"],
+              [t("smart_match.quiz.steps.final.age_range.options.19_24"),             "19_24"],
+              [t("smart_match.quiz.steps.final.age_range.options.25_34"),             "25_34"],
+              [t("smart_match.quiz.steps.final.age_range.options.35_44"),             "35_44"],
+              [t("smart_match.quiz.steps.final.age_range.options.45_54"),             "45_54"],
+              [t("smart_match.quiz.steps.final.age_range.options.55_64"),             "55_64"],
+              [t("smart_match.quiz.steps.final.age_range.options.over_65"),           "over_65"],
+              [t("smart_match.quiz.steps.final.age_range.options.prefer_not_to_say"), "prefer_not_to_say"]
+            ], @session_answers[:age_range]),
+            { include_blank: t("smart_match.quiz.steps.final.age_range.prompt") },
+            class: "w-full px-4 py-3 text-gray-2 border border-gray-5 rounded-md focus:border-blue-medium focus:ring-1 focus:ring-blue-medium focus:outline-none",
+            data: { action: "change->smart-match-quiz#updateNextButton" } %>
+    </div>
+
+    <div>
+      <%= f.label :gender_identity, t("smart_match.quiz.steps.final.gender_identity.label"), class: "block mb-1 text-sm font-semibold text-gray-2" %>
+      <%= f.select :gender_identity,
+            options_for_select([
+              [t("smart_match.quiz.steps.final.gender_identity.options.female"),            "female"],
+              [t("smart_match.quiz.steps.final.gender_identity.options.male"),              "male"],
+              [t("smart_match.quiz.steps.final.gender_identity.options.non_binary"),        "non_binary"],
+              [t("smart_match.quiz.steps.final.gender_identity.options.other"),             "other"],
+              [t("smart_match.quiz.steps.final.gender_identity.options.prefer_not_to_say"), "prefer_not_to_say"]
+            ], @session_answers[:gender_identity]),
+            { include_blank: t("smart_match.quiz.steps.final.gender_identity.prompt") },
+            class: "w-full px-4 py-3 text-gray-2 border border-gray-5 rounded-md focus:border-blue-medium focus:ring-1 focus:ring-blue-medium focus:outline-none",
+            data: { action: "change->smart-match-quiz#updateNextButton" } %>
+    </div>
+
+    <div>
+      <%= f.label :race_ethnicity, t("smart_match.quiz.steps.final.race_ethnicity.label"), class: "block mb-1 text-sm font-semibold text-gray-2" %>
+      <%= f.select :race_ethnicity,
+            options_for_select([
+              [t("smart_match.quiz.steps.final.race_ethnicity.options.black_african_american"),       "black_african_american"],
+              [t("smart_match.quiz.steps.final.race_ethnicity.options.hispanic_latino"),              "hispanic_latino"],
+              [t("smart_match.quiz.steps.final.race_ethnicity.options.white"),                        "white"],
+              [t("smart_match.quiz.steps.final.race_ethnicity.options.asian"),                        "asian"],
+              [t("smart_match.quiz.steps.final.race_ethnicity.options.native_american"),              "native_american"],
+              [t("smart_match.quiz.steps.final.race_ethnicity.options.native_hawaiian"),              "native_hawaiian"],
+              [t("smart_match.quiz.steps.final.race_ethnicity.options.middle_eastern_north_african"), "middle_eastern_north_african"],
+              [t("smart_match.quiz.steps.final.race_ethnicity.options.prefer_not_to_say"),            "prefer_not_to_say"]
+            ], @session_answers[:race_ethnicity]),
+            { include_blank: t("smart_match.quiz.steps.final.race_ethnicity.prompt") },
+            class: "w-full px-4 py-3 text-gray-2 border border-gray-5 rounded-md focus:border-blue-medium focus:ring-1 focus:ring-blue-medium focus:outline-none",
+            data: { action: "change->smart-match-quiz#updateNextButton" } %>
+    </div>
+
+  </div>
+<% end %>

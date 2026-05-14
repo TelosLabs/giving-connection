@@ -1,0 +1,119 @@
+<article class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md">
+
+  <%# Cover photo %>
+  <div class="relative h-52 bg-gradient-to-br from-blue-dark to-blue-medium flex-shrink-0">
+    <% if cover_photo_url %>
+      <%= image_tag cover_photo_url, alt: organization.name, class: "object-cover w-full h-full" %>
+    <% end %>
+  </div>
+
+  <%# Head: logo + match + org info %>
+  <div class="flex items-start gap-4 px-5 pt-4 pb-4 border-b border-gray-8">
+
+    <%# Logo %>
+    <% if logo_url %>
+      <%= image_tag logo_url,
+            alt: "#{organization.name} logo",
+            class: "flex-shrink-0 w-16 h-16 object-contain rounded" %>
+    <% else %>
+      <div class="flex-shrink-0 w-16 h-16 rounded bg-gray-8 flex items-center justify-center">
+        <svg class="w-8 h-8 text-gray-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21" />
+        </svg>
+      </div>
+    <% end %>
+
+    <%# Right: match badge + org details %>
+    <div class="flex-1 min-w-0">
+
+      <%# Match circle + label %>
+      <div class="flex items-center gap-2 mb-2">
+        <div class="relative flex-shrink-0 w-10 h-10">
+          <svg viewBox="0 0 48 48" class="w-full h-full -rotate-90" aria-hidden="true">
+            <circle cx="24" cy="24" r="20" fill="none" stroke="#e5e7eb" stroke-width="5"/>
+            <circle cx="24" cy="24" r="20" fill="none"
+                    stroke="<%= circle_color %>"
+                    stroke-width="5"
+                    stroke-linecap="round"
+                    stroke-dasharray="<%= circle_circumference %>"
+                    stroke-dashoffset="<%= circle_dash_offset %>"/>
+          </svg>
+          <span class="absolute inset-0 flex items-center justify-center" style="font-size: 9px; font-weight: 700; color: #374151;">
+            <%= match_percentage %>%
+          </span>
+        </div>
+        <span class="text-sm font-bold <%= match_label_color %>"><%= match_label %></span>
+      </div>
+
+      <%# Org name + verified %>
+      <div class="flex items-center gap-1 mb-0.5">
+        <h3 class="text-sm font-semibold leading-snug text-gray-2 truncate"><%= organization.name %></h3>
+        <% if verified? %>
+          <svg class="flex-shrink-0 w-4 h-4 text-blue-medium" viewBox="0 0 20 20" fill="currentColor" aria-label="Verified">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/>
+          </svg>
+        <% end %>
+      </div>
+
+      <%# Address %>
+      <% if location_address %>
+        <p class="text-xs text-gray-4 truncate"><%= location_address %></p>
+      <% end %>
+
+      <%# Phone %>
+      <% if phone_number %>
+        <a href="tel:<%= phone_number %>" class="text-xs text-gray-4 hover:text-blue-medium transition-colors">
+          <%= phone_number %>
+        </a>
+      <% end %>
+
+    </div>
+  </div>
+
+  <%# Card body %>
+  <div class="flex flex-col flex-1 px-5 pb-6">
+
+    <%# CTA button %>
+    <% if cta_url %>
+      <%= link_to cta_url, class: "flex items-center justify-center gap-2 mt-4 py-3 text-sm font-bold tracking-wide uppercase rounded-md transition-colors #{cta_classes}" do %>
+        <% if user_type == "donor" %>
+          <%# Gift icon (Heroicons outline) %>
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/>
+          </svg>
+        <% elsif user_type == "volunteer" %>
+          <%# Hand raised icon (Heroicons outline) %>
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.175.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"/>
+          </svg>
+        <% else %>
+          <%# Heart icon (Heroicons solid) %>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"/>
+          </svg>
+        <% end %>
+        <%= cta_text %>
+      <% end %>
+    <% end %>
+
+    <%# Causes %>
+    <% if top_causes.any? %>
+      <div class="pt-5 mt-4 border-t border-gray-8">
+        <p class="mb-3 text-xs font-semibold tracking-wider text-gray-4 uppercase">Causes</p>
+        <div class="flex flex-wrap gap-3">
+          <% top_causes.each do |cause| %>
+            <div class="flex flex-col items-center gap-1 w-20 text-center">
+              <%= render CauseIcon::Component.new(
+                    svg_name: "causes_categories/#{cause_svg_name(cause)}",
+                    wrapper_options: { class: "w-12 h-12 bg-blue-pale" },
+                    svg_options: { class: "w-1/2", aria_hidden: "true" }
+                  ) %>
+              <span class="text-xs text-gray-4 leading-tight"><%= cause.name %></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</article>

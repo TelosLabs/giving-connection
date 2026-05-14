@@ -8,6 +8,15 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Pre-download model weights to /opt/hf-cache so they survive the USER switch.
+# Without HF_HOME set, sentence-transformers caches under /root/.cache, which
+# appuser cannot read -- the model would re-download on every container boot,
+# slowing cold start and risking HF rate-limit blocks.
+ENV HF_HOME=/opt/hf-cache
+RUN mkdir -p /opt/hf-cache && \
+    python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('BAAI/bge-large-en-v1.5')" && \
+    chown -R appuser:appuser /opt/hf-cache
+
 COPY main.py .
 
 USER appuser

@@ -1,0 +1,177 @@
+# Smart Match Engine — City Centroids
+#
+# Provides center-point coordinates for cities offered in the quiz location step.
+# Used by SimilarityQuery to convert a user's city selection into lat/lon for
+# PostGIS distance filtering (ST_DWithin).
+#
+# Note: The locations table has no city/state columns — only an address string
+# and lat/lon coordinates. Distance-based filtering via these centroids is the
+# primary mechanism for location matching.
+#
+# TODO: Validate city list against production locations data to ensure coverage
+# of cities where organizations actually operate.
+
+# ---------------------------------------------------------------------------
+# New Jersey
+# ---------------------------------------------------------------------------
+NJ:
+  Newark:
+    latitude: 40.7357
+    longitude: -74.1724
+  Jersey City:
+    latitude: 40.7178
+    longitude: -74.0431
+  Paterson:
+    latitude: 40.9168
+    longitude: -74.1718
+  Elizabeth:
+    latitude: 40.6640
+    longitude: -74.2107
+  Trenton:
+    latitude: 40.2171
+    longitude: -74.7429
+  Camden:
+    latitude: 39.9259
+    longitude: -75.1196
+  Passaic:
+    latitude: 40.8568
+    longitude: -74.1285
+  Union City:
+    latitude: 40.7795
+    longitude: -74.0235
+  New Brunswick:
+    latitude: 40.4862
+    longitude: -74.4518
+  Atlantic City:
+    latitude: 39.3643
+    longitude: -74.4229
+  Hoboken:
+    latitude: 40.7440
+    longitude: -74.0324
+  East Orange:
+    latitude: 40.7671
+    longitude: -74.2049
+  Vineland:
+    latitude: 39.4863
+    longitude: -75.0257
+  Plainfield:
+    latitude: 40.6337
+    longitude: -74.4074
+  Hackensack:
+    latitude: 40.8859
+    longitude: -74.0435
+  Morristown:
+    latitude: 40.7968
+    longitude: -74.4815
+  Perth Amboy:
+    latitude: 40.5068
+    longitude: -74.2654
+
+# ---------------------------------------------------------------------------
+# California
+# ---------------------------------------------------------------------------
+CA:
+  Los Angeles:
+    latitude: 34.0522
+    longitude: -118.2437
+  San Francisco:
+    latitude: 37.7749
+    longitude: -122.4194
+  San Diego:
+    latitude: 32.7157
+    longitude: -117.1611
+  San Jose:
+    latitude: 37.3382
+    longitude: -121.8863
+  Sacramento:
+    latitude: 38.5816
+    longitude: -121.4944
+  Oakland:
+    latitude: 37.8044
+    longitude: -122.2712
+  Fresno:
+    latitude: 36.7378
+    longitude: -119.7871
+  Long Beach:
+    latitude: 33.7701
+    longitude: -118.1937
+  Bakersfield:
+    latitude: 35.3733
+    longitude: -119.0187
+  Anaheim:
+    latitude: 33.8366
+    longitude: -117.9143
+  Riverside:
+    latitude: 33.9533
+    longitude: -117.3962
+  Santa Ana:
+    latitude: 33.7455
+    longitude: -117.8677
+  Stockton:
+    latitude: 37.9577
+    longitude: -121.2908
+  Irvine:
+    latitude: 33.6846
+    longitude: -117.8265
+  San Bernardino:
+    latitude: 34.1083
+    longitude: -117.2898
+  Modesto:
+    latitude: 37.6391
+    longitude: -120.9969
+  Santa Rosa:
+    latitude: 38.4405
+    longitude: -122.7141
+  Pasadena:
+    latitude: 34.1478
+    longitude: -118.1445
+
+# ---------------------------------------------------------------------------
+# Tennessee
+# ---------------------------------------------------------------------------
+TN:
+  Nashville:
+    latitude: 36.1627
+    longitude: -86.7816
+  Memphis:
+    latitude: 35.1495
+    longitude: -90.0490
+  Knoxville:
+    latitude: 35.9606
+    longitude: -83.9207
+  Chattanooga:
+    latitude: 35.0456
+    longitude: -85.3097
+  Clarksville:
+    latitude: 36.5298
+    longitude: -87.3595
+  Murfreesboro:
+    latitude: 35.8456
+    longitude: -86.3903
+  Franklin:
+    latitude: 35.9251
+    longitude: -86.8689
+  Jackson:
+    latitude: 35.6145
+    longitude: -88.8139
+  Johnson City:
+    latitude: 36.3134
+    longitude: -82.3535
+  Kingsport:
+    latitude: 36.5484
+    longitude: -82.5618
+  Hendersonville:
+    latitude: 36.3048
+    longitude: -86.6200
+  Bartlett:
+    latitude: 35.2045
+    longitude: -89.8740
+  Germantown:
+    latitude: 35.0868
+    longitude: -89.8100
+  Columbia:
+    latitude: 35.6151
+    longitude: -87.0353
+  Gallatin:
+    latitude: 36.3884
+    longitude: -86.4467

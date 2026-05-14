@@ -38,11 +38,21 @@ env:
 
 # Python embedding service for Smart Match feature.
 # SECURITY: Bound to 127.0.0.1 only — not accessible from the public internet.
+#
+# Healthcheck: /health returns 503 until the model finishes loading. Kamal
+# polls Docker's healthcheck before swinging traffic onto a new container.
 accessories:
   embedding-api:
     image: ghcr.io/teloslabs/gc-embedding-api
     host: 161.35.179.50
     port: "127.0.0.1:8000:8000"
+    options:
+      memory: 2.5g
+      health-cmd: 'python -c "import urllib.request,sys; r=urllib.request.urlopen(''http://127.0.0.1:8000/health'', timeout=2); sys.exit(0 if r.status==200 else 1)"'
+      health-interval: 15s
+      health-timeout: 3s
+      health-retries: 30
+      health-start-period: 90s
     env:
       clear:
         PYTHONUNBUFFERED: "1"

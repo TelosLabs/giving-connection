@@ -31,6 +31,231 @@
 
 en:
   hello: "Hello world"
+  smart_match:
+    landing:
+      hero:
+        title: "Welcome to Smart Match"
+        body: "A Giving Connection feature designed to help you quickly identify nonprofits aligned with your goals, situation, and location without the overwhelm of endless searching."
+      features:
+        time: "Takes 3-5 minutes"
+        match: "Personalized nonprofit matches"
+        based_on: "Based on your needs and preferences"
+      illustration_alt: "Person browsing nonprofits"
+      description: "We'll ask you a few simple questions about what you're looking for. Based on your responses, we'll recommend nonprofits that are most relevant to you."
+      cta:
+        prompt: "Ready to find the nonprofit that's right for you?"
+        start: "START"
+    confirmation:
+      title: "Ready to see your results?"
+      body_lead: "You've completed <strong>Smart Match</strong>!"
+      body: "Based on your responses, we're ready to show you nonprofit organizations that align with your interests and preferences."
+      review_notice: "This is your chance to go back and <strong>review</strong> or <strong>update</strong> your answers. Once you submit, you'll need to retake the questionnaire to make changes."
+      submit: "SUBMIT"
+    results:
+      heading: "Your results are ready!"
+      subheading: "Based on your answers, we've matched you with nonprofit organizations that best fit your preferences. You can explore the options below to learn more and take the next step."
+      still_need_help: "Still Need Help?"
+      retake: "Retake Quiz"
+      try_again: "Try Again"
+      empty:
+        title: "No quiz results found"
+        body: "Take the quiz to get personalized nonprofit matches."
+        cta: "Take the Quiz"
+      unavailable:
+        title: "Smart Match is temporarily unavailable"
+        body: "Our matching engine is currently offline. Please try again in a few minutes."
+    quiz:
+      buttons:
+        back: "Go Back"
+        next: "NEXT"
+        find_matches: "FIND MY MATCHES"
+      subtitles:
+        single_choice: "Single Choice"
+        multiple_choice: "Multiple Choice"
+      sections:
+        about_you: "About You"
+        type_of_support: "Type of Support"
+        location_access: "Location & Access"
+        prefs_accessibility: "Preferences & Accessibility"
+        volunteer_prefs: "Your Volunteering Preferences"
+        volunteer_availability: "Your Availability & Location"
+        engagement: "Where & How You Engage"
+        donor_prefs: "Your Donation Preferences"
+      titles:
+        personal_details: "Personal Details"
+        service_seeker:
+          step_1: "How can we support you today?"
+          step_2: "Who are you seeking support for?"
+          step_3: "How would you describe yourself?"
+          step_4: "Which categories best fits your needs?"
+          step_5: "What best describes your situation?"
+          step_6: "Where should we look for support?"
+          step_7: "What kind of travel is possible for you?"
+          step_8: "What should we keep in mind when matching you to services?"
+        volunteer:
+          step_1: "How can we support you today?"
+          step_2: "Which causes are close to your heart?"
+          step_3: "How would you like to help?"
+          step_4: "What type of volunteering are you looking for?"
+          step_5: "What format works best for you?"
+          step_6: "Which community would you like your giving to focus on?"
+          step_7: "How much time do you have to give?"
+        donor:
+          step_1: "How can we support you today?"
+          step_2: "What causes are close to your heart?"
+          step_3: "What is your preferred donation style?"
+          step_4: "What inspires your giving today?"
+          step_5: "Are there specific communities or populations you'd like your donation to support?"
+          step_6: "Where would you like your donation to make an impact?"
+          step_7: "Which community would you like your giving to focus on?"
+          step_8: "How would you like to be involved?"
+      steps:
+        user_type:
+          options:
+            service_seeker: "I'm here seeking help from a nonprofit"
+            donor: "I want to donate to a cause I care about"
+            volunteer: "I want to volunteer my time"
+        support_for:
+          options:
+            myself: "Myself"
+            someone_else: "Someone else"
+            organization: "On behalf of an organization"
+        self_description:
+          options:
+            student: "Student"
+            veteran: "Veteran or in the military"
+            caregiver: "Caregiver"
+            lgbtqia: "LGBTQIA+"
+            disability: "Living with disabilities"
+            business_nonprofit: "Business or nonprofit"
+            business_partner: "Business looking for a partner"
+            none: "Prefer not to say / none apply"
+          hint: "Your response helps us highlight the services that align with your needs and preferences."
+        causes:
+          more_options: "Not finding a cause? More options here."
+        situation:
+          options:
+            urgent: "I need services urgently"
+            long_term: "I am looking for long-term support"
+            exploring: "I am exploring my options"
+        city_selection:
+          hint: "Thanks for sharing this. You're moving closer to your personalized results."
+        travel:
+          options:
+            nearby: "Walking distance only (under 5 miles)"
+            moderate: "Public transit or rides (5–10 miles)"
+            far: "Car or ride share available (10+ miles)"
+            statewide: "Remote services only"
+          hint: "Thanks for sharing this. You're moving closer to your personalized results."
+        preferences:
+          options:
+            free_sliding_scale: "Free or sliding-scale services"
+            no_id_required: "No ID or documentation required"
+            multilingual: "Spanish or another language available"
+            lgbtqia_affirming: "LGBTQIA+ affirming services"
+            wheelchair_accessible: "Wheelchair accessible locations"
+            women_bipoc_led: "Women- or BIPOC-led organizations"
+        volunteer_involvement:
+          options:
+            volunteer_time: "Volunteer my time"
+            attend_event: "Attend an event"
+            business_partner: "Partner as a business"
+            just_exploring: "Not sure yet / just exploring"
+        volunteer_type:
+          options:
+            kids_seniors: "Kids or seniors"
+            veterans_military: "Veterans / military families"
+            spanish_speaking: "Spanish-speaking"
+            grassroots_bipoc: "Grassroots / BIPOC-led"
+            behind_scenes: "Behind the scenes"
+            accessible_virtual: "Accessible or virtual"
+            family_group: "Family or group"
+            no_preference: "No preference"
+          hint: "Your response helps us highlight volunteer opportunities that align with your interests and preferences."
+        volunteer_format:
+          options:
+            in_person: "Only in-person"
+            remote: "Only remote"
+            both: "Both"
+        volunteer_time:
+          options:
+            one_time: "Just one day / one-time event"
+            few_hours: "A few hours a week"
+            ongoing: "An ongoing role"
+            not_sure: "I'm not sure yet"
+        donor_giving_style:
+          options:
+            general_donation: "General donation"
+            specific_project: "Support a specific project"
+            goods_items: "Donate goods or items"
+            recurring_giving: "Set up recurring giving"
+            just_exploring: "Just exploring for now"
+        donor_giving_inspiration:
+          options:
+            local_community: "Supporting my local community"
+            personal_cause: "A cause that's personal or close to my heart"
+            underserved_communities: "Helping underserved or overlooked communities"
+            honor_memory: "Giving in honor or in memory of someone"
+            real_impact: "Making sure my donation has real impact"
+            discovering_ways: "Discovering meaningful ways to give"
+            values_aligned: "Giving in alignment with my values"
+          hint: "Your answers help us identify donation opportunities that best match your preferences."
+        donor_communities:
+          options:
+            seniors: "Seniors"
+            veteran_military: "Veteran & military"
+            spanish_speaking: "Spanish-speaking communities"
+            bipoc: "BIPOC communities"
+            disabilities: "People with disabilities"
+            lgbtqia: "LGBTQIA+ community"
+            children_family: "Children & family"
+            no_preference: "No preference"
+        donor_impact_location:
+          options:
+            near_me: "Somewhere near me"
+            specific_place: "A specific city or zip code"
+            anywhere: "Anywhere"
+        donor_involvement:
+          options:
+            one_time_donation: "Make a one-time donation"
+            learn_updates: "Learn more and receive updates"
+            volunteer_events: "Volunteer or attend events"
+            deeper_involvement: "Explore ongoing or deeper involvement"
+        final:
+          intro: "Sharing this information is optional and only helps us improve the relevance of certain results. You may choose \"Prefer not to say\" in any question."
+          age_range:
+            label: "Age Range"
+            prompt: "Select your age range"
+            options:
+              under_18: "Under 18"
+              "19_24": "19–24"
+              "25_34": "25–34"
+              "35_44": "35–44"
+              "45_54": "45–54"
+              "55_64": "55–64"
+              over_65: "Over 65+"
+              prefer_not_to_say: "Prefer not to say"
+          gender_identity:
+            label: "Gender Identity"
+            prompt: "Select your gender identity"
+            options:
+              female: "Female"
+              male: "Male"
+              non_binary: "Non-binary or gender diverse"
+              other: "Other"
+              prefer_not_to_say: "Prefer not to say"
+          race_ethnicity:
+            label: "Race or Ethnicity"
+            prompt: "Select your race or ethnicity"
+            options:
+              black_african_american: "Black or African American"
+              hispanic_latino: "Hispanic or Latino/a/x"
+              white: "White"
+              asian: "Asian"
+              native_american: "Native American or Alaska Native"
+              native_hawaiian: "Native Hawaiian or Pacific Islander"
+              middle_eastern_north_african: "Middle Eastern or North African"
+              prefer_not_to_say: "Prefer not to say"
   helpers:
     label:
       organization:
