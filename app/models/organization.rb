@@ -42,6 +42,7 @@ class Organization < ApplicationRecord
   has_many :additional_locations, -> { where(main: false) }, class_name: "Location", foreign_key: :organization_id
   has_one :main_location, -> { where(main: true) }, class_name: "Location", foreign_key: :organization_id
   has_one :organization_embedding, dependent: :destroy
+  has_many :organization_matches, dependent: :destroy
   has_one :social_media, dependent: :destroy
   has_one_attached :logo
   has_one_attached :cover_photo
@@ -87,7 +88,7 @@ class Organization < ApplicationRecord
   def schedule_embedding_update
     return unless previously_new_record? || previous_changes.keys.intersect?(EMBEDDING_FIELDS)
 
-    SmartMatch::EmbedOrganizationJob.perform_later(id)
+    SmartMatch::EmbedOrganizationJob.coalesce_for(id)
   end
 
   def attach_logo_and_cover

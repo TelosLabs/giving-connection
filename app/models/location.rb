@@ -171,6 +171,6 @@ class Location < ActiveRecord::Base
   def schedule_org_embedding_update
     return unless organization_id
 
-    SmartMatch::EmbedOrganizationJob.perform_later(organization_id)
+    SmartMatch::EmbedOrganizationJob.coalesce_for(organization_id)
   end
 end

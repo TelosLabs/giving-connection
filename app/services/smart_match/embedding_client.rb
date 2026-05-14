@@ -51,23 +51,16 @@ module SmartMatch
 
       private
 
+      THREAD_CONN_KEY = :smart_match_embedding_http
+
       def http_post(path, payload)
         uri = URI.join(service_url, path)
-        request = Net::HTTP::Post.new(uri, "Content-Type" => "application/json")
+        request = Net::HTTP::Post.new(uri.request_uri, "Content-Type" => "application/json")
         request.body = payload.to_json
 
         retries = 0
         begin
-          response = Net::HTTP.start(
-            uri.host,
-            uri.port,
-            open_timeout: OPEN_TIMEOUT,
-            read_timeout: READ_TIMEOUT,
-            use_ssl: uri.scheme == "https",
-            verify_mode: (uri.scheme == "https" ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE)
-          ) do |http|
-            http.request(request)
-          end
+          response = http_connection.request(request)
 
           unless response.is_a?(Net::HTTPSuccess)
             raise EmbeddingUnavailableError, "Embedding service returned #{response.code}"
@@ -76,7 +69,9 @@ module SmartMatch
           response
         rescue EmbeddingUnavailableError
           raise
-        rescue Timeout::Error, Errno::ECONNREFUSED, Errno::ECONNRESET, Net::OpenTimeout, Net::ReadTimeout => e
+        rescue Timeout::Error, Errno::ECONNREFUSED, Errno::ECONNRESET,
+               Net::OpenTimeout, Net::ReadTimeout, IOError, EOFError => e
+          reset_http_connection!
           retries += 1
           if retries <= MAX_RETRIES
             sleep(backoff_with_jitter(retries))
@@ -84,6 +79,37 @@ module SmartMatch
           end
           raise EmbeddingUnavailableError, "Embedding service unavailable: #{e.message}"
         end
+      end
+
+      # Per-thread keep-alive connection. Net::HTTP itself is not thread-safe,
+      # so each Puma worker thread maintains its own started connection,
+      # reused across requests until a connection-level error trips
+      # reset_http_connection!.
+      def http_connection
+        conn = Thread.current[THREAD_CONN_KEY]
+        return conn if conn&.started?
+
+        uri = URI(service_url)
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.open_timeout = OPEN_TIMEOUT
+        http.read_timeout = READ_TIMEOUT
+        http.use_ssl = uri.scheme == "https"
+        http.verify_mode = (uri.scheme == "https" ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE)
+        http.keep_alive_timeout = 30
+        http.start
+        Thread.current[THREAD_CONN_KEY] = http
+      end
+
+      def reset_http_connection!
+        http = Thread.current[THREAD_CONN_KEY]
+        return unless http
+
+        begin
+          http.finish if http.started?
+        rescue IOError
+          # connection already closed by peer; ignore
+        end
+        Thread.current[THREAD_CONN_KEY] = nil
       end
 
       def backoff_with_jitter(attempt)

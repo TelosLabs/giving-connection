@@ -17,19 +17,37 @@ export default class extends Controller {
   }
 
   connect () {
+    // Reconcile DOM classes with actual input state. Turbo Drive snapshot
+    // restoration on back/forward navigation leaves the cached HTML, but
+    // input.checked may have been mutated since -- syncing here avoids the
+    // "card visually still selected after deselect" race.
+    this.reconcileSelectionUI()
     this.updateNextButton()
+    this.bindFormGuard()
+  }
+
+  disconnect () {
+    if (this.formSubmitHandler && this.hasFormTarget) {
+      this.formTarget.removeEventListener('submit', this.formSubmitHandler)
+    }
   }
 
   selectCard (event) {
-    event.preventDefault()
     const card = event.currentTarget
     const isMultiple = card.dataset.selectMode === 'multiple'
     const input = card.querySelector('input')
 
     if (!input) return
 
+    // When the click originates on the sr-only input itself (keyboard Space,
+    // or a screen-reader activating the checkbox), the browser has already
+    // toggled `input.checked` natively. Re-toggling here would cancel the
+    // user's intent. In that case just sync the UI to the new input state.
+    const originatedOnInput = event.target === input
+    event.preventDefault()
+
     if (isMultiple) {
-      input.checked = !input.checked
+      if (!originatedOnInput) input.checked = !input.checked
       card.classList.toggle('selected', input.checked)
 
       const checkIcon = card.querySelector('.check-icon')
@@ -116,6 +134,40 @@ export default class extends Controller {
         const checkIcon = card.querySelector('.check-icon')
         if (checkIcon) checkIcon.classList.toggle('hidden', !checked)
       }
+    })
+  }
+
+  // Disable the submit button on form submit so double-clicks (and Back/Next
+  // hammering while a PUT is in flight) cannot fire a second submission. The
+  // button is re-enabled on the next Turbo render via connect() running again.
+  bindFormGuard () {
+    if (!this.hasFormTarget) return
+
+    this.formSubmitHandler = () => {
+      if (this.hasSubmitBtnTarget) {
+        this.submitBtnTarget.disabled = true
+        this.submitBtnTarget.setAttribute('aria-busy', 'true')
+      }
+    }
+    this.formTarget.addEventListener('submit', this.formSubmitHandler)
+  }
+
+  reconcileSelectionUI () {
+    this.element.querySelectorAll('.sm-card-option, .sm-card-option--list').forEach(card => {
+      const input = card.querySelector('input')
+      const checked = !!(input && input.checked)
+      card.classList.toggle('selected', checked)
+      const checkIcon = card.querySelector('.check-icon')
+      if (checkIcon) checkIcon.classList.toggle('hidden', !checked)
+    })
+
+    this.element.querySelectorAll('.pill-label, label[data-action*="toggleCause"]').forEach(label => {
+      const checkbox = label.querySelector('input[type="checkbox"]')
+      const checked = !!(checkbox && checkbox.checked)
+      label.classList.toggle('border-blue-medium', checked)
+      label.classList.toggle('bg-blue-pale', checked)
+      const checkIcon = label.querySelector('.check-icon')
+      if (checkIcon) checkIcon.classList.toggle('hidden', !checked)
     })
   }
 

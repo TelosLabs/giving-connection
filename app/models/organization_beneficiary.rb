@@ -19,6 +19,6 @@ class OrganizationBeneficiary < ApplicationRecord
   private
 
   def schedule_org_embedding_update
-    SmartMatch::EmbedOrganizationJob.perform_later(organization_id)
+    SmartMatch::EmbedOrganizationJob.coalesce_for(organization_id)
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_03_05_000005) do
+ActiveRecord::Schema[7.2].define(version: 2026_05_14_155700) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -262,9 +262,11 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_05_000005) do
     t.integer "non_standard_office_hours"
     t.string "time_zone"
     t.string "slug"
+    t.string "state_code", limit: 2
     t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
     t.index ["organization_id"], name: "index_locations_on_organization_id"
     t.index ["slug"], name: "index_locations_on_slug", unique: true
+    t.index ["state_code"], name: "index_locations_on_state_code"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -410,26 +412,12 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_05_000005) do
     t.string "session_id", null: false
     t.jsonb "answers", default: {}
     t.string "user_type", null: false
-    t.vector "embedding", null: false
+    t.vector "embedding", limit: 1024, null: false
     t.text "text_snapshot", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["session_id"], name: "index_quiz_submissions_on_session_id"
     t.index ["user_id"], name: "index_quiz_submissions_on_user_id"
-  end
-
-  create_table "recommendation_feedbacks", force: :cascade do |t|
-    t.bigint "user_id"
-    t.string "nonprofit_id", null: false
-    t.string "feedback_type", null: false
-    t.string "session_id", null: false
-    t.text "user_answers"
-    t.text "recommendation_data"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["feedback_type"], name: "index_recommendation_feedbacks_on_feedback_type"
-    t.index ["session_id", "nonprofit_id"], name: "index_recommendation_feedbacks_on_session_id_and_nonprofit_id", unique: true
-    t.index ["user_id"], name: "index_recommendation_feedbacks_on_user_id"
   end
 
   create_table "services", force: :cascade do |t|
@@ -520,11 +508,10 @@ ActiveRecord::Schema[7.2].define(version: 2026_03_05_000005) do
   add_foreign_key "organization_causes", "causes"
   add_foreign_key "organization_causes", "organizations"
   add_foreign_key "organization_embeddings", "organizations"
-  add_foreign_key "organization_matches", "organizations"
-  add_foreign_key "organization_matches", "quiz_submissions"
+  add_foreign_key "organization_matches", "organizations", on_delete: :cascade
+  add_foreign_key "organization_matches", "quiz_submissions", on_delete: :cascade
   add_foreign_key "phone_numbers", "locations"
   add_foreign_key "quiz_submissions", "users"
-  add_foreign_key "recommendation_feedbacks", "users"
   add_foreign_key "services", "causes"
   add_foreign_key "social_medias", "organizations"
   add_foreign_key "tags", "organizations"

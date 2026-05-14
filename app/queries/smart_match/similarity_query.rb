@@ -42,7 +42,17 @@ module SmartMatch
       end
 
       def location_in_state(state)
-        Location.where("address ILIKE ?", "%#{ActiveRecord::Base.sanitize_sql_like(state)}%")
+        # Prefer the structured state_code column (indexed, exact match).
+        # Fall back to address ILIKE for locations not yet backfilled by
+        # `rake smart_match:backfill_location_state_codes`. Once backfill is
+        # complete and state_code is enforced NOT NULL, the OR clause can be
+        # dropped and the predicate becomes a clean indexed equality.
+        code = state.to_s.upcase
+        like = "%#{ActiveRecord::Base.sanitize_sql_like(state)}%"
+        Location.where(
+          "locations.state_code = :code OR (locations.state_code IS NULL AND locations.address ILIKE :like)",
+          code: code, like: like
+        )
       end
 
       def distance_filtered(scope, coordinates, radius_miles)

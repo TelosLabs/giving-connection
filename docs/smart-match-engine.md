@@ -85,18 +85,25 @@ Exit criteria: A user completes the quiz end-to-end and the backend receives str
 - `config/routes.rb` (modify) — Add smart match routes using a RESTful namespace:
   ```ruby
   namespace :smart_match do
-    root to: "landing#show"              # GET /smart_match
-    resource :quiz, only: [:show, :update] # GET/PUT /smart_match/quiz
-    resources :results, only: [:index]     # GET /smart_match/results
+    root to: "landing#show"                       # GET  /smart_match
+    resource :quiz,         only: [:show, :update] # GET/PUT /smart_match/quiz
+    resource :confirmation, only: [:show]          # GET  /smart_match/confirmation
+    resource :result,       only: [:show]          # GET  /smart_match/result
   end
   ```
+  Singular `resource :result` (not `resources :results`) — there is exactly one
+  result per session, keyed off `session[:smart_match_submission_id]`. The
+  confirmation step is an interstitial between final quiz step and results
+  while the embedding pipeline runs.
+
   Feedback routes deferred to Phase 3 (when the model exists).
 
 ### Controllers
 
 - `app/controllers/smart_match/landing_controller.rb` (new) — Single `show` action rendering the landing page. Skips `authenticate_user!`.
 - `app/controllers/smart_match/quizzes_controller.rb` (new) — Thin controller (~30 lines). `show` renders current quiz step, `update` processes step submission and advances. Delegates navigation to `SmartMatch::QuizNavigator`. Stores quiz progress in session. Skips `authenticate_user!`.
-- `app/controllers/smart_match/results_controller.rb` (new) — Single `index` action. Initially renders a placeholder. Fleshed out in Phase 2. Skips `authenticate_user!`.
+- `app/controllers/smart_match/results_controller.rb` (new) — Single `show` action (singular resource). Resolves the submission from session, runs `SmartMatch::SubmissionProcessor` if absent, renders matches or the embedding-unavailable fallback. Skips `authenticate_user!`.
+- `app/controllers/smart_match/confirmations_controller.rb` (new) — Single `show` action rendering the post-quiz interstitial while embedding runs. Skips `authenticate_user!`.
 
 ### Services
 
