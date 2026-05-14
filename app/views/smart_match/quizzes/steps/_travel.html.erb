@@ -10,7 +10,7 @@
             class: "sr-only",
             checked: @session_answers[:travel_bucket] == "nearby",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold text-center">Walking distance only (under 5 miles)</span>
+      <span class="text-base font-bold text-center"><%= t("smart_match.quiz.steps.travel.options.nearby") %></span>
       <%= inline_svg_tag "smart_match/person.svg", class: "w-20 h-20 mt-2", aria_hidden: "true" %>
     </label>
 
@@ -22,7 +22,7 @@
             class: "sr-only",
             checked: @session_answers[:travel_bucket] == "moderate",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold text-center">Public transit or rides (5–10 miles)</span>
+      <span class="text-base font-bold text-center"><%= t("smart_match.quiz.steps.travel.options.moderate") %></span>
       <%= inline_svg_tag "smart_match/bus.svg", class: "w-20 h-20 mt-2", aria_hidden: "true" %>
     </label>
 
@@ -34,7 +34,7 @@
             class: "sr-only",
             checked: @session_answers[:travel_bucket] == "far",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold text-center">Car or ride share available (10+ miles)</span>
+      <span class="text-base font-bold text-center"><%= t("smart_match.quiz.steps.travel.options.far") %></span>
       <%= inline_svg_tag "smart_match/car.svg", class: "w-20 h-20 mt-2", aria_hidden: "true" %>
     </label>
 
@@ -46,12 +46,12 @@
             class: "sr-only",
             checked: @session_answers[:travel_bucket] == "statewide",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold text-center">Remote services only</span>
+      <span class="text-base font-bold text-center"><%= t("smart_match.quiz.steps.travel.options.statewide") %></span>
       <%= inline_svg_tag "smart_match/building.svg", class: "w-20 h-20 mt-2", aria_hidden: "true" %>
     </label>
 
   </div>
   <div class="sm-selection-hint mt-5 rounded-lg px-5 py-3 text-sm font-medium text-blue-dark text-center" style="background-color: #e2ecf7;">
-    Thanks for sharing this. You're moving closer to your personalized results.
+    <%= t("smart_match.quiz.steps.travel.hint") %>
   </div>
 <% end %>

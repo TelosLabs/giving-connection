@@ -10,7 +10,7 @@
             class: "sr-only",
             checked: @session_answers[:support_for] == "myself",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold">Myself</span>
+      <span class="text-base font-bold"><%= t("smart_match.quiz.steps.support_for.options.myself") %></span>
       <%= inline_svg_tag "smart_match/user.svg", class: "w-24 h-24 mt-2 text-blue-dark", aria_hidden: "true" %>
     </label>
 
@@ -22,7 +22,7 @@
             class: "sr-only",
             checked: @session_answers[:support_for] == "someone_else",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold">Someone else</span>
+      <span class="text-base font-bold"><%= t("smart_match.quiz.steps.support_for.options.someone_else") %></span>
       <%= inline_svg_tag "smart_match/people.svg", class: "w-24 h-24 mt-2", aria_hidden: "true" %>
     </label>
 
@@ -34,7 +34,7 @@
             class: "sr-only",
             checked: @session_answers[:support_for] == "organization",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold">On behalf of an organization</span>
+      <span class="text-base font-bold"><%= t("smart_match.quiz.steps.support_for.options.organization") %></span>
       <%= inline_svg_tag "smart_match/building2.svg", class: "w-24 h-24 mt-2", aria_hidden: "true" %>
     </label>
 

@@ -10,7 +10,7 @@
             class: "sr-only",
             checked: @session_answers[:user_type] == "service_seeker",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold">I'm here seeking help from a nonprofit</span>
+      <span class="text-base font-bold"><%= t("smart_match.quiz.steps.user_type.options.service_seeker") %></span>
       <%= inline_svg_tag "cloud-laptop.svg", class: "w-2/3 max-w-md h-auto" %>
     </label>
 
@@ -22,7 +22,7 @@
             class: "sr-only",
             checked: @session_answers[:user_type] == "donor",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold">I want to donate to a cause I care about</span>
+      <span class="text-base font-bold"><%= t("smart_match.quiz.steps.user_type.options.donor") %></span>
       <%= inline_svg_tag "e-commerce.svg", class: "w-2/3 max-w-md h-auto" %>
     </label>
 
@@ -34,7 +34,7 @@
             class: "sr-only",
             checked: @session_answers[:user_type] == "volunteer",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold">I want to volunteer my time</span>
+      <span class="text-base font-bold"><%= t("smart_match.quiz.steps.user_type.options.volunteer") %></span>
       <%= inline_svg_tag "water-plants.svg", class: "w-2/3 max-w-md h-auto" %>
     </label>
 

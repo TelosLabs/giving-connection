@@ -43,3 +43,13 @@ bin/rails runner "SmartMatch::EmbedAllOrganizationsJob.perform_now"
 ```
 
 This only needs to be run once, or whenever new organizations are added/updated.
+
+## Tests
+
+The test suite mocks the SentenceTransformer at the module boundary, so the real ~1.3 GB BGE model is never downloaded.
+
+```bash
+cd embedding-service
+venv/bin/pip install -r requirements-dev.txt
+venv/bin/pytest tests/
+```

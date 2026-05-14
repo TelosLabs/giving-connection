@@ -3,11 +3,11 @@
   <div data-card-group="volunteer_time" data-card-cols="4">
 
     <% [
-      ["Just one day / one-time event", "one_time",  "smart_match/calendar.svg"],
-      ["A few hours a week",            "few_hours", "smart_match/time.svg"],
-      ["An ongoing role",               "ongoing",   "smart_match/recurrent.svg"],
-      ["I'm not sure yet",              "not_sure",  "smart_match/question.svg"]
-    ].each do |label, value, icon| %>
+      ["one_time",  "smart_match/calendar.svg"],
+      ["few_hours", "smart_match/time.svg"],
+      ["ongoing",   "smart_match/recurrent.svg"],
+      ["not_sure",  "smart_match/question.svg"]
+    ].each do |value, icon| %>
       <label class="sm-card-option sm-card-option--red <%= 'selected' if @session_answers[:volunteer_time] == value %>"
              data-action="click->smart-match-quiz#selectCard"
              data-select-mode="single">
@@ -15,7 +15,7 @@
                class="sr-only"
                <%= "checked" if @session_answers[:volunteer_time] == value %>
                data-smart-match-quiz-target="radio" />
-        <span class="text-base font-bold text-center"><%= label %></span>
+        <span class="text-base font-bold text-center"><%= t("smart_match.quiz.steps.volunteer_time.options.#{value}") %></span>
         <%= inline_svg_tag icon, class: "w-20 h-20 mt-2 text-white", aria_hidden: "true" %>
       </label>
     <% end %>
