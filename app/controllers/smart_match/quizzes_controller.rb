@@ -98,7 +98,7 @@ module SmartMatch
     end
 
     def build_user_intent_for_validation
-      SmartMatch::QuizToUserIntentConverter.call(
+      UserIntent.from_session(
         session_answers: quiz_session_answers,
         user_type: session[:smart_match_user_type]
       )

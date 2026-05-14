@@ -81,6 +81,30 @@ class Organization < ApplicationRecord
     end
   end
 
+  # Render this organization as embedding-ready text for Smart Match. Replaces
+  # the SmartMatch::OrganizationTextBuilder service -- the input is one
+  # organization's own fields, so the method belongs on the model.
+  #
+  # Returns nil when no embeddable text exists (org has no name, no statements,
+  # no causes/beneficiaries, no main location). Callers (EmbedOrganizationJob,
+  # EmbedAllOrganizationsJob) skip orgs whose text builds to nil.
+  def smart_match_text
+    parts = [
+      name,
+      mission_statement_en,
+      vision_statement_en,
+      tagline_en,
+      causes.map(&:name).join(", ").presence,
+      beneficiary_subcategories.map(&:name).join(", ").presence,
+      main_location&.address
+    ]
+
+    text = parts.compact_blank.join(" | ")
+    return nil if text.blank?
+
+    text.truncate(SmartMatch::EMBEDDING_TEXT_MAX_LENGTH)
+  end
+
   private
 
   EMBEDDING_FIELDS = %w[name mission_statement_en vision_statement_en tagline_en].freeze

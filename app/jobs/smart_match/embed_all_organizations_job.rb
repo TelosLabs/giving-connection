@@ -18,7 +18,7 @@ module SmartMatch
 
       scope.find_in_batches(batch_size: BATCH_SIZE) do |batch|
         org_text_pairs = batch.filter_map do |org|
-          text = OrganizationTextBuilder.call(organization: org)
+          text = org.smart_match_text
           [org, text] if text
         end
 

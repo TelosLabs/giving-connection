@@ -31,6 +31,84 @@
 
 en:
   hello: "Hello world"
+  smart_match:
+    landing:
+      hero:
+        title: "Welcome to Smart Match"
+        body: "A Giving Connection feature designed to help you quickly identify nonprofits aligned with your goals, situation, and location without the overwhelm of endless searching."
+      features:
+        time: "Takes 3-5 minutes"
+        match: "Personalized nonprofit matches"
+        based_on: "Based on your needs and preferences"
+      illustration_alt: "Person browsing nonprofits"
+      description: "We'll ask you a few simple questions about what you're looking for. Based on your responses, we'll recommend nonprofits that are most relevant to you."
+      cta:
+        prompt: "Ready to find the nonprofit that's right for you?"
+        start: "START"
+    confirmation:
+      title: "Ready to see your results?"
+      body_lead: "You've completed <strong>Smart Match</strong>!"
+      body: "Based on your responses, we're ready to show you nonprofit organizations that align with your interests and preferences."
+      review_notice: "This is your chance to go back and <strong>review</strong> or <strong>update</strong> your answers. Once you submit, you'll need to retake the questionnaire to make changes."
+      submit: "SUBMIT"
+    results:
+      heading: "Your results are ready!"
+      subheading: "Based on your answers, we've matched you with nonprofit organizations that best fit your preferences. You can explore the options below to learn more and take the next step."
+      still_need_help: "Still Need Help?"
+      retake: "Retake Quiz"
+      try_again: "Try Again"
+      empty:
+        title: "No quiz results found"
+        body: "Take the quiz to get personalized nonprofit matches."
+        cta: "Take the Quiz"
+      unavailable:
+        title: "Smart Match is temporarily unavailable"
+        body: "Our matching engine is currently offline. Please try again in a few minutes."
+    quiz:
+      buttons:
+        back: "Go Back"
+        next: "NEXT"
+        find_matches: "FIND MY MATCHES"
+      subtitles:
+        single_choice: "Single Choice"
+        multiple_choice: "Multiple Choice"
+      sections:
+        about_you: "About You"
+        type_of_support: "Type of Support"
+        location_access: "Location & Access"
+        prefs_accessibility: "Preferences & Accessibility"
+        volunteer_prefs: "Your Volunteering Preferences"
+        volunteer_availability: "Your Availability & Location"
+        engagement: "Where & How You Engage"
+        donor_prefs: "Your Donation Preferences"
+      titles:
+        personal_details: "Personal Details"
+        service_seeker:
+          step_1: "How can we support you today?"
+          step_2: "Who are you seeking support for?"
+          step_3: "How would you describe yourself?"
+          step_4: "Which categories best fits your needs?"
+          step_5: "What best describes your situation?"
+          step_6: "Where should we look for support?"
+          step_7: "What kind of travel is possible for you?"
+          step_8: "What should we keep in mind when matching you to services?"
+        volunteer:
+          step_1: "How can we support you today?"
+          step_2: "Which causes are close to your heart?"
+          step_3: "How would you like to help?"
+          step_4: "What type of volunteering are you looking for?"
+          step_5: "What format works best for you?"
+          step_6: "Which community would you like your giving to focus on?"
+          step_7: "How much time do you have to give?"
+        donor:
+          step_1: "How can we support you today?"
+          step_2: "What causes are close to your heart?"
+          step_3: "What is your preferred donation style?"
+          step_4: "What inspires your giving today?"
+          step_5: "Are there specific communities or populations you'd like your donation to support?"
+          step_6: "Where would you like your donation to make an impact?"
+          step_7: "Which community would you like your giving to focus on?"
+          step_8: "How would you like to be involved?"
   helpers:
     label:
       organization:

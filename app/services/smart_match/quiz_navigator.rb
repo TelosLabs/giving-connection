@@ -87,7 +87,7 @@ module SmartMatch
     end
 
     def state_for_city(city)
-      centroids = SmartMatch::Config.city_centroids
+      centroids = SmartMatch::CITY_CENTROIDS
       centroids.each do |state, cities|
         return state if cities.is_a?(Hash) && cities.key?(city)
       end

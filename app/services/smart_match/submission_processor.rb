@@ -13,7 +13,7 @@ module SmartMatch
 
     def call
       user_intent = build_user_intent
-      quiz_text = QuizTextBuilder.call(user_intent: user_intent)
+      quiz_text = user_intent.to_embedding_text
       vector = EmbeddingClient.call(text: quiz_text)
 
       candidates = find_candidates(vector, user_intent)
@@ -31,7 +31,7 @@ module SmartMatch
     private
 
     def build_user_intent
-      QuizToUserIntentConverter.call(
+      UserIntent.from_session(
         session_answers: session_answers,
         user_type: user_type
       )
@@ -76,7 +76,7 @@ module SmartMatch
     # (SimilarityQuery, Scorer.distance_score) treat nil coordinates / nil
     # distance as "no distance bonus" rather than substituting a default city.
     def resolve_coordinates(user_intent)
-      state_data = SmartMatch::Config.city_centroids[user_intent.state]
+      state_data = SmartMatch::CITY_CENTROIDS[user_intent.state]
       return nil unless state_data
 
       city_data = state_data[user_intent.city]
@@ -86,7 +86,7 @@ module SmartMatch
     end
 
     def resolve_radius(travel_bucket)
-      SmartMatch::Config.matching_rules.dig("radius_by_travel_bucket", travel_bucket) || 5
+      SmartMatch::MATCHING_RULES.dig("radius_by_travel_bucket", travel_bucket) || 5
     end
   end
 end

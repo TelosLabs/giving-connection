@@ -90,11 +90,11 @@ module SmartMatch
     end
 
     def weights
-      @weights ||= SmartMatch::Config.matching_rules["scoring"]["weights"]
+      @weights ||= SmartMatch::MATCHING_RULES["scoring"]["weights"]
     end
 
     def attribute_weights
-      @attribute_weights ||= SmartMatch::Config.matching_rules["attribute_weights"]
+      @attribute_weights ||= SmartMatch::MATCHING_RULES["attribute_weights"]
     end
 
     def distance_score(distance_miles)

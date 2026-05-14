@@ -2,38 +2,50 @@
 
 module SmartMatch
   class QuizStepConfig
-    SECTION_MAPS = {
+    # Step structure: section_number, section_i18n_key, title_i18n_key, subtitle_kind.
+    # Display strings are looked up from config/locales/{en,es}.yml at render
+    # time, keeping copy out of Ruby and translatable. The structural metadata
+    # (section grouping, subtitle kind = single/multiple/none) stays in code
+    # because navigator/scorer branch on it.
+    #
+    # Note on YAML: STEP_STRUCTURES and STEP_PARTIAL_MAP were considered for
+    # extraction to config/smart_match_quiz.yml. Decision: keep in Ruby. The
+    # values are stable structural pointers (i18n keys, view-path strings,
+    # integers) -- not natural-language or operator-tunable config. YAML adds
+    # indirection without easing change. Natural-language copy lives in
+    # config/locales/* where it belongs.
+    STEP_STRUCTURES = {
       "service_seeker" => {
-        1 => {number: 1, name: "About You", title: "How can we support you today?", subtitle: "Single Choice"},
-        2 => {number: 1, name: "About You", title: "Who are you seeking support for?", subtitle: "Single Choice"},
-        3 => {number: 2, name: "Type of Support", title: "How would you describe yourself?", subtitle: "Single Choice"},
-        4 => {number: 2, name: "Type of Support", title: "Which categories best fits your needs?", subtitle: "Multiple Choice"},
-        5 => {number: 2, name: "Type of Support", title: "What best describes your situation?", subtitle: "Single Choice"},
-        6 => {number: 3, name: "Location & Access", title: "Where should we look for support?", subtitle: "Single Choice"},
-        7 => {number: 3, name: "Location & Access", title: "What kind of travel is possible for you?", subtitle: "Single Choice"},
-        8 => {number: 4, name: "Preferences & Accessibility", title: "What should we keep in mind when matching you to services?", subtitle: "Multiple Choice"},
-        9 => {number: 4, name: "Preferences & Accessibility", title: "Personal Details", subtitle: nil}
+        1 => {number:1, section_key: :about_you, title_key: "service_seeker.step_1", subtitle: :single},
+        2 => {number:1, section_key: :about_you, title_key: "service_seeker.step_2", subtitle: :single},
+        3 => {number:2, section_key: :type_of_support, title_key: "service_seeker.step_3", subtitle: :single},
+        4 => {number:2, section_key: :type_of_support, title_key: "service_seeker.step_4", subtitle: :multiple},
+        5 => {number:2, section_key: :type_of_support, title_key: "service_seeker.step_5", subtitle: :single},
+        6 => {number:3, section_key: :location_access, title_key: "service_seeker.step_6", subtitle: :single},
+        7 => {number:3, section_key: :location_access, title_key: "service_seeker.step_7", subtitle: :single},
+        8 => {number:4, section_key: :prefs_accessibility, title_key: "service_seeker.step_8", subtitle: :multiple},
+        9 => {number:4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none}
       }.freeze,
       "volunteer" => {
-        1 => {number: 1, name: "About You", title: "How can we support you today?", subtitle: "Single Choice"},
-        2 => {number: 1, name: "About You", title: "Which causes are close to your heart?", subtitle: "Multiple Choice"},
-        3 => {number: 2, name: "Your Volunteering Preferences", title: "How would you like to help?", subtitle: "Multiple Choice"},
-        4 => {number: 2, name: "Your Volunteering Preferences", title: "What type of volunteering are you looking for?", subtitle: "Multiple Choice"},
-        5 => {number: 3, name: "Your Availability & Location", title: "What format works best for you?", subtitle: "Single Choice"},
-        6 => {number: 3, name: "Where & How You Engage", title: "Which community would you like your giving to focus on?", subtitle: "Single Choice"},
-        7 => {number: 3, name: "Your Availability & Location", title: "How much time do you have to give?", subtitle: "Single Choice"},
-        8 => {number: 4, name: "Preferences & Accessibility", title: "Personal Details", subtitle: nil}
+        1 => {number:1, section_key: :about_you, title_key: "volunteer.step_1", subtitle: :single},
+        2 => {number:1, section_key: :about_you, title_key: "volunteer.step_2", subtitle: :multiple},
+        3 => {number:2, section_key: :volunteer_prefs, title_key: "volunteer.step_3", subtitle: :multiple},
+        4 => {number:2, section_key: :volunteer_prefs, title_key: "volunteer.step_4", subtitle: :multiple},
+        5 => {number:3, section_key: :volunteer_availability, title_key: "volunteer.step_5", subtitle: :single},
+        6 => {number:3, section_key: :engagement, title_key: "volunteer.step_6", subtitle: :single},
+        7 => {number:3, section_key: :volunteer_availability, title_key: "volunteer.step_7", subtitle: :single},
+        8 => {number:4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none}
       }.freeze,
       "donor" => {
-        1 => {number: 1, name: "About You", title: "How can we support you today?", subtitle: "Single Choice"},
-        2 => {number: 1, name: "About You", title: "What causes are close to your heart?", subtitle: "Multiple Choice"},
-        3 => {number: 2, name: "Your Donation Preferences", title: "What is your preferred donation style?", subtitle: "Multiple Choice"},
-        4 => {number: 2, name: "Your Donation Preferences", title: "What inspires your giving today?", subtitle: "Multiple Choice"},
-        5 => {number: 2, name: "Your Donation Preferences", title: "Are there specific communities or populations you'd like your donation to support?", subtitle: "Multiple Choice"},
-        6 => {number: 3, name: "Where & How You Engage", title: "Where would you like your donation to make an impact?", subtitle: "Single Choice"},
-        7 => {number: 3, name: "Where & How You Engage", title: "Which community would you like your giving to focus on?", subtitle: "Single Choice"},
-        8 => {number: 3, name: "Where & How You Engage", title: "How would you like to be involved?", subtitle: "Single Choice"},
-        9 => {number: 4, name: "Preferences & Accessibility", title: "Personal Details", subtitle: nil}
+        1 => {number:1, section_key: :about_you, title_key: "donor.step_1", subtitle: :single},
+        2 => {number:1, section_key: :about_you, title_key: "donor.step_2", subtitle: :multiple},
+        3 => {number:2, section_key: :donor_prefs, title_key: "donor.step_3", subtitle: :multiple},
+        4 => {number:2, section_key: :donor_prefs, title_key: "donor.step_4", subtitle: :multiple},
+        5 => {number:2, section_key: :donor_prefs, title_key: "donor.step_5", subtitle: :multiple},
+        6 => {number:3, section_key: :engagement, title_key: "donor.step_6", subtitle: :single},
+        7 => {number:3, section_key: :engagement, title_key: "donor.step_7", subtitle: :single},
+        8 => {number:3, section_key: :engagement, title_key: "donor.step_8", subtitle: :single},
+        9 => {number:4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none}
       }.freeze
     }.freeze
 
@@ -78,17 +90,40 @@ module SmartMatch
     }.freeze
 
     def self.section_map_for(user_type)
-      SECTION_MAPS[user_type.to_s] || SECTION_MAPS["donor"]
+      STEP_STRUCTURES[user_type.to_s] || STEP_STRUCTURES["donor"]
     end
 
+    # Returns a display-ready section hash with the same shape the views expect:
+    # {number:, name:, title:, subtitle:}. Strings are localized at call time
+    # using the current I18n locale.
     def self.section_for(user_type, step)
       map = section_map_for(user_type)
-      map[step] || map[1]
+      structure = map[step] || map[1]
+      {
+        number: structure[:number],
+        name: I18n.t("smart_match.quiz.sections.#{structure[:section_key]}"),
+        title: title_for(structure[:title_key]),
+        subtitle: subtitle_for(structure[:subtitle])
+      }
     end
 
     def self.partial_for(user_type, step)
       entry = STEP_PARTIAL_MAP[step]
       entry.is_a?(Hash) ? (entry[user_type.to_s] || entry["donor"]) : entry
+    end
+
+    # title_key is either a Symbol referencing a top-level key
+    # (e.g. :personal_details -> smart_match.quiz.titles.personal_details)
+    # or a String of the form "<user_type>.<step>" referencing the
+    # user_type-scoped section.
+    def self.title_for(title_key)
+      I18n.t("smart_match.quiz.titles.#{title_key}")
+    end
+
+    def self.subtitle_for(kind)
+      return nil if kind == :none
+
+      I18n.t("smart_match.quiz.subtitles.#{kind}_choice")
     end
   end
 end

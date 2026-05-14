@@ -95,7 +95,7 @@ module SmartMatch
       end
 
       def matching_rules
-        SmartMatch::Config.matching_rules
+        SmartMatch::MATCHING_RULES
       end
     end
   end

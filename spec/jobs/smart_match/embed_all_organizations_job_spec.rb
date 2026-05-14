@@ -10,7 +10,7 @@ RSpec.describe SmartMatch::EmbedAllOrganizationsJob, type: :job do
       org1 = create(:organization)
       org2 = create(:organization, name: "Second Org")
 
-      allow(SmartMatch::OrganizationTextBuilder).to receive(:call).and_return("test embedding text")
+      allow_any_instance_of(Organization).to receive(:smart_match_text).and_return("test embedding text")
       allow(SmartMatch::EmbeddingClient).to receive(:embed_batch) { |texts:| texts.map { vector } }
 
       described_class.new.perform
@@ -20,7 +20,7 @@ RSpec.describe SmartMatch::EmbedAllOrganizationsJob, type: :job do
 
     it "skips organizations with nil text" do
       org = create(:organization)
-      allow(SmartMatch::OrganizationTextBuilder).to receive(:call).and_return(nil)
+      allow_any_instance_of(Organization).to receive(:smart_match_text).and_return(nil)
 
       described_class.new.perform
 
@@ -29,7 +29,7 @@ RSpec.describe SmartMatch::EmbedAllOrganizationsJob, type: :job do
 
     it "calls embed_batch instead of individual calls" do
       create(:organization)
-      allow(SmartMatch::OrganizationTextBuilder).to receive(:call).and_return("test embedding text")
+      allow_any_instance_of(Organization).to receive(:smart_match_text).and_return("test embedding text")
       allow(SmartMatch::EmbeddingClient).to receive(:embed_batch) { |texts:| texts.map { vector } }
 
       described_class.new.perform

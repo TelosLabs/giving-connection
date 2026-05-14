@@ -1,0 +1,87 @@
+# Spanish translations for Smart Match. Tone matches the bilingual content
+# convention already used in app/models/organization.rb (mission_statement_es,
+# vision_statement_es, tagline_es): direct, second-person informal ("tú"),
+# capitalized titles. Translator's note: deeper copy inside individual quiz
+# step partials (app/views/smart_match/quizzes/steps/_*.html.erb) is still
+# hardcoded English in this pass; localize in a follow-up translation PR.
+
+es:
+  hello: "Hola mundo"
+  smart_match:
+    landing:
+      hero:
+        title: "Bienvenido a Smart Match"
+        body: "Una función de Giving Connection diseñada para ayudarte a identificar rápidamente organizaciones sin fines de lucro alineadas con tus metas, situación y ubicación, sin la fatiga de búsquedas interminables."
+      features:
+        time: "Toma 3-5 minutos"
+        match: "Emparejamientos personalizados con organizaciones"
+        based_on: "Basado en tus necesidades y preferencias"
+      illustration_alt: "Persona explorando organizaciones"
+      description: "Te haremos algunas preguntas sencillas sobre lo que estás buscando. Con base en tus respuestas, te recomendaremos las organizaciones más relevantes para ti."
+      cta:
+        prompt: "¿Listo para encontrar la organización indicada para ti?"
+        start: "COMENZAR"
+    confirmation:
+      title: "¿Listo para ver tus resultados?"
+      body_lead: "¡Has completado <strong>Smart Match</strong>!"
+      body: "Con base en tus respuestas, estamos listos para mostrarte organizaciones alineadas con tus intereses y preferencias."
+      review_notice: "Esta es tu oportunidad para regresar y <strong>revisar</strong> o <strong>actualizar</strong> tus respuestas. Una vez que envíes, tendrás que volver a hacer el cuestionario para cambiar algo."
+      submit: "ENVIAR"
+    results:
+      heading: "¡Tus resultados están listos!"
+      subheading: "Con base en tus respuestas, te emparejamos con organizaciones sin fines de lucro que se ajustan mejor a tus preferencias. Explora las opciones abajo para conocerlas y dar el siguiente paso."
+      still_need_help: "¿Aún necesitas ayuda?"
+      retake: "Volver a hacer el cuestionario"
+      try_again: "Intentar de nuevo"
+      empty:
+        title: "No se encontraron resultados"
+        body: "Haz el cuestionario para recibir emparejamientos personalizados."
+        cta: "Hacer el cuestionario"
+      unavailable:
+        title: "Smart Match no está disponible temporalmente"
+        body: "Nuestro motor de emparejamiento está fuera de línea en este momento. Por favor inténtalo de nuevo en unos minutos."
+    quiz:
+      buttons:
+        back: "Regresar"
+        next: "SIGUIENTE"
+        find_matches: "ENCONTRAR MIS COINCIDENCIAS"
+      subtitles:
+        single_choice: "Opción Única"
+        multiple_choice: "Opción Múltiple"
+      sections:
+        about_you: "Sobre Ti"
+        type_of_support: "Tipo de Apoyo"
+        location_access: "Ubicación y Acceso"
+        prefs_accessibility: "Preferencias y Accesibilidad"
+        volunteer_prefs: "Tus Preferencias de Voluntariado"
+        volunteer_availability: "Tu Disponibilidad y Ubicación"
+        engagement: "Dónde y Cómo Participas"
+        donor_prefs: "Tus Preferencias de Donación"
+      titles:
+        personal_details: "Detalles Personales"
+        service_seeker:
+          step_1: "¿Cómo podemos apoyarte hoy?"
+          step_2: "¿Para quién buscas apoyo?"
+          step_3: "¿Cómo te describirías?"
+          step_4: "¿Qué categorías se ajustan mejor a tus necesidades?"
+          step_5: "¿Qué describe mejor tu situación?"
+          step_6: "¿Dónde deberíamos buscar apoyo?"
+          step_7: "¿Qué tipo de traslado es posible para ti?"
+          step_8: "¿Qué deberíamos tener en cuenta al emparejarte con servicios?"
+        volunteer:
+          step_1: "¿Cómo podemos apoyarte hoy?"
+          step_2: "¿Qué causas están cerca de tu corazón?"
+          step_3: "¿Cómo te gustaría ayudar?"
+          step_4: "¿Qué tipo de voluntariado estás buscando?"
+          step_5: "¿Qué formato funciona mejor para ti?"
+          step_6: "¿En qué comunidad te gustaría enfocar tu contribución?"
+          step_7: "¿Cuánto tiempo tienes para dar?"
+        donor:
+          step_1: "¿Cómo podemos apoyarte hoy?"
+          step_2: "¿Qué causas están cerca de tu corazón?"
+          step_3: "¿Cuál es tu estilo preferido de donación?"
+          step_4: "¿Qué inspira tu generosidad hoy?"
+          step_5: "¿Hay comunidades o poblaciones específicas que te gustaría apoyar con tu donación?"
+          step_6: "¿Dónde te gustaría que tu donación haga impacto?"
+          step_7: "¿En qué comunidad te gustaría enfocar tu contribución?"
+          step_8: "¿Cómo te gustaría involucrarte?"

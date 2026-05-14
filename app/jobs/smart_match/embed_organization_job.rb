@@ -41,7 +41,7 @@ module SmartMatch
         return
       end
 
-      text = OrganizationTextBuilder.call(organization: organization)
+      text = organization.smart_match_text
       unless text
         Rails.logger.warn("[SmartMatch] Organization #{organization_id} has no embeddable text, skipping")
         return
