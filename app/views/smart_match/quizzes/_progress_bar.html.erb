@@ -4,11 +4,26 @@
       section_steps = section_map.select { |_, v| v[:number] == seg }.keys.sort
       fill_pct      = segment_fill_pct(section_steps, seg, current_section_number, step)
       prev_fill_pct = segment_prev_fill_pct(section_steps, seg, current_section_number, step)
+      target_step   = section_steps.first
+      clickable     = target_step.present? && seg <= current_section_number && target_step < step
     %>
-    <div class="sm-wizard__progress-segment flex-1">
-      <div class="sm-wizard__progress-fill"
-           style="--fill-pct: <%= fill_pct %>%; --prev-fill-pct: <%= prev_fill_pct %>%"
-           <%= "data-animate=true" if seg == current_section_number %>></div>
-    </div>
+    <% if clickable %>
+      <%= button_to smart_match_quiz_path,
+            method: :put,
+            params: { direction: "goto", target_step: target_step },
+            form: { class: "sm-wizard__progress-segment flex-1", data: { turbo: false } },
+            class: "sm-wizard__progress-segment-button",
+            aria: { label: "Go back to section #{seg}" } do %>
+        <span class="sm-wizard__progress-fill"
+              style="--fill-pct: <%= fill_pct %>%; --prev-fill-pct: <%= prev_fill_pct %>%"
+              <%= "data-animate=true" if seg == current_section_number %>></span>
+      <% end %>
+    <% else %>
+      <div class="sm-wizard__progress-segment flex-1">
+        <div class="sm-wizard__progress-fill"
+             style="--fill-pct: <%= fill_pct %>%; --prev-fill-pct: <%= prev_fill_pct %>%"
+             <%= "data-animate=true" if seg == current_section_number %>></div>
+      </div>
+    <% end %>
   <% end %>
 </div>

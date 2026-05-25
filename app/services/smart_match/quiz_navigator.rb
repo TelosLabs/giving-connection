@@ -45,7 +45,11 @@ module SmartMatch
     end
 
     def call
-      going_back? ? navigate_back : navigate_forward
+      case params[:direction]
+      when "back" then navigate_back
+      when "goto" then navigate_goto
+      else navigate_forward
+      end
     end
 
     def self.total_steps_for(user_type)
@@ -54,12 +58,18 @@ module SmartMatch
 
     private
 
-    def going_back?
-      params[:direction] == "back"
-    end
-
     def navigate_back
       session[:smart_match_step] = [step - 1, 1].max
+      {completed: false}
+    end
+
+    # Jump to a specific step. Only allowed backward (target <= current step)
+    # so users can't skip past unanswered questions via the progress bar.
+    def navigate_goto
+      target = params[:target_step].to_i
+      total = self.class.total_steps_for(session[:smart_match_user_type])
+      target = target.clamp(1, [step, total].min)
+      session[:smart_match_step] = target
       {completed: false}
     end
 
