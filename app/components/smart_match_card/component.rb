@@ -60,14 +60,15 @@ class SmartMatchCard::Component < ApplicationViewComponent
   def cta_classes
     case user_type
     when "donor"
-      "bg-purple-100 hover:bg-purple-200 text-purple-800"
+      "bg-indigo-100 hover:bg-indigo-200 text-indigo-700"
     when "volunteer"
-      "bg-green-100 hover:bg-green-200 text-green-800"
+      "bg-seafoam hover:bg-electric-teal text-blue-dark"
     else
       # service_seeker + default
       "bg-salmon hover:bg-salmon-medium text-white"
     end
   end
+
 
   def cta_url
     return unless organization.main_location

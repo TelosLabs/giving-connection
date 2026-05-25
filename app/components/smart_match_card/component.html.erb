@@ -77,15 +77,9 @@
     <% if cta_url %>
       <%= link_to cta_url, class: "flex items-center justify-center gap-2 mt-4 py-3 text-sm font-bold tracking-wide uppercase rounded-md transition-colors #{cta_classes}" do %>
         <% if user_type == "donor" %>
-          <%# Gift icon (Heroicons outline) %>
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/>
-          </svg>
+          <%= image_tag "donate-icon.svg", class: "w-5 h-5", alt: "" %>
         <% elsif user_type == "volunteer" %>
-          <%# Hand raised icon (Heroicons outline) %>
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.175.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"/>
-          </svg>
+          <%= image_tag "volunteer-icon.svg", class: "w-5 h-5", alt: "" %>
         <% else %>
           <%# Heart icon (Heroicons solid) %>
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
