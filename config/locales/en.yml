@@ -146,7 +146,7 @@ en:
             moderate: "Public transit or rides (5–10 miles)"
             far: "Car or ride share available (10+ miles)"
             statewide: "Remote services only"
-          hint: "Thanks for sharing this. You're moving closer to your personalized results."
+          hint: "Sharing your location preferences helps us tailor results to your needs."
         preferences:
           options:
             free_sliding_scale: "Free or sliding-scale services"

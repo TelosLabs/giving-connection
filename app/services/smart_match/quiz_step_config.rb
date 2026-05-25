@@ -18,7 +18,7 @@ module SmartMatch
       "service_seeker" => {
         1 => {number:1, section_key: :about_you, title_key: "service_seeker.step_1", subtitle: :single},
         2 => {number:1, section_key: :about_you, title_key: "service_seeker.step_2", subtitle: :single},
-        3 => {number:2, section_key: :type_of_support, title_key: "service_seeker.step_3", subtitle: :single},
+        3 => {number:2, section_key: :type_of_support, title_key: "service_seeker.step_3", subtitle: :multiple},
         4 => {number:2, section_key: :type_of_support, title_key: "service_seeker.step_4", subtitle: :multiple},
         5 => {number:2, section_key: :type_of_support, title_key: "service_seeker.step_5", subtitle: :single},
         6 => {number:3, section_key: :location_access, title_key: "service_seeker.step_6", subtitle: :single},

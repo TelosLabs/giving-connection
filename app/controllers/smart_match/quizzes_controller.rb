@@ -55,7 +55,7 @@ module SmartMatch
       {
         user_type: session[:smart_match_user_type],
         support_for: session[:smart_match_support_for],
-        self_description: session[:smart_match_self_description],
+        self_description: Array(session[:smart_match_self_description]),
         situation: session[:smart_match_situation],
         city: session[:smart_match_city],
         state: session[:smart_match_state],
@@ -79,11 +79,11 @@ module SmartMatch
     end
 
     def quiz_params
-      params.permit(:user_type, :support_for, :self_description, :situation, :city_selection, :state, :city, :travel_bucket,
+      params.permit(:user_type, :support_for, :situation, :city_selection, :state, :city, :travel_bucket,
         :language_input, :direction, :impact_location, :donor_involvement,
         :volunteer_format, :volunteer_time,
         :age_range, :gender_identity, :race_ethnicity,
-        causes: [], prefs: [], donation_style: [], giving_inspiration: [], donor_communities: [],
+        self_description: [], causes: [], prefs: [], donation_style: [], giving_inspiration: [], donor_communities: [],
         volunteer_involvement: [], volunteer_type: [])
     end
 

@@ -1,3 +1,6 @@
+<%
+  selected_self_descriptions = Array(@session_answers[:self_description])
+%>
 <%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
              data: { smart_match_quiz_target: "form" } do |f| %>
   <div data-card-group="self-description" data-card-cols="4">
@@ -12,13 +15,14 @@
       ["business_partner",   "smart_match/categories/partnership.svg", ""],
       ["none",               nil,                                      ""]
     ].each do |value, icon, icon_class| %>
-      <label class="sm-card-option sm-card-option--blue <%= 'selected' if @session_answers[:self_description] == value %>"
+      <label class="sm-card-option sm-card-option--blue <%= 'selected' if selected_self_descriptions.include?(value) %>"
              data-action="click->smart-match-quiz#selectCard"
-             data-select-mode="single">
-        <%= f.radio_button :self_description, value,
-              class: "sr-only",
-              checked: @session_answers[:self_description] == value,
-              data: { smart_match_quiz_target: "radio" } %>
+             data-select-mode="multiple">
+        <input type="checkbox"
+               name="self_description[]"
+               value="<%= value %>"
+               class="sr-only"
+               <%= "checked" if selected_self_descriptions.include?(value) %> />
         <span class="text-base font-bold"><%= t("smart_match.quiz.steps.self_description.options.#{value}") %></span>
         <% if icon %>
           <%= inline_svg_tag icon, class: "w-2/3 max-w-md h-auto #{icon_class}" %>

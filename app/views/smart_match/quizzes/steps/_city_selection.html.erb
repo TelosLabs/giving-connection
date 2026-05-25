@@ -14,8 +14,8 @@
               class: "sr-only",
               checked: @session_answers[:city] == value,
               data: { smart_match_quiz_target: "radio" } %>
+        <%= inline_svg_tag icon, class: "w-36 h-36 mb-3", aria_hidden: "true" %>
         <span class="text-base font-bold"><%= label %></span>
-        <%= inline_svg_tag icon, class: "w-24 h-24 mt-2", aria_hidden: "true" %>
       </label>
     <% end %>
 

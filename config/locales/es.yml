@@ -120,7 +120,7 @@ es:
             moderate: "Transporte público o aventones (5–10 millas)"
             far: "Auto o viaje compartido disponible (10+ millas)"
             statewide: "Sólo servicios remotos"
-          hint: "Gracias por compartir esto. Estás más cerca de tus resultados personalizados."
+          hint: "Compartir tus preferencias de ubicación nos ayuda a adaptar los resultados a tus necesidades."
         preferences:
           options:
             free_sliding_scale: "Servicios gratuitos o con tarifa ajustable"
