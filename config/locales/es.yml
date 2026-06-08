@@ -117,6 +117,12 @@ es:
             exploring: "Estoy explorando mis opciones"
         city_selection:
           hint: "Gracias por compartir esto. Estás más cerca de tus resultados personalizados."
+          other: "Otro lugar"
+          other_help: "Dinos dónde te encuentras y buscaremos en esa zona."
+          state_label: "Estado"
+          state_prompt: "Selecciona tu estado"
+          city_label: "Ciudad (opcional)"
+          city_placeholder: "Tu ciudad"
         travel:
           options:
             nearby: "Sólo distancia caminable (menos de 5 millas)"

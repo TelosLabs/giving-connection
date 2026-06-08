@@ -111,13 +111,25 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
   end
 
   describe "DELETE /smart_match/quiz (reset)" do
-    it "clears all smart_match_* session keys and redirects to landing" do
+    it "clears all smart_match_* session keys and restarts the quiz at step 1" do
       get smart_match_quiz_path
       put smart_match_quiz_path, params: {user_type: "donor"}
       put smart_match_quiz_path, params: {causes: %w[Education]}
       expect(request.session.keys.any? { |k| k.to_s.start_with?("smart_match_") }).to be true
 
       delete smart_match_quiz_path
+
+      expect(response).to redirect_to(smart_match_quiz_path)
+      smart_match_keys = request.session.keys.select { |k| k.to_s.start_with?("smart_match_") }
+      expect(smart_match_keys).to be_empty
+    end
+
+    it "exits to the landing page when return_to=home (quiz X button)" do
+      get smart_match_quiz_path
+      put smart_match_quiz_path, params: {user_type: "donor"}
+      put smart_match_quiz_path, params: {causes: %w[Education]}
+
+      delete smart_match_quiz_path, params: {return_to: "home"}
 
       expect(response).to redirect_to(smart_match_root_path)
       smart_match_keys = request.session.keys.select { |k| k.to_s.start_with?("smart_match_") }

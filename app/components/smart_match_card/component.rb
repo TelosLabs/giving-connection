@@ -12,7 +12,7 @@ class SmartMatchCard::Component < ApplicationViewComponent
   end
 
   def match_percentage
-    (match.score * 100).round
+    (calibrated_fraction * 100).round
   end
 
   def match_label
@@ -36,7 +36,7 @@ class SmartMatchCard::Component < ApplicationViewComponent
   end
 
   def circle_dash_offset
-    (circle_circumference * (1 - [match.score, 1.0].min)).round(2)
+    (circle_circumference * (1 - calibrated_fraction)).round(2)
   end
 
   def circle_color
@@ -107,5 +107,30 @@ class SmartMatchCard::Component < ApplicationViewComponent
 
   def verified?
     organization.verified?
+  end
+
+  private
+
+  # The displayed match fraction (0.0–1.0) after presentation-only calibration.
+  # Raw scores are dominated by compressed embedding similarity; the linear
+  # rescale defined in matching_rules.yml#display_calibration stretches them
+  # onto a more intuitive band. It is monotonic, so ranking is unaffected.
+  def calibrated_fraction
+    @calibrated_fraction ||= calibrate(match.score.to_f)
+  end
+
+  def calibrate(raw)
+    raw = raw.clamp(0.0, 1.0)
+    cfg = SmartMatch::MATCHING_RULES["display_calibration"]
+    return raw unless cfg
+
+    floor = cfg["input_floor"].to_f
+    ceiling = cfg["input_ceiling"].to_f
+    return raw if ceiling <= floor
+
+    min_fraction = cfg["min_percentage"].to_f / 100.0
+    max_fraction = cfg["max_percentage"].to_f / 100.0
+    t = ((raw - floor) / (ceiling - floor)).clamp(0.0, 1.0)
+    (min_fraction + t * (max_fraction - min_fraction)).clamp(0.0, 1.0)
   end
 end

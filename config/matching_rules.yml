@@ -30,6 +30,27 @@ scoring:
   max_results: 20
 
 # ---------------------------------------------------------------------------
+# Display calibration (presentation only — does NOT affect ranking)
+#
+# Raw scores are dominated by embedding cosine similarity, which is naturally
+# compressed: even an excellent match rarely exceeds ~0.65. That makes the
+# headline percentage read low (a great match shows ~60%). This block linearly
+# rescales the raw score onto a more intuitive percentage band for display.
+#
+# It is a strictly monotonic transform, so the order of results and which
+# organizations are matched are completely unchanged — only the number, label,
+# and progress ring shown on the result card move. Tune the four knobs to taste:
+#   input_floor   : raw score mapped to min_percentage (and anything below)
+#   input_ceiling : raw score mapped to max_percentage (and anything above)
+#   min_percentage / max_percentage : the displayed band, in percent
+# ---------------------------------------------------------------------------
+display_calibration:
+  input_floor: 0.38
+  input_ceiling: 0.66
+  min_percentage: 52
+  max_percentage: 95
+
+# ---------------------------------------------------------------------------
 # Attribute bonus weights — applied within the 20% attribute_bonus bucket
 # Each sub-weight is relative (they are normalized internally).
 # ---------------------------------------------------------------------------

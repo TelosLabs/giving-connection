@@ -86,8 +86,29 @@ module SmartMatch
         session[session_key] = params[param_key] if params.key?(param_key)
       end
 
-      store_city_selection if params[:city_selection].present?
-      store_location if params[:state].present?
+      store_location_answer
+    end
+
+    # Location is captured one of three ways, and we branch so the (always
+    # present in the DOM) "Other" panel can't overwrite a preset city card:
+    #   * preset city card -> city_selection holds the city; state is derived
+    #   * "Other" card      -> city_selection == "other"; the revealed
+    #                          state/city fields carry the real values
+    #   * direct state/city -> legacy path used when no city_selection is sent
+    def store_location_answer
+      case params[:city_selection]
+      when "other"
+        store_other_location
+      when nil, ""
+        store_location if params[:state].present?
+      else
+        store_city_selection
+      end
+    end
+
+    def store_other_location
+      session[:smart_match_state] = params[:state] if params[:state].present?
+      session[:smart_match_city] = params[:city].to_s.strip.presence
     end
 
     def store_city_selection

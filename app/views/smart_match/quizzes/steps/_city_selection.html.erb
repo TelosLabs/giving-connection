@@ -1,3 +1,9 @@
+<%
+  preset_cities = ["Atlantic City", "Los Angeles", "Nashville"]
+  # The "Other" card is the active one whenever we have a location that isn't
+  # one of the presets (state captured, city not in the preset list).
+  other_selected = @session_answers[:state].present? && preset_cities.exclude?(@session_answers[:city])
+%>
 <%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
              data: { smart_match_quiz_target: "form" } do |f| %>
   <div data-card-group="city-selection" data-card-cols="3">
@@ -19,6 +25,42 @@
       </label>
     <% end %>
 
+    <%# "Other" — full-width row that reveals a state/city picker when chosen %>
+    <label class="sm-card-option sm-card-option--blue sm-card-option--full <%= 'selected' if other_selected %>"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="single">
+      <%= f.radio_button :city_selection, "other",
+            class: "sr-only sm-other-toggle",
+            checked: other_selected,
+            data: { smart_match_quiz_target: "radio" } %>
+      <%= inline_svg_tag "smart_match/location.svg", class: "w-8 h-8", aria_hidden: "true" %>
+      <span class="text-base font-bold"><%= t("smart_match.quiz.steps.city_selection.other") %></span>
+    </label>
+
+  </div>
+
+  <%# Revealed only when "Other" is selected (CSS :has on the radio) %>
+  <div class="sm-other-location mt-5 max-w-md mx-auto text-left">
+    <p class="mb-3 text-sm text-gray-4 text-center"><%= t("smart_match.quiz.steps.city_selection.other_help") %></p>
+
+    <label class="block mb-1 text-sm font-bold text-blue-dark" for="sm-other-state">
+      <%= t("smart_match.quiz.steps.city_selection.state_label") %>
+    </label>
+    <select name="state" id="sm-other-state"
+            class="w-full rounded-md border-2 border-gray-300 px-4 py-3 text-blue-dark bg-white focus:border-blue-medium focus:outline-none">
+      <option value=""><%= t("smart_match.quiz.steps.city_selection.state_prompt") %></option>
+      <% SmartMatch::US_STATES.each do |code, name| %>
+        <option value="<%= code %>" <%= "selected" if @session_answers[:state] == code %>><%= name %></option>
+      <% end %>
+    </select>
+
+    <label class="block mt-4 mb-1 text-sm font-bold text-blue-dark" for="sm-other-city">
+      <%= t("smart_match.quiz.steps.city_selection.city_label") %>
+    </label>
+    <input type="text" name="city" id="sm-other-city"
+           value="<%= @session_answers[:city] if other_selected %>"
+           placeholder="<%= t("smart_match.quiz.steps.city_selection.city_placeholder") %>"
+           class="w-full rounded-md border-2 border-gray-300 px-4 py-3 text-blue-dark focus:border-blue-medium focus:outline-none" />
   </div>
 
   <div class="sm-selection-hint mt-5 rounded-lg px-5 py-3 text-sm font-medium text-blue-dark text-center" style="background-color: #e2ecf7;">

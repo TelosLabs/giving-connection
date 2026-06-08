@@ -211,6 +211,27 @@
   }
 }
 
+// Full-width selectable row — used by the "Other location" option so it sits
+// on its own line beneath the preset city cards instead of as a tall lone card.
+.sm-card-option--full {
+  flex: 1 1 100% !important;
+  height: auto;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem;
+}
+
+// "Other location" reveal panel — only shown once the Other card is checked.
+// Mirrors the existing form:has(...) pattern used for the selection hint.
+.sm-other-location {
+  display: none;
+}
+
+form:has(.sm-other-toggle:checked) .sm-other-location {
+  display: block;
+}
+
 // Contextual hint banner — shown when any card in the form is selected
 .sm-selection-hint {
   display: none;
