@@ -44,7 +44,10 @@ en:
       description: "We'll ask you a few simple questions about what you're looking for. Based on your responses, we'll recommend nonprofits that are most relevant to you."
       cta:
         prompt: "Ready to find the nonprofit that's right for you?"
+        prompt_completed: "Your matches are ready and waiting."
         start: "START"
+        view_results: "VIEW RESULTS"
+        retake: "RETAKE QUIZ"
     confirmation:
       title: "Ready to see your results?"
       body_lead: "You've completed <strong>Smart Match</strong>!"

@@ -23,7 +23,14 @@ module SmartMatch
 
     def destroy
       session.keys.select { |k| k.to_s.start_with?("smart_match_") }.each { |k| session.delete(k) }
-      redirect_to smart_match_root_path
+      # The quiz X button exits to the landing page; retake buttons restart the
+      # quiz. Either way all progress is wiped above. A cleared session resets
+      # the wizard to step 1, so restarting lands on the first question.
+      if params[:return_to] == "home"
+        redirect_to smart_match_root_path
+      else
+        redirect_to smart_match_quiz_path
+      end
     end
 
     def update

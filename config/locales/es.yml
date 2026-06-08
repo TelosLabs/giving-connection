@@ -18,7 +18,10 @@ es:
       description: "Te haremos algunas preguntas sencillas sobre lo que estás buscando. Con base en tus respuestas, te recomendaremos las organizaciones más relevantes para ti."
       cta:
         prompt: "¿Listo para encontrar la organización indicada para ti?"
+        prompt_completed: "Tus resultados están listos y esperándote."
         start: "COMENZAR"
+        view_results: "VER RESULTADOS"
+        retake: "VOLVER A EMPEZAR"
     confirmation:
       title: "¿Listo para ver tus resultados?"
       body_lead: "¡Has completado <strong>Smart Match</strong>!"
