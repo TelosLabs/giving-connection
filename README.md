@@ -59,4 +59,10 @@ Run tests with `bundle exec rspec`
 
 - Headless is the default config. If you want to see the browser you can run the following command: `HEADLESS=false bundle exec rspec`
 - If you want to pause the execution you can use `pause` inside an `it` statement.
+
+### Deployment
+
+We deploy to DigitalOcean with Kamal. See **[docs/deployment.md](docs/deployment.md)** for the full runbook.
+
+> ⚠️ `kamal deploy` does **not** touch accessories. The Smart Match embedding service is a Kamal accessory — if it is missing/stale, Smart Match shows "temporarily unavailable" and a plain `kamal deploy` will not fix it. The runbook covers how to verify and (re)boot it.
 - If you want to see the logs you can use `:log`, e.g. `it "xxx", :log do`
