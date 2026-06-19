@@ -32,6 +32,17 @@
 en:
   hello: "Hello world"
   smart_match:
+    entry_points:
+      nav: "Smart Match"
+      still_need_help_prompt: "Can't find what you're looking for?"
+      home:
+        heading: "Try our Smart Match Engine"
+        body: "Not sure where to start? Let us help you find the right nonprofit. Answer a few simple questions and get personalized nonprofit recommendations in minutes."
+        cta: "Get Matched"
+      search_banner:
+        heading: "Too many options?"
+        body: "Let our Smart Match Engine narrow the list based on your situation."
+        cta: "Get Matched"
     landing:
       hero:
         title: "Welcome to Smart Match"
