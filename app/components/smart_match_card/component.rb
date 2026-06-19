@@ -19,7 +19,7 @@ class SmartMatchCard::Component < ApplicationViewComponent
     case match_percentage
     when 75..100 then "Great Match"
     when 50..74 then "Good Match"
-    else "Possible Match"
+    else "Match"
     end
   end
 
@@ -87,6 +87,10 @@ class SmartMatchCard::Component < ApplicationViewComponent
   end
 
   # Info
+  def main_location
+    organization.main_location
+  end
+
   def location_address
     organization.main_location&.address
   end

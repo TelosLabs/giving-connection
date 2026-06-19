@@ -5,6 +5,18 @@
     <% if cover_photo_url %>
       <%= image_tag cover_photo_url, alt: organization.name, class: "object-cover w-full h-full" %>
     <% end %>
+
+    <%# Save / bookmark — toggles via favorite_locations turbo_stream %>
+    <% if main_location %>
+      <div class="absolute top-3 right-3 grid place-items-center w-9 h-9 bg-white rounded-full shadow-md hover:bg-gray-8 transition-colors">
+        <%= render SaveButton::Component.new(
+              user: helpers.current_user,
+              location: main_location,
+              simplified: true,
+              tooltip_position: "right-0 mt-2"
+            ) %>
+      </div>
+    <% end %>
   </div>
 
   <%# Head: logo + match + org info %>
