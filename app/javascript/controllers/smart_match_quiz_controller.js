@@ -187,9 +187,11 @@ export default class extends Controller {
       return Array.from(selects).every(s => s.value !== '')
     }
 
+    // Free-text (open-ended) steps are optional — never block advancing on
+    // an empty textarea. The input still feeds matching when filled.
     const textareas = this.element.querySelectorAll('textarea')
     if (textareas.length > 0) {
-      return Array.from(textareas).some(t => t.value.trim() !== '')
+      return true
     }
 
     return false

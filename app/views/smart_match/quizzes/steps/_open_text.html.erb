@@ -1,0 +1,19 @@
+<%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
+             data: { smart_match_quiz_target: "form" } do |f| %>
+  <div class="max-w-xl mx-auto">
+    <%= f.label :language_input,
+          t("smart_match.quiz.steps.open_text.#{@user_type}"),
+          class: "block mb-3 text-base text-gray-2 text-center" %>
+
+    <%= f.text_area :language_input,
+          value: @session_answers[:language],
+          rows: 5,
+          maxlength: 500,
+          placeholder: t("smart_match.quiz.steps.open_text.placeholder"),
+          class: "w-full px-4 py-3 text-gray-2 border border-gray-5 rounded-md focus:border-blue-medium focus:ring-1 focus:ring-blue-medium focus:outline-none resize-none" %>
+
+    <p class="mt-2 text-xs text-gray-4 text-center">
+      <%= t("smart_match.quiz.steps.open_text.optional") %>
+    </p>
+  </div>
+<% end %>

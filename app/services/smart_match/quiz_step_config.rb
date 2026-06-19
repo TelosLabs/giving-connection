@@ -24,7 +24,8 @@ module SmartMatch
         6 => {number:3, section_key: :location_access, title_key: "service_seeker.step_6", subtitle: :single},
         7 => {number:3, section_key: :location_access, title_key: "service_seeker.step_7", subtitle: :single},
         8 => {number:4, section_key: :prefs_accessibility, title_key: "service_seeker.step_8", subtitle: :multiple},
-        9 => {number:4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none}
+        9 => {number:4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
+        10 => {number:4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
       }.freeze,
       "volunteer" => {
         1 => {number:1, section_key: :about_you, title_key: "volunteer.step_1", subtitle: :single},
@@ -34,7 +35,8 @@ module SmartMatch
         5 => {number:3, section_key: :volunteer_availability, title_key: "volunteer.step_5", subtitle: :single},
         6 => {number:3, section_key: :engagement, title_key: "volunteer.step_6", subtitle: :single},
         7 => {number:3, section_key: :volunteer_availability, title_key: "volunteer.step_7", subtitle: :single},
-        8 => {number:4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none}
+        8 => {number:4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
+        9 => {number:4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
       }.freeze,
       "donor" => {
         1 => {number:1, section_key: :about_you, title_key: "donor.step_1", subtitle: :single},
@@ -45,7 +47,8 @@ module SmartMatch
         6 => {number:3, section_key: :engagement, title_key: "donor.step_6", subtitle: :single},
         7 => {number:3, section_key: :engagement, title_key: "donor.step_7", subtitle: :single},
         8 => {number:3, section_key: :engagement, title_key: "donor.step_8", subtitle: :single},
-        9 => {number:4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none}
+        9 => {number:4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
+        10 => {number:4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
       }.freeze
     }.freeze
 
@@ -86,7 +89,12 @@ module SmartMatch
         "volunteer" => "smart_match/quizzes/steps/final",
         "donor" => "smart_match/quizzes/steps/donor_involvement"
       },
-      9 => "smart_match/quizzes/steps/final"
+      9 => {
+        "service_seeker" => "smart_match/quizzes/steps/final",
+        "donor" => "smart_match/quizzes/steps/final",
+        "volunteer" => "smart_match/quizzes/steps/open_text"
+      },
+      10 => "smart_match/quizzes/steps/open_text"
     }.freeze
 
     def self.section_map_for(user_type)

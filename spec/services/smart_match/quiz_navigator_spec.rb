@@ -102,16 +102,16 @@ RSpec.describe SmartMatch::QuizNavigator do
   end
 
   describe ".total_steps_for" do
-    it "returns 9 for service_seeker" do
-      expect(described_class.total_steps_for("service_seeker")).to eq(9)
+    it "returns 10 for service_seeker" do
+      expect(described_class.total_steps_for("service_seeker")).to eq(10)
     end
 
-    it "returns 8 for volunteer" do
-      expect(described_class.total_steps_for("volunteer")).to eq(8)
+    it "returns 9 for volunteer" do
+      expect(described_class.total_steps_for("volunteer")).to eq(9)
     end
 
-    it "returns 9 for donor" do
-      expect(described_class.total_steps_for("donor")).to eq(9)
+    it "returns 10 for donor" do
+      expect(described_class.total_steps_for("donor")).to eq(10)
     end
 
     it "returns default for unknown type" do

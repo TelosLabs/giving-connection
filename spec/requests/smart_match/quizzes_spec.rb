@@ -45,7 +45,7 @@ RSpec.describe "SmartMatch::Quizzes", type: :request do
     end
 
     it "redirects to confirmation on quiz completion" do
-      # Volunteer has 8 steps
+      # Volunteer has 9 steps (personal details, then the open-text question)
       put smart_match_quiz_path, params: {user_type: "volunteer"}
       put smart_match_quiz_path, params: {causes: ["Education"]}
       put smart_match_quiz_path, params: {volunteer_involvement: ["Teaching"]}
@@ -53,6 +53,7 @@ RSpec.describe "SmartMatch::Quizzes", type: :request do
       put smart_match_quiz_path, params: {volunteer_format: "in_person"}
       put smart_match_quiz_path, params: {city_selection: "Nashville"}
       put smart_match_quiz_path, params: {volunteer_time: "few_hours_week"}
+      put smart_match_quiz_path, params: {age_range: "25-34", gender_identity: "prefer_not_to_say", race_ethnicity: "prefer_not_to_say"}
       put smart_match_quiz_path, params: {language_input: "I want to help"}
 
       expect(response).to redirect_to(smart_match_confirmation_path)

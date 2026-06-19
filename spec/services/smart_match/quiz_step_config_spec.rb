@@ -6,17 +6,17 @@ RSpec.describe SmartMatch::QuizStepConfig do
   describe ".section_map_for" do
     it "returns the correct map for service_seeker" do
       map = described_class.section_map_for("service_seeker")
-      expect(map.keys).to eq((1..9).to_a)
+      expect(map.keys).to eq((1..10).to_a)
     end
 
     it "returns the correct map for volunteer" do
       map = described_class.section_map_for("volunteer")
-      expect(map.keys).to eq((1..8).to_a)
+      expect(map.keys).to eq((1..9).to_a)
     end
 
     it "returns the correct map for donor" do
       map = described_class.section_map_for("donor")
-      expect(map.keys).to eq((1..9).to_a)
+      expect(map.keys).to eq((1..10).to_a)
     end
 
     it "falls back to donor map for unknown user type" do
@@ -56,12 +56,18 @@ RSpec.describe SmartMatch::QuizStepConfig do
       expect(volunteer_partial).not_to eq(donor_partial)
     end
 
-    it "returns the final partial for last step of volunteer (step 8)" do
+    it "returns the final (personal details) partial for volunteer step 8" do
       expect(described_class.partial_for("volunteer", 8)).to eq("smart_match/quizzes/steps/final")
     end
 
-    it "returns the final partial for last step of donor (step 9)" do
+    it "returns the final (personal details) partial for donor step 9" do
       expect(described_class.partial_for("donor", 9)).to eq("smart_match/quizzes/steps/final")
+    end
+
+    it "returns the open_text partial for the last step of each user type" do
+      expect(described_class.partial_for("service_seeker", 10)).to eq("smart_match/quizzes/steps/open_text")
+      expect(described_class.partial_for("donor", 10)).to eq("smart_match/quizzes/steps/open_text")
+      expect(described_class.partial_for("volunteer", 9)).to eq("smart_match/quizzes/steps/open_text")
     end
 
     it "falls back to donor partial for unknown user type" do

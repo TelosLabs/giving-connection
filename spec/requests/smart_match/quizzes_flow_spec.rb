@@ -40,7 +40,7 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
     end
   end
 
-  describe "donor quiz happy path (9 steps)" do
+  describe "donor quiz happy path (10 steps)" do
     it "advances every step and redirects to confirmation on completion" do
       get smart_match_quiz_path
 
@@ -86,13 +86,19 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       expect(request.session[:smart_match_donor_involvement]).to eq("active")
       expect(request.session[:smart_match_step]).to eq(9)
 
-      # Step 9 (final): personal details + language_input — completes the quiz
+      # Step 9 -> 10: personal details (optional demographics)
       put smart_match_quiz_path, params: {
         age_range: "25-34",
         gender_identity: "prefer_not_to_say",
-        race_ethnicity: "prefer_not_to_say",
+        race_ethnicity: "prefer_not_to_say"
+      }
+      expect(request.session[:smart_match_step]).to eq(10)
+
+      # Step 10 (final): open-ended language_input — completes the quiz
+      put smart_match_quiz_path, params: {
         language_input: "I want my donations to support education in Nashville."
       }
+      expect(request.session[:smart_match_language]).to eq("I want my donations to support education in Nashville.")
       expect(response).to redirect_to(smart_match_confirmation_path)
     end
   end
@@ -229,24 +235,24 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       expect(flash[:alert]).to be_present
     end
 
-    it "redirects back to the quiz when a forced step 9 submit fails UserIntent validation" do
+    it "redirects back to the quiz when a forced final-step submit fails UserIntent validation" do
       get smart_match_quiz_path
-      # Pick a user_type so we know total_steps = 9, but leave state and
+      # Pick a user_type so we know total_steps = 10, but leave state and
       # causes blank — UserIntent.valid? will fail on missing state + causes.
       put smart_match_quiz_path, params: {user_type: "donor"}
 
       # Jump straight to the final step by submitting direction=next many
       # times without filling in required fields. The first valid back-end
       # gate is at "completion" (step > total_steps), so we need to force
-      # the controller's current_step to 9. Without modifying app code, the
-      # cleanest path is to drive the navigator to step 9 by submitting
-      # empty next params from step 2 through step 9.
-      7.times do
+      # the controller's current_step to the last step (10). Without modifying
+      # app code, the cleanest path is to drive the navigator there by
+      # submitting empty next params from step 2 onward.
+      8.times do
         put smart_match_quiz_path, params: {}
       end
-      expect(request.session[:smart_match_step]).to eq(9)
+      expect(request.session[:smart_match_step]).to eq(10)
 
-      # Step 9 next -> completion check runs, UserIntent invalid (no state,
+      # Final step next -> completion check runs, UserIntent invalid (no state,
       # no causes_selected), so controller redirects back to quiz with flash.
       put smart_match_quiz_path, params: {}
       expect(response).to redirect_to(smart_match_quiz_path)

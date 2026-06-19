@@ -3,9 +3,9 @@
 module SmartMatch
   class QuizNavigator < ApplicationService
     STEPS_BY_USER_TYPE = {
-      "service_seeker" => 9,
-      "volunteer" => 8,
-      "donor" => 9
+      "service_seeker" => 10,
+      "volunteer" => 9,
+      "donor" => 10
     }.freeze
 
     DEFAULT_STEPS = 4
