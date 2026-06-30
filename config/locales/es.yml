@@ -8,15 +8,16 @@ es:
   smart_match:
     entry_points:
       nav: "Smart Match"
-      still_need_help_prompt: "¿No encuentras lo que buscas?"
+      cta_prompt: "¿No estás seguro de qué organización es la adecuada para ti?"
+      cta_button: "Prueba Smart Match"
       home:
         heading: "Prueba nuestro Smart Match Engine"
         body: "¿No sabes por dónde empezar? Déjanos ayudarte a encontrar la organización sin fines de lucro adecuada. Responde unas preguntas sencillas y recibe recomendaciones personalizadas en minutos."
         cta: "Encuentra tu Match"
       search_banner:
-        heading: "¿Demasiadas opciones?"
-        body: "Deja que nuestro Smart Match Engine reduzca la lista según tu situación."
-        cta: "Encuentra tu Match"
+        heading: "¿No sabes por dónde empezar?"
+        body: "Responde unas preguntas rápidas y deja que nuestro Smart Match Engine encuentre las organizaciones adecuadas para ti."
+        cta: "Prueba Smart Match"
     landing:
       hero:
         title: "Bienvenido a Smart Match"

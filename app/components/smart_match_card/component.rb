@@ -75,6 +75,22 @@ class SmartMatchCard::Component < ApplicationViewComponent
     helpers.location_path(organization.main_location)
   end
 
+  # Org profile (location page) — used by the logo and org name links.
+  def profile_url
+    return unless main_location
+    helpers.location_path(main_location)
+  end
+
+  # Google Maps link for the address.
+  def maps_url
+    main_location&.link_to_google_maps
+  end
+
+  # Discover page for a cause (routes by Cause#to_param == name).
+  def discover_cause_url(cause)
+    helpers.discover_show_path(cause)
+  end
+
   # Images
   def cover_photo_url
     return unless organization.cover_photo.attached?
