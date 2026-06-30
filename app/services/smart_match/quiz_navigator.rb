@@ -10,6 +10,13 @@ module SmartMatch
 
     DEFAULT_STEPS = 4
 
+    # The service_seeker distance/"travel" step. It is meaningless when the
+    # user picked a nationwide/international scope (no specific location), so
+    # it is skipped for those users. It is the only distance step in any flow.
+    SERVICE_SEEKER_TRAVEL_STEP = 7
+
+    NON_LOCAL_SCOPES = %w[national international].freeze
+
     # Maps each form parameter name to its session key.
     # Parameters that write to multiple keys (city_selection, state/city) are
     # handled separately in #store_city_selection and #store_location.
@@ -59,7 +66,9 @@ module SmartMatch
     private
 
     def navigate_back
-      session[:smart_match_step] = [step - 1, 1].max
+      total = self.class.total_steps_for(session[:smart_match_user_type])
+      prev_step = next_visible_step(step - 1, total, :backward)
+      session[:smart_match_step] = [prev_step, 1].max
       {completed: false}
     end
 
@@ -98,12 +107,31 @@ module SmartMatch
     def store_location_answer
       case params[:city_selection]
       when "other"
+        store_local_scope
         store_other_location
+      when "national", "international"
+        store_scope_location(params[:city_selection])
       when nil, ""
-        store_location if params[:state].present?
+        if params[:state].present?
+          store_local_scope
+          store_location
+        end
       else
+        store_local_scope
         store_city_selection
       end
+    end
+
+    # Nationwide/international selections carry no specific location — clear any
+    # previously captured city/state so geographic filtering is skipped.
+    def store_scope_location(scope)
+      session[:smart_match_location_scope] = scope
+      session[:smart_match_state] = nil
+      session[:smart_match_city] = nil
+    end
+
+    def store_local_scope
+      session[:smart_match_location_scope] = "local"
     end
 
     def store_other_location
@@ -131,8 +159,8 @@ module SmartMatch
     end
 
     def advance_step
-      next_step = step + 1
       total = self.class.total_steps_for(session[:smart_match_user_type])
+      next_step = next_visible_step(step + 1, total, :forward)
 
       if next_step > total
         session[:smart_match_step] = total
@@ -141,6 +169,21 @@ module SmartMatch
         session[:smart_match_step] = next_step
         {completed: false}
       end
+    end
+
+    # Walk past any skipped steps in the given direction. Total step count is
+    # unchanged (the flow simply jumps over the hidden step), so final-step
+    # detection and the progress bar need no renumbering.
+    def next_visible_step(candidate, total, direction)
+      delta = (direction == :forward ? 1 : -1)
+      candidate += delta while candidate.between?(1, total) && skip_step?(candidate)
+      candidate
+    end
+
+    def skip_step?(step_number)
+      session[:smart_match_user_type] == "service_seeker" &&
+        step_number == SERVICE_SEEKER_TRAVEL_STEP &&
+        NON_LOCAL_SCOPES.include?(session[:smart_match_location_scope].to_s)
     end
   end
 end

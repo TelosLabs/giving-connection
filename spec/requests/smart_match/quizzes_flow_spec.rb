@@ -103,6 +103,33 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
     end
   end
 
+  describe "service_seeker nationwide scope" do
+    it "skips the travel step and completes without a state" do
+      get smart_match_quiz_path
+      put smart_match_quiz_path, params: {user_type: "service_seeker"}        # 1 -> 2
+      put smart_match_quiz_path, params: {support_for: "myself"}              # 2 -> 3
+      put smart_match_quiz_path, params: {self_description: ["student"]}      # 3 -> 4
+      put smart_match_quiz_path, params: {causes: %w[Education]}              # 4 -> 5
+      put smart_match_quiz_path, params: {situation: "exploring"}            # 5 -> 6
+
+      # Step 6 (city_selection): choose nationwide instead of a city.
+      put smart_match_quiz_path, params: {city_selection: "national"}
+      expect(request.session[:smart_match_location_scope]).to eq("national")
+      expect(request.session[:smart_match_state]).to be_nil
+      # Travel step (7) is skipped → lands on preferences (8).
+      expect(request.session[:smart_match_step]).to eq(8)
+
+      put smart_match_quiz_path, params: {prefs: []}                          # 8 -> 9
+      put smart_match_quiz_path, params: {                                    # 9 (personal details) -> 10
+        age_range: "25_34", gender_identity: "prefer_not_to_say", race_ethnicity: "prefer_not_to_say"
+      }
+      expect(request.session[:smart_match_step]).to eq(10)
+
+      put smart_match_quiz_path, params: {language_input: "online job training"}  # 10 -> complete
+      expect(response).to redirect_to(smart_match_confirmation_path)
+    end
+  end
+
   describe "back navigation" do
     it "decrements the step when direction=back" do
       get smart_match_quiz_path

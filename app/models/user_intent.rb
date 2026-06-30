@@ -6,11 +6,25 @@ class UserIntent
 
   attr_accessor :state, :city, :travel_bucket, :user_type,
     :causes_selected, :prefs_selected, :language_input
+  attr_writer :location_scope
+
+  LOCATION_SCOPES = %w[local national international].freeze
 
   validates :user_type, presence: true,
     inclusion: {in: %w[service_seeker volunteer donor]}
-  validates :state, presence: true
+  # State is only required for a local (city-based) search. Nationwide /
+  # international selections intentionally carry no specific location.
+  validates :state, presence: true, if: :local?
   validates :causes_selected, presence: true
+
+  # local (default) | national | international
+  def location_scope
+    @location_scope.presence || "local"
+  end
+
+  def local?
+    location_scope == "local"
+  end
 
   # Embedding-text construction tuning. The total length cap is shared with
   # Organization#smart_match_text via SmartMatch::EMBEDDING_TEXT_MAX_LENGTH so
@@ -32,6 +46,7 @@ class UserIntent
       state: answers[:state],
       city: answers[:city],
       travel_bucket: answers[:travel_bucket],
+      location_scope: answers[:location_scope],
       causes_selected: parse_array(answers[:causes]),
       prefs_selected: parse_array(answers[:prefs]),
       language_input: answers[:language_input]
@@ -85,7 +100,11 @@ class UserIntent
   end
 
   def location_text
-    @location_text ||= [city, state].map(&:presence).compact.join(", ")
+    @location_text ||= case location_scope
+    when "national" then "Nationwide services"
+    when "international" then "International services"
+    else [city, state].map(&:presence).compact.join(", ")
+    end
   end
 
   def cause_mappings

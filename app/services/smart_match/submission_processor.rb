@@ -56,7 +56,8 @@ module SmartMatch
         embedding: vector,
         state: user_intent.state,
         coordinates: coordinates,
-        radius_miles: radius
+        radius_miles: radius,
+        location_scope: user_intent.location_scope
       )
     end
 

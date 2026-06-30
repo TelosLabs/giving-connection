@@ -67,9 +67,21 @@ module SmartMatch
     end
 
     def scope_match?(organization)
-      bucket = user_intent.travel_bucket
       scope = organization.scope_of_work
-      return false if bucket.blank? || scope.blank?
+      return false if scope.blank?
+
+      case user_intent.location_scope
+      when "national" then %w[National International].include?(scope)
+      when "international" then scope == "International"
+      else local_scope_match?(scope)
+      end
+    end
+
+    # Local (city-based) search: the willingness-to-travel bucket decides which
+    # org scopes are a good fit.
+    def local_scope_match?(scope)
+      bucket = user_intent.travel_bucket
+      return false if bucket.blank?
 
       case bucket
       when "statewide" then %w[National International].include?(scope)

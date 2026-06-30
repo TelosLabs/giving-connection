@@ -72,6 +72,89 @@ RSpec.describe SmartMatch::QuizNavigator do
       end
     end
 
+    context "with location scope (nationwide / international)" do
+      it "stores a nationwide scope and clears any specific location" do
+        session[:smart_match_user_type] = "service_seeker"
+        session[:smart_match_state] = "TN"
+        session[:smart_match_city] = "Nashville"
+
+        described_class.call(
+          session: session,
+          params: ActionController::Parameters.new(city_selection: "national").permit!,
+          step: 6
+        )
+
+        expect(session[:smart_match_location_scope]).to eq("national")
+        expect(session[:smart_match_state]).to be_nil
+        expect(session[:smart_match_city]).to be_nil
+      end
+
+      it "stores an international scope" do
+        session[:smart_match_user_type] = "donor"
+
+        described_class.call(
+          session: session,
+          params: ActionController::Parameters.new(city_selection: "international").permit!,
+          step: 7
+        )
+
+        expect(session[:smart_match_location_scope]).to eq("international")
+      end
+
+      it "marks a local scope when a specific city is picked" do
+        session[:smart_match_user_type] = "service_seeker"
+
+        described_class.call(
+          session: session,
+          params: ActionController::Parameters.new(city_selection: "Nashville").permit!,
+          step: 6
+        )
+
+        expect(session[:smart_match_location_scope]).to eq("local")
+        expect(session[:smart_match_city]).to eq("Nashville")
+      end
+
+      it "skips the service_seeker travel step (7) when scope is non-local" do
+        session[:smart_match_user_type] = "service_seeker"
+        session[:smart_match_location_scope] = "national"
+
+        described_class.call(
+          session: session,
+          params: ActionController::Parameters.new(city_selection: "national").permit!,
+          step: 6
+        )
+
+        # 6 -> 8, jumping over the (now irrelevant) distance step 7.
+        expect(session[:smart_match_step]).to eq(8)
+      end
+
+      it "keeps the travel step for a local service_seeker search" do
+        session[:smart_match_user_type] = "service_seeker"
+        session[:smart_match_location_scope] = "local"
+
+        described_class.call(
+          session: session,
+          params: ActionController::Parameters.new(city_selection: "Nashville").permit!,
+          step: 6
+        )
+
+        expect(session[:smart_match_step]).to eq(7)
+      end
+
+      it "skips back over the travel step when scope is non-local" do
+        session[:smart_match_user_type] = "service_seeker"
+        session[:smart_match_location_scope] = "national"
+
+        described_class.call(
+          session: session,
+          params: ActionController::Parameters.new(direction: "back").permit!,
+          step: 8
+        )
+
+        expect(session[:smart_match_step]).to eq(6)
+      end
+    end
+
     context "when navigating back" do
       it "decrements step" do
         session[:smart_match_user_type] = "volunteer"

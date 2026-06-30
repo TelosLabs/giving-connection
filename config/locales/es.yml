@@ -132,6 +132,8 @@ es:
           hint: "Gracias por compartir esto. Estás más cerca de tus resultados personalizados."
           other: "Otro lugar"
           other_help: "Dinos dónde te encuentras y buscaremos en esa zona."
+          national: "🌐 Servicios nacionales / en línea"
+          international: "🌍 Servicios internacionales"
           state_label: "Estado"
           state_prompt: "Selecciona tu estado"
           city_label: "Ciudad (opcional)"

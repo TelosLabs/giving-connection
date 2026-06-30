@@ -3,6 +3,7 @@
   # The "Other" card is the active one whenever we have a location that isn't
   # one of the presets (state captured, city not in the preset list).
   other_selected = @session_answers[:state].present? && preset_cities.exclude?(@session_answers[:city])
+  scope = @session_answers[:location_scope]
 %>
 <%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
              data: { smart_match_quiz_target: "form" } do |f| %>
@@ -35,6 +36,28 @@
             data: { smart_match_quiz_target: "radio" } %>
       <%= inline_svg_tag "smart_match/location.svg", class: "w-8 h-8", aria_hidden: "true" %>
       <span class="text-base font-bold"><%= t("smart_match.quiz.steps.city_selection.other") %></span>
+    </label>
+
+    <%# Scope options — no specific location. Submitted via city_selection and
+        mapped to location_scope in the navigator. %>
+    <label class="sm-card-option sm-card-option--blue sm-card-option--full <%= 'selected' if scope == 'national' %>"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="single">
+      <%= f.radio_button :city_selection, "national",
+            class: "sr-only",
+            checked: scope == "national",
+            data: { smart_match_quiz_target: "radio" } %>
+      <span class="text-base font-bold"><%= t("smart_match.quiz.steps.city_selection.national") %></span>
+    </label>
+
+    <label class="sm-card-option sm-card-option--blue sm-card-option--full <%= 'selected' if scope == 'international' %>"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="single">
+      <%= f.radio_button :city_selection, "international",
+            class: "sr-only",
+            checked: scope == "international",
+            data: { smart_match_quiz_target: "radio" } %>
+      <span class="text-base font-bold"><%= t("smart_match.quiz.steps.city_selection.international") %></span>
     </label>
 
   </div>

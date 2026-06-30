@@ -67,6 +67,7 @@ module SmartMatch
       {
         state: session[:smart_match_state],
         city: session[:smart_match_city],
+        location_scope: session[:smart_match_location_scope],
         travel_bucket: session[:smart_match_travel_bucket],
         causes: session[:smart_match_causes],
         prefs: session[:smart_match_prefs],

@@ -66,6 +66,7 @@ module SmartMatch
         situation: session[:smart_match_situation],
         city: session[:smart_match_city],
         state: session[:smart_match_state],
+        location_scope: session[:smart_match_location_scope],
         travel_bucket: session[:smart_match_travel_bucket],
         causes: Array(session[:smart_match_causes]),
         prefs: Array(session[:smart_match_prefs]),
@@ -115,9 +116,15 @@ module SmartMatch
     # Conservative mapping: state is asked early, causes near the end.
     def first_incomplete_step
       return 1 if session[:smart_match_user_type].blank?
-      return 2 if session[:smart_match_state].blank?
+      # State is only required for a local (city-based) search; nationwide /
+      # international selections carry no state.
+      return 2 if local_scope_session? && session[:smart_match_state].blank?
       return 3 if Array(session[:smart_match_causes]).empty?
       1
+    end
+
+    def local_scope_session?
+      !QuizNavigator::NON_LOCAL_SCOPES.include?(session[:smart_match_location_scope].to_s)
     end
   end
 end

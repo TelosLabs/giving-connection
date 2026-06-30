@@ -158,6 +158,8 @@ en:
           hint: "Thanks for sharing this. You're moving closer to your personalized results."
           other: "Somewhere else"
           other_help: "Tell us where you're located and we'll search that area."
+          national: "🌐 Nationwide / online services"
+          international: "🌍 International services"
           state_label: "State"
           state_prompt: "Select your state"
           city_label: "City (optional)"

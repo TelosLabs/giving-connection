@@ -81,4 +81,28 @@ RSpec.describe SmartMatch::Scorer do
       expect(results.first[:score_breakdown][:distance_score]).to eq(0.5)
     end
   end
+
+  describe "scope matching by location_scope" do
+    def attribute_bonus_for(org, intent)
+      oe = create(:organization_embedding, organization: org)
+      candidates = [{organization_embedding: oe, cosine_distance: 0.5, distance_miles: nil}]
+      described_class.call(candidates: candidates, user_intent: intent).first[:score_breakdown][:attribute_bonus]
+    end
+
+    it "rewards National orgs over Regional ones for a nationwide search" do
+      intent = UserIntent.new(user_type: "volunteer", location_scope: "national", causes_selected: ["Education"])
+      national = create(:organization, scope_of_work: "National")
+      regional = create(:organization, name: "Regional Org", scope_of_work: "Regional")
+
+      expect(attribute_bonus_for(national, intent)).to be > attribute_bonus_for(regional, intent)
+    end
+
+    it "rewards International orgs over National ones for an international search" do
+      intent = UserIntent.new(user_type: "donor", location_scope: "international", causes_selected: ["Education"])
+      intl = create(:organization, scope_of_work: "International")
+      national = create(:organization, name: "National Org", scope_of_work: "National")
+
+      expect(attribute_bonus_for(intl, intent)).to be > attribute_bonus_for(national, intent)
+    end
+  end
 end

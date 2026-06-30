@@ -28,6 +28,25 @@ RSpec.describe UserIntent do
       expect(intent.errors[:state]).to be_present
     end
 
+    it "defaults location_scope to local" do
+      intent = described_class.new(user_type: "volunteer", state: "TN", causes_selected: ["Education"])
+      expect(intent.location_scope).to eq("local")
+      expect(intent).to be_local
+    end
+
+    it "does not require state for a nationwide scope" do
+      intent = described_class.new(user_type: "volunteer", location_scope: "national", causes_selected: ["Education"])
+
+      expect(intent).to be_valid
+      expect(intent).not_to be_local
+    end
+
+    it "does not require state for an international scope" do
+      intent = described_class.new(user_type: "donor", location_scope: "international", causes_selected: ["Health"])
+
+      expect(intent).to be_valid
+    end
+
     it "requires causes_selected" do
       intent = described_class.new(user_type: "volunteer", state: "TN")
 
@@ -182,6 +201,18 @@ RSpec.describe UserIntent do
       intent = described_class.new(user_type: "volunteer", state: "TN", city: "Nashville",
         causes_selected: ["Education"])
       expect(intent.to_embedding_text).to include("Nashville, TN")
+    end
+
+    it "uses a nationwide phrase instead of city/state for a national scope" do
+      intent = described_class.new(user_type: "volunteer", location_scope: "national",
+        causes_selected: ["Education"])
+      expect(intent.to_embedding_text).to include("Nationwide services")
+    end
+
+    it "uses an international phrase for an international scope" do
+      intent = described_class.new(user_type: "donor", location_scope: "international",
+        causes_selected: ["Health"])
+      expect(intent.to_embedding_text).to include("International services")
     end
 
     it "includes prefs" do

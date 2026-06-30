@@ -59,6 +59,60 @@ RSpec.describe SmartMatch::SimilarityQuery do
       expect(results).to be_an(Array)
     end
 
+    describe "location scope (nationwide / international)" do
+      def ids(results)
+        results.map { |r| r[:organization_embedding].organization_id }
+      end
+
+      it "matches National orgs for a nationwide search, ignoring state/coordinates" do
+        national = create(:organization, scope_of_work: "National")
+        national.locations.first.update_columns(state_code: "CA")
+        create(:organization_embedding, organization: national)
+
+        results = described_class.call(
+          embedding: embedding, state: nil, coordinates: nil, location_scope: "national"
+        )
+
+        expect(ids(results)).to include(national.id)
+      end
+
+      it "excludes Regional orgs from a nationwide search" do
+        regional = create(:organization, scope_of_work: "Regional")
+        create(:organization_embedding, organization: regional)
+
+        results = described_class.call(
+          embedding: embedding, state: nil, coordinates: nil, location_scope: "national"
+        )
+
+        expect(ids(results)).not_to include(regional.id)
+      end
+
+      it "broadens a nationwide search to International when no National orgs exist" do
+        intl = create(:organization, scope_of_work: "International")
+        create(:organization_embedding, organization: intl)
+
+        results = described_class.call(
+          embedding: embedding, state: nil, coordinates: nil, location_scope: "national"
+        )
+
+        expect(ids(results)).to include(intl.id)
+      end
+
+      it "matches only International orgs for an international search" do
+        intl = create(:organization, scope_of_work: "International")
+        create(:organization_embedding, organization: intl)
+        national = create(:organization, name: "National Org", scope_of_work: "National")
+        create(:organization_embedding, organization: national)
+
+        results = described_class.call(
+          embedding: embedding, state: nil, coordinates: nil, location_scope: "international"
+        )
+
+        expect(ids(results)).to include(intl.id)
+        expect(ids(results)).not_to include(national.id)
+      end
+    end
+
     # Correctness sentinel: the ILIKE fallback matches false positives like
     # "Patten, ME" being matched as TN. When a location has the structured
     # state_code column populated, we MUST use that exact-match column even
