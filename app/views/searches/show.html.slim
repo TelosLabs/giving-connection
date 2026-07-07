@@ -12,16 +12,7 @@
   = render SearchBar::Component.new(form: f, search: @search, current_location: @current_location, locations: @locations)
   = turbo_frame_tag "search-pills" do
     = render SearchPills::Component.new(causes: @top_10_causes, services: @top_10_services, beneficiary_subcategories: @top_10_beneficiary_subcategories, params: params, current_location: @current_location)
-  div class="flex relative flex-col gap-2 items-center px-10 py-3 w-full text-center bg-blue-pale sm:flex-row sm:justify-center sm:gap-4" data-controller="banner" data-banner-key-value="smart-match-search-banner" data-banner-target="banner"
-    p class="text-sm text-gray-3"
-      span class="font-bold text-blue-dark"
-        = t("smart_match.entry_points.search_banner.heading")
-      | &nbsp;
-      = t("smart_match.entry_points.search_banner.body")
-    = link_to t("smart_match.entry_points.search_banner.cta"), smart_match_root_path, class: "flex-shrink-0 inline-block px-6 py-2 text-xs font-bold tracking-wider uppercase rounded-md text-blue-dark bg-seafoam hover:bg-seafoam-light transition-colors"
-    button type="button" class="absolute top-1/2 right-2 p-1 text-gray-4 transition-colors -translate-y-1/2 hover:text-gray-2" aria-label="Dismiss" data-action="banner#closeBanner"
-      svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"
-        path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"
+  = render "shared/smart_match_search_banner"
   = turbo_frame_tag "search-locations", data: { controller: "search-loading" } do
     div class="flex flex-row justify-center w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3 underline-on-hover"
       div class="flex flex-row justify-center w-full min-h-full"

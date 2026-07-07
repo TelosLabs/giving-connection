@@ -1,0 +1,12 @@
+/ Smart Match entry-point banner shown on the search page. Dismissible via the
+/ "x"; dismissal persists for the session (see banner_controller.js).
+div class="flex relative flex-col gap-2 items-center px-10 py-3 w-full text-center bg-blue-pale sm:flex-row sm:justify-center sm:gap-4" data-controller="banner" data-banner-key-value="smart-match-search-banner" data-banner-target="banner"
+  p class="text-sm text-gray-3"
+    span class="font-bold text-blue-dark"
+      = t("smart_match.entry_points.search_banner.heading")
+    | &nbsp;
+    = t("smart_match.entry_points.search_banner.body")
+  = link_to t("smart_match.entry_points.search_banner.cta"), smart_match_root_path, class: "flex-shrink-0 inline-block px-6 py-2 text-xs font-bold tracking-wider uppercase rounded-md text-blue-dark bg-seafoam hover:bg-seafoam-light transition-colors"
+  button type="button" class="absolute top-1/2 right-2 p-1 text-gray-4 transition-colors -translate-y-1/2 hover:text-gray-2" aria-label="Dismiss" data-action="banner#closeBanner"
+    svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"
+      path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"
