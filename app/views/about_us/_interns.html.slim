@@ -2,7 +2,7 @@ details class="w-full max-w-4xl pb-6 mb-16 border-b open:pb-12 border-blue-gradi
   summary class="flex items-center justify-between cursor-pointer" data-controller="accordion--component"
     div class="relative flex flex-col items-center justify-center w-full bg-white" data-action="click->accordion--component#rotateArrow"
         h2 class="flex mb-8 text-2xl font-bold text-center uppercase text-blue-dark"
-          | 2025 Interns
+          | 2026 Interns
           = inline_svg_tag 'expand-arrow.svg', class: "transition-transform duration-300 absolute mt-2 right-1", size:'16*16', data: { 'accordion--component-target': 'arrow'}
   div class="flex flex-wrap justify-center max-w-4xl"
     div class="w-full max-w-4xl px-4 sm:w-1/2"
@@ -66,6 +66,36 @@ details class="w-full max-w-4xl pb-6 mb-16 border-b open:pb-12 border-blue-gradi
     
     div class="w-full max-w-4xl px-4 sm:w-1/2"
       = render BioCard::Component.new(\
+        name: "Alyssa Landa",
+        job_title: "Platform Development Fellow",
+        img_url: "alyssa.jpeg",
+      ) do |c|
+        - c.with_biography do
+          p class="mb-3 text-gray-2"
+            | Alyssa Landa is a rising senior at Stanford studying Symbolic Systems on the Cognitive Science 
+            | track. She is fascinated by the intersection of psychology and computer science and how it can 
+            | be used to design technology that better supports underserved communities. Outside of academics,  
+            | Alyssa enjoys crocheting, volleyball, and spending time with her cat. 
+            span data-read-more-target="dots" class=""...
+          p data-read-more-target="collapsableText" class="hidden mb-3"
+            | Her passion for social impact began through volunteering at food banks, tutoring students, and 
+            | founding a nonprofit that creates and distributes handmade cards to cancer patients and residents 
+            | of retirement homes. She is excited to continue making a positive impact this summer by applying 
+            | her technical skills and passion for service at Giving Connection!
+          a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+        end
+      end
+
+details class="w-full max-w-4xl pb-6 mb-16 border-b open:pb-12 border-blue-gradient-2"
+  summary class="flex items-center justify-between cursor-pointer" data-controller="accordion--component"
+    div class="relative flex flex-col items-center justify-center w-full bg-white" data-action="click->accordion--component#rotateArrow"
+        h2 class="flex mb-8 text-2xl font-bold text-center uppercase text-blue-dark"
+          | Past Interns
+          = inline_svg_tag 'expand-arrow.svg', class: "transition-transform duration-300 absolute mt-2 right-1", size:'16*16', data: { 'accordion--component-target': 'arrow'}
+  
+  div class="flex flex-wrap justify-center max-w-4xl"
+    div class="w-full max-w-4xl px-4 sm:w-1/2"
+      = render BioCard::Component.new(\
         name: "Tommy Ngo",
         job_title: "Platform Development Fellow",
         img_url: "tommy_ngo.jpg",
@@ -87,14 +117,6 @@ details class="w-full max-w-4xl pb-6 mb-16 border-b open:pb-12 border-blue-gradi
         end
       end
 
-details class="w-full max-w-4xl pb-6 mb-16 border-b open:pb-12 border-blue-gradient-2"
-  summary class="flex items-center justify-between cursor-pointer" data-controller="accordion--component"
-    div class="relative flex flex-col items-center justify-center w-full bg-white" data-action="click->accordion--component#rotateArrow"
-        h2 class="flex mb-8 text-2xl font-bold text-center uppercase text-blue-dark"
-          | Past Interns
-          = inline_svg_tag 'expand-arrow.svg', class: "transition-transform duration-300 absolute mt-2 right-1", size:'16*16', data: { 'accordion--component-target': 'arrow'}
-  
-  div class="flex flex-wrap justify-center max-w-4xl"
     div class="w-full max-w-4xl px-4 sm:w-1/2"
       = render BioCard::Component.new(\
         name: "Ann Matthew",
