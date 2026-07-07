@@ -67,9 +67,10 @@ module SpreadsheetImport
     def normalize_time(time)
       return nil if time.blank?
       begin
-        parsed_time = Time.zone.parse(time)
-        shifted_time = parsed_time + 7.hours
-        shifted_time.strftime("%H:%M")
+        # Return the local wall-clock time as written. OfficeHour converts to
+        # UTC on save (see TimeZoneConvertible), so shifting here would double
+        # the conversion.
+        Time.zone.parse(time).strftime("%H:%M")
       rescue
         nil
       end

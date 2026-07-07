@@ -1,12 +1,11 @@
 require "rails_helper"
 
-OFFSET_HOURS = 7
-
+# The parser returns local wall-clock times unchanged; conversion to UTC is the
+# OfficeHour model's responsibility (TimeZoneConvertible).
 def offset_time(time_str)
   return time_str if time_str.nil?
 
-  # Parse and shift by OFFSET_HOURS
-  (Time.zone.parse(time_str) + OFFSET_HOURS.hours).strftime("%H:%M")
+  Time.zone.parse(time_str).strftime("%H:%M")
 end
 
 RSpec.describe SpreadsheetImport::OfficeHoursParser do
