@@ -14,6 +14,13 @@ module SmartMatch
     # integers) -- not natural-language or operator-tunable config. YAML adds
     # indirection without easing change. Natural-language copy lives in
     # config/locales/* where it belongs.
+    # Location is split across two consecutive steps: a "location" step (three
+    # preset cities + "Somewhere else") followed by a conditionally-shown
+    # "location_detail" step that only appears when "Somewhere else" was picked
+    # (see QuizNavigator#skip_step?). The numbered title_key strings stay bound
+    # to their original content, so the shifted steps below keep referencing the
+    # same locale keys they always used; the inserted detail step gets a
+    # semantic "<user_type>.location_detail" key instead of a number.
     STEP_STRUCTURES = {
       "service_seeker" => {
         1 => {number:1, section_key: :about_you, title_key: "service_seeker.step_1", subtitle: :single},
@@ -22,10 +29,11 @@ module SmartMatch
         4 => {number:2, section_key: :type_of_support, title_key: "service_seeker.step_4", subtitle: :multiple},
         5 => {number:2, section_key: :type_of_support, title_key: "service_seeker.step_5", subtitle: :single},
         6 => {number:3, section_key: :location_access, title_key: "service_seeker.step_6", subtitle: :single},
-        7 => {number:3, section_key: :location_access, title_key: "service_seeker.step_7", subtitle: :single},
-        8 => {number:4, section_key: :prefs_accessibility, title_key: "service_seeker.step_8", subtitle: :multiple},
-        9 => {number:4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
-        10 => {number:4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
+        7 => {number:3, section_key: :location_access, title_key: "service_seeker.location_detail", subtitle: :none},
+        8 => {number:3, section_key: :location_access, title_key: "service_seeker.step_7", subtitle: :single},
+        9 => {number:4, section_key: :prefs_accessibility, title_key: "service_seeker.step_8", subtitle: :multiple},
+        10 => {number:4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
+        11 => {number:4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
       }.freeze,
       "volunteer" => {
         1 => {number:1, section_key: :about_you, title_key: "volunteer.step_1", subtitle: :single},
@@ -34,9 +42,10 @@ module SmartMatch
         4 => {number:2, section_key: :volunteer_prefs, title_key: "volunteer.step_4", subtitle: :multiple},
         5 => {number:3, section_key: :volunteer_availability, title_key: "volunteer.step_5", subtitle: :single},
         6 => {number:3, section_key: :engagement, title_key: "volunteer.step_6", subtitle: :single},
-        7 => {number:3, section_key: :volunteer_availability, title_key: "volunteer.step_7", subtitle: :single},
-        8 => {number:4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
-        9 => {number:4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
+        7 => {number:3, section_key: :engagement, title_key: "volunteer.location_detail", subtitle: :none},
+        8 => {number:3, section_key: :volunteer_availability, title_key: "volunteer.step_7", subtitle: :single},
+        9 => {number:4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
+        10 => {number:4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
       }.freeze,
       "donor" => {
         1 => {number:1, section_key: :about_you, title_key: "donor.step_1", subtitle: :single},
@@ -46,9 +55,10 @@ module SmartMatch
         5 => {number:2, section_key: :donor_prefs, title_key: "donor.step_5", subtitle: :multiple},
         6 => {number:3, section_key: :engagement, title_key: "donor.step_6", subtitle: :single},
         7 => {number:3, section_key: :engagement, title_key: "donor.step_7", subtitle: :single},
-        8 => {number:3, section_key: :engagement, title_key: "donor.step_8", subtitle: :single},
-        9 => {number:4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
-        10 => {number:4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
+        8 => {number:3, section_key: :engagement, title_key: "donor.location_detail", subtitle: :none},
+        9 => {number:3, section_key: :engagement, title_key: "donor.step_8", subtitle: :single},
+        10 => {number:4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
+        11 => {number:4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
       }.freeze
     }.freeze
 
@@ -80,21 +90,26 @@ module SmartMatch
         "donor" => "smart_match/quizzes/steps/donor_impact_location"
       },
       7 => {
-        "service_seeker" => "smart_match/quizzes/steps/travel",
-        "volunteer" => "smart_match/quizzes/steps/volunteer_time",
+        "service_seeker" => "smart_match/quizzes/steps/location_detail",
+        "volunteer" => "smart_match/quizzes/steps/location_detail",
         "donor" => "smart_match/quizzes/steps/city_selection"
       },
       8 => {
+        "service_seeker" => "smart_match/quizzes/steps/travel",
+        "volunteer" => "smart_match/quizzes/steps/volunteer_time",
+        "donor" => "smart_match/quizzes/steps/location_detail"
+      },
+      9 => {
         "service_seeker" => "smart_match/quizzes/steps/preferences",
         "volunteer" => "smart_match/quizzes/steps/final",
         "donor" => "smart_match/quizzes/steps/donor_involvement"
       },
-      9 => {
+      10 => {
         "service_seeker" => "smart_match/quizzes/steps/final",
-        "donor" => "smart_match/quizzes/steps/final",
-        "volunteer" => "smart_match/quizzes/steps/open_text"
+        "volunteer" => "smart_match/quizzes/steps/open_text",
+        "donor" => "smart_match/quizzes/steps/final"
       },
-      10 => "smart_match/quizzes/steps/open_text"
+      11 => "smart_match/quizzes/steps/open_text"
     }.freeze
 
     def self.section_map_for(user_type)

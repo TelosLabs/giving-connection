@@ -184,6 +184,20 @@
   }
 }
 
+// Big emoji "icon" sitting above the label on text-only cards (location scope).
+// Scoped under .sm-card-option so it outranks the base `.sm-card-option span`
+// sizing, and mirrors the icon cards: large + on top for desktop, smaller and
+// to the side on mobile's row layout.
+.sm-card-option .sm-card-emoji {
+  font-size: 3.5rem;
+  line-height: 1;
+
+  @media (max-width: 639px) {
+    font-size: 2rem;
+    order: 2;
+  }
+}
+
 // List variant for mobile
 .sm-card-option--list {
   display: flex;
@@ -222,13 +236,14 @@
   padding: 1rem 1.25rem;
 }
 
-// "Other location" reveal panel — only shown once the Other card is checked.
-// Mirrors the existing form:has(...) pattern used for the selection hint.
-.sm-other-location {
+// US state/city reveal panel — only shown once the "In the United States"
+// scope card is checked on the location_detail step. Mirrors the existing
+// form:has(...) pattern used for the selection hint.
+.sm-us-location {
   display: none;
 }
 
-form:has(.sm-other-toggle:checked) .sm-other-location {
+form:has(.sm-local-toggle:checked) .sm-us-location {
   display: block;
 }
 

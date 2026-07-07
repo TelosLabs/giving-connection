@@ -45,7 +45,8 @@ RSpec.describe "SmartMatch::Quizzes", type: :request do
     end
 
     it "redirects to confirmation on quiz completion" do
-      # Volunteer has 9 steps (personal details, then the open-text question)
+      # Volunteer has 10 steps; a preset city skips the "Somewhere else"
+      # location detail step, so this walks 9 visible steps to completion.
       put smart_match_quiz_path, params: {user_type: "volunteer"}
       put smart_match_quiz_path, params: {causes: ["Education"]}
       put smart_match_quiz_path, params: {volunteer_involvement: ["Teaching"]}

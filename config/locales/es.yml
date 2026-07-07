@@ -82,6 +82,7 @@ es:
           step_6: "¿Dónde deberíamos buscar apoyo?"
           step_7: "¿Qué tipo de traslado es posible para ti?"
           step_8: "¿Qué deberíamos tener en cuenta al emparejarte con servicios?"
+          location_detail: "¿Dónde te encuentras?"
         volunteer:
           step_1: "¿Cómo podemos apoyarte hoy?"
           step_2: "¿Qué causas están cerca de tu corazón?"
@@ -90,6 +91,7 @@ es:
           step_5: "¿Qué formato funciona mejor para ti?"
           step_6: "¿En qué comunidad te gustaría enfocar tu contribución?"
           step_7: "¿Cuánto tiempo tienes para dar?"
+          location_detail: "¿Dónde te encuentras?"
         donor:
           step_1: "¿Cómo podemos apoyarte hoy?"
           step_2: "¿Qué causas están cerca de tu corazón?"
@@ -99,6 +101,7 @@ es:
           step_6: "¿Dónde te gustaría que tu donación haga impacto?"
           step_7: "¿En qué comunidad te gustaría enfocar tu contribución?"
           step_8: "¿Cómo te gustaría involucrarte?"
+          location_detail: "¿Dónde te encuentras?"
       steps:
         user_type:
           options:
@@ -132,12 +135,14 @@ es:
           hint: "Gracias por compartir esto. Estás más cerca de tus resultados personalizados."
           other: "Otro lugar"
           other_help: "Dinos dónde te encuentras y buscaremos en esa zona."
-          national: "🌐 Servicios nacionales / en línea"
-          international: "🌍 Servicios internacionales"
+          national: "Servicios nacionales / en línea"
+          international: "Servicios internacionales"
           state_label: "Estado"
           state_prompt: "Selecciona tu estado"
           city_label: "Ciudad (opcional)"
           city_placeholder: "Tu ciudad"
+        location_detail:
+          us: "En los Estados Unidos"
         travel:
           options:
             nearby: "Sólo distancia caminable (menos de 5 millas)"

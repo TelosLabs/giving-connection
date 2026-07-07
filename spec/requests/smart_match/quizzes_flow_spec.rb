@@ -40,7 +40,7 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
     end
   end
 
-  describe "donor quiz happy path (10 steps)" do
+  describe "donor quiz happy path (11 steps, preset city skips the detail step)" do
     it "advances every step and redirects to confirmation on completion" do
       get smart_match_quiz_path
 
@@ -75,31 +75,69 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       expect(request.session[:smart_match_impact_location]).to eq("local")
       expect(request.session[:smart_match_step]).to eq(7)
 
-      # Step 7 -> 8: city_selection — also sets state via centroid lookup
+      # Step 7: city_selection — a preset city derives state via centroid lookup
+      # and skips the "Somewhere else" detail step (8), landing on step 9.
       put smart_match_quiz_path, params: {city_selection: "Nashville"}
       expect(request.session[:smart_match_city]).to eq("Nashville")
       expect(request.session[:smart_match_state]).to eq("TN")
-      expect(request.session[:smart_match_step]).to eq(8)
-
-      # Step 8 -> 9: donor_involvement (single)
-      put smart_match_quiz_path, params: {donor_involvement: "active"}
-      expect(request.session[:smart_match_donor_involvement]).to eq("active")
+      expect(request.session[:smart_match_city_choice]).to eq("Nashville")
       expect(request.session[:smart_match_step]).to eq(9)
 
-      # Step 9 -> 10: personal details (optional demographics)
+      # Step 9 -> 10: donor_involvement (single)
+      put smart_match_quiz_path, params: {donor_involvement: "active"}
+      expect(request.session[:smart_match_donor_involvement]).to eq("active")
+      expect(request.session[:smart_match_step]).to eq(10)
+
+      # Step 10 -> 11: personal details (optional demographics)
       put smart_match_quiz_path, params: {
         age_range: "25-34",
         gender_identity: "prefer_not_to_say",
         race_ethnicity: "prefer_not_to_say"
       }
-      expect(request.session[:smart_match_step]).to eq(10)
+      expect(request.session[:smart_match_step]).to eq(11)
 
-      # Step 10 (final): open-ended language_input — completes the quiz
+      # Step 11 (final): open-ended language_input — completes the quiz
       put smart_match_quiz_path, params: {
         language_input: "I want my donations to support education in Nashville."
       }
       expect(request.session[:smart_match_language]).to eq("I want my donations to support education in Nashville.")
       expect(response).to redirect_to(smart_match_confirmation_path)
+    end
+  end
+
+  describe "donor 'Somewhere else' path (visits the location detail step)" do
+    it "routes through the detail step to capture a state and city" do
+      get smart_match_quiz_path
+      put smart_match_quiz_path, params: {user_type: "donor"}                  # 1 -> 2
+      put smart_match_quiz_path, params: {causes: %w[Education]}               # 2 -> 3
+      put smart_match_quiz_path, params: {donation_style: %w[one_time]}        # 3 -> 4
+      put smart_match_quiz_path, params: {giving_inspiration: %w[personal_story]} # 4 -> 5
+      put smart_match_quiz_path, params: {donor_communities: %w[veterans]}     # 5 -> 6
+      put smart_match_quiz_path, params: {impact_location: "local"}            # 6 -> 7
+
+      # The location step renders the "Somewhere else" card alongside cities.
+      get smart_match_quiz_path
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(I18n.t("smart_match.quiz.steps.city_selection.other"))
+      expect(response.body).to include("Atlantic City")
+
+      # Step 7: pick "Somewhere else" — routes to the detail step (8).
+      put smart_match_quiz_path, params: {city_selection: "elsewhere"}
+      expect(request.session[:smart_match_city_choice]).to eq("elsewhere")
+      expect(request.session[:smart_match_step]).to eq(8)
+
+      # The detail step renders its scope options and US state picker.
+      get smart_match_quiz_path
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(I18n.t("smart_match.quiz.steps.location_detail.us"))
+      expect(response.body).to include(I18n.t("smart_match.quiz.titles.donor.location_detail"))
+
+      # Step 8 (detail): choose the U.S. scope with a state + city.
+      put smart_match_quiz_path, params: {location_scope_choice: "local", state: "OR", city: "Portland"}
+      expect(request.session[:smart_match_location_scope]).to eq("local")
+      expect(request.session[:smart_match_state]).to eq("OR")
+      expect(request.session[:smart_match_city]).to eq("Portland")
+      expect(request.session[:smart_match_step]).to eq(9)
     end
   end
 
@@ -112,20 +150,24 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       put smart_match_quiz_path, params: {causes: %w[Education]}              # 4 -> 5
       put smart_match_quiz_path, params: {situation: "exploring"}            # 5 -> 6
 
-      # Step 6 (city_selection): choose nationwide instead of a city.
-      put smart_match_quiz_path, params: {city_selection: "national"}
+      # Step 6 (city_selection): pick "Somewhere else" → detail step (7).
+      put smart_match_quiz_path, params: {city_selection: "elsewhere"}
+      expect(request.session[:smart_match_step]).to eq(7)
+
+      # Step 7 (detail): choose nationwide instead of a specific place.
+      put smart_match_quiz_path, params: {location_scope_choice: "national"}
       expect(request.session[:smart_match_location_scope]).to eq("national")
       expect(request.session[:smart_match_state]).to be_nil
-      # Travel step (7) is skipped → lands on preferences (8).
-      expect(request.session[:smart_match_step]).to eq(8)
+      # Travel step (8) is skipped → lands on preferences (9).
+      expect(request.session[:smart_match_step]).to eq(9)
 
-      put smart_match_quiz_path, params: {prefs: []}                          # 8 -> 9
-      put smart_match_quiz_path, params: {                                    # 9 (personal details) -> 10
+      put smart_match_quiz_path, params: {prefs: []}                          # 9 -> 10
+      put smart_match_quiz_path, params: {                                    # 10 (personal details) -> 11
         age_range: "25_34", gender_identity: "prefer_not_to_say", race_ethnicity: "prefer_not_to_say"
       }
-      expect(request.session[:smart_match_step]).to eq(10)
+      expect(request.session[:smart_match_step]).to eq(11)
 
-      put smart_match_quiz_path, params: {language_input: "online job training"}  # 10 -> complete
+      put smart_match_quiz_path, params: {language_input: "online job training"}  # 11 -> complete
       expect(response).to redirect_to(smart_match_confirmation_path)
     end
   end
@@ -264,20 +306,20 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
 
     it "redirects back to the quiz when a forced final-step submit fails UserIntent validation" do
       get smart_match_quiz_path
-      # Pick a user_type so we know total_steps = 10, but leave state and
+      # Pick a user_type so we know total_steps = 11, but leave state and
       # causes blank — UserIntent.valid? will fail on missing state + causes.
       put smart_match_quiz_path, params: {user_type: "donor"}
 
       # Jump straight to the final step by submitting direction=next many
       # times without filling in required fields. The first valid back-end
       # gate is at "completion" (step > total_steps), so we need to force
-      # the controller's current_step to the last step (10). Without modifying
-      # app code, the cleanest path is to drive the navigator there by
-      # submitting empty next params from step 2 onward.
+      # the controller's current_step to the last step (11). Empty submits
+      # never pick "Somewhere else", so the location detail step is skipped —
+      # 8 forward moves (2→3…10→11, jumping the detail step) reach the end.
       8.times do
         put smart_match_quiz_path, params: {}
       end
-      expect(request.session[:smart_match_step]).to eq(10)
+      expect(request.session[:smart_match_step]).to eq(11)
 
       # Final step next -> completion check runs, UserIntent invalid (no state,
       # no causes_selected), so controller redirects back to quiz with flash.

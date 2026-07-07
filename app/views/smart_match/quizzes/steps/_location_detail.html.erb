@@ -1,0 +1,71 @@
+<%
+  scope = @session_answers[:location_scope]
+  # Only treat a stored "local" scope as a selection on this step if a specific
+  # place was captured here (a preset city on the previous step also stores
+  # "local", but never reaches this step).
+  local_selected = scope == "local"
+%>
+<%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
+             data: { smart_match_quiz_target: "form" } do |f| %>
+  <div data-card-group="location-detail" data-card-cols="3">
+
+    <label class="sm-card-option sm-card-option--blue <%= 'selected' if local_selected %>"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="single">
+      <%= f.radio_button :location_scope_choice, "local",
+            class: "sr-only sm-local-toggle",
+            checked: local_selected,
+            data: { smart_match_quiz_target: "radio" } %>
+      <span class="sm-card-emoji" aria-hidden="true">📍</span>
+      <span class="text-base font-bold"><%= t("smart_match.quiz.steps.location_detail.us") %></span>
+    </label>
+
+    <label class="sm-card-option sm-card-option--blue <%= 'selected' if scope == 'national' %>"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="single">
+      <%= f.radio_button :location_scope_choice, "national",
+            class: "sr-only",
+            checked: scope == "national",
+            data: { smart_match_quiz_target: "radio" } %>
+      <span class="sm-card-emoji" aria-hidden="true">🌐</span>
+      <span class="text-base font-bold"><%= t("smart_match.quiz.steps.city_selection.national") %></span>
+    </label>
+
+    <label class="sm-card-option sm-card-option--blue <%= 'selected' if scope == 'international' %>"
+           data-action="click->smart-match-quiz#selectCard"
+           data-select-mode="single">
+      <%= f.radio_button :location_scope_choice, "international",
+            class: "sr-only",
+            checked: scope == "international",
+            data: { smart_match_quiz_target: "radio" } %>
+      <span class="sm-card-emoji" aria-hidden="true">🌍</span>
+      <span class="text-base font-bold"><%= t("smart_match.quiz.steps.city_selection.international") %></span>
+    </label>
+
+  </div>
+
+  <%# Revealed only when "In the United States" is selected (CSS :has). %>
+  <div class="sm-us-location mt-5 max-w-md mx-auto text-left">
+    <label class="block mb-1 text-sm font-bold text-blue-dark" for="sm-detail-state">
+      <%= t("smart_match.quiz.steps.city_selection.state_label") %>
+    </label>
+    <select name="state" id="sm-detail-state"
+            class="w-full rounded-md border-2 border-gray-300 px-4 py-3 text-blue-dark bg-white focus:border-blue-medium focus:outline-none">
+      <option value=""><%= t("smart_match.quiz.steps.city_selection.state_prompt") %></option>
+      <% SmartMatch::US_STATES.each do |code, name| %>
+        <option value="<%= code %>"><%= name %></option>
+      <% end %>
+    </select>
+
+    <label class="block mt-4 mb-1 text-sm font-bold text-blue-dark" for="sm-detail-city">
+      <%= t("smart_match.quiz.steps.city_selection.city_label") %>
+    </label>
+    <input type="text" name="city" id="sm-detail-city"
+           placeholder="<%= t("smart_match.quiz.steps.city_selection.city_placeholder") %>"
+           class="w-full rounded-md border-2 border-gray-300 px-4 py-3 text-blue-dark focus:border-blue-medium focus:outline-none" />
+  </div>
+
+  <div class="sm-selection-hint mt-5 rounded-lg px-5 py-3 text-sm font-medium text-blue-dark text-center" style="background-color: #e2ecf7;">
+    <%= t("smart_match.quiz.steps.city_selection.hint") %>
+  </div>
+<% end %>

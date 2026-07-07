@@ -66,6 +66,7 @@ module SmartMatch
         situation: session[:smart_match_situation],
         city: session[:smart_match_city],
         state: session[:smart_match_state],
+        city_choice: session[:smart_match_city_choice],
         location_scope: session[:smart_match_location_scope],
         travel_bucket: session[:smart_match_travel_bucket],
         causes: Array(session[:smart_match_causes]),
@@ -87,7 +88,7 @@ module SmartMatch
     end
 
     def quiz_params
-      params.permit(:user_type, :support_for, :situation, :city_selection, :state, :city, :travel_bucket,
+      params.permit(:user_type, :support_for, :situation, :city_selection, :location_scope_choice, :state, :city, :travel_bucket,
         :language_input, :direction, :target_step, :impact_location, :donor_involvement,
         :volunteer_format, :volunteer_time,
         :age_range, :gender_identity, :race_ethnicity,

@@ -3,9 +3,9 @@
 module SmartMatch
   class QuizNavigator < ApplicationService
     STEPS_BY_USER_TYPE = {
-      "service_seeker" => 10,
-      "volunteer" => 9,
-      "donor" => 10
+      "service_seeker" => 11,
+      "volunteer" => 10,
+      "donor" => 11
     }.freeze
 
     DEFAULT_STEPS = 4
@@ -13,7 +13,19 @@ module SmartMatch
     # The service_seeker distance/"travel" step. It is meaningless when the
     # user picked a nationwide/international scope (no specific location), so
     # it is skipped for those users. It is the only distance step in any flow.
-    SERVICE_SEEKER_TRAVEL_STEP = 7
+    SERVICE_SEEKER_TRAVEL_STEP = 8
+
+    # The "where exactly?" follow-up step, shown only when the user picked
+    # "Somewhere else" on the preceding location step. Its position differs by
+    # flow (it sits right after that flow's city_selection step).
+    LOCATION_DETAIL_STEP = {
+      "service_seeker" => 7,
+      "volunteer" => 7,
+      "donor" => 8
+    }.freeze
+
+    # Value submitted by the location step's "Somewhere else" card.
+    ELSEWHERE_CHOICE = "elsewhere"
 
     NON_LOCAL_SCOPES = %w[national international].freeze
 
@@ -98,27 +110,48 @@ module SmartMatch
       store_location_answer
     end
 
-    # Location is captured one of three ways, and we branch so the (always
-    # present in the DOM) "Other" panel can't overwrite a preset city card:
-    #   * preset city card -> city_selection holds the city; state is derived
-    #   * "Other" card      -> city_selection == "other"; the revealed
-    #                          state/city fields carry the real values
-    #   * direct state/city -> legacy path used when no city_selection is sent
+    # Location is captured across two steps:
+    #   1. The location step submits `city_selection`: either a preset city
+    #      (scope derived as local, state looked up from the centroid table) or
+    #      "elsewhere", which just records the choice and defers the specifics
+    #      to the follow-up step.
+    #   2. The location_detail step (only shown for "elsewhere") submits
+    #      `location_scope_choice` = local | national | international, plus a
+    #      state/city for the local case.
+    # The two params are independent, so both branches can run for a given
+    # submission. A legacy direct state/city path is kept for callers that send
+    # neither param.
     def store_location_answer
-      case params[:city_selection]
-      when "other"
+      store_city_choice if params.key?(:city_selection)
+      store_location_detail if params.key?(:location_scope_choice)
+
+      if !params.key?(:city_selection) && !params.key?(:location_scope_choice) &&
+          params[:state].present?
         store_local_scope
-        store_other_location
+        store_location
+      end
+    end
+
+    # Location step. A preset city fully resolves the location; "Somewhere else"
+    # only flags that the detail step should run next, leaving any previously
+    # captured detail answers intact so back-navigation can edit them.
+    def store_city_choice
+      choice = params[:city_selection]
+      session[:smart_match_city_choice] = choice
+      return if choice == ELSEWHERE_CHOICE
+
+      store_local_scope
+      store_city_selection
+    end
+
+    # location_detail step. Mirrors the three scopes offered on that page.
+    def store_location_detail
+      case params[:location_scope_choice]
       when "national", "international"
-        store_scope_location(params[:city_selection])
-      when nil, ""
-        if params[:state].present?
-          store_local_scope
-          store_location
-        end
+        store_scope_location(params[:location_scope_choice])
       else
         store_local_scope
-        store_city_selection
+        store_other_location
       end
     end
 
@@ -181,6 +214,17 @@ module SmartMatch
     end
 
     def skip_step?(step_number)
+      skip_location_detail?(step_number) || skip_travel?(step_number)
+    end
+
+    # The "where exactly?" follow-up is only relevant when the user picked
+    # "Somewhere else" on the location step.
+    def skip_location_detail?(step_number)
+      step_number == LOCATION_DETAIL_STEP[session[:smart_match_user_type].to_s] &&
+        session[:smart_match_city_choice].to_s != ELSEWHERE_CHOICE
+    end
+
+    def skip_travel?(step_number)
       session[:smart_match_user_type] == "service_seeker" &&
         step_number == SERVICE_SEEKER_TRAVEL_STEP &&
         NON_LOCAL_SCOPES.include?(session[:smart_match_location_scope].to_s)

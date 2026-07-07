@@ -108,6 +108,7 @@ en:
           step_6: "Where should we look for support?"
           step_7: "What kind of travel is possible for you?"
           step_8: "What should we keep in mind when matching you to services?"
+          location_detail: "Where are you located?"
         volunteer:
           step_1: "How can we support you today?"
           step_2: "Which causes are close to your heart?"
@@ -116,6 +117,7 @@ en:
           step_5: "What format works best for you?"
           step_6: "Which community would you like your giving to focus on?"
           step_7: "How much time do you have to give?"
+          location_detail: "Where are you located?"
         donor:
           step_1: "How can we support you today?"
           step_2: "What causes are close to your heart?"
@@ -125,6 +127,7 @@ en:
           step_6: "Where would you like your donation to make an impact?"
           step_7: "Which community would you like your giving to focus on?"
           step_8: "How would you like to be involved?"
+          location_detail: "Where are you located?"
       steps:
         user_type:
           options:
@@ -158,12 +161,14 @@ en:
           hint: "Thanks for sharing this. You're moving closer to your personalized results."
           other: "Somewhere else"
           other_help: "Tell us where you're located and we'll search that area."
-          national: "🌐 Nationwide / online services"
-          international: "🌍 International services"
+          national: "Nationwide / online services"
+          international: "International services"
           state_label: "State"
           state_prompt: "Select your state"
           city_label: "City (optional)"
           city_placeholder: "Your city"
+        location_detail:
+          us: "In the United States"
         travel:
           options:
             nearby: "Walking distance only (under 5 miles)"
