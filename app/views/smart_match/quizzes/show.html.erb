@@ -7,7 +7,7 @@
   <div class="flex-1 overflow-y-auto">
 
     <%# Top bar: close button + section label %>
-    <div class="px-4 sm:w-3/4 sm:mx-auto sm:px-0 pt-4 mb-4">
+    <div class="px-4 sm:w-3/4 sm:mx-auto sm:px-0 pt-2 mb-2">
       <%# Close button, top-right %>
       <div class="flex justify-end">
         <%= button_to smart_match_quiz_path, method: :delete,
@@ -25,7 +25,7 @@
           segment. The 4 segments are equal-width with a gap-2 (0.5rem) gutter,
           so segment N's left edge is at (N-1) * (25% + 0.125rem). The section
           name renders below the bar with the same offset, sandwiching the bar. %>
-      <div class="mt-1 transition-[padding] duration-500 ease-out sm:[padding-left:var(--seg-offset)]"
+      <div class="transition-[padding] duration-500 ease-out sm:[padding-left:var(--seg-offset)]"
            style="--seg-offset: calc(<%= @section_number - 1 %> * (25% + 0.125rem));">
         <span class="text-xl text-blue-dark">Section <%= @section_number %></span>
       </div>
@@ -37,7 +37,7 @@
 
       <%# Section name — slides to sit below the current progress segment,
           completing the sandwich (Section N · bar · name). %>
-      <div class="mt-2 transition-[padding] duration-500 ease-out sm:[padding-left:var(--seg-offset)]"
+      <div class="mt-1 transition-[padding] duration-500 ease-out sm:[padding-left:var(--seg-offset)]"
            style="--seg-offset: calc(<%= @section_number - 1 %> * (25% + 0.125rem));">
         <span class="text-lg font-bold text-blue-dark"><%= @section_name %></span>
       </div>
@@ -46,7 +46,7 @@
     <div class="px-4 sm:w-[56.25%] sm:mx-auto sm:px-0 py-0">
 
       <%# Step title %>
-      <div class="mt-4 sm:mt-8 mb-2 text-center">
+      <div class="mt-3 sm:mt-4 mb-2 text-center">
         <h1 class="text-2xl sm:text-4xl font-bold text-gray-2"><%= @step_title %></h1>
         <% if @step_subtitle %>
           <p class="mt-1 text-sm sm:text-base text-gray-4"><%= @step_subtitle %></p>
