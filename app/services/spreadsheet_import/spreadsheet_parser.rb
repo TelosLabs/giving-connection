@@ -87,12 +87,23 @@ module SpreadsheetImport
           end
         else
           @import_log&.increment!(:success_count)
+          attach_default_media(org_import_result.ids)
           @imported_names.add(org.name) if org.name.present?
           Rails.logger.info "Import SUCCESSFUL for organization at row #{row_number} (name: #{org.name})"
         end
       end
 
       finalize_import_log
+    end
+
+    # activerecord-import skips ActiveRecord callbacks, so the default
+    # logo/cover the after_create hook would normally attach never gets set.
+    # Without them, views that render the org's logo (map pins, info windows,
+    # detail pages) raise and show "Content missing". Attach them explicitly.
+    def attach_default_media(org_ids)
+      Organization.where(id: org_ids).each(&:ensure_default_media!)
+    rescue => e
+      Rails.logger.warn "Failed to attach default logo/cover for #{org_ids.inspect}: #{e.message}"
     end
 
     def finalize_import_log

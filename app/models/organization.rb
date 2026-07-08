@@ -78,12 +78,24 @@ class Organization < ApplicationRecord
     end
   end
 
+  # Attaches the default logo/cover for records that don't have them yet.
+  # Normally handled by the after_create callback, but bulk inserts via
+  # activerecord-import skip callbacks, so the importer calls this directly.
+  def ensure_default_media!
+    attach_logo_and_cover
+  end
+
   private
 
   def attach_logo_and_cover
-    cover_photo.attach(io: File.open("app/assets/images/cover-default.png"), filename: "cover-default.png")
-    file_logo = "logo-default#{rand(1..6)}"
-    filepath = File.open("app/assets/images/#{file_logo}.png")
-    logo.attach(io: filepath, filename: "#{file_logo}.png") unless logo.attached?
+    unless cover_photo.attached?
+      cover_photo.attach(io: File.open("app/assets/images/cover-default.png"), filename: "cover-default.png")
+    end
+
+    unless logo.attached?
+      file_logo = "logo-default#{rand(1..6)}"
+      filepath = File.open("app/assets/images/#{file_logo}.png")
+      logo.attach(io: filepath, filename: "#{file_logo}.png")
+    end
   end
 end
