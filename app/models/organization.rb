@@ -85,6 +85,20 @@ class Organization < ApplicationRecord
     attach_logo_and_cover
   end
 
+  # Image sources for views/components. Returns the attached image when present,
+  # otherwise the bundled default asset name. Prevents `image_tag`/`url_for` from
+  # crashing with "Can't resolve image into URL: ... for nil" on orgs that never
+  # got media attached (bulk-imported/seeded orgs skip the after_create hook).
+  # Both an ActiveStorage attachment and an asset-name string are valid
+  # `image_tag` arguments, so callers can pass the result straight through.
+  def cover_photo_or_default
+    cover_photo.attached? ? cover_photo : "cover-default.png"
+  end
+
+  def logo_or_default
+    logo.attached? ? logo : "logo-default1.png"
+  end
+
   private
 
   def attach_logo_and_cover

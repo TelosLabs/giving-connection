@@ -4,7 +4,7 @@ span class="absolute top-4 left-4 ml-1"
 div.flex.items-center.justify-between.w-full
   // Logo
   div.flex-grow.flex.justify-center
-    = image_tag @location.organization.logo, class: "w-3/5 h-3/5"
+    = image_tag @location.organization.logo_or_default, class: "w-3/5 h-3/5"
 
 // Name
 div class="flex flex-row gap-1 justify-between items-start"
