@@ -87,7 +87,7 @@ module SpreadsheetImport
           end
         else
           @import_log&.increment!(:success_count)
-          attach_default_media(org_import_result.ids)
+          attach_media(org_import_result.ids, entry[:org_row])
           @imported_names.add(org.name) if org.name.present?
           Rails.logger.info "Import SUCCESSFUL for organization at row #{row_number} (name: #{org.name})"
         end
@@ -99,11 +99,34 @@ module SpreadsheetImport
     # activerecord-import skips ActiveRecord callbacks, so the default
     # logo/cover the after_create hook would normally attach never gets set.
     # Without them, views that render the org's logo (map pins, info windows,
-    # detail pages) raise and show "Content missing". Attach them explicitly.
-    def attach_default_media(org_ids)
-      Organization.where(id: org_ids).each(&:ensure_default_media!)
+    # detail pages) raise and show "Content missing".
+    #
+    # First try to attach the real logo from the spreadsheet's "Logo" URL, then
+    # fall back to the bundled defaults for whatever is still missing (cover
+    # always defaults; logo defaults only when the download failed or was blank).
+    def attach_media(org_ids, org_row)
+      logo_url = org_row && org_row["Logo"]
+
+      Organization.where(id: org_ids).each do |org|
+        attach_remote_logo(org, logo_url)
+        org.ensure_default_media!
+      end
     rescue => e
-      Rails.logger.warn "Failed to attach default logo/cover for #{org_ids.inspect}: #{e.message}"
+      Rails.logger.warn "Failed to attach logo/cover for #{org_ids.inspect}: #{e.message}"
+    end
+
+    def attach_remote_logo(org, logo_url)
+      payload = SpreadsheetImport::LogoDownloader.new(logo_url).call
+      return if payload.nil?
+
+      org.logo.attach(
+        io: payload[:io],
+        filename: payload[:filename],
+        content_type: payload[:content_type]
+      )
+      Rails.logger.info "🖼 Attached remote logo for #{org.name}"
+    rescue => e
+      Rails.logger.warn "Failed to attach remote logo for #{org.name}: #{e.message}"
     end
 
     def finalize_import_log
