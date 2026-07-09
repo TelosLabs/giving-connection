@@ -29,7 +29,7 @@
     <div class="flex m-0 w-52 font-medium bg-white rounded-r-md cursor-pointer h-46px"
       data-controller="dropdown" 
       data-action="click@window->dropdown#hide touchstart@window->dropdown#hide keydown.up->dropdown#previousItem keydown.down->dropdown#nextItem keydown.esc->dropdown#hide">
-      <div class="flex items-center pl-2 border-l-gray md:w-52">
+      <div class="flex items-center pl-2 pr-2 border-l-gray md:w-52">
         <%= inline_svg_tag "location-dot.svg", size:"9*9", class:"h-7 mr-2 fill-current" %>
         <input
           type="text"
@@ -40,6 +40,13 @@
           class="w-full min-w-0 p-0 text-base bg-transparent border-none cursor-text text-gray-3 focus:outline-none focus:ring-0"
           data-action="focus->dropdown#show input->geolocation#suggestCities keydown.enter->geolocation#geocodeAndSearch"
         />
+        <button
+          type="button"
+          class="flex-shrink-0 px-2 <%= "hidden" unless @current_location[:city]&.presence %>"
+          data-geolocation-target="clearButton"
+          data-action="click->geolocation#clearLocationInput">
+          <%= inline_svg_tag "x-icon.svg", class: "w-3.5 h-3.5 icon", aria_hidden: true %>
+        </button>
       </div>
       <div data-dropdown-target="menu" class="flex absolute right-0 top-11 w-52 bg-white z-110">
         <div class="overflow-hidden w-full text-sm bg-white rounded border shadow-lg">

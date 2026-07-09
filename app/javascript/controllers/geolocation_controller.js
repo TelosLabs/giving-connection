@@ -17,7 +17,7 @@ import { useCookies } from "./mixins/useCookies";
   const IP_LOOKUP_COOLDOWN_MS = 12 * 60 * 60 * 1000; // 12 hours in miliseconds (12h * 60m * 60s * 1000ms)
 
 export default class extends Controller { 
-  static targets = [ "currentLocation", "formLatitude", "formLongitude", "suggestions", "presets" ]
+  static targets = [ "currentLocation", "formLatitude", "formLongitude", "suggestions", "presets", "clearButton" ]
 
   connect() {
     useCookies(this)
@@ -145,9 +145,35 @@ export default class extends Controller {
     clearTimeout(this.suggestTimeout);
     if (!query) {
       this.showPresets();
+      this.toggleClearButton();
       return;
     }
     this.suggestTimeout = setTimeout(() => this.fetchPredictions(query), 150);
+    this.toggleClearButton();
+  }
+
+  // Drop the trailing country ("Nashville, TN, USA" -> "Nashville, TN").
+  formatCityLabel(text) {
+    return text.replace(/,?\s*(USA|United States)$/i, "").trim();
+  }
+
+  toggleClearButton() {
+    if (!this.hasClearButtonTarget) return;
+    const hasValue = this.hasCurrentLocationTarget && this.currentLocationTarget.value.trim() !== "";
+    this.clearButtonTarget.classList.toggle("hidden", !hasValue);
+  }
+
+  clearLocationInput(event) {
+    event.preventDefault();
+    const wrapper = event.currentTarget.closest("[data-controller~='dropdown']");
+    const input = wrapper?.querySelector("[data-geolocation-target='currentLocation']");
+    if (input) {
+      input.value = "";
+      // Defer focus so it lands after the click finishes bubbling.
+      requestAnimationFrame(() => input.focus());
+    }
+    this.showPresets();
+    this.toggleClearButton();
   }
 
   fetchPredictions(query) {
@@ -162,12 +188,22 @@ export default class extends Controller {
       },
       (predictions, status) => {
         if (status !== google.maps.places.PlacesServiceStatus.OK || !predictions || predictions.length === 0) {
+          console.warn("City autocomplete returned no predictions:", status);
           this.showPresets();
           return;
         }
         this.renderPredictions(predictions);
       }
     );
+  }
+
+  // Ensure the location dropdown is open so rendered suggestions are visible.
+  openDropdown() {
+    if (!this.hasCurrentLocationTarget) return;
+    const el = this.currentLocationTarget.closest("[data-controller~='dropdown']");
+    if (!el) return;
+    const controller = this.application.getControllerForElementAndIdentifier(el, "dropdown");
+    if (controller && typeof controller.show === "function") controller.show();
   }
 
   renderPredictions(predictions) {
@@ -177,7 +213,7 @@ export default class extends Controller {
     predictions.forEach(prediction => {
       const item = document.createElement("li");
       item.className = "block px-4 py-2 cursor-pointer text-gray-3 hover:bg-seafoam";
-      item.textContent = prediction.description;
+      item.textContent = this.formatCityLabel(prediction.description);
       item.dataset.placeId = prediction.place_id;
       item.dataset.action = "click->dropdown#toggle click->geolocation#selectPrediction";
       this.suggestionsTarget.appendChild(item);
@@ -185,6 +221,7 @@ export default class extends Controller {
 
     this.suggestionsTarget.classList.remove("hidden");
     if (this.hasPresetsTarget) this.presetsTarget.classList.add("hidden");
+    this.openDropdown();
   }
 
   showPresets() {
