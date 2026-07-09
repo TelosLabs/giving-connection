@@ -107,7 +107,7 @@ module SpreadsheetImport
     def attach_media(org_ids, org_row)
       logo_url = org_row && org_row["Logo"]
 
-      Organization.where(id: org_ids).each do |org|
+      Organization.where(id: org_ids).find_each do |org|
         attach_remote_logo(org, logo_url)
         org.ensure_default_media!
       end

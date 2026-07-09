@@ -85,7 +85,7 @@ module SpreadsheetImport
     # both before normalizing so a newline can't collapse two ranges into one
     # malformed entry.
     def split_into_entries(input)
-      input.split(/[&\n\r]+/).map { |part| normalize(part) }.reject(&:blank?)
+      input.split(/[&\n\r]+/).map { |part| normalize(part) }.compact_blank
     end
 
     def parse_single_part(part)

@@ -45,7 +45,7 @@ module SpreadsheetImport
 
       if ALLOWED_CONTENT_TYPES.include?(content_type)
         # Normalize the odd-but-valid "image/jpg" to a canonical jpeg type.
-        payload(body, content_type == "image/png" ? "image/png" : "image/jpeg")
+        payload(body, (content_type == "image/png") ? "image/png" : "image/jpeg")
       elsif image_content_type?(content_type)
         converted = convert_to_jpeg(body)
         converted ? payload(converted, "image/jpeg") : nil
@@ -117,7 +117,7 @@ module SpreadsheetImport
     end
 
     def payload(body, content_type)
-      extension = content_type == "image/png" ? "png" : "jpg"
+      extension = (content_type == "image/png") ? "png" : "jpg"
       {
         io: StringIO.new(body),
         filename: "logo.#{extension}",

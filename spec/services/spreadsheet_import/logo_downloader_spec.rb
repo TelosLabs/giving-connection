@@ -37,7 +37,7 @@ RSpec.describe SpreadsheetImport::LogoDownloader do
   # A real png (the bundled default logo) so content-type handling, transcoding,
   # and attachment are exercised against genuine image bytes.
   def png_bytes
-    @png_bytes ||= File.binread(Rails.root.join("app/assets/images/logo-default1.png"))
+    @png_bytes ||= Rails.root.join("app/assets/images/logo-default1.png").binread
   end
 
   describe "#call" do
