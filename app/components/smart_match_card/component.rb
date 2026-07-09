@@ -122,7 +122,7 @@ class SmartMatchCard::Component < ApplicationViewComponent
   end
 
   def cause_svg_name(cause)
-    "#{cause.name.parameterize(separator: "_")}.svg"
+    cause.decorate.svg_file_name
   end
 
   def verified?

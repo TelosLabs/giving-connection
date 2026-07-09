@@ -10,18 +10,15 @@
   <%# Head: logo + match + org info %>
   <div class="flex items-start gap-4 px-5 pt-4 pb-4 border-b border-gray-8">
 
-    <%# Logo — links to the org profile %>
     <% logo_markup = capture do %>
       <% if logo_url %>
         <%= image_tag logo_url,
               alt: "#{organization.name} logo",
               class: "w-16 h-16 object-contain rounded" %>
       <% else %>
-        <div class="w-16 h-16 rounded bg-gray-8 flex items-center justify-center">
-          <svg class="w-8 h-8 text-gray-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21" />
-          </svg>
-        </div>
+        <%= image_tag "logo-default1.png",
+              alt: "#{organization.name} logo",
+              class: "w-16 h-16 object-contain rounded" %>
       <% end %>
     <% end %>
     <% if profile_url %>
