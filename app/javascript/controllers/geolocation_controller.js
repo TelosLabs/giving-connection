@@ -17,7 +17,7 @@ import { useCookies } from "./mixins/useCookies";
   const IP_LOOKUP_COOLDOWN_MS = 12 * 60 * 60 * 1000; // 12 hours in miliseconds (12h * 60m * 60s * 1000ms)
 
 export default class extends Controller { 
-  static targets = [ "currentLocation", "formLatitude", "formLongitude" ]
+  static targets = [ "currentLocation", "formLatitude", "formLongitude", "suggestions", "presets" ]
 
   connect() {
     useCookies(this)
@@ -137,6 +137,87 @@ export default class extends Controller {
     if (postal) return state ? `${postal.long_name}, ${state.short_name}` : postal.long_name;
     if (state) return state.long_name;
     return null;
+  }
+
+  // Live US-city suggestions rendered into the location dropdown as the user types.
+  suggestCities(event) {
+    const query = event.target.value.trim();
+    clearTimeout(this.suggestTimeout);
+    if (!query) {
+      this.showPresets();
+      return;
+    }
+    this.suggestTimeout = setTimeout(() => this.fetchPredictions(query), 150);
+  }
+
+  fetchPredictions(query) {
+    if (!this.autocompleteService) {
+      this.autocompleteService = new google.maps.places.AutocompleteService();
+    }
+    this.autocompleteService.getPlacePredictions(
+      {
+        input: query,
+        types: ["(cities)"],
+        componentRestrictions: { country: "us" }
+      },
+      (predictions, status) => {
+        if (status !== google.maps.places.PlacesServiceStatus.OK || !predictions || predictions.length === 0) {
+          this.showPresets();
+          return;
+        }
+        this.renderPredictions(predictions);
+      }
+    );
+  }
+
+  renderPredictions(predictions) {
+    if (!this.hasSuggestionsTarget) return;
+
+    this.suggestionsTarget.innerHTML = "";
+    predictions.forEach(prediction => {
+      const item = document.createElement("li");
+      item.className = "block px-4 py-2 cursor-pointer text-gray-3 hover:bg-seafoam";
+      item.textContent = prediction.description;
+      item.dataset.placeId = prediction.place_id;
+      item.dataset.action = "click->dropdown#toggle click->geolocation#selectPrediction";
+      this.suggestionsTarget.appendChild(item);
+    });
+
+    this.suggestionsTarget.classList.remove("hidden");
+    if (this.hasPresetsTarget) this.presetsTarget.classList.add("hidden");
+  }
+
+  showPresets() {
+    if (this.hasSuggestionsTarget) {
+      this.suggestionsTarget.innerHTML = "";
+      this.suggestionsTarget.classList.add("hidden");
+    }
+    if (this.hasPresetsTarget) this.presetsTarget.classList.remove("hidden");
+  }
+
+  async selectPrediction(event) {
+    const placeId = event.currentTarget.dataset.placeId;
+    const description = event.currentTarget.textContent.trim();
+    const form = event.currentTarget.closest("form");
+    if (!placeId) return;
+
+    try {
+      const geocoder = new google.maps.Geocoder();
+      const response = await geocoder.geocode({ placeId });
+      const result = response.results[0];
+      if (!result) return;
+
+      const coords = result.geometry.location;
+      this.latitude = coords.lat();
+      this.longitude = coords.lng();
+      this.currentCity = description;
+      this.rememberLocation();
+      this.updateFormFields();
+      this.showPresets();
+      if (form) form.requestSubmit();
+    } catch (error) {
+      console.warn("Failed to resolve selected city:", error);
+    }
   }
 
   async findNearestCity(coordinates) {

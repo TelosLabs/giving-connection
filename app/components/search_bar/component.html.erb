@@ -38,21 +38,24 @@
           placeholder="City or ZIP"
           autocomplete="off"
           class="w-full min-w-0 p-0 text-base bg-transparent border-none cursor-text text-gray-3 focus:outline-none focus:ring-0"
-          data-action="focus->dropdown#show keydown.enter->geolocation#geocodeAndSearch"
+          data-action="focus->dropdown#show input->geolocation#suggestCities keydown.enter->geolocation#geocodeAndSearch"
         />
       </div>
       <div data-dropdown-target="menu" class="flex absolute right-0 top-11 w-52 bg-white z-110">
-        <ul class="overflow-hidden w-full text-sm bg-white rounded border shadow-lg">
-          <% @locations.each do |location| %>
-            <li class="block px-4 py-2 text-gray-3 hover:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#updateLocation" data-dropdown-target="menuItem" >
-              <%= location %>
+        <div class="overflow-hidden w-full text-sm bg-white rounded border shadow-lg">
+          <ul data-geolocation-target="suggestions" class="hidden"></ul>
+          <ul data-geolocation-target="presets">
+            <% @locations.each do |location| %>
+              <li class="block px-4 py-2 text-gray-3 hover:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#updateLocation" data-dropdown-target="menuItem" >
+                <%= location %>
+              </li>
+            <% end %>
+            <li class="block flex items-center px-4 py-1 font-medium text-gray-3 border-gray-5 hover:bg-seafoam focus:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#getCurrentPosition" data-dropdown-target="menuItem">
+              <%= inline_svg_tag "my-location.svg", size:"12*12", class:"h-7 mr-2 fill-current text-gray-3" %>
+              Search near me
             </li>
-          <% end %>
-          <li class="block flex items-center px-4 py-1 font-medium text-gray-3 border-gray-5 hover:bg-seafoam focus:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#getCurrentPosition" data-dropdown-target="menuItem">
-            <%= inline_svg_tag "my-location.svg", size:"12*12", class:"h-7 mr-2 fill-current text-gray-3" %>
-            Search near me
-          </li>
-        </ul>
+          </ul>
+        </div>
       </div>
     </div>
     <%= @form.hidden_field :lat, value: @current_location[:latitude], data: { geolocation_target:  "formLatitude" }  %>
