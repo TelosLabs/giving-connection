@@ -7,30 +7,18 @@ details class="w-full max-w-4xl pb-6 mb-16 border-b open:pb-12 border-blue-gradi
   div class="flex flex-wrap justify-center max-w-4xl"
     div class="w-full max-w-4xl px-4 sm:w-1/2"
       = render BioCard::Component.new(\
-        name: "Luke Cassidy",
-        job_title: "Public Interest Law Fellow",
-        img_url: "luke.jpg",
+        name: "Aria Shah",
+        job_title: "Platform Development Fellow",
+        img_url: "aria.png",
       ) do |c|
         - c.with_biography do
           p class="mb-3 text-gray-2"
-            | Luke is joining the Giving Connection team as a legal intern for the summer of 2025. 
-            | Luke is a rising 2L law student at Vanderbilt University Law School. Luke was born 
-            | and raised in Park City, UT, before relocating to Wolfeboro, NH, 
-            | and finally arriving in Nashville, TN.
+            | Aria Shah is joining Giving Connection through Stanford's Haas Center for Public Service’s Cardinal Quarter Program as a Platform Development Fellow. She was selected as part of the Computer Science and Social Good fellowship made for students pursuing the intersection of Computer Science and social impact. This summer, she will be focused on integrating capabilities for multiple languages for our website.
             span data-read-more-target="dots" class=""...
           p data-read-more-target="collapsableText" class="hidden mb-3"
-            | Before law school, Luke attended Vanderbilt University, 
-            | graduating with a B.S. in Human & Organizational Development and participating in club hockey, 
-            | club sailing, club fencing, the Phi Delta Theta social fraternity, and Next Steps, a peer 
-            | mentorship and tutoring program for neurodivergent students. In law school, Luke has continued 
-            | to play club hockey, and is also a member of the Vanderbilt Bar Association, Vanderbilt  Ambassadors, 
-            | the Entertainment & Sports Law Society, the Law & Business Society, and If/When/How. 
-            | Prior to coming to Giving Connection, Luke worked extensively in law offices, 
-            | interning for the Carroll County Attorney’s Office in Ossipee, NH through high school 
-            | and undergrad, as well as Coleman-Talley LLP in Atlanta, GA between undergrad and law school. 
-            | He has interest and experience in matters of transactional law, including corporate governance 
-            | & compliance, contracts, and M&A. Luke is very excited to apply these skills and give back to 
-            | the Nashville community through his time at Giving Connection.
+            | Aria is a part of the Class of 2029 at Stanford University in Palo Alto, California, where she is studying Biomedical Computation in the School of Engineering. She is deeply passionate about understanding both the promise and the pitfalls of technology, from the ways it can empower underserved communities to the systemic harms it can reinforce simultaneously. Her interest in tech for social good was sparked in her first year of high school, when she first learned about the digital divide and realized that access to technology is rarely as equal as it seems. Since then, she has been driven not just to build things, but to build things that actually make people's lives better. 
+            | Aria was born and raised in Chicago, Illinois, and she loves to explore it in her free time. From spending time on/near Lake Michigan during sailing, volleyball, or biking, or trying the newest restaurants and dessert shops, she enjoys spending time with friends and family, getting outdoors, and appreciating everything her city has to offer. She hopes to bring that same curiosity and energy to everything she does. 
+            | Aria believes that technology isn't going anywhere, which is exactly why it matters so much who builds it and how. She wants to be part of a generation of developers who ask harder questions, center the people most often left out, and use their skills to close gaps rather than widen them. She's thrilled to spend this summer at Giving Connection doing exactly that!
           a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
         end
       end
@@ -113,6 +101,36 @@ details class="w-full max-w-4xl pb-6 mb-16 border-b open:pb-12 border-blue-gradi
             | for Key Club. During his free time, he loves to dance and is a part of three dance teams: 
             | Legacy, XTRM, and MLH. He is excited to contribute to Giving Connection and create tools that 
             | uplift, empower, and inspire communities. 
+          a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
+        end
+      end
+
+    div class="w-full max-w-4xl px-4 sm:w-1/2"
+      = render BioCard::Component.new(\
+        name: "Luke Cassidy",
+        job_title: "Public Interest Law Fellow",
+        img_url: "luke.jpg",
+      ) do |c|
+        - c.with_biography do
+          p class="mb-3 text-gray-2"
+            | Luke is joining the Giving Connection team as a legal intern for the summer of 2025. 
+            | Luke is a rising 2L law student at Vanderbilt University Law School. Luke was born 
+            | and raised in Park City, UT, before relocating to Wolfeboro, NH, 
+            | and finally arriving in Nashville, TN.
+            span data-read-more-target="dots" class=""...
+          p data-read-more-target="collapsableText" class="hidden mb-3"
+            | Before law school, Luke attended Vanderbilt University, 
+            | graduating with a B.S. in Human & Organizational Development and participating in club hockey, 
+            | club sailing, club fencing, the Phi Delta Theta social fraternity, and Next Steps, a peer 
+            | mentorship and tutoring program for neurodivergent students. In law school, Luke has continued 
+            | to play club hockey, and is also a member of the Vanderbilt Bar Association, Vanderbilt  Ambassadors, 
+            | the Entertainment & Sports Law Society, the Law & Business Society, and If/When/How. 
+            | Prior to coming to Giving Connection, Luke worked extensively in law offices, 
+            | interning for the Carroll County Attorney’s Office in Ossipee, NH through high school 
+            | and undergrad, as well as Coleman-Talley LLP in Atlanta, GA between undergrad and law school. 
+            | He has interest and experience in matters of transactional law, including corporate governance 
+            | & compliance, contracts, and M&A. Luke is very excited to apply these skills and give back to 
+            | the Nashville community through his time at Giving Connection.
           a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
         end
       end
