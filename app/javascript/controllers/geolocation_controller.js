@@ -94,6 +94,51 @@ export default class extends Controller {
     }
   }
 
+  // Geocode a typed city name or ZIP code into coordinates, then search.
+  async geocodeAndSearch(event) {
+    event.preventDefault();
+    const query = event.target.value.trim();
+    const form = event.target.closest("form");
+    if (!query) return;
+
+    try {
+      const geocoder = new google.maps.Geocoder();
+      const response = await geocoder.geocode({
+        address: query,
+        componentRestrictions: { country: "US" }
+      });
+      const result = response.results[0];
+      if (!result) {
+        window.alert("We couldn't find that location. Try a city name or ZIP code.");
+        return;
+      }
+
+      const coords = result.geometry.location;
+      this.latitude = coords.lat();
+      this.longitude = coords.lng();
+      this.currentCity = this.cityFromGeocode(result) || query;
+      this.rememberLocation();
+      this.updateFormFields();
+      if (form) form.requestSubmit();
+    } catch (error) {
+      console.warn("Failed to geocode typed location:", error);
+      window.alert("We couldn't look up that location. Please try again.");
+    }
+  }
+
+  cityFromGeocode(result) {
+    const components = result.address_components || [];
+    const find = (type) => components.find((component) => component.types.includes(type));
+    const locality = find("locality") || find("postal_town") || find("sublocality");
+    if (locality) return locality.long_name;
+
+    const postal = find("postal_code");
+    const state = find("administrative_area_level_1");
+    if (postal) return state ? `${postal.long_name}, ${state.short_name}` : postal.long_name;
+    if (state) return state.long_name;
+    return null;
+  }
+
   async findNearestCity(coordinates) {
     let response;
     const geocoder = new google.maps.Geocoder()
@@ -120,12 +165,22 @@ export default class extends Controller {
     this.updateCityAndForm()
   }
 
-  updateCityAndForm() {
-    this.currentLocationTargets.forEach(target => target.innerText = this.currentCity);
+  updateFormFields() {
+    this.currentLocationTargets.forEach(target => {
+      if (target.tagName === "INPUT") {
+        target.value = this.currentCity;
+      } else {
+        target.innerText = this.currentCity;
+      }
+    });
     if (this.hasFormLatitudeTarget && this.hasFormLongitudeTarget) {
       this.formLongitudeTarget.value = this.longitude;
       this.formLatitudeTarget.value = this.latitude;
     }
+  }
+
+  updateCityAndForm() {
+    this.updateFormFields();
 
     // Dispatch a custom event indicating the location has changed
     const event = new CustomEvent('location-updated', {
