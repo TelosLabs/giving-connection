@@ -43,19 +43,42 @@ unless Rails.env.production?
   # Population served categories and subcategories
   Rake::Task["populate:seed_beneficiaries_and_beneficiaries_subcategories"].invoke
 
-  # Populate organizations and locations
-  SpreadsheetParse.new("./lib/assets/GC_Dummy_Data_for_DB.xlsx", AdminUser.first).import
+  # Populate organizations. The bulk-upload importer
+  # (SpreadsheetImport::SpreadsheetParser) geocodes addresses and downloads
+  # logos over the network, which isn't appropriate for seeding (slow, flaky,
+  # and CI runs db:prepare before ImageMagick is even installed), so build a
+  # handful of valid organizations directly instead. Locations are added below
+  # by populate:random_locations, and the after_create hook attaches default
+  # logo/cover art.
+  admin = AdminUser.first
+  5.times do |i|
+    org = Organization.new(
+      name: "#{Faker::Company.name} #{i}",
+      ein_number: Faker::Number.number(digits: 9).to_s,
+      irs_ntee_code: Organizations::Constants::NTEE_CODE.sample,
+      scope_of_work: Organizations::Constants::SCOPE.sample,
+      mission_statement_en: Faker::Company.catch_phrase,
+      vision_statement_en: Faker::Company.bs,
+      tagline_en: Faker::Company.buzzword,
+      website: Faker::Internet.url,
+      active: true
+    )
+    org.creator = admin
+    org.organization_causes.build(cause: Cause.all.sample)
+    org.save!
+  end
 
   # Create Organization Admin
   OrganizationAdmin.find_or_create_by!(organization: Organization.first, user: User.first)
 
-  # Phone Number
+  # Create random locations around cities in US
+  Rake::Task["populate:random_locations"].invoke
+
+  # Phone Number — created after locations exist above.
   PhoneNumber.find_or_create_by!(location: Location.first) do |phone|
     phone.number = "222-333-4444"
-    main = false
+    phone.main = false
   end
-  # Create random location around cities in US
-  Rake::Task["populate:random_locations"].invoke
 
   # Create organizations and causes association
   Rake::Task["populate:seed_organizations_causes"].invoke
