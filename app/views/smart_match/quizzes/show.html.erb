@@ -15,14 +15,14 @@
     <div class="px-4 sm:w-3/4 sm:mx-auto sm:px-0 pt-2 flex items-center gap-3">
       <div class="flex-1 min-w-0 transition-[padding] duration-500 ease-out sm:[padding-left:var(--seg-offset)]"
            style="--seg-offset: calc(<%= @section_number - 1 %> * (25% + 0.125rem));">
-        <span class="text-xl text-blue-dark">Section <%= @section_number %></span>
+        <span class="text-base font-semibold text-blue-dark">Section <%= @section_number %></span>
       </div>
       <div class="w-8 shrink-0" aria-hidden="true"></div>
     </div>
 
     <%# Segmented progress bar with the close button to its right, so the
         close control shares the bar's row instead of taking its own. %>
-    <div class="px-4 sm:w-3/4 sm:mx-auto sm:px-0 mt-2 flex items-center gap-3">
+    <div class="px-4 sm:w-3/4 sm:mx-auto sm:px-0 mt-0 flex items-center gap-3">
       <div class="flex-1 min-w-0">
         <%= render "smart_match/quizzes/progress_bar", step: @step, total_steps: @total_steps, section_map: @section_map, current_section_number: @section_number %>
       </div>
@@ -39,10 +39,10 @@
 
     <%# Section name — slides to sit below the current progress segment,
         completing the sandwich (Section N · bar · name). %>
-    <div class="px-4 sm:w-3/4 sm:mx-auto sm:px-0 mt-1 flex items-center gap-3">
+    <div class="px-4 sm:w-3/4 sm:mx-auto sm:px-0 mt-0 flex items-center gap-3">
       <div class="flex-1 min-w-0 transition-[padding] duration-500 ease-out sm:[padding-left:var(--seg-offset)]"
            style="--seg-offset: calc(<%= @section_number - 1 %> * (25% + 0.125rem));">
-        <span class="text-lg font-bold text-blue-dark"><%= @section_name %></span>
+        <span class="text-sm font-semibold text-blue-dark"><%= @section_name %></span>
       </div>
       <div class="w-8 shrink-0" aria-hidden="true"></div>
     </div>

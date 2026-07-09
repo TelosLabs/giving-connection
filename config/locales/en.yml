@@ -98,7 +98,7 @@ en:
         donor_prefs: "Your Donation Preferences"
       titles:
         personal_details: "Personal Details"
-        open_text: "In your own words"
+        open_text: "Anything else we should know?"
         service_seeker:
           step_1: "How can we support you today?"
           step_2: "Who are you seeking support for?"
@@ -108,7 +108,7 @@ en:
           step_6: "Where should we look for support?"
           step_7: "What kind of travel is possible for you?"
           step_8: "What should we keep in mind when matching you to services?"
-          location_detail: "Where are you located?"
+          location_detail: "Where should we search?"
         volunteer:
           step_1: "How can we support you today?"
           step_2: "Which causes are close to your heart?"
@@ -117,17 +117,17 @@ en:
           step_5: "What format works best for you?"
           step_6: "Which community would you like your giving to focus on?"
           step_7: "How much time do you have to give?"
-          location_detail: "Where are you located?"
+          location_detail: "Where should we search?"
         donor:
           step_1: "How can we support you today?"
           step_2: "What causes are close to your heart?"
           step_3: "What is your preferred donation style?"
           step_4: "What inspires your giving today?"
-          step_5: "Are there specific communities or populations you'd like your donation to support?"
+          step_5: "Are there specific communities you'd like to support?"
           step_6: "Where would you like your donation to make an impact?"
           step_7: "Which community would you like your giving to focus on?"
           step_8: "How would you like to be involved?"
-          location_detail: "Where are you located?"
+          location_detail: "Where should we search?"
       steps:
         user_type:
           options:
