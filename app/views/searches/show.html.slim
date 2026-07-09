@@ -9,10 +9,10 @@
     turbo_action: "replace", \
     controller: 'search modal', \
     'search-target': 'form'}) do |f|
+  = render "shared/smart_match_search_banner"
   = render SearchBar::Component.new(form: f, search: @search, current_location: @current_location, locations: @locations)
   = turbo_frame_tag "search-pills" do
     = render SearchPills::Component.new(causes: @top_10_causes, services: @top_10_services, beneficiary_subcategories: @top_10_beneficiary_subcategories, params: params, current_location: @current_location)
-  = render "shared/smart_match_search_banner"
   = turbo_frame_tag "search-locations", data: { controller: "search-loading" } do
     div class="flex flex-row justify-center w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3 underline-on-hover"
       div class="flex flex-row justify-center w-full min-h-full"

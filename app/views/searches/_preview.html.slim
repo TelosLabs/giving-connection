@@ -8,6 +8,7 @@
     turbo_action: "replace", \
     controller: 'search modal', \
     'search-target': 'form'}) do |f|
+  = render "shared/smart_match_search_banner"
   = render SearchBar::Component.new(form: f, search: @search, current_location: @current_location, locations: @locations)
   = turbo_frame_tag "search-pills", src: search_path() do
     div class="w-full bg-gray-9"
@@ -32,8 +33,6 @@
                 button class="inline-block py-3 whitespace-nowrap" type="button" id="advanced-filters-button" disabled="true"
                   | Advanced Filters
                   span class="hidden relative mb-2 ml-1 w-2 h-2 rounded-full bg-salmon" id="appliedIcon"
-
-  = render "shared/smart_match_search_banner"
 
   = turbo_frame_tag "search-locations", src: search_path() do
     div class="w-full md:flex md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3 underline-on-hover"
