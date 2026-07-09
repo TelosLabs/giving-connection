@@ -59,6 +59,20 @@ RSpec.describe SpreadsheetImport::OfficeHoursParser do
       expect(result).to eq(expected)
     end
 
+    it "parses newline-separated entries with dash separators (no colon)" do
+      # Spreadsheet cells often place each day range on its own line and separate
+      # the days from the times with a tab/dash rather than a colon.
+      input = "Thursday–Sunday\t- 10:00 - 15:00\nMonday–Wednesday - Closed"
+      result = described_class.new(input).call
+      expected = week_with(
+        4 => {day: 4, open_time: offset_time("10:00"), close_time: offset_time("15:00"), closed: false},
+        5 => {day: 5, open_time: offset_time("10:00"), close_time: offset_time("15:00"), closed: false},
+        6 => {day: 6, open_time: offset_time("10:00"), close_time: offset_time("15:00"), closed: false},
+        0 => {day: 0, open_time: offset_time("10:00"), close_time: offset_time("15:00"), closed: false}
+      )
+      expect(result).to eq(expected)
+    end
+
     it "parses combining everything" do
       result = described_class.new("Monday, Wednesday-Friday: 9:00 - 17:00 & Saturday, Sunday: 14:00 - 16:00").call
       expected = week_with(
