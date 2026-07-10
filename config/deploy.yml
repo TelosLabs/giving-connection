@@ -1,0 +1,39 @@
+# Kamal deployment configuration for Giving Connection
+# See https://kamal-deploy.org/docs/configuration/ for reference
+#
+# Usage:
+#   kamal deploy -d staging
+#   kamal deploy -d production
+
+service: giving-connection
+
+image: teloslabs/giving-connection
+
+# Container registry credentials via environment variables
+registry:
+  server: ghcr.io
+  username:
+    - KAMAL_REGISTRY_USERNAME
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+# Shared environment variables across all destinations.
+# SECURITY: All secrets MUST go in env.secret, never in env.clear.
+# Kamal reads secrets from .kamal/secrets-common + .kamal/secrets.<destination>
+env:
+  clear:
+    RAILS_LOG_TO_STDOUT: "1"
+    RAILS_SERVE_STATIC_FILES: "1"
+    RUBY_YJIT_ENABLE: "1"
+  secret:
+    - RAILS_MASTER_KEY
+    - DATABASE_URL
+    - REDIS_URL
+
+# Build configuration — target amd64 for DigitalOcean droplets
+builder:
+  arch: amd64
+
+# SSH configuration
+ssh:
+  user: deploy

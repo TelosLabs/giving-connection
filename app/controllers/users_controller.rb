@@ -22,7 +22,7 @@ class UsersController < ApplicationController
     end
 
     flash[:alert] = @user.errors.full_messages.to_sentence unless @user.update(save_params)
-    sign_in(current_user, bypass: true)
+    bypass_sign_in(current_user)
 
     flash_message
     redirect_to my_account_path

@@ -1,0 +1,48 @@
+# Production destination — deploy with: kamal deploy -d production
+
+servers:
+  web:
+    hosts:
+      - 161.35.179.50
+    cmd: bundle exec puma -C config/puma.rb
+    options:
+      memory: 1.5g
+
+  worker:
+    hosts:
+      - 161.35.179.50
+    cmd: bundle exec sidekiq
+    options:
+      memory: 768m
+
+  clock:
+    hosts:
+      - 161.35.179.50
+    cmd: bundle exec clockwork config/clock.rb
+    options:
+      memory: 256m
+
+proxy:
+  ssl: true
+  host: www.givingconnection.org
+  app_port: 3000
+  healthcheck:
+    interval: 3
+    path: /up
+    timeout: 10
+
+env:
+  clear:
+    RAILS_ENV: production
+    WEB_CONCURRENCY: "2"
+
+# Python embedding service for Smart Match feature.
+# SECURITY: Bound to 127.0.0.1 only — not accessible from the public internet.
+accessories:
+  embedding-api:
+    image: ghcr.io/teloslabs/gc-embedding-api
+    host: 161.35.179.50
+    port: "127.0.0.1:8000:8000"
+    env:
+      clear:
+        PYTHONUNBUFFERED: "1"
