@@ -1,0 +1,20 @@
+# Symlinked by `cw` into new worktrees so they boot without re-running setup
+# (bundle install, yarn install, credentials setup). Paths are relative to
+# the repo root and must already exist there.
+
+# App config / secrets (gitignored, required to boot Rails)
+.env
+config/master.key
+
+# Kamal deploy secrets (gitignored)
+.kamal/secrets-common
+.kamal/secrets.production
+.kamal/secrets.staging
+
+# Bundler local config
+.bundle
+
+# JS dependencies (169M; shared to skip a fresh yarn install per worktree).
+# Note: running `yarn install` in one worktree updates node_modules for all
+# worktrees since it's the same symlinked directory.
+node_modules
