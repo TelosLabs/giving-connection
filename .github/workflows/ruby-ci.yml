@@ -100,7 +100,9 @@ jobs:
       - name: Install ImageMagick
         run: |
           sudo apt-get update
-          sudo apt-get install -y imagemagick
+          # The extra coders package (HEIC/HEIF support) has a runner-specific ABI
+          # suffix (e.g. -6-extra on 22.04, -7-extra on 24.04), so match it by regex.
+          sudo apt-get install -y imagemagick 'libmagickcore-6.q16-.*-extra'
       - name: Run tests
         run: |
           bundle exec rspec --fail-fast
