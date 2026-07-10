@@ -25,29 +25,20 @@ details class="w-full max-w-4xl pb-6 mb-16 border-b open:pb-12 border-blue-gradi
 
     div class="w-full max-w-4xl px-4 sm:w-1/2"
       = render BioCard::Component.new(\
-        name: "Nathaly Shige",
+        name: "Hazel Le",
         job_title: "Platform Development Fellow",
-        img_url: "nathaly.jpg",
+        img_url: "hazel.JPG",
       ) do |c|
         - c.with_biography do
           p class="mb-3 text-gray-2"
-            | Nathaly Shige is a rising junior at Stanford University, where she studies Design and Computer Science. 
-            | With a background in product strategy, platform development, and social advocacy, she has led initiatives 
-            | at the intersection of technology and impact—developing AI-powered tools for education and healthcare, 
-            | building data-driven platforms, and driving large-scale digital solutions to advance equity and access.
+            | Hazel is joining the Giving Connection team as a Platform Development Fellow through Stanford University's 
+            | CS+Social Good program. They are passionate about building technology that is inclusive and accessible, 
+            | particularly tools that prioritizes people before profit. Through experiences in product management, community organizing,
+            | and data-driven research, they have explored how technology can create more equitable systems and strengthen communities. 
             span data-read-more-target="dots" class=""...
           p data-read-more-target="collapsableText" class="hidden mb-3"
-            | Alongside her work in tech, Nathaly has spent years leading nonprofit efforts focused on gender equality, 
-            | education, and civic engagement. Her initiatives have reached national scale in Brazil and gained 
-            | international recognition, contributing to public policy change and youth leadership networks across the 
-            | globe.
-            br
-            br
-            | She brings a unique perspective shaped by both grassroots activism and high-level strategy, 
-            | always centering inclusion, dignity, and systemic change in her work. At Giving Connection, 
-            | Nathaly is contributing to product and platform development, helping design and implement features 
-            | that expand access to resources and strengthen community infrastructure. Her work this summer builds 
-            | on her ongoing interest in creating thoughtful, inclusive technologies that respond to real-world needs.
+            | At Giving Connection, Hazel is excited to apply their skills in data science, machine learning, and human-centered
+            | design to help build tools that connect people with the resources and support they need.
           a data-read-more-target="readMoreButton" class="font-bold cursor-pointer text-blue-medium" Read More
         end
       end
@@ -105,6 +96,38 @@ details class="w-full max-w-4xl pb-6 mb-16 border-b open:pb-12 border-blue-gradi
         end
       end
 
+details class="w-full max-w-4xl pb-6 mb-16 border-b open:pb-12 border-blue-gradient-2"
+  summary class="flex items-center justify-between cursor-pointer" data-controller="accordion--component"
+    div class="relative flex flex-col items-center justify-center w-full bg-white" data-action="click->accordion--component#rotateArrow"
+        h2 class="flex mb-8 text-2xl font-bold text-center uppercase text-blue-dark"
+          | Past Interns
+          = inline_svg_tag 'expand-arrow.svg', class: "transition-transform duration-300 absolute mt-2 right-1", size:'16*16', data: { 'accordion--component-target': 'arrow'}
+  
+  div class="w-full max-w-4xl px-4 sm:w-1/2"
+      = render BioCard::Component.new(\
+        name: "Nathaly Shige",
+        job_title: "Platform Development Fellow",
+        img_url: "nathaly.jpg",
+      ) do |c|
+        - c.with_biography do
+          p class="mb-3 text-gray-2"
+            | Nathaly Shige is a rising junior at Stanford University, where she studies Design and Computer Science. 
+            | With a background in product strategy, platform development, and social advocacy, she has led initiatives 
+            | at the intersection of technology and impact—developing AI-powered tools for education and healthcare, 
+            | building data-driven platforms, and driving large-scale digital solutions to advance equity and access.
+            span data-read-more-target="dots" class=""...
+          p data-read-more-target="collapsableText" class="hidden mb-3"
+            | Alongside her work in tech, Nathaly has spent years leading nonprofit efforts focused on gender equality, 
+            | education, and civic engagement. Her initiatives have reached national scale in Brazil and gained 
+            | international recognition, contributing to public policy change and youth leadership networks across the 
+            | globe.
+            br
+            br
+            | She brings a unique perspective shaped by both grassroots activism and high-level strategy, 
+            | always centering inclusion, dignity, and systemic change in her work. At Giving Connection, 
+            | Nathaly is contributing to product and platform development, helping design and implement features 
+            | that expand access to resources and strengthen community infrastructure. Her work this summer builds 
+            | on her ongoing interest in creating thoughtful, inclusive technologies that respond to real-world needs.
     div class="w-full max-w-4xl px-4 sm:w-1/2"
       = render BioCard::Component.new(\
         name: "Luke Cassidy",
@@ -135,6 +158,7 @@ details class="w-full max-w-4xl pb-6 mb-16 border-b open:pb-12 border-blue-gradi
         end
       end
 
+  div class="flex flex-wrap justify-center max-w-4xl"
     div class="w-full max-w-4xl px-4 sm:w-1/2"
       = render BioCard::Component.new(\
         name: "Ann Matthew",
