@@ -43,7 +43,7 @@ preload_app!
 
 # Re-establish connections in forked workers to avoid sharing
 # the parent process's connection pool across workers.
-on_worker_boot do
+before_worker_boot do
   ActiveRecord::Base.establish_connection
 end
 
