@@ -103,7 +103,13 @@ jobs:
       - name: Install ImageMagick
         run: |
           sudo apt-get update
-          sudo apt-get install -y imagemagick
+          # The extra coders package (HEIC/HEIF support) has a runner-specific ABI
+          # suffix (e.g. -6-extra on 22.04, -7-extra on 24.04), so match it by regex.
+          sudo apt-get install -y imagemagick 'libmagickcore-6.q16-.*-extra'
+          # On Ubuntu 24.04 libheif is split and ships without the HEVC decoder
+          # plugin, so HEVC-encoded HEIC won't decode even with the coder present.
+          # The plugin package only exists on 24.04+, so tolerate its absence on 22.04.
+          sudo apt-get install -y libheif-plugin-libde265 || true
       - name: Run tests
         run: |
           bundle exec rspec --fail-fast
