@@ -1,6 +1,6 @@
 div class="flex relative flex-col gap-2 p-7 bg-white rounded-6px" id="loc_#{@result.id}_popup" data-places-target="popup"
   div class="flex gap-1 items-start mb-3"
-    = image_tag @result.organization.logo, class: "flex-shrink-0 w-1/5 h-1/5 mt-1"
+    = image_tag @result.organization.logo_or_default, class: "flex-shrink-0 w-1/5 h-1/5 mt-1"
     div class="flex flex-col ml-2"
       div class="flex items-center"
         = link_to location_path(@result), class: "font-semibold text-sm lg:text-base cursor-pointer", target: "_blank" do
