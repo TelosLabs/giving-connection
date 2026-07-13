@@ -3,16 +3,6 @@
 require "openssl"
 
 module SmartMatch
-  # Raised when the embedding service is unavailable, times out, returns a
-  # transient failure, or returns a malformed payload. Callers should treat
-  # this as retryable; jobs use `retry_on` and the results controller renders
-  # a graceful fallback.
-  EmbeddingUnavailableError = Class.new(StandardError) unless const_defined?(:EmbeddingUnavailableError)
-
-  # Raised for non-retryable failures the embedding pipeline cannot recover
-  # from (validation errors, 4xx-shaped responses). Jobs `discard_on` this.
-  PermanentError = Class.new(StandardError) unless const_defined?(:PermanentError)
-
   class EmbeddingClient < ApplicationService
     # Per-request timeout. Plan budgets 5s for embedding so quiz submission
     # stays interactive; total retry budget stays under ~10s with jittered backoff.
