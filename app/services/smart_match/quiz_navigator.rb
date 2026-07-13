@@ -15,6 +15,11 @@ module SmartMatch
     # it is skipped for those users. It is the only distance step in any flow.
     SERVICE_SEEKER_TRAVEL_STEP = 8
 
+    # The service_seeker preferences/"what should we keep in mind" step. It is
+    # skipped when the user is here on behalf of an organization, since those
+    # personal-service preferences don't apply to organizational partnerships.
+    SERVICE_SEEKER_PREFERENCES_STEP = 9
+
     # The "where exactly?" follow-up step, shown only when the user picked
     # "Somewhere else" on the preceding location step. Its position differs by
     # flow (it sits right after that flow's city_selection step).
@@ -214,7 +219,8 @@ module SmartMatch
     end
 
     def skip_step?(step_number)
-      skip_location_detail?(step_number) || skip_travel?(step_number)
+      skip_location_detail?(step_number) || skip_travel?(step_number) ||
+        skip_preferences?(step_number)
     end
 
     # The "where exactly?" follow-up is only relevant when the user picked
@@ -228,6 +234,12 @@ module SmartMatch
       session[:smart_match_user_type] == "service_seeker" &&
         step_number == SERVICE_SEEKER_TRAVEL_STEP &&
         NON_LOCAL_SCOPES.include?(session[:smart_match_location_scope].to_s)
+    end
+
+    def skip_preferences?(step_number)
+      session[:smart_match_user_type] == "service_seeker" &&
+        step_number == SERVICE_SEEKER_PREFERENCES_STEP &&
+        session[:smart_match_support_for].to_s == "organization"
     end
   end
 end

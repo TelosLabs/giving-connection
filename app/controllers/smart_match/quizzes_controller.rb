@@ -10,7 +10,7 @@ module SmartMatch
       @total_steps = total_steps
       @user_type = session[:smart_match_user_type]
 
-      step_info = SmartMatch::QuizStepConfig.section_for(@user_type, @step)
+      step_info = SmartMatch::QuizStepConfig.section_for(@user_type, @step, support_for: session[:smart_match_support_for])
       @section_number = step_info[:number]
       @section_name = step_info[:name]
       @step_title = step_info[:title]

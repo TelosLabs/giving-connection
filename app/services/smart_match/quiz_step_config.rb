@@ -119,13 +119,13 @@ module SmartMatch
     # Returns a display-ready section hash with the same shape the views expect:
     # {number:, name:, title:, subtitle:}. Strings are localized at call time
     # using the current I18n locale.
-    def self.section_for(user_type, step)
+    def self.section_for(user_type, step, support_for: nil)
       map = section_map_for(user_type)
       structure = map[step] || map[1]
       {
         number: structure[:number],
         name: I18n.t("smart_match.quiz.sections.#{structure[:section_key]}"),
-        title: title_for(structure[:title_key]),
+        title: title_for(structure[:title_key], support_for: support_for),
         subtitle: subtitle_for(structure[:subtitle])
       }
     end
@@ -139,7 +139,20 @@ module SmartMatch
     # (e.g. :personal_details -> smart_match.quiz.titles.personal_details)
     # or a String of the form "<user_type>.<step>" referencing the
     # user_type-scoped section.
-    def self.title_for(title_key)
+    #
+    # For service_seekers, the wording of several questions changes depending on
+    # who they're seeking help for (support_for). When a support_for is given we
+    # first look for a variant key
+    # "<user_type>.<support_for>.<step>" (e.g. "service_seeker.someone_else.step_3")
+    # and fall back to the default title when no variant exists.
+    def self.title_for(title_key, support_for: nil)
+      if support_for.present? && title_key.is_a?(String)
+        parts = title_key.split(".")
+        variant_key = ([parts.first, support_for] + parts[1..]).join(".")
+        variant = I18n.t("smart_match.quiz.titles.#{variant_key}", default: nil)
+        return variant if variant.present?
+      end
+
       I18n.t("smart_match.quiz.titles.#{title_key}")
     end
 

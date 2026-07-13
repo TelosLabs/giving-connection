@@ -1,3 +1,13 @@
+<%
+  # The situation answer labels are reworded depending on who the service_seeker
+  # is helping (see support_for step): "their"/partnership phrasing for someone
+  # else / an organization, personal phrasing otherwise.
+  options_key = case @session_answers[:support_for]
+                when "someone_else" then "options_someone_else"
+                when "organization" then "options_organization"
+                else "options"
+                end
+%>
 <%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
              data: { smart_match_quiz_target: "form" } do |f| %>
   <div data-card-group="situation" data-card-cols="3">
@@ -10,7 +20,7 @@
             class: "sr-only",
             checked: @session_answers[:situation] == "urgent",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold"><%= t("smart_match.quiz.steps.situation.options.urgent") %></span>
+      <span class="text-base font-bold"><%= t("smart_match.quiz.steps.situation.#{options_key}.urgent") %></span>
       <%= inline_svg_tag "smart_match/alert.svg", class: "w-2/3 max-w-md h-auto" %>
     </label>
 
@@ -22,7 +32,7 @@
             class: "sr-only",
             checked: @session_answers[:situation] == "long_term",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold"><%= t("smart_match.quiz.steps.situation.options.long_term") %></span>
+      <span class="text-base font-bold"><%= t("smart_match.quiz.steps.situation.#{options_key}.long_term") %></span>
       <%= inline_svg_tag "smart_match/time.svg", class: "w-2/3 max-w-md h-auto" %>
     </label>
 
@@ -34,7 +44,7 @@
             class: "sr-only",
             checked: @session_answers[:situation] == "exploring",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="text-base font-bold"><%= t("smart_match.quiz.steps.situation.options.exploring") %></span>
+      <span class="text-base font-bold"><%= t("smart_match.quiz.steps.situation.#{options_key}.exploring") %></span>
       <%= inline_svg_tag "smart_match/map.svg", class: "w-2/3 max-w-md h-auto text-white" %>
     </label>
 

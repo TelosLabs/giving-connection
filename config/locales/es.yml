@@ -83,6 +83,15 @@ es:
           step_7: "¿Qué tipo de traslado es posible para ti?"
           step_8: "¿Qué deberíamos tener en cuenta al emparejarte con servicios?"
           location_detail: "¿Dónde te encuentras?"
+          someone_else:
+            step_3: "¿Cuál de las siguientes describe mejor a la persona para la que buscas ayuda?"
+            step_4: "¿Qué categorías se ajustan mejor a sus necesidades?"
+            step_5: "¿Qué describe mejor su situación?"
+            step_7: "¿Qué tipo de traslado es posible?"
+            step_8: "¿Qué deberíamos tener en cuenta al emparejar servicios?"
+          organization:
+            step_4: "¿Qué categorías se ajustan mejor a las necesidades de alianza de tu organización?"
+            step_5: "¿Qué describe mejor la situación?"
         volunteer:
           step_1: "¿Cómo podemos apoyarte hoy?"
           step_2: "¿Qué causas están cerca de tu corazón?"
@@ -131,6 +140,14 @@ es:
             urgent: "Necesito servicios con urgencia"
             long_term: "Estoy buscando apoyo a largo plazo"
             exploring: "Estoy explorando mis opciones"
+          options_someone_else:
+            urgent: "Necesita servicios con urgencia"
+            long_term: "Busca apoyo a largo plazo"
+            exploring: "Sólo explorando opciones"
+          options_organization:
+            urgent: "Necesita una alianza con urgencia"
+            long_term: "Busca apoyo a largo plazo"
+            exploring: "Sólo explorando opciones"
         city_selection:
           hint: "Gracias por compartir esto. Estás más cerca de tus resultados personalizados."
           other: "Otro lugar"

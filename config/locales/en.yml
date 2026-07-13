@@ -109,6 +109,18 @@ en:
           step_7: "What kind of travel is possible for you?"
           step_8: "What should we keep in mind when matching you to services?"
           location_detail: "Where should we search?"
+          # Reworded titles when the service_seeker is helping someone else.
+          # Missing keys fall back to the defaults above (see QuizStepConfig#title_for).
+          someone_else:
+            step_3: "Which of the following best describe the person you're seeking help for?"
+            step_4: "Which categories best fits their needs?"
+            step_5: "What best describes their situation?"
+            step_7: "What kind of travel is possible?"
+            step_8: "What should we keep in mind when matching services?"
+          # Reworded titles when the service_seeker is here on behalf of an organization.
+          organization:
+            step_4: "Which categories best fits your organization's partnership needs?"
+            step_5: "What best describes the situation?"
         volunteer:
           step_1: "How can we support you today?"
           step_2: "Which causes are close to your heart?"
@@ -157,6 +169,14 @@ en:
             urgent: "I need services urgently"
             long_term: "I am looking for long-term support"
             exploring: "I am exploring my options"
+          options_someone_else:
+            urgent: "Need services urgently"
+            long_term: "Looking for long-term support"
+            exploring: "Just exploring options"
+          options_organization:
+            urgent: "Need partnership urgently"
+            long_term: "Looking for long-term support"
+            exploring: "Just exploring options"
         city_selection:
           hint: "Thanks for sharing this. You're moving closer to your personalized results."
           other: "Somewhere else"
