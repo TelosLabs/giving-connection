@@ -37,13 +37,13 @@ module SmartMatch
       # include "International" if too few results are found (international
       # orgs commonly serve the US too); "international" stays strict.
       def scoped_results(embedding, location_scope)
-        primary_codes = location_scope.to_s == "international" ? %w[International] : %w[National]
+        primary_codes = (location_scope.to_s == "international") ? %w[International] : %w[National]
         results = results_from(scope_filtered(primary_codes), embedding)
 
         return results if location_scope.to_s == "international" || results.size >= MIN_RESULTS
 
         broadened = results_from(scope_filtered(%w[National International]), embedding)
-        broadened.size > results.size ? broadened : results
+        (broadened.size > results.size) ? broadened : results
       end
 
       def scope_filtered(scope_codes)

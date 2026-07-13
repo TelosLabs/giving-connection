@@ -6,7 +6,6 @@ module SmartMatch
 
     # Force EmbeddingClient (and its sibling error constants) to load so the
     # retry_on/discard_on references below resolve under Zeitwerk.
-    SmartMatch::EmbeddingClient
 
     discard_on SmartMatch::PermanentError
     retry_on SmartMatch::EmbeddingUnavailableError, wait: :polynomially_longer, attempts: 5

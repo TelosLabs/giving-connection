@@ -23,42 +23,42 @@ module SmartMatch
     # semantic "<user_type>.location_detail" key instead of a number.
     STEP_STRUCTURES = {
       "service_seeker" => {
-        1 => {number:1, section_key: :about_you, title_key: "service_seeker.step_1", subtitle: :single},
-        2 => {number:1, section_key: :about_you, title_key: "service_seeker.step_2", subtitle: :single},
-        3 => {number:2, section_key: :type_of_support, title_key: "service_seeker.step_3", subtitle: :multiple},
-        4 => {number:2, section_key: :type_of_support, title_key: "service_seeker.step_4", subtitle: :multiple},
-        5 => {number:2, section_key: :type_of_support, title_key: "service_seeker.step_5", subtitle: :single},
-        6 => {number:3, section_key: :location_access, title_key: "service_seeker.step_6", subtitle: :single},
-        7 => {number:3, section_key: :location_access, title_key: "service_seeker.location_detail", subtitle: :none},
-        8 => {number:3, section_key: :location_access, title_key: "service_seeker.step_7", subtitle: :single},
-        9 => {number:4, section_key: :prefs_accessibility, title_key: "service_seeker.step_8", subtitle: :multiple},
-        10 => {number:4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
-        11 => {number:4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
+        1 => {number: 1, section_key: :about_you, title_key: "service_seeker.step_1", subtitle: :single},
+        2 => {number: 1, section_key: :about_you, title_key: "service_seeker.step_2", subtitle: :single},
+        3 => {number: 2, section_key: :type_of_support, title_key: "service_seeker.step_3", subtitle: :multiple},
+        4 => {number: 2, section_key: :type_of_support, title_key: "service_seeker.step_4", subtitle: :multiple},
+        5 => {number: 2, section_key: :type_of_support, title_key: "service_seeker.step_5", subtitle: :single},
+        6 => {number: 3, section_key: :location_access, title_key: "service_seeker.step_6", subtitle: :single},
+        7 => {number: 3, section_key: :location_access, title_key: "service_seeker.location_detail", subtitle: :none},
+        8 => {number: 3, section_key: :location_access, title_key: "service_seeker.step_7", subtitle: :single},
+        9 => {number: 4, section_key: :prefs_accessibility, title_key: "service_seeker.step_8", subtitle: :multiple},
+        10 => {number: 4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
+        11 => {number: 4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
       }.freeze,
       "volunteer" => {
-        1 => {number:1, section_key: :about_you, title_key: "volunteer.step_1", subtitle: :single},
-        2 => {number:1, section_key: :about_you, title_key: "volunteer.step_2", subtitle: :multiple},
-        3 => {number:2, section_key: :volunteer_prefs, title_key: "volunteer.step_3", subtitle: :multiple},
-        4 => {number:2, section_key: :volunteer_prefs, title_key: "volunteer.step_4", subtitle: :multiple},
-        5 => {number:3, section_key: :volunteer_availability, title_key: "volunteer.step_5", subtitle: :single},
-        6 => {number:3, section_key: :engagement, title_key: "volunteer.step_6", subtitle: :single},
-        7 => {number:3, section_key: :engagement, title_key: "volunteer.location_detail", subtitle: :none},
-        8 => {number:3, section_key: :volunteer_availability, title_key: "volunteer.step_7", subtitle: :single},
-        9 => {number:4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
-        10 => {number:4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
+        1 => {number: 1, section_key: :about_you, title_key: "volunteer.step_1", subtitle: :single},
+        2 => {number: 1, section_key: :about_you, title_key: "volunteer.step_2", subtitle: :multiple},
+        3 => {number: 2, section_key: :volunteer_prefs, title_key: "volunteer.step_3", subtitle: :multiple},
+        4 => {number: 2, section_key: :volunteer_prefs, title_key: "volunteer.step_4", subtitle: :multiple},
+        5 => {number: 3, section_key: :volunteer_availability, title_key: "volunteer.step_5", subtitle: :single},
+        6 => {number: 3, section_key: :engagement, title_key: "volunteer.step_6", subtitle: :single},
+        7 => {number: 3, section_key: :engagement, title_key: "volunteer.location_detail", subtitle: :none},
+        8 => {number: 3, section_key: :volunteer_availability, title_key: "volunteer.step_7", subtitle: :single},
+        9 => {number: 4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
+        10 => {number: 4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
       }.freeze,
       "donor" => {
-        1 => {number:1, section_key: :about_you, title_key: "donor.step_1", subtitle: :single},
-        2 => {number:1, section_key: :about_you, title_key: "donor.step_2", subtitle: :multiple},
-        3 => {number:2, section_key: :donor_prefs, title_key: "donor.step_3", subtitle: :multiple},
-        4 => {number:2, section_key: :donor_prefs, title_key: "donor.step_4", subtitle: :multiple},
-        5 => {number:2, section_key: :donor_prefs, title_key: "donor.step_5", subtitle: :multiple},
-        6 => {number:3, section_key: :engagement, title_key: "donor.step_6", subtitle: :single},
-        7 => {number:3, section_key: :engagement, title_key: "donor.step_7", subtitle: :single},
-        8 => {number:3, section_key: :engagement, title_key: "donor.location_detail", subtitle: :none},
-        9 => {number:3, section_key: :engagement, title_key: "donor.step_8", subtitle: :single},
-        10 => {number:4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
-        11 => {number:4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
+        1 => {number: 1, section_key: :about_you, title_key: "donor.step_1", subtitle: :single},
+        2 => {number: 1, section_key: :about_you, title_key: "donor.step_2", subtitle: :multiple},
+        3 => {number: 2, section_key: :donor_prefs, title_key: "donor.step_3", subtitle: :multiple},
+        4 => {number: 2, section_key: :donor_prefs, title_key: "donor.step_4", subtitle: :multiple},
+        5 => {number: 2, section_key: :donor_prefs, title_key: "donor.step_5", subtitle: :multiple},
+        6 => {number: 3, section_key: :engagement, title_key: "donor.step_6", subtitle: :single},
+        7 => {number: 3, section_key: :engagement, title_key: "donor.step_7", subtitle: :single},
+        8 => {number: 3, section_key: :engagement, title_key: "donor.location_detail", subtitle: :none},
+        9 => {number: 3, section_key: :engagement, title_key: "donor.step_8", subtitle: :single},
+        10 => {number: 4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
+        11 => {number: 4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
       }.freeze
     }.freeze
 

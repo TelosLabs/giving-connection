@@ -69,8 +69,7 @@ module SmartMatch
           response
         rescue EmbeddingUnavailableError
           raise
-        rescue Timeout::Error, Errno::ECONNREFUSED, Errno::ECONNRESET,
-               Net::OpenTimeout, Net::ReadTimeout, IOError, EOFError => e
+        rescue Timeout::Error, Errno::ECONNREFUSED, Errno::ECONNRESET, IOError => e
           reset_http_connection!
           retries += 1
           if retries <= MAX_RETRIES
@@ -94,7 +93,7 @@ module SmartMatch
         http.open_timeout = OPEN_TIMEOUT
         http.read_timeout = READ_TIMEOUT
         http.use_ssl = uri.scheme == "https"
-        http.verify_mode = (uri.scheme == "https" ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE)
+        http.verify_mode = ((uri.scheme == "https") ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE)
         http.keep_alive_timeout = 30
         http.start
         Thread.current[THREAD_CONN_KEY] = http

@@ -213,7 +213,7 @@ module SmartMatch
     # unchanged (the flow simply jumps over the hidden step), so final-step
     # detection and the progress bar need no renumbering.
     def next_visible_step(candidate, total, direction)
-      delta = (direction == :forward ? 1 : -1)
+      delta = ((direction == :forward) ? 1 : -1)
       candidate += delta while candidate.between?(1, total) && skip_step?(candidate)
       candidate
     end

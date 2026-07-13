@@ -69,7 +69,6 @@ class SmartMatchCard::Component < ApplicationViewComponent
     end
   end
 
-
   def cta_url
     return unless organization.main_location
     helpers.location_path(organization.main_location)
