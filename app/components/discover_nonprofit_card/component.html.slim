@@ -9,7 +9,7 @@ article class="overflow-hidden text-xs font-medium bg-white rounded shadow-md"
     img src=url_for(@location.images.first) alt="cover photo" class="w-hull"
   - else
     div class="relative w-full h-52 text-gray-5"
-      img src=url_for(@location.organization.cover_photo) alt="cover photo" class="h-full object-fit-cover"
+      = image_tag @location.organization.cover_photo_or_default, alt: "cover photo", class: "h-full object-fit-cover"
 
   // Bottom Part
   div class="px-5 pb-6"
