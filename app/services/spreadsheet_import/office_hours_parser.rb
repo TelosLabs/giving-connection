@@ -9,7 +9,7 @@ module SpreadsheetImport
     def call
       return [] if blank_input?
 
-      parts = split_by_ampersand(normalize(@input))
+      parts = split_into_entries(@input)
 
       parsed_entries = parts.flat_map { |part| parse_single_part(part) }
 
@@ -67,9 +67,10 @@ module SpreadsheetImport
     def normalize_time(time)
       return nil if time.blank?
       begin
-        parsed_time = Time.zone.parse(time)
-        shifted_time = parsed_time + 7.hours
-        shifted_time.strftime("%H:%M")
+        # Return the local wall-clock time as written. OfficeHour converts to
+        # UTC on save (see TimeZoneConvertible), so shifting here would double
+        # the conversion.
+        Time.zone.parse(time).strftime("%H:%M")
       rescue
         nil
       end
@@ -79,8 +80,12 @@ module SpreadsheetImport
       @input.strip.downcase == "na"
     end
 
-    def split_by_ampersand(input)
-      input.split("&").map(&:strip)
+    # Entries may be separated by "&" or by line breaks — spreadsheet cells with
+    # multiple day ranges frequently put each range on its own line. Split on
+    # both before normalizing so a newline can't collapse two ranges into one
+    # malformed entry.
+    def split_into_entries(input)
+      input.split(/[&\n\r]+/).map { |part| normalize(part) }.compact_blank
     end
 
     def parse_single_part(part)
@@ -102,8 +107,19 @@ module SpreadsheetImport
       end
     end
 
+    # The day specification and the times can be separated by a colon
+    # ("Monday - Friday: 8:00 - 16:00") or simply by a tab/dash
+    # ("Thursday - Sunday - 10:00 - 15:00"). Splitting on ":" breaks the latter
+    # because it hits the colon inside "10:00", so instead locate where the time
+    # portion begins — the first digit, or the word "closed"/"24/7". Everything
+    # before it is the day specification; trailing separators are stripped later
+    # by parse_days.
     def split_days_and_times(part)
-      part.split(":", 2).map(&:strip)
+      match = part.match(/\d|closed|24\/7/i)
+      return part.split(":", 2).map(&:strip) unless match
+
+      boundary = match.begin(0)
+      [part[0...boundary].strip, part[boundary..].strip]
     end
 
     def parse_times_or_247(time_str)
