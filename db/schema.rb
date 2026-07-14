@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_15_194445) do
+ActiveRecord::Schema[7.2].define(version: 2026_07_10_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -245,7 +245,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_15_194445) do
     t.string "address"
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
-    t.geography "lonlat", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}, null: false
+    t.geography "lonlat", limit: {srid: 4326, type: "st_point", geographic: true}, null: false
     t.string "website"
     t.boolean "main", default: false, null: false
     t.boolean "offer_services"
@@ -354,6 +354,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_15_194445) do
     t.boolean "volunteer_availability", default: false, null: false
     t.string "volunteer_link"
     t.boolean "general_population_serving", default: false, null: false
+    t.string "in_kind_donation_link"
+    t.text "in_kind_donation_items"
     t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
     t.index ["ein_number"], name: "index_organizations_on_ein_number"
     t.index ["mission_statement_en"], name: "index_organizations_on_mission_statement_en"
