@@ -16,7 +16,13 @@ import { useCookies } from "./mixins/useCookies";
 
   const IP_LOOKUP_COOLDOWN_MS = 12 * 60 * 60 * 1000; // 12 hours in miliseconds (12h * 60m * 60s * 1000ms)
 
-export default class extends Controller { 
+// NOTE ON CLIENT-SIDE RENDERING: the live city suggestions below are built in JS
+// (createElement) rather than via Turbo Streams. This is an intentional exception
+// to the "Stimulus never generates DOM" standard: Google Places predictions only
+// exist client-side, and per-keystroke server round-trips would add latency and
+// Google API cost. Rendering the *typeahead list* is the only DOM this controller
+// creates; everything else routes through server-rendered markup.
+export default class extends Controller {
   static targets = [ "currentLocation", "formLatitude", "formLongitude", "suggestions", "presets", "clearButton" ]
 
   connect() {
@@ -24,6 +30,12 @@ export default class extends Controller {
     this.latitude = this.getCookie("latitude")
     this.longitude = this.getCookie("longitude")
     this.currentCity = this.getCookie("city")
+  }
+
+  disconnect() {
+    // Cancel any pending debounce so a scheduled fetch can't fire against
+    // recycled DOM after Turbo navigation / controller teardown.
+    clearTimeout(this.suggestTimeout)
   }
 
   async getCurrentPosition() {
@@ -47,7 +59,7 @@ export default class extends Controller {
     if (err.code === 1) {
       // User denied access to location services
       console.warn(`ERROR(${err.code}): ${err.message}`)
-      window.alert('Please enable location services to use this feature. Visit your browser settings to enable location services.') 
+      window.alert('Please enable location services to use this feature. Visit your browser settings to enable location services.')
     }
     await this.getLocationFromIP();
   }
@@ -97,10 +109,18 @@ export default class extends Controller {
   // Geocode a typed city name or ZIP code into coordinates, then search.
   async geocodeAndSearch(event) {
     event.preventDefault();
-    const query = event.target.value.trim();
-    const form = event.target.closest("form");
+    if (this.isGeocoding) return; // guard against OS key-repeat / rapid Enter
+    const input = event.target;
+    const query = input.value.trim();
+    const form = input.closest("form");
     if (!query) return;
 
+    if (!window.google?.maps) {
+      window.alert("Location search is still loading. Please try again in a moment.");
+      return;
+    }
+
+    this.isGeocoding = true;
     try {
       const geocoder = new google.maps.Geocoder();
       const response = await geocoder.geocode({
@@ -113,17 +133,29 @@ export default class extends Controller {
         return;
       }
 
-      const coords = result.geometry.location;
-      this.latitude = coords.lat();
-      this.longitude = coords.lng();
-      this.currentCity = this.cityFromGeocode(result) || query;
-      this.rememberLocation();
-      this.updateFormFields();
-      if (form) form.requestSubmit();
+      this.applyGeocodeResult(result, this.cityFromGeocode(result) || query, form);
     } catch (error) {
       console.warn("Failed to geocode typed location:", error);
       window.alert("We couldn't look up that location. Please try again.");
+    } finally {
+      this.isGeocoding = false;
     }
+  }
+
+  // Shared tail for the typed-Enter and click-suggestion paths: persist the
+  // resolved coordinates, sync the form fields, and submit. We submit the form
+  // directly (rather than dispatching `location-updated`) because these are
+  // explicit "search now" actions that must work on pages without a search
+  // controller, e.g. the home hero. On the results page this is equivalent:
+  // handleLocationUpdate just calls form.requestSubmit().
+  applyGeocodeResult(result, cityLabel, form) {
+    const coords = result.geometry.location;
+    this.latitude = coords.lat();
+    this.longitude = coords.lng();
+    this.currentCity = cityLabel;
+    this.rememberLocation();
+    this.updateFormFields();
+    if (form) form.requestSubmit();
   }
 
   cityFromGeocode(result) {
@@ -141,15 +173,17 @@ export default class extends Controller {
 
   // Live US-city suggestions rendered into the location dropdown as the user types.
   suggestCities(event) {
-    const query = event.target.value.trim();
+    const input = event.target;
+    const query = input.value.trim();
     clearTimeout(this.suggestTimeout);
+    this.toggleClearButton(input);
     if (!query) {
-      this.showPresets();
-      this.toggleClearButton();
+      this.showPresets(input);
       return;
     }
-    this.suggestTimeout = setTimeout(() => this.fetchPredictions(query), 150);
-    this.toggleClearButton();
+    // Tag each request so a late/out-of-order response can be discarded.
+    const requestId = (this.activeRequestId = (this.activeRequestId || 0) + 1);
+    this.suggestTimeout = setTimeout(() => this.fetchPredictions(query, input, requestId), 150);
   }
 
   // Drop the trailing country ("Nashville, TN, USA" -> "Nashville, TN").
@@ -157,103 +191,169 @@ export default class extends Controller {
     return text.replace(/,?\s*(USA|United States)$/i, "").trim();
   }
 
-  toggleClearButton() {
-    if (!this.hasClearButtonTarget) return;
-    const hasValue = this.hasCurrentLocationTarget && this.currentLocationTarget.value.trim() !== "";
-    this.clearButtonTarget.classList.toggle("hidden", !hasValue);
+  // Resolve the dropdown wrapper and its scoped elements from the active input.
+  // The geolocation controller lives on <body>, so multiple currentLocation
+  // targets exist (navbar/pills <p> + the search-bar <input>). We must operate on
+  // the element that fired the event, never the singular `...Target` (which
+  // resolves to the FIRST match in the DOM — the navbar <p>).
+  wrapperFor(input) {
+    return input?.closest("[data-controller~='dropdown']");
+  }
+
+  elementFor(input, name) {
+    return this.wrapperFor(input)?.querySelector(`[data-geolocation-target='${name}']`);
+  }
+
+  toggleClearButton(input) {
+    const clearButton = this.elementFor(input, "clearButton");
+    if (!clearButton) return;
+    const hasValue = !!input && input.value.trim() !== "";
+    clearButton.classList.toggle("hidden", !hasValue);
   }
 
   clearLocationInput(event) {
     event.preventDefault();
-    const wrapper = event.currentTarget.closest("[data-controller~='dropdown']");
-    const input = wrapper?.querySelector("[data-geolocation-target='currentLocation']");
+    // Cancel any pending suggestion fetch so it can't re-render for erased text.
+    clearTimeout(this.suggestTimeout);
+    this.activeRequestId = (this.activeRequestId || 0) + 1;
+
+    const input = this.elementFor(event.currentTarget, "currentLocation");
     if (input) {
       input.value = "";
       // Defer focus so it lands after the click finishes bubbling.
       requestAnimationFrame(() => input.focus());
     }
-    this.showPresets();
-    this.toggleClearButton();
+    // Frontend: clear the visible text only so the user can type a new location.
+    // Filter: fall back to nationwide "Search all" (hidden fields + cookies) so
+    // leaving the box empty searches everywhere instead of the stale location.
+    this.resetToSearchAll();
+    this.showPresets(input);
+    this.toggleClearButton(input);
   }
 
-  fetchPredictions(query) {
-    if (!this.autocompleteService) {
-      this.autocompleteService = new google.maps.places.AutocompleteService();
+  // Reset the underlying location filter to the nationwide "Search all" preset
+  // WITHOUT writing "Search all" into the visible input (kept blank for typing).
+  resetToSearchAll() {
+    const coords = CITIES["Search all"];
+    this.latitude = coords.latitude;
+    this.longitude = coords.longitude;
+    this.currentCity = "Search all";
+    this.rememberLocation();
+    if (this.hasFormLatitudeTarget && this.hasFormLongitudeTarget) {
+      this.formLatitudeTarget.value = this.latitude;
+      this.formLongitudeTarget.value = this.longitude;
     }
-    this.autocompleteService.getPlacePredictions(
-      {
-        input: query,
-        types: ["(cities)"],
-        componentRestrictions: { country: "us" }
-      },
-      (predictions, status) => {
-        if (status !== google.maps.places.PlacesServiceStatus.OK || !predictions || predictions.length === 0) {
-          console.warn("City autocomplete returned no predictions:", status);
-          this.showPresets();
-          return;
-        }
-        this.renderPredictions(predictions);
-      }
-    );
   }
 
-  // Ensure the location dropdown is open so rendered suggestions are visible.
-  openDropdown() {
-    if (!this.hasCurrentLocationTarget) return;
-    const el = this.currentLocationTarget.closest("[data-controller~='dropdown']");
+  fetchPredictions(query, input, requestId) {
+    // The Maps SDK loads async; Places may be undefined right after page load or
+    // if an extension blocks it. Fall back to presets instead of crashing.
+    if (!window.google?.maps?.places) {
+      console.warn("Google Places unavailable; showing preset cities.");
+      this.showPresets(input);
+      return;
+    }
+
+    try {
+      if (!this.autocompleteService) {
+        this.autocompleteService = new google.maps.places.AutocompleteService();
+      }
+      this.autocompleteService.getPlacePredictions(
+        {
+          input: query,
+          types: ["(cities)"],
+          componentRestrictions: { country: "us" }
+        },
+        (predictions, status) => {
+          // Discard stale/out-of-order responses: the user has typed again or
+          // cleared the box since this request was issued.
+          if (requestId !== this.activeRequestId || !input || input.value.trim() !== query) return;
+
+          const { OK, ZERO_RESULTS } = google.maps.places.PlacesServiceStatus;
+          if (status === ZERO_RESULTS || !predictions || predictions.length === 0) {
+            this.showPresets(input);
+            return;
+          }
+          if (status !== OK) {
+            // Quota/billing/key failure — distinct from "no matches" for debugging.
+            console.warn("City autocomplete error status:", status);
+            this.showPresets(input);
+            return;
+          }
+          this.renderPredictions(predictions, input);
+        }
+      );
+    } catch (error) {
+      console.warn("City autocomplete failed:", error);
+      this.showPresets(input);
+    }
+  }
+
+  // Ensure the location dropdown for the active input is open so suggestions show.
+  openDropdown(input) {
+    const el = this.wrapperFor(input);
     if (!el) return;
     const controller = this.application.getControllerForElementAndIdentifier(el, "dropdown");
     if (controller && typeof controller.show === "function") controller.show();
   }
 
-  renderPredictions(predictions) {
-    if (!this.hasSuggestionsTarget) return;
+  renderPredictions(predictions, input) {
+    const suggestions = this.elementFor(input, "suggestions");
+    const presets = this.elementFor(input, "presets");
+    if (!suggestions) return;
 
-    this.suggestionsTarget.innerHTML = "";
+    suggestions.innerHTML = "";
     predictions.forEach(prediction => {
       const item = document.createElement("li");
       item.className = "block px-4 py-2 cursor-pointer text-gray-3 hover:bg-seafoam";
       item.textContent = this.formatCityLabel(prediction.description);
       item.dataset.placeId = prediction.place_id;
       item.dataset.action = "click->dropdown#toggle click->geolocation#selectPrediction";
-      this.suggestionsTarget.appendChild(item);
+      suggestions.appendChild(item);
     });
 
-    this.suggestionsTarget.classList.remove("hidden");
-    if (this.hasPresetsTarget) this.presetsTarget.classList.add("hidden");
-    this.openDropdown();
+    suggestions.classList.remove("hidden");
+    if (presets) presets.classList.add("hidden");
+    this.openDropdown(input);
   }
 
-  showPresets() {
-    if (this.hasSuggestionsTarget) {
-      this.suggestionsTarget.innerHTML = "";
-      this.suggestionsTarget.classList.add("hidden");
+  showPresets(input) {
+    const suggestions = this.elementFor(input, "suggestions");
+    const presets = this.elementFor(input, "presets");
+    if (suggestions) {
+      suggestions.innerHTML = "";
+      suggestions.classList.add("hidden");
     }
-    if (this.hasPresetsTarget) this.presetsTarget.classList.remove("hidden");
+    if (presets) presets.classList.remove("hidden");
   }
 
   async selectPrediction(event) {
-    const placeId = event.currentTarget.dataset.placeId;
-    const description = event.currentTarget.textContent.trim();
-    const form = event.currentTarget.closest("form");
+    const li = event.currentTarget;
+    const placeId = li.dataset.placeId;
+    const description = li.textContent.trim();
+    const form = li.closest("form");
+    const input = this.elementFor(li, "currentLocation");
     if (!placeId) return;
+
+    if (!window.google?.maps) {
+      window.alert("Location search is still loading. Please try again in a moment.");
+      return;
+    }
 
     try {
       const geocoder = new google.maps.Geocoder();
       const response = await geocoder.geocode({ placeId });
       const result = response.results[0];
-      if (!result) return;
+      if (!result) {
+        window.alert("We couldn't load that location. Please try another.");
+        return;
+      }
 
-      const coords = result.geometry.location;
-      this.latitude = coords.lat();
-      this.longitude = coords.lng();
-      this.currentCity = description;
-      this.rememberLocation();
-      this.updateFormFields();
-      this.showPresets();
-      if (form) form.requestSubmit();
+      this.applyGeocodeResult(result, description, form);
+      this.showPresets(input);
     } catch (error) {
       console.warn("Failed to resolve selected city:", error);
+      window.alert("We couldn't load that location. Please try again.");
     }
   }
 
