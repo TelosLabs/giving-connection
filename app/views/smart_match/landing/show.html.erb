@@ -64,10 +64,12 @@
         </p>
 
         <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <%# turbo: false so the back button on the results page is a genuine
+              unload -- see smart-match-leave-guard. %>
           <%= link_to t("smart_match.landing.cta.view_results"),
                 smart_match_result_path,
                 class: "inline-block px-12 py-4 text-lg font-bold tracking-wider text-blue-dark uppercase rounded-md bg-seafoam hover:bg-seafoam-light transition-colors",
-                data: { test_id: "smart_match_view_results_btn" } %>
+                data: { test_id: "smart_match_view_results_btn", turbo: false } %>
 
           <%= button_to t("smart_match.landing.cta.retake"),
                 smart_match_quiz_path,

@@ -33,8 +33,12 @@
             smart_match_quiz_path,
             class: "text-base font-semibold cursor-pointer text-blue-dark hover:underline" %>
 
+      <%# turbo: false so results is entered as a real navigation, which makes
+          the browser back button there a genuine unload -- the condition the
+          smart-match-leave-guard confirmation prompt needs to fire. %>
       <%= link_to t("smart_match.confirmation.submit"),
             smart_match_result_path,
+            data: { turbo: false },
             class: "px-10 py-3 text-sm font-bold tracking-wider text-white uppercase rounded-md bg-blue-dark hover:bg-blue-medium transition-colors" %>
     </div>
   </div>
