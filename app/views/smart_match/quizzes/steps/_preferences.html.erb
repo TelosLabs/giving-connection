@@ -8,7 +8,8 @@
       ["multilingual",         "smart_match/languages.svg",     ""],
       ["lgbtqia_affirming",    "smart_match/rainbow_pride.svg", ""],
       ["wheelchair_accessible","smart_match/disability2.svg",   ""],
-      ["women_bipoc_led",      "smart_match/women.svg",         ""]
+      ["women_bipoc_led",      "smart_match/women.svg",         ""],
+      ["none",                 nil,                             ""]
     ].each do |value, icon, icon_class| %>
       <label class="sm-card-option <%= 'selected' if @session_answers[:prefs].include?(value) %>"
              data-action="click->smart-match-quiz#selectCard"
@@ -18,7 +19,9 @@
                <%= "checked" if @session_answers[:prefs].include?(value) %>
                data-smart-match-quiz-target="causeCheckbox" />
         <span class="text-base font-bold text-center"><%= t("smart_match.quiz.steps.preferences.options.#{value}") %></span>
-        <%= inline_svg_tag icon, class: "w-20 h-20 mt-2 #{icon_class}", aria_hidden: "true" %>
+        <% if icon %>
+          <%= inline_svg_tag icon, class: "w-20 h-20 mt-2 #{icon_class}", aria_hidden: "true" %>
+        <% end %>
       </label>
     <% end %>
 

@@ -2,16 +2,32 @@
   selected_self_descriptions = Array(@session_answers[:self_description])
   on_behalf_of_org = @session_answers[:support_for] == "organization"
 
+  # [value, icon, icon_class]. icon may be nil for text-only cards. Labels come
+  # from smart_match.quiz.steps.self_description.options.<value>.
   self_description_options = [
     ["student",            "smart_match/categories/user.svg",        ""],
     ["veteran",            "smart_match/categories/medal.svg",       ""],
     ["caregiver",          "smart_match/categories/care.svg",        "text-white"],
     ["lgbtqia",            "smart_match/categories/pride.svg",       ""],
     ["disability",         "smart_match/categories/disability.svg",  ""],
+    ["senior",                     nil, ""],
+    ["children_youth",             nil, ""],
+    ["formerly_incarcerated",      nil, ""],
+    ["economically_disadvantaged", nil, ""],
+    ["currently_unhoused",         nil, ""],
+    ["mental_health",              nil, ""],
+    ["substance_use",              nil, ""],
+    ["health_issues",              nil, ""],
     (["business_nonprofit", "smart_match/categories/uphill.svg",      ""] if on_behalf_of_org),
-    (["business_partner",   "smart_match/categories/partnership.svg", ""] if on_behalf_of_org),
-    ["none",               nil,                                      ""]
+    (["business_partner",   "smart_match/categories/partnership.svg", ""] if on_behalf_of_org)
   ].compact
+
+  # Show options alphabetically by their displayed label, but always keep the
+  # "prefer not to say / none" escape hatch pinned to the end.
+  self_description_options = self_description_options.sort_by do |value, _icon, _icon_class|
+    t("smart_match.quiz.steps.self_description.options.#{value}")
+  end
+  self_description_options << ["none", nil, ""]
 %>
 <%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
              data: { smart_match_quiz_target: "form" } do |f| %>

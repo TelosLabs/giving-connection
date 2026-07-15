@@ -154,10 +154,18 @@ en:
         self_description:
           options:
             student: "Student"
-            veteran: "Veteran or in the military"
-            caregiver: "Caregiver"
+            veteran: "Veteran or in the Military"
+            caregiver: "Parents or Caregivers"
             lgbtqia: "LGBTQIA+"
-            disability: "Living with disabilities"
+            disability: "Living with Disabilities"
+            senior: "Senior"
+            children_youth: "Children & Youth"
+            formerly_incarcerated: "Formerly Incarcerated"
+            economically_disadvantaged: "Economically Disadvantaged"
+            currently_unhoused: "Currently Unhoused"
+            mental_health: "Living with Mental Health Issues"
+            substance_use: "Living with Substance Use Issues"
+            health_issues: "Living with Health Issues"
             business_nonprofit: "Nonprofit looking to partner"
             business_partner: "Business looking for a partner"
             none: "Prefer not to say / none apply"
@@ -204,6 +212,7 @@ en:
             lgbtqia_affirming: "LGBTQIA+ affirming services"
             wheelchair_accessible: "Wheelchair accessible locations"
             women_bipoc_led: "Women- or BIPOC-led organizations"
+            none: "Prefer not to say / none apply"
         volunteer_involvement:
           options:
             volunteer_time: "Volunteer my time"

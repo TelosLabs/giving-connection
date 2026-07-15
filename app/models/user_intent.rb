@@ -95,8 +95,11 @@ class UserIntent
     [cause] + synonyms
   end
 
+  # "none" is the "prefer not to say / none apply" escape hatch. It is a UI
+  # affordance only and carries no semantic signal, so keep it out of the
+  # embedding text.
   def prefs
-    Array(prefs_selected).compact_blank
+    Array(prefs_selected).compact_blank - ["none"]
   end
 
   def location_text

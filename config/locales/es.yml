@@ -129,6 +129,14 @@ es:
             caregiver: "Cuidador"
             lgbtqia: "LGBTQIA+"
             disability: "Vivo con una discapacidad"
+            senior: "Adulto mayor"
+            children_youth: "Niñez y juventud"
+            formerly_incarcerated: "Anteriormente encarcelado"
+            economically_disadvantaged: "En desventaja económica"
+            currently_unhoused: "Actualmente sin vivienda"
+            mental_health: "Vivo con problemas de salud mental"
+            substance_use: "Vivo con problemas de uso de sustancias"
+            health_issues: "Vivo con problemas de salud"
             business_nonprofit: "Organización sin fines de lucro buscando aliarse"
             business_partner: "Empresa buscando un aliado"
             none: "Prefiero no decirlo / ninguna aplica"
@@ -175,6 +183,7 @@ es:
             lgbtqia_affirming: "Servicios afirmativos LGBTQIA+"
             wheelchair_accessible: "Ubicaciones accesibles en silla de ruedas"
             women_bipoc_led: "Organizaciones lideradas por mujeres o personas BIPOC"
+            none: "Prefiero no decirlo / ninguna aplica"
         volunteer_involvement:
           options:
             volunteer_time: "Ofrecer mi tiempo como voluntario"
