@@ -156,12 +156,38 @@ class Organization < ApplicationRecord
     end
   end
 
+  # Attaches the default logo/cover for records that don't have them yet.
+  # Normally handled by the after_create callback, but bulk inserts via
+  # activerecord-import skip callbacks, so the importer calls this directly.
+  def ensure_default_media!
+    attach_logo_and_cover
+  end
+
+  # Image sources for views/components. Returns the attached image when present,
+  # otherwise the bundled default asset name. Prevents `image_tag`/`url_for` from
+  # crashing with "Can't resolve image into URL: ... for nil" on orgs that never
+  # got media attached (bulk-imported/seeded orgs skip the after_create hook).
+  # Both an ActiveStorage attachment and an asset-name string are valid
+  # `image_tag` arguments, so callers can pass the result straight through.
+  def cover_photo_or_default
+    cover_photo.attached? ? cover_photo : "cover-default.png"
+  end
+
+  def logo_or_default
+    logo.attached? ? logo : "logo-default1.png"
+  end
+
   private
 
   def attach_logo_and_cover
-    cover_photo.attach(io: File.open("app/assets/images/cover-default.png"), filename: "cover-default.png")
-    file_logo = "logo-default#{rand(1..6)}"
-    filepath = File.open("app/assets/images/#{file_logo}.png")
-    logo.attach(io: filepath, filename: "#{file_logo}.png") unless logo.attached?
+    unless cover_photo.attached?
+      cover_photo.attach(io: File.open("app/assets/images/cover-default.png"), filename: "cover-default.png")
+    end
+
+    unless logo.attached?
+      file_logo = "logo-default#{rand(1..6)}"
+      filepath = File.open("app/assets/images/#{file_logo}.png")
+      logo.attach(io: filepath, filename: "#{file_logo}.png")
+    end
   end
 end

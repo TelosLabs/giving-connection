@@ -72,6 +72,7 @@ RUN apt-get update -qq && \
       gdal-bin \
       libvips42 \
       imagemagick \
+      libmagickcore-6.q16-6-extra \
       libjemalloc2 && \
     rm -rf /var/lib/apt/lists/*
 

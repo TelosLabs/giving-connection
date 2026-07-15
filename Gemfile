@@ -10,7 +10,7 @@ gem "rails", "~> 7.2.3.1"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 # Use Puma as the app server
-gem "puma", "~> 5.6"
+gem "puma", "~> 8.0"
 # Use SCSS for stylesheets
 # Bundle and transpile JS in Rails. Read more: https://github.com/rails/jsbundling-rails/tree/main
 gem "jsbundling-rails"
@@ -52,7 +52,7 @@ gem "roo", "~> 2.8.0"
 gem "scout_apm"
 gem "sidekiq", "<7"
 gem "slim-rails"
-gem "view_component"
+gem "view_component", "~> 3.25"
 # Use Turbo for rails
 gem "turbo-rails"
 
