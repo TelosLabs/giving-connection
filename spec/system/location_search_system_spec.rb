@@ -8,8 +8,8 @@ RSpec.describe "Location search", type: :system do
   let!(:user) { create(:user) }
 
   # Nationwide "Search all" preset coordinates, mirrored from geolocation_controller.
-  SEARCH_ALL_LAT = "37.0902".freeze
-  SEARCH_ALL_LON = "-95.7129".freeze
+  let(:search_all_lat) { "37.0902" }
+  let(:search_all_lon) { "-95.7129" }
 
   let(:location_input) { find("input[data-geolocation-target='currentLocation']") }
   let(:clear_button) { find("[data-geolocation-target='clearButton']", visible: :all) }
@@ -35,7 +35,7 @@ RSpec.describe "Location search", type: :system do
     # Stub the server-side location services (RSpec class stubs are visible to the
     # in-process Capybara server thread).
     allow(LocationAutocomplete).to receive(:call).and_return([
-      { description: "Nashville, TN", place_id: "p1" }
+      {description: "Nashville, TN", place_id: "p1"}
     ])
     allow(LocationGeocoder).to receive(:call).and_return(
       latitude: 36.16404968727089, longitude: -86.78125827725053, city: "Nashville, TN"
@@ -76,7 +76,7 @@ RSpec.describe "Location search", type: :system do
     clear_button.click
 
     expect(location_input.value).to eq("")
-    expect(find("input[data-geolocation-target='formLatitude']", visible: :all).value).to eq(SEARCH_ALL_LAT)
-    expect(find("input[data-geolocation-target='formLongitude']", visible: :all).value).to eq(SEARCH_ALL_LON)
+    expect(find("input[data-geolocation-target='formLatitude']", visible: :all).value).to eq(search_all_lat)
+    expect(find("input[data-geolocation-target='formLongitude']", visible: :all).value).to eq(search_all_lon)
   end
 end

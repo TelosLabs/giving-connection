@@ -25,7 +25,7 @@ class LocationSearchesController < ApplicationController
     if location
       render json: location
     else
-      render json: { error: "not_found" }, status: :unprocessable_entity
+      render json: {error: "not_found"}, status: :unprocessable_entity
     end
   end
 end

@@ -4,7 +4,7 @@ RSpec.describe LocationAutocomplete, type: :service do
   # Fake Places response body (OK) with a trailing-country description to prove
   # the label formatting.
   def ok_body(predictions)
-    { "status" => "OK", "predictions" => predictions }.to_json
+    {"status" => "OK", "predictions" => predictions}.to_json
   end
 
   def http_response(body)
@@ -20,21 +20,21 @@ RSpec.describe LocationAutocomplete, type: :service do
 
   it "returns formatted predictions on an OK response" do
     body = ok_body([
-      { "description" => "Nashville, TN, USA", "place_id" => "p1" },
-      { "description" => "Nashua, NH, USA", "place_id" => "p2" }
+      {"description" => "Nashville, TN, USA", "place_id" => "p1"},
+      {"description" => "Nashua, NH, USA", "place_id" => "p2"}
     ])
     allow_any_instance_of(Net::HTTP).to receive(:get).and_return(http_response(body))
 
     result = described_class.call("nash")
 
     expect(result).to eq([
-      { description: "Nashville, TN", place_id: "p1" },
-      { description: "Nashua, NH", place_id: "p2" }
+      {description: "Nashville, TN", place_id: "p1"},
+      {description: "Nashua, NH", place_id: "p2"}
     ])
   end
 
   it "caps results at MAX_RESULTS" do
-    predictions = (1..10).map { |i| { "description" => "City #{i}, TN, USA", "place_id" => "p#{i}" } }
+    predictions = (1..10).map { |i| {"description" => "City #{i}, TN, USA", "place_id" => "p#{i}"} }
     allow_any_instance_of(Net::HTTP).to receive(:get).and_return(http_response(ok_body(predictions)))
 
     expect(described_class.call("city").size).to eq(described_class::MAX_RESULTS)
@@ -42,14 +42,14 @@ RSpec.describe LocationAutocomplete, type: :service do
 
   it "returns [] on ZERO_RESULTS" do
     allow_any_instance_of(Net::HTTP).to receive(:get)
-      .and_return(http_response({ "status" => "ZERO_RESULTS", "predictions" => [] }.to_json))
+      .and_return(http_response({"status" => "ZERO_RESULTS", "predictions" => []}.to_json))
 
     expect(described_class.call("zzzzz")).to eq([])
   end
 
   it "returns [] and logs on a non-OK error status (e.g. Places not enabled)" do
     allow_any_instance_of(Net::HTTP).to receive(:get)
-      .and_return(http_response({ "status" => "REQUEST_DENIED", "error_message" => "denied" }.to_json))
+      .and_return(http_response({"status" => "REQUEST_DENIED", "error_message" => "denied"}.to_json))
     expect(Rails.logger).to receive(:warn).with(/non-OK status 'REQUEST_DENIED'/)
 
     expect(described_class.call("nash")).to eq([])

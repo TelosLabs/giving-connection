@@ -6,10 +6,10 @@ RSpec.describe "Location searches", type: :request do
   describe "GET /location_search/suggestions" do
     it "renders server-side <li> options without requiring auth" do
       allow(LocationAutocomplete).to receive(:call).with("nash").and_return([
-        { description: "Nashville, TN", place_id: "p1" }
+        {description: "Nashville, TN", place_id: "p1"}
       ])
 
-      get location_suggestions_path, params: { q: "nash" }
+      get location_suggestions_path, params: {q: "nash"}
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to include('role="option"')
@@ -20,7 +20,7 @@ RSpec.describe "Location searches", type: :request do
     it "renders an empty body when there are no predictions" do
       allow(LocationAutocomplete).to receive(:call).and_return([])
 
-      get location_suggestions_path, params: { q: "zzzzz" }
+      get location_suggestions_path, params: {q: "zzzzz"}
 
       expect(response).to have_http_status(:ok)
       expect(response.body.strip).to be_empty
@@ -33,7 +33,7 @@ RSpec.describe "Location searches", type: :request do
         latitude: 36.16, longitude: -86.78, city: "Nashville"
       )
 
-      get location_geocode_path, params: { q: "Nashville" }
+      get location_geocode_path, params: {q: "Nashville"}
 
       expect(response).to have_http_status(:ok)
       expect(response.parsed_body).to eq(
@@ -44,7 +44,7 @@ RSpec.describe "Location searches", type: :request do
     it "returns 422 when the location can't be resolved" do
       allow(LocationGeocoder).to receive(:call).and_return(nil)
 
-      get location_geocode_path, params: { q: "nowhere" }
+      get location_geocode_path, params: {q: "nowhere"}
 
       expect(response).to have_http_status(:unprocessable_entity)
     end
