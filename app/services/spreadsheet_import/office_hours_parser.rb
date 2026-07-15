@@ -70,7 +70,7 @@ module SpreadsheetImport
       return group.dup if group
 
       # Days can be listed with commas, slashes ("Mon/Wed/Fri") or "&".
-      parts = cleaned.split(/[,\/&]/).map(&:strip).reject(&:blank?)
+      parts = cleaned.split(/[,\/&]/).map(&:strip).compact_blank
 
       parts.flat_map do |part|
         if part.include?("-")
