@@ -27,18 +27,22 @@
       </button>
     </div>
     <div class="flex m-0 w-52 font-medium bg-white rounded-r-md cursor-pointer h-46px"
-      data-controller="dropdown" 
-      data-action="click@window->dropdown#hide touchstart@window->dropdown#hide keydown.up->dropdown#previousItem keydown.down->dropdown#nextItem keydown.esc->dropdown#hide">
+      data-controller="dropdown autocomplete"
+      data-autocomplete-url-value="<%= location_suggestions_path %>"
+      data-autocomplete-min-length-value="2"
+      data-autocomplete-delay-value="150"
+      data-action="click@window->dropdown#hide touchstart@window->dropdown#hide keydown.up->dropdown#previousItem keydown.down->dropdown#nextItem keydown.esc->dropdown#hide autocomplete.change->geolocation#locationSelected toggle->geolocation#onAutocompleteToggle">
       <div class="flex items-center pl-2 pr-2 border-l-gray md:w-52">
         <%= inline_svg_tag "location-dot.svg", size:"9*9", class:"h-7 mr-2 fill-current" %>
         <input
           type="text"
           data-geolocation-target="currentLocation"
+          data-autocomplete-target="input"
           value="<%= @current_location[:city]&.presence %>"
           placeholder="City or ZIP"
           autocomplete="off"
           class="w-full min-w-0 p-0 text-base bg-transparent border-none cursor-text text-gray-3 focus:outline-none focus:ring-0"
-          data-action="focus->dropdown#show input->geolocation#suggestCities keydown.enter->geolocation#geocodeAndSearch"
+          data-action="focus->dropdown#show input->geolocation#onInput keydown.enter->geolocation#searchTyped"
         />
         <button
           type="button"
@@ -50,7 +54,7 @@
       </div>
       <div data-dropdown-target="menu" class="flex absolute right-0 top-11 w-52 bg-white z-110">
         <div class="overflow-hidden w-full text-sm bg-white rounded border shadow-lg">
-          <ul data-geolocation-target="suggestions" class="hidden"></ul>
+          <ul data-autocomplete-target="results" hidden></ul>
           <ul data-geolocation-target="presets">
             <% @locations.each do |location| %>
               <li class="block px-4 py-2 text-gray-3 hover:bg-seafoam" data-action="click->dropdown#toggle click->geolocation#updateLocation" data-dropdown-target="menuItem" >
