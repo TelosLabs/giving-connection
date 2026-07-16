@@ -104,7 +104,7 @@ class Organization < ApplicationRecord
 
     text.truncate(SmartMatch::EMBEDDING_TEXT_MAX_LENGTH)
   end
-  
+
   # Attaches the default logo/cover for records that don't have them yet.
   # Normally handled by the after_create callback, but bulk inserts via
   # activerecord-import skip callbacks, so the importer calls this directly.
