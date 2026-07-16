@@ -331,8 +331,15 @@ module SpreadsheetImport
         location.location_services.build(service: service) if service
       end
 
+      # activerecord-import (see #import) skips ActiveRecord save callbacks, so
+      # OfficeHour's before_save :convert_times_to_utc never runs during a bulk
+      # import. Without it the parser's wall-clock strings ("10:00") get stored
+      # verbatim and then shifted by the timezone on display (e.g. a 10-15 range
+      # shows as 3-8 for an Arizona location). Convert to UTC here so the imported
+      # value matches what a normal save would have produced.
       office_hours.each do |attrs|
-        location.office_hours.build(attrs)
+        office_hour = location.office_hours.build(attrs)
+        office_hour.convert_times_to_utc
       end
 
       :ok
