@@ -14,6 +14,22 @@ class Rack::Attack
   }
   Rack::Attack.cache.store = Redis.new(**rack_attack_redis_options)
 
+  ### Client IP resolution ###
+
+  # Behind kamal-proxy the app sees the proxy's private Docker IP in REMOTE_ADDR
+  # and the real visitor in X-Forwarded-For. Rack's own `req.ip` uses a cruder
+  # algorithm than Rails and can end up bucketing many visitors under a single
+  # proxy IP — which makes a shared throttle fire during ordinary browsing.
+  #
+  # ActionDispatch::RemoteIp runs earlier in the middleware stack (before
+  # Rack::Attack) and already resolves the true client while respecting trusted
+  # proxies, so reuse its result. Fall back to `ip` if it isn't set (e.g. tests).
+  class Request < ::Rack::Request
+    def remote_ip
+      @remote_ip ||= (env["action_dispatch.remote_ip"] || ip).to_s
+    end
+  end
+
   # Development-specific settings for easier testing
   THROTTLE_PERIODS = if Rails.env.development?
     {
@@ -55,17 +71,29 @@ class Rack::Attack
   # quickly. If so, enable the condition to exclude them from tracking.
 
   # Throttle all requests by IP (60rpm)
+  #
+  # Exclude framework-served paths that a single page load fans out into —
+  # bundled assets, ActiveStorage image variants (org logos/covers), Action
+  # Cable, and the health check. Counting these made image-heavy pages (search
+  # results, the map) exhaust the budget during normal navigation and trip the
+  # throttle on legitimate users.
+  EXCLUDED_FROM_REQ_THROTTLE = ["/assets", "/packs", "/rails/active_storage", "/cable", "/up"].freeze
   throttle("req/ip", limit: 300, period: 5.minutes) do |req|
-    req.ip unless req.path.start_with?("/assets")
+    req.remote_ip unless EXCLUDED_FROM_REQ_THROTTLE.any? { |prefix| req.path.start_with?(prefix) }
   end
 
   ### Prevent Registration Spam ###
 
-  # Throttle new account registrations by IP
-  throttle("registrations/ip", limit: 1, period: THROTTLE_PERIODS[:registration_ip]) do |req|
+  # Throttle new account registrations by IP.
+  #
+  # A limit of 1/hour blocked legitimate visitors who share an IP (offices,
+  # campuses, carrier-grade NAT) — the second person to sign up from that IP was
+  # rejected. 5/hour still stops automated bulk-registration while leaving room
+  # for real shared-network signups.
+  throttle("registrations/ip", limit: 5, period: THROTTLE_PERIODS[:registration_ip]) do |req|
     if req.path == "/users" && req.post?
-      Rails.logger.info "[Rack::Attack] Registration attempt from IP: #{req.ip}" if Rails.env.development?
-      req.ip
+      Rails.logger.info "[Rack::Attack] Registration attempt from IP: #{req.remote_ip}" if Rails.env.development?
+      req.remote_ip
     end
   end
 
@@ -102,41 +130,41 @@ class Rack::Attack
     end
   end
 
-  # Return a custom error message for throttled registration attempts
+  # Return a custom error message for throttled requests.
+  #
+  # The message is chosen by the NAME of the throttle that matched
+  # (`rack.attack.matched`), not by the discriminator value. The previous
+  # version keyed off the discriminator and, because most throttles discriminate
+  # on the client IP, it labelled every IP-based throttle — including the general
+  # req/ip navigation throttle — as a "registration attempt", which is what made
+  # ordinary page browsing surface a registration error.
   Rack::Attack.throttled_responder = lambda do |request|
     now = Time.now.utc
     match_data = request.env["rack.attack.match_data"]
+    matched = request.env["rack.attack.matched"]
 
-    Rails.logger.info "[Rack::Attack] Throttle triggered"
+    Rails.logger.info "[Rack::Attack] Throttle triggered: #{matched}"
     Rails.logger.info "[Rack::Attack] Match data: #{match_data.inspect}"
     Rails.logger.info "[Rack::Attack] Request path: #{request.path}"
-    Rails.logger.info "[Rack::Attack] Client IP: #{request.ip}"
+    Rails.logger.info "[Rack::Attack] Client IP: #{request.remote_ip}"
 
     period = match_data[:period]
     retry_after = period - (now.to_i % period)
-
-    # Determine the type of throttle that was triggered
-    throttle_type = case match_data[:discriminator]
-    when request.ip
-      "IP-based rate limit"
-    when ->(d) { d.is_a?(String) && d.include?(".") }
-      "Suspicious email domain"
-    else
-      "Rate limit"
-    end
 
     headers = {
       "Content-Type" => "application/json",
       "Retry-After" => retry_after.to_s
     }
 
-    message = case throttle_type
-    when "IP-based rate limit"
+    message = case matched
+    when "registrations/ip"
       "Too many registration attempts from this IP address. Please try again in #{retry_after} seconds."
-    when "Suspicious email domain"
+    when "registrations/suspicious_email_domain"
       "Registration attempts from this email domain are temporarily restricted. Please try again in #{retry_after} seconds or use a different email provider."
+    when "logins/ip", "logins/email"
+      "Too many login attempts. Please try again in #{retry_after} seconds."
     else
-      "Too many attempts. Please try again in #{retry_after} seconds."
+      "Too many requests. Please try again in #{retry_after} seconds."
     end
 
     [
@@ -145,7 +173,7 @@ class Rack::Attack
       [{
         error: message,
         retry_after: retry_after,
-        throttle_type: throttle_type
+        throttle_type: matched
       }.to_json]
     ]
   end
@@ -162,7 +190,7 @@ class Rack::Attack
   # Throttle POST requests to /login by IP address
   throttle("logins/ip", limit: 5, period: THROTTLE_PERIODS[:login]) do |req|
     if req.path == "/login" && req.post?
-      req.ip
+      req.remote_ip
     end
   end
 
@@ -181,8 +209,8 @@ class Rack::Attack
       is_authenticated = req.env["warden"]&.authenticated?
 
       unless is_authenticated
-        Rails.logger.info "[Rack::Attack] Anonymous blog creation from IP: #{req.ip}" if Rails.env.development?
-        req.ip
+        Rails.logger.info "[Rack::Attack] Anonymous blog creation from IP: #{req.remote_ip}" if Rails.env.development?
+        req.remote_ip
       end
     end
   end

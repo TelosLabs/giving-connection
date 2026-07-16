@@ -1,6 +1,5 @@
 class SpreadsheetImportJob < ApplicationJob
   queue_as :default
-  discard_on StandardError
 
   def perform(blob_signed_id, admin_user_id, original_filename)
     admin = AdminUser.find(admin_user_id)

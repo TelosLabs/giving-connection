@@ -1,12 +1,11 @@
 require "rails_helper"
 
-OFFSET_HOURS = 7
-
+# The parser returns local wall-clock times unchanged; conversion to UTC is the
+# OfficeHour model's responsibility (TimeZoneConvertible).
 def offset_time(time_str)
   return time_str if time_str.nil?
 
-  # Parse and shift by OFFSET_HOURS
-  (Time.zone.parse(time_str) + OFFSET_HOURS.hours).strftime("%H:%M")
+  Time.zone.parse(time_str).strftime("%H:%M")
 end
 
 RSpec.describe SpreadsheetImport::OfficeHoursParser do
@@ -56,6 +55,20 @@ RSpec.describe SpreadsheetImport::OfficeHoursParser do
       result = described_class.new("Monday: 24/7").call
       expected = week_with(
         1 => {day: 1, open_time: "00:00", close_time: "24:00", closed: false}
+      )
+      expect(result).to eq(expected)
+    end
+
+    it "parses newline-separated entries with dash separators (no colon)" do
+      # Spreadsheet cells often place each day range on its own line and separate
+      # the days from the times with a tab/dash rather than a colon.
+      input = "Thursday–Sunday\t- 10:00 - 15:00\nMonday–Wednesday - Closed"
+      result = described_class.new(input).call
+      expected = week_with(
+        4 => {day: 4, open_time: offset_time("10:00"), close_time: offset_time("15:00"), closed: false},
+        5 => {day: 5, open_time: offset_time("10:00"), close_time: offset_time("15:00"), closed: false},
+        6 => {day: 6, open_time: offset_time("10:00"), close_time: offset_time("15:00"), closed: false},
+        0 => {day: 0, open_time: offset_time("10:00"), close_time: offset_time("15:00"), closed: false}
       )
       expect(result).to eq(expected)
     end

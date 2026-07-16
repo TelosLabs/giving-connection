@@ -1,19 +1,26 @@
+require "tmpdir"
+
 module SpreadsheetImport
   class SpreadsheetParser
-    ASSOCIATION_NAMES = ["orgs", "presets"].freeze
+    # Only the "orgs" sheet is consumed. Preset lookups (causes/services/
+    # beneficiaries) are matched against records that already exist in the DB.
+    ASSOCIATION_NAMES = ["orgs"].freeze
 
     def initialize(spreadsheet:, creator:, import_log: nil)
       @spreadsheet = spreadsheet
       @creator = creator
       @import_log = import_log
-      @file_path = File.open(Rails.root.join("db/uploads").to_s)
+      # Each import gets its own scratch directory so concurrent imports can't
+      # clobber each other's intermediate CSV files.
+      @work_dir = Dir.mktmpdir("spreadsheet_import")
       @csv_file_paths = csv_file_paths
       @imported_names = Set.new
     end
 
     def call
-      # load_presets
       import
+    ensure
+      cleanup_work_dir
     end
 
     private
@@ -26,28 +33,20 @@ module SpreadsheetImport
         raise "Missing required sheets: #{missing_sheets.join(", ")}"
       end
 
-      ASSOCIATION_NAMES.each do |association_name|
-        sheet_name = association_name.to_s
+      ASSOCIATION_NAMES.each do |sheet_name|
         data_spreadsheet.default_sheet = sheet_name
-        data_spreadsheet.to_csv("#{@file_path.path}/#{sheet_name}.csv")
+        data_spreadsheet.to_csv("#{@work_dir}/#{sheet_name}.csv")
       end
 
       ASSOCIATION_NAMES.each_with_object({}) do |file_name, hash|
-        hash[:"#{file_name}_csv_file"] = "#{@file_path.path}/#{file_name}.csv"
+        hash[:"#{file_name}_csv_file"] = "#{@work_dir}/#{file_name}.csv"
       end
     end
 
-    def load_presets
-      CSV.foreach(@csv_file_paths[:presets_csv_file], headers: :first_row) do |row|
-        cause = row["causes"]&.strip
-        Cause.find_or_create_by!(name: cause) if cause.present?
-
-        beneficiary = row["beneficiaries"]&.strip
-        BeneficiarySubcategory.find_or_create_by!(name: beneficiary) if beneficiary.present?
-
-        service = row["services"]&.strip
-        Service.find_or_create_by!(name: service) if service.present?
-      end
+    def cleanup_work_dir
+      FileUtils.remove_entry(@work_dir) if @work_dir && Dir.exist?(@work_dir)
+    rescue => e
+      Rails.logger.warn "Failed to clean up import work dir: #{e.message}"
     end
 
     def import
@@ -57,7 +56,9 @@ module SpreadsheetImport
       organizations.each do |entry|
         row_number = entry[:row_number]
         org = entry[:org]
-        label = "Row #{row_number} — #{org.name.presence || "Unnamed Org"}"
+        next if org.nil?
+
+        label = row_label(row_number, entry[:org_row])
 
         org_import_result =
           Organization.import([org],
@@ -86,18 +87,66 @@ module SpreadsheetImport
           end
         else
           @import_log&.increment!(:success_count)
+          attach_media(org_import_result.ids, entry[:org_row])
           @imported_names.add(org.name) if org.name.present?
           Rails.logger.info "Import SUCCESSFUL for organization at row #{row_number} (name: #{org.name})"
         end
       end
 
+      finalize_import_log
+    end
+
+    # activerecord-import skips ActiveRecord callbacks, so the default
+    # logo/cover the after_create hook would normally attach never gets set.
+    # Without them, views that render the org's logo (map pins, info windows,
+    # detail pages) raise and show "Content missing".
+    #
+    # First try to attach the real logo from the spreadsheet's "Logo" URL, then
+    # fall back to the bundled defaults for whatever is still missing (cover
+    # always defaults; logo defaults only when the download failed or was blank).
+    def attach_media(org_ids, org_row)
+      logo_url = org_row && org_row["Logo"]
+
+      Organization.where(id: org_ids).find_each do |org|
+        attach_remote_logo(org, logo_url)
+        org.ensure_default_media!
+      end
+    rescue => e
+      Rails.logger.warn "Failed to attach logo/cover for #{org_ids.inspect}: #{e.message}"
+    end
+
+    def attach_remote_logo(org, logo_url)
+      payload = SpreadsheetImport::LogoDownloader.new(logo_url).call
+      return if payload.nil?
+
+      org.logo.attach(
+        io: payload[:io],
+        filename: payload[:filename],
+        content_type: payload[:content_type]
+      )
+      Rails.logger.info "🖼 Attached remote logo for #{org.name}"
+    rescue => e
+      Rails.logger.warn "Failed to attach remote logo for #{org.name}: #{e.message}"
+    end
+
+    def finalize_import_log
+      return unless @import_log
+
       formatted_errors = @error_messages_by_row.map do |row_label, messages|
         ["#{row_label}:", *messages.map { |msg| "• #{msg}" }].join("\n")
       end.join("\n\n")
 
+      @import_log.reload
+      status =
+        if @import_log.success_count.zero? && @import_log.error_count.positive?
+          "failed"
+        else
+          "completed"
+        end
+
       @import_log.update!(
         error_messages: formatted_errors.presence || "No errors found.",
-        status: "completed"
+        status: status
       )
     end
 
@@ -106,14 +155,17 @@ module SpreadsheetImport
       CSV.foreach(@csv_file_paths[:orgs_csv_file], headers: :first_row).with_index(2) do |org_row, row_number|
         @import_log&.increment!(:total_rows)
 
-        org_name = org_row["Organization Name"]
-        if organization_already_exists?(org_name)
+        # Use the cleaned name for both the duplicate check and storage so the
+        # two never disagree (which would defeat de-duplication).
+        org_name = clean_na(org_row["Organization Name"])
+
+        if org_name.present? && organization_already_exists?(org_name)
           Rails.logger.info "Skipping existing organization: #{org_name} (row #{row_number})"
           @import_log&.increment!(:skipped_count)
           next
         end
 
-        if @imported_names.include?(org_name)
+        if org_name.present? && @imported_names.include?(org_name)
           Rails.logger.warn "⚠️ Skipping duplicate organization in batch: #{org_name} (row #{row_number})"
           @import_log&.increment!(:skipped_count)
           next
@@ -122,12 +174,15 @@ module SpreadsheetImport
         new_organization = Organization.new(build_organization_hash(org_row))
         new_organization.creator = @creator
         new_organization.build_social_media(build_social_media_hash(org_row))
-        build_location_from_org_row(new_organization, org_row)
+        # A location that can't be built (bad address, non-US time zone, etc.)
+        # is a non-blocking note — the organization still imports without one.
+        build_location_from_org_row(new_organization, org_row, row_number)
         build_org_associations(new_organization, org_row)
 
         has_errors = log_organization_errors(row_number, org_row, new_organization)
+
         if has_errors
-          Rails.logger.warn "❌ Skipping row #{row_number} due to missing data (#{org_name || "Unnamed Org"})"
+          Rails.logger.warn "❌ Skipping row #{row_number} due to errors (#{org_name || "Unnamed Org"})"
           @import_log&.increment!(:error_count)
           next
         end
@@ -136,9 +191,10 @@ module SpreadsheetImport
         organizations << {row_number: row_number, org: new_organization, org_row: org_row}
         Rails.logger.info "Prepared organization: #{new_organization.name} (row #{row_number})"
       rescue => e
-        organizations << {row_number: row_number, org: new_organization, org_row: org_row}
         @import_log&.increment!(:error_count)
+        @error_messages_by_row[row_label(row_number, org_row)] << "Unexpected error: #{e.message}"
         Rails.logger.error "Exception preparing row #{row_number}: #{e.message}"
+        next
       end
       organizations
     end
@@ -178,60 +234,91 @@ module SpreadsheetImport
 
     def normalize_non_standard_office_hours(value)
       valid = Location.non_standard_office_hours.keys
-      v = clean_na(value)&.to_s&.strip&.downcase
+      v = clean_na(value)&.downcase
       return nil if v.blank?
       return v if valid.include?(v)
 
       return "appointment_only" if v.include?("appointment")
       return "always_open" if v.include?("always open")
-      return "no_set_business_hours" if v.include?("NA")
 
       nil
     end
 
-    def build_location_from_org_row(organization, org_row)
+    # A location is best-effort: if it can't be built the organization still
+    # imports without one, and the reason is recorded as a non-blocking note so
+    # it's visible in the log rather than silently dropped.
+    #
+    # Returns :ok when a location was attached, :skipped otherwise.
+    def build_location_from_org_row(organization, org_row, row_number)
+      label = row_label(row_number, org_row)
+
       if org_row["Website link"].to_s.strip.downcase == "not found"
         Rails.logger.warn "⏭ Skipping location for #{organization.name} — organization marked as 'Not Found'"
-        return "NA"
+        return :skipped
       end
 
       address = org_row["Address"]
-      geo_result = nil
-      timezone = nil
-
-      begin
-        geo_result = SpreadsheetImport::AddressLocationParser.new(address).call
-      rescue => e
-        Rails.logger.error "🌍 Failed to geocode address '#{address}': #{e.message}"
-        return "geocode"
+      if address.to_s.strip.blank?
+        note_location_skipped(label, "no address provided")
+        return :skipped
       end
 
-      begin
-        timezone = nil
-        if geo_result
-          timezone = SpreadsheetImport::TimezoneDetection.new(geo_result.latitude, geo_result.longitude).call
-        else
-          Rails.logger.warn "🌐 Skipping timezone detection — no geo result available."
-          return "timezone"
+      geo_result =
+        begin
+          SpreadsheetImport::AddressLocationParser.new(address).call
+        rescue => e
+          Rails.logger.error "🌍 Failed to geocode address '#{address}': #{e.message}"
+          nil
         end
-      rescue => e
-        Rails.logger.error "🕒 Failed to detect timezone for '#{address}': #{e.message}"
-        return "timezone"
+
+      if geo_result.nil?
+        note_location_skipped(label, "could not geocode address '#{address}'")
+        return :skipped
+      end
+
+      timezone =
+        begin
+          SpreadsheetImport::TimezoneDetection.new(geo_result.latitude, geo_result.longitude).call
+        rescue => e
+          Rails.logger.error "🕒 Failed to detect timezone for '#{address}': #{e.message}"
+          nil
+        end
+
+      if timezone.blank?
+        note_location_skipped(label, "could not determine time zone for address '#{address}'")
+        return :skipped
+      end
+
+      unless supported_time_zone?(timezone)
+        note_location_skipped(label, "unsupported (non-US) time zone '#{timezone}' for address '#{address}'")
+        return :skipped
       end
 
       hours_string = org_row["Detailed Hours Of Operation"]
+      office_hours =
+        if hours_string.present?
+          SpreadsheetImport::OfficeHoursParser.new(hours_string).call
+        else
+          []
+        end
+
+      # Only fall back to "no set business hours" when we have neither an
+      # explicit non-standard designation nor parsed weekly hours. When real
+      # hours are present we leave the flag blank so they are actually used.
+      non_standard = normalize_non_standard_office_hours(org_row["Hours of Operation"])
+      non_standard = "no_set_business_hours" if non_standard.blank? && office_hours.blank?
 
       location = organization.locations.build(
         name: clean_na(org_row["Organization Name"]),
-        address: org_row["Address"],
+        address: address,
         email: clean_na(org_row["Email"]),
         time_zone: timezone,
         offer_services: true,
-        non_standard_office_hours: normalize_non_standard_office_hours(org_row["Hours of Operation"]) || "no_set_business_hours",
+        non_standard_office_hours: non_standard,
         youtube_video_link: clean_na(org_row["YouTube Video Link"]),
         website: clean_na(org_row["Website link"]),
-        latitude: geo_result&.latitude,
-        longitude: geo_result&.longitude,
+        latitude: geo_result.latitude,
+        longitude: geo_result.longitude,
         main: true
       )
 
@@ -244,17 +331,15 @@ module SpreadsheetImport
         location.location_services.build(service: service) if service
       end
 
-      office_hours =
-        if hours_string.present?
-          SpreadsheetImport::OfficeHoursParser.new(hours_string).call
-        else
-          (0..6).map { |day| {day: day, open_time: nil, close_time: nil, closed: true} }
-        end
-
       office_hours.each do |attrs|
         location.office_hours.build(attrs)
       end
-      true
+
+      :ok
+    end
+
+    def supported_time_zone?(timezone)
+      ActiveSupport::TimeZone.us_zones.map(&:name).include?(timezone)
     end
 
     def build_org_associations(org, org_row)
@@ -273,19 +358,29 @@ module SpreadsheetImport
       return nil if raw_code.blank?
 
       normalized_code = raw_code.strip.upcase
-      Organizations::Constants::NTEE_CODE.find { |entry| entry.start_with?(normalized_code) }
+      codes = Organizations::Constants::NTEE_CODE
+
+      # Prefer an exact match, then a match on the "<code>:" prefix, and only
+      # then a loose prefix match — otherwise a short code like "A2" could
+      # silently bind to the first entry that merely starts with it.
+      codes.find { |entry| entry == normalized_code } ||
+        codes.find { |entry| entry.start_with?("#{normalized_code}:") } ||
+        codes.find { |entry| entry.start_with?(normalized_code) }
     end
 
-    def log_organization_errors(row_number, org_row, organization, exception = nil)
-      org_name = org_row["Organization Name"]
-      label = "Row #{row_number} — #{org_name.presence || "Unnamed Org"}"
-      had_errors = false
+    def note_location_skipped(label, reason)
+      Rails.logger.warn "📍 #{label}: imported without a location — #{reason}"
+      @error_messages_by_row[label] << "Note: imported without a location — #{reason}"
+    end
 
-      if exception
-        Rails.logger.error "#{label}: #{exception.message}"
-        @error_messages_by_row[label] << exception.message
-        had_errors = true
-      end
+    def row_label(row_number, org_row)
+      org_name = clean_na(org_row && org_row["Organization Name"])
+      "Row #{row_number} — #{org_name.presence || "Unnamed Org"}"
+    end
+
+    def log_organization_errors(row_number, org_row, organization)
+      label = row_label(row_number, org_row)
+      had_errors = false
 
       if clean_na(organization&.mission_statement_en).blank?
         @error_messages_by_row[label] << "Missing mission statement"
