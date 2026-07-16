@@ -332,9 +332,16 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_14_155700) do
     t.index ["organization_id"], name: "index_organization_causes_on_organization_id"
   end
 
-# Could not dump table "organization_embeddings" because of following StandardError
-#   Unknown type 'vector(1024)' for column 'embedding'
-
+  create_table "organization_embeddings", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.vector "embedding", limit: 1024, null: false
+    t.text "text_snapshot", null: false
+    t.jsonb "metadata", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["embedding"], name: "idx_org_embeddings_hnsw_cosine", opclass: :vector_cosine_ops, using: :hnsw
+    t.index ["organization_id"], name: "index_organization_embeddings_on_organization_id", unique: true
+  end
 
   create_table "organization_matches", force: :cascade do |t|
     t.bigint "quiz_submission_id", null: false
@@ -400,9 +407,18 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_14_155700) do
     t.index ["location_id"], name: "index_phone_numbers_on_location_id"
   end
 
-# Could not dump table "quiz_submissions" because of following StandardError
-#   Unknown type 'vector(1024)' for column 'embedding'
-
+  create_table "quiz_submissions", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "session_id", null: false
+    t.jsonb "answers", default: {}
+    t.string "user_type", null: false
+    t.vector "embedding", limit: 1024, null: false
+    t.text "text_snapshot", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_quiz_submissions_on_session_id"
+    t.index ["user_id"], name: "index_quiz_submissions_on_user_id"
+  end
 
   create_table "services", force: :cascade do |t|
     t.string "name"
