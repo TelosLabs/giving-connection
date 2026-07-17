@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_07_16_130000) do
+ActiveRecord::Schema[7.2].define(version: 2026_07_16_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -204,9 +204,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_16_130000) do
     t.text "comment"
     t.string "page_url"
     t.bigint "user_id"
+    t.datetime "read_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "read_at"
     t.index ["read_at"], name: "index_feedbacks_on_read_at"
     t.index ["user_id"], name: "index_feedbacks_on_user_id"
   end

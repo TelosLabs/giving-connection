@@ -9,9 +9,11 @@ class CreateFeedbacks < ActiveRecord::Migration[7.2]
       t.text :comment
       t.string :page_url
       t.references :user, null: true, foreign_key: true
-      t.string :tags
+      t.datetime :read_at
 
       t.timestamps
     end
+
+    add_index :feedbacks, :read_at
   end
 end

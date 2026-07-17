@@ -6,12 +6,92 @@ import { Controller } from "@hotwired/stimulus"
 // a successful submit.
 export default class extends Controller {
   static targets = [
-    "trigger", "panel", "tooltip", "face", "ratingInput", "submit",
+    "trigger", "panel", "backdrop", "tooltip", "face", "ratingInput", "submit",
     "dropdown", "dropdownMenu", "dropdownLabel", "categoryInput"
   ]
 
+  // exitIntent enables the "about to leave the page" behavior (nonprofit pages).
+  static values = { exitIntent: Boolean }
+
   // Classes applied to the selected rating face.
   static selectedClasses = ["bg-gray-8", "ring-1", "ring-blue-medium"]
+
+  // Classes that turn the corner panel into a centered modal (exit case only).
+  static MODAL_CLASSES = [
+    "fixed", "top-1/2", "left-1/2", "-translate-x-1/2", "-translate-y-1/2",
+    "z-50", "max-h-[90vh]", "overflow-y-auto"
+  ]
+
+  static STORAGE_KEY = "gc:feedbackSubmitted"
+
+  connect() {
+    if (!this.exitIntentValue || this.hasSentFeedback()) return
+
+    this.exitIntentShown = false
+
+    // Intercept the first back navigation on both desktop (keyboard/browser
+    // back) and mobile (back button / gesture).
+    this.onPopState = this.onPopState.bind(this)
+    history.pushState({ feedbackExitIntent: true }, "", location.href)
+    window.addEventListener("popstate", this.onPopState)
+
+    // Desktop only: also detect the cursor leaving the viewport toward the top.
+    if (window.matchMedia("(hover: hover)").matches) {
+      this.onMouseOut = this.onMouseOut.bind(this)
+      document.addEventListener("mouseout", this.onMouseOut)
+    }
+  }
+
+  disconnect() {
+    if (this.onMouseOut) document.removeEventListener("mouseout", this.onMouseOut)
+    if (this.onPopState) window.removeEventListener("popstate", this.onPopState)
+  }
+
+  // ---------- Exit intent ----------
+
+  onMouseOut(event) {
+    // Cursor left through the top edge of the window (heading for the tab bar,
+    // address bar, or close button).
+    if (event.clientY > 0 || event.relatedTarget) return
+    this.triggerExitIntent()
+  }
+
+  onPopState() {
+    // The user pressed back; show the modal once instead of leaving right away.
+    this.triggerExitIntent()
+  }
+
+  triggerExitIntent() {
+    if (this.exitIntentShown || this.hasSentFeedback()) return
+    if (!this.hasPanelTarget || !this.panelTarget.classList.contains("hidden")) return // already open
+
+    this.exitIntentShown = true
+    this.openAsModal()
+  }
+
+  // Open the form as a centered modal with a dark overlay (exit case only).
+  openAsModal() {
+    this.triggerTarget.classList.add("hidden")
+    this.panelTarget.classList.remove("hidden")
+    this.panelTarget.classList.add(...this.constructor.MODAL_CLASSES)
+    if (this.hasBackdropTarget) this.backdropTarget.classList.remove("hidden")
+  }
+
+  hasSentFeedback() {
+    try {
+      return window.localStorage.getItem(this.constructor.STORAGE_KEY) === "true"
+    } catch {
+      return false
+    }
+  }
+
+  markFeedbackSent() {
+    try {
+      window.localStorage.setItem(this.constructor.STORAGE_KEY, "true")
+    } catch {
+      // Storage unavailable (private mode / disabled) — ignore.
+    }
+  }
 
   open(event) {
     event?.preventDefault()
@@ -22,6 +102,9 @@ export default class extends Controller {
   close(event) {
     event?.preventDefault()
     this.panelTarget.classList.add("hidden")
+    // Undo any centered-modal styling so the next open shows the corner panel.
+    this.panelTarget.classList.remove(...this.constructor.MODAL_CLASSES)
+    if (this.hasBackdropTarget) this.backdropTarget.classList.add("hidden")
     this.triggerTarget.classList.remove("hidden")
   }
 
@@ -87,6 +170,8 @@ export default class extends Controller {
   afterSubmit(event) {
     if (!event.detail.success) return
 
+    // Remember that feedback was sent so exit-intent no longer fires.
+    this.markFeedbackSent()
     this.reset()
     this.close()
   }

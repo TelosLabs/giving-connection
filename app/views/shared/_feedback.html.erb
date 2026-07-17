@@ -5,11 +5,14 @@
   Backend is a UI-only stub for now (FeedbacksController#create).
 
   Locals (all optional):
-    context  - identifies the entry point (e.g. "search", "organization", "discover")
-    question - the rating question shown above the emoji faces
+    context     - identifies the entry point (e.g. "search", "organization", "discover")
+    question    - the rating question shown above the emoji faces
+    exit_intent - when true, the form opens automatically when the user is about
+                  to leave the page (unless they already sent feedback)
 %>
-<% context  = local_assigns.fetch(:context, "search") %>
-<% question = local_assigns.fetch(:question, "How was your experience searching for a nonprofit?") %>
+<% context     = local_assigns.fetch(:context, "search") %>
+<% question    = local_assigns.fetch(:question, "How was your experience searching for a nonprofit?") %>
+<% exit_intent = local_assigns.fetch(:exit_intent, false) %>
 <%
   category_options = [
     ["Search results",          "search_results",       "feedback_cat_search.svg"],
@@ -23,7 +26,12 @@
   ]
 %>
 <div data-controller="feedback" data-action="click@window->feedback#closeDropdownOutside"
+     data-feedback-exit-intent-value="<%= exit_intent %>"
      class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+
+  <%# Dark overlay, shown only when the form opens as a centered modal (exit case) %>
+  <div data-feedback-target="backdrop" data-action="click->feedback#close"
+       class="fixed inset-0 z-40 hidden bg-black/50"></div>
 
   <%# ---------- Closed: trigger (tooltip + button) ---------- %>
   <div data-feedback-target="trigger" class="flex items-center gap-2">
