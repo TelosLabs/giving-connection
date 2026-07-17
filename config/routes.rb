@@ -51,6 +51,8 @@ Rails.application.routes.draw do
   post "newsletter/signup", to: "newsletters#create", as: :newsletter_signup
   get "newsletter/verify/:token", to: "newsletters#verify", as: :verify_newsletter_subscription
 
+  resources :feedbacks, only: [:create]
+
   get "/nonprofit" => "nonprofit_requests#new", :as => :new_nonprofit_request
   post "/nonprofit" => "nonprofit_requests#create", :as => :create_nonprofit_request
 
