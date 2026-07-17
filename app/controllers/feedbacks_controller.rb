@@ -8,22 +8,34 @@ class FeedbacksController < ApplicationController
   # TODO: persist feedback (rating, category, comment, context) once the
   # data model is defined.
   SUCCESS_MESSAGE = "Your feedback has been successfully sent! Feel free to send more feedback anytime."
+  ERROR_MESSAGE = "Sorry, we couldn't save your feedback. Please try again."
 
   def create
-    Rails.logger.info("[Feedback] #{feedback_params.to_h}")
+    @feedback = Feedback.new(feedback_params)
+    @feedback.user = current_user if user_signed_in?
+    @feedback.page_url = @feedback.page_url.presence || request.referer
 
-    respond_to do |format|
-      format.turbo_stream do
-        flash.now[:notice] = SUCCESS_MESSAGE
-        render turbo_stream: turbo_stream.update("flash-messages", partial: "shared/flash_messages")
-      end
-      format.html { redirect_back fallback_location: root_path, notice: SUCCESS_MESSAGE }
+    if @feedback.save
+      respond_with_flash(:notice, SUCCESS_MESSAGE)
+    else
+      respond_with_flash(:alert, ERROR_MESSAGE, status: :unprocessable_entity)
     end
   end
 
   private
 
+  def respond_with_flash(type, message, status: :ok)
+    respond_to do |format|
+      format.turbo_stream do
+        flash.now[type] = message
+        render turbo_stream: turbo_stream.update("flash-messages", partial: "shared/flash_messages"),
+               status: status
+      end
+      format.html { redirect_back fallback_location: root_path, flash: { type => message } }
+    end
+  end
+
   def feedback_params
-    params.require(:feedback).permit(:rating, :category, :comment, :context)
+    params.require(:feedback).permit(:rating, :category, :comment, :context, :page_url)
   end
 end

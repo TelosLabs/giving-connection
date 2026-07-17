@@ -49,6 +49,7 @@
           data: { action: "turbo:submit-end->feedback#afterSubmit" }, class: "flex flex-col gap-2" do |f| %>
       <%= hidden_field_tag "feedback[rating]", "", data: { feedback_target: "ratingInput" } %>
       <%= hidden_field_tag "feedback[context]", context %>
+      <%= hidden_field_tag "feedback[page_url]", request.original_url %>
 
       <h2 class="text-2xl font-bold text-blue-dark">Please tell us about your experience</h2>
 
