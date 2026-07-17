@@ -2,7 +2,7 @@
   Floating feedback widget.
   Closed state: a bubble button + "Have any feedback?" tooltip.
   Open state: the feedback form panel (rating faces + category + comment).
-  Backend is a UI-only stub for now (FeedbacksController#create).
+  Submits to FeedbacksController#create, which persists the feedback.
 
   Locals (all optional):
     context     - identifies the entry point (e.g. "search", "organization", "discover")

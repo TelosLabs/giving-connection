@@ -4,9 +4,6 @@ class FeedbacksController < ApplicationController
   skip_after_action :verify_authorized
   skip_before_action :authenticate_user!
 
-  # UI-only stub for now: accepts the submission and acknowledges it.
-  # TODO: persist feedback (rating, category, comment, context) once the
-  # data model is defined.
   SUCCESS_MESSAGE = "Your feedback has been successfully sent! Feel free to send more feedback anytime."
   ERROR_MESSAGE = "Sorry, we couldn't save your feedback. Please try again."
 

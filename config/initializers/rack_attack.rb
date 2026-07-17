@@ -36,21 +36,24 @@ class Rack::Attack
       registration_ip: 5.minutes,      # Instead of 1 hour
       suspicious_domain: 5.minutes,    # Instead of 1 hour
       login: 20.seconds,               # Keep as is for login
-      blog_anonymous: 5.minutes
+      blog_anonymous: 5.minutes,
+      feedback_anonymous: 5.minutes
     }.freeze
   elsif Rails.env.test?
     {
       registration_ip: 1.second,      # Effectively disable throttling
       suspicious_domain: 1.second,    # Effectively disable throttling
       login: 1.second,                # Effectively disable throttling
-      blog_anonymous: 1.second
+      blog_anonymous: 1.second,
+      feedback_anonymous: 1.second
     }.freeze
   else
     {
       registration_ip: 1.hour,
       suspicious_domain: 1.hour,
       login: 20.seconds,
-      blog_anonymous: 1.hour
+      blog_anonymous: 1.hour,
+      feedback_anonymous: 1.hour
     }.freeze
   end
 
@@ -204,6 +207,20 @@ class Rack::Attack
 
       unless is_authenticated
         Rails.logger.info "[Rack::Attack] Anonymous blog creation from IP: #{req.remote_ip}" if Rails.env.development?
+        req.remote_ip
+      end
+    end
+  end
+
+  ### Prevent Feedback Spam ###
+  # The feedback widget POSTs to /feedbacks without authentication, so throttle
+  # anonymous submissions by IP the same way anonymous blog creation is limited.
+  throttle("feedbacks/anonymous", limit: 10, period: THROTTLE_PERIODS[:feedback_anonymous]) do |req|
+    if req.path == "/feedbacks" && req.post?
+      is_authenticated = req.env["warden"]&.authenticated?
+
+      unless is_authenticated
+        Rails.logger.info "[Rack::Attack] Anonymous feedback from IP: #{req.remote_ip}" if Rails.env.development?
         req.remote_ip
       end
     end

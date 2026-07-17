@@ -29,13 +29,10 @@ export default class extends Controller {
 
     this.exitIntentShown = false
 
-    // Intercept the first back navigation on both desktop (keyboard/browser
-    // back) and mobile (back button / gesture).
-    this.onPopState = this.onPopState.bind(this)
-    history.pushState({ feedbackExitIntent: true }, "", location.href)
-    window.addEventListener("popstate", this.onPopState)
-
-    // Desktop only: also detect the cursor leaving the viewport toward the top.
+    // Desktop only: detect the cursor leaving the viewport toward the top
+    // (heading for the tab bar, address bar, or close button). We intentionally
+    // do NOT hijack the browser Back button — pushState/popstate fights Turbo
+    // Drive's own history handling and traps users on the page.
     if (window.matchMedia("(hover: hover)").matches) {
       this.onMouseOut = this.onMouseOut.bind(this)
       document.addEventListener("mouseout", this.onMouseOut)
@@ -44,7 +41,6 @@ export default class extends Controller {
 
   disconnect() {
     if (this.onMouseOut) document.removeEventListener("mouseout", this.onMouseOut)
-    if (this.onPopState) window.removeEventListener("popstate", this.onPopState)
   }
 
   // ---------- Exit intent ----------
@@ -53,11 +49,6 @@ export default class extends Controller {
     // Cursor left through the top edge of the window (heading for the tab bar,
     // address bar, or close button).
     if (event.clientY > 0 || event.relatedTarget) return
-    this.triggerExitIntent()
-  }
-
-  onPopState() {
-    // The user pressed back; show the modal once instead of leaving right away.
     this.triggerExitIntent()
   }
 
@@ -120,9 +111,7 @@ export default class extends Controller {
 
     this.faceTargets.forEach((face) => {
       const selected = face === button
-      face.classList.toggle("bg-gray-8", selected)
-      face.classList.toggle("ring-1", selected)
-      face.classList.toggle("ring-blue-medium", selected)
+      this.constructor.selectedClasses.forEach((cls) => face.classList.toggle(cls, selected))
       face.setAttribute("aria-pressed", selected)
     })
 
@@ -181,7 +170,7 @@ export default class extends Controller {
     this.ratingInputTarget.value = ""
 
     this.faceTargets.forEach((face) => {
-      face.classList.remove("bg-gray-8", "ring-1", "ring-blue-medium")
+      face.classList.remove(...this.constructor.selectedClasses)
       face.setAttribute("aria-pressed", "false")
     })
 

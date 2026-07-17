@@ -16,7 +16,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_16_120000) do
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
   enable_extension "postgis"
-  enable_extension "vector"
 
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
@@ -260,7 +259,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_16_120000) do
     t.string "address"
     t.decimal "latitude", precision: 10, scale: 6
     t.decimal "longitude", precision: 10, scale: 6
-    t.geography "lonlat", limit: {srid: 4326, type: "st_point", geographic: true}, null: false
+    t.geography "lonlat", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}, null: false
     t.string "website"
     t.boolean "main", default: false, null: false
     t.boolean "offer_services"
@@ -276,11 +275,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_16_120000) do
     t.integer "non_standard_office_hours"
     t.string "time_zone"
     t.string "slug"
-    t.string "state_code", limit: 2
     t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
     t.index ["organization_id"], name: "index_locations_on_organization_id"
     t.index ["slug"], name: "index_locations_on_slug", unique: true
-    t.index ["state_code"], name: "index_locations_on_state_code"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -346,22 +343,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_16_120000) do
     t.index ["organization_id"], name: "index_organization_causes_on_organization_id"
   end
 
-# Could not dump table "organization_embeddings" because of following StandardError
-#   Unknown type 'vector(1024)' for column 'embedding'
-
-
-  create_table "organization_matches", force: :cascade do |t|
-    t.bigint "quiz_submission_id", null: false
-    t.bigint "organization_id", null: false
-    t.decimal "score", precision: 5, scale: 4, null: false
-    t.jsonb "score_breakdown", default: {}
-    t.integer "rank", null: false
-    t.datetime "created_at", null: false
-    t.index ["organization_id"], name: "index_organization_matches_on_organization_id"
-    t.index ["quiz_submission_id", "organization_id"], name: "idx_org_matches_on_submission_and_org", unique: true
-    t.index ["quiz_submission_id"], name: "index_organization_matches_on_quiz_submission_id"
-  end
-
   create_table "organizations", force: :cascade do |t|
     t.string "name", null: false
     t.string "ein_number", null: false
@@ -413,10 +394,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_16_120000) do
     t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_phone_numbers_on_location_id"
   end
-
-# Could not dump table "quiz_submissions" because of following StandardError
-#   Unknown type 'vector(1024)' for column 'embedding'
-
 
   create_table "services", force: :cascade do |t|
     t.string "name"
@@ -495,7 +472,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_16_120000) do
   add_foreign_key "favorite_blogs", "users"
   add_foreign_key "favorite_locations", "locations"
   add_foreign_key "favorite_locations", "users"
-  add_foreign_key "feedbacks", "users"
+  add_foreign_key "feedbacks", "users", on_delete: :nullify
   add_foreign_key "import_logs", "admin_users"
   add_foreign_key "location_services", "locations"
   add_foreign_key "location_services", "services"
@@ -506,11 +483,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_16_120000) do
   add_foreign_key "organization_beneficiaries", "organizations"
   add_foreign_key "organization_causes", "causes"
   add_foreign_key "organization_causes", "organizations"
-  add_foreign_key "organization_embeddings", "organizations"
-  add_foreign_key "organization_matches", "organizations", on_delete: :cascade
-  add_foreign_key "organization_matches", "quiz_submissions", on_delete: :cascade
   add_foreign_key "phone_numbers", "locations"
-  add_foreign_key "quiz_submissions", "users"
   add_foreign_key "services", "causes"
   add_foreign_key "social_medias", "organizations"
   add_foreign_key "tags", "organizations"

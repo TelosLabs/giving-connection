@@ -8,7 +8,7 @@ class CreateFeedbacks < ActiveRecord::Migration[7.2]
       t.string :context
       t.text :comment
       t.string :page_url
-      t.references :user, null: true, foreign_key: true
+      t.references :user, null: true, foreign_key: { on_delete: :nullify }
       t.datetime :read_at
 
       t.timestamps
