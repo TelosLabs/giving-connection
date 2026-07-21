@@ -101,7 +101,9 @@ Rails.application.routes.draw do
     root to: "landing#show"
     resource :quiz, only: [:show, :update, :destroy]
     resource :confirmation, only: [:show]
-    resource :result, only: [:show]
+    resource :result, only: [:show] do
+      get :status, on: :member
+    end
   end
 
   root to: "home#index"

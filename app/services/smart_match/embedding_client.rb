@@ -8,9 +8,38 @@ module SmartMatch
     # stays interactive; total retry budget stays under ~10s with jittered backoff.
     OPEN_TIMEOUT = 5
     READ_TIMEOUT = 5
+    # Batch calls (EmbedAllOrganizationsJob) embed up to BATCH_LIMIT texts in a
+    # single request against the CPU model, which routinely takes far longer
+    # than the 5s interactive budget. They run off the request path, so they get
+    # a much larger read timeout; without it Net::ReadTimeout trips the job's
+    # retry_on and restarts the whole find_in_batches scope.
+    BATCH_READ_TIMEOUT = 60
     MAX_RETRIES = 2
     BASE_BACKOFF = 0.3
     BATCH_LIMIT = 64
+
+    # --- Circuit breaker -----------------------------------------------------
+    # A slow or erroring embedding service can pin Puma threads: each
+    # request-path call can cost up to MAX_RETRIES x READ_TIMEOUT plus backoff.
+    # After CIRCUIT_FAILURE_THRESHOLD failures within CIRCUIT_WINDOW we "open"
+    # the breaker and fail fast for CIRCUIT_COOLDOWN seconds -- raising
+    # EmbeddingUnavailableError without touching the network -- so the graceful
+    # "temporarily unavailable" page shows immediately instead of threads
+    # piling up. After the cooldown the breaker half-opens: the next call is
+    # allowed through; a success resets the breaker, a failure re-opens it.
+    # State lives in Rails.cache (same store EmbedOrganizationJob.coalesce_for
+    # already relies on); a null_store simply disables the breaker.
+    CIRCUIT_FAILURE_THRESHOLD = 5
+    CIRCUIT_WINDOW = 60 # seconds to accumulate failures
+    CIRCUIT_COOLDOWN = 30 # seconds the breaker stays open
+    CIRCUIT_FAILURE_KEY = "smart_match:embedding:failure_count"
+    CIRCUIT_OPEN_KEY = "smart_match:embedding:open_until"
+
+    # 4xx statuses that will fail identically on retry (malformed / invalid
+    # request). These are raised as PermanentError so jobs discard rather than
+    # burn their retry budget. Other 4xx that can succeed later (e.g. 408
+    # Request Timeout, 429 Too Many Requests) stay transient.
+    NON_RETRYABLE_STATUSES = [400, 422].freeze
 
     attr_reader :text
 
@@ -25,7 +54,7 @@ module SmartMatch
 
     def self.embed_batch(texts:)
       texts.each_slice(BATCH_LIMIT).flat_map do |batch|
-        response = http_post("/embed_batch", {texts: batch})
+        response = http_post("/embed_batch", {texts: batch}, read_timeout: BATCH_READ_TIMEOUT)
         parse_vector(response.body, key: "vectors")
       end
     end
@@ -43,21 +72,36 @@ module SmartMatch
 
       THREAD_CONN_KEY = :smart_match_embedding_http
 
-      def http_post(path, payload)
+      def http_post(path, payload, read_timeout: READ_TIMEOUT)
+        # Fail fast while the breaker is open: don't touch the network and don't
+        # count this as a failure (it isn't a real attempt).
+        if circuit_open?
+          raise EmbeddingUnavailableError, "Embedding service unavailable: circuit breaker open"
+        end
+
         uri = URI.join(service_url, path)
         request = Net::HTTP::Post.new(uri.request_uri, "Content-Type" => "application/json")
         request.body = payload.to_json
 
         retries = 0
         begin
-          response = http_connection.request(request)
+          conn = http_connection
+          conn.read_timeout = read_timeout
+          response = conn.request(request)
 
           unless response.is_a?(Net::HTTPSuccess)
+            if NON_RETRYABLE_STATUSES.include?(response.code.to_i)
+              # Client-side/malformed request: a service bug, not an outage --
+              # don't let it trip the breaker.
+              raise PermanentError, "Embedding service rejected request: #{response.code}"
+            end
+            record_circuit_failure
             raise EmbeddingUnavailableError, "Embedding service returned #{response.code}"
           end
 
+          record_circuit_success
           response
-        rescue EmbeddingUnavailableError
+        rescue EmbeddingUnavailableError, PermanentError
           raise
         rescue Timeout::Error, Errno::ECONNREFUSED, Errno::ECONNRESET, IOError => e
           reset_http_connection!
@@ -66,8 +110,32 @@ module SmartMatch
             sleep(backoff_with_jitter(retries))
             retry
           end
+          record_circuit_failure
           raise EmbeddingUnavailableError, "Embedding service unavailable: #{e.message}"
         end
+      end
+
+      # Breaker is open while the open-marker key is present in the cache; it
+      # self-clears when the key expires after CIRCUIT_COOLDOWN (half-open).
+      def circuit_open?
+        Rails.cache.read(CIRCUIT_OPEN_KEY).present?
+      end
+
+      # A success closes the breaker and clears the failure tally.
+      def record_circuit_success
+        Rails.cache.delete(CIRCUIT_FAILURE_KEY)
+        Rails.cache.delete(CIRCUIT_OPEN_KEY)
+      end
+
+      # Count consecutive failures within a rolling window; open the breaker
+      # once the threshold is reached. Read+write (rather than #increment) keeps
+      # this correct across cache stores that don't support atomic increment.
+      def record_circuit_failure
+        count = (Rails.cache.read(CIRCUIT_FAILURE_KEY) || 0) + 1
+        Rails.cache.write(CIRCUIT_FAILURE_KEY, count, expires_in: CIRCUIT_WINDOW)
+        return if count < CIRCUIT_FAILURE_THRESHOLD
+
+        Rails.cache.write(CIRCUIT_OPEN_KEY, true, expires_in: CIRCUIT_COOLDOWN)
       end
 
       # Per-thread keep-alive connection. Net::HTTP itself is not thread-safe,

@@ -5,6 +5,13 @@ class SmartMatchCard::Component < ApplicationViewComponent
 
   CIRCLE_CIRCUMFERENCE = (2 * Math::PI * 20).round(2)
 
+  # Match-tier percentage cutoffs. A score at or above GREAT_MATCH_THRESHOLD
+  # is a "Great Match"; at or above GOOD_MATCH_THRESHOLD (but below great) is a
+  # "Good Match"; anything lower is a plain "Match". Shared by the label, label
+  # color, and circle color so the three presentations can't drift apart.
+  GREAT_MATCH_THRESHOLD = 75
+  GOOD_MATCH_THRESHOLD = 50
+
   def initialize(organization:, match:, user_type: nil)
     @organization = organization
     @match = match
@@ -17,16 +24,16 @@ class SmartMatchCard::Component < ApplicationViewComponent
 
   def match_label
     case match_percentage
-    when 75..100 then "Great Match"
-    when 50..74 then "Good Match"
+    when GREAT_MATCH_THRESHOLD..100 then "Great Match"
+    when GOOD_MATCH_THRESHOLD...GREAT_MATCH_THRESHOLD then "Good Match"
     else "Match"
     end
   end
 
   def match_label_color
     case match_percentage
-    when 75..100 then "text-seafoam"
-    when 50..74 then "text-blue-medium"
+    when GREAT_MATCH_THRESHOLD..100 then "text-seafoam"
+    when GOOD_MATCH_THRESHOLD...GREAT_MATCH_THRESHOLD then "text-blue-medium"
     else "text-salmon"
     end
   end
@@ -41,8 +48,8 @@ class SmartMatchCard::Component < ApplicationViewComponent
 
   def circle_color
     case match_percentage
-    when 75..100 then "#9ae2e0"
-    when 50..74 then "#0782D0"
+    when GREAT_MATCH_THRESHOLD..100 then "#9ae2e0"
+    when GOOD_MATCH_THRESHOLD...GREAT_MATCH_THRESHOLD then "#0782D0"
     else "#fc8383"
     end
   end

@@ -13,9 +13,21 @@ module SmartMatch
       scope = Organization.active.includes(:causes, :beneficiary_subcategories, :main_location)
 
       scope.find_in_batches(batch_size: BATCH_SIZE) do |batch|
+        # Resume-safe: skip orgs whose stored embedding already matches their
+        # current text. On a retry (e.g. after a Net::ReadTimeout tripped
+        # retry_on) this makes the job pick up where it left off instead of
+        # re-embedding every org from the top of the scope.
+        current_snapshots = OrganizationEmbedding
+          .where(organization_id: batch.map(&:id))
+          .pluck(:organization_id, :text_snapshot)
+          .to_h
+
         org_text_pairs = batch.filter_map do |org|
           text = org.smart_match_text
-          [org, text] if text
+          next unless text
+          next if current_snapshots[org.id] == text
+
+          [org, text]
         end
 
         next if org_text_pairs.empty?

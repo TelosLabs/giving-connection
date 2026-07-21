@@ -88,4 +88,24 @@ RSpec.describe Location, type: :model do
       end
     end
   end
+
+  describe "smart match embedding sync" do
+    it "enqueues an org embedding refresh when a location with an address is created" do
+      organization = create(:organization)
+      allow(SmartMatch::EmbedOrganizationJob).to receive(:coalesce_for)
+
+      create(:location, non_standard_office_hours: :always_open, organization: organization, address: "123 Main St")
+
+      expect(SmartMatch::EmbedOrganizationJob).to have_received(:coalesce_for).with(organization.id)
+    end
+
+    it "does not enqueue when a non-address attribute changes" do
+      location = create(:location, non_standard_office_hours: :always_open, address: "123 Main St")
+      allow(SmartMatch::EmbedOrganizationJob).to receive(:coalesce_for)
+
+      location.update!(name: "Renamed Location")
+
+      expect(SmartMatch::EmbedOrganizationJob).not_to have_received(:coalesce_for)
+    end
+  end
 end

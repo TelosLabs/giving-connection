@@ -1,7 +1,7 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, Response
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from sentence_transformers import SentenceTransformer
 
 model: SentenceTransformer | None = None
@@ -10,6 +10,12 @@ MODEL_NAME = "BAAI/bge-large-en-v1.5"
 EMBEDDING_DIM = 1024
 MAX_TOKENS = 512
 MAX_BATCH_SIZE = 64
+# Upper bound on characters per text. The model only consumes MAX_TOKENS (~512)
+# tokens and truncates the rest, so anything beyond a few thousand chars is
+# pure waste. Bound the input BEFORE it reaches the tokenizer so a single
+# multi-megabyte string can't burn CPU/memory ahead of truncation. Generous
+# relative to MAX_TOKENS (worst-case ~1 char/token) to never clip real text.
+MAX_TEXT_CHARS = 20_000
 
 
 @asynccontextmanager
@@ -29,7 +35,7 @@ app = FastAPI(title="GivingConnection Embedding Service", lifespan=lifespan)
 
 
 class EmbedRequest(BaseModel):
-    text: str
+    text: str = Field(..., max_length=MAX_TEXT_CHARS)
 
 
 class EmbedResponse(BaseModel):
@@ -38,6 +44,19 @@ class EmbedResponse(BaseModel):
 
 class EmbedBatchRequest(BaseModel):
     texts: list[str] = Field(..., max_length=MAX_BATCH_SIZE)
+
+    # `max_length` above bounds the item COUNT; this validator bounds each
+    # item's SIZE so one oversized entry can't slip through the batch
+    # guardrail. A violation raises ValueError, which FastAPI surfaces as 422.
+    @field_validator("texts")
+    @classmethod
+    def _bound_text_sizes(cls, texts: list[str]) -> list[str]:
+        for text in texts:
+            if len(text) > MAX_TEXT_CHARS:
+                raise ValueError(
+                    f"each text must be at most {MAX_TEXT_CHARS} characters"
+                )
+        return texts
 
 
 class EmbedBatchResponse(BaseModel):

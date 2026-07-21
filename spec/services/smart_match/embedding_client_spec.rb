@@ -89,6 +89,42 @@ RSpec.describe SmartMatch::EmbeddingClient do
     end
   end
 
+  describe "circuit breaker" do
+    # The test env uses a null_store, which disables the breaker; use a real
+    # in-memory store so failures actually accumulate.
+    let(:memory_cache) { ActiveSupport::Cache::MemoryStore.new }
+
+    before do
+      allow(Rails).to receive(:cache).and_return(memory_cache)
+      memory_cache.clear
+    end
+
+    it "opens after repeated failures and then fails fast without calling the service" do
+      allow(http_conn).to receive(:request).and_raise(Errno::ECONNREFUSED)
+
+      # Drive enough failing calls to reach CIRCUIT_FAILURE_THRESHOLD.
+      SmartMatch::EmbeddingClient::CIRCUIT_FAILURE_THRESHOLD.times do
+        expect { described_class.call(text: "boom") }
+          .to raise_error(SmartMatch::EmbeddingUnavailableError)
+      end
+
+      # Breaker is now open: the next call must fail fast via the short-circuit
+      # path. Its distinct message ("circuit breaker open") proves the network
+      # was never touched -- a real request would raise "...: Connection refused".
+      expect { described_class.call(text: "should short-circuit") }
+        .to raise_error(SmartMatch::EmbeddingUnavailableError, /circuit breaker open/)
+    end
+
+    it "resets after a success" do
+      allow(http_conn).to receive(:request).and_return(stub_response(body: {vector: vector}.to_json))
+
+      described_class.call(text: "ok")
+
+      expect(memory_cache.read(SmartMatch::EmbeddingClient::CIRCUIT_OPEN_KEY)).to be_nil
+      expect(memory_cache.read(SmartMatch::EmbeddingClient::CIRCUIT_FAILURE_KEY)).to be_nil
+    end
+  end
+
   describe ".embed_batch" do
     it "returns vectors for a batch of texts" do
       texts = ["text one", "text two"]

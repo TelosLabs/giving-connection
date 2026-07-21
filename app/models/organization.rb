@@ -134,6 +134,10 @@ class Organization < ApplicationRecord
     return unless previously_new_record? || previous_changes.keys.intersect?(EMBEDDING_FIELDS)
 
     SmartMatch::EmbedOrganizationJob.coalesce_for(id)
+  rescue => e
+    # Embedding refresh is best-effort. A queue/cache (Redis) outage must not
+    # roll back or block an otherwise-valid Organization save.
+    Rails.logger.error("[SmartMatch] Failed to schedule embedding update for organization #{id}: #{e.class}: #{e.message}")
   end
 
   def attach_logo_and_cover

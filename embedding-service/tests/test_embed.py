@@ -21,6 +21,22 @@ def test_embed_empty_body_returns_422(client):
     assert response.status_code == 422
 
 
+def test_embed_oversized_text_returns_422(client):
+    from main import MAX_TEXT_CHARS
+
+    response = client.post("/embed", json={"text": "x" * (MAX_TEXT_CHARS + 1)})
+
+    assert response.status_code == 422
+
+
+def test_embed_text_at_max_size_is_accepted(client):
+    from main import MAX_TEXT_CHARS
+
+    response = client.post("/embed", json={"text": "x" * MAX_TEXT_CHARS})
+
+    assert response.status_code == 200
+
+
 def test_embed_returns_503_when_model_not_loaded(client_unloaded):
     response = client_unloaded.post("/embed", json={"text": "hello"})
 

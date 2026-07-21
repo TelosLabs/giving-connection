@@ -25,6 +25,15 @@ def test_embed_batch_over_max_size_returns_422(client):
     assert response.status_code == 422
 
 
+def test_embed_batch_oversized_text_returns_422(client):
+    from main import MAX_TEXT_CHARS
+
+    texts = ["ok", "x" * (MAX_TEXT_CHARS + 1)]
+    response = client.post("/embed_batch", json={"texts": texts})
+
+    assert response.status_code == 422
+
+
 def test_embed_batch_returns_503_when_model_not_loaded(client_unloaded):
     response = client_unloaded.post("/embed_batch", json={"texts": ["hello"]})
 

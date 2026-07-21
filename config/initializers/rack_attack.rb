@@ -38,7 +38,8 @@ class Rack::Attack
       login: 20.seconds,               # Keep as is for login
       blog_anonymous: 5.minutes,
       smart_match_quiz: 5.minutes,
-      smart_match_results: 5.minutes
+      smart_match_results: 5.minutes,
+      smart_match_result_status: 5.minutes
     }.freeze
   elsif Rails.env.test?
     {
@@ -47,7 +48,8 @@ class Rack::Attack
       login: 1.second,                # Effectively disable throttling
       blog_anonymous: 1.second,
       smart_match_quiz: 1.second,
-      smart_match_results: 1.second
+      smart_match_results: 1.second,
+      smart_match_result_status: 1.second
     }.freeze
   else
     {
@@ -56,7 +58,8 @@ class Rack::Attack
       login: 20.seconds,
       blog_anonymous: 1.hour,
       smart_match_quiz: 1.hour,
-      smart_match_results: 1.hour
+      smart_match_results: 1.hour,
+      smart_match_result_status: 1.hour
     }.freeze
   end
 
@@ -229,13 +232,25 @@ class Rack::Attack
   # Tune in THROTTLE_PERIODS above once real traffic patterns are known.
   throttle("smart_match/quiz", limit: 60, period: THROTTLE_PERIODS[:smart_match_quiz]) do |req|
     if req.path.start_with?("/smart_match/quiz") && (req.put? || req.patch? || req.post?)
-      req.ip
+      req.remote_ip
     end
   end
 
   throttle("smart_match/results", limit: 10, period: THROTTLE_PERIODS[:smart_match_results]) do |req|
-    if req.path.start_with?("/smart_match/result") && req.get?
-      req.ip
+    # Exact match: the "/smart_match/result/status" poll target is throttled
+    # separately below (polling would otherwise burn the 10/hour results budget).
+    if req.path == "/smart_match/result" && req.get?
+      req.remote_ip
+    end
+  end
+
+  # The loading page polls this JSON endpoint every ~2s while the embedding +
+  # scoring job runs. It touches no external service (just a cache/DB existence
+  # check), so it gets a much higher ceiling than the results page itself:
+  # ~120/hour covers several slow completions worth of polling per IP.
+  throttle("smart_match/result_status", limit: 120, period: THROTTLE_PERIODS[:smart_match_result_status]) do |req|
+    if req.path == "/smart_match/result/status" && req.get?
+      req.remote_ip
     end
   end
 

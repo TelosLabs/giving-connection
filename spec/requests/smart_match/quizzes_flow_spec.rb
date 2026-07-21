@@ -9,6 +9,8 @@ require "rails_helper"
 # lift. External calls are stubbed at the SmartMatch::EmbeddingClient and
 # SmartMatch::SimilarityQuery class-method seams; no real HTTP is issued.
 RSpec.describe "SmartMatch quiz flow", type: :request do
+  include ActiveJob::TestHelper
+
   let(:vector) { Array.new(1024) { 0.1 } }
 
   before do
@@ -227,6 +229,15 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
   describe "GET /smart_match/result" do
     let(:organization) { create(:organization) }
     let(:organization_embedding) { create(:organization_embedding, organization: organization) }
+    let(:memory_cache) { ActiveSupport::Cache::MemoryStore.new }
+
+    before do
+      # Matching now runs in ProcessSubmissionJob; the controller and job
+      # coordinate through the cache (test env's :null_store won't persist).
+      allow(Rails).to receive(:cache).and_return(memory_cache)
+      ActiveJob::Base.queue_adapter = :test
+      clear_enqueued_jobs
+    end
 
     def prime_donor_session
       get smart_match_quiz_path
@@ -245,7 +256,7 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       }
     end
 
-    it "renders the org card and persists a QuizSubmission on the happy path" do
+    it "enqueues the match job, persists a QuizSubmission when it runs, and renders the org card" do
       organization_embedding # touch to create org + embedding before stub
 
       allow(SmartMatch::EmbeddingClient).to receive(:call).and_return(vector)
@@ -255,22 +266,30 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
 
       prime_donor_session
 
-      expect {
-        get smart_match_result_path
-      }.to change(QuizSubmission, :count).by(1)
+      # First GET shows the loading state and enqueues the off-thread job.
+      expect { get smart_match_result_path }
+        .to have_enqueued_job(SmartMatch::ProcessSubmissionJob)
+      expect(response.body).to include(I18n.t("smart_match.results.processing.title"))
 
+      # Running the job persists the submission + matches.
+      expect { perform_enqueued_jobs }.to change(QuizSubmission, :count).by(1)
+
+      # The next GET (what the poll navigates to) renders the real results.
+      get smart_match_result_path
       expect(response).to have_http_status(:ok)
       expect(response.body).to include(organization.name)
     end
 
-    it "renders the unavailable fallback when EmbeddingClient raises EmbeddingUnavailableError" do
+    it "renders the unavailable fallback when the job hits EmbeddingUnavailableError" do
       allow(SmartMatch::EmbeddingClient).to receive(:call)
         .and_raise(SmartMatch::EmbeddingUnavailableError, "boom")
 
       prime_donor_session
 
-      get smart_match_result_path
+      # The job records the terminal error; the following GET degrades gracefully.
+      perform_enqueued_jobs { get smart_match_result_path }
 
+      get smart_match_result_path
       expect(response).to have_http_status(:ok)
       expect(response.body).to include(I18n.t("smart_match.results.unavailable.title"))
     end
@@ -290,13 +309,15 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       allow(SmartMatch::EmbeddingClient).to receive(:call).and_return(vector)
       allow(SmartMatch::SimilarityQuery).to receive(:call).and_return([])
 
-      # First request creates the submission and stores its id in session.
+      # Run the job so the submission is persisted, then a GET caches its id
+      # into the session (find_submission resolves it by session_id column).
+      perform_enqueued_jobs { get smart_match_result_path }
       get smart_match_result_path
       submission = QuizSubmission.last
       expect(submission).to be_present
       expect(response).to have_http_status(:ok)
 
-      # Now delete the submission row so the cached id is stale.
+      # Now delete the submission row so the cached session id is stale.
       submission.destroy!
 
       get smart_match_result_path

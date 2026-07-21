@@ -119,9 +119,33 @@ module SmartMatch
       return 1 if session[:smart_match_user_type].blank?
       # State is only required for a local (city-based) search; nationwide /
       # international selections carry no state.
-      return 2 if local_scope_session? && session[:smart_match_state].blank?
-      return 3 if Array(session[:smart_match_causes]).empty?
+      return state_step if local_scope_session? && session[:smart_match_state].blank?
+      return causes_step if Array(session[:smart_match_causes]).empty?
       1
+    end
+
+    # The state is captured on the location / city-selection step, whose
+    # position differs by flow (see QuizStepConfig::STEP_PARTIAL_MAP and
+    # QuizNavigator). Donors answer an "impact location" question at step 6 and
+    # pick their city/state at step 7; service_seekers and volunteers pick
+    # city/state at step 6. Routing to a hardcoded step 2 would send users to an
+    # unrelated question (support_for / causes) that never captures state.
+    def state_step
+      case session[:smart_match_user_type].to_s
+      when "donor" then 7
+      else 6
+      end
+    end
+
+    # The causes question lives at a different step per flow (see
+    # QuizStepConfig::STEP_PARTIAL_MAP): service_seekers answer it at step 4,
+    # donors/volunteers at step 2. Routing to a hardcoded step 3 would send a
+    # service_seeker past their missing causes field.
+    def causes_step
+      case session[:smart_match_user_type].to_s
+      when "service_seeker" then 4
+      else 2
+      end
     end
 
     def local_scope_session?

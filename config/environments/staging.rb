@@ -55,8 +55,14 @@ Rails.application.configure do
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
 
-  # Use a different cache store in production.
-  # config.cache_store = :mem_cache_store
+  # Shared Redis cache store (mirrors production). Required: web and Sidekiq run
+  # in separate containers, and Smart Match coordinates across them through the
+  # cache -- job coalescing (EmbedOrganizationJob), the EmbeddingClient circuit
+  # breaker, and the async results status/error flags (ProcessSubmissionJob).
+  # A per-process memory store would break that cross-container coordination.
+  redis_cache_options = {url: ENV["REDIS_URL"]}
+  redis_cache_options[:ssl_params] = {verify_mode: OpenSSL::SSL::VERIFY_NONE} if ENV["REDIS_URL"]&.start_with?("rediss://")
+  config.cache_store = :redis_cache_store, redis_cache_options
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque

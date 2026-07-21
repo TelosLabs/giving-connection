@@ -5,6 +5,7 @@ export default class extends Controller {
     'form',
     'radio',
     'submitBtn',
+    'backBtn',
     'causeCheckbox',
     'accordion',
     'accordionIcon',
@@ -90,6 +91,29 @@ export default class extends Controller {
     this.updateNextButton()
   }
 
+  // Back navigation. The "Go Back" control is a type="button" (see
+  // _wizard_footer), so it never acts as the form's implicit-submit default.
+  // We convey direction=back via an injected hidden input and submit through
+  // requestSubmit() so the form guard's submit handler still runs (disabling
+  // both Next and Back). The input is created fresh per click; the fresh
+  // server render replaces the footer, so it never lingers to taint a
+  // subsequent Next submit.
+  goBack (event) {
+    event.preventDefault()
+    if (!this.hasFormTarget) return
+
+    let input = this.formTarget.querySelector('input[name="direction"]')
+    if (!input) {
+      input = document.createElement('input')
+      input.type = 'hidden'
+      input.name = 'direction'
+      this.formTarget.appendChild(input)
+    }
+    input.value = 'back'
+
+    this.formTarget.requestSubmit()
+  }
+
   toggleAccordion () {
     if (!this.hasAccordionContentTarget) return
 
@@ -147,6 +171,13 @@ export default class extends Controller {
       if (this.hasSubmitBtnTarget) {
         this.submitBtnTarget.disabled = true
         this.submitBtnTarget.setAttribute('aria-busy', 'true')
+      }
+      // Also disable "Go Back" so a Next-then-Back (or Back-then-Next)
+      // double click cannot fire two concurrent PUTs that race the session.
+      // Safe to disable because the back button carries no form data of its
+      // own -- direction=back is injected as a hidden input in goBack().
+      if (this.hasBackBtnTarget) {
+        this.backBtnTarget.disabled = true
       }
     }
     this.formTarget.addEventListener('submit', this.formSubmitHandler)

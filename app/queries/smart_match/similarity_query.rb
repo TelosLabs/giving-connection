@@ -3,6 +3,9 @@
 module SmartMatch
   class SimilarityQuery
     EXPANSION_RADII = [5, 10, 25, 50].freeze
+    # Fallback only. The live value is read from config/matching_rules.yml
+    # (scoring.min_results) via #min_results; this constant is used when the key
+    # is absent.
     MIN_RESULTS = 3
     MILES_TO_METERS = 1609.344
 
@@ -24,7 +27,7 @@ module SmartMatch
           next if candidates.none?
 
           results = results_from(candidates, embedding, coordinates)
-          return results if results.size >= MIN_RESULTS
+          return results if results.size >= min_results
         end
 
         results_from(state_scope, embedding)
@@ -40,7 +43,7 @@ module SmartMatch
         primary_codes = (location_scope.to_s == "international") ? %w[International] : %w[National]
         results = results_from(scope_filtered(primary_codes), embedding)
 
-        return results if location_scope.to_s == "international" || results.size >= MIN_RESULTS
+        return results if location_scope.to_s == "international" || results.size >= min_results
 
         broadened = results_from(scope_filtered(%w[National International]), embedding)
         (broadened.size > results.size) ? broadened : results
@@ -118,6 +121,10 @@ module SmartMatch
 
       def matching_rules
         SmartMatch::MATCHING_RULES
+      end
+
+      def min_results
+        matching_rules.dig("scoring", "min_results") || MIN_RESULTS
       end
     end
   end

@@ -1,11 +1,16 @@
 <div class="sm-wizard__footer">
   <div class="flex items-center justify-between w-full px-4 sm:w-3/4 sm:mx-auto sm:px-0">
     <% if step > 1 %>
-      <button type="submit"
-              name="direction"
-              value="back"
-              form="quiz-form"
-              class="text-base font-semibold cursor-pointer text-blue-dark hover:underline">
+      <%# type="button" (not submit) so it can never become the form's
+          implicit-submit default -- pressing Enter in a text field must
+          advance (Next), never go back. Back navigation is driven by JS,
+          which injects direction=back and submits; because the direction is
+          not carried by this button's own name/value, the submit guard can
+          safely disable it to prevent a Next-then-Back concurrent PUT. %>
+      <button type="button"
+              class="text-base font-semibold cursor-pointer text-blue-dark hover:underline disabled:opacity-60 disabled:cursor-not-allowed"
+              data-action="click->smart-match-quiz#goBack"
+              data-smart-match-quiz-target="backBtn">
         Go Back
       </button>
     <% else %>

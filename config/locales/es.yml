@@ -46,6 +46,9 @@ es:
       still_need_help: "¿Aún necesitas ayuda?"
       retake: "Volver a hacer el cuestionario"
       try_again: "Intentar de nuevo"
+      processing:
+        title: "Buscando tus coincidencias…"
+        body: "Te estamos emparejando con organizaciones sin fines de lucro que se ajustan a tus respuestas. Esto solo toma un momento."
       empty:
         title: "No se encontraron resultados"
         body: "Haz el cuestionario para recibir emparejamientos personalizados."

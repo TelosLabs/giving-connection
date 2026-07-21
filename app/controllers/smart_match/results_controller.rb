@@ -8,15 +8,32 @@ module SmartMatch
 
     def show
       @user_type = session[:smart_match_user_type]
-      process_quiz_results if quiz_completed?
-    rescue SmartMatch::EmbeddingUnavailableError
-      @embedding_unavailable = true
-    rescue PG::Error, ActiveRecord::RecordInvalid, Net::HTTPFatalError => e
-      Rails.logger.error("[SmartMatch::ResultsController] #{e.class}: #{e.message}")
-      @embedding_unavailable = true
-    rescue => e
-      Rails.logger.error("[SmartMatch::ResultsController] Unexpected #{e.class}: #{e.message}\n#{e.backtrace&.first(10)&.join("\n")}")
-      @embedding_unavailable = true
+      return unless quiz_completed?
+
+      @submission = find_submission
+      return if performed? # stale-id redirect already happened
+
+      if @submission
+        @results = matches_for(@submission)
+      elsif processing_error?
+        # Terminal failure recorded by the background job. Clear the flags so
+        # the "try again" link starts a fresh attempt, then degrade gracefully.
+        reset_processing_state
+        @embedding_unavailable = true
+      else
+        # Embedding + scoring runs off the request thread (see
+        # ProcessSubmissionJob) so a slow embedding service can't block Puma.
+        # Render the loading state; the page polls #status until matches land.
+        ensure_processing_enqueued
+        @processing = true
+      end
+    end
+
+    # Lightweight JSON poll target for the loading page. Kept separate from #show
+    # (and separately throttled) so polling never trips the results throttle or
+    # re-runs the pipeline.
+    def status
+      render json: {status: current_status}
     end
 
     private
@@ -25,17 +42,31 @@ module SmartMatch
       session[:smart_match_user_type].present? && session[:smart_match_causes].present?
     end
 
-    def process_quiz_results
-      @submission = find_or_create_submission
-      return unless @submission
+    def current_status
+      return "unavailable" unless quiz_completed?
+      return "ready" if submission_present?
+      return "unavailable" if processing_error?
 
-      @results = @submission.organization_matches
+      "processing"
+    end
+
+    # Side-effect-free existence check for the JSON poll (unlike find_submission,
+    # which may redirect on a stale session id).
+    def submission_present?
+      id = session[:smart_match_submission_id]
+      return true if id && QuizSubmission.exists?(id: id)
+
+      QuizSubmission.exists?(session_id: session.id.to_s)
+    end
+
+    def matches_for(submission)
+      submission.organization_matches
         .includes(organization: [:causes, :main_location, {logo_attachment: :blob}, {cover_photo_attachment: :blob}])
         .order(:rank)
         .limit(3)
     end
 
-    def find_or_create_submission
+    def find_submission
       if (id = session[:smart_match_submission_id])
         submission = QuizSubmission.find_by(id: id)
         return submission if submission
@@ -48,19 +79,37 @@ module SmartMatch
         redirect_to smart_match_root_path and return nil
       end
 
-      create_submission
+      # A prior background run may have persisted the submission without this
+      # request having written the id back to the session yet. Reuse it.
+      existing = QuizSubmission.where(session_id: session.id.to_s).order(:created_at).last
+      session[:smart_match_submission_id] = existing.id if existing
+      existing
     end
 
-    def create_submission
-      result = SmartMatch::SubmissionProcessor.call(
+    def ensure_processing_enqueued
+      # unless_exist makes this a no-op when a job is already in flight, so
+      # repeated polls / double-clicks enqueue exactly one job per session.
+      newly_claimed = Rails.cache.write(
+        SmartMatch::ProcessSubmissionJob.processing_key(session.id.to_s),
+        true, unless_exist: true, expires_in: SmartMatch::ProcessSubmissionJob::STATE_TTL
+      )
+      return unless newly_claimed
+
+      SmartMatch::ProcessSubmissionJob.perform_later(
         session_answers: submission_attributes,
         user_type: session[:smart_match_user_type],
         session_id: session.id.to_s,
-        user: current_user
+        user_id: current_user&.id
       )
-      submission = result[:submission]
-      session[:smart_match_submission_id] = submission.id
-      submission
+    end
+
+    def processing_error?
+      Rails.cache.exist?(SmartMatch::ProcessSubmissionJob.error_key(session.id.to_s))
+    end
+
+    def reset_processing_state
+      Rails.cache.delete(SmartMatch::ProcessSubmissionJob.error_key(session.id.to_s))
+      Rails.cache.delete(SmartMatch::ProcessSubmissionJob.processing_key(session.id.to_s))
     end
 
     def submission_attributes

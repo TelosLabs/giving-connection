@@ -172,5 +172,9 @@ class Location < ActiveRecord::Base
     return unless organization_id
 
     SmartMatch::EmbedOrganizationJob.coalesce_for(organization_id)
+  rescue => e
+    # Embedding refresh is best-effort. A queue/cache (Redis) outage must not
+    # roll back or block an otherwise-valid Location save.
+    Rails.logger.error("[SmartMatch] Failed to schedule embedding update for organization #{organization_id}: #{e.class}: #{e.message}")
   end
 end

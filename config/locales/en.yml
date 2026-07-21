@@ -72,6 +72,9 @@ en:
       still_need_help: "Still Need Help?"
       retake: "Retake Quiz"
       try_again: "Try Again"
+      processing:
+        title: "Finding your matches…"
+        body: "We're matching you with nonprofits that fit your answers. This only takes a moment."
       empty:
         title: "No quiz results found"
         body: "Take the quiz to get personalized nonprofit matches."
