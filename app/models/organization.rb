@@ -29,7 +29,10 @@ class Organization < ApplicationRecord
   validates_with OrganizationValidator
   include PgSearch::Model
 
-  IN_KIND_DONATION_ITEMS_TEMPLATE = <<~ITEMS
+  # Static reference copy shown on the org edit form to help nonprofits
+  # think through what to list at their own in-kind donation link. It is
+  # display-only — not persisted, not tied to any form field.
+  IN_KIND_DONATION_ITEMS_SUGGESTIONS = <<~ITEMS
     Basic Needs & Household Items
     - Clothing (general)
     - Winter coats & cold-weather gear

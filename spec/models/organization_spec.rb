@@ -57,13 +57,10 @@ RSpec.describe Organization, type: :model do
   end
 
   describe "in-kind donation fields" do
-    it "persists a link and a list of requested items" do
-      organization = create(:organization,
-        in_kind_donation_link: "https://example.org/wishlist",
-        in_kind_donation_items: "Clothing\nDiapers\nBooks")
+    it "persists a link to the org's own in-kind donation needs" do
+      organization = create(:organization, in_kind_donation_link: "https://example.org/wishlist")
 
       expect(organization.in_kind_donation_link).to eq("https://example.org/wishlist")
-      expect(organization.in_kind_donation_items).to eq("Clothing\nDiapers\nBooks")
     end
   end
 end
