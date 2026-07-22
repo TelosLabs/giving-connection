@@ -16,8 +16,16 @@ import { useCookies } from "./mixins/useCookies";
 
   const IP_LOOKUP_COOLDOWN_MS = 12 * 60 * 60 * 1000; // 12 hours in miliseconds (12h * 60m * 60s * 1000ms)
 
-export default class extends Controller { 
-  static targets = [ "currentLocation", "formLatitude", "formLongitude" ]
+// This controller owns the "where am I" concerns of the search bar: browser
+// geolocation + IP fallback, preset cities ("Search near me"), cookie
+// persistence, and syncing the resolved location into the form.
+//
+// The live city typeahead is handled by the `stimulus-autocomplete` controller
+// (server-rendered predictions from LocationSearchesController), NOT here. When a
+// suggestion is picked or free text is submitted, we resolve it to coordinates
+// via the server geocode endpoint and submit — no client-side Google calls.
+export default class extends Controller {
+  static targets = [ "currentLocation", "formLatitude", "formLongitude", "presets", "clearButton" ]
 
   connect() {
     useCookies(this)
@@ -25,6 +33,8 @@ export default class extends Controller {
     this.longitude = this.getCookie("longitude")
     this.currentCity = this.getCookie("city")
   }
+
+  // --- Browser geolocation / IP fallback (the "Search near me" preset) ---
 
   async getCurrentPosition() {
     navigator.geolocation.getCurrentPosition(this.success.bind(this), this.error.bind(this), options);
@@ -47,7 +57,7 @@ export default class extends Controller {
     if (err.code === 1) {
       // User denied access to location services
       console.warn(`ERROR(${err.code}): ${err.message}`)
-      window.alert('Please enable location services to use this feature. Visit your browser settings to enable location services.') 
+      window.alert('Please enable location services to use this feature. Visit your browser settings to enable location services.')
     }
     await this.getLocationFromIP();
   }
@@ -106,11 +116,7 @@ export default class extends Controller {
     }
   }
 
-  rememberLocation() {
-    this.setCookie("latitude", this.latitude)
-    this.setCookie("longitude", this.longitude)
-    this.setCookie("city", this.currentCity)
-  }
+  // --- Preset cities ---
 
   updateLocation(event) {
     this.currentCity = event.target.innerText
@@ -120,12 +126,148 @@ export default class extends Controller {
     this.updateCityAndForm()
   }
 
-  updateCityAndForm() {
-    this.currentLocationTargets.forEach(target => target.innerText = this.currentCity);
+  // --- Typeahead selection (driven by the stimulus-autocomplete controller) ---
+
+  // Fired via `autocomplete.change` when the user picks a suggestion. Resolve the
+  // chosen city label to coordinates server-side, then search.
+  async locationSelected(event) {
+    const query = event.detail && event.detail.value;
+    const form = event.target.closest("form");
+    if (!query) return;
+
+    const location = await this.geocode(query);
+    if (!location) {
+      window.alert("We couldn't load that location. Please try again.");
+      return;
+    }
+    this.applyResolved(location, form);
+  }
+
+  // Fired on Enter for free text that wasn't picked from the suggestion list.
+  async searchTyped(event) {
+    // If a suggestion is highlighted, let stimulus-autocomplete commit it (its
+    // Enter handler fires autocomplete.change -> locationSelected). Bail so we
+    // don't geocode + submit twice.
+    const results = event.target
+      .closest("[data-controller~='autocomplete']")
+      ?.querySelector("[data-autocomplete-target='results']");
+    if (results && !results.hidden && results.querySelector('[aria-selected="true"]')) return;
+
+    event.preventDefault();
+    if (this.isGeocoding) return; // guard OS key-repeat / rapid Enter
+    const input = event.target;
+    const query = input.value.trim();
+    const form = input.closest("form");
+    if (!query) return;
+
+    this.isGeocoding = true;
+    try {
+      const location = await this.geocode(query);
+      if (!location) {
+        window.alert("We couldn't find that location. Try a city name or ZIP code.");
+        return;
+      }
+      this.applyResolved(location, form);
+    } finally {
+      this.isGeocoding = false;
+    }
+  }
+
+  // Resolve a typed/selected string to { latitude, longitude, city } via the
+  // server geocode endpoint. Returns null on any failure.
+  async geocode(query) {
+    try {
+      const url = new URL("/location_search/geocode", window.location.origin);
+      url.searchParams.set("q", query);
+      const response = await fetch(url, { headers: { Accept: "application/json" } });
+      if (!response.ok) return null;
+      return await response.json();
+    } catch (error) {
+      console.warn("Failed to geocode location:", error);
+      return null;
+    }
+  }
+
+  applyResolved(location, form) {
+    this.latitude = location.latitude;
+    this.longitude = location.longitude;
+    this.currentCity = location.city;
+    this.rememberLocation();
+    this.updateFormFields();
+    if (form) form.requestSubmit();
+  }
+
+  // --- Clear button + preset/suggestion visibility ---
+
+  // Bound to the input's `input` event: show the clear (x) only when non-empty.
+  onInput(event) {
+    if (!this.hasClearButtonTarget) return;
+    this.clearButtonTarget.classList.toggle("hidden", event.target.value.trim() === "");
+  }
+
+  // Bound to the autocomplete `toggle` event: hide presets while suggestions are
+  // open, show them again when the suggestion list closes.
+  onAutocompleteToggle(event) {
+    if (!this.hasPresetsTarget) return;
+    const open = event.detail && event.detail.action === "open";
+    this.presetsTarget.classList.toggle("hidden", open);
+  }
+
+  clearLocationInput(event) {
+    event.preventDefault();
+    const input = event.currentTarget
+      .closest("[data-controller~='dropdown']")
+      ?.querySelector("[data-geolocation-target='currentLocation']");
+    if (input) {
+      input.value = "";
+      // Let stimulus-autocomplete clear its results (fires `toggle` -> presets show).
+      input.dispatchEvent(new Event("input"));
+      // Defer focus so it lands after the click finishes bubbling.
+      requestAnimationFrame(() => input.focus());
+    }
+    // Frontend clears the visible text only; the underlying filter falls back to
+    // nationwide "Search all" so an empty box searches everywhere, not the stale
+    // previous location.
+    this.resetToSearchAll();
+    if (this.hasClearButtonTarget) this.clearButtonTarget.classList.add("hidden");
+  }
+
+  resetToSearchAll() {
+    const coords = CITIES["Search all"];
+    this.latitude = coords.latitude;
+    this.longitude = coords.longitude;
+    this.currentCity = "Search all";
+    this.rememberLocation();
+    if (this.hasFormLatitudeTarget && this.hasFormLongitudeTarget) {
+      this.formLatitudeTarget.value = this.latitude;
+      this.formLongitudeTarget.value = this.longitude;
+    }
+  }
+
+  // --- Persistence + form sync ---
+
+  rememberLocation() {
+    this.setCookie("latitude", this.latitude)
+    this.setCookie("longitude", this.longitude)
+    this.setCookie("city", this.currentCity)
+  }
+
+  updateFormFields() {
+    this.currentLocationTargets.forEach(target => {
+      if (target.tagName === "INPUT") {
+        target.value = this.currentCity;
+      } else {
+        target.innerText = this.currentCity;
+      }
+    });
     if (this.hasFormLatitudeTarget && this.hasFormLongitudeTarget) {
       this.formLongitudeTarget.value = this.longitude;
       this.formLatitudeTarget.value = this.latitude;
     }
+  }
+
+  updateCityAndForm() {
+    this.updateFormFields();
 
     // Dispatch a custom event indicating the location has changed
     const event = new CustomEvent('location-updated', {
