@@ -16,7 +16,7 @@
             class: "sr-only sm-local-toggle",
             checked: local_selected,
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="sm-card-emoji" aria-hidden="true">📍</span>
+      <%= inline_svg_tag "smart_match/map_location.svg", class: "w-24 h-24 mb-3", aria_hidden: "true" %>
       <span class="text-base font-bold"><%= t("smart_match.quiz.steps.location_detail.us") %></span>
     </label>
 
@@ -27,7 +27,7 @@
             class: "sr-only",
             checked: scope == "national",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="sm-card-emoji" aria-hidden="true">🌐</span>
+      <%= inline_svg_tag "smart_match/online.svg", class: "w-24 h-24 mb-3", aria_hidden: "true" %>
       <span class="text-base font-bold"><%= t("smart_match.quiz.steps.city_selection.national") %></span>
     </label>
 
@@ -38,7 +38,7 @@
             class: "sr-only",
             checked: scope == "international",
             data: { smart_match_quiz_target: "radio" } %>
-      <span class="sm-card-emoji" aria-hidden="true">🌍</span>
+      <%= inline_svg_tag "smart_match/globe.svg", class: "w-24 h-24 mb-3", aria_hidden: "true" %>
       <span class="text-base font-bold"><%= t("smart_match.quiz.steps.city_selection.international") %></span>
     </label>
 

@@ -184,20 +184,6 @@
   }
 }
 
-// Big emoji "icon" sitting above the label on text-only cards (location scope).
-// Scoped under .sm-card-option so it outranks the base `.sm-card-option span`
-// sizing, and mirrors the icon cards: large + on top for desktop, smaller and
-// to the side on mobile's row layout.
-.sm-card-option .sm-card-emoji {
-  font-size: 3.5rem;
-  line-height: 1;
-
-  @media (max-width: 639px) {
-    font-size: 2rem;
-    order: 2;
-  }
-}
-
 // List variant for mobile
 .sm-card-option--list {
   display: flex;
