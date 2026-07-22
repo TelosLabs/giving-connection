@@ -1,0 +1,8 @@
+<%# One city prediction, in the shape stimulus-autocomplete expects (role="option",
+    data-autocomplete-value = the label we geocode server-side on selection). %>
+<li role="option"
+    class="block px-4 py-2 cursor-pointer text-gray-3 hover:bg-seafoam"
+    data-autocomplete-value="<%= prediction[:description] %>"
+    data-autocomplete-label="<%= prediction[:description] %>">
+  <%= prediction[:description] %>
+</li>

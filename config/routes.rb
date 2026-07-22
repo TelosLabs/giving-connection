@@ -55,6 +55,8 @@ Rails.application.routes.draw do
   post "/nonprofit" => "nonprofit_requests#create", :as => :create_nonprofit_request
 
   get "search" => "searches#show"
+  get "location_search/suggestions" => "location_searches#suggestions", :as => :location_suggestions
+  get "location_search/geocode" => "location_searches#geocode", :as => :location_geocode
   get "termsofuse" => "terms_and_conditions#show", :as => :terms_of_use
   resource :map_popup, only: [:new]
   resource :search_preview, only: [:show]
