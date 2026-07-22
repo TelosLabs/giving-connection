@@ -1,4 +1,11 @@
 - markers = @results&.map { |l| [l.latitude, l.longitude] }  || []
+- search_keyword = params.dig(:search, :keyword)
+- search_city = params.dig(:search, :city).presence || @current_location&.dig(:city)
+- search_analytics_payload = { search_term: search_keyword, category: "Find Help", location: search_city }.to_json
+script
+  | if (typeof gtag === "function") {
+  |   gtag("event", "search", #{{search_analytics_payload}});
+  | }
 = form_with(\
   model: @search, \
   url: "", \
