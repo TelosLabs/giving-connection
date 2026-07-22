@@ -61,4 +61,4 @@ database_consistency*
 production_backup.dump
 staging_backup.dump
 
-/embedding-service/
+/embedding-service/*
