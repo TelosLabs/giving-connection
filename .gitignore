@@ -60,3 +60,5 @@ database_consistency*
 # Ignore backup dumps
 production_backup.dump
 staging_backup.dump
+
+/embedding-service/*
