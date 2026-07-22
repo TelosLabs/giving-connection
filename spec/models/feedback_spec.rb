@@ -99,7 +99,7 @@ RSpec.describe Feedback, type: :model do
       older = create(:feedback, comment: "older")
       newer = create(:feedback, comment: "newer")
       rows = CSV.parse(described_class.to_csv, headers: true)
-      expect(rows.map { |r| r["Comment"] }.first(2)).to eq([newer.comment, older.comment])
+      expect(rows.pluck("Comment").first(2)).to eq([newer.comment, older.comment])
       expect(newer.id).to be > older.id
     end
 

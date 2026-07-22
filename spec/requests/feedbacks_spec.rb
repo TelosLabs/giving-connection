@@ -3,9 +3,9 @@
 require "rails_helper"
 
 RSpec.describe "Feedbacks", type: :request do
-  let(:turbo_headers) { { "Accept" => "text/vnd.turbo-stream.html" } }
+  let(:turbo_headers) { {"Accept" => "text/vnd.turbo-stream.html"} }
   let(:valid_params) do
-    { feedback: { rating: 5, category: "search_results", comment: "Great!", context: "search" } }
+    {feedback: {rating: 5, category: "search_results", comment: "Great!", context: "search"}}
   end
 
   describe "POST /feedbacks" do
@@ -24,7 +24,7 @@ RSpec.describe "Feedbacks", type: :request do
     context "with an invalid rating (turbo_stream)" do
       it "does not persist and returns 422" do
         expect do
-          post feedbacks_path, params: { feedback: { rating: nil } }, headers: turbo_headers
+          post feedbacks_path, params: {feedback: {rating: nil}}, headers: turbo_headers
         end.not_to change(Feedback, :count)
 
         expect(response).to have_http_status(:unprocessable_entity)
@@ -33,7 +33,7 @@ RSpec.describe "Feedbacks", type: :request do
 
     context "html format" do
       it "redirects back to the fallback location on success" do
-        post feedbacks_path, params: valid_params, headers: { "Referer" => "/search" }
+        post feedbacks_path, params: valid_params, headers: {"Referer" => "/search"}
         expect(response).to have_http_status(:found)
         expect(response).to redirect_to("/search")
       end
@@ -46,7 +46,7 @@ RSpec.describe "Feedbacks", type: :request do
       end
 
       it "keeps a submitted page_url" do
-        params = valid_params.deep_merge(feedback: { page_url: "https://example.com/explicit" })
+        params = valid_params.deep_merge(feedback: {page_url: "https://example.com/explicit"})
         post feedbacks_path, params: params, headers: turbo_headers
         expect(Feedback.last.page_url).to eq("https://example.com/explicit")
       end

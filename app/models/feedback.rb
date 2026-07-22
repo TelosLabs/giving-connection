@@ -18,13 +18,13 @@ class Feedback < ApplicationRecord
     other
   ].freeze
 
-  validates :rating, presence: true, inclusion: { in: 1..5 }
+  validates :rating, presence: true, inclusion: {in: 1..5}
   # category is optional (the widget lets people submit without picking one),
   # but if present it must be one of the known values — the field is a hidden
   # input a direct POST could set to anything.
-  validates :category, inclusion: { in: CATEGORIES }, allow_blank: true
-  validates :comment, length: { maximum: 5_000 }
-  validates :context, :page_url, length: { maximum: 2_048 }
+  validates :category, inclusion: {in: CATEGORIES}, allow_blank: true
+  validates :comment, length: {maximum: 5_000}
+  validates :context, :page_url, length: {maximum: 2_048}
 
   scope :unread, -> { where(read_at: nil) }
   scope :read, -> { where.not(read_at: nil) }

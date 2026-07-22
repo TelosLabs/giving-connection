@@ -14,8 +14,8 @@ module Admin
     def index
       if request.format.csv?
         send_data Feedback.to_csv,
-                  filename: "feedback-#{Time.zone.today.iso8601}.csv",
-                  type: "text/csv"
+          filename: "feedback-#{Time.zone.today.iso8601}.csv",
+          type: "text/csv"
       else
         super
       end

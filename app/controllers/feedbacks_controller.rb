@@ -26,9 +26,9 @@ class FeedbacksController < ApplicationController
       format.turbo_stream do
         flash.now[type] = message
         render turbo_stream: turbo_stream.update("flash-messages", partial: "shared/flash_messages"),
-               status: status
+          status: status
       end
-      format.html { redirect_back fallback_location: root_path, flash: { type => message } }
+      format.html { redirect_back fallback_location: root_path, flash: {type => message} }
     end
   end
 
