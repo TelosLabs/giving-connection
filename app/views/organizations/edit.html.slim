@@ -126,6 +126,20 @@
 
               div class="hidden col-span-3 md:flex"
 
+              div class="col-span-12 lg:col-span-7 md:col-span-6"
+                = f.label :in_kind_donation_link, "In-kind Donation Needs Link", class: "block text-sm text-gray-3 font-medium"
+                = f.text_field :in_kind_donation_link, { class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium", placeholder: "https://example.org/in-kind-needs" }
+                p class="mt-2 text-sm text-gray-4"
+                  | Add a link to an Amazon Wishlist or a page on your website that lists your current in-kind donation needs.
+
+                div class="mt-4 p-4 rounded-6px bg-gray-9 border border-gray-8"
+                  p class="text-sm font-medium text-gray-3"
+                    | Need ideas? Here are some commonly requested items nonprofits list:
+                  p class="mt-2 text-sm text-gray-4 whitespace-pre-wrap"
+                    = Organization::IN_KIND_DONATION_ITEMS_SUGGESTIONS
+
+              div class="hidden col-span-3 md:flex"
+
               fieldset  class="col-span-12 lg:col-span-7 md:col-span-6 mt-6" data-controller="toggle"
                 legend class="text-sm font-medium leading-4 text-gray-2"
                   | Do you have volunteer opportunities available?

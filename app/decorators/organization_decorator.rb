@@ -11,6 +11,10 @@ class OrganizationDecorator < ApplicationDecorator
     url_or_nil(object.volunteer_link)
   end
 
+  def in_kind_donation_link
+    url_or_nil(object.in_kind_donation_link)
+  end
+
   def designation_copies
     case object.scope_of_work
     when "National"

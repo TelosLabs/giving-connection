@@ -112,6 +112,7 @@ class OrganizationsController < ApplicationController
       :active,
       :verified,
       :donation_link,
+      :in_kind_donation_link,
       :volunteer_availability,
       :volunteer_link,
       :general_population_serving,

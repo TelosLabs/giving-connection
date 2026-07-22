@@ -28,6 +28,87 @@ class Organization < ApplicationRecord
   include Organizations::Constants
   validates_with OrganizationValidator
   include PgSearch::Model
+
+  # Static reference copy shown on the org edit form to help nonprofits
+  # think through what to list at their own in-kind donation link. It is
+  # display-only — not persisted, not tied to any form field.
+  IN_KIND_DONATION_ITEMS_SUGGESTIONS = <<~ITEMS
+    Basic Needs & Household Items
+    - Clothing (general)
+    - Winter coats & cold-weather gear
+    - Shoes (adults or children)
+    - Blankets & bedding
+    - Towels & washcloths
+    - Diapers (baby & adult)
+    - Baby wipes
+    - Feminine hygiene products
+    - Soap & toiletries
+    - Laundry detergent
+    - Cleaning supplies
+
+    Children & Baby Items
+    - Toys & games (new or gently used)
+    - Books (children’s)
+    - School supplies
+    - Backpacks
+    - Cribs & bassinets
+    - Strollers
+    - Car seats (new or not expired)
+
+    Food & Kitchen Supplies
+    - Non-perishable food (canned/dry goods)
+    - Fresh produce
+    - Frozen foods
+    - Grocery store gift cards
+    - Bottled water
+    - Paper plates & plastic utensils
+    - Small kitchen appliances (e.g. microwave, blender)
+    - Cooking utensils & cookware
+
+    Furniture & Household Goods
+    - Beds & mattresses (new or gently used)
+    - Dressers & storage units
+    - Sofas & chairs
+    - Dining tables & chairs
+    - Lamps & lighting
+    - Rugs
+    - Kitchenware (dishes, pots, silverware)
+
+    Electronics & Office Supplies
+    - Laptops or tablets
+    - Smartphones (factory reset)
+    - Desktop computers
+    - Printers & ink
+    - Headphones or headsets
+    - Office chairs
+    - Desks
+    - Notebooks & pens
+
+    Tools, Building, & Facility Supplies
+    - Hand tools (hammers, screwdrivers, etc.)
+    - Power tools
+    - Paint & painting supplies
+    - Construction materials (lumber, drywall)
+    - Safety gear (gloves, goggles, helmets)
+
+    Pet Supplies
+    - Pet food
+    - Leashes & collars
+    - Pet beds
+    - Crates or carriers
+    - Toys
+    - Litter & litter boxes
+
+    Other Services & Specialty Items
+    - Gas cards or transit passes
+    - Gift cards (general purpose, e.g., Target, Walmart, Visa)
+    - Event supplies (tables, tents, signage)
+    - Art supplies
+    - Musical instruments
+    - Gardening tools & supplies
+    - Bikes (adult or kids)
+  ITEMS
+
   multisearchable against: [:name]
 
   scope :active, -> { where(active: true) }
