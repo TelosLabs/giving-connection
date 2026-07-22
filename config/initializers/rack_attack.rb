@@ -39,7 +39,8 @@ class Rack::Attack
       blog_anonymous: 5.minutes,
       smart_match_quiz: 5.minutes,
       smart_match_results: 5.minutes,
-      smart_match_result_status: 5.minutes
+      smart_match_result_status: 5.minutes,
+      feedback_anonymous: 5.minutes
     }.freeze
   elsif Rails.env.test?
     {
@@ -49,7 +50,8 @@ class Rack::Attack
       blog_anonymous: 1.second,
       smart_match_quiz: 1.second,
       smart_match_results: 1.second,
-      smart_match_result_status: 1.second
+      smart_match_result_status: 1.second,
+      feedback_anonymous: 1.second
     }.freeze
   else
     {
@@ -59,7 +61,8 @@ class Rack::Attack
       blog_anonymous: 1.hour,
       smart_match_quiz: 1.hour,
       smart_match_results: 1.hour,
-      smart_match_result_status: 1.hour
+      smart_match_result_status: 1.hour,
+      feedback_anonymous: 1.hour
     }.freeze
   end
 
@@ -251,6 +254,20 @@ class Rack::Attack
   throttle("smart_match/result_status", limit: 120, period: THROTTLE_PERIODS[:smart_match_result_status]) do |req|
     if req.path == "/smart_match/result/status" && req.get?
       req.remote_ip
+    end
+  end
+  
+  ### Prevent Feedback Spam ###
+  # The feedback widget POSTs to /feedbacks without authentication, so throttle
+  # anonymous submissions by IP the same way anonymous blog creation is limited.
+  throttle("feedbacks/anonymous", limit: 10, period: THROTTLE_PERIODS[:feedback_anonymous]) do |req|
+    if req.path == "/feedbacks" && req.post?
+      is_authenticated = req.env["warden"]&.authenticated?
+
+      unless is_authenticated
+        Rails.logger.info "[Rack::Attack] Anonymous feedback from IP: #{req.remote_ip}" if Rails.env.development?
+        req.remote_ip
+      end
     end
   end
 

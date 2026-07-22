@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_05_14_155700) do
+ActiveRecord::Schema[7.2].define(version: 2026_07_16_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -195,6 +195,20 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_14_155700) do
     t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_favorite_locations_on_location_id"
     t.index ["user_id"], name: "index_favorite_locations_on_user_id"
+  end
+
+  create_table "feedbacks", force: :cascade do |t|
+    t.integer "rating", null: false
+    t.string "category"
+    t.string "context"
+    t.text "comment"
+    t.string "page_url"
+    t.bigint "user_id"
+    t.datetime "read_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["read_at"], name: "index_feedbacks_on_read_at"
+    t.index ["user_id"], name: "index_feedbacks_on_user_id"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -497,6 +511,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_14_155700) do
   add_foreign_key "favorite_blogs", "users"
   add_foreign_key "favorite_locations", "locations"
   add_foreign_key "favorite_locations", "users"
+  add_foreign_key "feedbacks", "users", on_delete: :nullify
   add_foreign_key "import_logs", "admin_users"
   add_foreign_key "location_services", "locations"
   add_foreign_key "location_services", "services"
