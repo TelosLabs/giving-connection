@@ -27,7 +27,7 @@
 %>
 <div data-controller="feedback" data-action="click@window->feedback#closeDropdownOutside"
      data-feedback-exit-intent-value="<%= exit_intent %>"
-     class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+     class="fixed bottom-24 right-6 z-50 flex flex-col items-end sm:bottom-6 sm:right-24">
 
   <%# Dark overlay, shown only when the form opens as a centered modal (exit case) %>
   <div data-feedback-target="backdrop" data-action="click->feedback#close"
