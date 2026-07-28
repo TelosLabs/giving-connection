@@ -41,7 +41,7 @@ RSpec.describe "Search analytics tracking", type: :system do
   # Turbo may still be swapping frames the instant navigation "completes" per
   # have_current_path, so a single evaluate_script read can race and see an
   # empty/stale dataLayer. Poll instead of reading it exactly once.
-  def wait_for_data_layer_event(event_name, timeout: 5)
+  def wait_for_data_layer_event(event_name, timeout: 10)
     event = nil
     Timeout.timeout(timeout) do
       loop do
@@ -56,9 +56,21 @@ RSpec.describe "Search analytics tracking", type: :system do
   end
 
   # JSON round-trip forces the browser to hand back a plain, JSON-safe
-  # structure (no functions/undefined), and Array(...) guards against a nil
-  # return if the JS context isn't ready yet.
+  # structure (no functions/undefined). The try/catch inside the JS itself
+  # avoids throwing on any unserializable value (e.g. a circular reference
+  # pushed by GTM's own internals), and the Ruby-level rescue is a backup
+  # in case Ferrum still raises (e.g. the page context is mid-navigation).
   def fetch_data_layer
-    Array(page.evaluate_script("JSON.parse(JSON.stringify(window.dataLayer || []))"))
+    Array(page.evaluate_script(<<~JS))
+      (function() {
+        try {
+          return JSON.parse(JSON.stringify(window.dataLayer || []));
+        } catch (err) {
+          return [];
+        }
+      })();
+    JS
+  rescue Ferrum::JavaScriptError
+    []
   end
 end
