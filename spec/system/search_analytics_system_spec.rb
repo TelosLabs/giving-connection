@@ -15,8 +15,7 @@ RSpec.describe "Search analytics tracking", type: :system do
 
     expect(page).to have_current_path(search_path, ignore_query: true, wait: 5)
 
-    data_layer = page.evaluate_script("window.dataLayer || []")
-    search_event = data_layer.reverse.find { |entry| entry["event"] == "search" }
+    search_event = wait_for_data_layer_event("search")
 
     expect(search_event).not_to be_nil
     expect(search_event["search_term"]).to eq("food pantry")
@@ -30,10 +29,36 @@ RSpec.describe "Search analytics tracking", type: :system do
     find("#search-keyword-input").send_keys(:enter)
     expect(page).to have_current_path(search_path, ignore_query: true, wait: 5)
 
-    count_after_search = page.evaluate_script(
-      "(window.dataLayer || []).filter(e => e.event === 'search').length"
-    )
+    # Make sure the (single) search event has actually landed before counting.
+    wait_for_data_layer_event("search")
 
+    count_after_search = fetch_data_layer.count { |entry| entry["event"] == "search" }
     expect(count_after_search).to eq(1)
+  end
+
+  private
+
+  # Turbo may still be swapping frames the instant navigation "completes" per
+  # have_current_path, so a single evaluate_script read can race and see an
+  # empty/stale dataLayer. Poll instead of reading it exactly once.
+  def wait_for_data_layer_event(event_name, timeout: 5)
+    event = nil
+    Timeout.timeout(timeout) do
+      loop do
+        event = fetch_data_layer.reverse.find { |entry| entry["event"] == event_name }
+        break if event
+        sleep 0.1
+      end
+    end
+    event
+  rescue Timeout::Error
+    nil
+  end
+
+  # JSON round-trip forces the browser to hand back a plain, JSON-safe
+  # structure (no functions/undefined), and Array(...) guards against a nil
+  # return if the JS context isn't ready yet.
+  def fetch_data_layer
+    Array(page.evaluate_script("JSON.parse(JSON.stringify(window.dataLayer || []))"))
   end
 end

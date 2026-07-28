@@ -5,7 +5,7 @@ require "rails_helper"
 RSpec.describe "Searches", type: :request do
   describe "GET /search" do
     it "wires the search form to fire the Stimulus search-tracking action on submit" do
-      get "/search", params: { search: { keyword: "food pantry" } }
+      get "/search", params: {search: {keyword: "food pantry"}}
 
       expect(response).to have_http_status(:ok)
       # The actual dataLayer push is verified end-to-end in
