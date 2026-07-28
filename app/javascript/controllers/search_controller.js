@@ -370,4 +370,19 @@ export default class extends Controller {
     this.updateCheckboxesFromFilterStore();
     this.updatePillsCounter();
   }
+
+  // Analytics
+  // Fires once per actual form submission (manual or via submitForm()->requestSubmit()),
+  // so it never double-counts on pagination or plain page reloads.
+  trackSearch() {
+    const locationInput = document.querySelector('[data-geolocation-target="currentLocation"]')
+
+    window.dataLayer = window.dataLayer || []
+    window.dataLayer.push({
+      event: "search",
+      search_term: this.hasKeywordInputTarget ? this.keywordInputTarget.value : null,
+      category: "Find Help",
+      location: locationInput ? locationInput.value : null
+    })
+  }
 }
