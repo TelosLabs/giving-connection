@@ -8,7 +8,7 @@ class Search
 
   attr_accessor :keyword, :results, :distance, :city, :state, :zipcode,
     :beneficiary_groups, :services, :causes, :open_now, :open_weekends,
-    :scope_of_work, :lat, :lon
+    :scope_of_work, :lat, :lon, :give
 
   def save
     raise ActiveRecord::RecordInvalid unless valid?
@@ -41,7 +41,8 @@ class Search
       open_now: open_now,
       open_weekends: open_weekends,
       scope_of_work: scope_of_work,
-      zipcode: zipcode
+      zipcode: zipcode,
+      give: give
     }.compact
   end
 
@@ -62,7 +63,8 @@ class Search
       beneficiary_groups: beneficiary_groups&.transform_values { |value| value.uniq },
       services: services&.transform_values { |value| value.uniq },
       causes: causes&.uniq,
-      scope_of_work: scope_of_work
+      scope_of_work: scope_of_work,
+      give: give&.uniq
     }
   end
 

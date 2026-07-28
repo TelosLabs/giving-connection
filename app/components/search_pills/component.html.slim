@@ -29,8 +29,8 @@ div class="w-full bg-gray-9 overflow-visible" id="tabs-wrapper" data-search-targ
                 = tooltip_for(tab_label)
             - else
               a class="inline-block py-3 whitespace-nowrap" href="#" = tab_label
-        li data-action="click->modal#open" class="underline-on-hover"
-          button class="inline-block py-3 whitespace-nowrap" type="button" id="advanced-filters-button"
+        li data-action="click->modal#open" class="relative underline-on-hover"
+          button class="inline-flex items-center py-3 whitespace-nowrap" type="button" id="advanced-filters-button"
             | Advanced Filters
             span class="hidden relative mb-2 ml-1 w-2 h-2 rounded-full bg-salmon" id="appliedIcon"
 

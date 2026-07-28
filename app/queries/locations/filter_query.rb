@@ -12,8 +12,10 @@ module Locations
         scope = by_service(scope, params[:services])
         scope = by_beneficiary_groups_served(scope, params[:beneficiary_groups])
         scope = by_scope_of_work(scope, params[:scope_of_work])
+        scope = by_give(scope, params[:give])
         scope = opened_now(scope, params[:open_now])
         opened_on_weekends(scope, params[:open_weekends])
+        scope
       end
 
       def geo_near(scope, coords, distance)
@@ -136,6 +138,26 @@ module Locations
         SQL
         scope_as_array = scope.find_by_sql(query)
         scope.where(id: scope_as_array.map(&:id))
+      end
+
+      def by_give(scope, give_values)
+        return scope if give_values.blank? || scope.empty?
+
+        query = Location.joins(:organization).where("locations.id IN (?)", scope.ids)
+
+        if give_values.include?("Donation Opportunities")
+          query = query.where.not(organizations: {donation_link: [nil, ""]})
+        end
+
+        if give_values.include?("Volunteer Opportunities")
+          query = query.where(organizations: {volunteer_availability: true})
+        end
+
+        if give_values.include?("In Kind Donations Accepted")
+          query = query.where.not(organizations: {in_kind_donation_link: [nil, ""]})
+        end
+
+        query.group("locations.id")
       end
     end
   end
