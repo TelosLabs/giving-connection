@@ -9,6 +9,7 @@ class OrganizationValidator < ActiveModel::Validator
     # at_least_one_main_location
     valid_website_url
     valid_donation_url
+    valid_in_kind_donation_url
     valid_volunteer_url
   end
 
@@ -28,6 +29,10 @@ class OrganizationValidator < ActiveModel::Validator
 
   def valid_donation_url
     valid_url(record.donation_link, :donation_link)
+  end
+
+  def valid_in_kind_donation_url
+    valid_url(record.in_kind_donation_link, :in_kind_donation_link)
   end
 
   def valid_volunteer_url

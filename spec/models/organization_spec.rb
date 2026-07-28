@@ -55,4 +55,12 @@ RSpec.describe Organization, type: :model do
     it { is_expected.to validate_presence_of(:scope_of_work) }
     it { is_expected.to validate_inclusion_of(:scope_of_work).in_array(Organizations::Constants::SCOPE) }
   end
+
+  describe "in-kind donation fields" do
+    it "persists a link to the org's own in-kind donation needs" do
+      organization = create(:organization, in_kind_donation_link: "https://example.org/wishlist")
+
+      expect(organization.in_kind_donation_link).to eq("https://example.org/wishlist")
+    end
+  end
 end

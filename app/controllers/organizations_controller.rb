@@ -93,7 +93,7 @@ class OrganizationsController < ApplicationController
   end
 
   def organization_params
-    params.require(:organization).permit(
+    permitted_params = params.require(:organization).permit(
       :name,
       :second_name,
       :ein_number,
@@ -112,6 +112,7 @@ class OrganizationsController < ApplicationController
       :active,
       :verified,
       :donation_link,
+      :in_kind_donation_link,
       :volunteer_availability,
       :volunteer_link,
       :general_population_serving,
@@ -143,5 +144,12 @@ class OrganizationsController < ApplicationController
       beneficiary_subcategory_ids: [],
       cause_ids: []
     )
+    permitted_params[:in_kind_donation_items] = permitted_in_kind_donation_items
+    permitted_params
+  end
+
+  def permitted_in_kind_donation_items
+    selected_items = params.dig(:organization, :in_kind_donation_items)&.values&.flatten&.reject(&:blank?)
+    selected_items&.join("\n")
   end
 end

@@ -118,6 +118,19 @@ div class=""
           - if @location.website.present? || @location.organization.website.present? || @location.organization.donation_link.present? || @location.organization.volunteer_link.present?
             = render "locations/donate_volunteer_buttons", location: @location, container_styles: "flex flex-col gap-y-4 pt-7 border-t border-gray-8", find_help_link: @location.website || @location.organization.website
 
+          - if @location.organization.in_kind_donation_link.present? || @location.organization.in_kind_donation_item_names.any?
+            - organization = @location.organization.decorate
+            div class="my-7 border-t border-gray-8"
+            h3 class="mb-3.5 text-sm font-bold uppercase"
+              | In-Kind Donation Needs
+            - if @location.organization.in_kind_donation_item_names.any?
+              div class="flex flex-wrap gap-2 mb-3"
+                - @location.organization.in_kind_donation_item_names.each do |item|
+                  span class="inline-flex items-center px-3 py-1 text-xs font-medium rounded-full bg-blue-pale text-blue-dark"
+                    = item
+            - if @location.organization.in_kind_donation_link.present?
+              = link_to "View In-Kind Donation Needs", organization.in_kind_donation_link, target: "_blank", rel: "noopener", class: "inline-flex items-center text-sm font-semibold text-blue-medium hover:text-blue-dark"
+
         - if @location.youtube_video_link.present?
           div class="flex flex-col items-center p-5 text-center"
             iframe class="w-full h-400px" src="https://www.youtube.com/embed/#{@youtube_video_id}?"
@@ -191,3 +204,16 @@ div class=""
       - if @location.social_media.present?
         div class="my-7 border-t border-gray-8"
         = render SocialMedia::Component.new(social_media: @location.social_media)
+
+      - if @location.organization.in_kind_donation_link.present? || @location.organization.in_kind_donation_item_names.any?
+        - organization = @location.organization.decorate
+        div class="my-7 border-t border-gray-8"
+        h3 class="mb-3.5 text-sm font-bold uppercase"
+          | In-Kind Donation Needs
+        - if @location.organization.in_kind_donation_item_names.any?
+          div class="flex flex-wrap gap-2 mb-3"
+            - @location.organization.in_kind_donation_item_names.each do |item|
+              span class="inline-flex items-center px-3 py-1 text-xs font-medium rounded-full bg-blue-pale text-blue-dark"
+                = item
+        - if @location.organization.in_kind_donation_link.present?
+          = link_to "View In-Kind Donation Needs", organization.in_kind_donation_link, target: "_blank", rel: "noopener", class: "inline-flex items-center text-sm font-semibold text-blue-medium hover:text-blue-dark"
