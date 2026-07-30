@@ -151,6 +151,7 @@ module Locations
 
         if give_values.include?("Volunteer Opportunities")
           query = query.where(organizations: {volunteer_availability: true})
+            .where.not(organizations: {volunteer_link: [nil, ""]})
         end
 
         if give_values.include?("In Kind Donations Accepted")
