@@ -60,29 +60,36 @@ module SpreadsheetImport
 
         label = row_label(row_number, entry[:org_row])
 
-        org_import_result =
-          Organization.import([org],
-            recursive: true,
-            validate: true,
-            track_validation_failures: true)
+        # Validate first, convert office hours to UTC second, insert third — the
+        # same order a normal save uses (OfficeHour's before_save conversion runs
+        # *after* validation). Converting before validation makes a west-of-Central
+        # location's "8:30 - 18:00" become 15:30 - 01:00 UTC, and since a `time`
+        # column drops the day rollover, OfficeHoursValidator reads that as closing
+        # before opening. Passing validate: false to the import is not a loss:
+        # activerecord-import already imports associations without validating them,
+        # and org.valid? cascades through locations to the office hours.
+        unless org.valid?
+          @import_log&.increment!(:error_count)
+          Rails.logger.warn "Import FAILED for organization at row #{row_number} (name: #{org.name})"
+          org.errors.full_messages.each { |msg| @error_messages_by_row[label] << msg }
+          next
+        end
 
-        failed =
-          if org_import_result.respond_to?(:failed_instances_with_indexes)
-            org_import_result.failed_instances_with_indexes
-          else
-            org_import_result.failed_instances
-          end
+        convert_office_hours_to_utc(org)
+
+        org_import_result = Organization.import([org], recursive: true, validate: false)
+
+        failed = org_import_result.failed_instances
 
         if failed.present?
           @import_log&.increment!(:error_count)
           Rails.logger.warn "Import FAILED for organization at row #{row_number} (name: #{org.name})"
 
-          Array(failed).each do |item|
-            idx, inst = item.is_a?(Array) ? item : [nil, item]
+          Array(failed).each do |inst|
             if inst.respond_to?(:errors) && inst.errors.any?
               inst.errors.full_messages.each { |msg| @error_messages_by_row[label] << msg }
             else
-              @error_messages_by_row[label] << "Database/association error on #{inst.class.name}#{idx ? " (index #{idx})" : ""}"
+              @error_messages_by_row[label] << "Database/association error on #{inst.class.name}"
             end
           end
         else
@@ -127,6 +134,18 @@ module SpreadsheetImport
       Rails.logger.info "🖼 Attached remote logo for #{org.name}"
     rescue => e
       Rails.logger.warn "Failed to attach remote logo for #{org.name}: #{e.message}"
+    end
+
+    # activerecord-import skips ActiveRecord save callbacks, so OfficeHour's
+    # before_save :convert_times_to_utc never runs during a bulk import. Without
+    # it the parser's wall-clock strings get stored verbatim and are then shifted
+    # by the timezone on display (a 10-15 range shows as 3-8 for an Arizona
+    # location). Called once validation has passed so the validator still sees
+    # the local times, exactly as it would on a normal save.
+    def convert_office_hours_to_utc(org)
+      org.locations.each do |location|
+        location.office_hours.each(&:convert_times_to_utc)
+      end
     end
 
     def finalize_import_log
@@ -331,9 +350,9 @@ module SpreadsheetImport
         location.location_services.build(service: service) if service
       end
 
-      office_hours.each do |attrs|
-        location.office_hours.build(attrs)
-      end
+      # Built with the parser's local wall-clock strings ("10:00"). #import
+      # converts them to UTC after validation — see the comment there.
+      office_hours.each { |attrs| location.office_hours.build(attrs) }
 
       :ok
     end
