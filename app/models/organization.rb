@@ -29,7 +29,7 @@ class Organization < ApplicationRecord
   validates_with OrganizationValidator
   include PgSearch::Model
 
-  attribute :in_kind_donation_items, :json, default: []
+  attribute :in_kind_donation_items, :json, default: -> { [] }
 
   multisearchable against: [:name]
 
@@ -116,17 +116,17 @@ class Organization < ApplicationRecord
   private
 
   def normalize_in_kind_donation_items
-    normalized_items = Array(in_kind_donation_items).compact.map(&:to_s).reject(&:blank?).uniq
+    normalized_items = Array(in_kind_donation_items).map(&:to_s).compact_blank.uniq
     self.in_kind_donation_items = normalized_items
   end
 
   def validate_in_kind_donation_items
     return if in_kind_donation_items.blank?
 
-    unsupported_items = Array(in_kind_donation_items).map(&:to_s).reject(&:blank?) - self.class.in_kind_donation_items_options.keys
+    unsupported_items = Array(in_kind_donation_items).map(&:to_s).compact_blank - self.class.in_kind_donation_items_options.keys
     return if unsupported_items.empty?
 
-    errors.add(:in_kind_donation_items, "contains unsupported item(s): #{unsupported_items.join(', ')}")
+    errors.add(:in_kind_donation_items, "contains unsupported item(s): #{unsupported_items.join(", ")}")
   end
 
   def attach_logo_and_cover

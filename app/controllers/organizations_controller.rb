@@ -113,7 +113,7 @@ class OrganizationsController < ApplicationController
       :verified,
       :donation_link,
       :in_kind_donation_link,
-      { in_kind_donation_items: [] },
+      {in_kind_donation_items: []},
       :volunteer_availability,
       :volunteer_link,
       :general_population_serving,
