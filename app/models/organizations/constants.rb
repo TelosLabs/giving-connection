@@ -4,6 +4,28 @@ module Organizations
   module Constants
     SCOPE = %w[International National Regional].freeze
 
+    IN_KIND_DONATION_ITEMS = {
+      "clothing" => "Clothing",
+      "winter_coats" => "Winter coats & cold-weather gear",
+      "shoes" => "Shoes",
+      "blankets" => "Blankets & bedding",
+      "diapers" => "Diapers",
+      "toiletries" => "Toiletries",
+      "cleaning_supplies" => "Cleaning supplies",
+      "baby_supplies" => "Baby supplies",
+      "school_supplies" => "School supplies",
+      "books" => "Books",
+      "food" => "Non-perishable food",
+      "grocery_cards" => "Grocery store gift cards",
+      "furniture" => "Furniture",
+      "electronics" => "Electronics",
+      "office_supplies" => "Office supplies",
+      "tools" => "Tools",
+      "pet_supplies" => "Pet supplies",
+      "gift_cards" => "Gift cards",
+      "bikes" => "Bikes"
+    }.freeze
+
     NTEE_CODE = [
       "A01: Alliances & Advocacy",
       "A02: Management & Technical Assistance",

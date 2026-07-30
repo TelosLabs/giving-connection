@@ -1,0 +1,18 @@
+<div class="field-unit__label">
+  <%= f.label field.attribute %>
+</div>
+
+<div class="field-unit__field">
+  <%= hidden_field_tag "organization[in_kind_donation_items][]", "" %>
+  <div class="grid gap-2 sm:grid-cols-2">
+    <% field.options.each do |item_key, item_label| %>
+      <span class="flex items-center gap-x-1.5">
+        <%= check_box_tag "organization[in_kind_donation_items][]", item_key,
+          field.selected_items.include?(item_key),
+          id: "organization_in_kind_donation_items_#{item_key}", class: "admin-panel-population m-0" %>
+
+        <%= label_tag "organization_in_kind_donation_items_#{item_key}", item_label, class: "font-normal" %>
+      </span>
+    <% end %>
+  </div>
+</div>

@@ -138,8 +138,14 @@
                 = f.label :in_kind_donation_items, "In-Kind Donation Needs", class: "block text-sm text-gray-3 font-medium"
                 p class="mt-1 mb-3 text-sm text-gray-4"
                   | Select the items your organization currently needs and they will appear on your profile.
-                = hidden_field_tag "organization[in_kind_donation_items][selected][]", ""
-                = render SelectMultiple::Component.new(f: f, name: "organization[in_kind_donation_items]", items: Organization::IN_KIND_DONATION_ITEMS, selected: @organization.in_kind_donation_item_names, placeholder: "Search items")
+                = hidden_field_tag "organization[in_kind_donation_items][]", ""
+                div class="mt-4 p-4 rounded-6px bg-gray-9 border border-gray-8"
+                  div class="grid gap-2 sm:grid-cols-2"
+                    - Organization.in_kind_donation_items_options.each do |item_key, item_label|
+                      - checked = @organization.in_kind_donation_items.include?(item_key)
+                      div class="flex items-start gap-2 rounded border border-gray-8 bg-white p-3"
+                        = check_box_tag "organization[in_kind_donation_items][]", item_key, checked, id: "organization_in_kind_donation_items_#{item_key}", class: "mt-1 h-4 w-4 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent"
+                        = label_tag "organization_in_kind_donation_items_#{item_key}", item_label, class: "text-sm text-gray-3"
 
               div class="hidden col-span-3 md:flex"
 
