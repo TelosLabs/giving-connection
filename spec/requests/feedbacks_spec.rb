@@ -65,5 +65,31 @@ RSpec.describe "Feedbacks", type: :request do
         expect(Feedback.last.user).to be_nil
       end
     end
+
+    context "admin notification" do
+      it "emails the admin when the feedback is saved" do
+        expect do
+          post feedbacks_path, params: valid_params, headers: turbo_headers
+        end.to have_enqueued_mail(FeedbackMailer, :admin_notification)
+      end
+
+      it "does not email when the feedback is invalid" do
+        expect do
+          post feedbacks_path, params: {feedback: {rating: nil}}, headers: turbo_headers
+        end.not_to have_enqueued_mail(FeedbackMailer, :admin_notification)
+      end
+
+      it "still confirms the submission when delivery cannot be enqueued" do
+        allow(FeedbackMailer).to receive(:admin_notification).and_raise(Redis::CannotConnectError)
+        allow(Rollbar).to receive(:error)
+
+        expect do
+          post feedbacks_path, params: valid_params, headers: turbo_headers
+        end.to change(Feedback, :count).by(1)
+
+        expect(response).to have_http_status(:ok)
+        expect(Rollbar).to have_received(:error)
+      end
+    end
   end
 end

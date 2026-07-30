@@ -13,21 +13,10 @@
 <% context     = local_assigns.fetch(:context, "search") %>
 <% question    = local_assigns.fetch(:question, "How was your experience searching for a nonprofit?") %>
 <% exit_intent = local_assigns.fetch(:exit_intent, false) %>
-<%
-  category_options = [
-    ["Search results",          "search_results",       "feedback_cat_search.svg"],
-    ["Accuracy of matches",     "accuracy_of_matches",  "feedback_cat_accuracy.svg"],
-    ["Ease of use",             "ease_of_use",          "feedback_cat_ease.svg"],
-    ["Speed / performance",     "speed_performance",    "feedback_cat_speed.svg"],
-    ["Filters & sorting",       "filters_sorting",      "feedback_cat_filters.svg"],
-    ["Location or map results", "location_map_results", "feedback_cat_location.svg"],
-    ["Something didn't work",   "something_didnt_work", "feedback_cat_issue.svg"],
-    ["Other",                   "other",                nil]
-  ]
-%>
+<% category_options = Feedback::CATEGORY_OPTIONS %>
 <div data-controller="feedback" data-action="click@window->feedback#closeDropdownOutside"
      data-feedback-exit-intent-value="<%= exit_intent %>"
-     class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+     class="fixed bottom-24 right-6 z-50 flex flex-col items-end sm:bottom-6 sm:right-24">
 
   <%# Dark overlay, shown only when the form opens as a centered modal (exit case) %>
   <div data-feedback-target="backdrop" data-action="click->feedback#close"
@@ -39,7 +28,6 @@
     <div data-feedback-target="tooltip">
       <%= render "shared/feedback_tooltip",
             title: "Have any feedback?",
-            body: "Tell us how this is going!",
             dismiss_action: "click->feedback#dismissTooltip" %>
     </div>
 
@@ -67,13 +55,14 @@
         <%# Each face gets an equal share of the row (flex-1) so they always
             span the full width; the emoji scales down to fit on mobile. %>
         <div class="flex items-center">
-          <% [
-               [1, "feedback_face_1_mad.svg",   "Mad"],
-               [2, "feedback_face_2_sad.svg",   "Sad"],
-               [3, "feedback_face_3_meh.svg",   "Meh"],
-               [4, "feedback_face_4_happy.svg", "Happy"],
-               [5, "feedback_face_5_love.svg",  "Love it"]
-             ].each do |rating, icon, label| %>
+          <% {
+               1 => "feedback_face_1_mad.svg",
+               2 => "feedback_face_2_sad.svg",
+               3 => "feedback_face_3_meh.svg",
+               4 => "feedback_face_4_happy.svg",
+               5 => "feedback_face_5_love.svg"
+             }.each do |rating, icon| %>
+            <% label = Feedback::RATING_LABELS[rating] %>
             <button type="button" data-feedback-target="face" data-rating="<%= rating %>"
                     data-action="click->feedback#selectRating"
                     aria-pressed="false" aria-label="<%= label %>" title="<%= label %>"
@@ -98,7 +87,7 @@
           </button>
           <ul data-feedback-target="dropdownMenu"
               class="absolute z-10 mt-1 hidden max-h-64 w-full overflow-auto rounded-6px border border-gray-5 bg-white py-1 drop-shadow-md">
-            <% category_options.each do |label, value, icon| %>
+            <% category_options.each do |value, (label, icon)| %>
               <li>
                 <button type="button" data-action="click->feedback#selectCategory"
                         data-value="<%= value %>"
