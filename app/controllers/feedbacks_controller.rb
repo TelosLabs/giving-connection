@@ -13,6 +13,7 @@ class FeedbacksController < ApplicationController
     @feedback.page_url = @feedback.page_url.presence || request.referer
 
     if @feedback.save
+      notify_admin(@feedback)
       respond_with_flash(:notice, SUCCESS_MESSAGE)
     else
       respond_with_flash(:alert, ERROR_MESSAGE, status: :unprocessable_entity)
@@ -20,6 +21,15 @@ class FeedbacksController < ApplicationController
   end
 
   private
+
+  # The feedback is already saved at this point, so a mail/queue hiccup must not
+  # turn a successful submission into an error for the visitor — it is reported
+  # and swallowed instead.
+  def notify_admin(feedback)
+    FeedbackMailer.admin_notification(feedback).deliver_later
+  rescue => e
+    Rollbar.error(e, feedback_id: feedback.id)
+  end
 
   def respond_with_flash(type, message, status: :ok)
     respond_to do |format|
