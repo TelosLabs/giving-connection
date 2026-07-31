@@ -7,6 +7,7 @@
     turbo_frame: "search-locations", \
     turbo_action: "replace", \
     controller: 'search modal', \
+    action: 'submit->search#trackSearch', \
     'search-target': 'form'}) do |f|
   = render SearchBar::Component.new(form: f, search: @search, current_location: @current_location, locations: @locations)
   = turbo_frame_tag "search-pills", src: search_path() do

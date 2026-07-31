@@ -375,12 +375,18 @@ export default class extends Controller {
   // Fires once per actual form submission (manual or via submitForm()->requestSubmit()),
   // so it never double-counts on pagination or plain page reloads.
   trackSearch() {
-    const locationInput = document.querySelector('[data-geolocation-target="currentLocation"]')
+    // Scoped to this controller's own element (the form) so we match the search
+    // bar's location input, not the navbar's — document-wide querySelector would
+    // match whichever one appears first in the DOM (the navbar).
+    const locationInput = this.element.querySelector('input[data-geolocation-target="currentLocation"]')
+    const keywordValue = this.hasKeywordInputTarget ? this.keywordInputTarget.value.trim() : ""
 
     window.dataLayer = window.dataLayer || []
     window.dataLayer.push({
       event: "search",
-      search_term: this.hasKeywordInputTarget ? this.keywordInputTarget.value : null,
+      // null (not "") when blank, so clearing the keyword doesn't pollute
+      // analytics with empty-string search terms.
+      search_term: keywordValue || null,
       category: "Find Help",
       location: locationInput ? locationInput.value : null
     })
