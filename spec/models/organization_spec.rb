@@ -64,13 +64,13 @@ RSpec.describe Organization, type: :model do
     end
 
     it "persists a selected list of approved in-kind donation items" do
-      organization = create(:organization, in_kind_donation_items: ["clothing", "diapers"])
+      organization = create(:organization, in_kind_donation_items: ["clothing_general", "diapers"])
 
-      expect(organization.in_kind_donation_items).to eq(["clothing", "diapers"])
+      expect(organization.in_kind_donation_items).to eq(["clothing_general", "diapers"])
     end
 
     it "rejects unsupported in-kind donation items" do
-      organization = build(:organization, in_kind_donation_items: ["clothing", "not-supported"])
+      organization = build(:organization, in_kind_donation_items: ["clothing_general", "not-supported"])
 
       expect(organization).not_to be_valid
       expect(organization.errors[:in_kind_donation_items]).to include("contains unsupported item(s): not-supported")

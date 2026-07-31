@@ -17,7 +17,7 @@ class OrganizationDecorator < ApplicationDecorator
 
   def in_kind_donation_items
     Array(object.in_kind_donation_items).filter_map do |item_key|
-      Organizations::Constants::IN_KIND_DONATION_ITEMS[item_key.to_s]
+      Organization.in_kind_donation_item_label(item_key)
     end
   end
 

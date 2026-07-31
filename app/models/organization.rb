@@ -72,8 +72,16 @@ class Organization < ApplicationRecord
     Organizations::Constants::IN_KIND_DONATION_ITEMS
   end
 
+  def self.in_kind_donation_item_keys
+    Organizations::Constants::IN_KIND_DONATION_ITEMS.values.flat_map(&:keys)
+  end
+
   def self.in_kind_donation_item_label(item_key)
-    Organizations::Constants::IN_KIND_DONATION_ITEMS[item_key.to_s]
+    Organizations::Constants::IN_KIND_DONATION_ITEMS.values.each do |items|
+      label = items[item_key.to_s]
+      return label if label
+    end
+    nil
   end
 
   def regenerate_org_locations_slugs
@@ -123,7 +131,7 @@ class Organization < ApplicationRecord
   def validate_in_kind_donation_items
     return if in_kind_donation_items.blank?
 
-    unsupported_items = Array(in_kind_donation_items).map(&:to_s).compact_blank - self.class.in_kind_donation_items_options.keys
+    unsupported_items = Array(in_kind_donation_items).map(&:to_s).compact_blank - self.class.in_kind_donation_item_keys
     return if unsupported_items.empty?
 
     errors.add(:in_kind_donation_items, "contains unsupported item(s): #{unsupported_items.join(", ")}")

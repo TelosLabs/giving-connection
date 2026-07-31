@@ -12,7 +12,7 @@ class InKindDonationItemsField < Administrate::Field::Base
   end
 
   def selected_labels
-    selected_items.filter_map { |item_key| options[item_key.to_s] }
+    selected_items.filter_map { |item_key| Organization.in_kind_donation_item_label(item_key) }
   end
 
   def to_s

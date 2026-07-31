@@ -58,6 +58,16 @@
                       <%= c.label(class: "text-sm text-black w-full") %>
                     <% end %>
                   <% end %>
+                <% elsif list.is_a?(Hash) %>
+                  <% list.sort_by { |_item_key, item_label| item_label }.each do |item_key, item_label| %>
+                    <% checkbox_id = "#{@name}_#{group}_#{item_key}".parameterize(separator: "_") %>
+                    <div class="flex flex-row items-center my-2">
+                      <%= check_box_tag "#{@name}[]", item_key, @selected.include?(item_key), id: checkbox_id,
+                                      class: "h-4 w-4 mr-2 rounded-6px text-base text-blue-medium focus:border-0 focus:ring-0 focus:ring-transparent modal-checkbox",
+                                      data: { "search-target": "pill", "#{@stimulus_controller}-target": "checkbox", action: "click->#{@stimulus_controller}#select", value: item_key, label: item_label } %>
+                      <%= label_tag checkbox_id, item_label, class: "text-sm text-black w-full" %>
+                    </div>
+                  <% end %>
                 <% else %>
                   <% list&.sort&.each do |item| %>
                     <div class="flex flex-row items-center my-2">
