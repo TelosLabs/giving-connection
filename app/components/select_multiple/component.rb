@@ -23,8 +23,7 @@ module SelectMultiple
           "search-target": "customInput",
           form_validation_target: "selectMultiple",
           "#{@stimulus_controller}-target": "container",
-          "extend-dropdown-target": "button",
-          "#{@stimulus_controller}-selected-value": @selected
+          "extend-dropdown-target": "button"
         }
       }.merge(@options) do |key, first_value, repeated_value|
         if key == :data
@@ -33,6 +32,14 @@ module SelectMultiple
           "#{new_value} #{old_value}"
         end
       end
+    end
+
+    def grouped_items
+      keyed_items? ? @items : @items.sort
+    end
+
+    def keyed_items?
+      @items.is_a?(Hash) && @items.each_value.any?(Hash)
     end
 
     def format_cause_name(name)
