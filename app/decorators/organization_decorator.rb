@@ -15,6 +15,12 @@ class OrganizationDecorator < ApplicationDecorator
     url_or_nil(object.in_kind_donation_link)
   end
 
+  def in_kind_donation_items
+    Array(object.in_kind_donation_items).filter_map do |item_key|
+      Organization.in_kind_donation_item_label(item_key)
+    end
+  end
+
   def designation_copies
     case object.scope_of_work
     when "National"

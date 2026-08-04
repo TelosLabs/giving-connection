@@ -29,46 +29,7 @@ class Organization < ApplicationRecord
   validates_with OrganizationValidator
   include PgSearch::Model
 
-  IN_KIND_DONATION_ITEMS = {
-    "Basic Needs & Household Items" => [
-      "Clothing (general)", "Winter coats & cold-weather gear", "Shoes (adults or children)",
-      "Blankets & bedding", "Towels & washcloths", "Diapers (baby & adult)", "Baby wipes",
-      "Feminine hygiene products", "Soap & toiletries", "Laundry detergent", "Cleaning supplies"
-    ],
-    "Children & Baby Items" => [
-      "Toys & games (new or gently used)", "Books (children’s)", "School supplies", "Backpacks",
-      "Cribs & bassinets", "Strollers", "Car seats (new or not expired)"
-    ],
-    "Food & Kitchen Supplies" => [
-      "Non-perishable food (canned/dry goods)", "Fresh produce", "Frozen foods", "Grocery store gift cards",
-      "Bottled water", "Paper plates & plastic utensils", "Small kitchen appliances (e.g. microwave, blender)",
-      "Cooking utensils & cookware"
-    ],
-    "Furniture & Household Goods" => [
-      "Beds & mattresses (new or gently used)", "Dressers & storage units", "Sofas & chairs",
-      "Dining tables & chairs", "Lamps & lighting", "Rugs", "Kitchenware (dishes, pots, silverware)"
-    ],
-    "Electronics & Office Supplies" => [
-      "Laptops or tablets", "Smartphones (factory reset)", "Desktop computers", "Printers & ink",
-      "Headphones or headsets", "Office chairs", "Desks", "Notebooks & pens"
-    ],
-    "Tools, Building, & Facility Supplies" => [
-      "Hand tools (hammers, screwdrivers, etc.)", "Power tools", "Paint & painting supplies",
-      "Construction materials (lumber, drywall)", "Safety gear (gloves, goggles, helmets)"
-    ],
-    "Pet Supplies" => [
-      "Pet food", "Leashes & collars", "Pet beds", "Crates or carriers", "Toys", "Litter & litter boxes"
-    ],
-    "Other Services & Specialty Items" => [
-      "Gas cards or transit passes", "Gift cards (general purpose, e.g., Target, Walmart, Visa)",
-      "Event supplies (tables, tents, signage)", "Art supplies", "Musical instruments",
-      "Gardening tools & supplies", "Bikes (adult or kids)"
-    ]
-  }.freeze
-
-  def in_kind_donation_item_names
-    in_kind_donation_items.to_s.lines.map { |item| item.sub(/\A-\s*/, "").strip }.reject(&:blank?)
-  end
+  attribute :in_kind_donation_items, :json, default: -> { [] }
 
   multisearchable against: [:name]
 
@@ -97,12 +58,31 @@ class Organization < ApplicationRecord
   validates :logo, content_type: ["image/png", "image/jpeg"],
     size: {less_than: 5.megabytes, message: "File too large. Must be less than 5MB in size"}
 
+  before_validation :normalize_in_kind_donation_items
+  validate :validate_in_kind_donation_items
+
   after_create :attach_logo_and_cover
 
   accepts_nested_attributes_for :social_media, allow_destroy: true
   accepts_nested_attributes_for :locations, allow_destroy: true
   accepts_nested_attributes_for :organization_beneficiaries, allow_destroy: true
   accepts_nested_attributes_for :organization_causes, allow_destroy: true
+
+  def self.in_kind_donation_items_options
+    Organizations::Constants::IN_KIND_DONATION_ITEMS
+  end
+
+  def self.in_kind_donation_item_keys
+    Organizations::Constants::IN_KIND_DONATION_ITEMS.values.flat_map(&:keys)
+  end
+
+  def self.in_kind_donation_item_label(item_key)
+    Organizations::Constants::IN_KIND_DONATION_ITEMS.values.each do |items|
+      label = items[item_key.to_s]
+      return label if label
+    end
+    nil
+  end
 
   def regenerate_org_locations_slugs
     locations.order(:created_at).each do |location|
@@ -142,6 +122,20 @@ class Organization < ApplicationRecord
   end
 
   private
+
+  def normalize_in_kind_donation_items
+    normalized_items = Array(in_kind_donation_items).map(&:to_s).compact_blank.uniq
+    self.in_kind_donation_items = normalized_items
+  end
+
+  def validate_in_kind_donation_items
+    return if in_kind_donation_items.blank?
+
+    unsupported_items = Array(in_kind_donation_items).map(&:to_s).compact_blank - self.class.in_kind_donation_item_keys
+    return if unsupported_items.empty?
+
+    errors.add(:in_kind_donation_items, "contains unsupported item(s): #{unsupported_items.join(", ")}")
+  end
 
   def attach_logo_and_cover
     unless cover_photo.attached?
