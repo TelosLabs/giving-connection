@@ -24,7 +24,19 @@ export default class extends Controller {
 
   static STORAGE_KEY = "gc:feedbackSubmitted"
 
+  // accessiBe (loaded in the application layout) drops a floating trigger in the
+  // bottom-right corner — the same corner as this widget. It is licensed per
+  // domain, so it renders on production but not on localhost or staging. Rather
+  // than hardcode "shift on production", we look for the trigger itself and only
+  // step aside when it is really there.
+  static A11Y_TRIGGER_SELECTOR = ".acsb-trigger:not(.acsb-hidden):not(.acsb-trigger-hidden)"
+  static A11Y_DEFAULT_CLASSES = ["bottom-6"]
+  static A11Y_SHIFTED_CLASSES = ["bottom-24", "sm:bottom-6", "sm:right-24"]
+  static A11Y_WATCH_MS = 15000
+
   connect() {
+    this.watchAccessibilityTrigger()
+
     if (!this.exitIntentValue || this.hasSentFeedback()) return
 
     this.exitIntentShown = false
@@ -41,6 +53,43 @@ export default class extends Controller {
 
   disconnect() {
     if (this.onMouseOut) document.removeEventListener("mouseout", this.onMouseOut)
+    this.stopWatchingAccessibilityTrigger()
+  }
+
+  // ---------- Accessibility widget avoidance ----------
+
+  watchAccessibilityTrigger() {
+    if (this.positionAroundAccessibilityTrigger()) return
+
+    // accessiBe is injected by an async script that validates the licence before
+    // rendering anything, so the trigger can show up well after we connect.
+    this.a11yObserver = new MutationObserver(() => {
+      if (this.positionAroundAccessibilityTrigger()) this.stopWatchingAccessibilityTrigger()
+    })
+    this.a11yObserver.observe(document.body, { childList: true, subtree: true })
+
+    // On environments without the widget the trigger never arrives; stop
+    // watching rather than keep an observer on the whole body for the page's life.
+    this.a11yTimeout = setTimeout(
+      () => this.stopWatchingAccessibilityTrigger(),
+      this.constructor.A11Y_WATCH_MS
+    )
+  }
+
+  // Moves the widget clear of the accessibility trigger. Returns true once the
+  // trigger has been found, which is the signal to stop watching for it.
+  positionAroundAccessibilityTrigger() {
+    if (!document.querySelector(this.constructor.A11Y_TRIGGER_SELECTOR)) return false
+
+    this.element.classList.remove(...this.constructor.A11Y_DEFAULT_CLASSES)
+    this.element.classList.add(...this.constructor.A11Y_SHIFTED_CLASSES)
+    return true
+  }
+
+  stopWatchingAccessibilityTrigger() {
+    this.a11yObserver?.disconnect()
+    this.a11yObserver = null
+    clearTimeout(this.a11yTimeout)
   }
 
   // ---------- Exit intent ----------

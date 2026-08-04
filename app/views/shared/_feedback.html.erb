@@ -16,7 +16,7 @@
 <% category_options = Feedback::CATEGORY_OPTIONS %>
 <div data-controller="feedback" data-action="click@window->feedback#closeDropdownOutside"
      data-feedback-exit-intent-value="<%= exit_intent %>"
-     class="fixed bottom-24 right-6 z-50 flex flex-col items-end sm:bottom-6 sm:right-24">
+     class="fixed bottom-6 right-6 z-50 flex flex-col items-end motion-safe:transition-[bottom,right] motion-safe:duration-200">
 
   <%# Dark overlay, shown only when the form opens as a centered modal (exit case) %>
   <div data-feedback-target="backdrop" data-action="click->feedback#close"
