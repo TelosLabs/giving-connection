@@ -11,7 +11,8 @@ RSpec.describe "Searches", type: :request do
       # The actual dataLayer push is verified end-to-end in
       # spec/system/search_analytics_system_spec.rb (needs a real browser to run JS).
       # This just confirms the server renders the wiring that action depends on.
-      expect(response.body).to include("submit-&gt;search#trackSearch").or include("submit->search#trackSearch")
+      expect(response.body).to include("submit-&gt;search-tracking#trackSearch")
+        .or include("submit->search-tracking#trackSearch")
     end
 
     # SearchesController#show renders a *different* template (_preview.html.slim,
@@ -24,7 +25,8 @@ RSpec.describe "Searches", type: :request do
       get "/search"
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include("submit-&gt;search#trackSearch").or include("submit->search#trackSearch")
+      expect(response.body).to include("submit-&gt;search-tracking#trackSearch")
+        .or include("submit->search-tracking#trackSearch")
     end
   end
 end

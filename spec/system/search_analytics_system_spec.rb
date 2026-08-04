@@ -60,6 +60,75 @@ RSpec.describe "Search analytics tracking", type: :system do
     expect(count_after_search).to eq(1)
   end
 
+  describe "from a nonprofit detail page" do
+    it "tracks the search" do
+      location = create(:location, :with_office_hours)
+
+      visit location_path(location)
+
+      find("#search-keyword-input").set("food pantry")
+      find("#search-keyword-input").send_keys(:enter)
+
+      expect(page).to have_text(/results? found/i, wait: 5)
+
+      search_event = wait_for_data_layer_event("search")
+
+      expect(search_event).not_to be_nil, "dataLayer at failure: #{fetch_data_layer.inspect}"
+      expect(search_event["search_term"]).to eq("food pantry")
+      expect(search_event["category"]).to eq("Find Help")
+    end
+  end
+
+  describe "from the homepage hero form" do
+    it "tracks the search, with the location that was actually submitted" do
+      visit root_path
+
+      find(:test_id, "home_search_input").fill_in with: "food pantry"
+      click_button "home_search_btn"
+
+      expect(page).to have_text(/results? found/i, wait: 5)
+
+      search_event = wait_for_data_layer_event("search")
+
+      expect(search_event).not_to be_nil, "dataLayer at failure: #{fetch_data_layer.inspect}"
+      expect(search_event["search_term"]).to eq("food pantry")
+      expect(search_event["category"]).to eq("Find Help")
+      # Asserted, not just present: the location was silently `undefined` for a
+      # while because the selector picked up the navbar's <p> instead of the
+      # search bar's <input>, and presence-only assertions never caught it.
+      expect(search_event["location"]).to be_present
+    end
+
+    # Regression guard: the homepage form used to declare the whole `search`
+    # controller, which auto-submits its form whenever the global
+    # `location-updated` event fires. That turned "pick a city on the homepage"
+    # into "run an empty search and get navigated to /search", inflating counts
+    # with searches nobody performed. Tracking now lives in its own controller
+    # that only reads from its own element.
+    it "neither searches nor navigates when only the location changes" do
+      visit root_path
+
+      navbar_location = "#main-navbar [data-geolocation-target='currentLocation']"
+      current_city = find(navbar_location, match: :first).text
+
+      within("form[data-controller~='search-tracking']") do
+        find("input[data-geolocation-target='currentLocation']").click
+        other_city = all("[data-geolocation-target='presets'] li")
+          .map(&:text)
+          .find { |text| text.present? && text != current_city && text != "Search near me" }
+        find("[data-geolocation-target='presets'] li", text: other_city, match: :first).click
+        @picked_city = other_city
+      end
+
+      # Sync on the location change having fully propagated before asserting
+      # that nothing *else* happened as a result of it.
+      expect(page).to have_css(navbar_location, text: @picked_city, wait: 5)
+
+      expect(page).to have_current_path(root_path)
+      expect(fetch_data_layer.count { |entry| entry["event"] == "search" }).to eq(0)
+    end
+  end
+
   private
 
   # Turbo may still be swapping frames the instant navigation "completes" per
