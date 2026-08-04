@@ -6,7 +6,7 @@ main
       = @main_text
     div class="hidden px-6 pb-6 text-2xl text-center text-white sm:block"
       | Search for nonprofits in Nashville, Atlantic City, & Los Angeles.
-    = form_with model: @search, url: search_path, method: :get, data: { controller: 'search-tracking', action: 'submit->search-tracking#trackSearch' } do |f|
+    = form_with model: @search, url: search_path, method: :get, data: { controller: 'search-tracking', action: 'submit->search-tracking#trackSearch', 'search-tracking-origin-value': 'home' } do |f|
       .c-form class="relative max-w-3xl py-0 mx-auto z-25 c-form sm:px-3 sm:flex-col sm:justify-center sm:max-w-4xl"
         div class="relative flex w-full p-0 divide-x rounded-md mb-7 h-14 c-input sm:mb-0"
           div class="relative flex w-full"

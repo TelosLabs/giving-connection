@@ -44,6 +44,27 @@ RSpec.describe "Search analytics tracking", type: :system do
     # elsewhere (e.g. location) wouldn't be caught by presence alone.
     expect(search_event["search_term"]).to eq("food pantry")
     expect(search_event["category"]).to eq("Find Help")
+    # A paramless visit to /search renders _preview.html.slim, so this is a
+    # first search from the search page rather than a refinement.
+    expect(search_event["search_origin"]).to eq("search_landing")
+    expect(search_event["location"]).to be_present
+  end
+
+  it "distinguishes a refinement made from the results template" do
+    # Params present, so SearchesController#show renders show.html.slim — the
+    # template users refine an existing search from.
+    visit search_path(search: {keyword: "seed"})
+    expect(page).to have_text(/results? found/i, wait: 5)
+
+    find("#search-keyword-input").set("food pantry")
+    find("#search-keyword-input").send_keys(:enter)
+    expect(page).to have_text(/results? found/i, wait: 5)
+
+    search_event = wait_for_data_layer_event("search")
+
+    expect(search_event).not_to be_nil, "dataLayer at failure: #{fetch_data_layer.inspect}"
+    expect(search_event["search_term"]).to eq("food pantry")
+    expect(search_event["search_origin"]).to eq("search_results")
   end
 
   it "does not re-fire the search event on pagination" do
@@ -76,6 +97,7 @@ RSpec.describe "Search analytics tracking", type: :system do
       expect(search_event).not_to be_nil, "dataLayer at failure: #{fetch_data_layer.inspect}"
       expect(search_event["search_term"]).to eq("food pantry")
       expect(search_event["category"]).to eq("Find Help")
+      expect(search_event["search_origin"]).to eq("nonprofit_profile")
     end
   end
 
@@ -93,6 +115,7 @@ RSpec.describe "Search analytics tracking", type: :system do
       expect(search_event).not_to be_nil, "dataLayer at failure: #{fetch_data_layer.inspect}"
       expect(search_event["search_term"]).to eq("food pantry")
       expect(search_event["category"]).to eq("Find Help")
+      expect(search_event["search_origin"]).to eq("home")
       # Asserted, not just present: the location was silently `undefined` for a
       # while because the selector picked up the navbar's <p> instead of the
       # search bar's <input>, and presence-only assertions never caught it.
@@ -169,6 +192,7 @@ RSpec.describe "Search analytics tracking", type: :system do
               event: entry.event,
               search_term: entry.search_term,
               category: entry.category,
+              search_origin: entry.search_origin,
               location: entry.location
             });
           }
