@@ -33,7 +33,7 @@ dump.rdb
 /spec/examples.txt
 
 # Ignore master key for decrypting credentials and more.
-/config/master.key
+master.key
 
 /public/packs
 /public/packs-test
@@ -52,10 +52,13 @@ database_consistency*
 /app/assets/builds/*
 !/app/assets/builds/.keep
 
-.env
+.env*
+!.env.template
 
 # Kamal deployment secrets
-/.kamal/secrets*
+# **/ prefix so a stray copy outside the repo root is still ignored;
+# a pattern with a mid-path slash is root-anchored without it.
+**/.kamal/secrets*
 
 # Ignore backup dumps
 production_backup.dump
