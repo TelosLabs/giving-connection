@@ -93,7 +93,7 @@ class OrganizationsController < ApplicationController
   end
 
   def organization_params
-    permitted_params = params.require(:organization).permit(
+    params.require(:organization).permit(
       :name,
       :second_name,
       :ein_number,
@@ -145,6 +145,5 @@ class OrganizationsController < ApplicationController
       beneficiary_subcategory_ids: [],
       cause_ids: []
     )
-    permitted_params
   end
 end

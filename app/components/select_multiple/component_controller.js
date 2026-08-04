@@ -2,7 +2,6 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["input", "container", "badgesContainer", 'checkbox', 'badgeTemplate', 'group', ]
-  static values = { selected: Array }
 
   connect() {
     // Map of submitted value -> display label. For most fields (Causes,

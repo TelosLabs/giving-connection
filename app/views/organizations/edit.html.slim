@@ -139,7 +139,7 @@
                 p class="mt-1 mb-3 text-sm text-gray-4"
                   | Select the items your organization currently needs and they will appear on your profile.
                 = hidden_field_tag "organization[in_kind_donation_items][]", ""
-                = render SelectMultiple::Component.new(f: f, name: "organization[in_kind_donation_items]", items: Organization.in_kind_donation_items_options, selected: @organization.in_kind_donation_items, placeholder: "Search items")
+                = render SelectMultiple::Component.new(name: "organization[in_kind_donation_items]", items: Organization.in_kind_donation_items_options, selected: @organization.in_kind_donation_items, placeholder: "Search items")
 
               div class="hidden col-span-3 md:flex"
 

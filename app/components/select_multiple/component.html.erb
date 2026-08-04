@@ -45,7 +45,7 @@
               <% end %>
             <% end %>
           <% elsif @items.is_a?(Hash) %>
-            <% @items&.sort&.each do |group, list|%>
+            <% grouped_items.each do |group, list|%>
               <div class="mb-2" <%= "data-#{@stimulus_controller}-target='group'".html_safe %>>
                 <div class="pl-6 my-2 text-sm font-bold text-black" data-group-title="<%= group.downcase %> " <%= "data-#{@stimulus_controller}-target='groupTitle'".html_safe %>>
                   <%= group %>
@@ -59,7 +59,7 @@
                     <% end %>
                   <% end %>
                 <% elsif list.is_a?(Hash) %>
-                  <% list.sort_by { |_item_key, item_label| item_label }.each do |item_key, item_label| %>
+                  <% list.each do |item_key, item_label| %>
                     <% checkbox_id = "#{@name}_#{group}_#{item_key}".parameterize(separator: "_") %>
                     <div class="flex flex-row items-center my-2">
                       <%= check_box_tag "#{@name}[]", item_key, @selected.include?(item_key), id: checkbox_id,

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_07_31_090000) do
+ActiveRecord::Schema[7.2].define(version: 2026_07_30_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -354,7 +354,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_31_090000) do
     t.boolean "volunteer_availability", default: false, null: false
     t.string "volunteer_link"
     t.boolean "general_population_serving", default: false, null: false
-    t.json "in_kind_donation_items", default: []
+    t.jsonb "in_kind_donation_items", default: [], null: false
     t.string "in_kind_donation_link"
     t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
     t.index ["ein_number"], name: "index_organizations_on_ein_number"
