@@ -4,6 +4,84 @@ module Organizations
   module Constants
     SCOPE = %w[International National Regional].freeze
 
+    IN_KIND_DONATION_ITEMS = {
+      "Basic Needs & Household Items" => {
+        "clothing_general" => "Clothing (general)",
+        "winter_coats" => "Winter coats & cold-weather gear",
+        "shoes" => "Shoes (adults or children)",
+        "blankets_bedding" => "Blankets & bedding",
+        "towels_washcloths" => "Towels & washcloths",
+        "diapers" => "Diapers (baby & adult)",
+        "baby_wipes" => "Baby wipes",
+        "feminine_hygiene_products" => "Feminine hygiene products",
+        "soap_toiletries" => "Soap & toiletries",
+        "laundry_detergent" => "Laundry detergent",
+        "cleaning_supplies" => "Cleaning supplies"
+      },
+      "Children & Baby Items" => {
+        "toys_games" => "Toys & games (new or gently used)",
+        "books_childrens" => "Books (children's)",
+        "school_supplies" => "School supplies",
+        "backpacks" => "Backpacks",
+        "cribs_bassinets" => "Cribs & bassinets",
+        "strollers" => "Strollers",
+        "car_seats" => "Car seats (new or not expired)"
+      },
+      "Food & Kitchen Supplies" => {
+        "non_perishable_food" => "Non-perishable food (canned/dry goods)",
+        "fresh_produce" => "Fresh produce",
+        "frozen_foods" => "Frozen foods",
+        "grocery_gift_cards" => "Grocery store gift cards",
+        "bottled_water" => "Bottled water",
+        "paper_plates_utensils" => "Paper plates & plastic utensils",
+        "small_kitchen_appliances" => "Small kitchen appliances (e.g. microwave, blender)",
+        "cooking_utensils_cookware" => "Cooking utensils & cookware"
+      },
+      "Furniture & Household Goods" => {
+        "beds_mattresses" => "Beds & mattresses (new or gently used)",
+        "dressers_storage_units" => "Dressers & storage units",
+        "sofas_chairs" => "Sofas & chairs",
+        "dining_tables_chairs" => "Dining tables & chairs",
+        "lamps_lighting" => "Lamps & lighting",
+        "rugs" => "Rugs",
+        "kitchenware" => "Kitchenware (dishes, pots, silverware)"
+      },
+      "Electronics & Office Supplies" => {
+        "laptops_tablets" => "Laptops or tablets",
+        "smartphones" => "Smartphones (factory reset)",
+        "desktop_computers" => "Desktop computers",
+        "printers_ink" => "Printers & ink",
+        "headphones_headsets" => "Headphones or headsets",
+        "office_chairs" => "Office chairs",
+        "desks" => "Desks",
+        "notebooks_pens" => "Notebooks & pens"
+      },
+      "Tools, Building, & Facility Supplies" => {
+        "hand_tools" => "Hand tools (hammers, screwdrivers, etc.)",
+        "power_tools" => "Power tools",
+        "paint_supplies" => "Paint & painting supplies",
+        "construction_materials" => "Construction materials (lumber, drywall)",
+        "safety_gear" => "Safety gear (gloves, goggles, helmets)"
+      },
+      "Pet Supplies" => {
+        "pet_food" => "Pet food",
+        "leashes_collars" => "Leashes & collars",
+        "pet_beds" => "Pet beds",
+        "crates_carriers" => "Crates or carriers",
+        "pet_toys" => "Toys",
+        "litter_boxes" => "Litter & litter boxes"
+      },
+      "Other Services & Specialty Items" => {
+        "transit_gas_cards" => "Gas cards or transit passes",
+        "general_gift_cards" => "Gift cards (general purpose, e.g., Target, Walmart, Visa)",
+        "event_supplies" => "Event supplies (tables, tents, signage)",
+        "art_supplies" => "Art supplies",
+        "musical_instruments" => "Musical instruments",
+        "gardening_supplies" => "Gardening tools & supplies",
+        "bikes" => "Bikes (adult or kids)"
+      }
+    }.freeze
+
     NTEE_CODE = [
       "A01: Alliances & Advocacy",
       "A02: Management & Technical Assistance",

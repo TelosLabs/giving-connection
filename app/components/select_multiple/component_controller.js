@@ -2,12 +2,24 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["input", "container", "badgesContainer", 'checkbox', 'badgeTemplate', 'group', ]
-  static values = { selected: Array }
 
   connect() {
-    this.store = new Set(this.selectedValue || [])
-    this.updateCheckboxes()
+    // Map of submitted value -> display label. For most fields (Causes,
+    // Services, Populations) value and label are the same string. Fields
+    // backed by a stable key + display label (e.g. In-Kind Donation Needs)
+    // set a separate data-label so badges show the human-readable text
+    // instead of the raw stored key.
+    this.store = new Map()
+    this.checkboxTargets.forEach(checkbox => {
+      if (checkbox.checked) {
+        this.store.set(checkbox.dataset.value, this.labelFor(checkbox))
+      }
+    })
     this.updateBadges()
+  }
+
+  labelFor(checkbox) {
+    return checkbox.dataset.label || checkbox.dataset.value
   }
 
   select(event) {
@@ -41,9 +53,10 @@ export default class extends Controller {
   }
 
   addCheckboxToStore(event) {
-    const value = event.currentTarget.dataset.value
-    if (event.currentTarget.checked) {
-      this.store.add(value)
+    const checkbox = event.currentTarget
+    const value = checkbox.dataset.value
+    if (checkbox.checked) {
+      this.store.set(value, this.labelFor(checkbox))
     } else {
       this.store.delete(value)
     }
@@ -51,20 +64,16 @@ export default class extends Controller {
 
   updateCheckboxes() {
     this.checkboxTargets.forEach(checkbox => {
-      if (this.store.has(checkbox.dataset.value)) {
-        checkbox.checked = true
-      } else {
-        checkbox.checked = false
-      }
+      checkbox.checked = this.store.has(checkbox.dataset.value)
     })
   }
 
   updateBadges() {
     this.badgesContainerTarget.innerHTML = ''
-    this.store.forEach(value => {
+    this.store.forEach((label, value) => {
       const badge = this.badgeTemplateTarget.cloneNode(true)
       const valueTarget = badge.querySelector('span')
-      valueTarget.innerHTML = value
+      valueTarget.innerHTML = label
       badge.classList.remove('hidden')
       badge.setAttribute('data-value', value)
       this.badgesContainerTarget.appendChild(badge)
@@ -87,7 +96,7 @@ export default class extends Controller {
     const regex = new RegExp('.*' + query + '.*', 'gmi')
 
     this.checkboxTargets.forEach(checkbox => {
-      if (checkbox.dataset.value.search(regex) >= 0) {
+      if (this.labelFor(checkbox).search(regex) >= 0) {
         checkbox.parentElement.classList.remove('hidden')
       } else {
         checkbox.parentElement.classList.add('hidden')
