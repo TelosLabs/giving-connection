@@ -47,6 +47,16 @@ scoring:
     # Kept wired at 0.0 for one release as a rollback lever, then removed.
     attribute_bonus: 0.00
     distance: 0.10
+  # Fraction of a Populations Served rule's weight credited to an organization
+  # flagged general_population_serving when it has no exact population match.
+  #
+  # Those organizations record no beneficiary subcategories at all (the flag
+  # exists so they don't have to enumerate them), so before this they scored
+  # zero on every population rule -- ranked below any org that ticked a box,
+  # despite serving the user too. "We serve everyone" is a real but weaker
+  # signal than "we specialise in your population", hence a partial credit
+  # rather than a full match. Set to 0 to disable.
+  general_population_credit: 0.5
   # Minimum number of results to return (triggers radius expansion if not met)
   min_results: 3
   # Maximum results to display

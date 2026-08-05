@@ -428,6 +428,63 @@ RSpec.describe SmartMatch::RuleScorer do
     end
   end
 
+  # These organizations record no beneficiary subcategories by design -- the
+  # flag replaces enumerating them. Before this, every population rule scored
+  # them 0, so an org serving everyone (including the user) ranked below one
+  # that ticked a matching box.
+  describe "organizations serving the general population" do
+    it "gives partial credit where an exact population match would score full" do
+      general = build_org(general_population_serving: true)
+      exact = build_org(name: "Seniors Specialist", ein_number: "880011",
+        beneficiaries: ["Seniors"])
+
+      answers = intent(self_description: ["senior"])
+
+      general_earned = score_for(general, answers)[:earned]
+      exact_earned = score_for(exact, answers)[:earned]
+
+      expect(general_earned).to be > 0, "serving everyone should not score zero"
+      expect(general_earned).to be < exact_earned, "it is a weaker signal than specialising"
+      expect(general_earned).to eq(exact_earned * 0.5)
+    end
+
+    it "records how the credit was earned in the trace" do
+      general = build_org(general_population_serving: true)
+
+      entry = score_for(general, intent(self_description: ["senior"]))[:matched]
+        .find { |m| m[:field] == "population" }
+
+      expect(entry[:via]).to eq("general_population_serving")
+    end
+
+    it "prefers an exact match over the general-population credit" do
+      both = build_org(general_population_serving: true, beneficiaries: ["Seniors"])
+
+      entry = score_for(both, intent(self_description: ["senior"]))[:matched]
+        .find { |m| m[:field] == "population" }
+
+      expect(entry[:via]).to be_nil, "an exact match should not be downgraded"
+    end
+
+    it "does not extend the credit to non-population fields" do
+      general = build_org(general_population_serving: true)
+
+      # A cause rule must still require an actual cause match.
+      result = score_for(general, intent(causes: ["Mental Health"]))
+
+      expect(result[:matched].map { |m| m[:field] }).not_to include("cause")
+    end
+
+    it "leaves ordinary organizations untouched" do
+      plain = build_org(beneficiaries: ["Seniors"])
+
+      entry = score_for(plain, intent(self_description: ["senior"]))[:matched].first
+
+      expect(entry[:contribution]).to eq(7.5)
+      expect(entry[:via]).to be_nil
+    end
+  end
+
   describe "path scoping" do
     it "ignores questions belonging to another path" do
       org = build_org(beneficiaries: ["Seniors"])

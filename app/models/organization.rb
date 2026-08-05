@@ -99,6 +99,14 @@ class Organization < ApplicationRecord
       tagline_en,
       causes.map(&:name).join(", ").presence,
       beneficiary_subcategories.map(&:name).join(", ").presence,
+      # Tags carry short descriptors the structured fields miss ("Food banks",
+      # "Family services", "Arts education") and cover 70% of production
+      # organizations. They already weight the main site search; including them
+      # here lets the quiz's free-text box and cause selections reach them too.
+      #
+      # NOTE: changing this method invalidates every stored embedding. Re-embed
+      # all organizations after deploying a change here.
+      tags.map(&:name).uniq.join(", ").presence,
       main_location&.address
     ]
 

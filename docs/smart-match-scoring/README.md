@@ -38,6 +38,9 @@ exists to fix it (Q6).
    client; **also the decision log**, record answers there
 6. [06-phase-5-fields.md](./06-phase-5-fields.md) — the 14 new nonprofit
    fields, and why they ship without a backfill campaign
+7. [07-unused-organization-data.md](./07-unused-organization-data.md) — the
+   inverse gap: organization data the platform already holds that Smart Match
+   never reads
 
 [source/](./source/) holds the client's four CSVs. They arrived as chat
 attachments and existed nowhere else — treat these copies as the source of

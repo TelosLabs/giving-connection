@@ -87,11 +87,18 @@ module SmartMatch
 
         hit = group[:rules].select { |rule| rule_matches?(rule, group[:answer]) }
           .max_by { |rule| rule["weight"] }
+
+        # No exact match, but an organization that serves the general
+        # population still serves this user -- credit it partially rather than
+        # scoring it zero.
+        via_general_population = hit.nil? && general_population_match?(best)
+        hit = best if via_general_population
         next unless hit
 
-        contribution = hit["weight"] * group[:multiplier]
+        credit = via_general_population ? general_population_credit : 1.0
+        contribution = hit["weight"] * group[:multiplier] * credit
         earned += contribution
-        matched << trace_entry(group, hit, contribution)
+        matched << trace_entry(group, hit, contribution, general_population: via_general_population)
       end
 
       {
@@ -177,6 +184,21 @@ module SmartMatch
       @boolean_values[field] = BOOLEAN_FIELDS.fetch(field).call(organization)
     end
 
+    # An organization flagged general_population_serving records no
+    # beneficiary subcategories at all -- the flag exists so it doesn't have
+    # to enumerate them. All 54 such organizations in production have zero
+    # populations, so every population rule scored them 0 no matter how well
+    # they fit: an org that serves everyone, including this user, ranked below
+    # one that ticked a matching box.
+    #
+    # Partial credit rather than a full match. "We serve everyone" is a genuine
+    # fit but a weaker signal than "we specialise in your population", so the
+    # rule's weight is scaled by general_population_credit in matching_rules.yml
+    # rather than counted in full.
+    def general_population_match?(rule)
+      rule["field"] == "population" && organization.general_population_serving?
+    end
+
     def rule_matches?(rule, answer)
       field = rule["field"]
       return boolean_value(field) == true if BOOLEAN_FIELDS.key?(field)
@@ -213,8 +235,8 @@ module SmartMatch
       Organizations::Constants::CAUSES_AND_SERVICES.fetch(cause_name, [])
     end
 
-    def trace_entry(group, rule, contribution)
-      {
+    def trace_entry(group, rule, contribution, general_population: false)
+      entry = {
         question: group[:session_key],
         answer: group[:answer],
         field: rule["field"],
@@ -223,6 +245,13 @@ module SmartMatch
         multiplier: group[:multiplier],
         contribution: contribution.round(2)
       }
+      # Flagged so a result reading "matched Seniors" can be distinguished from
+      # "serves everyone, including seniors".
+      general_population ? entry.merge(via: "general_population_serving") : entry
+    end
+
+    def general_population_credit
+      SmartMatch::MATCHING_RULES.dig("scoring", "general_population_credit") || 0.5
     end
 
     def answers

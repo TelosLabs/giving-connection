@@ -359,6 +359,79 @@ RSpec.describe SmartMatch::SimilarityQuery do
       end
     end
 
+    # Distance used to be measured from main_location only, which contradicted
+    # the eligibility filters ("any location offers services") and made an
+    # organization with a nearby branch look as far away as its head office.
+    describe "distance across multiple locations" do
+      def anchor_cluster
+        3.times.map do |i|
+          org = create(:organization, name: "Anchor #{i}", ein_number: "9910#{i}", scope_of_work: "Regional")
+          org.locations.first.update_columns(
+            address: "#{i} Main St, Nashville, TN", state_code: "TN",
+            lonlat: Geo.point(-86.7816, 36.1627), latitude: 36.1627, longitude: -86.7816
+          )
+          create(:organization_embedding, organization: org)
+          org
+        end
+      end
+
+      def distance_for(results, org)
+        results.candidates
+          .find { |c| c[:organization_embedding].organization_id == org.id }
+          &.dig(:distance_miles)
+      end
+
+      def search
+        described_class.call(embedding: embedding, state: "TN", coordinates: coordinates, radius_miles: 50)
+      end
+
+      it "measures from the nearest location, not the main one" do
+        anchor_cluster
+        org = create(:organization, name: "Branch Org", ein_number: "99200", scope_of_work: "Regional")
+        # Head office far east of Nashville...
+        org.locations.first.update_columns(
+          address: "1 Far Rd, Knoxville, TN", state_code: "TN", main: true,
+          lonlat: Geo.point(-83.9207, 35.9606), latitude: 35.9606, longitude: -83.9207
+        )
+        # ...branch right on top of the user.
+        create(:location, :with_office_hours, organization: org, main: false, offer_services: true,
+          address: "2 Near St, Nashville, TN", state_code: "TN",
+          lonlat: Geo.point(-86.7816, 36.1627), latitude: 36.1627, longitude: -86.7816)
+        create(:organization_embedding, organization: org)
+
+        expect(distance_for(search, org.reload)).to be_within(1).of(0)
+      end
+
+      # A PO box geocodes to a post office: roughly right for the town, wrong
+      # for a five-mile radius. nil is the neutral "distance doesn't apply".
+      it "ignores PO box locations when measuring" do
+        anchor_cluster
+        org = create(:organization, name: "PO Box Only", ein_number: "99300", scope_of_work: "Regional")
+        org.locations.first.update_columns(
+          address: "PO Box 5, Nashville, TN", state_code: "TN", po_box: true,
+          lonlat: Geo.point(-86.7816, 36.1627), latitude: 36.1627, longitude: -86.7816
+        )
+        create(:organization_embedding, organization: org)
+
+        expect(distance_for(search, org.reload)).to be_nil
+      end
+
+      it "still measures a physical location when the organization also has a PO box" do
+        anchor_cluster
+        org = create(:organization, name: "Box And Office", ein_number: "99400", scope_of_work: "Regional")
+        org.locations.first.update_columns(
+          address: "PO Box 9, Nashville, TN", state_code: "TN", po_box: true,
+          lonlat: Geo.point(-83.9207, 35.9606), latitude: 35.9606, longitude: -83.9207
+        )
+        create(:location, :with_office_hours, organization: org, main: false, offer_services: true,
+          address: "3 Real St, Nashville, TN", state_code: "TN",
+          lonlat: Geo.point(-86.7816, 36.1627), latitude: 36.1627, longitude: -86.7816)
+        create(:organization_embedding, organization: org)
+
+        expect(distance_for(search, org.reload)).to be_within(1).of(0)
+      end
+    end
+
     describe "eligibility filters and relaxation" do
       def volunteer_intent
         UserIntent.from_session(

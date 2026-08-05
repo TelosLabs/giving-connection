@@ -96,11 +96,20 @@ module SmartMatch
         scope.where(organizations: {scope_of_work: scope_codes})
       end
 
+      # Joins ALL locations, not just the main one.
+      #
+      # Restricting to main locations meant an organization was only ever
+      # findable at its head office: a Nashville branch of a California-
+      # headquartered organization was invisible to a Nashville search, and a
+      # nearby branch was filtered out by the radius because the head office
+      # was too far. That contradicted the eligibility filters, which read
+      # "any location offers services".
+      #
+      # `distinct` collapses the extra rows the wider join produces.
       def base_scope
         OrganizationEmbedding
           .joins(organization: :locations)
-          .includes(organization: [:causes, :beneficiary_subcategories, {locations: :services}])
-          .where(locations: {main: true})
+          .includes(organization: [:causes, :beneficiary_subcategories, :tags, {locations: :services}])
           .merge(Location.joins(:organization).where(organizations: {active: true}))
           .distinct
       end
@@ -175,12 +184,26 @@ module SmartMatch
         organization = org_embedding.organization
         return nil if Eligibility::NATIONWIDE_SCOPES.include?(organization.scope_of_work)
 
-        loc = organization.main_location
-        return nil unless loc
-
         user_point = Geo.point(coordinates[:longitude], coordinates[:latitude])
-        org_point = Geo.point(loc.longitude, loc.latitude)
-        user_point.distance(org_point) / MILES_TO_METERS
+
+        # Nearest location, not the main one. An organization with a branch two
+        # miles away and a head office forty miles away is two miles away.
+        # This also matches how the eligibility filters read locations ("any
+        # location offers services"), which measuring from main_location alone
+        # contradicted.
+        #
+        # PO boxes are excluded: they geocode to a post office, which is
+        # roughly right for the town and meaningless for a five-mile radius.
+        # An organization whose only address is a PO box yields nil, the same
+        # neutral "distance doesn't apply" other callers already understand.
+        distances = organization.locations.filter_map do |loc|
+          next if loc.po_box?
+          next if loc.latitude.nil? || loc.longitude.nil?
+
+          user_point.distance(Geo.point(loc.longitude, loc.latitude)) / MILES_TO_METERS
+        end
+
+        distances.min
       end
 
       def expansion_radii(initial_radius)

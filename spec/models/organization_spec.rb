@@ -80,6 +80,34 @@ RSpec.describe Organization, type: :model do
       org.causes.each { |cause| expect(result).to include(cause.name) }
     end
 
+    # Tags cover 70% of production organizations and carry short descriptors
+    # the structured fields miss ("Food banks", "Family services"). They feed
+    # the main site search already; including them here lets the quiz's free
+    # text and cause selections reach them semantically.
+    it "includes tag names" do
+      org = create(:organization)
+      Tag.create!(organization: org, name: "Food banks")
+      Tag.create!(organization: org, name: "Family services")
+
+      result = org.reload.smart_match_text
+
+      expect(result).to include("Food banks")
+      expect(result).to include("Family services")
+    end
+
+    it "does not repeat a duplicated tag" do
+      org = create(:organization)
+      2.times { Tag.create!(organization: org, name: "Food banks") }
+
+      expect(org.reload.smart_match_text.scan("Food banks").size).to eq(1)
+    end
+
+    it "builds text for an organization with no tags" do
+      org = create(:organization)
+
+      expect(org.smart_match_text).to be_present
+    end
+
     it "truncates at SmartMatch::EMBEDDING_TEXT_MAX_LENGTH" do
       org = create(:organization, mission_statement_en: "A" * 2000)
 
