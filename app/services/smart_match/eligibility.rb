@@ -36,6 +36,13 @@ module SmartMatch
     # few National orgs match -- see SimilarityQuery#scoped_results.
     NATIONWIDE_SCOPES = %w[National].freeze
 
+    # The travel-step answer labelled "Remote services only". The stored token
+    # is `statewide` because the option's copy was rewritten without renaming
+    # the value, and renaming it now would strand in-flight sessions and every
+    # historical QuizSubmission. The label is the source of truth for what it
+    # means; this constant is the one place that mapping is written down.
+    REMOTE_ONLY_TRAVEL_BUCKET = "statewide"
+
     attr_reader :user_intent
 
     def initialize(user_intent:)
@@ -72,9 +79,26 @@ module SmartMatch
     # should be shed progressively, lowest CSV weight first.
     def relaxable
       @relaxable ||= [
+        (remote_services_filter if wants_remote_only?),
         (volunteer_opportunities_filter if volunteer?),
         (donation_link_filter if wants_general_donation?)
       ].compact
+    end
+
+    # The client's spec makes this a hard requirement, but the backing field
+    # ships empty and fills in only as organizations edit their profiles. As an
+    # absolute filter that would hide every organization that simply hasn't
+    # answered yet -- a wrong answer presented as a complete one. Relaxable
+    # gives correct behaviour at any level of coverage: remote organizations
+    # rank alone once enough have said yes, and until then the user is told
+    # the search was broadened.
+    def remote_services_filter
+      [
+        :remote_services,
+        ->(scope) {
+          scope.where(organization_id: Location.where(remote_services: true).select(:organization_id))
+        }
+      ]
     end
 
     # 61% of production organizations carry volunteer_availability, so this is
@@ -113,6 +137,13 @@ module SmartMatch
 
     def service_seeker?
       user_intent.user_type.to_s == "service_seeker"
+    end
+
+    # The travel step's "Remote services only" answer. Its session token is
+    # still `statewide` -- a leftover from an earlier copy revision, kept so
+    # in-flight sessions don't break. See REMOTE_ONLY_TRAVEL_BUCKET.
+    def wants_remote_only?
+      service_seeker? && user_intent.travel_bucket.to_s == REMOTE_ONLY_TRAVEL_BUCKET
     end
 
     def volunteer?

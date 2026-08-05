@@ -27,10 +27,12 @@ module SmartMatch
         # Try with every eligibility filter in place, then again without the
         # relaxable ones. Retrieval is otherwise identical, so the second pass
         # only ever widens.
-        strict = retrieve(embedding, state, coordinates, radius_miles, location_scope, eligibility, relax: false)
+        strict = retrieve(embedding, state, coordinates, radius_miles, location_scope, eligibility,
+          relax: false, user_intent: user_intent)
         return Result.new(candidates: strict, relaxed: []) if sufficient?(strict) || eligibility.nil? || !eligibility.relaxable?
 
-        relaxed = retrieve(embedding, state, coordinates, radius_miles, location_scope, eligibility, relax: true)
+        relaxed = retrieve(embedding, state, coordinates, radius_miles, location_scope, eligibility,
+          relax: true, user_intent: user_intent)
         return Result.new(candidates: strict, relaxed: []) if relaxed.size <= strict.size
 
         Result.new(candidates: relaxed, relaxed: eligibility.relaxable_labels)
@@ -38,8 +40,12 @@ module SmartMatch
 
       private
 
-      def retrieve(embedding, state, coordinates, radius_miles, location_scope, eligibility, relax:)
+      def retrieve(embedding, state, coordinates, radius_miles, location_scope, eligibility, relax:, user_intent: nil)
         scope = eligible_base(eligibility, relax: relax)
+
+        # "Anywhere" outranks every other geographic signal, including a city
+        # the donor named on a later step.
+        return results_from(scope, embedding) if user_intent && !user_intent.geographic_filtering?
 
         return scoped_results(scope, embedding, location_scope) if NON_LOCAL_SCOPES.include?(location_scope.to_s)
 
@@ -152,8 +158,24 @@ module SmartMatch
         }
       end
 
+      # nil means "distance does not apply", which Scorer#distance_score reads
+      # as a neutral full mark rather than a penalty.
+      #
+      # Nationwide organizations get nil deliberately. They are included in a
+      # local search precisely because their reach isn't geographic, so
+      # measuring from their head office would score a national helpline 0 on
+      # the distance term for being headquartered in another state -- punishing
+      # them for the property that made them eligible.
+      #
+      # The trade-off: a nationwide org ties with the nearest local org on this
+      # term. That is only 10% of the total, so it still has to win on
+      # embedding similarity and rule score, but it does mean nationwide orgs
+      # are never distance-disadvantaged. Revisit if they crowd local results.
       def distance_miles(org_embedding, coordinates)
-        loc = org_embedding.organization.main_location
+        organization = org_embedding.organization
+        return nil if Eligibility::NATIONWIDE_SCOPES.include?(organization.scope_of_work)
+
+        loc = organization.main_location
         return nil unless loc
 
         user_point = Geo.point(coordinates[:longitude], coordinates[:latitude])

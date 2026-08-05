@@ -21,12 +21,48 @@ module SmartMatch
   # skipped from both sides of that ratio -- users are never penalised for data
   # the platform has not collected.
   class RuleScorer < ApplicationService
-    # Fields that are a plain capability check on the organization rather than
-    # a preset lookup: present/true scores, absent does not.
+    # Fields that are a plain capability check rather than a preset lookup.
+    #
+    # A lambda returns true (scores), false (does not score), or nil (UNKNOWN
+    # -- the organization has never been asked). nil is not the same as false:
+    # see #each_answer_group, which drops unknown rules from the achievable
+    # maximum as well as from the earned score, so an organization with no data
+    # is not penalised and the user's normalized score doesn't move.
+    #
+    # That distinction is what lets these fields ship with almost no data.
     BOOLEAN_FIELDS = {
+      # Pre-existing columns. Both are non-nullable, so absence really does
+      # mean "no" for them.
       "donation_link" => ->(org) { org.donation_link.present? },
-      "volunteer_availability" => ->(org) { org.volunteer_availability? }
+      "volunteer_availability" => ->(org) { org.volunteer_availability? },
+
+      # Organization-level Smart Match fields. Nullable -- nil is unknown.
+      "free_or_sliding_scale" => ->(org) { org.free_or_sliding_scale },
+      "no_id_required" => ->(org) { org.no_id_required },
+      "lgbtqia_affirming" => ->(org) { org.lgbtqia_affirming },
+      "specific_project_giving" => ->(org) { org.specific_project_giving },
+      "accepts_in_kind" => ->(org) { org.accepts_in_kind },
+      "recurring_giving" => ->(org) { org.recurring_giving },
+      "fundraising_events" => ->(org) { org.fundraising_events },
+      "partnership_opportunities" => ->(org) { org.partnership_opportunities },
+
+      # Location-level. True if ANY location qualifies, unknown only when no
+      # location has been answered either way -- an organization with one
+      # audited-inaccessible site and one unaudited site is a definite "we
+      # don't know of an accessible site", not an unknown.
+      "wheelchair_accessible" => ->(org) { any_location(org, :wheelchair_accessible) },
+      "remote_services" => ->(org) { any_location(org, :remote_services) }
     }.freeze
+
+    # true if any location says yes; nil if every location is unanswered;
+    # false if at least one answered and none said yes.
+    def self.any_location(organization, attribute)
+      values = organization.locations.map { |l| l.public_send(attribute) }
+      return true if values.any?(true)
+      return nil if values.all?(&:nil?)
+
+      false
+    end
 
     attr_reader :organization, :user_intent
 
@@ -74,7 +110,7 @@ module SmartMatch
           next if spec.nil?
 
           rules, multiplier = spec
-          rules.reject { |rule| rule["requires_field"] }
+          rules.reject { |rule| rule["requires_field"] || unknown?(rule) }
             .group_by { |rule| rule["field"] }
             .each_value do |field_rules|
               yield(
@@ -118,9 +154,25 @@ module SmartMatch
       end
     end
 
+    # A capability the organization has simply never been asked about. Such a
+    # rule is dropped from the achievable maximum as well as from the earned
+    # score, so missing data neither helps nor hurts. Preset fields (cause,
+    # population, ...) have no unknown state: an org either carries the tag or
+    # it doesn't.
+    def unknown?(rule)
+      BOOLEAN_FIELDS.key?(rule["field"]) && boolean_value(rule["field"]).nil?
+    end
+
+    def boolean_value(field)
+      @boolean_values ||= {}
+      return @boolean_values[field] if @boolean_values.key?(field)
+
+      @boolean_values[field] = BOOLEAN_FIELDS.fetch(field).call(organization)
+    end
+
     def rule_matches?(rule, answer)
       field = rule["field"]
-      return BOOLEAN_FIELDS.fetch(field).call(organization) if BOOLEAN_FIELDS.key?(field)
+      return boolean_value(field) == true if BOOLEAN_FIELDS.key?(field)
 
       case rule["match"]
       when "prefix" then organization_values(field).any? { |value| value.start_with?(rule["preset"]) }

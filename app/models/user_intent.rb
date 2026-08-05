@@ -60,6 +60,18 @@ class UserIntent
     location_scope == "local"
   end
 
+  # Donors who answered "Anywhere" to "where should your donation make an
+  # impact?" opted out of geography: the client's spec gives that answer "All
+  # nonprofits" and "no geographic weight".
+  #
+  # Without this the answer was stored and ignored, and the donor flow's
+  # next question (which community?) hard-filtered them to a single state --
+  # the opposite of what they asked for. Only the donor path offers the
+  # answer, so nobody else can opt out.
+  def geographic_filtering?
+    !(user_type.to_s == "donor" && impact_location.to_s == "anywhere")
+  end
+
   # Embedding-text construction tuning. The total length cap is shared with
   # Organization#smart_match_text via SmartMatch::EMBEDDING_TEXT_MAX_LENGTH so
   # both ends of the embedding pipeline use the same character budget.

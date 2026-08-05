@@ -184,6 +184,95 @@ RSpec.describe SmartMatch::RuleScorer do
     end
   end
 
+  # The mechanism the no-backfill decision rests on
+  # (docs/smart-match-scoring/06-phase-5-fields.md). These fields ship empty
+  # and fill in slowly, so "nobody has told us" must behave differently from
+  # "no".
+  describe "capability fields with no data yet" do
+    # wheelchair_accessible lives on locations, not organizations -- a branch
+    # can be step-free while head office isn't.
+    def org_with_accessibility(value)
+      org = build_org
+      org.locations.first.update_columns(wheelchair_accessible: value)
+      org.reload
+    end
+
+    it "scores an organization that says yes" do
+      result = score_for(org_with_accessibility(true), intent(prefs: ["wheelchair_accessible"]))
+
+      expect(result[:earned]).to eq(4.0) # weight 4 x answer-level multiplier 1.0
+      expect(result[:score]).to eq(1.0)
+    end
+
+    it "counts an explicit no against the achievable maximum" do
+      result = score_for(org_with_accessibility(false), intent(prefs: ["wheelchair_accessible"]))
+
+      expect(result[:earned]).to eq(0.0)
+      expect(result[:max]).to eq(4.0)
+      expect(result[:score]).to eq(0.0)
+    end
+
+    # The important one. An unanswered organization must be indistinguishable
+    # from one the question was never asked about -- neither rewarded nor
+    # punished -- otherwise every org would be suppressed until backfilled.
+    it "ignores an unanswered field entirely, on both sides of the ratio" do
+      org = build_org # wheelchair_accessible is NULL
+
+      result = score_for(org, intent(prefs: ["wheelchair_accessible"]))
+
+      expect(result[:earned]).to eq(0.0)
+      expect(result[:max]).to eq(0.0)
+      expect(result[:matched]).to be_empty
+    end
+
+    it "does not let unanswered preferences dilute a scored match" do
+      org = build_org(beneficiaries: ["Seniors"], causes: ["Seniors"],
+        services: ["Senior Centers"], ntee: "P81: Senior Centers")
+
+      plain = score_for(org, intent(self_description: ["senior"]))
+      with_unknowns = score_for(org, intent(
+        self_description: ["senior"],
+        prefs: %w[wheelchair_accessible free_sliding_scale no_id_required]
+      ))
+
+      expect(with_unknowns[:score]).to eq(plain[:score])
+      expect(with_unknowns[:max]).to eq(plain[:max])
+    end
+
+    describe "location-level fields" do
+      it "counts the organization as accessible when any location is" do
+        org = build_org
+        org.locations.first.update_columns(wheelchair_accessible: false)
+        create(:location, :with_office_hours, organization: org, main: false,
+          offer_services: true, wheelchair_accessible: true)
+
+        result = score_for(org.reload, intent(prefs: ["wheelchair_accessible"]))
+
+        expect(result[:earned]).to eq(4.0)
+      end
+
+      it "treats a partly-audited organization as a known no, not unknown" do
+        org = build_org
+        org.locations.first.update_columns(wheelchair_accessible: false)
+        create(:location, :with_office_hours, organization: org, main: false, offer_services: true)
+
+        result = score_for(org.reload, intent(prefs: ["wheelchair_accessible"]))
+
+        expect(result[:earned]).to eq(0.0)
+        expect(result[:max]).to eq(4.0), "one audited location makes this a known answer"
+      end
+
+      it "treats a wholly unaudited organization as unknown" do
+        org = build_org
+        create(:location, :with_office_hours, organization: org, main: false, offer_services: true)
+
+        result = score_for(org.reload, intent(prefs: ["wheelchair_accessible"]))
+
+        expect(result[:max]).to eq(0.0)
+      end
+    end
+  end
+
   describe "fields that do not exist yet" do
     # A deferred rule must affect neither side of the ratio. If it counted
     # toward the maximum, selecting "wheelchair accessible" would permanently

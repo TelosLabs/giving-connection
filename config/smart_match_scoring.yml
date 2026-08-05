@@ -60,10 +60,10 @@ ignored_answers:
   situation: "Information only / free-text context -- feeds the embedding layer"
   giving_inspiration: "Information only / free-text context -- feeds the embedding layer"
   donor_involvement: "Information only (CSV: do not use for preset scoring)"
-  impact_location: "Geographic -- the CSV's rules for it (local match, city/ZIP
-    proximity, 'no geographic weight' for Anywhere) are filtering and distance
-    concerns, handled by SmartMatch::Eligibility and the distance term rather
-    than by preset scoring."
+  impact_location: "Geographic, not preset-scored. Its CSV rules are handled
+    elsewhere: 'Anywhere' disables geographic filtering entirely via
+    UserIntent#geographic_filtering?, and local/city proximity is the distance
+    term in Scorer."
   gender_identity: "Deferred -- mapping unresolved, see open question Q5"
   race_ethnicity: "Deferred -- mapping unresolved, see open question Q5"
 
@@ -250,10 +250,10 @@ questions:
     multiplier: 0.5
     answers:
       free_sliding_scale:
-        - {field: free_or_sliding_scale, weight: 2, requires_field: true}
+        - {field: free_or_sliding_scale, weight: 2}
 
       no_id_required:
-        - {field: no_id_required, weight: 2, requires_field: true}
+        - {field: no_id_required, weight: 2}
 
       multilingual:
         - {field: languages, weight: 2, requires_field: true}
@@ -264,12 +264,12 @@ questions:
         - {field: population, preset: "LGBTQ+ People", weight: 2}
         - {field: service, preset: "LGBTQ+ Advocacy", weight: 3}
         - {field: service, preset: "LGBTQ+ Community Centers", weight: 3}
-        - {field: lgbtqia_affirming, weight: 4, requires_field: true}
+        - {field: lgbtqia_affirming, weight: 4}
 
       wheelchair_accessible:
         multiplier: 1.0
         rules:
-          - {field: wheelchair_accessible, weight: 4, requires_field: true}
+          - {field: wheelchair_accessible, weight: 4}
 
       women_bipoc_led:
         - {field: leadership_attributes, weight: 2, requires_field: true}
@@ -329,15 +329,15 @@ questions:
       general_donation: []
 
       specific_project:
-        - {field: specific_project_giving, weight: 2, requires_field: true}
+        - {field: specific_project_giving, weight: 2}
 
       goods_items:
         multiplier: 1.0
         rules:
-          - {field: accepts_in_kind, weight: 3, requires_field: true}
+          - {field: accepts_in_kind, weight: 3}
 
       recurring_giving:
-        - {field: recurring_giving, weight: 2, requires_field: true}
+        - {field: recurring_giving, weight: 2}
 
       just_exploring: []
 
@@ -427,9 +427,9 @@ questions:
     multiplier: 1.0
     answers:
       attend_event:
-        - {field: fundraising_events, weight: 3, requires_field: true}
+        - {field: fundraising_events, weight: 3}
       business_partner:
-        - {field: partnership_opportunities, weight: 3, requires_field: true}
+        - {field: partnership_opportunities, weight: 3}
       # Covered by the path's volunteer_availability hard filter.
       volunteer_time: []
       just_exploring: []

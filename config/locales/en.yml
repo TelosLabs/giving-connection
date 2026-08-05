@@ -88,6 +88,7 @@ en:
         filters:
           volunteer_opportunities: "volunteer opportunities"
           donation_link: "online donations"
+          remote_services: "remote services"
     quiz:
       buttons:
         back: "Go Back"

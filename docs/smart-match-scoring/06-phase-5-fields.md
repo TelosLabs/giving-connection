@@ -4,6 +4,16 @@
 over time as organizations edit their own profiles. Partial coverage is
 accepted by design.
 
+**Build status:** 10 of 14 fields are shipped and scoring. The remaining 4
+are blocked on vocabulary decisions (see "Still open"). Not yet built: the
+self-service form *inputs* — params and the importer accept the fields, but
+[organizations/edit.html.slim](../../app/views/organizations/edit.html.slim)
+has no widgets for them yet, so today only Administrate can set them.
+
+| Shipped | Blocked on a decision |
+|---|---|
+| `remote_services`, `wheelchair_accessible`, `lgbtqia_affirming`, `accepts_in_kind`, `fundraising_events`, `partnership_opportunities`, `free_or_sliding_scale`, `no_id_required`, `specific_project_giving`, `recurring_giving` | `volunteer_format`, `volunteer_frequency`, `languages`, `leadership_attributes` |
+
 This document records the 14 fields, why partial data is safe for scoring but
 dangerous for filtering, and what still needs deciding.
 

@@ -183,14 +183,17 @@ win, no dependency), and promote the remote-services field to the front of
 Phase 5 so this option can mean what it says. Interim copy change if the field
 will take a while.
 
-**Answer: PARTIALLY RESOLVED (2026-08-05).** The three real radii now match
-their labels (`nearby` 5, `moderate` 10, `far` 100).
+**Answer: RESOLVED (2026-08-05).** The three real radii now match their labels
+(`nearby` 5, `moderate` 10, `far` 100), and `remote_services` shipped early
+from Phase 5 so the fourth option finally means what it says.
 
-`statewide` is **still wrong** and is commented as such in
-`config/matching_rules.yml`. Confirmed by an exhaustive search: no column on
-`organizations` or `locations` records remote/virtual/online service delivery,
-and no service preset is a general proxy (the closest, "Hot Lines & Crisis
-Intervention", is one specific service). The option therefore falls back to the
-widest radius while its label promises remote-only. **Still needs a product
-decision** — hide the option, reword it, or promote the remote-services field
-to the front of Phase 5.
+"Remote services only" is now a **relaxable filter** on
+`locations.remote_services`, not a radius. Relaxable rather than absolute
+because the field ships with no data: as an absolute filter it would show only
+the handful of organizations that had answered and silently hide everyone
+else. Relaxed, the user gets the widest radius plus a "we broadened your
+search — these may not all offer remote services" notice.
+
+The session token is still `statewide`, deliberately. Renaming it would strand
+in-flight sessions and every historical `QuizSubmission`; the mapping is
+written down once as `SmartMatch::Eligibility::REMOTE_ONLY_TRAVEL_BUCKET`.

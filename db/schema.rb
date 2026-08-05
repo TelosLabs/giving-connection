@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_05_164216) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_05_172144) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -277,8 +277,11 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_05_164216) do
     t.string "time_zone"
     t.string "slug"
     t.string "state_code", limit: 2
+    t.boolean "wheelchair_accessible"
+    t.boolean "remote_services"
     t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
     t.index ["organization_id"], name: "index_locations_on_organization_id"
+    t.index ["remote_services"], name: "index_locations_on_remote_services", where: "(remote_services = true)"
     t.index ["slug"], name: "index_locations_on_slug", unique: true
     t.index ["state_code"], name: "index_locations_on_state_code"
   end
@@ -396,6 +399,14 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_05_164216) do
     t.boolean "general_population_serving", default: false, null: false
     t.string "in_kind_donation_link"
     t.jsonb "in_kind_donation_items", default: [], null: false
+    t.boolean "free_or_sliding_scale"
+    t.boolean "no_id_required"
+    t.boolean "lgbtqia_affirming"
+    t.boolean "specific_project_giving"
+    t.boolean "accepts_in_kind"
+    t.boolean "recurring_giving"
+    t.boolean "fundraising_events"
+    t.boolean "partnership_opportunities"
     t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
     t.index ["ein_number"], name: "index_organizations_on_ein_number"
     t.index ["mission_statement_en"], name: "index_organizations_on_mission_statement_en"

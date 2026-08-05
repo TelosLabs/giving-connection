@@ -18,10 +18,13 @@ radius_by_travel_bucket:
   nearby: 5        # "Walking distance only (under 5 miles)"
   moderate: 10     # "Public transit or rides (5-10 miles)"
   far: 100         # "Car or ride share available (10+ miles)"
-  # KNOWN WRONG. The label reads "Remote services only", but no nonprofit
-  # field records whether services are delivered remotely, so there is nothing
-  # to filter on and this falls back to the widest radius. Tracked as open
-  # question Q6; fix requires the remote-services field (Phase 5).
+  # "Remote services only". The token is a leftover name -- see
+  # SmartMatch::Eligibility::REMOTE_ONLY_TRAVEL_BUCKET. This answer is now a
+  # relaxable filter on locations.remote_services rather than a radius, so the
+  # value below is only the fallback used when that filter is relaxed away
+  # (which it will be often until the field has data). Widest radius is the
+  # right fallback: someone who asked for remote services is not constrained
+  # by travel.
   statewide: 100
 
 # ---------------------------------------------------------------------------

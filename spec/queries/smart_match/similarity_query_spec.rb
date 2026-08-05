@@ -222,6 +222,63 @@ RSpec.describe SmartMatch::SimilarityQuery do
         expect(org_ids(results)).to include(national.id)
       end
 
+      # Regression: including nationwide orgs in local searches (Phase 3)
+      # introduced a penalty for them. distance_miles was computed from their
+      # head office, so a national org headquartered 1,800 miles away scored
+      # 0 on the distance term -- punished for the exact property that made it
+      # eligible. nil means "distance does not apply here", which is already
+      # how Scorer#distance_score reads it.
+      # Enough in-radius organizations that the coordinate-bearing branch of
+      # the radius expansion is used. With fewer than min_results the query
+      # falls back to the state-wide pass, which reports no distance for
+      # anyone and would make these assertions pass for the wrong reason.
+      def nashville_cluster
+        3.times.map do |i|
+          org = create(:organization, name: "Nashville Org #{i}", ein_number: "4405#{i}", scope_of_work: "Regional")
+          org.locations.first.update_columns(
+            address: "#{i} Main St, Nashville, TN", state_code: "TN",
+            lonlat: Geo.point(-86.7816, 36.1627), latitude: 36.1627, longitude: -86.7816
+          )
+          create(:organization_embedding, organization: org)
+          org
+        end
+      end
+
+      def distant_national
+        org = create(:organization, name: "Coast To Coast", ein_number: "440059", scope_of_work: "National")
+        org.locations.first.update_columns(
+          address: "9 Ocean Ave, Los Angeles, CA", state_code: "CA",
+          lonlat: Geo.point(-118.2437, 34.0522), latitude: 34.0522, longitude: -118.2437
+        )
+        create(:organization_embedding, organization: org)
+        org
+      end
+
+      it "reports no distance for a nationwide org so it is not penalised for being far" do
+        nashville_cluster
+        national = distant_national
+
+        results = described_class.call(
+          embedding: embedding, state: "TN", coordinates: coordinates, radius_miles: 5
+        )
+
+        candidate = results.candidates.find { |c| c[:organization_embedding].organization_id == national.id }
+        expect(candidate).to be_present, "the nationwide org should be a candidate at all"
+        expect(candidate[:distance_miles]).to be_nil
+      end
+
+      it "still measures distance for a Regional org in the searched state" do
+        local = nashville_cluster.first
+        distant_national
+
+        results = described_class.call(
+          embedding: embedding, state: "TN", coordinates: coordinates, radius_miles: 5
+        )
+
+        candidate = results.candidates.find { |c| c[:organization_embedding].organization_id == local.id }
+        expect(candidate[:distance_miles]).to be_within(1).of(0)
+      end
+
       it "still excludes an out-of-state Regional org" do
         tn_anchor
         regional = create(:organization, name: "California Only", ein_number: "440004", scope_of_work: "Regional")
@@ -233,6 +290,72 @@ RSpec.describe SmartMatch::SimilarityQuery do
         )
 
         expect(org_ids(results)).not_to include(regional.id)
+      end
+    end
+
+    # The client's spec gives the donor "Anywhere" answer "All nonprofits" and
+    # "No geographic weight". The answer was being stored and then ignored, so
+    # a donor who said Anywhere was still hard-filtered to whichever single
+    # state their next answer implied -- the opposite of what they asked for.
+    describe "donors who chose Anywhere" do
+      def donor_intent(impact_location)
+        UserIntent.from_session(
+          session_answers: {
+            state: "TN", city: "Nashville", location_scope: "local",
+            causes: ["Health"], impact_location: impact_location
+          },
+          user_type: "donor"
+        )
+      end
+
+      def org_in(name, ein, state_code, address)
+        org = create(:organization, name: name, ein_number: ein, scope_of_work: "Regional")
+        org.locations.first.update_columns(address: address, state_code: state_code)
+        create(:organization_embedding, organization: org)
+        org
+      end
+
+      it "ignores geography entirely" do
+        tn = org_in("TN Org", "45001", "TN", "1 Main St, Nashville, TN")
+        ca = org_in("CA Org", "45002", "CA", "9 Ocean Ave, Los Angeles, CA")
+
+        results = described_class.call(
+          embedding: embedding, state: "TN", coordinates: coordinates,
+          radius_miles: 5, user_intent: donor_intent("anywhere")
+        )
+
+        expect(org_ids(results)).to include(tn.id, ca.id)
+      end
+
+      it "still filters by state for a donor who named a place" do
+        tn = org_in("TN Org", "45003", "TN", "1 Main St, Nashville, TN")
+        ca = org_in("CA Org", "45004", "CA", "9 Ocean Ave, Los Angeles, CA")
+
+        results = described_class.call(
+          embedding: embedding, state: "TN", coordinates: coordinates,
+          radius_miles: 5, user_intent: donor_intent("specific_place")
+        )
+
+        expect(org_ids(results)).to include(tn.id)
+        expect(org_ids(results)).not_to include(ca.id)
+      end
+
+      it "does not let a service seeker opt out of geography" do
+        tn = org_in("TN Org", "45005", "TN", "1 Main St, Nashville, TN")
+        ca = org_in("CA Org", "45006", "CA", "9 Ocean Ave, Los Angeles, CA")
+
+        seeker = UserIntent.from_session(
+          session_answers: {state: "TN", city: "Nashville", causes: ["Health"], impact_location: "anywhere"},
+          user_type: "service_seeker"
+        )
+
+        results = described_class.call(
+          embedding: embedding, state: "TN", coordinates: coordinates,
+          radius_miles: 5, user_intent: seeker
+        )
+
+        expect(org_ids(results)).to include(tn.id)
+        expect(org_ids(results)).not_to include(ca.id)
       end
     end
 

@@ -115,6 +115,70 @@ RSpec.describe SmartMatch::Eligibility do
       expect(described_class.new(user_intent: intent(user_type: "service_seeker", causes: ["Health"])))
         .not_to be_relaxable
     end
+
+    # Closes the long-standing bug where "Remote services only" silently
+    # applied a 100-mile physical radius. Relaxable rather than absolute
+    # because the backing field ships empty -- see 06-phase-5-fields.md.
+    describe "remote services only" do
+      def remote_seeker
+        intent(user_type: "service_seeker", causes: ["Health"],
+          travel_bucket: SmartMatch::Eligibility::REMOTE_ONLY_TRAVEL_BUCKET)
+      end
+
+      it "keeps only organizations with a remote-capable location" do
+        remote = create(:organization, name: "Remote Org", ein_number: "550011")
+        remote.locations.first.update_columns(remote_services: true)
+        create(:organization_embedding, organization: remote)
+
+        in_person = create(:organization, name: "In Person Org", ein_number: "550012")
+        create(:organization_embedding, organization: in_person)
+
+        eligibility = described_class.new(user_intent: remote_seeker)
+        scope = eligibility.apply_relaxable(embedding_scope)
+
+        expect(ids(scope)).to include(remote.id)
+        expect(ids(scope)).not_to include(in_person.id)
+        expect(eligibility.relaxable_labels).to include(:remote_services)
+      end
+
+      it "does not filter on remote services for any other travel answer" do
+        %w[nearby moderate far].each do |bucket|
+          eligibility = described_class.new(
+            user_intent: intent(user_type: "service_seeker", causes: ["Health"], travel_bucket: bucket)
+          )
+          expect(eligibility.relaxable_labels).not_to include(:remote_services),
+            "travel bucket #{bucket} should not imply remote-only"
+        end
+      end
+    end
+  end
+
+  # Every relaxable filter can end up named in the "we broadened your search"
+  # notice. A label with no translation renders a raw missing-translation
+  # string to the user, so the two must stay in step.
+  describe "broadened-search labels" do
+    # Every label any path can produce.
+    let(:all_labels) do
+      [
+        intent(user_type: "volunteer", causes: ["Health"]),
+        intent(user_type: "donor", causes: ["Health"], donation_style: ["general_donation"]),
+        intent(user_type: "service_seeker", causes: ["Health"],
+          travel_bucket: SmartMatch::Eligibility::REMOTE_ONLY_TRAVEL_BUCKET)
+      ].flat_map { |i| described_class.new(user_intent: i).relaxable_labels }.uniq
+    end
+
+    it "covers every relaxable filter in both locales" do
+      expect(all_labels).to contain_exactly(:volunteer_opportunities, :donation_link, :remote_services)
+
+      %i[en es].each do |locale|
+        all_labels.each do |label|
+          translation = I18n.t("smart_match.results.broadened.filters.#{label}",
+            locale: locale, default: nil)
+          expect(translation).to be_present,
+            "missing #{locale} translation for broadened filter #{label}"
+        end
+      end
+    end
   end
 
   describe "preference answers are never filters" do
