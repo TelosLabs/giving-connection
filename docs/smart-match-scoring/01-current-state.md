@@ -112,7 +112,7 @@ use — **not** the human labels in the CSV.
 | `self_description` | `student` `veteran` `caregiver` `lgbtqia` `disability` `senior` `children_youth` `formerly_incarcerated` `economically_disadvantaged` `currently_unhoused` `mental_health` `substance_use` `health_issues` `business_nonprofit`\* `business_partner`\* `none` |
 | `causes` | Cause names from `Organizations::Constants::CAUSES_AND_SERVICES` keys, plus `none` |
 | `situation` | `urgent` `long_term` `exploring` `someone_else` `organization` |
-| `city_selection` | `nashville` `los_angeles` `atlantic_city` `elsewhere` (verify exact preset slugs in `_city_selection.html.erb` / `city_centroids.yml`) |
+| `city_selection` | `Nashville` `Los Angeles` `Atlantic City` `elsewhere` — display names, **not** slugs; they are written straight to `session[:smart_match_city]` and looked up in `city_centroids.yml` |
 | `location_scope_choice` | `local` `national` `international` |
 | `travel_bucket` | `nearby` `moderate` `far` `statewide` |
 | `prefs` | `free_sliding_scale` `no_id_required` `multilingual` `lgbtqia_affirming` `wheelchair_accessible` `women_bipoc_led` `none` |

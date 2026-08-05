@@ -45,4 +45,64 @@ RSpec.describe "SmartMatch quiz step schema consistency" do
     expect(SmartMatch::QuizStepConfig.partial_for("service_seeker", step))
       .to eq("smart_match/quizzes/steps/preferences")
   end
+
+  # Third duplicated schema: QuizNavigator writes answers into the session, and
+  # UserIntent reads them back out. For most of the engine's life these two
+  # disagreed silently -- the navigator stored 20 answers and UserIntent
+  # accepted 7, so 13 questions were collected from users and then discarded
+  # before scoring. Nothing failed; the answers simply had no effect.
+  #
+  # These specs make that class of drift loud. Adding a question to the quiz
+  # now forces an explicit decision about whether it scores.
+  describe "QuizNavigator answers reach UserIntent" do
+    # Session keys the navigator writes that intentionally never become a
+    # UserIntent answer attribute, with the reason each is exempt.
+    let(:non_answer_session_params) do
+      {
+        user_type: "the path itself -- passed to from_session separately",
+        causes: "kept under the historical causes_selected accessor",
+        prefs: "kept under the historical prefs_selected accessor",
+        language_input: "free text -- feeds embedding text, not preset scoring",
+        travel_bucket: "drives the retrieval radius, not an answer weight"
+      }
+    end
+
+    it "every navigator answer param is readable from UserIntent" do
+      SmartMatch::QuizNavigator::PARAM_SESSION_MAP.each_key do |param|
+        next if non_answer_session_params.key?(param)
+
+        expect(UserIntent::QUIZ_ANSWERS).to have_key(param),
+          "QuizNavigator stores :#{param} in the session but UserIntent::QUIZ_ANSWERS " \
+          "does not declare it, so the answer is collected and then dropped before " \
+          "scoring. Add it to QUIZ_ANSWERS (with its form arity), or add it to " \
+          "NON_ANSWER_SESSION_PARAMS with a reason."
+      end
+    end
+
+    it "every declared UserIntent answer is actually stored by the navigator" do
+      UserIntent::QUIZ_ANSWERS.each_key do |answer|
+        expect(SmartMatch::QuizNavigator::PARAM_SESSION_MAP).to have_key(answer),
+          "UserIntent declares :#{answer} but QuizNavigator never stores it, " \
+          "so it will always be blank."
+      end
+    end
+
+    it "declares each answer with the arity its step partial submits" do
+      partials = Rails.root.glob("app/views/smart_match/quizzes/steps/*.html.erb")
+        .map(&:read).join("\n")
+
+      UserIntent::QUIZ_ANSWERS.each do |answer, arity|
+        submits_array = partials.include?(%(name="#{answer}[]"))
+        submits_scalar = partials.match?(/radio_button :#{answer}\b|f\.select :#{answer}\b|name="#{answer}"/)
+
+        # Skip answers whose control we can't find -- covered by the specs above.
+        next unless submits_array || submits_scalar
+
+        expected = submits_array ? :multiple : :single
+        expect(arity).to eq(expected),
+          "UserIntent::QUIZ_ANSWERS declares :#{answer} as #{arity.inspect} but its " \
+          "step partial submits it as #{expected.inspect}"
+      end
+    end
+  end
 end

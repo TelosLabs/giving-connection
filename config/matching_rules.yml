@@ -21,8 +21,20 @@ radius_by_travel_bucket:
 # ---------------------------------------------------------------------------
 scoring:
   weights:
-    embedding_similarity: 0.70
-    attribute_bonus: 0.20
+    # Semantic recall -- catches good matches whose tagging is thin.
+    embedding_similarity: 0.45
+    # Deterministic per-answer scoring from config/smart_match_scoring.yml.
+    # Balanced against embedding as a starting point; the split is the open
+    # decision Q1 in docs/smart-match-scoring/05-open-questions.md and is meant
+    # to be tuned against the committed baseline with the client. Raising this
+    # favours predictable, explainable ranking; lowering it favours recall for
+    # sparsely-tagged organizations.
+    rule_score: 0.45
+    # Superseded by rule_score, which scores the same cause/beneficiary/service
+    # signals per answer instead of as four coarse booleans (two of which never
+    # fired -- see docs/smart-match-scoring/03-findings-and-gaps.md#finding-6).
+    # Kept wired at 0.0 for one release as a rollback lever, then removed.
+    attribute_bonus: 0.00
     distance: 0.10
   # Minimum number of results to return (triggers radius expansion if not met)
   min_results: 3
@@ -44,9 +56,22 @@ scoring:
 #   input_ceiling : raw score mapped to max_percentage (and anything above)
 #   min_percentage / max_percentage : the displayed band, in percent
 # ---------------------------------------------------------------------------
+#
+# PROVISIONAL as of the scoring refinement. The previous 0.38–0.66 window was
+# fitted to an embedding-dominated score, where the raw value was squeezed into
+# a narrow band. Now that rule_score carries 45% of the weight and spans a full
+# 0–1, raw scores spread much wider: an excellent match lands near 0.84
+# (0.45 x ~0.65 embedding + 0.45 x 1.0 rules + 0.10 x 1.0 distance) and a weak
+# one near 0.21. Left unchanged, every strong match would clamp to 95% and
+# every weak one to 52%.
+#
+# These bounds are derived from that arithmetic, NOT fitted to production
+# results -- the committed spec baseline uses synthetic cosine distances and
+# can't stand in for real data. Refit against a sample of real submissions
+# once this is on staging.
 display_calibration:
-  input_floor: 0.38
-  input_ceiling: 0.66
+  input_floor: 0.25
+  input_ceiling: 0.80
   min_percentage: 52
   max_percentage: 95
 

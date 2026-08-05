@@ -2,8 +2,10 @@
 
 Decisions needed before Phase 2. Phases 0 and 1 can proceed without them.
 
-**Status:** all open as of 2026-08-04. Record answers inline as they land —
-this file is the decision log.
+**Status as of 2026-08-04:** Q1 and Q5 provisionally resolved in code so
+Phase 2 could ship; both are cheap to change and still want client sign-off.
+Q2, Q3, Q4, Q6 remain open. Record answers inline as they land — this file is
+the decision log.
 
 ---
 
@@ -28,7 +30,17 @@ breakdown trace exists to justify the move.
 **Watch:** orgs with thin cause/beneficiary tagging get punished as rules gain
 weight. Check the tagging-completeness distribution before going rules-dominant.
 
-**Answer:** _pending_
+**Answer:** _provisionally balanced_ — shipped as
+`embedding_similarity 0.45 / rule_score 0.45 / attribute_bonus 0.00 /
+distance 0.10` in `config/matching_rules.yml`. `attribute_bonus` is retired
+rather than kept alongside `rule_score` (it scored the same cause signal, so
+running both double-counted); it stays wired at 0.0 for one release as a
+rollback lever.
+
+Effect on the committed baseline: four of eight scenarios changed order, and in
+each the intuitively-correct organization moved to rank 1 — the LGBTQ+ centre
+and the racial-equity org went from outside the top four to first. Still wants
+client review against real result sets before being called settled.
 
 ---
 
@@ -127,7 +139,12 @@ contribution). Low stakes for ranking, higher stakes for getting the
 representation right. Defer if it slows Phase 2 — there is no ranking cost to
 shipping without them.
 
-**Answer:** _pending_
+**Answer:** _split_ — `age_range` is implemented (the CSV enumerates its
+presets itself, and the mapping is uncontested). `gender_identity` and
+`race_ethnicity` are listed under `ignored_answers` in
+`config/smart_match_scoring.yml` with the reason, so the coverage drift spec
+passes without anyone having guessed a demographic mapping. Still needs the
+client before it can be implemented.
 
 ---
 

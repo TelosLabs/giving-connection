@@ -10,6 +10,40 @@ class UserIntent
 
   LOCATION_SCOPES = %w[local national international].freeze
 
+  # Quiz answers carried through verbatim, keyed by their session answer name.
+  #
+  # The value is the form control's arity in the step partial: :multiple for a
+  # checkbox group (name="foo[]"), :single for a radio/select. Getting this
+  # wrong stores a bare string where the scorer expects a list (or vice versa),
+  # so it is asserted against the partials in the quiz schema consistency spec.
+  #
+  # These are read by SmartMatch::RuleScorer via config/smart_match_scoring.yml.
+  # They were previously collected by QuizNavigator into the session and then
+  # dropped on the floor here -- every lookup sheet in the client's scoring
+  # spec (docs/smart-match-scoring/) scores answers from this set.
+  #
+  # `causes` and `prefs` are deliberately absent: they predate this table and
+  # keep their historical `*_selected` accessor names.
+  QUIZ_ANSWERS = {
+    support_for: :single,
+    self_description: :multiple,
+    situation: :single,
+    donation_style: :multiple,
+    giving_inspiration: :multiple,
+    donor_communities: :multiple,
+    impact_location: :single,
+    donor_involvement: :single,
+    volunteer_involvement: :multiple,
+    volunteer_type: :multiple,
+    volunteer_format: :single,
+    volunteer_time: :single,
+    age_range: :single,
+    gender_identity: :single,
+    race_ethnicity: :single
+  }.freeze
+
+  attr_accessor(*QUIZ_ANSWERS.keys)
+
   validates :user_type, presence: true,
     inclusion: {in: %w[service_seeker volunteer donor]}
   # State is only required for a local (city-based) search. Nationwide /
@@ -41,7 +75,8 @@ class UserIntent
   # belongs on the model rather than wrapped in a service.
   def self.from_session(session_answers:, user_type:)
     answers = session_answers.with_indifferent_access
-    new(
+
+    attributes = {
       user_type: user_type,
       state: answers[:state],
       city: answers[:city],
@@ -50,7 +85,27 @@ class UserIntent
       causes_selected: parse_array(answers[:causes]),
       prefs_selected: parse_array(answers[:prefs]),
       language_input: answers[:language_input]
-    )
+    }
+
+    QUIZ_ANSWERS.each do |key, arity|
+      attributes[key] = (arity == :multiple) ? parse_array(answers[key]) : answers[key].presence
+    end
+
+    new(attributes)
+  end
+
+  # All quiz answers as a normalized {session_key => Array(values)} hash --
+  # the shape SmartMatch::RuleScorer walks. Single-value answers are wrapped so
+  # callers don't branch on arity, and blanks are dropped so an unanswered
+  # question is indistinguishable from an absent one.
+  def answers_by_key
+    normalized = QUIZ_ANSWERS.keys.to_h { |key| [key.to_s, Array(public_send(key)).compact_blank] }
+    normalized["causes"] = Array(causes_selected).compact_blank
+    normalized["prefs"] = Array(prefs_selected).compact_blank
+    # The chosen path is itself scorable (the Donor path rewards a usable
+    # donation link), so it is exposed the same way as any other answer.
+    normalized["user_type"] = Array(user_type).compact_blank
+    normalized
   end
 
   # Render this intent as embedding-ready text. Replaces SmartMatch::QuizTextBuilder.

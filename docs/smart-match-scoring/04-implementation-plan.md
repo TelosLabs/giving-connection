@@ -38,6 +38,31 @@ nearly every row ("Treat the filter separately from ranking score").
 
 ---
 
+## Build notes (2026-08-04)
+
+Things learned while implementing Phases 0–2 that aren't obvious from the
+plan:
+
+- **YAML eats `19_24`.** Bare `19_24` parses as the integer `1924` (underscore
+  digit separator), so the age-range keys silently stopped matching their
+  answer tokens. Quote any answer token that looks numeric. Caught by the
+  answer-coverage drift spec, which is the argument for having written it.
+- **`impact_location` isn't preset-scored.** Its CSV rules (local match,
+  city/ZIP proximity, "no geographic weight" for Anywhere) are filtering and
+  distance concerns. It sits in `ignored_answers` pointing at Phase 3.
+- **The `causes` question can't be enumerated** — the answer *is* a cause name.
+  It uses a `"*"` catch-all answer plus `match: answer` / `match: cause_service`
+  rules that resolve against the selected value. `none` overrides the catch-all.
+- **The CSV's "+3 Related Services match" tier is not implemented.** "Related"
+  is undefined and nothing in the data drives it; the nearest signal (cause
+  synonyms) already feeds the embedding layer, so implementing it here would
+  double-count. Flagged rather than guessed.
+- **Two questions share the `causes` session key** with different weights per
+  path, hence the `session_key:` alias on the `causes_donor` entry.
+- **Breakdown key types.** `score_breakdown` nests symbol-keyed hashes that
+  become strings in jsonb. The baseline spec round-trips through JSON before
+  comparing; anything reading the trace back out of the DB gets strings.
+
 ## Phase 0 — Baseline
 
 Cheap, and everything downstream depends on it.
