@@ -15,7 +15,7 @@ client scoping. Phase 6 not started.
 | 2 Rule scorer | ✅ | `config/smart_match_scoring.yml`, `SmartMatch::RuleScorer`, `scoring_rules_consistency_spec.rb`, `rule_scorer_spec.rb` |
 | 3 Eligibility filters | ✅ | `SmartMatch::Eligibility`, `SimilarityQuery::Result`, `quiz_submissions.search_relaxations`, "we broadened your search" notice |
 | 4 Display calibration | ⚠️ provisional | `matching_rules.yml#display_calibration` — derived arithmetically, needs refitting on real data |
-| 5 New nonprofit fields | ⬜ | — |
+| 5 New nonprofit fields | ⬜ scoped, see [06](./06-phase-5-fields.md) | 14 columns, no backfill campaign — partial coverage by design |
 | 6 City column | ⬜ | — |
 
 **Open and still needing a product decision:** the `statewide` travel option
@@ -36,6 +36,8 @@ exists to fix it (Q6).
 4. [04-implementation-plan.md](./04-implementation-plan.md) — the phased plan
 5. [05-open-questions.md](./05-open-questions.md) — decisions needed from the
    client; **also the decision log**, record answers there
+6. [06-phase-5-fields.md](./06-phase-5-fields.md) — the 14 new nonprofit
+   fields, and why they ship without a backfill campaign
 
 [source/](./source/) holds the client's four CSVs. They arrived as chat
 attachments and existed nowhere else — treat these copies as the source of
