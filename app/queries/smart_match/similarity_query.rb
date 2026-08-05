@@ -11,13 +11,41 @@ module SmartMatch
 
     NON_LOCAL_SCOPES = %w[national international].freeze
 
+    # Candidates plus the eligibility filters that had to be dropped to find
+    # them. `relaxed` drives the "we broadened your search" notice, so an empty
+    # array means the results satisfy everything the user asked for.
+    Result = Struct.new(:candidates, :relaxed, keyword_init: true) do
+      def relaxed?
+        relaxed.present?
+      end
+    end
+
     class << self
-      def call(embedding:, state:, coordinates:, radius_miles: 5, location_scope: "local")
-        return scoped_results(embedding, location_scope) if NON_LOCAL_SCOPES.include?(location_scope.to_s)
+      def call(embedding:, state:, coordinates:, radius_miles: 5, location_scope: "local", user_intent: nil)
+        eligibility = user_intent && Eligibility.new(user_intent: user_intent)
 
-        state_scope = filtered_scope(state)
+        # Try with every eligibility filter in place, then again without the
+        # relaxable ones. Retrieval is otherwise identical, so the second pass
+        # only ever widens.
+        strict = retrieve(embedding, state, coordinates, radius_miles, location_scope, eligibility, relax: false)
+        return Result.new(candidates: strict, relaxed: []) if sufficient?(strict) || eligibility.nil? || !eligibility.relaxable?
 
-        return results_from(base_scope, embedding) if state_scope.none?
+        relaxed = retrieve(embedding, state, coordinates, radius_miles, location_scope, eligibility, relax: true)
+        return Result.new(candidates: strict, relaxed: []) if relaxed.size <= strict.size
+
+        Result.new(candidates: relaxed, relaxed: eligibility.relaxable_labels)
+      end
+
+      private
+
+      def retrieve(embedding, state, coordinates, radius_miles, location_scope, eligibility, relax:)
+        scope = eligible_base(eligibility, relax: relax)
+
+        return scoped_results(scope, embedding, location_scope) if NON_LOCAL_SCOPES.include?(location_scope.to_s)
+
+        state_scope = filtered_scope(scope, state)
+
+        return results_from(scope, embedding) if state_scope.none?
 
         # If we couldn't resolve coordinates, skip distance filtering entirely.
         return results_from(state_scope, embedding) if coordinates.nil?
@@ -33,24 +61,33 @@ module SmartMatch
         results_from(state_scope, embedding)
       end
 
-      private
+      def eligible_base(eligibility, relax:)
+        return base_scope if eligibility.nil?
+
+        scope = eligibility.apply_required(base_scope)
+        relax ? scope : eligibility.apply_relaxable(scope)
+      end
+
+      def sufficient?(results)
+        results.size >= min_results
+      end
 
       # Nationwide / international searches ignore geography and match on the
       # organization's scope_of_work instead. "National" broadens to also
       # include "International" if too few results are found (international
       # orgs commonly serve the US too); "international" stays strict.
-      def scoped_results(embedding, location_scope)
+      def scoped_results(scope, embedding, location_scope)
         primary_codes = (location_scope.to_s == "international") ? %w[International] : %w[National]
-        results = results_from(scope_filtered(primary_codes), embedding)
+        results = results_from(scope_filtered(scope, primary_codes), embedding)
 
         return results if location_scope.to_s == "international" || results.size >= min_results
 
-        broadened = results_from(scope_filtered(%w[National International]), embedding)
+        broadened = results_from(scope_filtered(scope, %w[National International]), embedding)
         (broadened.size > results.size) ? broadened : results
       end
 
-      def scope_filtered(scope_codes)
-        base_scope.where(organizations: {scope_of_work: scope_codes})
+      def scope_filtered(scope, scope_codes)
+        scope.where(organizations: {scope_of_work: scope_codes})
       end
 
       def base_scope
@@ -62,29 +99,41 @@ module SmartMatch
           .distinct
       end
 
-      def filtered_scope(state)
-        base_scope.merge(location_in_state(state))
-      end
-
-      def location_in_state(state)
-        # Prefer the structured state_code column (indexed, exact match).
-        # Fall back to address ILIKE for locations not yet backfilled by
-        # `rake smart_match:backfill_location_state_codes`. Once backfill is
-        # complete and state_code is enforced NOT NULL, the OR clause can be
-        # dropped and the predicate becomes a clean indexed equality.
+      # A local search is "organizations in this state, PLUS organizations
+      # whose reach isn't geographically bounded at all".
+      #
+      # Nationwide organizations used to be invisible to local searchers: the
+      # state predicate dropped any org without a location in that state, so a
+      # national helpline never appeared for someone searching Nashville. The
+      # client's spec calls for them on every location row, and they are only
+      # *excluded* when the user picks a specific non-local scope.
+      def filtered_scope(scope, state)
         code = state.to_s.upcase
         like = "%#{ActiveRecord::Base.sanitize_sql_like(state)}%"
-        Location.where(
-          "locations.state_code = :code OR (locations.state_code IS NULL AND locations.address ILIKE :like)",
-          code: code, like: like
+
+        scope.where(
+          # Prefer the structured state_code column (indexed, exact match).
+          # Fall back to address ILIKE for locations not yet backfilled by
+          # `rake smart_match:backfill_location_state_codes`.
+          "locations.state_code = :code
+             OR (locations.state_code IS NULL AND locations.address ILIKE :like)
+             OR organizations.scope_of_work IN (:nationwide)",
+          code: code, like: like, nationwide: Eligibility::NATIONWIDE_SCOPES
         )
       end
 
+      # Nationwide organizations bypass the radius entirely -- their main
+      # office's distance from the user says nothing about whether they can
+      # help. Without this they'd be added by filtered_scope and then
+      # immediately filtered back out by every radius pass.
       def distance_filtered(scope, coordinates, radius_miles)
         point = Geo.to_wkt(Geo.point(coordinates[:longitude], coordinates[:latitude]))
         scope.where(
-          "ST_DWithin(locations.lonlat, :point, :distance)",
-          point: point, distance: radius_miles * MILES_TO_METERS
+          "ST_DWithin(locations.lonlat, :point, :distance)
+             OR organizations.scope_of_work IN (:nationwide)",
+          point: point,
+          distance: radius_miles * MILES_TO_METERS,
+          nationwide: Eligibility::NATIONWIDE_SCOPES
         )
       end
 

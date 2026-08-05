@@ -5,18 +5,22 @@ with the client's explicit answer-by-answer scoring model.
 
 **Started:** 2026-08-04 · **Branch:** `refine-smart-match`
 
-**Status:** Phases 0–2 and 4 built. Phase 3 (hard filters) is next and is
-blocked on decision Q2. Phases 5–6 not started.
+**Status:** Phases 0–4 built. Phase 5 (new nonprofit fields) is next and needs
+client scoping. Phase 6 not started.
 
 | Phase | State | Landed as |
 |---|---|---|
 | 0 Baseline | ✅ | `spec/services/smart_match/scoring_baseline_spec.rb`, `spec/support/smart_match_scoring_fixtures.rb` |
 | 1 Widen `UserIntent` | ✅ | `UserIntent::QUIZ_ANSWERS` + `#answers_by_key`; guards in `quiz_schema_consistency_spec.rb` |
 | 2 Rule scorer | ✅ | `config/smart_match_scoring.yml`, `SmartMatch::RuleScorer`, `scoring_rules_consistency_spec.rb`, `rule_scorer_spec.rb` |
-| 3 Hard filters | ⛔ blocked on Q2 | — |
+| 3 Eligibility filters | ✅ | `SmartMatch::Eligibility`, `SimilarityQuery::Result`, `quiz_submissions.search_relaxations`, "we broadened your search" notice |
 | 4 Display calibration | ⚠️ provisional | `matching_rules.yml#display_calibration` — derived arithmetically, needs refitting on real data |
 | 5 New nonprofit fields | ⬜ | — |
 | 6 City column | ⬜ | — |
+
+**Open and still needing a product decision:** the `statewide` travel option
+reads "Remote services only" but applies a 100-mile radius, and no field
+exists to fix it (Q6).
 
 ---
 

@@ -60,12 +60,48 @@ module SmartMatch
       race_ethnicity: :smart_match_race_ethnicity
     }.freeze
 
+    # Multi-select answers that predate PARAM_SESSION_MAP's arity being
+    # tracked on UserIntent. Everything else takes its arity from
+    # UserIntent::QUIZ_ANSWERS.
+    LEGACY_MULTI_SELECT_PARAMS = %i[causes prefs].freeze
+
+    # Session keys written outside PARAM_SESSION_MAP, by the location steps.
+    LOCATION_SESSION_KEYS = {
+      state: :smart_match_state,
+      city: :smart_match_city,
+      city_choice: :smart_match_city_choice,
+      location_scope: :smart_match_location_scope
+    }.freeze
+
     attr_reader :session, :params, :step
 
     def initialize(session:, params:, step:)
       @session = session
       @params = params
       @step = step
+    end
+
+    # The single reader for "everything the user answered", built from the same
+    # map used to write it.
+    #
+    # This used to be duplicated: QuizzesController built the full set for
+    # rendering while ResultsController built a 7-key subset for the scoring
+    # job. The two drifted, and the subset silently dropped 13 answers on the
+    # way to the background job -- so answers the user gave never reached the
+    # scorer. Both controllers now call this, which makes that drift
+    # impossible rather than merely unlikely.
+    def self.session_answers(session)
+      answers = PARAM_SESSION_MAP.to_h do |param, session_key|
+        value = session[session_key]
+        [param, multi_select?(param) ? Array(value) : value]
+      end
+
+      answers.merge(LOCATION_SESSION_KEYS.transform_values { |key| session[key] })
+    end
+
+    def self.multi_select?(param)
+      LEGACY_MULTI_SELECT_PARAMS.include?(param) ||
+        UserIntent::QUIZ_ANSWERS[param] == :multiple
     end
 
     def call

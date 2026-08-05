@@ -55,6 +55,34 @@ column as its own scoped piece of work (Phase 6). Do not block scoring on it.
 
 ---
 
+## Production data (verified 2026-08-05)
+
+Queried directly against production. **The dev database is a thin, stale seed
+and is not representative — do not size decisions from it.**
+
+| | prod (973 orgs) | dev (56) |
+|---|---|---|
+| active | 943 | 56 |
+| `volunteer_availability` true | 597 (61%) | **0** |
+| `volunteer_link` present | 544 | — |
+| either of the above | **597** | — |
+| `donation_link` present | 806 (83%) | 8 |
+| scope Regional / National / International | 873 / 73 / 27 | 47 / 6 / 3 |
+
+Two things follow:
+
+- **The volunteer filter is safe.** 61% coverage, not the data-absence trap
+  dev suggested.
+- **`volunteer_link` is a strict subset of `volunteer_availability`** — the
+  OR of the two is exactly 597, identical to the flag alone. It is still
+  written as an OR so the filter stays correct if they ever diverge, but it
+  buys nothing today.
+
+Read-only production access is available via
+`kamal app exec -d production -r web --reuse "bin/rails runner '...'"`.
+Target the `web` role: a bare `kamal app exec` fans out to worker and clock
+too, and clock OOMs.
+
 ## Finding 2 — Local searches exclude nationwide orgs 🔴
 
 Every location row in the CSV says *"Nationwide organizations remain

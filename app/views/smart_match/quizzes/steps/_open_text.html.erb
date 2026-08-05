@@ -6,7 +6,7 @@
           class: "block mb-3 text-base text-gray-2 text-center" %>
 
     <%= f.text_area :language_input,
-          value: @session_answers[:language],
+          value: @session_answers[:language_input],
           rows: 5,
           maxlength: 500,
           placeholder: t("smart_match.quiz.steps.open_text.placeholder"),

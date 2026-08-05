@@ -15,6 +15,7 @@ module SmartMatch
 
       if @submission
         @results = matches_for(@submission)
+        @relaxations = @submission.search_relaxations
       elsif processing_error?
         # Terminal failure recorded by the background job. Clear the flags so
         # the "try again" link starts a fresh attempt, then degrade gracefully.
@@ -113,15 +114,7 @@ module SmartMatch
     end
 
     def submission_attributes
-      {
-        state: session[:smart_match_state],
-        city: session[:smart_match_city],
-        location_scope: session[:smart_match_location_scope],
-        travel_bucket: session[:smart_match_travel_bucket],
-        causes: session[:smart_match_causes],
-        prefs: session[:smart_match_prefs],
-        language_input: session[:smart_match_language]
-      }
+      SmartMatch::QuizNavigator.session_answers(session)
     end
   end
 end

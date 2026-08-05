@@ -59,32 +59,7 @@ module SmartMatch
     private
 
     def quiz_session_answers
-      {
-        user_type: session[:smart_match_user_type],
-        support_for: session[:smart_match_support_for],
-        self_description: Array(session[:smart_match_self_description]),
-        situation: session[:smart_match_situation],
-        city: session[:smart_match_city],
-        state: session[:smart_match_state],
-        city_choice: session[:smart_match_city_choice],
-        location_scope: session[:smart_match_location_scope],
-        travel_bucket: session[:smart_match_travel_bucket],
-        causes: Array(session[:smart_match_causes]),
-        prefs: Array(session[:smart_match_prefs]),
-        language: session[:smart_match_language],
-        age_range: session[:smart_match_age_range],
-        gender_identity: session[:smart_match_gender_identity],
-        race_ethnicity: session[:smart_match_race_ethnicity],
-        donation_style: Array(session[:smart_match_donation_style]),
-        giving_inspiration: Array(session[:smart_match_giving_inspiration]),
-        donor_communities: Array(session[:smart_match_donor_communities]),
-        impact_location: session[:smart_match_impact_location],
-        donor_involvement: session[:smart_match_donor_involvement],
-        volunteer_involvement: Array(session[:smart_match_volunteer_involvement]),
-        volunteer_type: Array(session[:smart_match_volunteer_type]),
-        volunteer_format: session[:smart_match_volunteer_format],
-        volunteer_time: session[:smart_match_volunteer_time]
-      }
+      SmartMatch::QuizNavigator.session_answers(session)
     end
 
     def quiz_params

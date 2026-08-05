@@ -56,6 +56,12 @@ es:
       unavailable:
         title: "Smart Match no está disponible temporalmente"
         body: "Nuestro motor de emparejamiento está fuera de línea en este momento. Por favor inténtalo de nuevo en unos minutos."
+      broadened:
+        title: "Ampliamos tu búsqueda"
+        body: "No encontramos suficientes resultados para todo lo que pediste, así que es posible que estas organizaciones no ofrezcan %{filters}."
+        filters:
+          volunteer_opportunities: "oportunidades de voluntariado"
+          donation_link: "donaciones en línea"
     quiz:
       buttons:
         back: "Regresar"

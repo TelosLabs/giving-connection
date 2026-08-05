@@ -25,6 +25,7 @@ RSpec.describe "SmartMatch Rack::Attack throttles", type: :request do
 
   around do |example|
     original_store = Rack::Attack.cache.store
+    original_enabled = Rack::Attack.enabled
     Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
     Rack::Attack.enabled = true
     travel_to(Time.utc(2026, 1, 1, 12, 0, 0)) do
@@ -32,6 +33,10 @@ RSpec.describe "SmartMatch Rack::Attack throttles", type: :request do
     end
   ensure
     Rack::Attack.cache.store = original_store
+    # Restoring `enabled` matters as much as the store: leaving it on leaked
+    # throttling into every later request spec, which then shared the global
+    # 300-req/5-min budget with this file's 60+ deliberate requests.
+    Rack::Attack.enabled = original_enabled
   end
 
   describe "smart_match/quiz throttle (60/period/IP)" do

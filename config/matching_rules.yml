@@ -10,11 +10,19 @@
 # Used by SimilarityQuery for PostGIS ST_DWithin filtering.
 # Progressive expansion: if fewer than 3 results, expand to next bucket.
 # ---------------------------------------------------------------------------
+# Values match the labels users actually see in
+# config/locales/*.yml -> smart_match.quiz.steps.travel.options. They had
+# drifted from the copy (moderate was 15mi under a "5-10 miles" label, far was
+# 30mi under "10+ miles").
 radius_by_travel_bucket:
-  nearby: 5        # "Close to me"
-  moderate: 15     # "Within a short drive"
-  far: 30          # "I'll travel for the right org"
-  statewide: 100   # "Anywhere in my state"
+  nearby: 5        # "Walking distance only (under 5 miles)"
+  moderate: 10     # "Public transit or rides (5-10 miles)"
+  far: 100         # "Car or ride share available (10+ miles)"
+  # KNOWN WRONG. The label reads "Remote services only", but no nonprofit
+  # field records whether services are delivered remotely, so there is nothing
+  # to filter on and this falls back to the widest radius. Tracked as open
+  # question Q6; fix requires the remote-services field (Phase 5).
+  statewide: 100
 
 # ---------------------------------------------------------------------------
 # Scoring weights — must sum to 1.0

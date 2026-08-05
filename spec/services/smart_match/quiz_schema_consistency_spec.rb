@@ -87,6 +87,52 @@ RSpec.describe "SmartMatch quiz step schema consistency" do
       end
     end
 
+    # QuizNavigator.session_answers is the single reader for everything the
+    # user answered. It replaced two hand-maintained builders that had
+    # drifted: the results controller's copy passed only 7 of the 20 answers
+    # to the scoring job, so most of the quiz never reached the scorer.
+    describe ".session_answers" do
+      let(:session) do
+        SmartMatch::QuizNavigator::PARAM_SESSION_MAP.values
+          .index_with { |_| nil }
+          .merge(
+            smart_match_user_type: "service_seeker",
+            smart_match_self_description: %w[senior veteran],
+            smart_match_situation: "urgent",
+            smart_match_causes: ["Health"],
+            smart_match_state: "TN",
+            smart_match_city: "Nashville"
+          )
+      end
+
+      it "reads back every session key the navigator writes" do
+        answers = SmartMatch::QuizNavigator.session_answers(session)
+
+        expect(answers.keys).to include(*SmartMatch::QuizNavigator::PARAM_SESSION_MAP.keys)
+        expect(answers.keys).to include(*SmartMatch::QuizNavigator::LOCATION_SESSION_KEYS.keys)
+      end
+
+      it "wraps multi-select answers and leaves single answers scalar" do
+        answers = SmartMatch::QuizNavigator.session_answers(session)
+
+        expect(answers[:self_description]).to eq(%w[senior veteran])
+        expect(answers[:causes]).to eq(["Health"])
+        expect(answers[:situation]).to eq("urgent")
+      end
+
+      it "produces a hash UserIntent can consume without losing answers" do
+        intent = UserIntent.from_session(
+          session_answers: SmartMatch::QuizNavigator.session_answers(session),
+          user_type: "service_seeker"
+        )
+
+        expect(intent.self_description).to eq(%w[senior veteran])
+        expect(intent.situation).to eq("urgent")
+        expect(intent.causes_selected).to eq(["Health"])
+        expect(intent.state).to eq("TN")
+      end
+    end
+
     it "declares each answer with the arity its step partial submits" do
       partials = Rails.root.glob("app/views/smart_match/quizzes/steps/*.html.erb")
         .map(&:read).join("\n")

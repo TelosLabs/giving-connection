@@ -6,6 +6,12 @@ RSpec.describe SmartMatch::SimilarityQuery do
   let(:embedding) { Array.new(1024) { rand(-1.0..1.0) } }
   let(:coordinates) { {latitude: 36.1627, longitude: -86.7816} }
 
+  # SimilarityQuery returns a Result (candidates + the eligibility filters it
+  # had to drop), so specs reach through to the candidate list.
+  def org_ids(result)
+    result.candidates.map { |c| c[:organization_embedding].organization_id }
+  end
+
   describe ".call" do
     it "returns results filtered by state" do
       org = create(:organization)
@@ -20,7 +26,7 @@ RSpec.describe SmartMatch::SimilarityQuery do
         radius_miles: 50
       )
 
-      expect(results).to be_an(Array)
+      expect(results.candidates).to be_an(Array)
     end
 
     it "returns results with expected keys" do
@@ -36,8 +42,8 @@ RSpec.describe SmartMatch::SimilarityQuery do
         radius_miles: 50
       )
 
-      expect(results).to be_an(Array)
-      result = results.first
+      expect(results.candidates).to be_an(Array)
+      result = results.candidates.first
       expect(result).to include(:organization_embedding, :cosine_distance, :distance_miles)
     end
 
@@ -56,12 +62,12 @@ RSpec.describe SmartMatch::SimilarityQuery do
         radius_miles: 5
       )
 
-      expect(results).to be_an(Array)
+      expect(results.candidates).to be_an(Array)
     end
 
     describe "location scope (nationwide / international)" do
       def ids(results)
-        results.map { |r| r[:organization_embedding].organization_id }
+        org_ids(results)
       end
 
       it "matches National orgs for a nationwide search, ignoring state/coordinates" do
@@ -131,7 +137,7 @@ RSpec.describe SmartMatch::SimilarityQuery do
           radius_miles: 50
         )
 
-        expect(results.map { |r| r[:organization_embedding].organization_id }).to include(org.id)
+        expect(org_ids(results)).to include(org.id)
       end
 
       it "does NOT match a ME location even when its address text contains 'TN' (Patten case)" do
@@ -152,9 +158,9 @@ RSpec.describe SmartMatch::SimilarityQuery do
           radius_miles: 50
         )
 
-        org_ids = results.map { |r| r[:organization_embedding].organization_id }
-        expect(org_ids).to include(tn_org.id)
-        expect(org_ids).not_to include(me_org.id)
+        matched = org_ids(results)
+        expect(matched).to include(tn_org.id)
+        expect(matched).not_to include(me_org.id)
       end
 
       it "still uses ILIKE fallback for rows where state_code is NULL (not yet backfilled)" do
@@ -170,7 +176,146 @@ RSpec.describe SmartMatch::SimilarityQuery do
           radius_miles: 50
         )
 
-        expect(results.map { |r| r[:organization_embedding].organization_id }).to include(org.id)
+        expect(org_ids(results)).to include(org.id)
+      end
+    end
+
+    # Before this, a National organization with no location in the searched
+    # state was invisible to a local searcher -- the state predicate dropped
+    # it, and every radius pass would have dropped it again. The client's
+    # scoring spec calls for them on every location row.
+    describe "nationwide organizations in a local search" do
+      def tn_anchor
+        org = create(:organization, name: "Tennessee Anchor", ein_number: "440001", scope_of_work: "Regional")
+        org.locations.first.update_columns(address: "1 Main St, Nashville, TN", state_code: "TN",
+          lonlat: Geo.point(-86.7816, 36.1627), latitude: 36.1627, longitude: -86.7816)
+        create(:organization_embedding, organization: org)
+        org
+      end
+
+      it "includes a National org that has no location in the searched state" do
+        tn_anchor
+        national = create(:organization, name: "National Helpline", ein_number: "440002", scope_of_work: "National")
+        national.locations.first.update_columns(address: "9 Ocean Ave, Los Angeles, CA", state_code: "CA")
+        create(:organization_embedding, organization: national)
+
+        results = described_class.call(
+          embedding: embedding, state: "TN", coordinates: coordinates, radius_miles: 5
+        )
+
+        expect(org_ids(results)).to include(national.id)
+      end
+
+      it "keeps the National org through radius narrowing despite being far away" do
+        tn_anchor
+        national = create(:organization, name: "Distant National", ein_number: "440003", scope_of_work: "National")
+        national.locations.first.update_columns(
+          address: "9 Ocean Ave, Los Angeles, CA", state_code: "CA",
+          lonlat: Geo.point(-118.2437, 34.0522), latitude: 34.0522, longitude: -118.2437
+        )
+        create(:organization_embedding, organization: national)
+
+        results = described_class.call(
+          embedding: embedding, state: "TN", coordinates: coordinates, radius_miles: 5
+        )
+
+        expect(org_ids(results)).to include(national.id)
+      end
+
+      it "still excludes an out-of-state Regional org" do
+        tn_anchor
+        regional = create(:organization, name: "California Only", ein_number: "440004", scope_of_work: "Regional")
+        regional.locations.first.update_columns(address: "9 Ocean Ave, Los Angeles, CA", state_code: "CA")
+        create(:organization_embedding, organization: regional)
+
+        results = described_class.call(
+          embedding: embedding, state: "TN", coordinates: coordinates, radius_miles: 5
+        )
+
+        expect(org_ids(results)).not_to include(regional.id)
+      end
+    end
+
+    describe "eligibility filters and relaxation" do
+      def volunteer_intent
+        UserIntent.from_session(
+          session_answers: {state: "TN", city: "Nashville", causes: ["Health"]},
+          user_type: "volunteer"
+        )
+      end
+
+      def nashville_org(name, ein, **attrs)
+        org = create(:organization, name: name, ein_number: ein, scope_of_work: "Regional", **attrs)
+        org.locations.first.update_columns(
+          address: "1 Main St, Nashville, TN", state_code: "TN",
+          lonlat: Geo.point(-86.7816, 36.1627), latitude: 36.1627, longitude: -86.7816
+        )
+        create(:organization_embedding, organization: org)
+        org
+      end
+
+      it "applies the volunteer filter when enough organizations satisfy it" do
+        3.times { |i| nashville_org("Volunteering Org #{i}", "4410#{i}", volunteer_availability: true) }
+        no_opps = nashville_org("No Volunteering", "44199", volunteer_availability: false)
+
+        results = described_class.call(
+          embedding: embedding, state: "TN", coordinates: coordinates,
+          radius_miles: 5, user_intent: volunteer_intent
+        )
+
+        expect(org_ids(results)).not_to include(no_opps.id)
+        expect(results.relaxed).to be_empty
+        expect(results).not_to be_relaxed
+      end
+
+      # The alternative is an empty page for someone willing to help. Showing
+      # the closest organizations is better, provided we say what we dropped.
+      it "drops the volunteer filter and reports it when too few organizations qualify" do
+        no_opps = nashville_org("No Volunteering", "44200", volunteer_availability: false)
+
+        results = described_class.call(
+          embedding: embedding, state: "TN", coordinates: coordinates,
+          radius_miles: 5, user_intent: volunteer_intent
+        )
+
+        expect(org_ids(results)).to include(no_opps.id)
+        expect(results.relaxed).to eq([:volunteer_opportunities])
+        expect(results).to be_relaxed
+      end
+
+      it "never relaxes the service-availability requirement" do
+        # Enough service-offering orgs would exist only by relaxing; there are
+        # none, so the result is empty rather than filled with ineligible orgs.
+        admin_only = nashville_org("Admin Only", "44300")
+        admin_only.locations.each { |l| l.update_columns(offer_services: false) }
+
+        seeker = UserIntent.from_session(
+          session_answers: {state: "TN", city: "Nashville", causes: ["Health"]},
+          user_type: "service_seeker"
+        )
+
+        results = described_class.call(
+          embedding: embedding, state: "TN", coordinates: coordinates,
+          radius_miles: 5, user_intent: seeker
+        )
+
+        expect(org_ids(results)).not_to include(admin_only.id)
+      end
+
+      it "reports no relaxation when there is nothing relaxable to drop" do
+        nashville_org("Service Org", "44400")
+
+        seeker = UserIntent.from_session(
+          session_answers: {state: "TN", city: "Nashville", causes: ["Health"]},
+          user_type: "service_seeker"
+        )
+
+        results = described_class.call(
+          embedding: embedding, state: "TN", coordinates: coordinates,
+          radius_miles: 5, user_intent: seeker
+        )
+
+        expect(results.relaxed).to be_empty
       end
     end
   end

@@ -51,6 +51,22 @@
       </div>
 
     <% elsif @results.present? %>
+      <%# Shown when eligibility filters had to be dropped to find any matches.
+          Naming the specific filter matters: someone who asked for volunteer
+          opportunities needs to know these organizations may not have any,
+          rather than discovering it after contacting them. %>
+      <% if @relaxations.present? %>
+        <div class="mb-6 rounded-lg border border-yellow-400 bg-yellow-50 px-5 py-4" role="status">
+          <p class="text-sm font-semibold text-gray-2">
+            <%= t("smart_match.results.broadened.title") %>
+          </p>
+          <p class="mt-1 text-sm text-gray-4">
+            <%= t("smart_match.results.broadened.body",
+                  filters: @relaxations.map { |r| t("smart_match.results.broadened.filters.#{r}") }.to_sentence) %>
+          </p>
+        </div>
+      <% end %>
+
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <% @results.each do |match| %>
           <%= render SmartMatchCard::Component.new(

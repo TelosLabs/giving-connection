@@ -82,6 +82,12 @@ en:
       unavailable:
         title: "Smart Match is temporarily unavailable"
         body: "Our matching engine is currently offline. Please try again in a few minutes."
+      broadened:
+        title: "We broadened your search"
+        body: "We couldn't find enough matches for everything you asked for, so these results may not all offer %{filters}."
+        filters:
+          volunteer_opportunities: "volunteer opportunities"
+          donation_link: "online donations"
     quiz:
       buttons:
         back: "Go Back"

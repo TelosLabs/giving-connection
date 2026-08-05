@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_05_14_155700) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_05_164216) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -197,6 +197,20 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_14_155700) do
     t.index ["user_id"], name: "index_favorite_locations_on_user_id"
   end
 
+  create_table "feedbacks", force: :cascade do |t|
+    t.integer "rating", null: false
+    t.string "category"
+    t.string "context"
+    t.text "comment"
+    t.string "page_url"
+    t.bigint "user_id"
+    t.datetime "read_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["read_at"], name: "index_feedbacks_on_read_at"
+    t.index ["user_id"], name: "index_feedbacks_on_user_id"
+  end
+
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
@@ -380,6 +394,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_14_155700) do
     t.boolean "volunteer_availability", default: false, null: false
     t.string "volunteer_link"
     t.boolean "general_population_serving", default: false, null: false
+    t.string "in_kind_donation_link"
+    t.jsonb "in_kind_donation_items", default: [], null: false
     t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
     t.index ["ein_number"], name: "index_organizations_on_ein_number"
     t.index ["mission_statement_en"], name: "index_organizations_on_mission_statement_en"
@@ -416,6 +432,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_14_155700) do
     t.text "text_snapshot", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "search_relaxations", default: [], null: false
     t.index ["session_id"], name: "index_quiz_submissions_on_session_id"
     t.index ["user_id"], name: "index_quiz_submissions_on_user_id"
   end
@@ -497,6 +514,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_14_155700) do
   add_foreign_key "favorite_blogs", "users"
   add_foreign_key "favorite_locations", "locations"
   add_foreign_key "favorite_locations", "users"
+  add_foreign_key "feedbacks", "users"
   add_foreign_key "import_logs", "admin_users"
   add_foreign_key "location_services", "locations"
   add_foreign_key "location_services", "services"

@@ -64,7 +64,25 @@ user must never be shown an inaccessible org without knowing why it's there.
 
 This is a product/UX call, not an engineering one. Needs the client.
 
-**Answer:** _pending_
+**Answer: RESOLVED (2026-08-05) — tiered, with a visible notice.**
+
+Two tiers, implemented in `SmartMatch::Eligibility`:
+
+| Tier | Filters | Behaviour |
+|---|---|---|
+| required | active org, geography, "any location offers services" (Find Help) | never dropped |
+| relaxable | volunteer capability, donation link | dropped as a set when the strict pass returns fewer than `min_results`, and only if dropping them actually finds more |
+
+`SimilarityQuery` returns a `Result` carrying `candidates` plus `relaxed`
+(the labels it gave up on). That is persisted to
+`quiz_submissions.search_relaxations` and rendered as the "We broadened your
+search" notice on the results page, naming the specific filter — a volunteer
+needs to know these organizations may not have opportunities.
+
+Not implemented: progressive shedding (drop the lowest-weight filter first).
+The two relaxable filters live on mutually exclusive paths, so at most one is
+ever active and set-dropping is equivalent. Revisit when Tier 4 preference
+filters land in Phase 5.
 
 ---
 
@@ -165,4 +183,14 @@ win, no dependency), and promote the remote-services field to the front of
 Phase 5 so this option can mean what it says. Interim copy change if the field
 will take a while.
 
-**Answer:** _pending_
+**Answer: PARTIALLY RESOLVED (2026-08-05).** The three real radii now match
+their labels (`nearby` 5, `moderate` 10, `far` 100).
+
+`statewide` is **still wrong** and is commented as such in
+`config/matching_rules.yml`. Confirmed by an exhaustive search: no column on
+`organizations` or `locations` records remote/virtual/online service delivery,
+and no service preset is a general proxy (the closest, "Hot Lines & Crisis
+Intervention", is one specific service). The option therefore falls back to the
+widest radius while its label promises remote-only. **Still needs a product
+decision** — hide the option, reword it, or promote the remote-services field
+to the front of Phase 5.

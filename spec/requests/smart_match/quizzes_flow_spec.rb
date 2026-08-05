@@ -260,9 +260,14 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       organization_embedding # touch to create org + embedding before stub
 
       allow(SmartMatch::EmbeddingClient).to receive(:call).and_return(vector)
-      allow(SmartMatch::SimilarityQuery).to receive(:call).and_return([
-        {organization_embedding: organization_embedding, cosine_distance: 0.1, distance_miles: 5.0}
-      ])
+      allow(SmartMatch::SimilarityQuery).to receive(:call).and_return(
+        SmartMatch::SimilarityQuery::Result.new(
+          candidates: [
+            {organization_embedding: organization_embedding, cosine_distance: 0.1, distance_miles: 5.0}
+          ],
+          relaxed: []
+        )
+      )
 
       prime_donor_session
 
@@ -278,6 +283,76 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       get smart_match_result_path
       expect(response).to have_http_status(:ok)
       expect(response.body).to include(organization.name)
+    end
+
+    # Regression guard. The results controller used to build its own 7-key
+    # subset of the session for the background job, so answers like
+    # donor_communities and donation_style were collected from the user and
+    # then silently dropped before scoring. Both controllers now read
+    # QuizNavigator.session_answers; this asserts the whole answer set
+    # actually survives the trip into the job.
+    it "carries every quiz answer through to the persisted submission" do
+      allow(SmartMatch::EmbeddingClient).to receive(:call).and_return(vector)
+      allow(SmartMatch::SimilarityQuery).to receive(:call)
+        .and_return(SmartMatch::SimilarityQuery::Result.new(candidates: [], relaxed: []))
+
+      prime_donor_session
+      get smart_match_result_path
+      perform_enqueued_jobs
+
+      answers = QuizSubmission.last.answers
+
+      expect(answers["donor_communities"]).to eq(%w[veterans])
+      expect(answers["donation_style"]).to eq(%w[one_time])
+      expect(answers["giving_inspiration"]).to eq(%w[personal_story])
+      expect(answers["impact_location"]).to eq("local")
+      expect(answers["donor_involvement"]).to eq("active")
+      expect(answers["age_range"]).to eq("25-34")
+      expect(answers["language_input"]).to eq("Support education in Nashville.")
+      expect(answers["city"]).to eq("Nashville")
+    end
+
+    it "tells the user when eligibility filters had to be dropped" do
+      organization_embedding
+
+      allow(SmartMatch::EmbeddingClient).to receive(:call).and_return(vector)
+      allow(SmartMatch::SimilarityQuery).to receive(:call).and_return(
+        SmartMatch::SimilarityQuery::Result.new(
+          candidates: [
+            {organization_embedding: organization_embedding, cosine_distance: 0.1, distance_miles: 5.0}
+          ],
+          relaxed: [:donation_link]
+        )
+      )
+
+      prime_donor_session
+      get smart_match_result_path
+      perform_enqueued_jobs
+      get smart_match_result_path
+
+      expect(response.body).to include(I18n.t("smart_match.results.broadened.title"))
+      expect(response.body).to include(I18n.t("smart_match.results.broadened.filters.donation_link"))
+    end
+
+    it "shows no broadened notice when every filter held" do
+      organization_embedding
+
+      allow(SmartMatch::EmbeddingClient).to receive(:call).and_return(vector)
+      allow(SmartMatch::SimilarityQuery).to receive(:call).and_return(
+        SmartMatch::SimilarityQuery::Result.new(
+          candidates: [
+            {organization_embedding: organization_embedding, cosine_distance: 0.1, distance_miles: 5.0}
+          ],
+          relaxed: []
+        )
+      )
+
+      prime_donor_session
+      get smart_match_result_path
+      perform_enqueued_jobs
+      get smart_match_result_path
+
+      expect(response.body).not_to include(I18n.t("smart_match.results.broadened.title"))
     end
 
     it "renders the unavailable fallback when the job hits EmbeddingUnavailableError" do
@@ -307,7 +382,8 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       # is set but the row has been deleted, the controller deletes the
       # session key, sets flash[:alert], and redirects to the root.
       allow(SmartMatch::EmbeddingClient).to receive(:call).and_return(vector)
-      allow(SmartMatch::SimilarityQuery).to receive(:call).and_return([])
+      allow(SmartMatch::SimilarityQuery).to receive(:call)
+        .and_return(SmartMatch::SimilarityQuery::Result.new(candidates: [], relaxed: []))
 
       # Run the job so the submission is persisted, then a GET caches its id
       # into the session (find_submission resolves it by session_id column).
