@@ -75,6 +75,14 @@ en:
       processing:
         title: "Finding your matches…"
         body: "We're matching you with nonprofits that fit your answers. This only takes a moment."
+      delayed:
+        title: "This is taking longer than usual"
+        body: "We're still putting your matches together. Your answers are saved, so you can check back in a few minutes."
+        refresh: "Check again"
+      failed:
+        title: "We ran into an issue"
+        body: "We couldn't check on your matches just now. Your answers are saved — refreshing usually sorts it out."
+        refresh: "Refresh"
       empty:
         title: "No quiz results found"
         body: "Take the quiz to get personalized nonprofit matches."

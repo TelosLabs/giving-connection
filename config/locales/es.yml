@@ -49,6 +49,14 @@ es:
       processing:
         title: "Buscando tus coincidencias…"
         body: "Te estamos emparejando con organizaciones sin fines de lucro que se ajustan a tus respuestas. Esto solo toma un momento."
+      delayed:
+        title: "Esto está tardando más de lo normal"
+        body: "Todavía estamos preparando tus coincidencias. Tus respuestas están guardadas, así que puedes volver en unos minutos."
+        refresh: "Volver a consultar"
+      failed:
+        title: "Tuvimos un problema"
+        body: "No pudimos consultar el estado de tus coincidencias. Tus respuestas están guardadas: actualizar la página suele resolverlo."
+        refresh: "Actualizar"
       empty:
         title: "No se encontraron resultados"
         body: "Haz el cuestionario para recibir emparejamientos personalizados."

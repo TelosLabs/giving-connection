@@ -47,6 +47,26 @@ RSpec.describe SmartMatch::SimilarityQuery do
       expect(result).to include(:organization_embedding, :cosine_distance, :distance_miles)
     end
 
+    # A partial session (abandoned quiz, direct visit to /smart_match/result)
+    # reaches the pipeline with no state, because ResultsController#quiz_completed?
+    # only requires user_type + causes. This used to raise NoMethodError in
+    # filtered_scope, which surfaced to the user as a spinner that never resolved.
+    it "still returns candidates for a local search with no state" do
+      org = create(:organization)
+      org.locations.first.update_columns(address: "123 Main St, Nashville, TN 37201")
+      create(:organization_embedding, organization: org)
+
+      expect {
+        results = described_class.call(
+          embedding: embedding,
+          state: nil,
+          coordinates: nil,
+          location_scope: "local"
+        )
+        expect(org_ids(results)).to include(org.id)
+      }.not_to raise_error
+    end
+
     it "falls back to state-wide results when no nearby results" do
       org = create(:organization)
       loc = org.locations.first

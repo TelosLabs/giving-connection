@@ -63,6 +63,31 @@ RSpec.describe "SmartMatch Rack::Attack throttles", type: :request do
     end
   end
 
+  # The status endpoint is polled, so its ceiling has to clear one attempt's
+  # worth of polling or the throttle fires during ordinary use. This was the
+  # actual defect: at 120 the limit was below what a single slow completion
+  # could spend, the poll controller read the resulting 429 as "still
+  # processing", and its retries held the window saturated -- so the page
+  # spun forever with no way to recover.
+  describe "smart_match/result_status throttle (300/period/IP)" do
+    # smart_match_poll_controller.js: 2s interval, 120s deadline.
+    let(:polls_per_attempt) { 60 }
+
+    it "admits a full polling attempt without throttling" do
+      polls_per_attempt.times do |i|
+        get status_smart_match_result_path, env: {"REMOTE_ADDR" => ip_a}
+        expect(response.status).to satisfy("be allowed on poll #{i + 1}, got #{response.status}") { |s| s != 429 }
+      end
+    end
+
+    it "allows 300 requests then throttles the 301st from the same IP" do
+      300.times { get status_smart_match_result_path, env: {"REMOTE_ADDR" => ip_a} }
+
+      get status_smart_match_result_path, env: {"REMOTE_ADDR" => ip_a}
+      expect(response).to have_http_status(:too_many_requests)
+    end
+  end
+
   describe "throttle key isolation by IP" do
     it "still admits requests from a different IP after the first IP is throttled" do
       # Exhaust quiz throttle from ip_a.

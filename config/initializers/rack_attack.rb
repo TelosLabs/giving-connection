@@ -246,9 +246,17 @@ class Rack::Attack
 
   # The loading page polls this JSON endpoint every ~2s while the embedding +
   # scoring job runs. It touches no external service (just a cache/DB existence
-  # check), so it gets a much higher ceiling than the results page itself:
-  # ~120/hour covers several slow completions worth of polling per IP.
-  throttle("smart_match/result_status", limit: 120, period: THROTTLE_PERIODS[:smart_match_result_status]) do |req|
+  # check), so it gets a much higher ceiling than the results page itself.
+  #
+  # The limit MUST stay above one attempt's worth of polling, or the throttle
+  # fires during ordinary use. smart_match_poll_controller.js polls every 2s for
+  # up to its 120s deadline = 60 requests for a single slow-but-healthy
+  # completion. The old limit of 120 was under that as soon as a page polled for
+  # more than ~4 minutes: it returned 429, the controller read every non-OK
+  # response as "still processing" and kept polling, and the retries held the
+  # window saturated so the page could never recover. 300 leaves room for
+  # several attempts per window while still bounding abuse.
+  throttle("smart_match/result_status", limit: 300, period: THROTTLE_PERIODS[:smart_match_result_status]) do |req|
     if req.path == "/smart_match/result/status" && req.get?
       req.remote_ip
     end

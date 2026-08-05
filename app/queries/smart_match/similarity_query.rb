@@ -49,7 +49,12 @@ module SmartMatch
 
         return scoped_results(scope, embedding, location_scope) if NON_LOCAL_SCOPES.include?(location_scope.to_s)
 
-        state_scope = filtered_scope(scope, state)
+        # A local search can reach here without a state: ResultsController's
+        # quiz_completed? only requires user_type + causes, so a partial session
+        # (an abandoned quiz, a direct visit to /smart_match/result) gets this
+        # far with nothing to narrow on. Skip the state pass rather than raising
+        # in filtered_scope -- same fallback the `none?` case below already uses.
+        state_scope = state.present? ? filtered_scope(scope, state) : scope
 
         return results_from(scope, embedding) if state_scope.none?
 
