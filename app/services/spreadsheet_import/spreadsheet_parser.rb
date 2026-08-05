@@ -219,6 +219,20 @@ module SpreadsheetImport
         scope_of_work: clean_na(org_row["Scope of Work"]),
         active: true
       }.merge(smart_match_capabilities(org_row))
+        .merge(languages: parse_languages(org_row["Languages"]))
+    end
+
+    # Comma-separated, matched case-insensitively against the supported
+    # vocabulary. Unrecognised entries are dropped rather than stored, so a
+    # typo can't create a language nothing will ever match. nil (unknown) when
+    # the column is absent or nothing recognisable remains.
+    def parse_languages(value)
+      cleaned = clean_na(value)
+      return nil if cleaned.blank?
+
+      known = Organizations::Constants::LANGUAGES.index_by(&:downcase)
+      found = cleaned.split(",").filter_map { |name| known[name.strip.downcase] }.uniq
+      found.presence
     end
 
     # Smart Match capability columns. All optional: a spreadsheet without these

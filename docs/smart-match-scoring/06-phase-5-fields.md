@@ -4,7 +4,7 @@
 over time as organizations edit their own profiles. Partial coverage is
 accepted by design.
 
-**Build status:** 10 of 14 fields are shipped and scoring. The remaining 4
+**Build status:** 11 of 14 fields are shipped and scoring. The remaining 3
 are blocked on vocabulary decisions (see "Still open"). Not yet built: the
 self-service form *inputs* — params and the importer accept the fields, but
 [organizations/edit.html.slim](../../app/views/organizations/edit.html.slim)
@@ -12,7 +12,13 @@ has no widgets for them yet, so today only Administrate can set them.
 
 | Shipped | Blocked on a decision |
 |---|---|
-| `remote_services`, `wheelchair_accessible`, `lgbtqia_affirming`, `accepts_in_kind`, `fundraising_events`, `partnership_opportunities`, `free_or_sliding_scale`, `no_id_required`, `specific_project_giving`, `recurring_giving` | `volunteer_format`, `volunteer_frequency`, `languages`, `leadership_attributes` |
+| `remote_services`, `wheelchair_accessible`, `languages`, `lgbtqia_affirming`, `accepts_in_kind`, `fundraising_events`, `partnership_opportunities`, `free_or_sliding_scale`, `no_id_required`, `specific_project_giving`, `recurring_giving` | `volunteer_format`, `volunteer_frequency`, `leadership_attributes` |
+
+`languages` shipped as a `string[]` on organizations with the vocabulary in
+`Organizations::Constants::LANGUAGES` (English, Spanish). Adding a third
+language is a one-line change there plus a scoring rule — no migration —
+because the column is an array rather than a set of booleans. Values are
+stored verbatim, so **add** languages rather than renaming them.
 
 This document records the 14 fields, why partial data is safe for scoring but
 dangerous for filtering, and what still needs deciding.
@@ -104,7 +110,7 @@ dormant; adding the column and removing that flag activates each one.
 | 1 | `remote_services` | bool | location | travel `statewide` | — | **relaxable filter** |
 | 2 | `wheelchair_accessible` | bool | location | prefs | 4 × 1.0 = 4.0 | score |
 | 3 | `volunteer_format` | enum | org | volunteer_format | 5 × 1.5 = **7.5** | score |
-| 4 | `languages` | array | org | prefs / volunteer_type | 2 × 0.5 / **5 × 1.0** | score |
+| 4 | `languages` | `string[]` | org | prefs / volunteer_type | 2 × 0.5 / **5 × 1.0** | score |
 | 5 | `lgbtqia_affirming` | bool | org | prefs | 4 × 0.5 = 2.0 | score |
 | 6 | `accepts_in_kind` | bool | org | donation_style | 3 × 1.0 = 3.0 | score |
 | 7 | `volunteer_frequency` | enum | org | volunteer_time | 3 × 1.0 = 3.0 | score |
@@ -166,9 +172,8 @@ now that there is no campaign. Prioritise it over the Administrate side.
 1. **Enum values.** `volunteer_format`: in-person / remote / hybrid.
    `volunteer_frequency`: one-time / event-based / weekly / ongoing. Taken
    from the client's CSV — confirm or amend.
-2. **`languages`** — fixed list (filterable, consistent, needs a
-   vocabulary decision) or free-text array (captures the long tail, messier to
-   match)? The Row 49 rule matches specifically on Spanish.
+2. ~~**`languages`**~~ — RESOLVED 2026-08-05: fixed vocabulary, English and
+   Spanish to start, extensible without a migration.
 3. **`leadership_attributes`** — the CSV says "Women- or BIPOC-led". Fixed
    set of attributes, or free text?
 4. **Volunteer opportunity attributes** (part of CSV row 11, weight 3) — the

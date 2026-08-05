@@ -154,6 +154,8 @@ class OrganizationsController < ApplicationController
           service_ids: []
         }
       ],
+      # Languages is a string array (Organizations::Constants::LANGUAGES).
+      languages: [],
       beneficiary_subcategory_ids: [],
       cause_ids: []
     )

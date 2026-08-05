@@ -99,6 +99,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     recurring_giving
     fundraising_events
     partnership_opportunities
+    languages
     social_media
     locations
   ].freeze
@@ -136,6 +137,7 @@ class OrganizationDashboard < Administrate::BaseDashboard
     recurring_giving
     fundraising_events
     partnership_opportunities
+    languages
     organization_causes
     social_media
     locations

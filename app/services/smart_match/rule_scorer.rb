@@ -21,6 +21,11 @@ module SmartMatch
   # skipped from both sides of that ratio -- users are never penalised for data
   # the platform has not collected.
   class RuleScorer < ApplicationService
+    # The language the platform assumes without being told. Used by the
+    # "Spanish or another language available" preference, which asks for any
+    # language beyond this one rather than naming a specific alternative.
+    DEFAULT_LANGUAGE = "English"
+
     # Fields that are a plain capability check rather than a preset lookup.
     #
     # A lambda returns true (scores), false (does not score), or nil (UNKNOWN
@@ -160,6 +165,8 @@ module SmartMatch
     # population, ...) have no unknown state: an org either carries the tag or
     # it doesn't.
     def unknown?(rule)
+      return organization.languages.blank? if rule["field"] == "languages"
+
       BOOLEAN_FIELDS.key?(rule["field"]) && boolean_value(rule["field"]).nil?
     end
 
@@ -178,6 +185,9 @@ module SmartMatch
       when "prefix" then organization_values(field).any? { |value| value.start_with?(rule["preset"]) }
       when "answer" then organization_values(field).include?(answer)
       when "cause_service" then organization_values(field).intersect?(services_for_cause(answer))
+      # "Spanish or another language available" doesn't say which language, so
+      # any language beyond the assumed default satisfies it.
+      when "non_default_language" then organization_values(field).any? { |l| l != DEFAULT_LANGUAGE }
       else organization_values(field).include?(rule["preset"])
       end
     end
@@ -191,6 +201,7 @@ module SmartMatch
       when "cause" then organization.causes.map(&:name)
       when "service" then organization.locations.flat_map { |l| l.services.map(&:name) }.uniq
       when "ntee" then [organization.irs_ntee_code].compact
+      when "languages" then Array(organization.languages)
       else []
       end
     end

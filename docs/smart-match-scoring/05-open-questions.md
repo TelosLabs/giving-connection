@@ -157,12 +157,39 @@ contribution). Low stakes for ranking, higher stakes for getting the
 representation right. Defer if it slows Phase 2 — there is no ranking cost to
 shipping without them.
 
-**Answer:** _split_ — `age_range` is implemented (the CSV enumerates its
-presets itself, and the mapping is uncontested). `gender_identity` and
-`race_ethnicity` are listed under `ignored_answers` in
-`config/smart_match_scoring.yml` with the reason, so the coverage drift spec
-passes without anyone having guessed a demographic mapping. Still needs the
-client before it can be implemented.
+**Answer: RESOLVED (2026-08-05) — follow the CSV. All three are scored on the
+Find Help path.** The CSV is the source of truth; Donor and Volunteer keep the
+sheet's "Information only" treatment, enforced by `paths: [service_seeker]`.
+
+> An earlier decision the same day removed these as "internal statistics only"
+> and was reversed. Recorded because the reversal is the reason the mappings
+> below were authored rather than deferred.
+
+**The rule for mapping:** the CSV enumerates presets for age but qualifies
+gender and race with *"when a corresponding preset exists"*. That qualifier
+decides where mapping stops — an answer maps only where a Populations Served
+preset means the same thing, and gets an empty list otherwise. At 1.0
+contribution (the sheet's lowest), a near-miss is worse than no signal.
+
+| Answer | Maps to | Why |
+|---|---|---|
+| `under_18` | Children & Youth, Individuals Under 21, Non-Adults | exact |
+| `19_24` | Individuals Under 21, Adults | spans both |
+| `25_34` … `55_64` | Adults | the CSV's own example; near-zero discriminating power |
+| `over_65` | Seniors, Retired People | exact |
+| `female` / `male` | Women & Girls / Men & Boys | exact |
+| `non_binary` | — | no equivalent. Intersex People is a different thing; LGBTQ+ People is an umbrella, not the "exact gender-related match" asked for |
+| `asian`, `black_african_american`, `hispanic_latino`, `native_american`, `native_hawaiian` | matching descent preset + People of all Racial Minority Groups | exact |
+| `middle_eastern_north_african` | People of Middle Eastern Descent + minority groups | closest available — the vocabulary has no North African preset |
+| `white` | People of European Descent | deliberately **not** paired with the minority-groups preset |
+| `other` (gender or race) | — | means "none of the above", which no preset means |
+| `prefer_not_to_say` | — | escape hatch |
+
+Pairing each descent preset with "People of all Racial Minority Groups" widens
+what can match without inflating anything: only the highest weight in a field
+group counts, so an org carrying both scores the same as one carrying either.
+
+Baseline effect: three Find Help scenarios move by <0.01, no ordering change.
 
 ---
 

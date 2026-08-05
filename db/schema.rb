@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_05_172144) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_05_181800) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -407,8 +407,10 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_05_172144) do
     t.boolean "recurring_giving"
     t.boolean "fundraising_events"
     t.boolean "partnership_opportunities"
+    t.string "languages", array: true
     t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
     t.index ["ein_number"], name: "index_organizations_on_ein_number"
+    t.index ["languages"], name: "index_organizations_on_languages", using: :gin
     t.index ["mission_statement_en"], name: "index_organizations_on_mission_statement_en"
     t.index ["name"], name: "index_organizations_on_name", unique: true
     t.index ["scope_of_work"], name: "index_organizations_on_scope_of_work"

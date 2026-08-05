@@ -54,6 +54,9 @@ class Organization < ApplicationRecord
   validates :irs_ntee_code, presence: true, inclusion: {in: Organizations::Constants::NTEE_CODE}
   validates :mission_statement_en, presence: true
   validates :scope_of_work, presence: true, inclusion: {in: Organizations::Constants::SCOPE}
+  # nil is "not yet answered" and must stay allowed -- the Smart Match scorer
+  # relies on being able to tell that apart from a recorded answer.
+  validate :languages_are_supported
   validates :logo, content_type: ["image/png", "image/jpeg"],
     size: {less_than: 5.megabytes, message: "File too large. Must be less than 5MB in size"}
 
@@ -127,6 +130,17 @@ class Organization < ApplicationRecord
   end
 
   private
+
+  # A language outside the vocabulary can never be matched by a scoring rule,
+  # so storing one is silently useless. Reject it at the boundary instead.
+  def languages_are_supported
+    return if languages.nil?
+
+    unsupported = languages - Organizations::Constants::LANGUAGES
+    return if unsupported.empty?
+
+    errors.add(:languages, "includes unsupported values: #{unsupported.join(", ")}")
+  end
 
   EMBEDDING_FIELDS = %w[name mission_statement_en vision_statement_en tagline_en].freeze
 

@@ -4,6 +4,14 @@ module Organizations
   module Constants
     SCOPE = %w[International National Regional].freeze
 
+    # Languages an organization can deliver services in, for Smart Match.
+    #
+    # Deliberately starts at two. Adding a language is a one-line change here
+    # plus a scoring rule -- the column is a string array, so no migration is
+    # needed. Values are stored verbatim, so renaming one WOULD need a data
+    # migration; add rather than rename.
+    LANGUAGES = %w[English Spanish].freeze
+
     NTEE_CODE = [
       "A01: Alliances & Advocacy",
       "A02: Management & Technical Assistance",

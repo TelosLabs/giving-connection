@@ -58,6 +58,17 @@ RSpec.describe "Smart Match scoring rules consistency" do
       end
     end
 
+    it "references only languages in the supported vocabulary" do
+      each_rule do |rule, location|
+        next unless rule["field"] == "languages" && rule["preset"]
+
+        expect(Organizations::Constants::LANGUAGES).to include(rule["preset"]),
+          "#{location}: #{rule["preset"].inspect} is not in Organizations::Constants::LANGUAGES. " \
+          "Add it there first -- a language that isn't in the vocabulary can never be stored, " \
+          "so the rule would silently never match."
+      end
+    end
+
     it "references NTEE codes that exist, or letter groups that match at least one code" do
       each_rule do |rule, location|
         next unless rule["field"] == "ntee" && rule["preset"]
@@ -84,7 +95,7 @@ RSpec.describe "Smart Match scoring rules consistency" do
 
     it "gives every preset-matching rule a preset" do
       preset_free = SmartMatch::RuleScorer::BOOLEAN_FIELDS.keys
-      dynamic = %w[answer cause_service]
+      dynamic = %w[answer cause_service non_default_language]
 
       each_rule do |rule, location|
         next if preset_free.include?(rule["field"]) || dynamic.include?(rule["match"])
@@ -104,7 +115,7 @@ RSpec.describe "Smart Match scoring rules consistency" do
     end
 
     it "resolves every non-deferred field to something the scorer can read" do
-      known = %w[population cause service ntee] + SmartMatch::RuleScorer::BOOLEAN_FIELDS.keys
+      known = %w[population cause service ntee languages] + SmartMatch::RuleScorer::BOOLEAN_FIELDS.keys
 
       each_rule do |rule, location|
         next if rule["requires_field"]
@@ -180,7 +191,11 @@ RSpec.describe "Smart Match scoring rules consistency" do
         "volunteer_involvement" => %w[volunteer_time attend_event business_partner just_exploring],
         "volunteer_format" => %w[in_person remote both],
         "volunteer_time" => %w[one_time few_hours ongoing not_sure],
-        "age_range" => %w[under_18 19_24 25_34 35_44 45_54 55_64 over_65 prefer_not_to_say]
+        "age_range" => %w[under_18 19_24 25_34 35_44 45_54 55_64 over_65 prefer_not_to_say],
+        "gender_identity" => %w[female male non_binary other prefer_not_to_say],
+        "race_ethnicity" => %w[asian black_african_american hispanic_latino
+          middle_eastern_north_african native_american native_hawaiian white
+          other prefer_not_to_say]
       }
 
       expected.each do |session_key, options|

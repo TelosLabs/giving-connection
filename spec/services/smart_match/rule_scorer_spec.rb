@@ -239,6 +239,47 @@ RSpec.describe SmartMatch::RuleScorer do
       expect(with_unknowns[:max]).to eq(plain[:max])
     end
 
+    describe "languages" do
+      it "scores a named language for the volunteer Spanish-speaking answer" do
+        spanish = build_org(languages: ["English", "Spanish"])
+        english = build_org(name: "English Only", ein_number: "660011", languages: ["English"])
+
+        answers = intent(user_type: "volunteer", volunteer_type: ["spanish_speaking"])
+
+        expect(score_for(spanish, answers)[:earned]).to eq(5.0) # weight 5 x 1.0
+        expect(score_for(english, answers)[:earned]).to eq(0.0)
+      end
+
+      # The preference is worded "Spanish or another language available", so it
+      # asks for any language beyond the assumed default rather than a specific
+      # one.
+      it "scores any non-default language for the multilingual preference" do
+        spanish = build_org(languages: ["Spanish"])
+        english = build_org(name: "English Only", ein_number: "660012", languages: ["English"])
+
+        answers = intent(prefs: ["multilingual"])
+
+        expect(score_for(spanish, answers)[:earned]).to eq(1.0) # weight 2 x 0.5
+        expect(score_for(english, answers)[:earned]).to eq(0.0)
+        expect(score_for(english, answers)[:max]).to eq(1.0), "English-only is a known no, not unknown"
+      end
+
+      it "treats an organization with no languages recorded as unknown" do
+        org = build_org # languages is NULL
+
+        result = score_for(org, intent(prefs: ["multilingual"]))
+
+        expect(result[:max]).to eq(0.0)
+        expect(result[:matched]).to be_empty
+      end
+
+      it "treats an empty language list as unknown rather than as a no" do
+        org = build_org(languages: [])
+
+        expect(score_for(org, intent(prefs: ["multilingual"]))[:max]).to eq(0.0)
+      end
+    end
+
     describe "location-level fields" do
       it "counts the organization as accessible when any location is" do
         org = build_org
@@ -300,6 +341,90 @@ RSpec.describe SmartMatch::RuleScorer do
 
       expect(result[:earned]).to be > 0
       expect(result[:matched].map { |m| m[:field] }).to contain_exactly("population", "service")
+    end
+  end
+
+  # The CSV scores these at +2 x 0.5 on Find Help only, and qualifies gender
+  # and race with "when a corresponding preset exists". These specs pin both
+  # halves: what maps, and what deliberately does not.
+  describe "personal details" do
+    it "matches an age answer to age-related populations" do
+      senior_org = build_org(beneficiaries: ["Seniors"])
+      youth_org = build_org(name: "Youth Org", ein_number: "770011", beneficiaries: ["Children & Youth"])
+
+      answers = intent(age_range: "over_65")
+
+      expect(score_for(senior_org, answers)[:earned]).to eq(1.0) # 2 x 0.5
+      expect(score_for(youth_org, answers)[:earned]).to eq(0.0)
+    end
+
+    it "matches gender answers that have an exact preset" do
+      womens_org = build_org(beneficiaries: ["Women & Girls"])
+
+      expect(score_for(womens_org, intent(gender_identity: "female"))[:earned]).to eq(1.0)
+      expect(score_for(womens_org, intent(gender_identity: "male"))[:earned]).to eq(0.0)
+    end
+
+    it "matches race answers to their descent preset" do
+      org = build_org(beneficiaries: ["People of African Descent"])
+
+      expect(score_for(org, intent(race_ethnicity: "black_african_american"))[:earned]).to eq(1.0)
+      expect(score_for(org, intent(race_ethnicity: "asian"))[:earned]).to eq(0.0)
+    end
+
+    it "also matches an organization serving all racial minority groups" do
+      broad = build_org(beneficiaries: ["People of all Racial Minority Groups"])
+
+      expect(score_for(broad, intent(race_ethnicity: "asian"))[:earned]).to eq(1.0)
+    end
+
+    # Only the highest weight in a field group counts, so an organization
+    # carrying both the exact descent preset and the umbrella one scores the
+    # same as one carrying either.
+    it "does not double-count the descent and umbrella presets" do
+      both = build_org(beneficiaries: ["People of Asian Descent", "People of all Racial Minority Groups"])
+      one = build_org(name: "One Tag", ein_number: "770012", beneficiaries: ["People of Asian Descent"])
+
+      answers = intent(race_ethnicity: "asian")
+
+      expect(score_for(both, answers)[:earned]).to eq(score_for(one, answers)[:earned])
+    end
+
+    it "does not pair a white answer with the racial-minority preset" do
+      minority_org = build_org(beneficiaries: ["People of all Racial Minority Groups"])
+
+      expect(score_for(minority_org, intent(race_ethnicity: "white"))[:earned]).to eq(0.0)
+    end
+
+    # The vocabulary has no honest equivalent for these, and the CSV only asks
+    # for a match "when a corresponding preset exists". Scoring nothing is the
+    # intended behaviour, not an oversight -- a non-binary person seeking food
+    # assistance should not be steered toward LGBTQ+-specific organizations by
+    # their gender answer alone.
+    it "scores nothing for answers with no corresponding preset" do
+      lgbtq_org = build_org(beneficiaries: ["LGBTQ+ People"])
+
+      %w[non_binary other prefer_not_to_say].each do |answer|
+        result = score_for(lgbtq_org, intent(gender_identity: answer))
+        expect(result[:earned]).to eq(0.0), "gender #{answer} should not score"
+        expect(result[:max]).to eq(0.0), "gender #{answer} should not affect the maximum either"
+      end
+
+      %w[other prefer_not_to_say].each do |answer|
+        expect(score_for(lgbtq_org, intent(race_ethnicity: answer))[:max]).to eq(0.0)
+      end
+    end
+
+    it "does not score personal details on the donor or volunteer paths" do
+      org = build_org(beneficiaries: ["Seniors", "Women & Girls", "People of African Descent"])
+
+      %w[donor volunteer].each do |user_type|
+        result = score_for(org, intent(
+          user_type: user_type, age_range: "over_65",
+          gender_identity: "female", race_ethnicity: "black_african_american"
+        ))
+        expect(result[:matched]).to be_empty, "#{user_type} should treat personal details as information only"
+      end
     end
   end
 

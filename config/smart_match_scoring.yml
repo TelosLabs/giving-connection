@@ -64,8 +64,10 @@ ignored_answers:
     elsewhere: 'Anywhere' disables geographic filtering entirely via
     UserIntent#geographic_filtering?, and local/city proximity is the distance
     term in Scorer."
-  gender_identity: "Deferred -- mapping unresolved, see open question Q5"
-  race_ethnicity: "Deferred -- mapping unresolved, see open question Q5"
+  # Personal Details (age / gender identity / race or ethnicity) IS scored, but
+  # only on the Find Help path -- see the questions below. The CSV marks the
+  # same step "Information only" for Donor and Volunteer, which the questions'
+  # `paths:` handles, so there is nothing to list here.
 
 questions:
   # ===========================================================================
@@ -255,8 +257,10 @@ questions:
       no_id_required:
         - {field: no_id_required, weight: 2}
 
+      # "Spanish or another language available" -- the answer doesn't name a
+      # language, so any language beyond English satisfies it.
       multilingual:
-        - {field: languages, weight: 2, requires_field: true}
+        - {field: languages, match: non_default_language, weight: 2}
 
       # The only preference the CSV can partly satisfy from existing data. The
       # dedicated affirming-services flag (future +4) is still pending.
@@ -276,16 +280,22 @@ questions:
 
       none: []
 
-  # Personal Details -- age only. The CSV scores age/gender/race on this path
-  # at +2 x 0.5, but enumerates presets for age alone ("e.g. Children & Youth,
-  # Individuals Under 21, Adults, Seniors"). Gender and race are listed in
-  # ignored_answers pending the client decision (Q5): guessing a demographic
-  # mapping affects who is shown which services, and the CSV itself hedges with
-  # "when a corresponding preset exists".
+  # ---------------------------------------------------------------------------
+  # Personal Details -- Find Help only.
   #
-  # The mid-range buckets all resolve to "Adults", which nearly every
-  # org serves -- near-zero discriminating power, which is consistent with this
-  # being the lowest-weighted rule in the whole sheet (2 x 0.5 = 1.0).
+  # The CSV scores all three at +2 x 0.5 = 1.0, the lowest contribution in the
+  # sheet, and marks the same step "Information only" on the Donor and
+  # Volunteer paths (hence paths: [service_seeker] on each question below).
+  #
+  # It enumerates presets for age but not for gender or race, qualifying both
+  # with "when a corresponding preset exists". That qualifier is the rule
+  # applied here: an answer maps only where a Populations Served preset means
+  # the same thing. Answers with no honest equivalent get an empty list rather
+  # than an approximation -- this decides who is shown which services, and a
+  # near-miss is worse than no signal at that weight.
+  #
+  # Numeric-looking keys are quoted: bare 19_24 is the integer 1924 in YAML.
+  # ---------------------------------------------------------------------------
   age_range:
     paths: [service_seeker]
     multiplier: 0.5
@@ -294,12 +304,12 @@ questions:
         - {field: population, preset: "Children & Youth", weight: 2}
         - {field: population, preset: "Individuals Under 21", weight: 2}
         - {field: population, preset: "Non-Adults", weight: 2}
-      # Quoted deliberately: YAML reads a bare 19_24 as the integer 1924
-      # (underscore digit separator), which silently stops matching the
-      # answer token. Caught by the answer-coverage drift spec.
       "19_24":
         - {field: population, preset: "Individuals Under 21", weight: 2}
         - {field: population, preset: "Adults", weight: 2}
+      # The mid-range buckets all resolve to "Adults", which nearly every
+      # organization serves -- almost no discriminating power, but that is what
+      # the sheet asks for and it costs at most 1.0.
       "25_34":
         - {field: population, preset: "Adults", weight: 2}
       "35_44":
@@ -311,6 +321,60 @@ questions:
       over_65:
         - {field: population, preset: "Seniors", weight: 2}
         - {field: population, preset: "Retired People", weight: 2}
+      prefer_not_to_say: []
+
+  gender_identity:
+    paths: [service_seeker]
+    multiplier: 0.5
+    answers:
+      female:
+        - {field: population, preset: "Women & Girls", weight: 2}
+      male:
+        - {field: population, preset: "Men & Boys", weight: 2}
+      # No corresponding preset. The vocabulary offers Women & Girls, Men &
+      # Boys, Heterosexuals, Intersex People and LGBTQ+ People. Intersex is a
+      # different thing entirely, and LGBTQ+ People is an umbrella rather than
+      # the "exact gender-related population match" the CSV asks for -- a
+      # non-binary person needing food assistance should not be steered toward
+      # LGBTQ+-specific organizations by their gender answer alone.
+      non_binary: []
+      other: []
+      prefer_not_to_say: []
+
+  race_ethnicity:
+    paths: [service_seeker]
+    multiplier: 0.5
+    answers:
+      # "People of all Racial Minority Groups" is listed alongside each exact
+      # descent preset. Within one field group only the highest weight counts,
+      # so this widens what can match without double-counting.
+      asian:
+        - {field: population, preset: "People of Asian Descent", weight: 2}
+        - {field: population, preset: "People of all Racial Minority Groups", weight: 2}
+      black_african_american:
+        - {field: population, preset: "People of African Descent", weight: 2}
+        - {field: population, preset: "People of all Racial Minority Groups", weight: 2}
+      hispanic_latino:
+        - {field: population, preset: "People of Latin American Descent", weight: 2}
+        - {field: population, preset: "People of all Racial Minority Groups", weight: 2}
+      # The vocabulary has no North African preset, so this is the closest
+      # available rather than an exact equivalent.
+      middle_eastern_north_african:
+        - {field: population, preset: "People of Middle Eastern Descent", weight: 2}
+        - {field: population, preset: "People of all Racial Minority Groups", weight: 2}
+      native_american:
+        - {field: population, preset: "Indigenous Peoples", weight: 2}
+        - {field: population, preset: "People of all Racial Minority Groups", weight: 2}
+      native_hawaiian:
+        - {field: population, preset: "Indigenous Peoples", weight: 2}
+        - {field: population, preset: "People of all Racial Minority Groups", weight: 2}
+      # Deliberately not paired with the minority-groups preset.
+      white:
+        - {field: population, preset: "People of European Descent", weight: 2}
+      # "Other" says only "none of the above", which no preset means. Mapping
+      # it to the minority-groups preset would be an assumption about the
+      # person, not a match.
+      other: []
       prefer_not_to_say: []
 
   # ===========================================================================
@@ -461,9 +525,9 @@ questions:
         - {field: service, preset: "Veteran Family Member Benefits", weight: 3}
         - {field: ntee, preset: "W30: Military & Veterans Organizations", weight: 2}
 
-      # Row 49's only Language rule. No languages field exists yet.
+      # Row 49's only Language rule -- names Spanish specifically.
       spanish_speaking:
-        - {field: languages, weight: 5, requires_field: true}
+        - {field: languages, preset: "Spanish", weight: 5}
 
       grassroots_bipoc:
         - {field: population, preset: "Indigenous Peoples", weight: 5}
