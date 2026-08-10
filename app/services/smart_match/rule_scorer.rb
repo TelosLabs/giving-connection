@@ -30,7 +30,7 @@ module SmartMatch
     #
     # A lambda returns true (scores), false (does not score), or nil (UNKNOWN
     # -- the organization has never been asked). nil is not the same as false:
-    # see #each_answer_group, which drops unknown rules from the achievable
+    # see #evaluate, which drops unknown rules from the achievable
     # maximum as well as from the earned score, so an organization with no data
     # is not penalised and the user's normalized score doesn't move.
     #
@@ -76,16 +76,144 @@ module SmartMatch
       @user_intent = user_intent
     end
 
+    # Status of one thing the user asked for, against this organization.
+    #   met      the organization satisfies it
+    #   unmet    the organization was asked and does not satisfy it
+    #   unknown  the organization has never recorded an answer either way
+    #
+    # `unknown` is not a softer `unmet`. Most capability fields ship empty and
+    # fill in only as organizations update their profiles, so telling a
+    # wheelchair user "this organization has not told us" is materially
+    # different from "this organization is not accessible".
+    MET = "met"
+    UNMET = "unmet"
+    UNKNOWN = "unknown"
+    # Only produced by proportional questions: some of the selected answers
+    # matched, but not all.
+    PARTIAL = "partial"
+
     def call
+      @earned = 0.0
+      @maximum = 0.0
+      @matched = []
+      @criteria = []
+
+      each_question do |session_key, question, given|
+        if question["aggregate"] == "proportional"
+          score_proportional_question(session_key, question, given)
+        else
+          given.each { |answer| score_independent_answer(session_key, question, answer) }
+        end
+      end
+
+      {
+        score: @maximum.zero? ? 0.0 : (@earned / @maximum).round(4),
+        earned: @earned.round(2),
+        max: @maximum.round(2),
+        matched: @matched,
+        criteria: @criteria
+      }
+    end
+
+    private
+
+    # Yields once per question the user answered, with the answers they gave.
+    #
+    # Answers with an empty rule list are dropped: an explicit "scores nothing"
+    # entry (escape hatches like "No preference") is not something the user
+    # asked for, so it is neither scored nor reported as a criterion.
+    def each_question
+      applicable_questions.each do |session_key, question|
+        given = answers.fetch(session_key, []).select do |answer|
+          spec = answer_spec(question, answer)
+          spec&.first&.any?
+        end
+        next if given.empty?
+
+        yield(session_key, question, given)
+      end
+    end
+
+    # One answer, scored on its own terms: each of its field groups adds its
+    # full weight to the achievable maximum.
+    def score_independent_answer(session_key, question, answer)
+      result = evaluate(session_key, question, answer)
+
+      if result[:unknown]
+        @criteria << {question: session_key, answer: answer, status: UNKNOWN}
+        return
+      end
+
+      @earned += result[:earned]
+      @maximum += result[:maximum]
+      @matched.concat(result[:matched])
+      @criteria << {question: session_key, answer: answer, status: result[:met] ? MET : UNMET}
+    end
+
+    # All of a question's answers collapsed into ONE slot, earned in proportion
+    # to how many matched.
+    #
+    # Services need this. Scored independently, picking six services added
+    # 6 x 5 x 1.5 = 45 to the achievable maximum while a single cause adds
+    # 13.5 -- so an organization that served the right cause but not the exact
+    # service was buried, and refining the search behaved like filtering it.
+    # Collapsed, the whole question is worth one answer's weight no matter how
+    # many boxes are ticked, and matching 2 of 4 earns half of it.
+    def score_proportional_question(session_key, question, given)
+      results = given.map { |answer| evaluate(session_key, question, answer) }
+      scorable = results.reject { |r| r[:unknown] }
+
+      if scorable.empty?
+        @criteria << {question: session_key, answer: nil, status: UNKNOWN, grouped: true,
+                      matched_count: 0, selected_count: given.size}
+        return
+      end
+
+      met_count = scorable.count { |r| r[:met] }
+      slot = proportional_slot(question, given.first)
+
+      @maximum += slot
+      @earned += slot * (met_count.to_f / scorable.size)
+      @matched.concat(scorable.flat_map { |r| r[:matched] })
+
+      status = if met_count.zero?
+        UNMET
+      else
+        (met_count == scorable.size) ? MET : PARTIAL
+      end
+
+      @criteria << {question: session_key, answer: nil, status: status, grouped: true,
+                    matched_count: met_count, selected_count: scorable.size}
+    end
+
+    # What the whole question is worth: the heaviest single rule, times the
+    # question multiplier. Independent of how many answers were selected.
+    def proportional_slot(question, sample_answer)
+      rules, multiplier = answer_spec(question, sample_answer)
+      rules.filter_map { |rule| rule["weight"] unless rule["requires_field"] }.max.to_f * multiplier
+    end
+
+    # Scores one answer without touching the running totals, so the caller can
+    # decide whether to bank it whole or fold it into a proportional slot.
+    def evaluate(session_key, question, answer)
+      rules, multiplier = answer_spec(question, answer)
+      scorable = rules.reject { |rule| rule["requires_field"] || unknown?(rule) }
+
+      # Every rule is blocked on data the organization has never supplied. It
+      # affects neither side of the ratio, but the user still asked for it.
+      return {unknown: true, met: false, earned: 0.0, maximum: 0.0, matched: []} if scorable.empty?
+
       earned = 0.0
       maximum = 0.0
       matched = []
+      met = false
 
-      each_answer_group do |group|
-        best = group[:rules].max_by { |rule| rule["weight"] }
-        maximum += best["weight"] * group[:multiplier]
+      scorable.group_by { |rule| rule["field"] }.each_value do |field_rules|
+        group = {session_key: session_key, answer: answer, multiplier: multiplier, rules: field_rules}
+        best = field_rules.max_by { |rule| rule["weight"] }
+        maximum += best["weight"] * multiplier
 
-        hit = group[:rules].select { |rule| rule_matches?(rule, group[:answer]) }
+        hit = field_rules.select { |rule| rule_matches?(rule, answer) }
           .max_by { |rule| rule["weight"] }
 
         # No exact match, but an organization that serves the general
@@ -95,45 +223,14 @@ module SmartMatch
         hit = best if via_general_population
         next unless hit
 
+        met = true
         credit = via_general_population ? general_population_credit : 1.0
-        contribution = hit["weight"] * group[:multiplier] * credit
+        contribution = hit["weight"] * multiplier * credit
         earned += contribution
         matched << trace_entry(group, hit, contribution, general_population: via_general_population)
       end
 
-      {
-        score: maximum.zero? ? 0.0 : (earned / maximum).round(4),
-        earned: earned.round(2),
-        max: maximum.round(2),
-        matched: matched
-      }
-    end
-
-    private
-
-    # Yields one hash per (answer, field) group -- the unit the "highest weight
-    # wins" rule applies to. Groups with no scorable rules (every rule blocked
-    # on a missing field) are skipped entirely so they affect neither side of
-    # the normalization.
-    def each_answer_group
-      applicable_questions.each do |session_key, question|
-        answers.fetch(session_key, []).each do |answer|
-          spec = answer_spec(question, answer)
-          next if spec.nil?
-
-          rules, multiplier = spec
-          rules.reject { |rule| rule["requires_field"] || unknown?(rule) }
-            .group_by { |rule| rule["field"] }
-            .each_value do |field_rules|
-              yield(
-                session_key: session_key,
-                answer: answer,
-                multiplier: multiplier,
-                rules: field_rules
-              )
-            end
-        end
-      end
+      {unknown: false, met: met, earned: earned, maximum: maximum, matched: matched}
     end
 
     # [[session_key, question], ...] for this user's path.
@@ -172,9 +269,13 @@ module SmartMatch
     # population, ...) have no unknown state: an org either carries the tag or
     # it doesn't.
     def unknown?(rule)
-      return organization.languages.blank? if rule["field"] == "languages"
+      field = rule["field"]
+      # A blank vocabulary column is "not yet answered", not "offers none" --
+      # an organization that records no volunteer formats has not told us it
+      # runs no volunteer programme.
+      return organization_values(field).blank? if VOCABULARY_FIELDS.include?(field)
 
-      BOOLEAN_FIELDS.key?(rule["field"]) && boolean_value(rule["field"]).nil?
+      BOOLEAN_FIELDS.key?(field) && boolean_value(field).nil?
     end
 
     def boolean_value(field)
@@ -210,8 +311,15 @@ module SmartMatch
       # "Spanish or another language available" doesn't say which language, so
       # any language beyond the assumed default satisfies it.
       when "non_default_language" then organization_values(field).any? { |l| l != DEFAULT_LANGUAGE }
+      # The answer and the organization's value come from different
+      # vocabularies -- see ANSWER_VOCABULARY.
+      when "answer_vocabulary" then organization_values(field).intersect?(vocabulary_for(field, answer))
       else organization_values(field).include?(rule["preset"])
       end
+    end
+
+    def vocabulary_for(field, answer)
+      ANSWER_VOCABULARY.dig(field, answer) || []
     end
 
     # Preloaded by SimilarityQuery#base_scope -- map(&:name) rather than
@@ -224,9 +332,39 @@ module SmartMatch
       when "service" then organization.locations.flat_map { |l| l.services.map(&:name) }.uniq
       when "ntee" then [organization.irs_ntee_code].compact
       when "languages" then Array(organization.languages)
+      when "volunteer_format" then [organization.volunteer_format].compact
+      when "volunteer_frequency" then Array(organization.volunteer_frequency)
+      when "leadership_attributes" then Array(organization.leadership_attributes)
       else []
       end
     end
+
+    # Fields whose value is a vocabulary the organization chose from, where
+    # "not yet answered" is a blank column rather than a false boolean.
+    VOCABULARY_FIELDS = %w[languages volunteer_format volunteer_frequency leadership_attributes].freeze
+
+    # Maps a quiz answer to the organization-side vocabulary values that
+    # satisfy it. The two vocabularies are deliberately different: the user is
+    # asked what they want, the organization records what it offers, and the
+    # words don't line up one-to-one.
+    ANSWER_VOCABULARY = {
+      # "Only in-person" is satisfied by an in-person OR hybrid programme.
+      "volunteer_format" => {
+        "in_person" => ["In person", "Hybrid"],
+        "remote" => ["Remote", "Hybrid"],
+        "both" => ["In person", "Remote", "Hybrid"]
+      },
+      "volunteer_frequency" => {
+        "one_time" => ["One-time", "Event-based"],
+        "few_hours" => ["Weekly"],
+        "ongoing" => ["Ongoing"]
+      },
+      # The quiz asks a single "Women- or BIPOC-led" question, so either
+      # attribute satisfies it.
+      "leadership_attributes" => {
+        "women_bipoc_led" => ["Women-led", "BIPOC-led"]
+      }
+    }.freeze
 
     # The services the client's spec treats as belonging to a selected cause.
     # Read from the constant rather than the services table so the mapping

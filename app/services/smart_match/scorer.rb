@@ -54,7 +54,12 @@ module SmartMatch
           rule_matches: rules[:matched]
             .sort_by { |m| [-m[:contribution], m[:question], m[:answer], m[:field]] }
             .first(MAX_TRACE_ENTRIES),
-          rule_points: {earned: rules[:earned], max: rules[:max]}
+          rule_points: {earned: rules[:earned], max: rules[:max]},
+          # Every answer the user gave, with whether this organization meets
+          # it. Drives the "how we matched you" panel on the results page --
+          # unlike rule_matches it is NOT trimmed, because a criterion missing
+          # from the list would read as "we ignored what you asked for".
+          criteria: rules[:criteria]
         }
       }
     end

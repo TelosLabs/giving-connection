@@ -3,9 +3,9 @@
 module SmartMatch
   class QuizNavigator < ApplicationService
     STEPS_BY_USER_TYPE = {
-      "service_seeker" => 11,
-      "volunteer" => 10,
-      "donor" => 11
+      "service_seeker" => 12,
+      "volunteer" => 11,
+      "donor" => 12
     }.freeze
 
     DEFAULT_STEPS = 4
@@ -13,20 +13,29 @@ module SmartMatch
     # The service_seeker distance/"travel" step. It is meaningless when the
     # user picked a nationwide/international scope (no specific location), so
     # it is skipped for those users. It is the only distance step in any flow.
-    SERVICE_SEEKER_TRAVEL_STEP = 8
+    SERVICE_SEEKER_TRAVEL_STEP = 9
 
     # The service_seeker preferences/"what should we keep in mind" step. It is
     # skipped when the user is here on behalf of an organization, since those
     # personal-service preferences don't apply to organizational partnerships.
-    SERVICE_SEEKER_PREFERENCES_STEP = 9
+    SERVICE_SEEKER_PREFERENCES_STEP = 10
 
     # The "where exactly?" follow-up step, shown only when the user picked
     # "Somewhere else" on the preceding location step. Its position differs by
     # flow (it sits right after that flow's city_selection step).
     LOCATION_DETAIL_STEP = {
-      "service_seeker" => 7,
-      "volunteer" => 7,
-      "donor" => 8
+      "service_seeker" => 8,
+      "volunteer" => 8,
+      "donor" => 9
+    }.freeze
+
+    # The services step, which narrows the chosen causes to specific services.
+    # Skipped when the chosen causes offer nothing to narrow (see
+    # #skip_services?), so the user is never shown an empty question.
+    SERVICES_STEP = {
+      "service_seeker" => 5,
+      "volunteer" => 3,
+      "donor" => 3
     }.freeze
 
     # Value submitted by the location step's "Somewhere else" card.
@@ -52,6 +61,7 @@ module SmartMatch
       volunteer_format: :smart_match_volunteer_format,
       volunteer_time: :smart_match_volunteer_time,
       causes: :smart_match_causes,
+      services: :smart_match_services,
       prefs: :smart_match_prefs,
       language_input: :smart_match_language,
       travel_bucket: :smart_match_travel_bucket,
@@ -256,7 +266,16 @@ module SmartMatch
 
     def skip_step?(step_number)
       skip_location_detail?(step_number) || skip_travel?(step_number) ||
-        skip_preferences?(step_number)
+        skip_preferences?(step_number) || skip_services?(step_number)
+    end
+
+    # The services question lists the services belonging to the causes the user
+    # picked. With no causes chosen, or causes that define no services (some,
+    # like Faith-Based, have none), there is nothing to ask.
+    def skip_services?(step_number)
+      return false unless step_number == SERVICES_STEP[session[:smart_match_user_type].to_s]
+
+      SmartMatch::QuizStepConfig.services_for_causes(session[:smart_match_causes]).empty?
     end
 
     # The "where exactly?" follow-up is only relevant when the user picked

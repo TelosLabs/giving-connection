@@ -20,7 +20,7 @@ under "Needs a new question" at the bottom.
 | Nearest-location distance | Yes — existing city/travel questions | ✅ done |
 | PO box locations | Yes — same | ✅ done |
 | Office hours | **No** — only hook is `situation`, which the CSV marks do-not-score | ⛔ needs a decision |
-| Service-level presets | **No** — no question asks for services | ⛔ needs a new question |
+| Service-level presets | **No** — needed a new question | ✅ built 2026-08-10 |
 | `verified` | No, and a question would be wrong | ⛔ product call |
 
 ---
@@ -174,6 +174,13 @@ All reachable by questions the quiz already asks — no flow changes.
 - **PO box locations excluded from distance.** They geocode to a post office.
   An organization with only a PO box reports `nil` distance — the neutral
   treatment nationwide organizations already get — rather than false precision.
+- **A "how we matched you" panel on the results page.** Every answer the user
+  gave, with whether the shown matches meet it: met / partial / unmet /
+  not-stated. `RuleScorer` records a per-answer status alongside the score and
+  `SmartMatch::CriteriaSummary` aggregates it across the displayed results.
+  The four-way split matters — "this organization is not wheelchair
+  accessible" and "this organization has not told us" are different answers,
+  and only one of them means the user should look elsewhere.
 
 ## Needs a new question (or a spec change)
 
@@ -195,7 +202,7 @@ non-reproducible (the same quiz at 2pm and 10pm would rank differently, and
 matches are persisted). Prefer time-independent signals — `always_open`,
 `appointment_only` — over a live open/closed check.
 
-### Service-level presets — ~400 values, no question asks for them ⛔
+### Service-level presets — BUILT 2026-08-10 ✅
 
 `Organizations::Constants::CAUSES_AND_SERVICES` defines roughly 400 services
 under 36 causes, and organizations are tagged with them via `location_services`.
@@ -206,9 +213,22 @@ The quiz only ever asks for **causes** — the top level. A user picking
 Services are reachable today only indirectly: the `cause_service` rule, and the
 fixed service presets under `self_description`. Nothing lets the user choose.
 
-**Proposed question:** a second-level picker shown after the cause step,
-listing the services belonging to the causes chosen. Optional, multi-select. It
-is the single largest matching signal the platform holds and does not ask for.
+**Shipped** as a services step immediately after the cause step on all three
+paths, listing only the services belonging to the causes chosen (274 services
+under 35 causes, so an unscoped list would be unusable). Optional and
+multi-select; `QuizNavigator#skip_services?` hides it when the chosen causes
+define no services, so a Faith-Based-only selection never sees an empty page.
+
+Scored at weight 5 × 1.5 — the same as an exact cause match, on the grounds
+that naming the specific service you need is at least as strong a signal as
+naming its cause. **This question is not in the client's CSV**; it is flagged
+as such in `config/smart_match_scoring.yml`.
+
+Inserting a step renumbered all three flows. The navigator constants
+(`SERVICES_STEP`, `LOCATION_DETAIL_STEP`, `SERVICE_SEEKER_TRAVEL_STEP`,
+`SERVICE_SEEKER_PREFERENCES_STEP`, `STEPS_BY_USER_TYPE`) moved with it, and the
+specs that had hard-coded step numbers now derive them from those constants so
+the next insertion does not need the same sweep.
 
 ### `verified` — 112 organizations ⛔
 

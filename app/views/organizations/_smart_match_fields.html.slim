@@ -1,0 +1,67 @@
+/ Smart Match capability fields.
+/
+/ Every control here is TRI-STATE, not a checkbox, and that is deliberate.
+/ The columns are nullable and SmartMatch::RuleScorer treats NULL as "nobody
+/ has told us" -- skipping the rule entirely rather than scoring it as a "no".
+/ A plain checkbox can only say true/false, so an untouched form would record
+/ a definite "we do not offer this" for every organization that never opened
+/ the page. See docs/smart-match-scoring/06-phase-5-fields.md.
+/
+/ "Not specified" submits an empty string, which ActiveRecord casts back to
+/ NULL for a boolean column.
+
+section class="mt-6 text-gray-2" id="smart-match-fields"
+  h2 class="text-lg font-bold" Smart Match details
+  p class="mt-1 mb-6 text-sm text-gray-4"
+    | These answers help Smart Match recommend your organization to the right people.
+    |  Every question is optional — leaving one as
+    strong  "Not specified"
+    |  simply means we won't use it when matching, and will never count against you.
+
+  .grid.grid-cols-12.gap-4
+    - Organizations::Constants::SMART_MATCH_CAPABILITY_QUESTIONS.each do |attribute, question|
+      fieldset class="col-span-12 lg:col-span-7 md:col-span-6 mt-2"
+        legend class="text-sm font-medium leading-4 text-gray-2"= question
+        div class="flex items-center gap-8 mt-3"
+          div class="flex items-center gap-2"
+            = f.radio_button attribute, true, class: "focus:ring-0 focus:ring-transparent"
+            = f.label "#{attribute}_true", "Yes", class: "text-sm text-black"
+          div class="flex items-center gap-2"
+            = f.radio_button attribute, false, class: "focus:ring-0 focus:ring-transparent"
+            = f.label "#{attribute}_false", "No", class: "text-sm text-black"
+          div class="flex items-center gap-2"
+            = f.radio_button attribute, "", class: "focus:ring-0 focus:ring-transparent", checked: f.object.public_send(attribute).nil?
+            = f.label "#{attribute}_", "Not specified", class: "text-sm text-gray-4"
+
+    / Languages -- a blank set stays NULL ("not answered"), so the hidden field
+    / that normally submits an empty array is deliberately omitted.
+    fieldset class="col-span-12 lg:col-span-7 md:col-span-6 mt-6"
+      legend class="text-sm font-medium leading-4 text-gray-2"
+        | Which languages can you deliver services in?
+      div class="flex flex-wrap items-center gap-6 mt-3"
+        - Organizations::Constants::LANGUAGES.each do |language|
+          div class="flex items-center gap-2"
+            = check_box_tag "organization[languages][]", language, Array(f.object.languages).include?(language), id: "organization_languages_#{language.parameterize.underscore}", class: "h-4 w-4 rounded-6px text-blue-medium focus:ring-0 focus:ring-transparent"
+            = label_tag "organization_languages_#{language.parameterize.underscore}", language, class: "text-sm text-black"
+
+    fieldset class="col-span-12 lg:col-span-7 md:col-span-6 mt-6"
+      legend class="text-sm font-medium leading-4 text-gray-2"
+        | Is your organization women-led or BIPOC-led?
+      div class="flex flex-wrap items-center gap-6 mt-3"
+        - Organizations::Constants::LEADERSHIP_ATTRIBUTES.each do |attribute|
+          div class="flex items-center gap-2"
+            = check_box_tag "organization[leadership_attributes][]", attribute, Array(f.object.leadership_attributes).include?(attribute), id: "organization_leadership_#{attribute.parameterize.underscore}", class: "h-4 w-4 rounded-6px text-blue-medium focus:ring-0 focus:ring-transparent"
+            = label_tag "organization_leadership_#{attribute.parameterize.underscore}", attribute, class: "text-sm text-black"
+
+    div class="col-span-12 lg:col-span-7 md:col-span-6 mt-6"
+      = f.label :volunteer_format, "What format do your volunteer opportunities take?", class: "block text-sm text-gray-3 font-medium"
+      = f.select :volunteer_format, Organizations::Constants::VOLUNTEER_FORMATS, { include_blank: "Not specified" }, { class: "block h-46px mt-1 w-full py-0 px-4 rounded-6px border-gray-5 text-base text-gray-3 focus:ring-blue-medium focus:border-blue-medium" }
+
+    fieldset class="col-span-12 lg:col-span-7 md:col-span-6 mt-6"
+      legend class="text-sm font-medium leading-4 text-gray-2"
+        | What time commitments do your volunteer roles involve?
+      div class="flex flex-wrap items-center gap-6 mt-3"
+        - Organizations::Constants::VOLUNTEER_FREQUENCIES.each do |frequency|
+          div class="flex items-center gap-2"
+            = check_box_tag "organization[volunteer_frequency][]", frequency, Array(f.object.volunteer_frequency).include?(frequency), id: "organization_volunteer_frequency_#{frequency.parameterize.underscore}", class: "h-4 w-4 rounded-6px text-blue-medium focus:ring-0 focus:ring-transparent"
+            = label_tag "organization_volunteer_frequency_#{frequency.parameterize.underscore}", frequency, class: "text-sm text-black"

@@ -43,6 +43,12 @@ module SmartMatch
       if result[:completed]
         intent = build_user_intent_for_validation
         if intent.valid?
+          # A completed quiz is a new attempt. Everything downstream (the job's
+          # idempotency guard, the processing/error cache, which submission the
+          # results page shows) keys on this rather than on the Rails session,
+          # which survives a retake and made every retake replay the first
+          # attempt's results.
+          session[:smart_match_attempt_token] = SecureRandom.uuid
           redirect_to smart_match_confirmation_path
         else
           flash[:alert] = intent.errors.full_messages.to_sentence.presence ||
@@ -67,7 +73,7 @@ module SmartMatch
         :language_input, :direction, :target_step, :impact_location, :donor_involvement,
         :volunteer_format, :volunteer_time,
         :age_range, :gender_identity, :race_ethnicity,
-        self_description: [], causes: [], prefs: [], donation_style: [], giving_inspiration: [], donor_communities: [],
+        self_description: [], causes: [], services: [], prefs: [], donation_style: [], giving_inspiration: [], donor_communities: [],
         volunteer_involvement: [], volunteer_type: [])
     end
 

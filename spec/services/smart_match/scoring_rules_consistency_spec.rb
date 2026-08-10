@@ -69,6 +69,42 @@ RSpec.describe "Smart Match scoring rules consistency" do
       end
     end
 
+    # answer_vocabulary rules match a quiz answer against organization-side
+    # values through RuleScorer::ANSWER_VOCABULARY. Both ends can drift: a
+    # value not in the constant vocabulary can never be stored, and an answer
+    # with no mapping can never match. Either failure is silent at runtime.
+    it "maps answer vocabularies onto values the organization can actually hold" do
+      allowed = {
+        "volunteer_format" => Organizations::Constants::VOLUNTEER_FORMATS,
+        "volunteer_frequency" => Organizations::Constants::VOLUNTEER_FREQUENCIES,
+        "leadership_attributes" => Organizations::Constants::LEADERSHIP_ATTRIBUTES
+      }
+
+      SmartMatch::RuleScorer::ANSWER_VOCABULARY.each do |field, by_answer|
+        expect(allowed).to have_key(field), "no vocabulary constant known for #{field}"
+
+        by_answer.each do |answer, values|
+          unsupported = values - allowed.fetch(field)
+          expect(unsupported).to be_empty,
+            "ANSWER_VOCABULARY[#{field}][#{answer}] references #{unsupported.join(", ")}, " \
+            "which no organization can store"
+        end
+      end
+    end
+
+    it "gives every answer_vocabulary rule an answer mapping" do
+      each_rule do |rule, location|
+        next unless rule["match"] == "answer_vocabulary"
+
+        _question_key, answer = location.split(".", 2)
+        mapping = SmartMatch::RuleScorer::ANSWER_VOCABULARY.dig(rule["field"], answer)
+
+        expect(mapping).to be_present,
+          "#{location}: no RuleScorer::ANSWER_VOCABULARY entry for " \
+          "#{rule["field"]}/#{answer}, so this rule can never match"
+      end
+    end
+
     it "references NTEE codes that exist, or letter groups that match at least one code" do
       each_rule do |rule, location|
         next unless rule["field"] == "ntee" && rule["preset"]
@@ -95,7 +131,7 @@ RSpec.describe "Smart Match scoring rules consistency" do
 
     it "gives every preset-matching rule a preset" do
       preset_free = SmartMatch::RuleScorer::BOOLEAN_FIELDS.keys
-      dynamic = %w[answer cause_service non_default_language]
+      dynamic = %w[answer cause_service non_default_language answer_vocabulary]
 
       each_rule do |rule, location|
         next if preset_free.include?(rule["field"]) || dynamic.include?(rule["match"])
@@ -115,7 +151,9 @@ RSpec.describe "Smart Match scoring rules consistency" do
     end
 
     it "resolves every non-deferred field to something the scorer can read" do
-      known = %w[population cause service ntee languages] + SmartMatch::RuleScorer::BOOLEAN_FIELDS.keys
+      known = %w[population cause service ntee] +
+        SmartMatch::RuleScorer::VOCABULARY_FIELDS +
+        SmartMatch::RuleScorer::BOOLEAN_FIELDS.keys
 
       each_rule do |rule, location|
         next if rule["requires_field"]

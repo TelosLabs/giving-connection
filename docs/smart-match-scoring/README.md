@@ -15,7 +15,9 @@ client scoping. Phase 6 not started.
 | 2 Rule scorer | ✅ | `config/smart_match_scoring.yml`, `SmartMatch::RuleScorer`, `scoring_rules_consistency_spec.rb`, `rule_scorer_spec.rb` |
 | 3 Eligibility filters | ✅ | `SmartMatch::Eligibility`, `SimilarityQuery::Result`, `quiz_submissions.search_relaxations`, "we broadened your search" notice |
 | 4 Display calibration | ⚠️ provisional | `matching_rules.yml#display_calibration` — derived arithmetically, needs refitting on real data |
-| 5 New nonprofit fields | ⬜ scoped, see [06](./06-phase-5-fields.md) | 14 columns, no backfill campaign — partial coverage by design |
+| 5 New nonprofit fields | ✅ | all 14 columns, scoring, Administrate + self-service tri-state forms, importer |
+| — Services question | ✅ | new step after causes on all three paths, scoped to chosen causes |
+| — Results transparency | ✅ | `CriteriaSummary` + "how we matched you" panel (met / partial / unmet / not-stated) |
 | 6 City column | ⬜ | — |
 
 **Open and still needing a product decision:** the `statewide` travel option

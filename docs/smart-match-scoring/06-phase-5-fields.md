@@ -4,15 +4,32 @@
 over time as organizations edit their own profiles. Partial coverage is
 accepted by design.
 
-**Build status:** 11 of 14 fields are shipped and scoring. The remaining 3
-are blocked on vocabulary decisions (see "Still open"). Not yet built: the
-self-service form *inputs* — params and the importer accept the fields, but
-[organizations/edit.html.slim](../../app/views/organizations/edit.html.slim)
-has no widgets for them yet, so today only Administrate can set them.
+**Build status: COMPLETE (2026-08-10).** All 14 fields have columns, score,
+and are editable from both the Administrate dashboard and the organization
+self-service edit form.
 
-| Shipped | Blocked on a decision |
-|---|---|
-| `remote_services`, `wheelchair_accessible`, `languages`, `lgbtqia_affirming`, `accepts_in_kind`, `fundraising_events`, `partnership_opportunities`, `free_or_sliding_scale`, `no_id_required`, `specific_project_giving`, `recurring_giving` | `volunteer_format`, `volunteer_frequency`, `leadership_attributes` |
+The last three (`volunteer_format`, `volunteer_frequency`,
+`leadership_attributes`) needed vocabularies rather than plain booleans; the
+values are the client's CSV wording, in `Organizations::Constants`:
+
+| Field | Shape | Values |
+|---|---|---|
+| `volunteer_format` | single string | In person / Remote / Hybrid (mutually exclusive — Hybrid means both) |
+| `volunteer_frequency` | `string[]` | One-time / Event-based / Weekly / Ongoing |
+| `leadership_attributes` | `string[]` | Women-led / BIPOC-led |
+
+The quiz answer and the organization value come from different vocabularies —
+"Only in-person" is satisfied by an in-person *or* hybrid programme — so they
+are bridged by `RuleScorer::ANSWER_VOCABULARY`, with a drift spec asserting
+every mapped value is one an organization can actually store.
+
+### Tri-state form controls
+
+The self-service form uses **radio buttons (Yes / No / Not specified)**, never
+checkboxes. A checkbox cannot express `nil`, so an untouched form would record
+a definite "we do not offer this" for every organization that never opened the
+page — precisely the trap this design exists to avoid. "Not specified" submits
+an empty string, which ActiveRecord casts back to `NULL`.
 
 `languages` shipped as a `string[]` on organizations with the vocabulary in
 `Organizations::Constants::LANGUAGES` (English, Spanish). Adding a third

@@ -21,44 +21,52 @@ module SmartMatch
     # to their original content, so the shifted steps below keep referencing the
     # same locale keys they always used; the inserted detail step gets a
     # semantic "<user_type>.location_detail" key instead of a number.
+    # A "services" step follows the cause step on every path, narrowing the
+    # chosen causes to the specific services the user needs. The numbered
+    # title_key strings stay bound to their original content, so steps after
+    # the insertion keep referencing the locale keys they always used; the
+    # inserted step gets a semantic "<user_type>.services" key.
     STEP_STRUCTURES = {
       "service_seeker" => {
         1 => {number: 1, section_key: :about_you, title_key: "service_seeker.step_1", subtitle: :single},
         2 => {number: 1, section_key: :about_you, title_key: "service_seeker.step_2", subtitle: :single},
         3 => {number: 2, section_key: :type_of_support, title_key: "service_seeker.step_3", subtitle: :multiple},
         4 => {number: 2, section_key: :type_of_support, title_key: "service_seeker.step_4", subtitle: :multiple},
-        5 => {number: 2, section_key: :type_of_support, title_key: "service_seeker.step_5", subtitle: :single},
-        6 => {number: 3, section_key: :location_access, title_key: "service_seeker.step_6", subtitle: :single},
-        7 => {number: 3, section_key: :location_access, title_key: "service_seeker.location_detail", subtitle: :none},
-        8 => {number: 3, section_key: :location_access, title_key: "service_seeker.step_7", subtitle: :single},
-        9 => {number: 4, section_key: :prefs_accessibility, title_key: "service_seeker.step_8", subtitle: :multiple},
-        10 => {number: 4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
-        11 => {number: 4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
+        5 => {number: 2, section_key: :type_of_support, title_key: "service_seeker.services", subtitle: :multiple},
+        6 => {number: 2, section_key: :type_of_support, title_key: "service_seeker.step_5", subtitle: :single},
+        7 => {number: 3, section_key: :location_access, title_key: "service_seeker.step_6", subtitle: :single},
+        8 => {number: 3, section_key: :location_access, title_key: "service_seeker.location_detail", subtitle: :none},
+        9 => {number: 3, section_key: :location_access, title_key: "service_seeker.step_7", subtitle: :single},
+        10 => {number: 4, section_key: :prefs_accessibility, title_key: "service_seeker.step_8", subtitle: :multiple},
+        11 => {number: 4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
+        12 => {number: 4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
       }.freeze,
       "volunteer" => {
         1 => {number: 1, section_key: :about_you, title_key: "volunteer.step_1", subtitle: :single},
         2 => {number: 1, section_key: :about_you, title_key: "volunteer.step_2", subtitle: :multiple},
-        3 => {number: 2, section_key: :volunteer_prefs, title_key: "volunteer.step_3", subtitle: :multiple},
-        4 => {number: 2, section_key: :volunteer_prefs, title_key: "volunteer.step_4", subtitle: :multiple},
-        5 => {number: 3, section_key: :volunteer_availability, title_key: "volunteer.step_5", subtitle: :single},
-        6 => {number: 3, section_key: :engagement, title_key: "volunteer.step_6", subtitle: :single},
-        7 => {number: 3, section_key: :engagement, title_key: "volunteer.location_detail", subtitle: :none},
-        8 => {number: 3, section_key: :volunteer_availability, title_key: "volunteer.step_7", subtitle: :single},
-        9 => {number: 4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
-        10 => {number: 4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
+        3 => {number: 1, section_key: :about_you, title_key: "volunteer.services", subtitle: :multiple},
+        4 => {number: 2, section_key: :volunteer_prefs, title_key: "volunteer.step_3", subtitle: :multiple},
+        5 => {number: 2, section_key: :volunteer_prefs, title_key: "volunteer.step_4", subtitle: :multiple},
+        6 => {number: 3, section_key: :volunteer_availability, title_key: "volunteer.step_5", subtitle: :single},
+        7 => {number: 3, section_key: :engagement, title_key: "volunteer.step_6", subtitle: :single},
+        8 => {number: 3, section_key: :engagement, title_key: "volunteer.location_detail", subtitle: :none},
+        9 => {number: 3, section_key: :volunteer_availability, title_key: "volunteer.step_7", subtitle: :single},
+        10 => {number: 4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
+        11 => {number: 4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
       }.freeze,
       "donor" => {
         1 => {number: 1, section_key: :about_you, title_key: "donor.step_1", subtitle: :single},
         2 => {number: 1, section_key: :about_you, title_key: "donor.step_2", subtitle: :multiple},
-        3 => {number: 2, section_key: :donor_prefs, title_key: "donor.step_3", subtitle: :multiple},
-        4 => {number: 2, section_key: :donor_prefs, title_key: "donor.step_4", subtitle: :multiple},
-        5 => {number: 2, section_key: :donor_prefs, title_key: "donor.step_5", subtitle: :multiple},
-        6 => {number: 3, section_key: :engagement, title_key: "donor.step_6", subtitle: :single},
-        7 => {number: 3, section_key: :engagement, title_key: "donor.step_7", subtitle: :single},
-        8 => {number: 3, section_key: :engagement, title_key: "donor.location_detail", subtitle: :none},
-        9 => {number: 3, section_key: :engagement, title_key: "donor.step_8", subtitle: :single},
-        10 => {number: 4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
-        11 => {number: 4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
+        3 => {number: 1, section_key: :about_you, title_key: "donor.services", subtitle: :multiple},
+        4 => {number: 2, section_key: :donor_prefs, title_key: "donor.step_3", subtitle: :multiple},
+        5 => {number: 2, section_key: :donor_prefs, title_key: "donor.step_4", subtitle: :multiple},
+        6 => {number: 2, section_key: :donor_prefs, title_key: "donor.step_5", subtitle: :multiple},
+        7 => {number: 3, section_key: :engagement, title_key: "donor.step_6", subtitle: :single},
+        8 => {number: 3, section_key: :engagement, title_key: "donor.step_7", subtitle: :single},
+        9 => {number: 3, section_key: :engagement, title_key: "donor.location_detail", subtitle: :none},
+        10 => {number: 3, section_key: :engagement, title_key: "donor.step_8", subtitle: :single},
+        11 => {number: 4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
+        12 => {number: 4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
       }.freeze
     }.freeze
 
@@ -71,46 +79,65 @@ module SmartMatch
       },
       3 => {
         "service_seeker" => "smart_match/quizzes/steps/self_description",
-        "volunteer" => "smart_match/quizzes/steps/volunteer_involvement",
-        "donor" => "smart_match/quizzes/steps/donor_giving_style"
+        "volunteer" => "smart_match/quizzes/steps/services",
+        "donor" => "smart_match/quizzes/steps/services"
       },
       4 => {
         "service_seeker" => "smart_match/quizzes/steps/causes",
+        "volunteer" => "smart_match/quizzes/steps/volunteer_involvement",
+        "donor" => "smart_match/quizzes/steps/donor_giving_style"
+      },
+      5 => {
+        "service_seeker" => "smart_match/quizzes/steps/services",
         "volunteer" => "smart_match/quizzes/steps/volunteer_type",
         "donor" => "smart_match/quizzes/steps/donor_giving_inspiration"
       },
-      5 => {
+      6 => {
         "service_seeker" => "smart_match/quizzes/steps/situation",
         "volunteer" => "smart_match/quizzes/steps/volunteer_format",
         "donor" => "smart_match/quizzes/steps/donor_communities"
       },
-      6 => {
+      7 => {
         "service_seeker" => "smart_match/quizzes/steps/city_selection",
         "volunteer" => "smart_match/quizzes/steps/city_selection",
         "donor" => "smart_match/quizzes/steps/donor_impact_location"
       },
-      7 => {
+      8 => {
         "service_seeker" => "smart_match/quizzes/steps/location_detail",
         "volunteer" => "smart_match/quizzes/steps/location_detail",
         "donor" => "smart_match/quizzes/steps/city_selection"
       },
-      8 => {
+      9 => {
         "service_seeker" => "smart_match/quizzes/steps/travel",
         "volunteer" => "smart_match/quizzes/steps/volunteer_time",
         "donor" => "smart_match/quizzes/steps/location_detail"
       },
-      9 => {
+      10 => {
         "service_seeker" => "smart_match/quizzes/steps/preferences",
         "volunteer" => "smart_match/quizzes/steps/final",
         "donor" => "smart_match/quizzes/steps/donor_involvement"
       },
-      10 => {
+      11 => {
         "service_seeker" => "smart_match/quizzes/steps/final",
         "volunteer" => "smart_match/quizzes/steps/open_text",
         "donor" => "smart_match/quizzes/steps/final"
       },
-      11 => "smart_match/quizzes/steps/open_text"
+      12 => "smart_match/quizzes/steps/open_text"
     }.freeze
+
+    # {cause_name => [service, ...]} for the causes the user selected, in the
+    # order the causes are defined, dropping causes that define no services.
+    #
+    # Read from Organizations::Constants rather than the services table so the
+    # list matches the vocabulary the scoring rules are written against.
+    def self.services_for_causes(selected_causes)
+      chosen = Array(selected_causes).compact_blank
+      return {} if chosen.empty?
+
+      Organizations::Constants::CAUSES_AND_SERVICES
+        .slice(*chosen)
+        .reject { |_cause, services| services.blank? }
+    end
 
     def self.section_map_for(user_type)
       STEP_STRUCTURES[user_type.to_s] || STEP_STRUCTURES["donor"]

@@ -100,6 +100,9 @@ class OrganizationDashboard < Administrate::BaseDashboard
     fundraising_events
     partnership_opportunities
     languages
+    volunteer_format
+    volunteer_frequency
+    leadership_attributes
     social_media
     locations
   ].freeze
@@ -138,6 +141,9 @@ class OrganizationDashboard < Administrate::BaseDashboard
     fundraising_events
     partnership_opportunities
     languages
+    volunteer_format
+    volunteer_frequency
+    leadership_attributes
     organization_causes
     social_media
     locations

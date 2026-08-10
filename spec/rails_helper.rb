@@ -79,6 +79,9 @@ RSpec.configure do |config|
   # Add test methods
   config.include FactoryBot::Syntax::Methods
   config.include Devise::Test::IntegrationHelpers, type: :system
+  # Request specs drive the real Rack stack, so they need the integration
+  # helpers (sign_in/sign_out) too -- the controller helpers don't apply.
+  config.include Devise::Test::IntegrationHelpers, type: :request
   config.include Warden::Test::Helpers
   config.include Devise::Test::ControllerHelpers, type: :controller
 

@@ -152,6 +152,68 @@ RSpec.describe SmartMatch::RuleScorer do
     end
   end
 
+  # Services refine a search within a cause; they must not behave like a filter.
+  #
+  # Scored independently, each selected service added its full weight to the
+  # achievable maximum, so ticking six services buried every organization that
+  # served the right cause but not those exact services. Collapsing the
+  # question into one proportional slot keeps it a refinement.
+  describe "services as a refinement, not a blocker" do
+    it "does not let extra service selections erode a cause match" do
+      org = build_org(causes: ["Mental Health"])
+
+      one = score_for(org, intent(causes: ["Mental Health"], services: ["Mental Health Counseling"]))
+      many = score_for(org, intent(
+        causes: ["Mental Health"],
+        services: ["Mental Health Counseling", "Therapy Services", "Psychiatric Care",
+          "Trauma Services", "Suicide Prevention Services", "Crisis Intervention"]
+      ))
+
+      # Six services must cost no more of the achievable maximum than one.
+      expect(many[:max]).to eq(one[:max])
+      expect(many[:score]).to eq(one[:score])
+    end
+
+    it "keeps an organization matching the cause ahead of one matching neither" do
+      on_cause = build_org(causes: ["Mental Health"])
+      unrelated = build_org(name: "Unrelated", ein_number: "990011", causes: ["Animals"])
+
+      answers = intent(
+        causes: ["Mental Health"],
+        services: ["Therapy Services", "Psychiatric Care", "Trauma Services"]
+      )
+
+      expect(score_for(on_cause, answers)[:score]).to be > score_for(unrelated, answers)[:score]
+    end
+
+    it "still rewards matching more of the requested services" do
+      one_service = build_org(services: ["Therapy Services"])
+      two_services = build_org(name: "Two Services", ein_number: "990012",
+        services: ["Therapy Services", "Psychiatric Care"])
+
+      answers = intent(services: ["Therapy Services", "Psychiatric Care"])
+
+      expect(score_for(two_services, answers)[:score]).to be > score_for(one_service, answers)[:score]
+    end
+
+    it "earns the slot in proportion to how many services matched" do
+      half = build_org(services: ["Therapy Services"])
+
+      result = score_for(half, intent(services: ["Therapy Services", "Psychiatric Care"]))
+
+      expect(result[:earned]).to eq(result[:max] / 2)
+    end
+
+    it "caps the whole question at one answer's weight" do
+      org = build_org(services: ["Therapy Services", "Psychiatric Care"])
+
+      result = score_for(org, intent(services: ["Therapy Services", "Psychiatric Care"]))
+
+      # weight 5 x multiplier 1.5, once -- not once per service.
+      expect(result[:max]).to eq(7.5)
+    end
+  end
+
   describe "answers that must not score" do
     it "ignores escape-hatch answers entirely" do
       org = build_org(beneficiaries: ["Seniors"], causes: ["Seniors"])
@@ -277,6 +339,87 @@ RSpec.describe SmartMatch::RuleScorer do
         org = build_org(languages: [])
 
         expect(score_for(org, intent(prefs: ["multilingual"]))[:max]).to eq(0.0)
+      end
+    end
+
+    # The quiz asks what the user wants; the organization records what it
+    # offers; the two vocabularies deliberately differ. RuleScorer bridges them
+    # via ANSWER_VOCABULARY.
+    describe "volunteer format" do
+      def volunteer(answer)
+        intent(user_type: "volunteer", volunteer_format: answer)
+      end
+
+      it "accepts a hybrid programme for an in-person request" do
+        hybrid = build_org(volunteer_format: "Hybrid")
+        in_person = build_org(name: "In Person Only", ein_number: "aa011", volunteer_format: "In person")
+        remote = build_org(name: "Remote Only", ein_number: "aa012", volunteer_format: "Remote")
+
+        expect(score_for(hybrid, volunteer("in_person"))[:earned]).to eq(7.5) # 5 x 1.5
+        expect(score_for(in_person, volunteer("in_person"))[:earned]).to eq(7.5)
+        expect(score_for(remote, volunteer("in_person"))[:earned]).to eq(0.0)
+      end
+
+      it "accepts a hybrid programme for a remote request" do
+        hybrid = build_org(volunteer_format: "Hybrid")
+        in_person = build_org(name: "In Person Only", ein_number: "aa013", volunteer_format: "In person")
+
+        expect(score_for(hybrid, volunteer("remote"))[:earned]).to eq(7.5)
+        expect(score_for(in_person, volunteer("remote"))[:earned]).to eq(0.0)
+      end
+
+      it "accepts any format when the user is happy with both" do
+        %w[In\ person Remote Hybrid].each_with_index do |format, i|
+          org = build_org(name: "Fmt #{i}", ein_number: "aa02#{i}", volunteer_format: format)
+          expect(score_for(org, volunteer("both"))[:earned]).to eq(7.5), "#{format} should satisfy 'both'"
+        end
+      end
+
+      it "treats an organization with no recorded format as unknown" do
+        org = build_org
+
+        expect(score_for(org, volunteer("in_person"))[:max]).to eq(0.0)
+      end
+    end
+
+    describe "volunteer frequency" do
+      def volunteer(answer)
+        intent(user_type: "volunteer", volunteer_time: answer)
+      end
+
+      it "matches one-time requests against one-off and event-based programmes" do
+        event = build_org(volunteer_frequency: ["Event-based"])
+        ongoing = build_org(name: "Ongoing Only", ein_number: "aa031", volunteer_frequency: ["Ongoing"])
+
+        expect(score_for(event, volunteer("one_time"))[:earned]).to eq(3.0) # 3 x 1.0
+        expect(score_for(ongoing, volunteer("one_time"))[:earned]).to eq(0.0)
+      end
+
+      it "matches a few hours a week against weekly programmes" do
+        weekly = build_org(volunteer_frequency: ["Weekly", "Ongoing"])
+
+        expect(score_for(weekly, volunteer("few_hours"))[:earned]).to eq(3.0)
+      end
+
+      it "scores nothing when the user is unsure" do
+        org = build_org(volunteer_frequency: ["Ongoing"])
+
+        expect(score_for(org, volunteer("not_sure"))[:max]).to eq(0.0)
+      end
+    end
+
+    describe "leadership attributes" do
+      it "matches either attribute against the combined question" do
+        women = build_org(leadership_attributes: ["Women-led"])
+        bipoc = build_org(name: "BIPOC Led", ein_number: "aa041", leadership_attributes: ["BIPOC-led"])
+        neither = build_org(name: "Neither", ein_number: "aa042", leadership_attributes: [])
+
+        answers = intent(prefs: ["women_bipoc_led"])
+
+        expect(score_for(women, answers)[:earned]).to eq(1.0) # 2 x 0.5
+        expect(score_for(bipoc, answers)[:earned]).to eq(1.0)
+        # An empty array is "not answered", not "neither" -- see the migration.
+        expect(score_for(neither, answers)[:max]).to eq(0.0)
       end
     end
 
@@ -505,6 +648,114 @@ RSpec.describe SmartMatch::RuleScorer do
       # The CSV grades the service tier +4 on Find Help and +3 on Donor.
       expect(seeker[:earned]).to eq(6.0)  # 4 x 1.5
       expect(donor[:earned]).to eq(4.5)   # 3 x 1.5
+    end
+  end
+
+  # Feeds the results page's "how we matched you" panel. The three states are
+  # user-facing, so the distinction between "does not offer this" and "has not
+  # told us" has to survive out of the scorer.
+  describe "criteria reporting" do
+    def criteria_for(org, user_intent)
+      score_for(org, user_intent)[:criteria].to_h { |c| [[c[:question], c[:answer]], c[:status]] }
+    end
+
+    it "marks a satisfied answer as met" do
+      org = build_org(beneficiaries: ["Seniors"])
+
+      expect(criteria_for(org, intent(self_description: ["senior"])))
+        .to include(["self_description", "senior"] => "met")
+    end
+
+    it "marks an answer the organization does not satisfy as unmet" do
+      org = build_org(beneficiaries: ["Veterans"])
+
+      expect(criteria_for(org, intent(self_description: ["senior"])))
+        .to include(["self_description", "senior"] => "unmet")
+    end
+
+    # The case the panel exists for: the organization has never recorded an
+    # answer, which is not the same as answering no.
+    it "marks an unanswered capability as unknown rather than unmet" do
+      org = build_org # wheelchair_accessible is NULL
+
+      expect(criteria_for(org, intent(prefs: ["wheelchair_accessible"])))
+        .to include(["prefs", "wheelchair_accessible"] => "unknown")
+    end
+
+    it "marks an explicitly-declined capability as unmet" do
+      org = build_org
+      org.locations.first.update_columns(wheelchair_accessible: false)
+
+      expect(criteria_for(org.reload, intent(prefs: ["wheelchair_accessible"])))
+        .to include(["prefs", "wheelchair_accessible"] => "unmet")
+    end
+
+    it "reports every answer the user gave" do
+      org = build_org(beneficiaries: ["Seniors"], causes: ["Seniors"])
+
+      criteria = criteria_for(org, intent(
+        self_description: %w[senior veteran],
+        causes: ["Seniors"],
+        prefs: ["wheelchair_accessible"]
+      ))
+
+      expect(criteria.keys).to include(
+        ["self_description", "senior"],
+        ["self_description", "veteran"],
+        ["causes", "Seniors"],
+        ["prefs", "wheelchair_accessible"]
+      )
+    end
+
+    # Only what the user actually chose is reported. Capability preferences in
+    # particular will read "not stated" for a long time, so it matters that a
+    # preference the user never ticked can't appear at all.
+    it "reports nothing for questions the user did not answer" do
+      org = build_org(beneficiaries: ["Seniors"])
+
+      criteria = criteria_for(org, intent(self_description: ["senior"]))
+
+      expect(criteria.keys.map(&:first)).to eq(["self_description"])
+      expect(criteria.keys).not_to include(
+        ["prefs", "no_id_required"],
+        ["prefs", "multilingual"],
+        ["prefs", "wheelchair_accessible"]
+      )
+    end
+
+    # "No preference" is not something the user asked for, so it should not
+    # appear as a criterion they can see unmet.
+    it "omits escape-hatch answers" do
+      org = build_org
+
+      criteria = criteria_for(org, intent(self_description: ["none"], prefs: ["none"]))
+
+      expect(criteria.keys).not_to include(["self_description", "none"], ["prefs", "none"])
+    end
+
+    # Services collapse into a single row rather than one per service: a
+    # six-service selection produced six rows, which buried everything else.
+    it "reports all chosen services as one grouped criterion" do
+      org = build_org(services: ["Homeless Shelters"])
+
+      criteria = score_for(org, intent(services: ["Homeless Shelters", "Temporary Housing"]))[:criteria]
+      services = criteria.find { |c| c[:question] == "services" }
+
+      expect(services[:answer]).to be_nil
+      expect(services[:grouped]).to be(true)
+      expect(services[:status]).to eq("partial")
+      expect(services[:matched_count]).to eq(1)
+      expect(services[:selected_count]).to eq(2)
+    end
+
+    it "reports a fully-covered service selection as met" do
+      org = build_org(services: ["Homeless Shelters", "Temporary Housing"])
+
+      services = score_for(org, intent(services: ["Homeless Shelters", "Temporary Housing"]))[:criteria]
+        .find { |c| c[:question] == "services" }
+
+      expect(services[:status]).to eq("met")
+      expect(services[:matched_count]).to eq(2)
     end
   end
 

@@ -28,6 +28,13 @@ RSpec.describe "SmartMatch::Results async flow", type: :request do
     put smart_match_quiz_path, params: {causes: %w[Education]}
   end
 
+  # Processing/error state and submission lookup key on the attempt, not the
+  # browser session -- the session outlives a retake. The controller mints the
+  # token lazily, so read it back after a results request.
+  def attempt_token
+    request.session[:smart_match_attempt_token]
+  end
+
   describe "GET /smart_match/result with no submission yet" do
     before { complete_minimum_quiz }
 
@@ -62,8 +69,9 @@ RSpec.describe "SmartMatch::Results async flow", type: :request do
     end
 
     it "reports ready once matches are persisted and the page renders them" do
-      allow(SmartMatch::SubmissionProcessor).to receive(:call) do |session_id:, **|
-        submission = create(:quiz_submission, session_id: session_id, user_type: "donor")
+      allow(SmartMatch::SubmissionProcessor).to receive(:call) do |session_id:, attempt_token:, **|
+        submission = create(:quiz_submission, session_id: session_id,
+          attempt_token: attempt_token, user_type: "donor")
         create(:organization_match, quiz_submission: submission)
         {submission: submission, results: []}
       end
@@ -79,9 +87,8 @@ RSpec.describe "SmartMatch::Results async flow", type: :request do
     end
 
     it "reports unavailable when the job recorded a terminal error" do
-      get smart_match_result_path # establishes the session
-      session_id = request.session.id.to_s
-      Rails.cache.write(SmartMatch::ProcessSubmissionJob.error_key(session_id), true)
+      get smart_match_result_path # establishes the session + attempt token
+      Rails.cache.write(SmartMatch::ProcessSubmissionJob.error_key(attempt_token), true)
 
       get status_smart_match_result_path
       expect(response.parsed_body["status"]).to eq("unavailable")
@@ -93,14 +100,14 @@ RSpec.describe "SmartMatch::Results async flow", type: :request do
 
     it "shows the unavailable page and clears the flag so a retry starts fresh" do
       get smart_match_result_path
-      session_id = request.session.id.to_s
-      Rails.cache.write(SmartMatch::ProcessSubmissionJob.error_key(session_id), true)
+      token = attempt_token
+      Rails.cache.write(SmartMatch::ProcessSubmissionJob.error_key(token), true)
 
       get smart_match_result_path
       expect(response.body).to include(I18n.t("smart_match.results.unavailable.title"))
 
       # Flag cleared -> the next visit re-enqueues instead of sticking on the error.
-      expect(Rails.cache.exist?(SmartMatch::ProcessSubmissionJob.error_key(session_id))).to be(false)
+      expect(Rails.cache.exist?(SmartMatch::ProcessSubmissionJob.error_key(token))).to be(false)
     end
   end
 end

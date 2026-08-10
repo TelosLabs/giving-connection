@@ -57,6 +57,7 @@ class Organization < ApplicationRecord
   # nil is "not yet answered" and must stay allowed -- the Smart Match scorer
   # relies on being able to tell that apart from a recorded answer.
   validate :languages_are_supported
+  validate :smart_match_vocabularies_are_supported
   validates :logo, content_type: ["image/png", "image/jpeg"],
     size: {less_than: 5.megabytes, message: "File too large. Must be less than 5MB in size"}
 
@@ -142,12 +143,31 @@ class Organization < ApplicationRecord
   # A language outside the vocabulary can never be matched by a scoring rule,
   # so storing one is silently useless. Reject it at the boundary instead.
   def languages_are_supported
-    return if languages.nil?
+    validate_vocabulary(:languages, Organizations::Constants::LANGUAGES)
+  end
 
-    unsupported = languages - Organizations::Constants::LANGUAGES
+  # Smart Match vocabularies. nil stays valid throughout -- it means "not yet
+  # answered", which the scorer needs to tell apart from a recorded answer.
+  def smart_match_vocabularies_are_supported
+    validate_vocabulary(:volunteer_frequency, Organizations::Constants::VOLUNTEER_FREQUENCIES)
+    validate_vocabulary(:leadership_attributes, Organizations::Constants::LEADERSHIP_ATTRIBUTES)
+
+    return if volunteer_format.nil?
+    return if Organizations::Constants::VOLUNTEER_FORMATS.include?(volunteer_format)
+
+    errors.add(:volunteer_format, "is not a supported value")
+  end
+
+  # A value outside the vocabulary can never be matched by a scoring rule, so
+  # storing one is silently useless. Reject it at the boundary instead.
+  def validate_vocabulary(attribute, allowed)
+    values = public_send(attribute)
+    return if values.nil?
+
+    unsupported = values - allowed
     return if unsupported.empty?
 
-    errors.add(:languages, "includes unsupported values: #{unsupported.join(", ")}")
+    errors.add(attribute, "includes unsupported values: #{unsupported.join(", ")}")
   end
 
   EMBEDDING_FIELDS = %w[name mission_statement_en vision_statement_en tagline_en].freeze

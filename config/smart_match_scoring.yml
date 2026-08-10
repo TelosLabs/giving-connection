@@ -118,6 +118,33 @@ questions:
         - {field: service, match: cause_service, weight: 3}
       none: []
 
+  # NOT IN THE CLIENT'S CSV -- added 2026-08-10.
+  #
+  # The sheet only ever asks for causes, the top level. The platform holds ~274
+  # services under 35 causes, organizations are tagged with them, and the main
+  # site search already filters on them -- Smart Match was the only surface not
+  # asking. See docs/smart-match-scoring/07-unused-organization-data.md.
+  #
+  # Weighted like an exact cause match (5 x 1.5): the user naming the specific
+  # service they need is at least as strong a signal as naming its cause. The
+  # answer IS a service name, so it resolves against the selected value the
+  # same way the cause questions do.
+  services:
+    paths: [service_seeker, donor, volunteer]
+    multiplier: 1.5
+    # The whole question is worth ONE answer's weight however many services are
+    # ticked, earned in proportion to how many match (2 of 4 -> half).
+    #
+    # Scored independently, six services added 6 x 5 x 1.5 = 45 to the
+    # achievable maximum against a single cause's 13.5 -- so an organization
+    # serving the right cause but not the exact service was buried, and
+    # refining the search behaved like filtering it out. Services are meant to
+    # sharpen the ranking within a cause, not gate it.
+    aggregate: proportional
+    answers:
+      "*":
+        - {field: service, match: answer, weight: 5}
+
   # ===========================================================================
   # FIND HELP  (service_seeker)
   # ===========================================================================
@@ -276,7 +303,7 @@ questions:
           - {field: wheelchair_accessible, weight: 4}
 
       women_bipoc_led:
-        - {field: leadership_attributes, weight: 2, requires_field: true}
+        - {field: leadership_attributes, match: answer_vocabulary, weight: 2}
 
       none: []
 
@@ -560,20 +587,20 @@ questions:
     multiplier: 1.5
     answers:
       in_person:
-        - {field: volunteer_format, weight: 5, requires_field: true}
+        - {field: volunteer_format, match: answer_vocabulary, weight: 5}
       remote:
-        - {field: volunteer_format, weight: 5, requires_field: true}
+        - {field: volunteer_format, match: answer_vocabulary, weight: 5}
       both:
-        - {field: volunteer_format, weight: 5, requires_field: true}
+        - {field: volunteer_format, match: answer_vocabulary, weight: 5}
 
   volunteer_time:
     paths: [volunteer]
     multiplier: 1.0
     answers:
       one_time:
-        - {field: volunteer_frequency, weight: 3, requires_field: true}
+        - {field: volunteer_frequency, match: answer_vocabulary, weight: 3}
       few_hours:
-        - {field: volunteer_frequency, weight: 3, requires_field: true}
+        - {field: volunteer_frequency, match: answer_vocabulary, weight: 3}
       ongoing:
-        - {field: volunteer_frequency, weight: 3, requires_field: true}
+        - {field: volunteer_frequency, match: answer_vocabulary, weight: 3}
       not_sure: []

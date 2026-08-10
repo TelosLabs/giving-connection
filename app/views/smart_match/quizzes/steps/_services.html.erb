@@ -1,0 +1,53 @@
+<%#
+  Narrows the causes chosen on the previous step to specific services.
+
+  Options come from Organizations::Constants::CAUSES_AND_SERVICES (the same
+  vocabulary the scoring rules use), scoped to the selected causes, so the user
+  never scrolls a list of ~274 services. QuizNavigator#skip_services? hides the
+  step entirely when the chosen causes define no services, so this partial can
+  assume at least one group.
+
+  Selecting nothing is valid: the cause-level match still applies, and the
+  results page reports which criteria went unmet.
+%>
+<%
+  selected_services = Array(@session_answers[:services])
+  grouped = SmartMatch::QuizStepConfig.services_for_causes(@session_answers[:causes])
+%>
+<%= form_with url: smart_match_quiz_path, method: :put, id: "quiz-form",
+             data: { smart_match_quiz_target: "form" } do |f| %>
+
+  <div class="max-w-4xl mx-auto">
+    <% grouped.each do |cause, services| %>
+      <fieldset class="mb-8">
+        <legend class="mb-3 text-base font-bold text-blue-dark"><%= cause %></legend>
+
+        <%# Visual state lives entirely in .sm-pill-option (both `.selected`,
+            which the Stimulus controller toggles on click, and
+            `:has(input:checked)` for server-rendered state). Conditional
+            classes here would only reflect the initial render and would stay
+            frozen as the user clicks. %>
+        <div class="flex flex-wrap gap-3">
+          <% services.each do |service| %>
+            <% checked = selected_services.include?(service) %>
+            <label class="sm-pill-option inline-flex items-center <%= "selected" if checked %>"
+                   data-action="click->smart-match-quiz#selectCard"
+                   data-select-mode="multiple">
+              <input type="checkbox"
+                     name="services[]"
+                     value="<%= service %>"
+                     class="sr-only"
+                     <%= "checked" if checked %>
+                     data-smart-match-quiz-target="causeCheckbox" />
+              <%= service %>
+            </label>
+          <% end %>
+        </div>
+      </fieldset>
+    <% end %>
+  </div>
+
+  <div class="sm-selection-hint mt-2 rounded-lg px-5 py-3 text-sm font-medium text-blue-dark text-center" style="background-color: #e2ecf7;">
+    <%= t("smart_match.quiz.steps.services.hint") %>
+  </div>
+<% end %>

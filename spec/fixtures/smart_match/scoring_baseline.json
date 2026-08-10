@@ -76,7 +76,39 @@
         "rule_points": {
           "earned": 42.0,
           "max": 50.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Housing & Homelessness",
+            "status": "met"
+          },
+          {
+            "question": "self_description",
+            "answer": "currently_unhoused",
+            "status": "met"
+          },
+          {
+            "question": "self_description",
+            "answer": "economically_disadvantaged",
+            "status": "met"
+          },
+          {
+            "question": "prefs",
+            "answer": "free_sliding_scale",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "no_id_required",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "35_44",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -91,7 +123,39 @@
         "rule_points": {
           "earned": 0.0,
           "max": 50.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Housing & Homelessness",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "currently_unhoused",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "economically_disadvantaged",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "free_sliding_scale",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "no_id_required",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "35_44",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -106,7 +170,39 @@
         "rule_points": {
           "earned": 0.0,
           "max": 50.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Housing & Homelessness",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "currently_unhoused",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "economically_disadvantaged",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "free_sliding_scale",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "no_id_required",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "35_44",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -121,7 +217,39 @@
         "rule_points": {
           "earned": 0.0,
           "max": 50.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Housing & Homelessness",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "currently_unhoused",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "economically_disadvantaged",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "free_sliding_scale",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "no_id_required",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "35_44",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -136,7 +264,39 @@
         "rule_points": {
           "earned": 0.0,
           "max": 50.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Housing & Homelessness",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "currently_unhoused",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "economically_disadvantaged",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "free_sliding_scale",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "no_id_required",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "35_44",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -151,7 +311,39 @@
         "rule_points": {
           "earned": 0.0,
           "max": 50.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Housing & Homelessness",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "currently_unhoused",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "economically_disadvantaged",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "free_sliding_scale",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "no_id_required",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "35_44",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -166,7 +358,39 @@
         "rule_points": {
           "earned": 0.0,
           "max": 50.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Housing & Homelessness",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "currently_unhoused",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "economically_disadvantaged",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "free_sliding_scale",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "no_id_required",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "35_44",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -181,7 +405,39 @@
         "rule_points": {
           "earned": 0.0,
           "max": 50.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Housing & Homelessness",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "currently_unhoused",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "economically_disadvantaged",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "free_sliding_scale",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "no_id_required",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "35_44",
+            "status": "unmet"
+          }
+        ]
       }
     }
   ],
@@ -253,7 +509,29 @@
         "rule_points": {
           "earned": 34.5,
           "max": 56.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Mental Health",
+            "status": "met"
+          },
+          {
+            "question": "self_description",
+            "answer": "mental_health",
+            "status": "met"
+          },
+          {
+            "question": "self_description",
+            "answer": "veteran",
+            "status": "unmet"
+          },
+          {
+            "question": "age_range",
+            "answer": "45_54",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -305,7 +583,29 @@
         "rule_points": {
           "earned": 21.0,
           "max": 56.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Mental Health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "mental_health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "veteran",
+            "status": "met"
+          },
+          {
+            "question": "age_range",
+            "answer": "45_54",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -320,7 +620,29 @@
         "rule_points": {
           "earned": 0.0,
           "max": 56.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Mental Health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "mental_health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "veteran",
+            "status": "unmet"
+          },
+          {
+            "question": "age_range",
+            "answer": "45_54",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -335,7 +657,29 @@
         "rule_points": {
           "earned": 0.0,
           "max": 56.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Mental Health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "mental_health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "veteran",
+            "status": "unmet"
+          },
+          {
+            "question": "age_range",
+            "answer": "45_54",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -350,7 +694,29 @@
         "rule_points": {
           "earned": 0.0,
           "max": 56.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Mental Health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "mental_health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "veteran",
+            "status": "unmet"
+          },
+          {
+            "question": "age_range",
+            "answer": "45_54",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -365,7 +731,29 @@
         "rule_points": {
           "earned": 0.0,
           "max": 56.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Mental Health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "mental_health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "veteran",
+            "status": "unmet"
+          },
+          {
+            "question": "age_range",
+            "answer": "45_54",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -380,7 +768,29 @@
         "rule_points": {
           "earned": 0.0,
           "max": 56.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Mental Health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "mental_health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "veteran",
+            "status": "unmet"
+          },
+          {
+            "question": "age_range",
+            "answer": "45_54",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -395,7 +805,29 @@
         "rule_points": {
           "earned": 0.0,
           "max": 56.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Mental Health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "mental_health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "veteran",
+            "status": "unmet"
+          },
+          {
+            "question": "age_range",
+            "answer": "45_54",
+            "status": "unmet"
+          }
+        ]
       }
     }
   ],
@@ -476,7 +908,39 @@
         "rule_points": {
           "earned": 40.5,
           "max": 56.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Children & Family Services",
+            "status": "met"
+          },
+          {
+            "question": "self_description",
+            "answer": "children_youth",
+            "status": "met"
+          },
+          {
+            "question": "self_description",
+            "answer": "caregiver",
+            "status": "met"
+          },
+          {
+            "question": "prefs",
+            "answer": "wheelchair_accessible",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "multilingual",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "25_34",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -491,7 +955,39 @@
         "rule_points": {
           "earned": 0.0,
           "max": 56.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Children & Family Services",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "children_youth",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "caregiver",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "wheelchair_accessible",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "multilingual",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "25_34",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -506,7 +1002,39 @@
         "rule_points": {
           "earned": 0.0,
           "max": 56.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Children & Family Services",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "children_youth",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "caregiver",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "wheelchair_accessible",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "multilingual",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "25_34",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -521,7 +1049,39 @@
         "rule_points": {
           "earned": 0.0,
           "max": 56.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Children & Family Services",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "children_youth",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "caregiver",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "wheelchair_accessible",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "multilingual",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "25_34",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -536,7 +1096,39 @@
         "rule_points": {
           "earned": 0.0,
           "max": 56.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Children & Family Services",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "children_youth",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "caregiver",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "wheelchair_accessible",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "multilingual",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "25_34",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -551,7 +1143,39 @@
         "rule_points": {
           "earned": 0.0,
           "max": 56.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Children & Family Services",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "children_youth",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "caregiver",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "wheelchair_accessible",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "multilingual",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "25_34",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -566,7 +1190,39 @@
         "rule_points": {
           "earned": 0.0,
           "max": 56.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Children & Family Services",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "children_youth",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "caregiver",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "wheelchair_accessible",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "multilingual",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "25_34",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -581,7 +1237,39 @@
         "rule_points": {
           "earned": 0.0,
           "max": 56.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Children & Family Services",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "children_youth",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "caregiver",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "wheelchair_accessible",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "multilingual",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "25_34",
+            "status": "unmet"
+          }
+        ]
       }
     }
   ],
@@ -671,7 +1359,24 @@
         "rule_points": {
           "earned": 37.0,
           "max": 37.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "LGBTQ+",
+            "status": "met"
+          },
+          {
+            "question": "self_description",
+            "answer": "lgbtqia",
+            "status": "met"
+          },
+          {
+            "question": "prefs",
+            "answer": "lgbtqia_affirming",
+            "status": "met"
+          }
+        ]
       }
     },
     {
@@ -686,7 +1391,24 @@
         "rule_points": {
           "earned": 0.0,
           "max": 37.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "LGBTQ+",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "lgbtqia",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "lgbtqia_affirming",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -701,7 +1423,24 @@
         "rule_points": {
           "earned": 0.0,
           "max": 37.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "LGBTQ+",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "lgbtqia",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "lgbtqia_affirming",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -716,7 +1455,24 @@
         "rule_points": {
           "earned": 0.0,
           "max": 37.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "LGBTQ+",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "lgbtqia",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "lgbtqia_affirming",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -731,7 +1487,24 @@
         "rule_points": {
           "earned": 0.0,
           "max": 37.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "LGBTQ+",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "lgbtqia",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "lgbtqia_affirming",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -746,7 +1519,24 @@
         "rule_points": {
           "earned": 0.0,
           "max": 37.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "LGBTQ+",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "lgbtqia",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "lgbtqia_affirming",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -761,7 +1551,24 @@
         "rule_points": {
           "earned": 0.0,
           "max": 37.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "LGBTQ+",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "lgbtqia",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "lgbtqia_affirming",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -776,7 +1583,24 @@
         "rule_points": {
           "earned": 0.0,
           "max": 37.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "LGBTQ+",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "lgbtqia",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "lgbtqia_affirming",
+            "status": "unmet"
+          }
+        ]
       }
     }
   ],
@@ -848,7 +1672,24 @@
         "rule_points": {
           "earned": 33.0,
           "max": 40.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Veteran & Military",
+            "status": "met"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "veteran_military",
+            "status": "met"
+          }
+        ]
       }
     },
     {
@@ -863,7 +1704,24 @@
         "rule_points": {
           "earned": 0.0,
           "max": 40.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Veteran & Military",
+            "status": "unmet"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "veteran_military",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -878,7 +1736,24 @@
         "rule_points": {
           "earned": 0.0,
           "max": 40.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Veteran & Military",
+            "status": "unmet"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "veteran_military",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -893,7 +1768,24 @@
         "rule_points": {
           "earned": 0.0,
           "max": 40.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Veteran & Military",
+            "status": "unmet"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "veteran_military",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -908,7 +1800,24 @@
         "rule_points": {
           "earned": 0.0,
           "max": 40.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Veteran & Military",
+            "status": "unmet"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "veteran_military",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -923,7 +1832,24 @@
         "rule_points": {
           "earned": 0.0,
           "max": 40.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Veteran & Military",
+            "status": "unmet"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "veteran_military",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -938,7 +1864,24 @@
         "rule_points": {
           "earned": 0.0,
           "max": 40.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Veteran & Military",
+            "status": "unmet"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "veteran_military",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -953,7 +1896,24 @@
         "rule_points": {
           "earned": 0.0,
           "max": 40.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Veteran & Military",
+            "status": "unmet"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "veteran_military",
+            "status": "unmet"
+          }
+        ]
       }
     }
   ],
@@ -1025,7 +1985,29 @@
         "rule_points": {
           "earned": 33.0,
           "max": 40.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Race & Ethnicity",
+            "status": "met"
+          },
+          {
+            "question": "donation_style",
+            "answer": "recurring_giving",
+            "status": "unknown"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "bipoc",
+            "status": "met"
+          }
+        ]
       }
     },
     {
@@ -1040,7 +2022,29 @@
         "rule_points": {
           "earned": 0.0,
           "max": 40.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Race & Ethnicity",
+            "status": "unmet"
+          },
+          {
+            "question": "donation_style",
+            "answer": "recurring_giving",
+            "status": "unknown"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "bipoc",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -1055,7 +2059,29 @@
         "rule_points": {
           "earned": 0.0,
           "max": 40.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Race & Ethnicity",
+            "status": "unmet"
+          },
+          {
+            "question": "donation_style",
+            "answer": "recurring_giving",
+            "status": "unknown"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "bipoc",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -1070,7 +2096,29 @@
         "rule_points": {
           "earned": 0.0,
           "max": 40.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Race & Ethnicity",
+            "status": "unmet"
+          },
+          {
+            "question": "donation_style",
+            "answer": "recurring_giving",
+            "status": "unknown"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "bipoc",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -1085,7 +2133,29 @@
         "rule_points": {
           "earned": 0.0,
           "max": 40.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Race & Ethnicity",
+            "status": "unmet"
+          },
+          {
+            "question": "donation_style",
+            "answer": "recurring_giving",
+            "status": "unknown"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "bipoc",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -1100,7 +2170,29 @@
         "rule_points": {
           "earned": 0.0,
           "max": 40.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Race & Ethnicity",
+            "status": "unmet"
+          },
+          {
+            "question": "donation_style",
+            "answer": "recurring_giving",
+            "status": "unknown"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "bipoc",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -1115,7 +2207,29 @@
         "rule_points": {
           "earned": 0.0,
           "max": 40.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Race & Ethnicity",
+            "status": "unmet"
+          },
+          {
+            "question": "donation_style",
+            "answer": "recurring_giving",
+            "status": "unknown"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "bipoc",
+            "status": "unmet"
+          }
+        ]
       }
     },
     {
@@ -1130,7 +2244,29 @@
         "rule_points": {
           "earned": 0.0,
           "max": 40.5
-        }
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Race & Ethnicity",
+            "status": "unmet"
+          },
+          {
+            "question": "donation_style",
+            "answer": "recurring_giving",
+            "status": "unknown"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "bipoc",
+            "status": "unmet"
+          }
+        ]
       }
     }
   ],
@@ -1202,7 +2338,29 @@
         "rule_points": {
           "earned": 26.0,
           "max": 26.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Seniors",
+            "status": "met"
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "status": "met"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "in_person",
+            "status": "unknown"
+          },
+          {
+            "question": "volunteer_time",
+            "answer": "ongoing",
+            "status": "unknown"
+          }
+        ]
       }
     },
     {
@@ -1254,7 +2412,29 @@
         "rule_points": {
           "earned": 14.0,
           "max": 26.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "status": "met"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "in_person",
+            "status": "unknown"
+          },
+          {
+            "question": "volunteer_time",
+            "answer": "ongoing",
+            "status": "unknown"
+          }
+        ]
       }
     },
     {
@@ -1269,7 +2449,29 @@
         "rule_points": {
           "earned": 0.0,
           "max": 26.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "in_person",
+            "status": "unknown"
+          },
+          {
+            "question": "volunteer_time",
+            "answer": "ongoing",
+            "status": "unknown"
+          }
+        ]
       }
     },
     {
@@ -1284,7 +2486,29 @@
         "rule_points": {
           "earned": 0.0,
           "max": 26.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "in_person",
+            "status": "unknown"
+          },
+          {
+            "question": "volunteer_time",
+            "answer": "ongoing",
+            "status": "unknown"
+          }
+        ]
       }
     },
     {
@@ -1299,7 +2523,29 @@
         "rule_points": {
           "earned": 0.0,
           "max": 26.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "in_person",
+            "status": "unknown"
+          },
+          {
+            "question": "volunteer_time",
+            "answer": "ongoing",
+            "status": "unknown"
+          }
+        ]
       }
     },
     {
@@ -1314,7 +2560,29 @@
         "rule_points": {
           "earned": 0.0,
           "max": 26.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "in_person",
+            "status": "unknown"
+          },
+          {
+            "question": "volunteer_time",
+            "answer": "ongoing",
+            "status": "unknown"
+          }
+        ]
       }
     },
     {
@@ -1329,7 +2597,29 @@
         "rule_points": {
           "earned": 0.0,
           "max": 26.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "in_person",
+            "status": "unknown"
+          },
+          {
+            "question": "volunteer_time",
+            "answer": "ongoing",
+            "status": "unknown"
+          }
+        ]
       }
     },
     {
@@ -1344,7 +2634,29 @@
         "rule_points": {
           "earned": 0.0,
           "max": 26.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "in_person",
+            "status": "unknown"
+          },
+          {
+            "question": "volunteer_time",
+            "answer": "ongoing",
+            "status": "unknown"
+          }
+        ]
       }
     }
   ],
@@ -1361,7 +2673,19 @@
         "rule_points": {
           "earned": 0.0,
           "max": 12.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Education",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "both",
+            "status": "unknown"
+          }
+        ]
       }
     },
     {
@@ -1376,7 +2700,19 @@
         "rule_points": {
           "earned": 0.0,
           "max": 12.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Education",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "both",
+            "status": "unknown"
+          }
+        ]
       }
     },
     {
@@ -1391,7 +2727,19 @@
         "rule_points": {
           "earned": 0.0,
           "max": 12.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Education",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "both",
+            "status": "unknown"
+          }
+        ]
       }
     },
     {
@@ -1406,7 +2754,19 @@
         "rule_points": {
           "earned": 0.0,
           "max": 12.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Education",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "both",
+            "status": "unknown"
+          }
+        ]
       }
     },
     {
@@ -1421,7 +2781,19 @@
         "rule_points": {
           "earned": 0.0,
           "max": 12.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Education",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "both",
+            "status": "unknown"
+          }
+        ]
       }
     },
     {
@@ -1436,7 +2808,19 @@
         "rule_points": {
           "earned": 0.0,
           "max": 12.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Education",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "both",
+            "status": "unknown"
+          }
+        ]
       }
     },
     {
@@ -1451,7 +2835,19 @@
         "rule_points": {
           "earned": 0.0,
           "max": 12.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Education",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "both",
+            "status": "unknown"
+          }
+        ]
       }
     },
     {
@@ -1466,7 +2862,19 @@
         "rule_points": {
           "earned": 0.0,
           "max": 12.0
-        }
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Education",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "both",
+            "status": "unknown"
+          }
+        ]
       }
     }
   ]

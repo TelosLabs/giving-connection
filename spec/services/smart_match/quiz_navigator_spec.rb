@@ -73,6 +73,14 @@ RSpec.describe SmartMatch::QuizNavigator do
     end
 
     context "with location scope (nationwide / international)" do
+      # Derived from the navigator's own constants so inserting a step
+      # upstream (as the services question did) doesn't silently invalidate
+      # these assertions.
+      let(:seeker_detail_step) { SmartMatch::QuizNavigator::LOCATION_DETAIL_STEP["service_seeker"] }
+      let(:seeker_city_step) { seeker_detail_step - 1 }
+      let(:seeker_travel_step) { SmartMatch::QuizNavigator::SERVICE_SEEKER_TRAVEL_STEP }
+      let(:donor_detail_step) { SmartMatch::QuizNavigator::LOCATION_DETAIL_STEP["donor"] }
+
       it "stores a nationwide scope from the detail step and clears any specific location" do
         session[:smart_match_user_type] = "service_seeker"
         session[:smart_match_state] = "TN"
@@ -81,7 +89,7 @@ RSpec.describe SmartMatch::QuizNavigator do
         described_class.call(
           session: session,
           params: ActionController::Parameters.new(location_scope_choice: "national").permit!,
-          step: 7
+          step: seeker_detail_step
         )
 
         expect(session[:smart_match_location_scope]).to eq("national")
@@ -95,7 +103,7 @@ RSpec.describe SmartMatch::QuizNavigator do
         described_class.call(
           session: session,
           params: ActionController::Parameters.new(location_scope_choice: "international").permit!,
-          step: 8
+          step: donor_detail_step
         )
 
         expect(session[:smart_match_location_scope]).to eq("international")
@@ -107,7 +115,7 @@ RSpec.describe SmartMatch::QuizNavigator do
         described_class.call(
           session: session,
           params: ActionController::Parameters.new(location_scope_choice: "local", state: "OR", city: "Portland").permit!,
-          step: 7
+          step: seeker_detail_step
         )
 
         expect(session[:smart_match_location_scope]).to eq("local")
@@ -121,42 +129,42 @@ RSpec.describe SmartMatch::QuizNavigator do
         described_class.call(
           session: session,
           params: ActionController::Parameters.new(city_selection: "Nashville").permit!,
-          step: 6
+          step: seeker_city_step
         )
 
         expect(session[:smart_match_location_scope]).to eq("local")
         expect(session[:smart_match_city]).to eq("Nashville")
         expect(session[:smart_match_city_choice]).to eq("Nashville")
-        # 6 -> 8 (travel), skipping the detail step 7 since a preset was chosen.
-        expect(session[:smart_match_step]).to eq(8)
+        # Jumps straight to travel, skipping the detail step since a preset was chosen.
+        expect(session[:smart_match_step]).to eq(seeker_travel_step)
       end
 
-      it "routes to the detail step (7) when 'Somewhere else' is chosen" do
+      it "routes to the detail step when 'Somewhere else' is chosen" do
         session[:smart_match_user_type] = "service_seeker"
 
         described_class.call(
           session: session,
           params: ActionController::Parameters.new(city_selection: "elsewhere").permit!,
-          step: 6
+          step: seeker_city_step
         )
 
         expect(session[:smart_match_city_choice]).to eq("elsewhere")
-        expect(session[:smart_match_step]).to eq(7)
+        expect(session[:smart_match_step]).to eq(seeker_detail_step)
       end
 
-      it "skips the service_seeker travel step (8) when scope is non-local" do
+      it "skips the service_seeker travel step when scope is non-local" do
         session[:smart_match_user_type] = "service_seeker"
         session[:smart_match_city_choice] = "elsewhere"
 
         described_class.call(
           session: session,
           params: ActionController::Parameters.new(location_scope_choice: "national").permit!,
-          step: 7
+          step: seeker_detail_step
         )
 
-        # 7 -> 9, jumping over the (now irrelevant) distance step 8.
+        # Jumps over the (now irrelevant) distance step.
         expect(session[:smart_match_location_scope]).to eq("national")
-        expect(session[:smart_match_step]).to eq(9)
+        expect(session[:smart_match_step]).to eq(seeker_travel_step + 1)
       end
 
       it "keeps the travel step for a local service_seeker search" do
@@ -166,10 +174,10 @@ RSpec.describe SmartMatch::QuizNavigator do
         described_class.call(
           session: session,
           params: ActionController::Parameters.new(city_selection: "Nashville").permit!,
-          step: 6
+          step: seeker_city_step
         )
 
-        expect(session[:smart_match_step]).to eq(8)
+        expect(session[:smart_match_step]).to eq(seeker_travel_step)
       end
 
       it "skips back over the travel step when scope is non-local" do
@@ -180,11 +188,11 @@ RSpec.describe SmartMatch::QuizNavigator do
         described_class.call(
           session: session,
           params: ActionController::Parameters.new(direction: "back").permit!,
-          step: 9
+          step: seeker_travel_step + 1
         )
 
-        # 9 -> 7 (detail), skipping the distance step 8.
-        expect(session[:smart_match_step]).to eq(7)
+        # Back over the distance step to the detail step.
+        expect(session[:smart_match_step]).to eq(seeker_detail_step)
       end
     end
 
@@ -219,15 +227,15 @@ RSpec.describe SmartMatch::QuizNavigator do
 
   describe ".total_steps_for" do
     it "returns 11 for service_seeker" do
-      expect(described_class.total_steps_for("service_seeker")).to eq(11)
+      expect(described_class.total_steps_for("service_seeker")).to eq(12)
     end
 
     it "returns 10 for volunteer" do
-      expect(described_class.total_steps_for("volunteer")).to eq(10)
+      expect(described_class.total_steps_for("volunteer")).to eq(11)
     end
 
     it "returns 11 for donor" do
-      expect(described_class.total_steps_for("donor")).to eq(11)
+      expect(described_class.total_steps_for("donor")).to eq(12)
     end
 
     it "returns default for unknown type" do

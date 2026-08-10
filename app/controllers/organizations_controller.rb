@@ -22,7 +22,7 @@ class OrganizationsController < ApplicationController
     @organization = Organization.find(params[:id])
     authorize @organization
     if @organization.update(organization_params)
-      update_tags(@organization, JSON.parse(params["organization"]["tags_attributes"])) unless params["organization"]["tags_attributes"].strip.empty?
+      update_tags(@organization, JSON.parse(params["organization"]["tags_attributes"])) unless params["organization"]["tags_attributes"].to_s.strip.empty?
       redirect_to my_account_path
       flash[:notice] = "The Organization was successfully updated"
     else
@@ -125,6 +125,7 @@ class OrganizationsController < ApplicationController
       :recurring_giving,
       :fundraising_events,
       :partnership_opportunities,
+      :volunteer_format,
       social_media_attributes: %i[facebook instagram twitter linkedin youtube blog id],
       tags_attributes: [],
       locations_attributes: [
@@ -154,8 +155,10 @@ class OrganizationsController < ApplicationController
           service_ids: []
         }
       ],
-      # Languages is a string array (Organizations::Constants::LANGUAGES).
+      # Array-valued Smart Match vocabularies (Organizations::Constants).
       languages: [],
+      volunteer_frequency: [],
+      leadership_attributes: [],
       beneficiary_subcategory_ids: [],
       cause_ids: []
     )

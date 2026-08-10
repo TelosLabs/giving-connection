@@ -2,12 +2,13 @@
 
 module SmartMatch
   class SubmissionProcessor < ApplicationService
-    attr_reader :session_answers, :user_type, :session_id, :user
+    attr_reader :session_answers, :user_type, :session_id, :attempt_token, :user
 
-    def initialize(session_answers:, user_type:, session_id:, user: nil)
+    def initialize(session_answers:, user_type:, session_id:, attempt_token: nil, user: nil)
       @session_answers = session_answers
       @user_type = user_type
       @session_id = session_id
+      @attempt_token = attempt_token
       @user = user
     end
 
@@ -45,7 +46,8 @@ module SmartMatch
         user_type: user_type,
         embedding: vector,
         text_snapshot: text,
-        search_relaxations: relaxations
+        search_relaxations: relaxations,
+        attempt_token: attempt_token
       )
     end
 
