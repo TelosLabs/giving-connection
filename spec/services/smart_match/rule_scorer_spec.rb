@@ -214,6 +214,40 @@ RSpec.describe SmartMatch::RuleScorer do
     end
   end
 
+  # The causes step offers two cards ("Financial assistance" and "Human &
+  # social services") that submit the same canonical cause, so ticking both put
+  # the value in the array twice -- scoring it as two criteria and doubling its
+  # weight against everything else.
+  describe "repeated answers" do
+    it "scores a duplicated cause exactly once" do
+      org = build_org(causes: ["Human & Social Services"])
+
+      once = score_for(org, intent(causes: ["Human & Social Services"]))
+      twice = score_for(org, intent(causes: ["Human & Social Services", "Human & Social Services"]))
+
+      expect(twice[:max]).to eq(once[:max])
+      expect(twice[:earned]).to eq(once[:earned])
+    end
+
+    it "lists a duplicated answer once in the criteria" do
+      org = build_org(causes: ["Human & Social Services"])
+
+      criteria = score_for(org, intent(causes: ["Human & Social Services", "Human & Social Services"]))[:criteria]
+
+      expect(criteria.count { |c| c[:answer] == "Human & Social Services" }).to eq(1)
+    end
+
+    it "does not let a duplicate crowd out another answer" do
+      org = build_org(causes: ["Seniors"])
+
+      focused = score_for(org, intent(causes: ["Seniors"]))
+      with_dupe = score_for(org, intent(causes: ["Seniors", "Human & Social Services", "Human & Social Services"]))
+
+      # One extra distinct cause, not two -- so the denominator grows once.
+      expect(with_dupe[:max]).to eq(focused[:max] * 2)
+    end
+  end
+
   describe "answers that must not score" do
     it "ignores escape-hatch answers entirely" do
       org = build_org(beneficiaries: ["Seniors"], causes: ["Seniors"])

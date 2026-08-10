@@ -133,6 +133,38 @@ RSpec.describe "SmartMatch quiz step schema consistency" do
       end
     end
 
+    # The causes step maps friendly labels onto canonical Cause names, and two
+    # of them ("Financial assistance" and "Human & social services") legitimately
+    # resolve to the same cause. That is fine on its own -- but ticking both
+    # submitted the value twice, which scored it as two criteria and doubled its
+    # weight, and listed it twice on the results card.
+    #
+    # UserIntent.parse_array now dedupes, so this is a canary rather than a
+    # gate: it documents which options collide, so adding another pair is a
+    # deliberate act rather than a surprise.
+    it "records which cause options share a canonical value" do
+      partial = Rails.root.join("app/views/smart_match/quizzes/steps/_causes.html.erb").read
+      canonical = partial.scan(/\["[^"]+",\s*"[^"]+\.svg",\s*"([^"]+)"\]/).flatten
+
+      known_collisions = ["Human & Social Services"]
+      collisions = canonical.tally.select { |_, count| count > 1 }.keys
+
+      expect(collisions).to match_array(known_collisions),
+        "the causes step's label -> cause mapping changed. Duplicated values are " \
+        "deduped by UserIntent.parse_array so scoring is safe, but confirm the " \
+        "overlap is intended and update known_collisions."
+    end
+
+    it "submits every cause option as a real Cause preset" do
+      partial = Rails.root.join("app/views/smart_match/quizzes/steps/_causes.html.erb").read
+      canonical = partial.scan(/\["[^"]+",\s*"[^"]+\.svg",\s*"([^"]+)"\]/).flatten
+
+      unknown = canonical.uniq - Organizations::Constants::CAUSES_AND_SERVICES.keys
+      expect(unknown).to be_empty,
+        "the causes step submits #{unknown.join(", ")}, which is not a Cause in " \
+        "Organizations::Constants -- it can never match an organization"
+    end
+
     it "declares each answer with the arity its step partial submits" do
       partials = Rails.root.glob("app/views/smart_match/quizzes/steps/*.html.erb")
         .map(&:read).join("\n")

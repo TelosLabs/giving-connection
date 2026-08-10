@@ -112,9 +112,12 @@ class UserIntent
   # callers don't branch on arity, and blanks are dropped so an unanswered
   # question is indistinguishable from an absent one.
   def answers_by_key
-    normalized = QUIZ_ANSWERS.keys.to_h { |key| [key.to_s, Array(public_send(key)).compact_blank] }
-    normalized["causes"] = Array(causes_selected).compact_blank
-    normalized["prefs"] = Array(prefs_selected).compact_blank
+    # uniq here as well as in parse_array: this is what RuleScorer reads, and a
+    # UserIntent built directly (specs, callers that skip from_session) would
+    # otherwise still double-weight a repeated answer.
+    normalized = QUIZ_ANSWERS.keys.to_h { |key| [key.to_s, Array(public_send(key)).compact_blank.uniq] }
+    normalized["causes"] = Array(causes_selected).compact_blank.uniq
+    normalized["prefs"] = Array(prefs_selected).compact_blank.uniq
     # The chosen path is itself scorable (the Donor path rewards a usable
     # donation link), so it is exposed the same way as any other answer.
     normalized["user_type"] = Array(user_type).compact_blank
@@ -145,8 +148,20 @@ class UserIntent
     pieces.join(" | ")
   end
 
+  # Deduplicated, because a repeated answer silently double-weights itself.
+  #
+  # The causes step offers two cards -- "Financial assistance" and "Human &
+  # social services" -- that both submit the canonical cause "Human & Social
+  # Services", so ticking both put the value in the array twice. RuleScorer
+  # then scored it as two separate criteria: `max` and `earned` both doubled,
+  # inflating that one cause against everything else the user asked for, and
+  # the results card listed it twice.
+  #
+  # Fixed here rather than in the quiz partial so no future duplicate-valued
+  # option can reintroduce it, and so answers already stored in a session are
+  # cleaned on the way through.
   def self.parse_array(value)
-    Array(value).map(&:strip).compact_blank
+    Array(value).map(&:strip).compact_blank.uniq
   end
 
   private
