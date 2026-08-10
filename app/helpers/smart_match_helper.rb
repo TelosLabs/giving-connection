@@ -46,10 +46,15 @@ module SmartMatchHelper
 
   # Colour + glyph per aggregate status. Kept here rather than in the template
   # so the four states stay defined in one place.
+  #
+  # Partial shares the full match's checkmark and differs only in colour: a
+  # partial match is still a match, and a distinct glyph made it read as a
+  # third kind of failure. Colour never carries the meaning on its own -- the
+  # sr-only label and the status text beside each row both name it.
   def smart_match_criterion_style(status)
     case status
     when "met" then {icon: "✓", classes: "text-green-700", aria: t("smart_match.results.criteria.status.met")}
-    when "partial" then {icon: "◐", classes: "text-yellow-700", aria: t("smart_match.results.criteria.status.partial")}
+    when "partial" then {icon: "✓", classes: "text-yellow-600", aria: t("smart_match.results.criteria.status.partial")}
     when "unknown" then {icon: "?", classes: "text-gray-4", aria: t("smart_match.results.criteria.status.unknown")}
     else {icon: "✕", classes: "text-red-600", aria: t("smart_match.results.criteria.status.unmet")}
     end
