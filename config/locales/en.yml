@@ -90,6 +90,11 @@ en:
       unavailable:
         title: "Smart Match is temporarily unavailable"
         body: "Our matching engine is currently offline. Please try again in a few minutes."
+      card:
+        why_matched: "Why this match"
+        more_reasons:
+          one: "+1 more"
+          other: "+%{count} more"
       criteria:
         title: "How we matched you"
         summary: "%{matched} of %{total} matched"

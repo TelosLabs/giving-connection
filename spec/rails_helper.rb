@@ -82,6 +82,9 @@ RSpec.configure do |config|
   # Request specs drive the real Rack stack, so they need the integration
   # helpers (sign_in/sign_out) too -- the controller helpers don't apply.
   config.include Devise::Test::IntegrationHelpers, type: :request
+  # ViewComponents reach the app's helpers through a view context, which only
+  # exists while rendering -- so component specs need a real one.
+  config.include ViewComponent::TestHelpers, type: :component
   config.include Warden::Test::Helpers
   config.include Devise::Test::ControllerHelpers, type: :controller
 

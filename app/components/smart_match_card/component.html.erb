@@ -116,6 +116,32 @@
       </div>
     <% end %>
 
+    <%# Why this organization matched.
+        Positives only, capped at MAX_MATCH_REASONS. Because answers are OR'd
+        rather than AND'd, every result satisfies some subset of what the user
+        asked for -- naming that subset is what distinguishes one card from the
+        next. What each one MISSED is reported once, in aggregate, by the
+        results page panel; repeating it here would triple the noise. %>
+    <% if match_reasons.any? %>
+      <div class="pt-5 mt-4 border-t border-gray-8">
+        <p class="mb-2 text-xs font-semibold tracking-wider uppercase text-gray-4">
+          <%= t("smart_match.results.card.why_matched") %>
+        </p>
+        <ul class="flex flex-wrap gap-2">
+          <% match_reasons.each do |reason| %>
+            <li class="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full bg-blue-pale text-blue-dark">
+              <span aria-hidden="true">✓</span><%= reason %>
+            </li>
+          <% end %>
+          <% if hidden_match_reason_count.positive? %>
+            <li class="inline-flex items-center px-2.5 py-1 text-xs text-gray-4">
+              <%= t("smart_match.results.card.more_reasons", count: hidden_match_reason_count) %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
     <%# Causes %>
     <% if top_causes.any? %>
       <div class="pt-5 mt-4 border-t border-gray-8">

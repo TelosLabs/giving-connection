@@ -64,6 +64,11 @@ es:
       unavailable:
         title: "Smart Match no está disponible temporalmente"
         body: "Nuestro motor de emparejamiento está fuera de línea en este momento. Por favor inténtalo de nuevo en unos minutos."
+      card:
+        why_matched: "Por qué coincide"
+        more_reasons:
+          one: "+1 más"
+          other: "+%{count} más"
       criteria:
         title: "Cómo te emparejamos"
         summary: "%{matched} de %{total} coinciden"

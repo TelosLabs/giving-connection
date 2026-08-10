@@ -121,6 +121,28 @@ class SmartMatchCard::Component < ApplicationViewComponent
     organization.main_location&.phone_number&.number
   end
 
+  # Why THIS organization surfaced -- the criteria it personally satisfies.
+  #
+  # Only the positives, and only a few. Answers are OR'd rather than AND'd, so
+  # every result meets some subset and the useful signal is which subset; the
+  # misses are already reported once, in aggregate, by the results page panel.
+  # Repeating them per card would triple the noise for no extra information.
+  #
+  # Ordered by what actually moved the score, so the most substantive reason
+  # leads rather than whichever question happened to come first in the quiz.
+  MAX_MATCH_REASONS = 3
+
+  def match_reasons
+    @match_reasons ||= satisfied_criteria
+      .sort_by { |criterion| -contribution_for(criterion) }
+      .first(MAX_MATCH_REASONS)
+      .map { |criterion| reason_label(criterion) }
+  end
+
+  def hidden_match_reason_count
+    [satisfied_criteria.size - MAX_MATCH_REASONS, 0].max
+  end
+
   def top_causes
     # Array#first serves from the preloaded association cache; limit() would
     # issue a fresh SELECT with LIMIT 4 and bypass the preload.
@@ -136,6 +158,35 @@ class SmartMatchCard::Component < ApplicationViewComponent
   end
 
   private
+
+  # Criteria this organization personally satisfies, in full or in part.
+  def satisfied_criteria
+    @satisfied_criteria ||= Array(match.score_breakdown&.dig("criteria")).select do |criterion|
+      criterion["status"].in?([SmartMatch::RuleScorer::MET, SmartMatch::RuleScorer::PARTIAL]) &&
+        SmartMatch::CriteriaSummary::HIDDEN_QUESTIONS.exclude?(criterion["question"])
+    end
+  end
+
+  # How much this criterion earned, read back from the itemized trace. Grouped
+  # criteria (services) have no single answer, so they match on question alone.
+  def contribution_for(criterion)
+    Array(match.score_breakdown&.dig("rule_matches"))
+      .select { |entry| entry["question"] == criterion["question"] }
+      .select { |entry| criterion["answer"].blank? || entry["answer"] == criterion["answer"] }
+      .sum { |entry| entry["contribution"].to_f }
+  end
+
+  def reason_label(criterion)
+    # ApplicationController.helpers rather than the component's `helpers`
+    # proxy: the latter needs an active render, and resolving a label is a pure
+    # function of the answer plus the current locale.
+    label = ApplicationController.helpers.smart_match_criterion_label(
+      criterion["question"], criterion["answer"]
+    )
+    return label unless criterion["grouped"]
+
+    "#{label} (#{criterion["matched_count"]}/#{criterion["selected_count"]})"
+  end
 
   # The displayed match fraction (0.0–1.0) after presentation-only calibration.
   # Raw scores are dominated by compressed embedding similarity; the linear
