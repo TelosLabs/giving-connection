@@ -23,7 +23,8 @@ class Search
     @results = (city == "Search all") ? Location.active : geolocation_query
 
     # Filter and keyword search
-    @results = Location.joins(:organization).where(id: Locations::FilterQuery.call(filters, @results).ids)
+    filtered_ids = Locations::FilterQuery.call(filters, @results).ids
+    @results = Location.joins(:organization).where(id: filtered_ids).in_order_of(:id, filtered_ids)
     @results = keyword.present? ? Locations::KeywordQuery.call({keyword: keyword}, @results) : @results
   end
 

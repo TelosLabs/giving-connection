@@ -14,7 +14,7 @@ module Locations
         scope = by_scope_of_work(scope, params[:scope_of_work])
         scope = by_give(scope, params[:give])
         scope = opened_now(scope, params[:open_now])
-        opened_on_weekends(scope, params[:open_weekends])
+        scope = opened_on_weekends(scope, params[:open_weekends])
         scope
       end
 
@@ -143,22 +143,19 @@ module Locations
       def by_give(scope, give_values)
         return scope if give_values.blank? || scope.empty?
 
-        query = Location.joins(:organization).where("locations.id IN (?)", scope.ids)
+        conditions = []
+        conditions << "organizations.donation_link IS NOT NULL AND organizations.donation_link != ''" if give_values.include?("Donation Opportunities")
+        conditions << "organizations.volunteer_availability = true AND organizations.volunteer_link IS NOT NULL AND organizations.volunteer_link != ''" if give_values.include?("Volunteer Opportunities")
+        conditions << "organizations.in_kind_donation_link IS NOT NULL AND organizations.in_kind_donation_link != '' AND jsonb_array_length(organizations.in_kind_donation_items) > 0" if give_values.include?("In Kind Donations Accepted")
 
-        if give_values.include?("Donation Opportunities")
-          query = query.where.not(organizations: {donation_link: [nil, ""]})
-        end
+        return scope if conditions.empty?
 
-        if give_values.include?("Volunteer Opportunities")
-          query = query.where(organizations: {volunteer_availability: true})
-            .where.not(organizations: {volunteer_link: [nil, ""]})
-        end
+        match_count = conditions.map { |c| "(#{c})::int" }.join(" + ")
 
-        if give_values.include?("In Kind Donations Accepted")
-          query = query.where.not(organizations: {in_kind_donation_link: [nil, ""]})
-        end
-
-        query.group("locations.id")
+        Location.joins(:organization)
+          .where("locations.id IN (?)", scope.ids)
+          .where(conditions.map { |c| "(#{c})" }.join(" OR "))
+          .order(Arel.sql("(#{match_count}) DESC"))
       end
     end
   end
