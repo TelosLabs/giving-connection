@@ -5,12 +5,12 @@ class SmartMatchCard::Component < ApplicationViewComponent
 
   CIRCLE_CIRCUMFERENCE = (2 * Math::PI * 20).round(2)
 
-  # Match-tier percentage cutoffs. A score at or above GREAT_MATCH_THRESHOLD
-  # is a "Great Match"; at or above GOOD_MATCH_THRESHOLD (but below great) is a
-  # "Good Match"; anything lower is a plain "Match". Shared by the label, label
-  # color, and circle color so the three presentations can't drift apart.
-  GREAT_MATCH_THRESHOLD = 75
-  GOOD_MATCH_THRESHOLD = 50
+  # Label, label colour and ring colour all key off OrganizationMatch#tier
+  # rather than re-deriving cutoffs here, so a card can never disagree with the
+  # tier the results page grouped it under.
+  TIER_LABELS = {great: "Great Match", good: "Good Match", match: "Match"}.freeze
+  TIER_LABEL_COLORS = {great: "text-seafoam", good: "text-blue-medium", match: "text-salmon"}.freeze
+  TIER_CIRCLE_COLORS = {great: "#9ae2e0", good: "#0782D0", match: "#fc8383"}.freeze
 
   def initialize(organization:, match:, user_type: nil)
     @organization = organization
@@ -19,23 +19,15 @@ class SmartMatchCard::Component < ApplicationViewComponent
   end
 
   def match_percentage
-    (calibrated_fraction * 100).round
+    match.display_percentage
   end
 
   def match_label
-    case match_percentage
-    when GREAT_MATCH_THRESHOLD..100 then "Great Match"
-    when GOOD_MATCH_THRESHOLD...GREAT_MATCH_THRESHOLD then "Good Match"
-    else "Match"
-    end
+    TIER_LABELS.fetch(match.tier)
   end
 
   def match_label_color
-    case match_percentage
-    when GREAT_MATCH_THRESHOLD..100 then "text-seafoam"
-    when GOOD_MATCH_THRESHOLD...GREAT_MATCH_THRESHOLD then "text-blue-medium"
-    else "text-salmon"
-    end
+    TIER_LABEL_COLORS.fetch(match.tier)
   end
 
   def circle_circumference
@@ -47,11 +39,7 @@ class SmartMatchCard::Component < ApplicationViewComponent
   end
 
   def circle_color
-    case match_percentage
-    when GREAT_MATCH_THRESHOLD..100 then "#9ae2e0"
-    when GOOD_MATCH_THRESHOLD...GREAT_MATCH_THRESHOLD then "#0782D0"
-    else "#fc8383"
-    end
+    TIER_CIRCLE_COLORS.fetch(match.tier)
   end
 
   # CTA
@@ -208,26 +196,10 @@ class SmartMatchCard::Component < ApplicationViewComponent
     "#{label} (#{criterion["matched_count"]}/#{criterion["selected_count"]})"
   end
 
-  # The displayed match fraction (0.0–1.0) after presentation-only calibration.
-  # Raw scores are dominated by compressed embedding similarity; the linear
-  # rescale defined in matching_rules.yml#display_calibration stretches them
-  # onto a more intuitive band. It is monotonic, so ranking is unaffected.
+  # The fraction the progress ring is drawn from. Taken off the displayed
+  # percentage rather than the raw score so the ring and the number in it can
+  # never round to different values.
   def calibrated_fraction
-    @calibrated_fraction ||= calibrate(match.score.to_f)
-  end
-
-  def calibrate(raw)
-    raw = raw.clamp(0.0, 1.0)
-    cfg = SmartMatch::MATCHING_RULES["display_calibration"]
-    return raw unless cfg
-
-    floor = cfg["input_floor"].to_f
-    ceiling = cfg["input_ceiling"].to_f
-    return raw if ceiling <= floor
-
-    min_fraction = cfg["min_percentage"].to_f / 100.0
-    max_fraction = cfg["max_percentage"].to_f / 100.0
-    t = ((raw - floor) / (ceiling - floor)).clamp(0.0, 1.0)
-    (min_fraction + t * (max_fraction - min_fraction)).clamp(0.0, 1.0)
+    match_percentage / 100.0
   end
 end

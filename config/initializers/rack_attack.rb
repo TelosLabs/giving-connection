@@ -227,8 +227,10 @@ class Rack::Attack
   # Limits chosen for the no-product-input default:
   #   - smart_match/quiz: 60/hour per IP. A normal completion is ~9 PUTs;
   #     this allows ~6 completions/hour/IP including back-button traffic.
-  #   - smart_match/results: 10/hour per IP. Each request invokes the
-  #     embedding service + similarity query + writes.
+  #   - smart_match/results: 10/hour per IP. A first view can start a match run
+  #     (embedding service + similarity query + writes) via ProcessSubmissionJob.
+  #   - smart_match/results_page: 60/hour per IP for "?page=N" requests. Those
+  #     are pure reads of already-persisted matches -- see below.
   # Tune in THROTTLE_PERIODS above once real traffic patterns are known.
   throttle("smart_match/quiz", limit: 60, period: THROTTLE_PERIODS[:smart_match_quiz]) do |req|
     if req.path.start_with?("/smart_match/quiz") && (req.put? || req.patch? || req.post?)
@@ -239,7 +241,26 @@ class Rack::Attack
   throttle("smart_match/results", limit: 10, period: THROTTLE_PERIODS[:smart_match_results]) do |req|
     # Exact match: the "/smart_match/result/status" poll target is throttled
     # separately below (polling would otherwise burn the 10/hour results budget).
-    if req.path == "/smart_match/result" && req.get?
+    #
+    # Paged requests are excluded and throttled separately: "Show more" turns one
+    # page view into several GETs of this same path, which would eat a 10/hour
+    # budget sized for starting match runs, not for browsing results.
+    if req.path == "/smart_match/result" && req.get? && req.GET["page"].blank?
+      req.remote_ip
+    end
+  end
+
+  # "Show more" on the results page re-requests it as "?page=N". By then the
+  # pipeline has already run: the controller reads persisted matches and renders
+  # cards, touching neither the embedding service nor pgvector. Paging through
+  # the full pool takes a handful of these, so they get their own higher ceiling.
+  #
+  # Passing ?page= on a first-ever visit still lands here, which is deliberate:
+  # the expensive work is enqueued once per attempt token (see
+  # ProcessSubmissionJob.processing_key) and starting a new attempt means
+  # completing the quiz again, which the 60/hour quiz throttle above bounds.
+  throttle("smart_match/results_page", limit: 60, period: THROTTLE_PERIODS[:smart_match_results]) do |req|
+    if req.path == "/smart_match/result" && req.get? && req.GET["page"].present?
       req.remote_ip
     end
   end

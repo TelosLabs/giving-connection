@@ -72,6 +72,12 @@ en:
       still_need_help: "Still Need Help?"
       retake: "Retake Quiz"
       try_again: "Try Again"
+      showing:
+        one: "Showing your only match"
+        other: "Showing %{shown} of %{count} matches"
+      show_more:
+        one: "Show 1 more"
+        other: "Show %{count} more"
       processing:
         title: "Finding your matches…"
         body: "We're matching you with nonprofits that fit your answers. This only takes a moment."

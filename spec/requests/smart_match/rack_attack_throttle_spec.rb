@@ -61,6 +61,29 @@ RSpec.describe "SmartMatch Rack::Attack throttles", type: :request do
       get smart_match_result_path, env: {"REMOTE_ADDR" => ip_a}
       expect(response).to have_http_status(:too_many_requests)
     end
+
+    # "Show more" re-requests this path with ?page=N. Those are reads of matches
+    # the pipeline already persisted, so they must not spend a budget sized for
+    # starting match runs -- otherwise paging through results locks the user out
+    # of their own results page.
+    it "does not spend the budget on paged requests" do
+      10.times { get smart_match_result_path(page: 2), env: {"REMOTE_ADDR" => ip_a} }
+
+      get smart_match_result_path, env: {"REMOTE_ADDR" => ip_a}
+      expect(response).not_to have_http_status(:too_many_requests)
+    end
+  end
+
+  describe "smart_match/results_page throttle (60/period/IP)" do
+    it "allows 60 paged requests then throttles the 61st from the same IP" do
+      60.times do |i|
+        get smart_match_result_path(page: 2), env: {"REMOTE_ADDR" => ip_a}
+        expect(response.status).to satisfy("be allowed on request #{i + 1}, got #{response.status}") { |s| (200..399).cover?(s) }
+      end
+
+      get smart_match_result_path(page: 2), env: {"REMOTE_ADDR" => ip_a}
+      expect(response).to have_http_status(:too_many_requests)
+    end
   end
 
   # The status endpoint is polled, so its ceiling has to clear one attempt's

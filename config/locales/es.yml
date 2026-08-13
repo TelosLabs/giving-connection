@@ -43,6 +43,12 @@ es:
     results:
       heading: "¡Tus resultados están listos!"
       subheading: "Con base en tus respuestas, te emparejamos con organizaciones sin fines de lucro que se ajustan mejor a tus preferencias. Explora las opciones abajo para conocerlas y dar el siguiente paso."
+      showing:
+        one: "Mostrando tu única coincidencia"
+        other: "Mostrando %{shown} de %{count} coincidencias"
+      show_more:
+        one: "Ver 1 más"
+        other: "Ver %{count} más"
       still_need_help: "¿Aún necesitas ayuda?"
       retake: "Volver a hacer el cuestionario"
       try_again: "Intentar de nuevo"

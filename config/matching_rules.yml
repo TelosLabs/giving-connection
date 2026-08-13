@@ -59,8 +59,34 @@ scoring:
   general_population_credit: 0.5
   # Minimum number of results to return (triggers radius expansion if not met)
   min_results: 3
-  # Maximum results to display
-  max_results: 20
+  # How deep the candidate pool goes: the most organizations SimilarityQuery
+  # will hand to the Scorer, and therefore the most OrganizationMatch rows a
+  # submission can have. This is the ceiling on everything the results page can
+  # ever page through -- see results_display below.
+  #
+  # Every extra candidate costs one RuleScorer pass in ProcessSubmissionJob and
+  # one persisted row carrying its score_breakdown, so this trades job time and
+  # storage for how many options a user can browse. Raised from 20 when the
+  # results page stopped showing a fixed three.
+  max_results: 60
+
+# ---------------------------------------------------------------------------
+# Results page paging (presentation only — does NOT affect ranking or scoring)
+#
+# The first page is the top match tier in full, rather than a fixed number of
+# cards: someone comparing options wants every organization we think is a great
+# fit. Two knobs shape that:
+#
+#   min_visible : the fewest cards a first page may show. Below this the page
+#                 reaches down into the next tier (great -> good -> match), so
+#                 a quiz with two great matches still returns a usable page.
+#   page_size   : cap on the first page, and how many more each "Show more"
+#                 adds. Keeps a 40-great-match quiz from rendering 40 cards
+#                 before the user has asked for them.
+# ---------------------------------------------------------------------------
+results_display:
+  min_visible: 6
+  page_size: 20
 
 # ---------------------------------------------------------------------------
 # Display calibration (presentation only — does NOT affect ranking)

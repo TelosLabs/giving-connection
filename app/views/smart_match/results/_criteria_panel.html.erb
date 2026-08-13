@@ -10,11 +10,15 @@
   only one of them means the user should look elsewhere.
 
   Collapsed by default: it is reassurance for the people who want it, not the
-  headline.
+  headline. Once opened it STAYS open across "Show more" clicks, which replace
+  this panel along with the cards -- see persistent_details_controller.
 %>
 <% return if criteria.blank? %>
 
-<details class="mb-6 bg-white border rounded-lg border-gray-6 group">
+<details class="mb-6 bg-white border rounded-lg border-gray-6 group"
+         data-controller="persistent-details"
+         data-persistent-details-key-value="smart-match-criteria"
+         data-action="toggle->persistent-details#save">
   <summary class="flex items-center justify-between px-5 py-4 cursor-pointer list-none">
     <span class="text-sm font-semibold text-gray-2">
       <%= t("smart_match.results.criteria.title") %>

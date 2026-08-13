@@ -14,8 +14,14 @@ module SmartMatch
       return if performed? # stale-id redirect already happened
 
       if @submission
-        @results = matches_for(@submission)
+        @page = SmartMatch::ResultsPage.call(
+          matches: @submission.organization_matches, page: params[:page]
+        )
+        @results = with_card_associations(@page.matches)
         @relaxations = @submission.search_relaxations
+        # Summarised over what is on screen, not the whole pool: the panel
+        # counts how many of the SHOWN matches meet each criterion, so it is
+        # re-rendered inside the same Turbo frame as the cards.
         @criteria = SmartMatch::CriteriaSummary.call(matches: @results)
       elsif processing_error?
         # Terminal failure recorded by the background job. Clear the flags so
@@ -61,11 +67,13 @@ module SmartMatch
       QuizSubmission.exists?(attempt_token: attempt_token)
     end
 
-    def matches_for(submission)
-      submission.organization_matches
-        .includes(organization: [:causes, :main_location, {logo_attachment: :blob}, {cover_photo_attachment: :blob}])
-        .order(:rank)
-        .limit(3)
+    # Preloads are applied to the page ResultsPage chose rather than to the
+    # whole pool, so a first page of six does not fetch the logos and cover
+    # photos of the fifty-four matches behind it.
+    def with_card_associations(matches)
+      matches.includes(
+        organization: [:causes, :main_location, {logo_attachment: :blob}, {cover_photo_attachment: :blob}]
+      )
     end
 
     def find_submission
