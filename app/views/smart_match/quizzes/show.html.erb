@@ -1,10 +1,12 @@
 <section class="flex flex-col min-h-screen bg-white sm-wizard"
-         data-controller="smart-match-quiz"
+         data-controller="smart-match-quiz scroll-cue"
          data-smart-match-quiz-step-value="<%= @step %>"
          data-smart-match-quiz-total-steps-value="<%= @total_steps %>">
 
-  <%# Wizard content area %>
-  <div class="flex-1 overflow-y-auto">
+  <%# Wizard content area. Declared as the scroll-cue pane because it is the
+      scroller whenever the flex line pins it to the viewport; the controller
+      falls back to the document when it is not. %>
+  <div class="flex-1 overflow-y-auto" data-scroll-cue-target="pane">
 
     <%# Section number — on desktop, slides to sit above the current progress
         segment. The 4 segments are equal-width with a gap-2 (0.5rem) gutter,

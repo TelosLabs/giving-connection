@@ -76,6 +76,67 @@
 }
 
 // ---------------------------------------------------------------------------
+// "More below" cue
+//
+// Steps with many options run past the fold, and the sticky footer reads as the
+// end of the page -- users were missing the options underneath. These two
+// layers sit directly above the footer and let content dissolve into it rather
+// than stopping at a hard edge, which is what makes the page look finished.
+//
+// Hung off the footer rather than added as markup because the footer is already
+// sticky-bottom: bottom: 100% pins the cue to its top edge for free, and that
+// holds whichever element ends up scrolling (see scroll_cue_controller.js).
+//
+// Both layers are opt-in via data-more-below, which the controller sets only
+// while something is genuinely left to scroll -- an always-on fade would claim
+// more content on the last screen of every step, which is the same lie in the
+// opposite direction. No JS means no cue, deliberately: a permanent gradient is
+// worse than none.
+// ---------------------------------------------------------------------------
+.sm-wizard__footer::before,
+.sm-wizard__footer::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  height: 4.5rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+// White wash, densest against the footer.
+.sm-wizard__footer::before {
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.9) 40%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+// Blur layer, masked so the blur itself fades out with the wash instead of
+// ending on a visible seam -- an unmasked blur strip reads as a rendering
+// artefact rather than an affordance. Kept shallow (3px): enough to suggest
+// content passing underneath, cheap enough to composite on every scroll frame.
+@supports (backdrop-filter: blur(3px)) or (-webkit-backdrop-filter: blur(3px)) {
+  .sm-wizard__footer::after {
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    -webkit-mask-image: linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0) 85%);
+    mask-image: linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0) 85%);
+  }
+}
+
+.sm-wizard[data-more-below="true"] {
+  .sm-wizard__footer::before,
+  .sm-wizard__footer::after {
+    opacity: 1;
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Card grid — flex so incomplete last rows are centered
 // ---------------------------------------------------------------------------
 [data-card-group] {
