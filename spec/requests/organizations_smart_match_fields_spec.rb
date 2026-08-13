@@ -31,7 +31,7 @@ RSpec.describe "Organization Smart Match fields", type: :request do
       get edit_organization_path(organization)
 
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include("Smart Match details")
+      expect(response.body).to include("Smart Match Details")
       expect(response.body).to include("Do you offer free or sliding-scale services?")
       expect(response.body).to include("Which languages can you deliver services in?")
       expect(response.body).to include("Is this location wheelchair accessible?")
