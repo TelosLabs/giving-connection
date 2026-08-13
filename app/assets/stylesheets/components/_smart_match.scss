@@ -136,6 +136,73 @@
   }
 }
 
+// The chevron riding in the fade. The gradient alone is a soft signal -- users
+// were not scrolling at all, so this is the loud half of the cue.
+//
+// z-index lifts it above both fade layers: pseudo-elements paint in tree order,
+// so without it the ::after blur layer would sit on top and blur the chevron.
+.sm-wizard__scroll-cue {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  background-color: #fff;
+  color: #113C7B;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+  // Untargetable until the wizard says there is more below, so it cannot be
+  // clicked while invisible.
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+
+  svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  // 36px is under the 44px minimum tap target, and phones are where the fade is
+  // easiest to miss and thumbs are least precise.
+  @media (max-width: 639px) {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}
+
+.sm-wizard[data-more-below="true"] .sm-wizard__scroll-cue {
+  opacity: 1;
+  pointer-events: auto;
+  animation: sm-scroll-cue-bob 1.6s ease-in-out infinite;
+}
+
+// Keyframes carry the -50% X themselves: a transform in the animation replaces
+// the base translateX rather than combining with it, which would otherwise snap
+// the chevron to the right by half its width for the whole animation.
+@keyframes sm-scroll-cue-bob {
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+  50% {
+    transform: translate(-50%, 25%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sm-wizard[data-more-below="true"] .sm-wizard__scroll-cue {
+    animation: none;
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Card grid — flex so incomplete last rows are centered
 // ---------------------------------------------------------------------------

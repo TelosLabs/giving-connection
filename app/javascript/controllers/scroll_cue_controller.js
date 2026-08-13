@@ -56,6 +56,14 @@ export default class extends Controller {
     })
   }
 
+  // Tapping the chevron advances most of a screen rather than a full one, so the
+  // options that were at the bottom edge stay visible as context.
+  scrollDown() {
+    const scroller = this.scroller
+
+    scroller.scrollBy({ top: scroller.clientHeight * 0.8, behavior: "smooth" })
+  }
+
   update() {
     const scroller = this.scroller
     const remaining = scroller.scrollHeight - scroller.clientHeight - scroller.scrollTop
