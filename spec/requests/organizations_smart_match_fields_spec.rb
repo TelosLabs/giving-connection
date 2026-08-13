@@ -37,6 +37,22 @@ RSpec.describe "Organization Smart Match fields", type: :request do
       expect(response.body).to include("Is this location wheelchair accessible?")
     end
 
+    # Placement and grouping are what the nonprofits asked for: the questions
+    # live at the bottom of Organization Information rather than as a section of
+    # their own, grouped by the audience each answer helps us match them with.
+    it "renders inside the Organization Information section, grouped by audience" do
+      get edit_organization_path(organization)
+
+      # Anchored on field labels rather than section ids: the sidebar repeats
+      # every section id in a data attribute, so an id search finds the nav
+      # link long before the section itself.
+      expect(response.body.index("smart-match-fields")).to be > response.body.index("Mission Statement - What We Do")
+      expect(response.body.index("smart-match-fields")).to be < response.body.index("Which causes best describe")
+      expect(response.body.index("For people looking for services"))
+        .to be < response.body.index("For volunteers")
+      expect(response.body.index("For volunteers")).to be < response.body.index("For donors")
+    end
+
     it "offers a Not specified option for every boolean capability" do
       get edit_organization_path(organization)
 
