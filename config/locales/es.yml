@@ -69,6 +69,7 @@ es:
         more_reasons:
           one: "+1 más"
           other: "+%{count} más"
+        fewer_reasons: "Ver menos"
       criteria:
         title: "Cómo te emparejamos"
         summary: "%{matched} de %{total} coinciden"

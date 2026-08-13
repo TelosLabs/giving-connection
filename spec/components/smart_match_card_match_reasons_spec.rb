@@ -83,10 +83,21 @@ RSpec.describe SmartMatchCard::Component, type: :component do
     expect(card.hidden_match_reason_count).to eq(2)
   end
 
+  # Capped, not truncated: the remainder is rendered collapsed so "+N more" can
+  # reveal it. Nothing the user asked for is dropped from the card.
+  it "keeps the remainder available behind the toggle" do
+    reasons = ["Health", "Mental Health", "Seniors", "Education", "Employment"]
+    card = card_for(reasons.map { |cause| criterion("causes", cause, "met") })
+
+    expect(card.match_reasons + card.hidden_match_reasons).to match_array(reasons)
+    expect(card.match_reason_chips.map(&:last)).to eq([false, false, false, true, true])
+  end
+
   it "reports no remainder when everything fits" do
     card = card_for([criterion("causes", "Health", "met")])
 
     expect(card.hidden_match_reason_count).to eq(0)
+    expect(card.hidden_match_reasons).to be_empty
   end
 
   it "shows how much of a grouped selection was found" do

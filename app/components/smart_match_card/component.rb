@@ -123,9 +123,10 @@ class SmartMatchCard::Component < ApplicationViewComponent
 
   # Why THIS organization surfaced -- the criteria it personally satisfies.
   #
-  # Only the positives, and only a few. Answers are OR'd rather than AND'd, so
-  # every result meets some subset and the useful signal is which subset; the
-  # misses are already reported once, in aggregate, by the results page panel.
+  # Only the positives, and only a few up front -- the rest are one click away
+  # behind the "+N more" toggle. Answers are OR'd rather than AND'd, so every
+  # result meets some subset and the useful signal is which subset; the misses
+  # are already reported once, in aggregate, by the results page panel.
   # Repeating them per card would triple the noise for no extra information.
   #
   # Ordered by what actually moved the score, so the most substantive reason
@@ -133,14 +134,26 @@ class SmartMatchCard::Component < ApplicationViewComponent
   MAX_MATCH_REASONS = 3
 
   def match_reasons
-    @match_reasons ||= satisfied_criteria
-      .sort_by { |criterion| -contribution_for(criterion) }
-      .first(MAX_MATCH_REASONS)
-      .map { |criterion| reason_label(criterion) }
+    ordered_match_reasons.first(MAX_MATCH_REASONS)
+  end
+
+  # The remainder, rendered collapsed behind the "+N more" toggle. They ship
+  # with the card rather than being fetched on expand: they are a handful of
+  # short strings we have already computed, and hiding them client-side keeps
+  # expanding instant and independent per card.
+  def hidden_match_reasons
+    ordered_match_reasons.drop(MAX_MATCH_REASONS)
   end
 
   def hidden_match_reason_count
-    [satisfied_criteria.size - MAX_MATCH_REASONS, 0].max
+    hidden_match_reasons.size
+  end
+
+  # Every chip in display order, flagged with whether it starts collapsed, so
+  # the template renders one chip markup rather than two near-identical loops.
+  def match_reason_chips
+    match_reasons.map { |reason| [reason, false] } +
+      hidden_match_reasons.map { |reason| [reason, true] }
   end
 
   def top_causes
@@ -158,6 +171,13 @@ class SmartMatchCard::Component < ApplicationViewComponent
   end
 
   private
+
+  # Labels for everything this organization satisfies, strongest first.
+  def ordered_match_reasons
+    @ordered_match_reasons ||= satisfied_criteria
+      .sort_by { |criterion| -contribution_for(criterion) }
+      .map { |criterion| reason_label(criterion) }
+  end
 
   # Criteria this organization personally satisfies, in full or in part.
   def satisfied_criteria

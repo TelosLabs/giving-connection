@@ -95,6 +95,7 @@ en:
         more_reasons:
           one: "+1 more"
           other: "+%{count} more"
+        fewer_reasons: "Show less"
       criteria:
         title: "How we matched you"
         summary: "%{matched} of %{total} matched"
