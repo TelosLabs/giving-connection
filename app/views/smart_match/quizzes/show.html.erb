@@ -1,12 +1,14 @@
-<section class="flex flex-col min-h-screen bg-white sm-wizard"
-         data-controller="smart-match-quiz scroll-cue"
+<%# No min-h-screen: the section's height is the space actually left below the
+    navbar, set by wizard_scroll_controller. min-h-screen was a viewport's worth
+    ON TOP of the navbar, which is where the blank tail at the end of every step
+    came from -- and it would win over the SCSS height if left here. %>
+<section class="flex flex-col bg-white sm-wizard"
+         data-controller="smart-match-quiz wizard-scroll"
          data-smart-match-quiz-step-value="<%= @step %>"
          data-smart-match-quiz-total-steps-value="<%= @total_steps %>">
 
-  <%# Wizard content area. Declared as the scroll-cue pane because it is the
-      scroller whenever the flex line pins it to the viewport; the controller
-      falls back to the document when it is not. %>
-  <div class="flex-1 overflow-y-auto" data-scroll-cue-target="pane">
+  <%# Wizard content area: the only scroller for step content. %>
+  <div class="flex-1 overflow-y-auto sm-wizard__pane" data-wizard-scroll-target="pane">
 
     <%# Section number — on desktop, slides to sit above the current progress
         segment. The 4 segments are equal-width with a gap-2 (0.5rem) gutter,
@@ -59,8 +61,10 @@
         <% end %>
       </div>
 
-      <%# Step content %>
-      <turbo-frame id="quiz-step" class="block mt-6 sm-step-enter" target="_top">
+      <%# Step content. Watched for size changes by wizard-scroll: a new step
+          arrives here, and the causes accordion expands inside it. %>
+      <turbo-frame id="quiz-step" class="block mt-6 sm-step-enter" target="_top"
+                   data-wizard-scroll-target="content">
         <%= render @step_partial %>
       </turbo-frame>
     </div>

@@ -11,10 +11,38 @@
 // Wizard layout
 // ---------------------------------------------------------------------------
 .sm-wizard {
+  // Height of the fade over the footer. Shared with the pane's bottom clearance
+  // below so the two can't drift: the clearance exists precisely so answers can
+  // scroll out from under the fade.
+  --sm-fade-height: 4.5rem;
+
   background-color: #fff;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+
+  // The space actually left below the navbar -- NOT a whole viewport. The navbar
+  // is in normal flow above this section, so `min-height: 100vh` made the page a
+  // navbar taller than the screen, and every step ended in a blank tail you could
+  // scroll into (302px on the shorter steps). A definite height also pins the
+  // pane as the single scroller, instead of the pane and the document trading the
+  // job depending on how tall the step happened to be.
+  //
+  // --sm-wizard-offset is measured by wizard_scroll_controller; the 0 fallback
+  // means "behave as before" for the moment between first paint and Stimulus
+  // connecting.
+  height: calc(100vh - var(--sm-wizard-offset, 0px));
+  height: calc(100dvh - var(--sm-wizard-offset, 0px));
+}
+
+.sm-wizard__pane {
+  // Clearance so the last answers can scroll clear of the fade and the footer
+  // rather than coming to rest underneath them -- without it, the bottom row of
+  // options on a full step stays blurred no matter how far you scroll.
+  //
+  // wizard_scroll_controller subtracts this padding when deciding whether
+  // anything is really left below, so the cue can never point at the clearance
+  // itself.
+  padding-bottom: var(--sm-fade-height);
 }
 
 // Progress bar segments
@@ -84,8 +112,8 @@
 // than stopping at a hard edge, which is what makes the page look finished.
 //
 // Hung off the footer rather than added as markup because the footer is already
-// sticky-bottom: bottom: 100% pins the cue to its top edge for free, and that
-// holds whichever element ends up scrolling (see scroll_cue_controller.js).
+// sticky-bottom: bottom: 100% pins the cue to its top edge for free (see
+// wizard_scroll_controller.js).
 //
 // Both layers are opt-in via data-more-below, which the controller sets only
 // while something is genuinely left to scroll -- an always-on fade would claim
@@ -100,7 +128,7 @@
   bottom: 100%;
   left: 0;
   right: 0;
-  height: 4.5rem;
+  height: var(--sm-fade-height);
   pointer-events: none;
   opacity: 0;
   transition: opacity 200ms ease;
@@ -415,12 +443,30 @@ form:has(input:checked) .sm-selection-hint {
 // Category accordion ("more options")
 // ---------------------------------------------------------------------------
 .sm-category-accordion {
+  // max-height: 0 hides the extra causes but does NOT take them out of layout:
+  // measured in Chrome, a collapsed accordion still handed ~1500px of its
+  // clipped content to the scrolling pane. The step was scrollable through a
+  // screenful of nothing, which is what the scroll cue then advertised and what
+  // the chevron delivered users into. Neither `overflow: hidden` nor
+  // `overflow: clip` stops it -- only skipping the contents' layout does.
+  //
+  // content-visibility does that while keeping the element in the box tree, so
+  // the max-height animation still works. Transitioning it with allow-discrete
+  // holds the contents rendered until the closing animation finishes; browsers
+  // without allow-discrete drop that second declaration and fall back to the
+  // first, where the contents simply vanish at the start of the close.
+  //
+  // Bonus: collapsed causes are no longer focusable or announced, which they
+  // were the whole time they were merely clipped.
   overflow: hidden;
   max-height: 0;
+  content-visibility: hidden;
   transition: max-height 350ms ease;
+  transition: max-height 350ms ease, content-visibility 350ms allow-discrete;
 
   &.open {
     max-height: 2000px;
+    content-visibility: visible;
   }
 }
 
