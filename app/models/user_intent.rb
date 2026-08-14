@@ -25,7 +25,6 @@ class UserIntent
   # `causes` and `prefs` are deliberately absent: they predate this table and
   # keep their historical `*_selected` accessor names.
   QUIZ_ANSWERS = {
-    services: :multiple,
     support_for: :single,
     self_description: :multiple,
     situation: :single,

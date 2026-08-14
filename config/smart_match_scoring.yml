@@ -118,32 +118,12 @@ questions:
         - {field: service, match: cause_service, weight: 3}
       none: []
 
-  # NOT IN THE CLIENT'S CSV -- added 2026-08-10.
-  #
-  # The sheet only ever asks for causes, the top level. The platform holds ~274
-  # services under 35 causes, organizations are tagged with them, and the main
-  # site search already filters on them -- Smart Match was the only surface not
-  # asking. See docs/smart-match-scoring/07-unused-organization-data.md.
-  #
-  # Weighted like an exact cause match (5 x 1.5): the user naming the specific
-  # service they need is at least as strong a signal as naming its cause. The
-  # answer IS a service name, so it resolves against the selected value the
-  # same way the cause questions do.
-  services:
-    paths: [service_seeker, donor, volunteer]
-    multiplier: 1.5
-    # The whole question is worth ONE answer's weight however many services are
-    # ticked, earned in proportion to how many match (2 of 4 -> half).
-    #
-    # Scored independently, six services added 6 x 5 x 1.5 = 45 to the
-    # achievable maximum against a single cause's 13.5 -- so an organization
-    # serving the right cause but not the exact service was buried, and
-    # refining the search behaved like filtering it out. Services are meant to
-    # sharpen the ranking within a cause, not gate it.
-    aggregate: proportional
-    answers:
-      "*":
-        - {field: service, match: answer, weight: 5}
+  # Specific services are deliberately NOT scored. Asking for them up front
+  # overwhelmed users who don't know the vocabulary, so the question is gone
+  # from the quiz; services are now a post-hoc filter on the results page (see
+  # SmartMatch::ServiceFilter), which narrows what is shown without touching
+  # the ranking. The cause questions above still credit an organization's
+  # services through their `cause_service` rules.
 
   # ===========================================================================
   # FIND HELP  (service_seeker)

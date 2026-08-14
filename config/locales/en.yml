@@ -102,17 +102,24 @@ en:
           one: "+1 more"
           other: "+%{count} more"
         fewer_reasons: "Show less"
+      service_filter:
+        title: "Looking for a specific service?"
+        hint: "Optional. Tick anything you need and we'll show only the matches that offer it. The number beside each one is how many of your matches provide it."
+        selected:
+          one: "1 selected"
+          other: "%{count} selected"
+        apply: "Show these"
+        clear: "Clear"
+        clear_cta: "Clear filter"
+        none:
+          title: "Nothing here offers that combination"
+          body: "Your matches are still saved. Clear the filter to see all of them again."
       criteria:
         title: "How we matched you"
         summary: "%{matched} of %{total} matched"
         intro:
           one: "You told us 1 thing mattered. Here is how these results measure up."
           other: "You told us %{count} things mattered. Here is how these results measure up."
-        services_count:
-          one: "1 of %{total} found"
-          other: "%{count} of %{total} found"
-        groups:
-          services: "Specific services you asked for"
         not_stated: "Not stated"
         unknown_note: "Some organizations have not published this information yet. Not stated means we do not know, rather than that the answer is no. It is worth asking them directly."
         status:
@@ -156,7 +163,6 @@ en:
           step_6: "Where should we look for support?"
           step_7: "What kind of travel is possible for you?"
           step_8: "What should we keep in mind when matching you to services?"
-          services: "Which specific services do you need?"
           location_detail: "Where should we search?"
           # Reworded titles when the service_seeker is helping someone else.
           # Missing keys fall back to the defaults above (see QuizStepConfig#title_for).
@@ -178,7 +184,6 @@ en:
           step_5: "What format works best for you?"
           step_6: "Which community would you like your giving to focus on?"
           step_7: "How much time do you have to give?"
-          services: "Which specific services would you like to support?"
           location_detail: "Where should we search?"
         donor:
           step_1: "How can we support you today?"
@@ -189,11 +194,8 @@ en:
           step_6: "Where would you like your donation to make an impact?"
           step_7: "Which community would you like your giving to focus on?"
           step_8: "How would you like to be involved?"
-          services: "Which specific services would you like to fund?"
           location_detail: "Where should we search?"
       steps:
-        services:
-          hint: "Optional — pick as many as you like, or skip to keep your matches broad."
         user_type:
           options:
             service_seeker: "I'm here seeking help from a nonprofit"

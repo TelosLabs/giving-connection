@@ -27,13 +27,13 @@ module SmartMatch
     # the user.
     HIDDEN_QUESTIONS = %w[age_range gender_identity race_ethnicity].freeze
 
-    Criterion = Struct.new(:question, :answer, :met_count, :partial_count, :unknown_count,
-      :total, :grouped, :matched_count, :selected_count, keyword_init: true) do
+    Criterion = Struct.new(:question, :answer, :met_count, :unknown_count, :total,
+      keyword_init: true) do
       def all_met? = met_count == total
 
-      # Counts toward "matched" in the headline. A criterion one match fully
-      # meets, or that several meet in part, is not a failure.
-      def matched? = met_count.positive? || partial_count.positive?
+      # Counts toward "matched" in the headline. A criterion even one of the
+      # shown matches satisfies is not a failure.
+      def matched? = met_count.positive?
 
       # Nobody said no -- they simply have not published the information. Worth
       # separating from a flat "no": the user may still want to call and ask.
@@ -46,11 +46,6 @@ module SmartMatch
 
         "unmet"
       end
-
-      # Proportional questions (services) report how many of the user's own
-      # selections matched, which is far more useful than how many of the three
-      # shown organizations did.
-      def detail? = grouped && selected_count.to_i.positive?
     end
 
     attr_reader :matches
@@ -67,14 +62,8 @@ module SmartMatch
           question: question,
           answer: answer,
           met_count: counts[:met],
-          partial_count: counts[:partial],
           unknown_count: counts[:unknown],
-          total: matches.size,
-          grouped: counts[:grouped],
-          # Best showing across the displayed matches -- "2 of 4 services"
-          # means at least one organization covered two of them.
-          matched_count: counts[:matched_count],
-          selected_count: counts[:selected_count]
+          total: matches.size
         )
       end
     end
@@ -89,17 +78,9 @@ module SmartMatch
           next if HIDDEN_QUESTIONS.include?(criterion["question"])
 
           key = [criterion["question"], criterion["answer"]]
-          acc[key] ||= {met: 0, partial: 0, unknown: 0, grouped: false, matched_count: 0, selected_count: 0}
+          acc[key] ||= {met: 0, unknown: 0}
           acc[key][:met] += 1 if criterion["status"] == RuleScorer::MET
-          acc[key][:partial] += 1 if criterion["status"] == RuleScorer::PARTIAL
           acc[key][:unknown] += 1 if criterion["status"] == RuleScorer::UNKNOWN
-
-          next unless criterion["grouped"]
-
-          acc[key][:grouped] = true
-          acc[key][:selected_count] = criterion["selected_count"].to_i
-          acc[key][:matched_count] =
-            [acc[key][:matched_count], criterion["matched_count"].to_i].max
         end
       end
     end

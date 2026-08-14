@@ -54,16 +54,9 @@
 
           <%# Qualitative, not "1 of 3 matches". The raw count invited the
               reading that the engine had failed twice, when a partial match
-              across a shortlist is the normal, useful outcome. Services are
-              the exception: there the count is of the USER'S selections, which
-              genuinely tells them how much of what they asked for was found. %>
+              across a shortlist is the normal, useful outcome. %>
           <span class="shrink-0 text-xs text-gray-4">
-            <% if criterion.detail? %>
-              <%= t("smart_match.results.criteria.services_count",
-                    count: criterion.matched_count, total: criterion.selected_count) %>
-            <% else %>
-              <%= t("smart_match.results.criteria.status.#{criterion.status}") %>
-            <% end %>
+            <%= t("smart_match.results.criteria.status.#{criterion.status}") %>
           </span>
         </li>
       <% end %>

@@ -32,9 +32,8 @@ RSpec.describe SmartMatchHelper, type: :helper do
       end
     end
 
-    it "shows causes and services by their own name" do
+    it "shows causes by their own name" do
       expect(helper.smart_match_criterion_label("causes", "Mental Health")).to eq("Mental Health")
-      expect(helper.smart_match_criterion_label("services", "Homeless Shelters")).to eq("Homeless Shelters")
     end
 
     it "falls back to a readable token for an unknown answer" do

@@ -14,8 +14,13 @@ module SmartMatch
       return if performed? # stale-id redirect already happened
 
       if @submission
+        # Post-scoring only: the filter narrows what is shown, it never touches
+        # the ranking the job already computed. See SmartMatch::ServiceFilter.
+        @service_filter = SmartMatch::ServiceFilter.new(
+          pool: @submission.organization_matches, requested: params[:services]
+        )
         @page = SmartMatch::ResultsPage.call(
-          matches: @submission.organization_matches, page: params[:page]
+          matches: @service_filter.matches, page: params[:page]
         )
         @results = with_card_associations(@page.matches)
         @relaxations = @submission.search_relaxations

@@ -73,7 +73,7 @@ module SmartMatch
         :language_input, :direction, :target_step, :impact_location, :donor_involvement,
         :volunteer_format, :volunteer_time,
         :age_range, :gender_identity, :race_ethnicity,
-        self_description: [], causes: [], services: [], prefs: [], donation_style: [], giving_inspiration: [], donor_communities: [],
+        self_description: [], causes: [], prefs: [], donation_style: [], giving_inspiration: [], donor_communities: [],
         volunteer_involvement: [], volunteer_type: [])
     end
 

@@ -36,7 +36,6 @@ RSpec.describe "SmartMatch retake isolation", type: :request do
     get smart_match_quiz_path
     put smart_match_quiz_path, params: {user_type: "donor"}
     put smart_match_quiz_path, params: {causes: causes}
-    put smart_match_quiz_path, params: {services: []}
     put smart_match_quiz_path, params: {donation_style: %w[one_time]}
     put smart_match_quiz_path, params: {giving_inspiration: %w[personal_story]}
     put smart_match_quiz_path, params: {donor_communities: %w[seniors]}

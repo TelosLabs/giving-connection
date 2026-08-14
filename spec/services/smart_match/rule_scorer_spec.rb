@@ -152,68 +152,6 @@ RSpec.describe SmartMatch::RuleScorer do
     end
   end
 
-  # Services refine a search within a cause; they must not behave like a filter.
-  #
-  # Scored independently, each selected service added its full weight to the
-  # achievable maximum, so ticking six services buried every organization that
-  # served the right cause but not those exact services. Collapsing the
-  # question into one proportional slot keeps it a refinement.
-  describe "services as a refinement, not a blocker" do
-    it "does not let extra service selections erode a cause match" do
-      org = build_org(causes: ["Mental Health"])
-
-      one = score_for(org, intent(causes: ["Mental Health"], services: ["Mental Health Counseling"]))
-      many = score_for(org, intent(
-        causes: ["Mental Health"],
-        services: ["Mental Health Counseling", "Therapy Services", "Psychiatric Care",
-          "Trauma Services", "Suicide Prevention Services", "Crisis Intervention"]
-      ))
-
-      # Six services must cost no more of the achievable maximum than one.
-      expect(many[:max]).to eq(one[:max])
-      expect(many[:score]).to eq(one[:score])
-    end
-
-    it "keeps an organization matching the cause ahead of one matching neither" do
-      on_cause = build_org(causes: ["Mental Health"])
-      unrelated = build_org(name: "Unrelated", ein_number: "990011", causes: ["Animals"])
-
-      answers = intent(
-        causes: ["Mental Health"],
-        services: ["Therapy Services", "Psychiatric Care", "Trauma Services"]
-      )
-
-      expect(score_for(on_cause, answers)[:score]).to be > score_for(unrelated, answers)[:score]
-    end
-
-    it "still rewards matching more of the requested services" do
-      one_service = build_org(services: ["Therapy Services"])
-      two_services = build_org(name: "Two Services", ein_number: "990012",
-        services: ["Therapy Services", "Psychiatric Care"])
-
-      answers = intent(services: ["Therapy Services", "Psychiatric Care"])
-
-      expect(score_for(two_services, answers)[:score]).to be > score_for(one_service, answers)[:score]
-    end
-
-    it "earns the slot in proportion to how many services matched" do
-      half = build_org(services: ["Therapy Services"])
-
-      result = score_for(half, intent(services: ["Therapy Services", "Psychiatric Care"]))
-
-      expect(result[:earned]).to eq(result[:max] / 2)
-    end
-
-    it "caps the whole question at one answer's weight" do
-      org = build_org(services: ["Therapy Services", "Psychiatric Care"])
-
-      result = score_for(org, intent(services: ["Therapy Services", "Psychiatric Care"]))
-
-      # weight 5 x multiplier 1.5, once -- not once per service.
-      expect(result[:max]).to eq(7.5)
-    end
-  end
-
   # The causes step offers two cards ("Financial assistance" and "Human &
   # social services") that submit the same canonical cause, so ticking both put
   # the value in the array twice -- scoring it as two criteria and doubling its
@@ -765,31 +703,6 @@ RSpec.describe SmartMatch::RuleScorer do
       criteria = criteria_for(org, intent(self_description: ["none"], prefs: ["none"]))
 
       expect(criteria.keys).not_to include(["self_description", "none"], ["prefs", "none"])
-    end
-
-    # Services collapse into a single row rather than one per service: a
-    # six-service selection produced six rows, which buried everything else.
-    it "reports all chosen services as one grouped criterion" do
-      org = build_org(services: ["Homeless Shelters"])
-
-      criteria = score_for(org, intent(services: ["Homeless Shelters", "Temporary Housing"]))[:criteria]
-      services = criteria.find { |c| c[:question] == "services" }
-
-      expect(services[:answer]).to be_nil
-      expect(services[:grouped]).to be(true)
-      expect(services[:status]).to eq("partial")
-      expect(services[:matched_count]).to eq(1)
-      expect(services[:selected_count]).to eq(2)
-    end
-
-    it "reports a fully-covered service selection as met" do
-      org = build_org(services: ["Homeless Shelters", "Temporary Housing"])
-
-      services = score_for(org, intent(services: ["Homeless Shelters", "Temporary Housing"]))[:criteria]
-        .find { |c| c[:question] == "services" }
-
-      expect(services[:status]).to eq("met")
-      expect(services[:matched_count]).to eq(2)
     end
   end
 

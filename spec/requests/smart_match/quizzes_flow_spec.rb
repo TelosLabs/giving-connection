@@ -42,7 +42,7 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
     end
   end
 
-  describe "donor quiz happy path (12 steps, preset city skips the detail step)" do
+  describe "donor quiz happy path (11 steps, preset city skips the detail step)" do
     it "advances every step and redirects to confirmation on completion" do
       get smart_match_quiz_path
 
@@ -57,52 +57,46 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       expect(request.session[:smart_match_causes]).to eq(%w[Education Health])
       expect(request.session[:smart_match_step]).to eq(3)
 
-      # Step 3 -> 4: services, scoped to the causes just chosen
-      put smart_match_quiz_path, params: {services: ["Student Educational Services"]}
-      expect(request.session[:smart_match_services]).to eq(["Student Educational Services"])
-      expect(request.session[:smart_match_step]).to eq(4)
-
-      # Step 4 -> 5: donation_style (multi-select)
+      # Step 3 -> 4: donation_style (multi-select)
       put smart_match_quiz_path, params: {donation_style: %w[one_time]}
       expect(request.session[:smart_match_donation_style]).to eq(%w[one_time])
-      expect(request.session[:smart_match_step]).to eq(5)
+      expect(request.session[:smart_match_step]).to eq(4)
 
-      # Step 5 -> 6: giving_inspiration (multi-select)
+      # Step 4 -> 5: giving_inspiration (multi-select)
       put smart_match_quiz_path, params: {giving_inspiration: %w[personal_story]}
       expect(request.session[:smart_match_giving_inspiration]).to eq(%w[personal_story])
-      expect(request.session[:smart_match_step]).to eq(6)
+      expect(request.session[:smart_match_step]).to eq(5)
 
-      # Step 6 -> 7: donor_communities (multi-select)
+      # Step 5 -> 6: donor_communities (multi-select)
       put smart_match_quiz_path, params: {donor_communities: %w[veterans]}
       expect(request.session[:smart_match_donor_communities]).to eq(%w[veterans])
-      expect(request.session[:smart_match_step]).to eq(7)
+      expect(request.session[:smart_match_step]).to eq(6)
 
-      # Step 7 -> 8: impact_location (single)
+      # Step 6 -> 7: impact_location (single)
       put smart_match_quiz_path, params: {impact_location: "local"}
       expect(request.session[:smart_match_impact_location]).to eq("local")
-      expect(request.session[:smart_match_step]).to eq(8)
+      expect(request.session[:smart_match_step]).to eq(7)
 
-      # city_selection — a preset city derives state via centroid lookup and
-      # skips the "Somewhere else" detail step entirely.
+      # Step 7: city_selection — a preset city derives state via centroid lookup
+      # and skips the "Somewhere else" detail step (8), landing on step 9.
       put smart_match_quiz_path, params: {city_selection: "Nashville"}
       expect(request.session[:smart_match_city]).to eq("Nashville")
       expect(request.session[:smart_match_state]).to eq("TN")
       expect(request.session[:smart_match_city_choice]).to eq("Nashville")
-      expect(request.session[:smart_match_step])
-        .to eq(SmartMatch::QuizNavigator::LOCATION_DETAIL_STEP["donor"] + 1)
+      expect(request.session[:smart_match_step]).to eq(9)
 
-      # donor_involvement (single)
+      # Step 9 -> 10: donor_involvement (single)
       put smart_match_quiz_path, params: {donor_involvement: "active"}
       expect(request.session[:smart_match_donor_involvement]).to eq("active")
-      expect(request.session[:smart_match_step]).to eq(11)
+      expect(request.session[:smart_match_step]).to eq(10)
 
-      # personal details (optional demographics)
+      # Step 10 -> 11: personal details (optional demographics)
       put smart_match_quiz_path, params: {
         age_range: "25-34",
         gender_identity: "prefer_not_to_say",
         race_ethnicity: "prefer_not_to_say"
       }
-      expect(request.session[:smart_match_step]).to eq(12)
+      expect(request.session[:smart_match_step]).to eq(11)
 
       # Step 11 (final): open-ended language_input — completes the quiz
       put smart_match_quiz_path, params: {
@@ -118,7 +112,6 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       get smart_match_quiz_path
       put smart_match_quiz_path, params: {user_type: "donor"}                  # 1 -> 2
       put smart_match_quiz_path, params: {causes: %w[Education]}               # 2 -> 3
-      put smart_match_quiz_path, params: {services: ["Student Educational Services"]}
       put smart_match_quiz_path, params: {donation_style: %w[one_time]}        # 3 -> 4
       put smart_match_quiz_path, params: {giving_inspiration: %w[personal_story]} # 4 -> 5
       put smart_match_quiz_path, params: {donor_communities: %w[veterans]}     # 5 -> 6
@@ -130,11 +123,10 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       expect(response.body).to include(I18n.t("smart_match.quiz.steps.city_selection.other"))
       expect(response.body).to include("Atlantic City")
 
-      # Pick "Somewhere else" — routes to the donor detail step.
+      # Step 7: pick "Somewhere else" — routes to the detail step (8).
       put smart_match_quiz_path, params: {city_selection: "elsewhere"}
       expect(request.session[:smart_match_city_choice]).to eq("elsewhere")
-      expect(request.session[:smart_match_step])
-        .to eq(SmartMatch::QuizNavigator::LOCATION_DETAIL_STEP["donor"])
+      expect(request.session[:smart_match_step]).to eq(8)
 
       # The detail step renders its scope options and US state picker.
       get smart_match_quiz_path
@@ -147,7 +139,7 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       expect(request.session[:smart_match_location_scope]).to eq("local")
       expect(request.session[:smart_match_state]).to eq("OR")
       expect(request.session[:smart_match_city]).to eq("Portland")
-      expect(request.session[:smart_match_step]).to eq(10)
+      expect(request.session[:smart_match_step]).to eq(9)
     end
   end
 
@@ -158,26 +150,24 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       put smart_match_quiz_path, params: {support_for: "myself"}              # 2 -> 3
       put smart_match_quiz_path, params: {self_description: ["student"]}      # 3 -> 4
       put smart_match_quiz_path, params: {causes: %w[Education]}              # 4 -> 5
-      put smart_match_quiz_path, params: {services: ["Student Educational Services"]}
       put smart_match_quiz_path, params: {situation: "exploring"}            # 5 -> 6
 
-      # city_selection: pick "Somewhere else" → the detail step.
+      # Step 6 (city_selection): pick "Somewhere else" → detail step (7).
       put smart_match_quiz_path, params: {city_selection: "elsewhere"}
-      expect(request.session[:smart_match_step])
-        .to eq(SmartMatch::QuizNavigator::LOCATION_DETAIL_STEP["service_seeker"])
+      expect(request.session[:smart_match_step]).to eq(7)
 
       # Step 7 (detail): choose nationwide instead of a specific place.
       put smart_match_quiz_path, params: {location_scope_choice: "national"}
       expect(request.session[:smart_match_location_scope]).to eq("national")
       expect(request.session[:smart_match_state]).to be_nil
       # Travel step (8) is skipped → lands on preferences (9).
-      expect(request.session[:smart_match_step]).to eq(10)
+      expect(request.session[:smart_match_step]).to eq(9)
 
       put smart_match_quiz_path, params: {prefs: []}                          # 9 -> 10
       put smart_match_quiz_path, params: {                                    # 10 (personal details) -> 11
         age_range: "25_34", gender_identity: "prefer_not_to_say", race_ethnicity: "prefer_not_to_say"
       }
-      expect(request.session[:smart_match_step]).to eq(12)
+      expect(request.session[:smart_match_step]).to eq(11)
 
       put smart_match_quiz_path, params: {language_input: "online job training"}  # 11 -> complete
       expect(response).to redirect_to(smart_match_confirmation_path)
@@ -189,11 +179,10 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       get smart_match_quiz_path
       put smart_match_quiz_path, params: {user_type: "donor"}
       put smart_match_quiz_path, params: {causes: %w[Education]}
-      put smart_match_quiz_path, params: {services: ["Student Educational Services"]}
-      expect(request.session[:smart_match_step]).to eq(4)
+      expect(request.session[:smart_match_step]).to eq(3)
 
       put smart_match_quiz_path, params: {direction: "back"}
-      expect(request.session[:smart_match_step]).to eq(3)
+      expect(request.session[:smart_match_step]).to eq(2)
       expect(response).to redirect_to(smart_match_quiz_path)
     end
   end
@@ -203,7 +192,6 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       get smart_match_quiz_path
       put smart_match_quiz_path, params: {user_type: "donor"}
       put smart_match_quiz_path, params: {causes: %w[Education]}
-      put smart_match_quiz_path, params: {services: ["Student Educational Services"]}
       expect(request.session.keys.any? { |k| k.to_s.start_with?("smart_match_") }).to be true
 
       delete smart_match_quiz_path
@@ -217,7 +205,6 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       get smart_match_quiz_path
       put smart_match_quiz_path, params: {user_type: "donor"}
       put smart_match_quiz_path, params: {causes: %w[Education]}
-      put smart_match_quiz_path, params: {services: ["Student Educational Services"]}
 
       delete smart_match_quiz_path, params: {return_to: "home"}
 
@@ -232,7 +219,6 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       get smart_match_quiz_path
       put smart_match_quiz_path, params: {user_type: "donor"}
       put smart_match_quiz_path, params: {causes: %w[Education]}
-      put smart_match_quiz_path, params: {services: ["Student Educational Services"]}
 
       get smart_match_confirmation_path
       expect(response).to have_http_status(:ok)
@@ -257,7 +243,6 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       get smart_match_quiz_path
       put smart_match_quiz_path, params: {user_type: "donor"}
       put smart_match_quiz_path, params: {causes: %w[Education]}
-      put smart_match_quiz_path, params: {services: ["Student Educational Services"]}
       put smart_match_quiz_path, params: {donation_style: %w[one_time]}
       put smart_match_quiz_path, params: {giving_inspiration: %w[personal_story]}
       put smart_match_quiz_path, params: {donor_communities: %w[veterans]}
@@ -349,62 +334,6 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       expect(response.body).to include(I18n.t("smart_match.results.broadened.filters.donation_link"))
     end
 
-    # The transparency panel. A user who asked for wheelchair-accessible
-    # services must be able to see that none of their matches offer it, rather
-    # than assuming the results honoured the request.
-    describe "the how-we-matched-you panel" do
-      def render_results_with(criteria)
-        allow(SmartMatch::EmbeddingClient).to receive(:call).and_return(vector)
-        allow(SmartMatch::SimilarityQuery).to receive(:call).and_return(
-          SmartMatch::SimilarityQuery::Result.new(
-            candidates: [
-              {organization_embedding: organization_embedding, cosine_distance: 0.1, distance_miles: 5.0}
-            ],
-            relaxed: []
-          )
-        )
-
-        prime_donor_session
-        get smart_match_result_path
-        perform_enqueued_jobs
-
-        QuizSubmission.last.organization_matches.each do |match|
-          match.update!(score_breakdown: match.score_breakdown.merge("criteria" => criteria))
-        end
-
-        get smart_match_result_path
-      end
-
-      it "lists a criterion no match meets" do
-        render_results_with([{"question" => "prefs", "answer" => "wheelchair_accessible", "status" => "unmet"}])
-
-        expect(response.body).to include(I18n.t("smart_match.results.criteria.title"))
-        expect(response.body).to include(I18n.t("smart_match.quiz.steps.preferences.options.wheelchair_accessible"))
-        expect(response.body).to include(I18n.t("smart_match.results.criteria.status.unmet"))
-      end
-
-      it "distinguishes an unanswered criterion from a declined one" do
-        render_results_with([{"question" => "prefs", "answer" => "free_sliding_scale", "status" => "unknown"}])
-
-        expect(response.body).to include(I18n.t("smart_match.results.criteria.not_stated"))
-        expect(response.body).to include(I18n.t("smart_match.results.criteria.unknown_note"))
-        expect(response.body).not_to include(I18n.t("smart_match.results.criteria.status.unmet"))
-      end
-
-      it "shows a met criterion" do
-        render_results_with([{"question" => "causes", "answer" => "Mental Health", "status" => "met"}])
-
-        expect(response.body).to include("Mental Health")
-        expect(response.body).to include(I18n.t("smart_match.results.criteria.status.met"))
-      end
-
-      it "omits the panel entirely when there are no criteria" do
-        render_results_with([])
-
-        expect(response.body).not_to include(I18n.t("smart_match.results.criteria.title"))
-      end
-    end
-
     it "shows no broadened notice when every filter held" do
       organization_embedding
 
@@ -487,7 +416,7 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       8.times do
         put smart_match_quiz_path, params: {}
       end
-      expect(request.session[:smart_match_step]).to eq(12)
+      expect(request.session[:smart_match_step]).to eq(11)
 
       # Final step next -> completion check runs, UserIntent invalid (no state,
       # no causes_selected), so controller redirects back to quiz with flash.

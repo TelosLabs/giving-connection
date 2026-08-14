@@ -88,9 +88,6 @@ module SmartMatch
     MET = "met"
     UNMET = "unmet"
     UNKNOWN = "unknown"
-    # Only produced by proportional questions: some of the selected answers
-    # matched, but not all.
-    PARTIAL = "partial"
 
     def call
       @earned = 0.0
@@ -99,11 +96,7 @@ module SmartMatch
       @criteria = []
 
       each_question do |session_key, question, given|
-        if question["aggregate"] == "proportional"
-          score_proportional_question(session_key, question, given)
-        else
-          given.each { |answer| score_independent_answer(session_key, question, answer) }
-        end
+        given.each { |answer| score_independent_answer(session_key, question, answer) }
       end
 
       {
@@ -150,51 +143,8 @@ module SmartMatch
       @criteria << {question: session_key, answer: answer, status: result[:met] ? MET : UNMET}
     end
 
-    # All of a question's answers collapsed into ONE slot, earned in proportion
-    # to how many matched.
-    #
-    # Services need this. Scored independently, picking six services added
-    # 6 x 5 x 1.5 = 45 to the achievable maximum while a single cause adds
-    # 13.5 -- so an organization that served the right cause but not the exact
-    # service was buried, and refining the search behaved like filtering it.
-    # Collapsed, the whole question is worth one answer's weight no matter how
-    # many boxes are ticked, and matching 2 of 4 earns half of it.
-    def score_proportional_question(session_key, question, given)
-      results = given.map { |answer| evaluate(session_key, question, answer) }
-      scorable = results.reject { |r| r[:unknown] }
-
-      if scorable.empty?
-        @criteria << {question: session_key, answer: nil, status: UNKNOWN, grouped: true,
-                      matched_count: 0, selected_count: given.size}
-        return
-      end
-
-      met_count = scorable.count { |r| r[:met] }
-      slot = proportional_slot(question, given.first)
-
-      @maximum += slot
-      @earned += slot * (met_count.to_f / scorable.size)
-      @matched.concat(scorable.flat_map { |r| r[:matched] })
-
-      status = if met_count.zero?
-        UNMET
-      else
-        (met_count == scorable.size) ? MET : PARTIAL
-      end
-
-      @criteria << {question: session_key, answer: nil, status: status, grouped: true,
-                    matched_count: met_count, selected_count: scorable.size}
-    end
-
-    # What the whole question is worth: the heaviest single rule, times the
-    # question multiplier. Independent of how many answers were selected.
-    def proportional_slot(question, sample_answer)
-      rules, multiplier = answer_spec(question, sample_answer)
-      rules.filter_map { |rule| rule["weight"] unless rule["requires_field"] }.max.to_f * multiplier
-    end
-
     # Scores one answer without touching the running totals, so the caller can
-    # decide whether to bank it whole or fold it into a proportional slot.
+    # decide whether to bank it whole.
     def evaluate(session_key, question, answer)
       rules, multiplier = answer_spec(question, answer)
       scorable = rules.reject { |rule| rule["requires_field"] || unknown?(rule) }

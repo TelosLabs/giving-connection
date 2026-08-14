@@ -100,14 +100,6 @@ RSpec.describe SmartMatchCard::Component, type: :component do
     expect(card.hidden_match_reasons).to be_empty
   end
 
-  it "shows how much of a grouped selection was found" do
-    card = card_for([
-      criterion("services", nil, "partial", grouped: true, matched_count: 2, selected_count: 4)
-    ])
-
-    expect(card.match_reasons.first).to eq("Specific services you asked for (2/4)")
-  end
-
   it "shows nothing for a match with no recorded criteria" do
     card = card_for([])
 

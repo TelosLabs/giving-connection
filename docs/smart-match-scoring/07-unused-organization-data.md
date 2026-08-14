@@ -202,7 +202,7 @@ non-reproducible (the same quiz at 2pm and 10pm would rank differently, and
 matches are persisted). Prefer time-independent signals — `always_open`,
 `appointment_only` — over a live open/closed check.
 
-### Service-level presets — BUILT 2026-08-10 ✅
+### Service-level presets — SHIPPED AS A FILTER, NOT A QUESTION 2026-08-14 ✅
 
 `Organizations::Constants::CAUSES_AND_SERVICES` defines roughly 400 services
 under 36 causes, and organizations are tagged with them via `location_services`.
@@ -210,25 +210,40 @@ The quiz only ever asks for **causes** — the top level. A user picking
 "Housing & Homelessness" cannot say whether they need *Homeless Shelters*,
 *Housing Search Assistance*, or *Home Improvement & Repairs*.
 
-Services are reachable today only indirectly: the `cause_service` rule, and the
-fixed service presets under `self_description`. Nothing lets the user choose.
+A services **quiz step** was built for this on 2026-08-10 (scored at 5 × 1.5,
+one proportional slot for the whole question) and **removed on 2026-08-14**. It
+worked as a refinement for the minority who know the vocabulary and added
+friction for everyone else: asked as a standalone question, before any results
+existed, it made people stop and wonder what a "service" is and whether they
+were supposed to know. A yes/no gate in front of it would have provoked exactly
+the same question, so the step is gone rather than hidden behind one.
 
-**Shipped** as a services step immediately after the cause step on all three
-paths, listing only the services belonging to the causes chosen (274 services
-under 35 causes, so an unscoped list would be unusable). Optional and
-multi-select; `QuizNavigator#skip_services?` hides it when the chosen causes
-define no services, so a Faith-Based-only selection never sees an empty page.
+Services now live **after** the results, as an optional filter on the results
+page — `SmartMatch::ServiceFilter` plus
+`app/views/smart_match/results/_service_filter.html.erb`, collapsed under
+"Looking for a specific service?". Three properties matter:
 
-Scored at weight 5 × 1.5 — the same as an exact cause match, on the grounds
-that naming the specific service you need is at least as strong a signal as
-naming its cause. **This question is not in the client's CSV**; it is flagged
-as such in `config/smart_match_scoring.yml`.
+* **It never touches scoring.** `config/smart_match_scoring.yml` has no
+  `services` question, `UserIntent::QUIZ_ANSWERS` has no `services` key, and the
+  filter only narrows an already-ranked, already-persisted match list. The
+  cause questions still credit an organization's services through their
+  `cause_service` rules, which predate all of this.
+* **Its options are the services the matched organizations actually offer**,
+  each with a count, rather than the full 274-name vocabulary — so the list is
+  scannable and no click can empty the page.
+* **The need is concrete by then.** Someone looking at six food banks and
+  realising they need eviction help has the intent the quiz question was
+  fishing for; someone who does not simply never opens the panel.
 
-Inserting a step renumbered all three flows. The navigator constants
-(`SERVICES_STEP`, `LOCATION_DETAIL_STEP`, `SERVICE_SEEKER_TRAVEL_STEP`,
-`SERVICE_SEEKER_PREFERENCES_STEP`, `STEPS_BY_USER_TYPE`) moved with it, and the
-specs that had hard-coded step numbers now derive them from those constants so
-the next insertion does not need the same sweep.
+Removing the step renumbered all three flows back to their pre-2026-08-10
+numbering (`STEPS_BY_USER_TYPE`, `LOCATION_DETAIL_STEP`,
+`SERVICE_SEEKER_TRAVEL_STEP`, `SERVICE_SEEKER_PREFERENCES_STEP`); the specs
+derive step numbers from those constants rather than hard-coding them.
+
+Because services were the only `aggregate: proportional` question, that
+machinery went with them: `RuleScorer#score_proportional_question`,
+`RuleScorer::PARTIAL`, and the `grouped` / `matched_count` / `selected_count`
+fields on criteria. A per-criterion status is now met / unmet / unknown only.
 
 ### `verified` — 112 organizations ⛔
 

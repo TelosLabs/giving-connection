@@ -17,10 +17,10 @@ module SmartMatchHelper
   # Human-readable label for one criterion on the results page.
   #
   # Most quiz answers are tokens with a locale entry under
-  # smart_match.quiz.steps.<question>.options.<answer>. Causes and services are
-  # the exceptions: their "token" is already the display name (a real Cause or
-  # Service preset), so they are shown as-is.
-  SELF_LABELLING_CRITERIA = %w[causes services].freeze
+  # smart_match.quiz.steps.<question>.options.<answer>. Causes are the
+  # exception: their "token" is already the display name (a real Cause
+  # preset), so they are shown as-is.
+  SELF_LABELLING_CRITERIA = %w[causes].freeze
 
   # Session answer keys whose locale block is named differently from the key
   # itself. Only these two diverge; everything else matches.
@@ -34,10 +34,6 @@ module SmartMatchHelper
   }.freeze
 
   def smart_match_criterion_label(question, answer)
-    # Proportional questions collapse all their answers into one row, so there
-    # is no single answer to name -- label the question instead.
-    return t("smart_match.results.criteria.groups.#{question}") if answer.blank?
-
     return answer if SELF_LABELLING_CRITERIA.include?(question)
 
     step = CRITERION_LOCALE_KEYS.fetch(question, question)

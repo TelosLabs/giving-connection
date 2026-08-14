@@ -11,11 +11,6 @@ RSpec.describe SmartMatch::CriteriaSummary do
     {"question" => question, "answer" => answer, "status" => status}
   end
 
-  def grouped_criterion(status, matched, selected)
-    {"question" => "services", "answer" => nil, "status" => status,
-     "grouped" => true, "matched_count" => matched, "selected_count" => selected}
-  end
-
   def summary_for(matches)
     described_class.call(matches: matches).to_h { |c| [[c.question, c.answer], c] }
   end
@@ -144,29 +139,6 @@ RSpec.describe SmartMatch::CriteriaSummary do
       ]
 
       expect(described_class.call(matches: matches).count(&:matched?)).to eq(0)
-    end
-  end
-
-  describe "grouped (proportional) criteria" do
-    it "carries how many of the user's selections were found" do
-      matches = [
-        match_with(grouped_criterion("partial", 1, 4)),
-        match_with(grouped_criterion("partial", 3, 4))
-      ]
-
-      entry = described_class.call(matches: matches).first
-
-      expect(entry).to be_detail
-      expect(entry.selected_count).to eq(4)
-      # Best showing across the shown organizations.
-      expect(entry.matched_count).to eq(3)
-      expect(entry.status).to eq("partial")
-    end
-
-    it "reports a fully-covered selection as met" do
-      matches = [match_with(grouped_criterion("met", 2, 2))]
-
-      expect(described_class.call(matches: matches).first.status).to eq("met")
     end
   end
 

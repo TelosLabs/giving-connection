@@ -76,17 +76,24 @@ es:
           one: "+1 más"
           other: "+%{count} más"
         fewer_reasons: "Ver menos"
+      service_filter:
+        title: "¿Buscas un servicio específico?"
+        hint: "Opcional. Marca lo que necesites y mostraremos solo las coincidencias que lo ofrecen. El número junto a cada uno indica cuántas de tus coincidencias lo brindan."
+        selected:
+          one: "1 seleccionado"
+          other: "%{count} seleccionados"
+        apply: "Ver estas"
+        clear: "Quitar"
+        clear_cta: "Quitar filtro"
+        none:
+          title: "Nada aquí ofrece esa combinación"
+          body: "Tus coincidencias siguen guardadas. Quita el filtro para verlas todas de nuevo."
       criteria:
         title: "Cómo te emparejamos"
         summary: "%{matched} de %{total} coinciden"
         intro:
           one: "Nos dijiste que 1 cosa importaba. Así responden estos resultados."
           other: "Nos dijiste que %{count} cosas importaban. Así responden estos resultados."
-        services_count:
-          one: "1 de %{total} encontrados"
-          other: "%{count} de %{total} encontrados"
-        groups:
-          services: "Servicios específicos que pediste"
         not_stated: "Sin especificar"
         unknown_note: "Algunas organizaciones aún no publican esta información. Sin especificar significa que no lo sabemos, no que la respuesta sea no. Vale la pena preguntarles directamente."
         status:
@@ -130,7 +137,6 @@ es:
           step_6: "¿Dónde deberíamos buscar apoyo?"
           step_7: "¿Qué tipo de traslado es posible para ti?"
           step_8: "¿Qué deberíamos tener en cuenta al emparejarte con servicios?"
-          services: "¿Qué servicios específicos necesitas?"
           location_detail: "¿Dónde te encuentras?"
           someone_else:
             step_3: "¿Cuál de las siguientes describe mejor a la persona para la que buscas ayuda?"
@@ -149,7 +155,6 @@ es:
           step_5: "¿Qué formato funciona mejor para ti?"
           step_6: "¿En qué comunidad te gustaría enfocar tu contribución?"
           step_7: "¿Cuánto tiempo tienes para dar?"
-          services: "¿Qué servicios específicos te gustaría apoyar?"
           location_detail: "¿Dónde te encuentras?"
         donor:
           step_1: "¿Cómo podemos apoyarte hoy?"
@@ -160,11 +165,8 @@ es:
           step_6: "¿Dónde te gustaría que tu donación haga impacto?"
           step_7: "¿En qué comunidad te gustaría enfocar tu contribución?"
           step_8: "¿Cómo te gustaría involucrarte?"
-          services: "¿Qué servicios específicos te gustaría financiar?"
           location_detail: "¿Dónde te encuentras?"
       steps:
-        services:
-          hint: "Opcional — elige los que quieras, o continúa para mantener tus resultados amplios."
         user_type:
           options:
             service_seeker: "Estoy buscando ayuda de una organización sin fines de lucro"

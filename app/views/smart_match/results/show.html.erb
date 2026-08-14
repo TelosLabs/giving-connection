@@ -117,6 +117,7 @@
           With Turbo unavailable it degrades to a normal navigation to the same
           URL, which renders the same larger page. %>
       <%= turbo_frame_tag "smart-match-results" do %>
+        <%= render "service_filter", filter: @service_filter %>
         <%= render "criteria_panel", criteria: @criteria %>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -134,7 +135,9 @@
             <%= t("smart_match.results.showing", count: @page.total, shown: @page.shown) %>
           </p>
           <% if @page.more? %>
-            <%= link_to smart_match_result_path(page: @page.next_page),
+            <%# Carries the active filter, or the next page would quietly drop
+                it and hand back organizations the user filtered out. %>
+            <%= link_to smart_match_result_path(page: @page.next_page, services: @service_filter.selected.presence),
                   class: "inline-block mt-4 px-8 py-3 text-sm font-bold tracking-wide uppercase transition-colors border-2 rounded-md border-blue-medium text-blue-dark hover:bg-blue-pale" do %>
               <%= t("smart_match.results.show_more", count: @page.next_batch_size) %>
             <% end %>
@@ -151,6 +154,20 @@
               smart_match_quiz_path,
               method: :delete,
               class: "text-sm font-semibold text-gray-4 hover:text-blue-dark underline transition-colors bg-transparent border-0 cursor-pointer" %>
+      </div>
+
+    <%# A service filter is only ever offered options that some match actually
+        offers, so this should be unreachable -- unless an organization dropped
+        the service between the page loading and the filter being applied.
+        Without this branch that lands on the "take the quiz" empty state, which
+        would read as though the answers were lost. %>
+    <% elsif @service_filter&.active? %>
+      <div class="p-12 text-center bg-white rounded-lg shadow-md">
+        <h2 class="mb-2 text-xl font-bold text-gray-2"><%= t("smart_match.results.service_filter.none.title") %></h2>
+        <p class="mb-6 text-gray-4"><%= t("smart_match.results.service_filter.none.body") %></p>
+        <%= link_to t("smart_match.results.service_filter.clear_cta"),
+              smart_match_result_path,
+              class: "inline-block px-8 py-3 font-bold text-white uppercase rounded-md bg-salmon hover:bg-salmon-medium transition-colors" %>
       </div>
 
     <% else %>

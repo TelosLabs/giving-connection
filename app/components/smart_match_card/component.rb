@@ -167,16 +167,15 @@ class SmartMatchCard::Component < ApplicationViewComponent
       .map { |criterion| reason_label(criterion) }
   end
 
-  # Criteria this organization personally satisfies, in full or in part.
+  # Criteria this organization personally satisfies.
   def satisfied_criteria
     @satisfied_criteria ||= Array(match.score_breakdown&.dig("criteria")).select do |criterion|
-      criterion["status"].in?([SmartMatch::RuleScorer::MET, SmartMatch::RuleScorer::PARTIAL]) &&
+      criterion["status"] == SmartMatch::RuleScorer::MET &&
         SmartMatch::CriteriaSummary::HIDDEN_QUESTIONS.exclude?(criterion["question"])
     end
   end
 
-  # How much this criterion earned, read back from the itemized trace. Grouped
-  # criteria (services) have no single answer, so they match on question alone.
+  # How much this criterion earned, read back from the itemized trace.
   def contribution_for(criterion)
     Array(match.score_breakdown&.dig("rule_matches"))
       .select { |entry| entry["question"] == criterion["question"] }
@@ -188,12 +187,9 @@ class SmartMatchCard::Component < ApplicationViewComponent
     # ApplicationController.helpers rather than the component's `helpers`
     # proxy: the latter needs an active render, and resolving a label is a pure
     # function of the answer plus the current locale.
-    label = ApplicationController.helpers.smart_match_criterion_label(
+    ApplicationController.helpers.smart_match_criterion_label(
       criterion["question"], criterion["answer"]
     )
-    return label unless criterion["grouped"]
-
-    "#{label} (#{criterion["matched_count"]}/#{criterion["selected_count"]})"
   end
 
   # The fraction the progress ring is drawn from. Taken off the displayed
