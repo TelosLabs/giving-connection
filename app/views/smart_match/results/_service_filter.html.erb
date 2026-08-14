@@ -1,56 +1,84 @@
 <%#
-  "Looking for a specific service?" — the optional post-results refinement.
+  "Looking for a specific service? Select services" — the optional post-results
+  refinement.
 
-  Collapsed and phrased as an invitation rather than a question, because this
-  replaced a quiz step that asked the same thing up front. Asking everybody to
-  name a service before seeing any results made people who don't know the
-  vocabulary stop and wonder whether they should; asking here, over results
-  they can already see, costs nothing to ignore.
+  Deliberately NOT a panel like "How we matched you" above it. This replaced a
+  quiz step that asked the same thing up front, and the lesson was that giving
+  the question its own surface is what made people stop and wonder whether they
+  were supposed to have an answer. So it is one line of small print with a blue
+  verb in it: visible to anyone looking for it, silent to everyone else, and
+  costing no vertical space that the results themselves could use.
+
+  The choices live in a modal rather than an expander for the same reason —
+  expanding pushes the cards down the page and makes the refinement look like
+  part of the flow, where a modal is clearly a detour the user opted into.
 
   Options are the services these matches actually offer, with a count, so no
   choice leads to an empty page. Filtering never re-scores anything — see
   SmartMatch::ServiceFilter.
-
-  Reopened automatically whenever a filter is active, so a user who lands on a
-  filtered URL can see (and undo) what is being applied. Otherwise its state
-  persists across "Show more" clicks, which replace this panel along with the
-  cards — see persistent_details_controller.
 %>
 <% return unless filter.available? %>
 
-<details class="mb-6 bg-white border rounded-lg border-gray-6 group"
-         data-controller="persistent-details"
-         data-persistent-details-key-value="smart-match-services"
-         data-action="toggle->persistent-details#save"
-         <%= "open" if filter.active? %>>
-  <summary class="flex items-center justify-between px-5 py-4 cursor-pointer list-none">
-    <span class="text-sm font-semibold text-gray-2">
-      <%= t("smart_match.results.service_filter.title") %>
-    </span>
-    <span class="flex items-center gap-3">
-      <% if filter.active? %>
-        <span class="px-2 py-1 text-xs font-semibold rounded-full text-blue-dark bg-blue-pale">
-          <%= t("smart_match.results.service_filter.selected", count: filter.selected.size) %>
-        </span>
-      <% end %>
-      <span class="text-gray-4 transition-transform group-open:rotate-180" aria-hidden="true">▾</span>
-    </span>
-  </summary>
+<div class="flex justify-end mb-4" data-controller="smart-match-service-dialog">
+  <p class="text-sm text-right text-gray-4">
+    <% if filter.active? %>
+      <%= t("smart_match.results.service_filter.active_prompt") %>
+      <button type="button"
+              class="font-semibold underline text-blue-medium hover:text-blue-dark"
+              data-action="smart-match-service-dialog#open">
+        <%= t("smart_match.results.service_filter.selected", count: filter.selected.size) %>
+      </button>
+      <span aria-hidden="true">·</span>
+      <%= link_to t("smart_match.results.service_filter.clear"),
+            smart_match_result_path,
+            data: { turbo_action: "advance" },
+            class: "underline hover:text-blue-dark" %>
+    <% else %>
+      <%= t("smart_match.results.service_filter.prompt") %>
+      <button type="button"
+              class="font-semibold underline text-blue-medium hover:text-blue-dark"
+              data-action="smart-match-service-dialog#open">
+        <%= t("smart_match.results.service_filter.select") %>
+      </button>
+    <% end %>
+  </p>
 
-  <div class="px-5 pt-1 pb-5 border-t border-gray-6">
-    <p class="mt-3 mb-4 text-sm text-gray-4">
-      <%= t("smart_match.results.service_filter.hint") %>
-    </p>
+  <%# Native <dialog>: the browser supplies the backdrop, Escape-to-close, focus
+      trapping and the top layer, so no z-index or scroll-lock of our own.
 
-    <%# A GET form inside the results frame: submitting swaps the cards in
-        place, and turbo_action advance puts the selection in the URL so it can
-        be reloaded, shared and backed out of.
+      `rewind` on close returns the boxes to the applied state, so dismissing
+      without submitting really does leave the results alone. %>
+  <dialog class="sm-service-dialog"
+          data-smart-match-service-dialog-target="dialog"
+          data-action="click->smart-match-service-dialog#closeOnBackdrop
+                       close->smart-match-service-dialog#rewind"
+          aria-labelledby="service-filter-heading">
+    <%# A GET form inside the results frame: submitting swaps the cards in place
+        and turbo_action advance puts the selection in the URL, so a filtered
+        view can be reloaded, shared and backed out of.
 
         No page param, so changing the filter returns to the first page rather
         than to page 3 of a result set that no longer has one. %>
     <%= form_with url: smart_match_result_path, method: :get,
-                  data: { turbo_action: "advance" } do %>
-      <div class="pr-1 space-y-5 overflow-y-auto max-h-80">
+                  data: { turbo_action: "advance",
+                          smart_match_service_dialog_target: "form" } do %>
+      <div class="flex items-start justify-between gap-6 px-6 pt-5 pb-4">
+        <div>
+          <h2 id="service-filter-heading" class="text-lg font-bold text-gray-2">
+            <%= t("smart_match.results.service_filter.title") %>
+          </h2>
+          <p class="mt-1 text-sm text-gray-4">
+            <%= t("smart_match.results.service_filter.hint") %>
+          </p>
+        </div>
+
+        <button type="button"
+                class="text-2xl leading-none text-gray-4 hover:text-gray-2"
+                aria-label="<%= t("smart_match.results.service_filter.close") %>"
+                data-action="smart-match-service-dialog#close">&times;</button>
+      </div>
+
+      <div class="px-6 py-4 space-y-5 overflow-y-auto border-t border-gray-6 max-h-96">
         <% filter.options.each do |cause, options| %>
           <fieldset>
             <legend class="mb-2 text-xs font-bold tracking-wide uppercase text-gray-4">
@@ -77,19 +105,19 @@
         <% end %>
       </div>
 
-      <div class="flex flex-wrap items-center gap-4 pt-4 mt-4 border-t border-gray-6">
-        <button type="submit"
-                class="px-6 py-2 text-sm font-bold tracking-wide text-white uppercase transition-colors rounded-md bg-salmon hover:bg-salmon-medium">
-          <%= t("smart_match.results.service_filter.apply") %>
-        </button>
-
+      <div class="flex flex-wrap items-center justify-end gap-4 px-6 py-4 border-t border-gray-6">
         <% if filter.active? %>
           <%= link_to t("smart_match.results.service_filter.clear"),
                 smart_match_result_path,
                 data: { turbo_action: "advance" },
                 class: "text-sm font-semibold underline text-gray-4 hover:text-blue-dark" %>
         <% end %>
+
+        <button type="submit"
+                class="px-6 py-2 text-sm font-bold tracking-wide text-white uppercase transition-colors rounded-md bg-salmon hover:bg-salmon-medium">
+          <%= t("smart_match.results.service_filter.apply") %>
+        </button>
       </div>
     <% end %>
-  </div>
-</details>
+  </dialog>
+</div>

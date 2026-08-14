@@ -565,3 +565,31 @@ form:has(input:checked) .sm-selection-hint {
     transform: translateX(-24px);
   }
 }
+
+// ---------------------------------------------------------------------------
+// Results service filter dialog
+// ---------------------------------------------------------------------------
+// A native <dialog>, so the browser handles the top layer, focus trapping and
+// Escape. Only the box itself and the backdrop need styling: a closed dialog is
+// display:none by default, which is what keeps the markup inert until opened.
+// NOTE: no CSS `min()` here -- SassC resolves min() as its own function and
+// fails on a calc() argument ("is not a number for `min'"). Two properties do
+// the same job without the ambiguity.
+.sm-service-dialog {
+  width: 40rem;
+  max-width: calc(100vw - 2rem);
+  max-height: 90vh;
+  padding: 0;
+  border: 0;
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+  box-shadow: 0 20px 40px rgba(17, 60, 123, 0.25);
+
+  // The dialog's own children scroll (the options list has its own max-height),
+  // so the box must not double up a scrollbar around them.
+  overflow: hidden;
+
+  &::backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+}

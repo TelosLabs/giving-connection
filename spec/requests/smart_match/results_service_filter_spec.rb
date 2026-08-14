@@ -51,9 +51,14 @@ RSpec.describe "SmartMatch::Results service filter", type: :request do
     Nokogiri::HTML(response.body).css("#smart-match-results article h3").map { |h| h.text.strip }
   end
 
-  def filter_panel
+  # The one-line trigger that sits under the "how we matched you" panel.
+  def filter_trigger
     Nokogiri::HTML(response.body)
-      .at_css("turbo-frame#smart-match-results details[data-persistent-details-key-value='smart-match-services']")
+      .at_css("turbo-frame#smart-match-results [data-controller='smart-match-service-dialog']")
+  end
+
+  def filter_dialog
+    filter_trigger&.at_css("dialog")
   end
 
   let(:three_orgs) do
@@ -64,18 +69,37 @@ RSpec.describe "SmartMatch::Results service filter", type: :request do
     ]
   end
 
-  it "offers the services these matches provide, collapsed and unselected" do
+  # One line of small print, not a panel: the point of moving this out of the
+  # quiz was to stop giving the question a surface of its own.
+  it "invites the refinement in one line and keeps the dialog shut" do
     complete_quiz_matching(three_orgs)
 
     get smart_match_result_path
 
-    panel = filter_panel
-    expect(panel).to be_present
-    expect(panel.attributes).not_to have_key("open")
-    expect(panel.text).to include(I18n.t("smart_match.results.service_filter.title"))
-    expect(panel.css("input[name='services[]']").map { |i| i["value"] })
+    trigger = filter_trigger
+    expect(trigger).to be_present
+    expect(trigger.text).to include(I18n.t("smart_match.results.service_filter.prompt"))
+    expect(trigger.text).to include(I18n.t("smart_match.results.service_filter.select"))
+
+    # Present in the markup but inert -- a closed <dialog> is display:none.
+    expect(filter_dialog.attributes).not_to have_key("open")
+    expect(filter_dialog.css("input[name='services[]']").map { |i| i["value"] })
       .to contain_exactly("Homeless Shelters", "Housing Support Services")
+    expect(filter_dialog.css("input[checked]")).to be_empty
     expect(card_names.size).to eq(3)
+  end
+
+  # A modal must never open by itself on page load, so the trigger line carries
+  # the "what is applied, and how do I undo it" job instead.
+  it "names the active filter inline with a way out" do
+    complete_quiz_matching(three_orgs)
+
+    get smart_match_result_path(services: ["Homeless Shelters"])
+
+    trigger = filter_trigger
+    expect(trigger.text).to include(I18n.t("smart_match.results.service_filter.selected", count: 1))
+    expect(trigger.at_css("a[href='#{smart_match_result_path}']")).to be_present
+    expect(filter_dialog.attributes).not_to have_key("open")
   end
 
   it "narrows the cards to organizations offering a selected service" do
@@ -86,18 +110,17 @@ RSpec.describe "SmartMatch::Results service filter", type: :request do
     expect(card_names).to contain_exactly("Shelter Org", "Both Org")
   end
 
-  # Someone arriving on a filtered URL has to be able to see, and undo, what is
-  # being applied to their results.
-  it "reopens the panel with the active selection ticked" do
+  # Reopening the dialog has to show what is actually applied, so dismissing it
+  # (which rewinds the boxes to this state) cannot drift from the results.
+  it "ticks the active selection inside the dialog" do
     complete_quiz_matching(three_orgs)
 
     get smart_match_result_path(services: ["Homeless Shelters"])
 
-    panel = filter_panel
-    expect(panel.attributes).to have_key("open")
-    expect(panel.css("input[value='Homeless Shelters']").first["checked"]).to be_present
-    expect(panel.text).to include(I18n.t("smart_match.results.service_filter.selected", count: 1))
-    expect(panel.at_css("a[href='#{smart_match_result_path}']")).to be_present
+    boxes = filter_dialog.css("input[name='services[]']")
+    checked = boxes.select { |box| box.attributes.key?("checked") }.map { |box| box["value"] }
+
+    expect(checked).to eq(["Homeless Shelters"])
   end
 
   it "keeps the filter on the next page of results" do
@@ -127,7 +150,7 @@ RSpec.describe "SmartMatch::Results service filter", type: :request do
 
     get smart_match_result_path
 
-    expect(filter_panel).to be_nil
+    expect(filter_trigger).to be_nil
   end
 
   # A stale link must degrade to showing more, not to a dead end.
@@ -137,6 +160,6 @@ RSpec.describe "SmartMatch::Results service filter", type: :request do
     get smart_match_result_path(services: ["Underwater Basket Weaving"])
 
     expect(card_names.size).to eq(3)
-    expect(filter_panel.attributes).not_to have_key("open")
+    expect(filter_trigger.text).to include(I18n.t("smart_match.results.service_filter.select"))
   end
 end

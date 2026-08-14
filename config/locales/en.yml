@@ -103,14 +103,18 @@ en:
           other: "+%{count} more"
         fewer_reasons: "Show less"
       service_filter:
+        prompt: "Looking for a specific service?"
+        select: "Select services"
+        active_prompt: "Filtered by"
         title: "Looking for a specific service?"
         hint: "Optional. Tick anything you need and we'll show only the matches that offer it. The number beside each one is how many of your matches provide it."
         selected:
-          one: "1 selected"
-          other: "%{count} selected"
+          one: "1 service"
+          other: "%{count} services"
         apply: "Show these"
         clear: "Clear"
         clear_cta: "Clear filter"
+        close: "Close"
         none:
           title: "Nothing here offers that combination"
           body: "Your matches are still saved. Clear the filter to see all of them again."

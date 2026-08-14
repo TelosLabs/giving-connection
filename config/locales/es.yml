@@ -77,14 +77,18 @@ es:
           other: "+%{count} más"
         fewer_reasons: "Ver menos"
       service_filter:
+        prompt: "¿Buscas un servicio específico?"
+        select: "Elegir servicios"
+        active_prompt: "Filtrado por"
         title: "¿Buscas un servicio específico?"
         hint: "Opcional. Marca lo que necesites y mostraremos solo las coincidencias que lo ofrecen. El número junto a cada uno indica cuántas de tus coincidencias lo brindan."
         selected:
-          one: "1 seleccionado"
-          other: "%{count} seleccionados"
+          one: "1 servicio"
+          other: "%{count} servicios"
         apply: "Ver estas"
         clear: "Quitar"
         clear_cta: "Quitar filtro"
+        close: "Cerrar"
         none:
           title: "Nada aquí ofrece esa combinación"
           body: "Tus coincidencias siguen guardadas. Quita el filtro para verlas todas de nuevo."

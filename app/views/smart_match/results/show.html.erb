@@ -117,8 +117,8 @@
           With Turbo unavailable it degrades to a normal navigation to the same
           URL, which renders the same larger page. %>
       <%= turbo_frame_tag "smart-match-results" do %>
-        <%= render "service_filter", filter: @service_filter %>
         <%= render "criteria_panel", criteria: @criteria %>
+        <%= render "service_filter", filter: @service_filter %>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <% @results.each do |match| %>
