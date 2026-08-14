@@ -72,6 +72,5 @@ div class="w-full bg-gray-9 overflow-visible" id="tabs-wrapper" data-search-targ
           | Open Weekends
       / Give
       div class="flex hidden overflow-y-auto flex-wrap gap-x-2 gap-y-3 px-6 py-4 max-h-28 border-r border-b border-l" data-search-target="panel" data-tabs-target="panel"
-        = render SearchPills::Pill::Component.new(name: "search[give][]", value: "Donation Opportunities", checked: @params.dig('search', 'give')&.include?("Donation Opportunities"), options: { multiple: true })
-        = render SearchPills::Pill::Component.new(name: "search[give][]", value: "Volunteer Opportunities", checked: @params.dig('search', 'give')&.include?("Volunteer Opportunities"), options: { multiple: true })
-        = render SearchPills::Pill::Component.new(name: "search[give][]", value: "In Kind Donations Accepted", checked: @params.dig('search', 'give')&.include?("In Kind Donations Accepted"), options: { multiple: true })
+        - Search::GIVE_OPTIONS.each do |give_option|
+          = render SearchPills::Pill::Component.new(name: "search[give][]", value: give_option, checked: @params.dig('search', 'give')&.include?(give_option))

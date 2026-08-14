@@ -19,7 +19,7 @@ module SelectMultiple
         class: "relative flex flex-wrap w-full mt-1 text-base border cursor-text min-h-46px rounded-6px text-gray-3",
         data: {
           controller: "#{@stimulus_controller} extend-dropdown",
-          action: "click->#{@stimulus_controller}#focus click->extend-dropdown#show click@window->extend-dropdown#hide selectmultiple:clear->#{controller}#clearAll",
+          action: "click->#{@stimulus_controller}#focus click->extend-dropdown#show click@window->extend-dropdown#hide selectmultiple:clear->#{@stimulus_controller}#clearAll",
           "search-target": "customInput",
           form_validation_target: "selectMultiple",
           "#{@stimulus_controller}-target": "container",

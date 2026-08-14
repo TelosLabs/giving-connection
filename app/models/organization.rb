@@ -29,8 +29,6 @@ class Organization < ApplicationRecord
   validates_with OrganizationValidator
   include PgSearch::Model
 
-  attribute :in_kind_donation_items, :json, default: -> { [] }
-
   multisearchable against: [:name]
 
   scope :active, -> { where(active: true) }

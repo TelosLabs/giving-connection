@@ -73,7 +73,7 @@ export default class extends Controller {
     this.store.forEach((label, value) => {
       const badge = this.badgeTemplateTarget.cloneNode(true)
       const valueTarget = badge.querySelector('span')
-      valueTarget.innerHTML = label
+      valueTarget.textContent = label
       badge.classList.remove('hidden')
       badge.setAttribute('data-value', value)
       this.badgesContainerTarget.appendChild(badge)
@@ -92,11 +92,13 @@ export default class extends Controller {
   }
 
   search(event) {
+    // Plain substring match rather than a built regex: labels contain
+    // characters like "(" (e.g. "Clothing (general)") that would make
+    // new RegExp throw on partially typed queries.
     const query = this.inputTarget.value.toLowerCase()
-    const regex = new RegExp('.*' + query + '.*', 'gmi')
 
     this.checkboxTargets.forEach(checkbox => {
-      if (this.labelFor(checkbox).search(regex) >= 0) {
+      if (this.labelFor(checkbox).toLowerCase().includes(query)) {
         checkbox.parentElement.classList.remove('hidden')
       } else {
         checkbox.parentElement.classList.add('hidden')

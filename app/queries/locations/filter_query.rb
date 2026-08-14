@@ -4,6 +4,18 @@ module Locations
   class FilterQuery
     attr_reader :locations
 
+    # An organization matches a "Give" pill when it offers that way of giving.
+    # In-kind matches on either the wishlist link or the selected item list,
+    # mirroring when locations/show renders the In-Kind Donation Needs section.
+    GIVE_CONDITIONS = {
+      Search::GIVE_DONATION =>
+        "organizations.donation_link IS NOT NULL AND organizations.donation_link != ''",
+      Search::GIVE_VOLUNTEER =>
+        "organizations.volunteer_availability = true AND organizations.volunteer_link IS NOT NULL AND organizations.volunteer_link != ''",
+      Search::GIVE_IN_KIND =>
+        "(organizations.in_kind_donation_link IS NOT NULL AND organizations.in_kind_donation_link != '') OR jsonb_array_length(organizations.in_kind_donation_items) > 0"
+    }.freeze
+
     class << self
       def call(params = {}, locations = Location.active)
         scope = locations
@@ -14,8 +26,8 @@ module Locations
         scope = by_scope_of_work(scope, params[:scope_of_work])
         scope = by_give(scope, params[:give])
         scope = opened_now(scope, params[:open_now])
-        scope = opened_on_weekends(scope, params[:open_weekends])
-        scope
+        # NOTE: this is the return value — every filter must stay in the chain.
+        opened_on_weekends(scope, params[:open_weekends])
       end
 
       def geo_near(scope, coords, distance)
@@ -59,38 +71,30 @@ module Locations
 
       def by_service(scope, services)
         return scope if services.blank? || scope.empty?
-        complex_query = []
-        services.each do |cause, services_list|
-          services_list.each do |ser|
-            cause = cause&.gsub("'", "''")
-            ser = ser&.gsub("'", "''")
-            complex_query << "('#{cause}', '#{ser}')"
-          end
+
+        pairs = services.flat_map do |cause, services_list|
+          services_list.map { |service| [cause, service] }
         end
 
         Location.joins(location_services: {service: :cause})
           .where("locations.id IN (?)", scope.ids)
-          .where("(causes.name, services.name) IN (#{complex_query.join(",")})")
+          .where(tuple_in("causes.name", "services.name", pairs))
           .group("locations.id")
-          .having("count(locations.id) >= ?", complex_query.size) # multiple filters add up with AND behavior
+          .having("count(locations.id) >= ?", pairs.size) # multiple filters add up with AND behavior
       end
 
       def by_beneficiary_groups_served(scope, beneficiary_groups_filters)
         return scope if beneficiary_groups_filters.blank? || scope.empty?
 
-        complex_query = []
-        beneficiary_groups_filters.each do |group, subcategory|
-          subcategory.each do |sub|
-            group = group&.gsub("'", "''")
-            complex_query << "('#{group}', '#{sub}')"
-          end
+        pairs = beneficiary_groups_filters.flat_map do |group, subcategories|
+          subcategories.map { |subcategory| [group, subcategory] }
         end
 
         Location.joins(organization: {organization_beneficiaries: {beneficiary_subcategory: :beneficiary_group}})
           .where("locations.id IN (?)", scope.ids)
-          .where("(beneficiary_groups.name, beneficiary_subcategories.name) IN (#{complex_query.join(",")})")
+          .where(tuple_in("beneficiary_groups.name", "beneficiary_subcategories.name", pairs))
           .group("locations.id")
-          .having("count(locations.id) >= ?", complex_query.size) # multiple filters add up with AND behavior
+          .having("count(locations.id) >= ?", pairs.size) # multiple filters add up with AND behavior
       end
 
       def by_scope_of_work(scope, scope_of_work)
@@ -113,11 +117,21 @@ module Locations
         address_params.values.reject!(&:blank?).compact.map { |v| "%#{v}%" }
       end
 
+      # Builds a bound `(col_a, col_b) IN ((?, ?), ...)` predicate. Values are
+      # passed as binds rather than interpolated so names containing quotes
+      # cannot break out of the statement.
+      def tuple_in(column_a, column_b, pairs)
+        placeholders = Array.new(pairs.size, "(?, ?)").join(", ")
+        ["(#{column_a}, #{column_b}) IN (#{placeholders})", *pairs.flatten]
+      end
+
       def opened_now(scope, open_now)
         return scope if open_now.nil?
 
         filtered = scope.select(&:open_now?) # use instance method to filter locations
-        Location.where(id: filtered.map(&:id)) # convert array to collection
+        # Narrow the existing scope rather than starting a new one, so any
+        # ordering already applied (e.g. by_give's match ranking) survives.
+        scope.where(id: filtered.map(&:id))
       end
 
       def opened_on_weekends(scope, open_on_weekends)
@@ -143,10 +157,7 @@ module Locations
       def by_give(scope, give_values)
         return scope if give_values.blank? || scope.empty?
 
-        conditions = []
-        conditions << "organizations.donation_link IS NOT NULL AND organizations.donation_link != ''" if give_values.include?("Donation Opportunities")
-        conditions << "organizations.volunteer_availability = true AND organizations.volunteer_link IS NOT NULL AND organizations.volunteer_link != ''" if give_values.include?("Volunteer Opportunities")
-        conditions << "organizations.in_kind_donation_link IS NOT NULL AND organizations.in_kind_donation_link != '' AND jsonb_array_length(organizations.in_kind_donation_items) > 0" if give_values.include?("In Kind Donations Accepted")
+        conditions = GIVE_CONDITIONS.filter_map { |value, condition| condition if give_values.include?(value) }
 
         return scope if conditions.empty?
 

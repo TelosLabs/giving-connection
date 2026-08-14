@@ -6,6 +6,14 @@ class Search
   KEYWORD_SEARCH_TYPE = "keyword"
   FILTER_SEARCH_TYPE = "filter"
 
+  # "Give" pill values. These strings are both the submitted param value and
+  # the label shown on the pill, so they must stay in sync with the SQL in
+  # Locations::FilterQuery::GIVE_CONDITIONS.
+  GIVE_DONATION = "Donation Opportunities"
+  GIVE_VOLUNTEER = "Volunteer Opportunities"
+  GIVE_IN_KIND = "In Kind Donations Accepted"
+  GIVE_OPTIONS = [GIVE_DONATION, GIVE_VOLUNTEER, GIVE_IN_KIND].freeze
+
   attr_accessor :keyword, :results, :distance, :city, :state, :zipcode,
     :beneficiary_groups, :services, :causes, :open_now, :open_weekends,
     :scope_of_work, :lat, :lon, :give
@@ -24,7 +32,12 @@ class Search
 
     # Filter and keyword search
     filtered_ids = Locations::FilterQuery.call(filters, @results).ids
-    @results = Location.joins(:organization).where(id: filtered_ids).in_order_of(:id, filtered_ids)
+    @results = Location.joins(:organization).where(id: filtered_ids)
+    # by_give ranks locations by how many "Give" pills they match. Replay that
+    # order here, but only for give searches with no keyword: in_order_of emits
+    # one CASE branch per id, and it would otherwise outrank pg_search's
+    # relevance ordering on every keyword search.
+    @results = @results.in_order_of(:id, filtered_ids) if rank_by_give?
     @results = keyword.present? ? Locations::KeywordQuery.call({keyword: keyword}, @results) : @results
   end
 
@@ -48,6 +61,10 @@ class Search
   end
 
   private
+
+  def rank_by_give?
+    give.present? && keyword.blank?
+  end
 
   def geolocation_query
     @results = Locations::GeolocationQuery.call(geo_filters)
