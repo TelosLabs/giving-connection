@@ -8,13 +8,13 @@ RSpec.describe FeedbackMailer, type: :mailer do
     let(:feedback) { create(:feedback, rating: 5, category: "ease_of_use", comment: "Loved it") }
     let(:mail) { described_class.admin_notification(feedback) }
 
-    it "goes to every admin and bccs Stephanie" do
+    it "goes to every admin and bccs the notification address" do
       expect(mail.to).to match_array(admins.map(&:email))
-      expect(mail.bcc).to eq(["stephanie@givingconnection.org"])
+      expect(mail.bcc).to eq([Rails.application.credentials.dig(:mailer, :notification_bcc)])
     end
 
     it "summarizes the feedback in the subject" do
-      expect(mail.subject).to eq("New feedback: Love it — Ease of use")
+      expect(mail.subject).to eq("New feedback: Love it - Ease of use")
     end
 
     it "drops the category from the subject when none was picked" do

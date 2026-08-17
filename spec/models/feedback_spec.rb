@@ -37,6 +37,25 @@ RSpec.describe Feedback, type: :model do
       expect(build(:feedback, comment: "a" * 5_001)).not_to be_valid
       expect(build(:feedback, comment: "a" * 5_000)).to be_valid
     end
+
+    it "accepts a blank page_url" do
+      expect(build(:feedback, page_url: nil)).to be_valid
+      expect(build(:feedback, page_url: "")).to be_valid
+    end
+
+    it "rejects a page_url that is not an http(s) URL" do
+      ["javascript:alert(1)", "data:text/html,<script>", "/relative/path", "example.com"].each do |url|
+        expect(build(:feedback, page_url: url)).not_to be_valid
+      end
+    end
+  end
+
+  describe "RATING_OPTIONS" do
+    it "backs RATING_LABELS so the labels and faces cannot drift" do
+      expect(Feedback::RATING_LABELS.keys).to eq(Feedback::RATING_OPTIONS.keys)
+      expect(Feedback::RATING_LABELS[5]).to eq("Love it")
+      expect(Feedback::RATING_OPTIONS[5].last).to eq("feedback_face_5_love.svg")
+    end
   end
 
   describe "scopes" do

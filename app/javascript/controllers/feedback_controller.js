@@ -25,7 +25,7 @@ export default class extends Controller {
   static STORAGE_KEY = "gc:feedbackSubmitted"
 
   // accessiBe (loaded in the application layout) drops a floating trigger in the
-  // bottom-right corner — the same corner as this widget. It is licensed per
+  // bottom-right corner, the same corner as this widget. It is licensed per
   // domain, so it renders on production but not on localhost or staging. Rather
   // than hardcode "shift on production", we look for the trigger itself and only
   // step aside when it is really there.
@@ -43,7 +43,7 @@ export default class extends Controller {
 
     // Desktop only: detect the cursor leaving the viewport toward the top
     // (heading for the tab bar, address bar, or close button). We intentionally
-    // do NOT hijack the browser Back button — pushState/popstate fights Turbo
+    // do NOT hijack the browser Back button: pushState/popstate fights Turbo
     // Drive's own history handling and traps users on the page.
     if (window.matchMedia("(hover: hover)").matches) {
       this.onMouseOut = this.onMouseOut.bind(this)
@@ -129,7 +129,7 @@ export default class extends Controller {
     try {
       window.localStorage.setItem(this.constructor.STORAGE_KEY, "true")
     } catch {
-      // Storage unavailable (private mode / disabled) — ignore.
+      // Storage unavailable (private mode / disabled), ignore.
     }
   }
 

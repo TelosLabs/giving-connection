@@ -2,7 +2,7 @@
 
 class FeedbackMailer < ApplicationMailer
   default to: -> { AdminUser.pluck(:email) },
-    bcc: "stephanie@givingconnection.org",
+    bcc: Rails.application.credentials.dig(:mailer, :notification_bcc),
     from: Rails.application.credentials.dig(:mailer, :from)
 
   def admin_notification(feedback)
@@ -13,6 +13,6 @@ class FeedbackMailer < ApplicationMailer
   private
 
   def subject_for(feedback)
-    ["New feedback: #{feedback.rating_label}", feedback.category_label].compact.join(" — ")
+    ["New feedback: #{feedback.rating_label}", feedback.category_label].compact.join(" - ")
   end
 end

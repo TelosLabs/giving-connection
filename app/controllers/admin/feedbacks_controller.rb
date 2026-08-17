@@ -5,9 +5,10 @@ module Admin
     # Feedback records are created by end users; admins browse them like an
     # inbox and mark them read/unread. See FeedbackDashboard for the fields.
 
-    # Most-recent feedback first on the index page.
+    # Most-recent feedback first on the index page. The index renders each row's
+    # submitter email, so preload the users to avoid a query per row.
     def scoped_resource
-      super.order(created_at: :desc)
+      super.includes(:user).order(created_at: :desc)
     end
 
     # Add a CSV export of all feedback alongside the standard index view.
@@ -39,7 +40,7 @@ module Admin
 
     def mark_all_as_read
       count = Feedback.unread.update_all(read_at: Time.current)
-      redirect_to admin_feedbacks_path, notice: "#{count} feedback marked as read."
+      redirect_to admin_feedbacks_path, notice: "#{helpers.pluralize(count, "feedback entry")} marked as read."
     end
   end
 end

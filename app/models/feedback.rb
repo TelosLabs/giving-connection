@@ -21,16 +21,26 @@ class Feedback < ApplicationRecord
 
   CATEGORIES = CATEGORY_OPTIONS.keys.freeze
 
-  # What each face on the rating row means.
-  RATING_LABELS = {1 => "Mad", 2 => "Sad", 3 => "Meh", 4 => "Happy", 5 => "Love it"}.freeze
+  # The faces on the rating row, as value => [label, icon]. Same single source
+  # of truth as CATEGORY_OPTIONS so the view and the labels cannot drift.
+  RATING_OPTIONS = {
+    1 => ["Mad", "feedback_face_1_mad.svg"],
+    2 => ["Sad", "feedback_face_2_sad.svg"],
+    3 => ["Meh", "feedback_face_3_meh.svg"],
+    4 => ["Happy", "feedback_face_4_happy.svg"],
+    5 => ["Love it", "feedback_face_5_love.svg"]
+  }.freeze
+
+  RATING_LABELS = RATING_OPTIONS.transform_values(&:first).freeze
 
   validates :rating, presence: true, inclusion: {in: 1..5}
   # category is optional (the widget lets people submit without picking one),
-  # but if present it must be one of the known values — the field is a hidden
+  # but if present it must be one of the known values. The field is a hidden
   # input a direct POST could set to anything.
   validates :category, inclusion: {in: CATEGORIES}, allow_blank: true
   validates :comment, length: {maximum: 5_000}
   validates :context, :page_url, length: {maximum: 2_048}
+  validates :page_url, format: {with: %r{\Ahttps?://}i}, allow_blank: true
 
   scope :unread, -> { where(read_at: nil) }
   scope :read, -> { where.not(read_at: nil) }
@@ -71,7 +81,7 @@ class Feedback < ApplicationRecord
     CSV.generate(headers: true) do |csv|
       csv << CSV_HEADERS
       # find_each batches to keep memory flat on large exports. It orders by id
-      # (:desc ≈ newest first, matching the admin index) rather than created_at.
+      # (:desc, roughly newest first, matching the admin index) not created_at.
       includes(:user).find_each(order: :desc) do |feedback|
         csv << [
           feedback.created_at&.iso8601,

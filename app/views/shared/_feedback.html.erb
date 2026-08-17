@@ -39,8 +39,7 @@
   </div>
 
   <%# ---------- Open: form panel ---------- %>
-  <%# Desktop (sm and up) renders a compact version of the panel: everything is
-      scaled to 75% of the mobile card — width, type, and spacing alike. %>
+  <%# Desktop (sm and up) renders a compact version of the panel
   <div data-feedback-target="panel"
        class="hidden w-[calc(100vw_-_2rem)] max-w-[390px] rounded-2xl border border-blue-medium bg-white px-4 py-6 drop-shadow-[0px_4px_7.5px_rgba(0,0,0,0.15)] sm:max-w-[292px] sm:rounded-xl sm:px-3 sm:py-[18px]">
     <%= form_with url: feedbacks_path, method: :post,
@@ -48,6 +47,12 @@
       <%= hidden_field_tag "feedback[rating]", "", data: { feedback_target: "ratingInput" } %>
       <%= hidden_field_tag "feedback[context]", context %>
       <%= hidden_field_tag "feedback[page_url]", request.original_url %>
+
+      <div class="hidden" aria-hidden="true">
+        <%= label_tag "feedback_website", "Leave this field blank" %>
+        <%= text_field_tag "feedback[#{FeedbacksController::HONEYPOT_FIELD}]", nil,
+              id: "feedback_website", tabindex: -1, autocomplete: "off" %>
+      </div>
 
       <div class="flex items-start justify-between gap-2">
         <h2 class="text-2xl font-bold text-blue-dark sm:text-lg">Please tell us about your experience</h2>
@@ -63,14 +68,7 @@
         <%# Each face gets an equal share of the row (flex-1) so they always
             span the full width; the emoji scales down to fit on mobile. %>
         <div class="flex items-center">
-          <% {
-               1 => "feedback_face_1_mad.svg",
-               2 => "feedback_face_2_sad.svg",
-               3 => "feedback_face_3_meh.svg",
-               4 => "feedback_face_4_happy.svg",
-               5 => "feedback_face_5_love.svg"
-             }.each do |rating, icon| %>
-            <% label = Feedback::RATING_LABELS[rating] %>
+          <% Feedback::RATING_OPTIONS.each do |rating, (label, icon)| %>
             <button type="button" data-feedback-target="face" data-rating="<%= rating %>"
                     data-action="click->feedback#selectRating"
                     aria-pressed="false" aria-label="<%= label %>" title="<%= label %>"

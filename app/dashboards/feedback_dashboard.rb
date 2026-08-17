@@ -56,8 +56,8 @@ class FeedbackDashboard < Administrate::BaseDashboard
   # COLLECTION_FILTERS
   # Type "unread:" or "read:" in the search field to filter the inbox.
   COLLECTION_FILTERS = {
-    unread: ->(resources) { resources.where(read_at: nil) },
-    read: ->(resources) { resources.where.not(read_at: nil) }
+    unread: ->(resources) { resources.unread },
+    read: ->(resources) { resources.read }
   }.freeze
 
   # Overwrite this method to customize how feedback records are displayed
