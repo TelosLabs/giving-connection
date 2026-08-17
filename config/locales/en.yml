@@ -107,7 +107,7 @@ en:
         select: "Select services"
         active_prompt: "Filtered by"
         title: "Looking for a specific service?"
-        hint: "Optional. Tick anything you need and we'll show only the matches that offer it. The number beside each one is how many of your matches provide it."
+        hint: "This is optional. Select any services you need and we'll show only the matches that offer it. The number beside each one is how many of your matches provide it"
         selected:
           one: "1 service"
           other: "%{count} services"

@@ -81,7 +81,7 @@ es:
         select: "Elegir servicios"
         active_prompt: "Filtrado por"
         title: "¿Buscas un servicio específico?"
-        hint: "Opcional. Marca lo que necesites y mostraremos solo las coincidencias que lo ofrecen. El número junto a cada uno indica cuántas de tus coincidencias lo brindan."
+        hint: "Esto es opcional. Selecciona los servicios que necesites y mostraremos solo las opciones compatibles que los ofrezcan. El número que aparece junto a cada uno indica cuántas de tus opciones compatibles lo ofrecen."
         selected:
           one: "1 servicio"
           other: "%{count} servicios"
