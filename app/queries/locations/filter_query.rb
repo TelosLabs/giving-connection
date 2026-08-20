@@ -129,9 +129,7 @@ module Locations
         return scope if open_now.nil?
 
         filtered = scope.select(&:open_now?) # use instance method to filter locations
-        # Narrow the existing scope rather than starting a new one, so any
-        # ordering already applied (e.g. by_give's match ranking) survives.
-        scope.where(id: filtered.map(&:id))
+        Location.where(id: filtered.map(&:id)) # convert array to collection
       end
 
       def opened_on_weekends(scope, open_on_weekends)
@@ -157,16 +155,29 @@ module Locations
       def by_give(scope, give_values)
         return scope if give_values.blank? || scope.empty?
 
-        conditions = GIVE_CONDITIONS.filter_map { |value, condition| condition if give_values.include?(value) }
+        conditions = give_conditions_for(give_values)
 
         return scope if conditions.empty?
-
-        match_count = conditions.map { |c| "(#{c})::int" }.join(" + ")
 
         Location.joins(:organization)
           .where("locations.id IN (?)", scope.ids)
           .where(conditions.map { |c| "(#{c})" }.join(" OR "))
-          .order(Arel.sql("(#{match_count}) DESC"))
+      end
+
+      # How many "Give" pills a location matches, for ordering search results
+      # by relevance. Callers apply this directly as an ORDER BY expression
+      # rather than round-tripping the order through a per-id sort.
+      def give_rank(give_values)
+        conditions = give_conditions_for(give_values)
+        return Arel.sql("0") if conditions.empty?
+
+        Arel.sql("(#{conditions.map { |c| "(#{c})::int" }.join(" + ")}) DESC")
+      end
+
+      private
+
+      def give_conditions_for(give_values)
+        GIVE_CONDITIONS.filter_map { |value, condition| condition if Array(give_values).include?(value) }
       end
     end
   end

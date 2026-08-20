@@ -72,5 +72,6 @@ div class="w-full bg-gray-9 overflow-visible" id="tabs-wrapper" data-search-targ
           | Open Weekends
       / Give
       div class="flex hidden overflow-y-auto flex-wrap gap-x-2 gap-y-3 px-6 py-4 max-h-28 border-r border-b border-l" data-search-target="panel" data-tabs-target="panel"
-        - Search::GIVE_OPTIONS.each do |give_option|
-          = render SearchPills::Pill::Component.new(name: "search[give][]", value: give_option, checked: @params.dig('search', 'give')&.include?(give_option))
+        - Search::GIVE_OPTIONS.each do |key, label|
+          = render SearchPills::Pill::Component.new(name: "search[give][]", value: key, checked: @params.dig('search', 'give')&.include?(key)) do
+            = label
