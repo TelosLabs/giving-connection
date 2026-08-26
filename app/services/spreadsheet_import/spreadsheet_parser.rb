@@ -77,27 +77,24 @@ module SpreadsheetImport
 
         convert_office_hours_to_utc(org)
 
-        org_import_result = Organization.import([org], recursive: true, validate: false)
-
-        failed = org_import_result.failed_instances
-
-        if failed.present?
+        # activerecord-import only populates failed_instances when it validates,
+        # and validation already happened above, so the only way the insert can
+        # fail now is a raised database error. Catch it per row: unwinding would
+        # abort the whole run and replace every diagnostic gathered so far with
+        # a single exception message.
+        begin
+          org_import_result = Organization.import([org], recursive: true, validate: false)
+        rescue => e
           @import_log&.increment!(:error_count)
-          Rails.logger.warn "Import FAILED for organization at row #{row_number} (name: #{org.name})"
-
-          Array(failed).each do |inst|
-            if inst.respond_to?(:errors) && inst.errors.any?
-              inst.errors.full_messages.each { |msg| @error_messages_by_row[label] << msg }
-            else
-              @error_messages_by_row[label] << "Database/association error on #{inst.class.name}"
-            end
-          end
-        else
-          @import_log&.increment!(:success_count)
-          attach_media(org_import_result.ids, entry[:org_row])
-          @imported_names.add(org.name) if org.name.present?
-          Rails.logger.info "Import SUCCESSFUL for organization at row #{row_number} (name: #{org.name})"
+          @error_messages_by_row[label] << "Database error: #{e.message}"
+          Rails.logger.error "Import FAILED for organization at row #{row_number} (name: #{org.name}): #{e.message}"
+          next
         end
+
+        @import_log&.increment!(:success_count)
+        attach_media(org_import_result.ids, entry[:org_row])
+        @imported_names.add(org.name) if org.name.present?
+        Rails.logger.info "Import SUCCESSFUL for organization at row #{row_number} (name: #{org.name})"
       end
 
       finalize_import_log
@@ -313,19 +310,7 @@ module SpreadsheetImport
         return :skipped
       end
 
-      hours_string = org_row["Detailed Hours Of Operation"]
-      office_hours =
-        if hours_string.present?
-          SpreadsheetImport::OfficeHoursParser.new(hours_string).call
-        else
-          []
-        end
-
-      # Only fall back to "no set business hours" when we have neither an
-      # explicit non-standard designation nor parsed weekly hours. When real
-      # hours are present we leave the flag blank so they are actually used.
-      non_standard = normalize_non_standard_office_hours(org_row["Hours of Operation"])
-      non_standard = "no_set_business_hours" if non_standard.blank? && office_hours.blank?
+      office_hours, non_standard = parse_office_hours(org_row, label)
 
       location = organization.locations.build(
         name: clean_na(org_row["Organization Name"]),
@@ -355,6 +340,25 @@ module SpreadsheetImport
       office_hours.each { |attrs| location.office_hours.build(attrs) }
 
       :ok
+    end
+
+    # Weekly hours come from the "Detailed Hours Of Operation" cell. Whatever the
+    # parser could not read is recorded against the row, so an operator can see
+    # that a cell was dropped instead of reading "Import SUCCESSFUL" for an
+    # organization that now shows no hours at all.
+    #
+    # Only fall back to "no set business hours" when we have neither an explicit
+    # non-standard designation nor parsed weekly hours; when real hours are
+    # present the flag stays blank so they are actually used.
+    def parse_office_hours(org_row, label)
+      parser = SpreadsheetImport::OfficeHoursParser.new(org_row["Detailed Hours Of Operation"])
+      office_hours = parser.call
+      parser.warnings.each { |warning| @error_messages_by_row[label] << warning }
+
+      non_standard = normalize_non_standard_office_hours(org_row["Hours of Operation"])
+      non_standard = parser.non_standard if non_standard.blank?
+      non_standard = "no_set_business_hours" if non_standard.blank? && office_hours.blank?
+      [office_hours, non_standard]
     end
 
     def supported_time_zone?(timezone)
