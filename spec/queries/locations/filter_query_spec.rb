@@ -52,8 +52,12 @@ RSpec.describe Locations::FilterQuery do
   end
 
   describe ".by_service" do
-    let(:cause) { create(:cause, name: "Education") }
-    let(:service) { create(:service, name: "Tutoring", cause: cause) }
+    # Cause and Service both validate global name uniqueness, and CI seeds the
+    # test database (db:prepare runs populate:seed_causes_and_services), so a
+    # real cause name like "Education" is already taken there. Use names the
+    # seed list will never contain.
+    let(:cause) { create(:cause, name: "Filter Spec Cause") }
+    let(:service) { create(:service, name: "Filter Spec Service", cause: cause) }
     let!(:location) do
       location = create(:organization, name: "service org").locations.first
       location.services << service
@@ -61,19 +65,19 @@ RSpec.describe Locations::FilterQuery do
     end
 
     it "matches on a cause and service pair" do
-      expect(described_class.by_service(Location.active, {"Education" => ["Tutoring"]}).ids)
+      expect(described_class.by_service(Location.active, {cause.name => [service.name]}).ids)
         .to contain_exactly(location.id)
     end
 
     it "binds a service that closes the IN list instead of executing it" do
-      injected = {"Education" => ["x') OR 1=1) --"]}
+      injected = {cause.name => ["x') OR 1=1) --"]}
 
       expect { described_class.by_service(Location.active, injected).ids }.not_to raise_error
       expect(described_class.by_service(Location.active, injected).ids).to be_empty
     end
 
     it "matches nothing when a cause is present with no services" do
-      expect(described_class.by_service(Location.active, {"Education" => []}).ids).to be_empty
+      expect(described_class.by_service(Location.active, {cause.name => []}).ids).to be_empty
     end
   end
 end
