@@ -354,8 +354,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_30_120000) do
     t.boolean "volunteer_availability", default: false, null: false
     t.string "volunteer_link"
     t.boolean "general_population_serving", default: false, null: false
-    t.jsonb "in_kind_donation_items", default: [], null: false
     t.string "in_kind_donation_link"
+    t.jsonb "in_kind_donation_items", default: [], null: false
     t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
     t.index ["ein_number"], name: "index_organizations_on_ein_number"
     t.index ["mission_statement_en"], name: "index_organizations_on_mission_statement_en"

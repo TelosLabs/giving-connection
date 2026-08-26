@@ -56,24 +56,71 @@ RSpec.describe Organization, type: :model do
     it { is_expected.to validate_inclusion_of(:scope_of_work).in_array(Organizations::Constants::SCOPE) }
   end
 
-  describe "in-kind donation fields" do
+  describe "in-kind donation items" do
+    it "persists a selected list of approved items" do
+      organization = create(:organization, in_kind_donation_items: ["clothing_general", "diapers"])
+
+      expect(organization.in_kind_donation_items).to eq(["clothing_general", "diapers"])
+    end
+
+    it "defaults to an empty list" do
+      expect(create(:organization).in_kind_donation_items).to eq([])
+    end
+
+    it "drops blanks, de-duplicates and coerces to strings" do
+      organization = create(:organization, in_kind_donation_items: ["", :diapers, "diapers", nil, "shoes"])
+
+      expect(organization.in_kind_donation_items).to eq(["diapers", "shoes"])
+    end
+
+    it "rejects unsupported items" do
+      organization = build(:organization, in_kind_donation_items: ["clothing_general", "not-supported"])
+
+      expect(organization).not_to be_valid
+      expect(organization.errors[:in_kind_donation_items]).to include("contains unsupported item(s): not-supported")
+    end
+
+    it "still saves a record holding an item key that has since been retired" do
+      organization = create(:organization)
+      organization.update_column(:in_kind_donation_items, ["retired_key"])
+      organization.reload
+
+      organization.phone_number = "555-0100"
+
+      expect(organization.save).to be(true)
+      expect(organization.reload.in_kind_donation_items).to eq(["retired_key"])
+    end
+  end
+
+  describe "in-kind donation link" do
     it "persists a link to the org's own in-kind donation needs" do
       organization = create(:organization, in_kind_donation_link: "https://example.org/wishlist")
 
       expect(organization.in_kind_donation_link).to eq("https://example.org/wishlist")
     end
 
-    it "persists a selected list of approved in-kind donation items" do
-      organization = create(:organization, in_kind_donation_items: ["clothing_general", "diapers"])
+    ["javascript:alert(1)", "data:text/html,<script>alert(1)</script>", "ftp://example.org/needs",
+      "example.org/needs", "not a url"].each do |bad_link|
+      it "rejects #{bad_link.inspect}" do
+        organization = build(:organization, in_kind_donation_link: bad_link)
 
-      expect(organization.in_kind_donation_items).to eq(["clothing_general", "diapers"])
+        expect(organization).not_to be_valid
+        expect(organization.errors[:in_kind_donation_link]).to include("URL incorrect format")
+      end
     end
 
-    it "rejects unsupported in-kind donation items" do
-      organization = build(:organization, in_kind_donation_items: ["clothing_general", "not-supported"])
+    it "keeps accepting scheme-less values on the legacy link columns" do
+      organization = build(:organization, website: "www.example.org", donation_link: "www.example.org/give",
+        volunteer_link: "www.example.org/volunteer")
+
+      expect(organization).to be_valid
+    end
+
+    it "rejects an unsafe scheme on the legacy link columns" do
+      organization = build(:organization, donation_link: "javascript:alert(1)")
 
       expect(organization).not_to be_valid
-      expect(organization.errors[:in_kind_donation_items]).to include("contains unsupported item(s): not-supported")
+      expect(organization.errors[:donation_link]).to include("URL incorrect format")
     end
   end
 end

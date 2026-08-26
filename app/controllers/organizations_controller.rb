@@ -40,6 +40,13 @@ class OrganizationsController < ApplicationController
     redirect_to edit_organization_path(@organization, anchor: "location-specific-fields")
   end
 
+  def check_ein
+    render json: EinChecker.new(params[:ein_number]).call
+    skip_authorization
+  end
+
+  private
+
   def set_form_data
     @causes = Cause.order(:name).pluck(:name)
     @beneficiaries = BeneficiarySubcategory.order(:name).pluck(:name)
@@ -85,11 +92,6 @@ class OrganizationsController < ApplicationController
     tags.each do |tag_name|
       organization.tags.find_by(name: tag_name).delete
     end
-  end
-
-  def check_ein
-    render json: EinChecker.new(params[:ein_number]).call
-    skip_authorization
   end
 
   def organization_params

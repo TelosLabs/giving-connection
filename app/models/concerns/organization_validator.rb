@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class OrganizationValidator < ActiveModel::Validator
+  # Schemes that must never reach an href, whatever the decorator does with them.
+  UNSAFE_URL_SCHEMES = %w[javascript data vbscript file blob].freeze
+
   attr_reader :record
 
   def validate(record)
@@ -32,21 +35,25 @@ class OrganizationValidator < ActiveModel::Validator
   end
 
   def valid_in_kind_donation_url
-    valid_url(record.in_kind_donation_link, :in_kind_donation_link)
+    valid_url(record.in_kind_donation_link, :in_kind_donation_link, require_http: true)
   end
 
   def valid_volunteer_url
     valid_url(record.volunteer_link, :volunteer_link)
   end
 
-  def valid_url(raw_url, attribute)
+  def valid_url(raw_url, attribute, require_http: false)
     return true if raw_url.blank?
+
     url = begin
       URI.parse(raw_url)
-    rescue
-      false
+    rescue URI::InvalidURIError, TypeError
+      nil
     end
-    unless url.is_a?(URI::HTTP) || url.is_a?(URI::HTTPS) || url.is_a?(URI::Generic)
+
+    return true if url.is_a?(URI::HTTP) # URI::HTTPS subclasses URI::HTTP
+
+    if url.nil? || require_http || UNSAFE_URL_SCHEMES.include?(url.scheme&.downcase)
       record.errors.add(attribute, "URL incorrect format")
     end
   end
