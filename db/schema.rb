@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_07_30_120000) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_26_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -381,6 +381,20 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_30_120000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_phone_numbers_on_location_id"
+  end
+
+  create_table "search_terms", force: :cascade do |t|
+    t.string "keyword", null: false
+    t.string "normalized_keyword", null: false
+    t.integer "results_count", default: 0, null: false
+    t.string "origin"
+    t.string "city"
+    t.string "state"
+    t.boolean "filtered", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_search_terms_on_created_at"
+    t.index ["normalized_keyword", "created_at"], name: "index_search_terms_on_normalized_keyword_and_created_at"
   end
 
   create_table "services", force: :cascade do |t|

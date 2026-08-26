@@ -1,18 +1,20 @@
 require "system_helper"
 
 RSpec.describe "Search analytics tracking", type: :system do
-  let!(:user) { create(:user) }
-
   before do
     # Same pattern as location_search_system_spec.rb: without this, third-party
     # scripts (Maps, Bing, Clarity, the accessibility widget) can hang or mutate
     # the page mid-test, which shows up as Ferrum::NodeNotFoundError/
     # PendingConnectionsError on whatever element Capybara happens to be
-    # interacting with at the time. Stub them out so the page settles.
+    # interacting with at the time.
+    #
+    # Scoped to Script rather than intercepting everything: an unscoped intercept
+    # proxies every request on the page over CDP into Ruby, which is slow and is
+    # itself a source of timing flake. All four of these are script loads.
     browser = page.driver.browser
     third_party_pattern = /maps\.googleapis\.com|bat\.bing\.(net|com)|clarity\.ms|acsbapp\.com/
 
-    browser.network.intercept
+    browser.network.intercept(resource_type: "Script")
     browser.on(:request) do |request|
       if request.url.match?(third_party_pattern)
         request.respond(body: "", content_type: "text/javascript")
@@ -20,8 +22,6 @@ RSpec.describe "Search analytics tracking", type: :system do
         request.continue
       end
     end
-
-    sign_in user
   end
 
   it "pushes a search event to the GTM dataLayer when a search is submitted" do
@@ -30,11 +30,8 @@ RSpec.describe "Search analytics tracking", type: :system do
     find("#search-keyword-input").set("food pantry")
     find("#search-keyword-input").send_keys(:enter)
 
-    # A real readiness signal: this text only renders once show.html.slim (the
-    # results template) has rendered, which only happens after the search
-    # actually went through. (The previous have_current_path(search_path,
-    # ignore_query: true) check was already true before submitting, since we
-    # start the test on search_path — it never proved anything.)
+    # This text only renders once show.html.slim (the results template) has
+    # rendered, which only happens after the search actually went through.
     expect(page).to have_text(/results? found/i, wait: 5)
 
     search_event = wait_for_data_layer_event("search")
@@ -43,11 +40,11 @@ RSpec.describe "Search analytics tracking", type: :system do
     # Check the full payload, not just that the event fired — a bad selector
     # elsewhere (e.g. location) wouldn't be caught by presence alone.
     expect(search_event["search_term"]).to eq("food pantry")
-    expect(search_event["category"]).to eq("Find Help")
+    expect(search_event["search_category"]).to eq("Find Help")
     # A paramless visit to /search renders _preview.html.slim, so this is a
     # first search from the search page rather than a refinement.
     expect(search_event["search_origin"]).to eq("search_landing")
-    expect(search_event["location"]).to be_present
+    expect(search_event["search_location"]).to be_present
   end
 
   it "distinguishes a refinement made from the results template" do
@@ -67,18 +64,29 @@ RSpec.describe "Search analytics tracking", type: :system do
     expect(search_event["search_origin"]).to eq("search_results")
   end
 
-  it "does not re-fire the search event on pagination" do
+  # The bug this guard exists for. The tracking controller rides on the same form
+  # as the `search` controller, whose submitForm() is requestSubmit() — a real
+  # submit event. Every pill, distance button and city change therefore re-fires
+  # the tracking action with the keyword unchanged. Counting those would turn one
+  # search into five and corrupt the top-terms report.
+  it "does not re-fire the search event when a filter is toggled" do
     visit search_path
 
     find("#search-keyword-input").set("food pantry")
     find("#search-keyword-input").send_keys(:enter)
     expect(page).to have_text(/results? found/i, wait: 5)
-
-    # Make sure the (single) search event has actually landed before counting.
     wait_for_data_layer_event("search")
 
-    count_after_search = fetch_data_layer.count { |entry| entry["event"] == "search" }
-    expect(count_after_search).to eq(1)
+    expect(search_event_count).to eq(1)
+
+    click_link "Hours"
+    find("label", text: "Open Now").click
+
+    # Sync on the filter having actually been applied before counting again —
+    # the results text is already on screen, so it proves nothing here.
+    expect(page).to have_current_path(/open_now/, url: true, wait: 5)
+
+    expect(search_event_count).to eq(1)
   end
 
   describe "from a nonprofit detail page" do
@@ -96,7 +104,7 @@ RSpec.describe "Search analytics tracking", type: :system do
 
       expect(search_event).not_to be_nil, "dataLayer at failure: #{fetch_data_layer.inspect}"
       expect(search_event["search_term"]).to eq("food pantry")
-      expect(search_event["category"]).to eq("Find Help")
+      expect(search_event["search_category"]).to eq("Find Help")
       expect(search_event["search_origin"]).to eq("nonprofit_profile")
     end
   end
@@ -114,20 +122,14 @@ RSpec.describe "Search analytics tracking", type: :system do
 
       expect(search_event).not_to be_nil, "dataLayer at failure: #{fetch_data_layer.inspect}"
       expect(search_event["search_term"]).to eq("food pantry")
-      expect(search_event["category"]).to eq("Find Help")
+      expect(search_event["search_category"]).to eq("Find Help")
       expect(search_event["search_origin"]).to eq("home")
       # Asserted, not just present: the location was silently `undefined` for a
       # while because the selector picked up the navbar's <p> instead of the
       # search bar's <input>, and presence-only assertions never caught it.
-      expect(search_event["location"]).to be_present
+      expect(search_event["search_location"]).to be_present
     end
 
-    # Regression guard: the homepage form used to declare the whole `search`
-    # controller, which auto-submits its form whenever the global
-    # `location-updated` event fires. That turned "pick a city on the homepage"
-    # into "run an empty search and get navigated to /search", inflating counts
-    # with searches nobody performed. Tracking now lives in its own controller
-    # that only reads from its own element.
     it "neither searches nor navigates when only the location changes" do
       visit root_path
 
@@ -148,7 +150,7 @@ RSpec.describe "Search analytics tracking", type: :system do
       expect(page).to have_css(navbar_location, text: @picked_city, wait: 5)
 
       expect(page).to have_current_path(root_path)
-      expect(fetch_data_layer.count { |entry| entry["event"] == "search" }).to eq(0)
+      expect(search_event_count).to eq(0)
     end
   end
 
@@ -157,29 +159,33 @@ RSpec.describe "Search analytics tracking", type: :system do
   # Turbo may still be swapping frames the instant navigation "completes" per
   # have_current_path, so a single evaluate_script read can race and see an
   # empty/stale dataLayer. Poll instead of reading it exactly once.
+  #
+  # A monotonic deadline rather than Timeout.timeout: Timeout raises
+  # asynchronously, which can land mid-CDP-round-trip and desync the Ferrum
+  # websocket, leaving the failure path to make another call on a connection
+  # that is no longer healthy.
   def wait_for_data_layer_event(event_name, timeout: 10)
-    event = nil
-    Timeout.timeout(timeout) do
-      loop do
-        event = fetch_data_layer.reverse.find { |entry| entry["event"] == event_name }
-        break if event
-        sleep 0.1
-      end
+    deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + timeout
+
+    loop do
+      event = fetch_data_layer.reverse.find { |entry| entry["event"] == event_name }
+      return event if event
+      return nil if Process.clock_gettime(Process::CLOCK_MONOTONIC) >= deadline
+
+      sleep 0.1
     end
-    event
-  rescue Timeout::Error
-    nil
+  end
+
+  def search_event_count
+    fetch_data_layer.count { |entry| entry["event"] == "search" }
   end
 
   # IMPORTANT: don't JSON.stringify the whole dataLayer array. GTM pushes its
   # own internal entries (gtm.historyChange-v2, etc.) that can contain
   # unserializable/circular structures, which makes JSON.stringify throw
   # "Converting circular structure to JSON" for the *entire* array — not just
-  # the offending entry. A previous version of this helper wrapped that in a
-  # JS try/catch AND a Ruby rescue, both returning [], which silently turned
-  # a real crash into what looked like "the event never fired." Instead,
-  # pluck only the specific scalar fields we actually assert on — those are
-  # always plain strings, so this can't hit a circular reference.
+  # the offending entry. Pluck only the specific scalar fields we assert on:
+  # those are always plain strings, so this can't hit a circular reference.
   def fetch_data_layer
     Array(page.evaluate_script(<<~JS))
       (function() {
@@ -191,9 +197,9 @@ RSpec.describe "Search analytics tracking", type: :system do
             out.push({
               event: entry.event,
               search_term: entry.search_term,
-              category: entry.category,
+              search_category: entry.search_category,
               search_origin: entry.search_origin,
-              location: entry.location
+              search_location: entry.search_location
             });
           }
         }
