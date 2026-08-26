@@ -133,40 +133,59 @@ RSpec.describe "Smart Match service filter", type: :system do
     all("#smart-match-results article h3").map(&:text)
   end
 
-  def dialog_open?
-    page.evaluate_script("!!document.querySelector('#smart-match-results dialog')?.open")
+  # Waits for the card count rather than reading it. Applying the filter and
+  # returning from the quiz both swap the results frame, and a bare `all` can
+  # catch that swap in flight -- the old cards are already detached and the new
+  # ones are not in the document yet -- reporting a count no user ever sees.
+  # The swap is a server round trip, so it can outlast the 2s default wait.
+  def expect_cards(count)
+    expect(page).to have_css("#smart-match-results article", count: count, wait: 10)
+  end
+
+  # showModal() and close() are reflected in the <dialog>'s `open` attribute, so
+  # the waiting matchers can be pointed straight at it. Reading `dialog.open`
+  # through evaluate_script resolved exactly once, with no retry, which raced
+  # every one of those swaps.
+  def expect_dialog_open
+    expect(page).to have_css("#smart-match-results dialog[open]", wait: 10)
+  end
+
+  # visible: :all so this asserts the attribute is really gone, rather than
+  # passing for free on a dialog the browser has merely hidden.
+  def expect_dialog_closed
+    expect(page).to have_no_css("#smart-match-results dialog[open]", visible: :all)
   end
 
   def open_dialog
     click_on trigger
-    expect(dialog_open?).to be(true)
+    expect_dialog_open
   end
 
   it "stays shut until asked for, and closes again on Escape" do
     complete_donor_quiz
 
     expect(page).to have_text(I18n.t("smart_match.results.service_filter.prompt"))
-    expect(dialog_open?).to be(false)
+    expect_dialog_closed
 
     open_dialog
     expect(page).to have_text("Homeless Shelters")
 
     find("#smart-match-results dialog").send_keys(:escape)
 
-    expect(dialog_open?).to be(false)
+    expect_dialog_closed
   end
 
   it "narrows the cards in place when applied" do
     complete_donor_quiz
-    expect(card_names.size).to eq(3)
+    expect_cards(3)
 
     open_dialog
     find("#smart-match-results dialog label", text: "Homeless Shelters").click
     click_on I18n.t("smart_match.results.service_filter.apply")
 
-    expect(page).to have_css("#smart-match-results article", count: 2)
+    expect_cards(2)
     expect(card_names).to contain_exactly("Shelter Org", "Both Org")
-    expect(dialog_open?).to be(false)
+    expect_dialog_closed
     # The inline trigger now reports what is applied, and offers the way out.
     expect(page).to have_text(I18n.t("smart_match.results.service_filter.selected", count: 1))
     expect(page).to have_link(I18n.t("smart_match.results.service_filter.clear"))
@@ -182,8 +201,8 @@ RSpec.describe "Smart Match service filter", type: :system do
     find("#smart-match-results dialog label", text: "Homeless Shelters").click
     find("button[aria-label='#{close_label}']").click
 
-    expect(dialog_open?).to be(false)
-    expect(card_names.size).to eq(3)
+    expect_dialog_closed
+    expect_cards(3)
 
     open_dialog
 
