@@ -34,6 +34,12 @@ module SelectMultiple
       end
     end
 
+    def checked?(item)
+      return false if @stimulus_controller == "select-multiple-search"
+
+      @selected.to_a.include?(item)
+    end
+
     def grouped_items
       keyed_items? ? @items : @items.sort
     end

@@ -16,7 +16,7 @@ class OrganizationDecorator < ApplicationDecorator
   end
 
   def in_kind_donation_items
-    Array(object.in_kind_donation_items).filter_map do |item_key|
+    object.in_kind_donation_items.to_a.filter_map do |item_key|
       Organization.in_kind_donation_item_label(item_key)
     end
   end

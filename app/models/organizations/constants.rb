@@ -82,6 +82,9 @@ module Organizations
       }
     }.freeze
 
+    IN_KIND_DONATION_ITEM_LABELS = IN_KIND_DONATION_ITEMS.values.reduce(:merge).freeze
+    IN_KIND_DONATION_ITEM_KEYS = IN_KIND_DONATION_ITEM_LABELS.keys.freeze
+
     NTEE_CODE = [
       "A01: Alliances & Advocacy",
       "A02: Management & Technical Assistance",
