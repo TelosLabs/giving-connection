@@ -23,7 +23,7 @@ class SearchesController < ApplicationController
   def create_params
     params.require(:search).permit(:distance, :city, :state, :lat, :lon,
       :open_now, :open_weekends, :keyword, :scope_of_work,
-      :zipcode, causes: [], services: {}, beneficiary_groups: {})
+      :zipcode, causes: [], services: {}, beneficiary_groups: {}, give: [])
   end
 
   def location_params

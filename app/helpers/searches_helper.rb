@@ -20,6 +20,10 @@ module SearchesHelper
     list << object.beneficiary_groups&.map(&:last)&.flatten
     list << object.services&.map(&:last)&.flatten
     list << object.causes&.flatten
+    # "Give" is deliberately omitted: Alert has no column for it, the alert form
+    # builds no field for it, and AlertSearchResults cannot replay it. Listing it
+    # here would enable the Create Search Alert button and show the pill as
+    # captured while the saved alert silently ignored it.
     list << "Open Now" if object.open_now.present?
     list << "Open On Weekends" if object.open_weekends.present?
     list << "#{kilometers_to_miles(object.distance).to_i} mi" if object.distance.present?

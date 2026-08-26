@@ -65,12 +65,13 @@
                         | Create Search Alert
                 - else
                   - tooltip_id = SecureRandom.hex(8)
+                  - tooltip_message = @search.give.present? ? "Search alerts do not support Give filters yet." : "Select search pills to narrow and create a search alert"
                   div class="relative text-xs text-center"
                     div class="inline-flex items-center px-3 py-1 text-xs text-gray-400 rounded-full border cursor-pointer border-gray-5 labelled-icon" aria-labelledby=tooltip_id
                       = inline_svg_tag "bell.svg", class: 'h-3 w-3 mr-2 fill-current text-gray-400 -ml-0.5'
                       | Create Search Alert
                     span role="tooltip" id=tooltip_id class="hidden absolute right-24 z-10 px-3 py-1 mt-8 w-48 text-white bg-opacity-90 rounded-lg transform translate-x-1/2 bg-gray-2"
-                      | Select search pills to narrow and create a search alert
+                      = tooltip_message
               div class="overflow-y-auto w-full h-full md:flex md:flex-col" data-tabs-target="panel"
                 - if @results.present?
                   ul class="flex flex-col divide-y divide-gray-8" id="search-results"
@@ -106,15 +107,16 @@
                     button class="text-sm font-bold text-blue-medium" type="submit" data-action="click->search#clearKeywordInput click->search#clearCheckedFilters click->search#clearAll"
                       | Clear Filters
 
-                    = link_to( \
-                      new_alert_path( \
-                        filters: parse_filters(@search), \
-                        filters_list: list_of_filters(@search) \
-                      ), \
-                      class: "mt-10 text-sm font-bold text-black", \
-                      data: { turbo_stream: true } \
-                    ) do
-                      | Create an Alert for this Search
+                    - if params.dig('search', 'keyword').present? || list_of_filters(@search).present?
+                      = link_to( \
+                        new_alert_path( \
+                          filters: parse_filters(@search), \
+                          filters_list: list_of_filters(@search) \
+                        ), \
+                        class: "mt-10 text-sm font-bold text-black", \
+                        data: { turbo_stream: true } \
+                      ) do
+                        | Create an Alert for this Search
           // Mobile map
           div class="hidden w-full h-85vh md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}"
             div class="w-full h-full" data-places-target="map"
