@@ -3,11 +3,15 @@
 require "administrate/field/base"
 
 class InKindDonationItemsField < Administrate::Field::Base
-  def selected_items
-    Array(data)
+  def self.permitted_attribute(attr, _options = nil)
+    {attr => []}
   end
 
-  def options
+  def selected_items
+    data.to_a
+  end
+
+  def item_groups
     Organizations::Constants::IN_KIND_DONATION_ITEMS
   end
 

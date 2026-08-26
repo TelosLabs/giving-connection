@@ -116,8 +116,7 @@ module Admin
                                                    services_id: [],
                                                    location_attributes: %i[address latitude longitude website main offer_services non_standard_office_hours],
                                                    tags_attributes: [],
-                                                   office_hours_attributes: %i[day open_time close_time closed],
-                                                   in_kind_donation_items: []}
+                                                   office_hours_attributes: %i[day open_time close_time closed]}
       params.require(resource_class.model_name.param_key)
         .permit(permit)
         .transform_values { |value| (value == "") ? nil : value }

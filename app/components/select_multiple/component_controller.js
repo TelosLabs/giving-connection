@@ -73,7 +73,7 @@ export default class extends Controller {
     this.store.forEach((label, value) => {
       const badge = this.badgeTemplateTarget.cloneNode(true)
       const valueTarget = badge.querySelector('span')
-      valueTarget.innerHTML = label
+      valueTarget.textContent = label
       badge.classList.remove('hidden')
       badge.setAttribute('data-value', value)
       this.badgesContainerTarget.appendChild(badge)
