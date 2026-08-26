@@ -28,6 +28,7 @@ class Organization < ApplicationRecord
   include Organizations::Constants
   validates_with OrganizationValidator
   include PgSearch::Model
+
   multisearchable against: [:name]
 
   scope :active, -> { where(active: true) }
@@ -55,12 +56,27 @@ class Organization < ApplicationRecord
   validates :logo, content_type: ["image/png", "image/jpeg"],
     size: {less_than: 5.megabytes, message: "File too large. Must be less than 5MB in size"}
 
+  before_validation :normalize_in_kind_donation_items
+  validate :validate_in_kind_donation_items
+
   after_create :attach_logo_and_cover
 
   accepts_nested_attributes_for :social_media, allow_destroy: true
   accepts_nested_attributes_for :locations, allow_destroy: true
   accepts_nested_attributes_for :organization_beneficiaries, allow_destroy: true
   accepts_nested_attributes_for :organization_causes, allow_destroy: true
+
+  def self.in_kind_donation_items_options
+    Organizations::Constants::IN_KIND_DONATION_ITEMS
+  end
+
+  def self.in_kind_donation_item_keys
+    Organizations::Constants::IN_KIND_DONATION_ITEM_KEYS
+  end
+
+  def self.in_kind_donation_item_label(item_key)
+    Organizations::Constants::IN_KIND_DONATION_ITEM_LABELS[item_key.to_s]
+  end
 
   def regenerate_org_locations_slugs
     locations.order(:created_at).each do |location|
@@ -100,6 +116,19 @@ class Organization < ApplicationRecord
   end
 
   private
+
+  def normalize_in_kind_donation_items
+    self.in_kind_donation_items = in_kind_donation_items.to_a.map(&:to_s).compact_blank.uniq
+  end
+
+  def validate_in_kind_donation_items
+    return unless will_save_change_to_in_kind_donation_items?
+
+    unsupported_items = in_kind_donation_items.to_a - self.class.in_kind_donation_item_keys
+    return if unsupported_items.empty?
+
+    errors.add(:in_kind_donation_items, :unsupported, items: unsupported_items.join(", "))
+  end
 
   def attach_logo_and_cover
     unless cover_photo.attached?

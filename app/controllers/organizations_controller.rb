@@ -40,6 +40,13 @@ class OrganizationsController < ApplicationController
     redirect_to edit_organization_path(@organization, anchor: "location-specific-fields")
   end
 
+  def check_ein
+    render json: EinChecker.new(params[:ein_number]).call
+    skip_authorization
+  end
+
+  private
+
   def set_form_data
     @causes = Cause.order(:name).pluck(:name)
     @beneficiaries = BeneficiarySubcategory.order(:name).pluck(:name)
@@ -87,11 +94,6 @@ class OrganizationsController < ApplicationController
     end
   end
 
-  def check_ein
-    render json: EinChecker.new(params[:ein_number]).call
-    skip_authorization
-  end
-
   def organization_params
     params.require(:organization).permit(
       :name,
@@ -112,6 +114,8 @@ class OrganizationsController < ApplicationController
       :active,
       :verified,
       :donation_link,
+      :in_kind_donation_link,
+      {in_kind_donation_items: []},
       :volunteer_availability,
       :volunteer_link,
       :general_population_serving,

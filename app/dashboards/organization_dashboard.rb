@@ -39,6 +39,8 @@ class OrganizationDashboard < Administrate::BaseDashboard
     active: Field::Boolean,
     verified: Field::Boolean,
     donation_link: Field::String,
+    in_kind_donation_link: Field::String,
+    in_kind_donation_items: InKindDonationItemsField,
     volunteer_link: Field::String,
     volunteer_availability: Field::Boolean,
     organization_causes: Field::NestedHasMany,
@@ -80,6 +82,8 @@ class OrganizationDashboard < Administrate::BaseDashboard
     general_population_serving
     tags
     donation_link
+    in_kind_donation_link
+    in_kind_donation_items
     volunteer_link
     volunteer_availability
     social_media
@@ -109,6 +113,8 @@ class OrganizationDashboard < Administrate::BaseDashboard
     general_population_serving
     tags
     donation_link
+    in_kind_donation_link
+    in_kind_donation_items
     volunteer_availability
     volunteer_link
     organization_causes
