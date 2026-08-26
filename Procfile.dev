@@ -1,4 +1,4 @@
 web:    bundle exec puma -C config/puma.rb
 js:     yarn dev
-css:    yarn build:css --watch
+css:    yarn build:css --watch=always
 worker: bundle exec sidekiq

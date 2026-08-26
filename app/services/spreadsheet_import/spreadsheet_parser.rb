@@ -60,37 +60,41 @@ module SpreadsheetImport
 
         label = row_label(row_number, entry[:org_row])
 
-        org_import_result =
-          Organization.import([org],
-            recursive: true,
-            validate: true,
-            track_validation_failures: true)
-
-        failed =
-          if org_import_result.respond_to?(:failed_instances_with_indexes)
-            org_import_result.failed_instances_with_indexes
-          else
-            org_import_result.failed_instances
-          end
-
-        if failed.present?
+        # Validate first, convert office hours to UTC second, insert third — the
+        # same order a normal save uses (OfficeHour's before_save conversion runs
+        # *after* validation). Converting before validation makes a west-of-Central
+        # location's "8:30 - 18:00" become 15:30 - 01:00 UTC, and since a `time`
+        # column drops the day rollover, OfficeHoursValidator reads that as closing
+        # before opening. Passing validate: false to the import is not a loss:
+        # activerecord-import already imports associations without validating them,
+        # and org.valid? cascades through locations to the office hours.
+        unless org.valid?
           @import_log&.increment!(:error_count)
           Rails.logger.warn "Import FAILED for organization at row #{row_number} (name: #{org.name})"
-
-          Array(failed).each do |item|
-            idx, inst = item.is_a?(Array) ? item : [nil, item]
-            if inst.respond_to?(:errors) && inst.errors.any?
-              inst.errors.full_messages.each { |msg| @error_messages_by_row[label] << msg }
-            else
-              @error_messages_by_row[label] << "Database/association error on #{inst.class.name}#{idx ? " (index #{idx})" : ""}"
-            end
-          end
-        else
-          @import_log&.increment!(:success_count)
-          attach_media(org_import_result.ids, entry[:org_row])
-          @imported_names.add(org.name) if org.name.present?
-          Rails.logger.info "Import SUCCESSFUL for organization at row #{row_number} (name: #{org.name})"
+          org.errors.full_messages.each { |msg| @error_messages_by_row[label] << msg }
+          next
         end
+
+        convert_office_hours_to_utc(org)
+
+        # activerecord-import only populates failed_instances when it validates,
+        # and validation already happened above, so the only way the insert can
+        # fail now is a raised database error. Catch it per row: unwinding would
+        # abort the whole run and replace every diagnostic gathered so far with
+        # a single exception message.
+        begin
+          org_import_result = Organization.import([org], recursive: true, validate: false)
+        rescue => e
+          @import_log&.increment!(:error_count)
+          @error_messages_by_row[label] << "Database error: #{e.message}"
+          Rails.logger.error "Import FAILED for organization at row #{row_number} (name: #{org.name}): #{e.message}"
+          next
+        end
+
+        @import_log&.increment!(:success_count)
+        attach_media(org_import_result.ids, entry[:org_row])
+        @imported_names.add(org.name) if org.name.present?
+        Rails.logger.info "Import SUCCESSFUL for organization at row #{row_number} (name: #{org.name})"
       end
 
       finalize_import_log
@@ -127,6 +131,18 @@ module SpreadsheetImport
       Rails.logger.info "🖼 Attached remote logo for #{org.name}"
     rescue => e
       Rails.logger.warn "Failed to attach remote logo for #{org.name}: #{e.message}"
+    end
+
+    # activerecord-import skips ActiveRecord save callbacks, so OfficeHour's
+    # before_save :convert_times_to_utc never runs during a bulk import. Without
+    # it the parser's wall-clock strings get stored verbatim and are then shifted
+    # by the timezone on display (a 10-15 range shows as 3-8 for an Arizona
+    # location). Called once validation has passed so the validator still sees
+    # the local times, exactly as it would on a normal save.
+    def convert_office_hours_to_utc(org)
+      org.locations.each do |location|
+        location.office_hours.each(&:convert_times_to_utc)
+      end
     end
 
     def finalize_import_log
@@ -294,19 +310,7 @@ module SpreadsheetImport
         return :skipped
       end
 
-      hours_string = org_row["Detailed Hours Of Operation"]
-      office_hours =
-        if hours_string.present?
-          SpreadsheetImport::OfficeHoursParser.new(hours_string).call
-        else
-          []
-        end
-
-      # Only fall back to "no set business hours" when we have neither an
-      # explicit non-standard designation nor parsed weekly hours. When real
-      # hours are present we leave the flag blank so they are actually used.
-      non_standard = normalize_non_standard_office_hours(org_row["Hours of Operation"])
-      non_standard = "no_set_business_hours" if non_standard.blank? && office_hours.blank?
+      office_hours, non_standard = parse_office_hours(org_row, label)
 
       location = organization.locations.build(
         name: clean_na(org_row["Organization Name"]),
@@ -331,11 +335,30 @@ module SpreadsheetImport
         location.location_services.build(service: service) if service
       end
 
-      office_hours.each do |attrs|
-        location.office_hours.build(attrs)
-      end
+      # Built with the parser's local wall-clock strings ("10:00"). #import
+      # converts them to UTC after validation — see the comment there.
+      office_hours.each { |attrs| location.office_hours.build(attrs) }
 
       :ok
+    end
+
+    # Weekly hours come from the "Detailed Hours Of Operation" cell. Whatever the
+    # parser could not read is recorded against the row, so an operator can see
+    # that a cell was dropped instead of reading "Import SUCCESSFUL" for an
+    # organization that now shows no hours at all.
+    #
+    # Only fall back to "no set business hours" when we have neither an explicit
+    # non-standard designation nor parsed weekly hours; when real hours are
+    # present the flag stays blank so they are actually used.
+    def parse_office_hours(org_row, label)
+      parser = SpreadsheetImport::OfficeHoursParser.new(org_row["Detailed Hours Of Operation"])
+      office_hours = parser.call
+      parser.warnings.each { |warning| @error_messages_by_row[label] << warning }
+
+      non_standard = normalize_non_standard_office_hours(org_row["Hours of Operation"])
+      non_standard = parser.non_standard if non_standard.blank?
+      non_standard = "no_set_business_hours" if non_standard.blank? && office_hours.blank?
+      [office_hours, non_standard]
     end
 
     def supported_time_zone?(timezone)
