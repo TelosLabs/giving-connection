@@ -83,7 +83,7 @@ RSpec.describe "SmartMatch::Results service filter", type: :request do
 
     # Present in the markup but inert -- a closed <dialog> is display:none.
     expect(filter_dialog.attributes).not_to have_key("open")
-    expect(filter_dialog.css("input[name='services[]']").map { |i| i["value"] })
+    expect(filter_dialog.css("input[name='services[]']").pluck("value"))
       .to contain_exactly("Homeless Shelters", "Housing Support Services")
     expect(filter_dialog.css("input[checked]")).to be_empty
     expect(card_names.size).to eq(3)
@@ -118,7 +118,7 @@ RSpec.describe "SmartMatch::Results service filter", type: :request do
     get smart_match_result_path(services: ["Homeless Shelters"])
 
     boxes = filter_dialog.css("input[name='services[]']")
-    checked = boxes.select { |box| box.attributes.key?("checked") }.map { |box| box["value"] }
+    checked = boxes.select { |box| box.attributes.key?("checked") }.pluck("value")
 
     expect(checked).to eq(["Homeless Shelters"])
   end

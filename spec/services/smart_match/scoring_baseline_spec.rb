@@ -70,7 +70,7 @@ RSpec.describe "Smart Match scoring baseline" do
     baseline.each do |scenario_key, expected|
       actual = snapshot.fetch(scenario_key)
 
-      expect(actual.map { |r| r["organization"] }).to eq(expected.map { |r| r["organization"] }),
+      expect(actual.pluck("organization")).to eq(expected.pluck("organization")),
         "ranking order changed for scenario '#{scenario_key}'"
       expect(actual).to eq(expected),
         "scores or breakdowns changed for scenario '#{scenario_key}'"

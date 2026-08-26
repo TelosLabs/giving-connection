@@ -114,7 +114,7 @@ RSpec.describe SmartMatch::RuleScorer do
 
       trace = score_for(org, intent(self_description: ["mental_health"]))[:matched]
 
-      expect(trace.map { |m| m[:field] }).to include("ntee")
+      expect(trace.pluck(:field)).to include("ntee")
     end
 
     it "does not match an NTEE letter group against an unrelated letter" do
@@ -122,7 +122,7 @@ RSpec.describe SmartMatch::RuleScorer do
 
       trace = score_for(org, intent(self_description: ["mental_health"]))[:matched]
 
-      expect(trace.map { |m| m[:field] }).not_to include("ntee")
+      expect(trace.pluck(:field)).not_to include("ntee")
     end
 
     it "matches a selected cause against the organization's own causes" do
@@ -130,7 +130,7 @@ RSpec.describe SmartMatch::RuleScorer do
 
       result = score_for(org, intent(causes: ["Mental Health"]))
 
-      expect(result[:matched].map { |m| m[:field] }).to include("cause")
+      expect(result[:matched].pluck(:field)).to include("cause")
       expect(result[:earned]).to eq(7.5) # weight 5 x 1.5
     end
 
@@ -139,7 +139,7 @@ RSpec.describe SmartMatch::RuleScorer do
 
       result = score_for(org, intent(causes: ["Mental Health"]))
 
-      expect(result[:matched].map { |m| m[:field] }).to include("service")
+      expect(result[:matched].pluck(:field)).to include("service")
     end
 
     it "scores a donation link for donors" do
@@ -455,7 +455,7 @@ RSpec.describe SmartMatch::RuleScorer do
       result = score_for(org, intent(prefs: ["lgbtqia_affirming"]))
 
       expect(result[:earned]).to be > 0
-      expect(result[:matched].map { |m| m[:field] }).to contain_exactly("population", "service")
+      expect(result[:matched].pluck(:field)).to contain_exactly("population", "service")
     end
   end
 
@@ -587,7 +587,7 @@ RSpec.describe SmartMatch::RuleScorer do
       # A cause rule must still require an actual cause match.
       result = score_for(general, intent(causes: ["Mental Health"]))
 
-      expect(result[:matched].map { |m| m[:field] }).not_to include("cause")
+      expect(result[:matched].pluck(:field)).not_to include("cause")
     end
 
     it "leaves ordinary organizations untouched" do

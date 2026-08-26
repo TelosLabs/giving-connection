@@ -81,7 +81,7 @@ RSpec.describe "SmartMatch retake isolation", type: :request do
 
     expect(second_token).to be_present
     expect(second_token).not_to eq(first_token)
-    expect(QuizSubmission.pluck(:attempt_token).uniq).to contain_exactly(first_token, second_token)
+    expect(QuizSubmission.distinct.pluck(:attempt_token)).to contain_exactly(first_token, second_token)
   end
 
   it "does not report the new attempt as ready before its job has run" do
