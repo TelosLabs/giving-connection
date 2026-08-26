@@ -7,7 +7,7 @@ RSpec.describe "Feedbacks", type: :request do
   let(:valid_params) do
     {feedback: {rating: 5, category: "search_results", comment: "Great!", context: "search"}}
   end
-  
+
   before { allow(Rack::Attack).to receive(:enabled).and_return(false) }
 
   describe "POST /feedbacks" do
