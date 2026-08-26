@@ -13,7 +13,9 @@ module Locations
       Search::GIVE_VOLUNTEER =>
         "organizations.volunteer_availability = true AND organizations.volunteer_link IS NOT NULL AND organizations.volunteer_link != ''",
       Search::GIVE_IN_KIND =>
-        "(organizations.in_kind_donation_link IS NOT NULL AND organizations.in_kind_donation_link != '') OR jsonb_array_length(organizations.in_kind_donation_items) > 0"
+        "(organizations.in_kind_donation_link IS NOT NULL AND organizations.in_kind_donation_link != '') " \
+        "OR (jsonb_typeof(organizations.in_kind_donation_items) = 'array' " \
+        "AND jsonb_array_length(organizations.in_kind_donation_items) > 0)"
     }.freeze
 
     class << self
@@ -26,7 +28,7 @@ module Locations
         scope = by_scope_of_work(scope, params[:scope_of_work])
         scope = by_give(scope, params[:give])
         scope = opened_now(scope, params[:open_now])
-        # NOTE: this is the return value — every filter must stay in the chain.
+        # NOTE: this is the return value: every filter must stay in the chain.
         opened_on_weekends(scope, params[:open_weekends])
       end
 
@@ -121,6 +123,8 @@ module Locations
       # passed as binds rather than interpolated so names containing quotes
       # cannot break out of the statement.
       def tuple_in(column_a, column_b, pairs)
+        return "1=0" if pairs.empty?
+
         placeholders = Array.new(pairs.size, "(?, ?)").join(", ")
         ["(#{column_a}, #{column_b}) IN (#{placeholders})", *pairs.flatten]
       end

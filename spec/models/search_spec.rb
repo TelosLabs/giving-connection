@@ -35,21 +35,36 @@ RSpec.describe Search do
       expect(search.results.ids.first).to eq(both.id)
     end
 
-    # Regression: in_order_of was applied unconditionally, so its CASE ordering
-    # assigned every row a unique sort position and pg_search's relevance rank
-    # could never break a tie. Keyword searches lost relevance ordering.
-    it "does not impose the give ordering on keyword searches" do
-      search = described_class.new(city: "Search all", keyword: "organization")
+    it "breaks ties on id so pagination cannot repeat or skip a row" do
+      search = described_class.new(
+        city: "Search all", give: [Search::GIVE_DONATION, Search::GIVE_VOLUNTEER]
+      )
       search.save
 
-      expect(search.results.to_sql).not_to include("CASE")
+      expect(search.results.to_sql).to include(give_rank_sql)
+      expect(search.results.to_sql).to end_with(%("locations"."id" ASC))
     end
 
-    it "does not impose the give ordering when no give filter is selected" do
+    it "does not impose the give ordering on keyword searches" do
+      search = described_class.new(
+        city: "Search all", keyword: "organization", give: [Search::GIVE_DONATION]
+      )
+      search.save
+
+      expect(search.results.to_sql).not_to include(give_rank_sql)
+    end
+
+    it "does not order at all when no give filter is selected" do
       search = described_class.new(city: "Search all")
       search.save
 
-      expect(search.results.to_sql).not_to include("CASE")
+      expect(search.results.order_values).to be_empty
     end
+  end
+
+  def give_rank_sql
+    Locations::FilterQuery.give_rank(
+      [Search::GIVE_DONATION, Search::GIVE_VOLUNTEER]
+    ).to_s
   end
 end

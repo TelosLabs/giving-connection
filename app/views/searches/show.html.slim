@@ -107,15 +107,16 @@
                     button class="text-sm font-bold text-blue-medium" type="submit" data-action="click->search#clearKeywordInput click->search#clearCheckedFilters click->search#clearAll"
                       | Clear Filters
 
-                    = link_to( \
-                      new_alert_path( \
-                        filters: parse_filters(@search), \
-                        filters_list: list_of_filters(@search) \
-                      ), \
-                      class: "mt-10 text-sm font-bold text-black", \
-                      data: { turbo_stream: true } \
-                    ) do
-                      | Create an Alert for this Search
+                    - if params.dig('search', 'keyword').present? || list_of_filters(@search).present?
+                      = link_to( \
+                        new_alert_path( \
+                          filters: parse_filters(@search), \
+                          filters_list: list_of_filters(@search) \
+                        ), \
+                        class: "mt-10 text-sm font-bold text-black", \
+                        data: { turbo_stream: true } \
+                      ) do
+                        | Create an Alert for this Search
           // Mobile map
           div class="hidden w-full h-85vh md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}"
             div class="w-full h-full" data-places-target="map"
