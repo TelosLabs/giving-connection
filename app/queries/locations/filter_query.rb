@@ -57,38 +57,30 @@ module Locations
 
       def by_service(scope, services)
         return scope if services.blank? || scope.empty?
-        complex_query = []
-        services.each do |cause, services_list|
-          services_list.each do |ser|
-            cause = cause&.gsub("'", "''")
-            ser = ser&.gsub("'", "''")
-            complex_query << "('#{cause}', '#{ser}')"
-          end
+
+        pairs = services.flat_map do |cause, services_list|
+          services_list.map { |service| [cause, service] }
         end
 
         Location.joins(location_services: {service: :cause})
           .where("locations.id IN (?)", scope.ids)
-          .where("(causes.name, services.name) IN (#{complex_query.join(",")})")
+          .where(tuple_in("causes.name", "services.name", pairs))
           .group("locations.id")
-          .having("count(locations.id) >= ?", complex_query.size) # multiple filters add up with AND behavior
+          .having("count(locations.id) >= ?", pairs.size) # multiple filters add up with AND behavior
       end
 
       def by_beneficiary_groups_served(scope, beneficiary_groups_filters)
         return scope if beneficiary_groups_filters.blank? || scope.empty?
 
-        complex_query = []
-        beneficiary_groups_filters.each do |group, subcategory|
-          subcategory.each do |sub|
-            group = group&.gsub("'", "''")
-            complex_query << "('#{group}', '#{sub}')"
-          end
+        pairs = beneficiary_groups_filters.flat_map do |group, subcategories|
+          subcategories.map { |subcategory| [group, subcategory] }
         end
 
         Location.joins(organization: {organization_beneficiaries: {beneficiary_subcategory: :beneficiary_group}})
           .where("locations.id IN (?)", scope.ids)
-          .where("(beneficiary_groups.name, beneficiary_subcategories.name) IN (#{complex_query.join(",")})")
+          .where(tuple_in("beneficiary_groups.name", "beneficiary_subcategories.name", pairs))
           .group("locations.id")
-          .having("count(locations.id) >= ?", complex_query.size) # multiple filters add up with AND behavior
+          .having("count(locations.id) >= ?", pairs.size) # multiple filters add up with AND behavior
       end
 
       def by_scope_of_work(scope, scope_of_work)
@@ -105,6 +97,18 @@ module Locations
         else
           Geo.to_wkt(Geo.point(lon, lat))
         end
+      end
+
+      # Builds a bound `(col_a, col_b) IN ((?, ?), ...)` predicate. Values are
+      # passed as binds rather than interpolated so names containing quotes
+      # cannot break out of the statement.
+      def tuple_in(column_a, column_b, pairs)
+        # A present filter key with an empty list ({"Youth" => []}) would emit
+        # `IN ()` and raise PG::SyntaxError. Nothing can match it, so say so.
+        return "1=0" if pairs.empty?
+
+        placeholders = Array.new(pairs.size, "(?, ?)").join(", ")
+        ["(#{column_a}, #{column_b}) IN (#{placeholders})", *pairs.flatten]
       end
 
       def parameterize_address_filters(address_params)
