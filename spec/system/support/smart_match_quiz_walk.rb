@@ -18,6 +18,29 @@ module SmartMatchQuizWalk
   # 5s default is not enough for it, hence the raised driver timeout. Scoped to
   # the including spec so no other spec's slowness gets hidden.
   def self.included(base)
+    # Organizations must not try to embed themselves while the adapter is
+    # inline. Creating one fires after_commit on Organization, OrganizationCause,
+    # OrganizationBeneficiary and Location, each of which schedules
+    # EmbedOrganizationJob -- and inline means that job RUNS, reaching for the
+    # embedding service over HTTP.
+    #
+    # On a machine with the service up this passes and hides the problem. In CI
+    # nothing listens on port 8000, so the connection is refused, the client
+    # raises EmbeddingUnavailableError, and `retry_on ... wait:` tries to
+    # re-enqueue for later -- which the inline adapter cannot do, so it raises
+    # NotImplementedError. That is a ScriptError, not a StandardError, so the
+    # `rescue => e` guarding each callback does not catch it and it surfaces as
+    # a failure in whichever example the random seed happened to run first.
+    #
+    # These specs plant their matches directly and never read an embedding, so
+    # the scheduling is pure overhead here. Stubbed at coalesce_for, the one
+    # seam every callback goes through. prepend_before so it is in place before
+    # any let! that creates organizations, whatever order the including group
+    # declares things in.
+    base.prepend_before do
+      allow(SmartMatch::EmbedOrganizationJob).to receive(:coalesce_for)
+    end
+
     base.around do |example|
       was_adapter = ActiveJob::Base.queue_adapter
       was_timeout = page.driver.browser.timeout
