@@ -49,6 +49,28 @@ RSpec.describe Locations::FilterQuery do
       expect(described_class.by_beneficiary_groups_served(Location.active, {"Youth" => []}).ids)
         .to be_empty
     end
+
+    # The group key was escaped on main, unlike the subcategory value, so this
+    # was never the hole. It is bound now like everything else, and this pins
+    # that so a future edit cannot quietly drop the key back into raw SQL.
+    it "binds a group key that closes the IN list instead of executing it" do
+      injected = {"x') OR 1=1) --" => ["Teens"]}
+
+      expect { described_class.by_beneficiary_groups_served(Location.active, injected).ids }
+        .not_to raise_error
+      expect(described_class.by_beneficiary_groups_served(Location.active, injected).ids).to be_empty
+    end
+
+    # Rack param nesting can deliver a subcategory as an array rather than a
+    # string. Coercing to a scalar keeps the bind count matched to the
+    # placeholders instead of raising on the unauthenticated search endpoint.
+    it "does not raise when a subcategory value is a nested array" do
+      malformed = {"Youth" => [["a", "b"]]}
+
+      expect { described_class.by_beneficiary_groups_served(Location.active, malformed).ids }
+        .not_to raise_error
+      expect(described_class.by_beneficiary_groups_served(Location.active, malformed).ids).to be_empty
+    end
   end
 
   describe ".by_service" do
@@ -69,6 +91,10 @@ RSpec.describe Locations::FilterQuery do
         .to contain_exactly(location.id)
     end
 
+    # Unlike by_beneficiary_groups_served, by_service already doubled quotes on
+    # both values on main, so these payloads never escaped the literal. These
+    # tests pin the bound behavior and guard against a regression to raw
+    # interpolation.
     it "binds a service that closes the IN list instead of executing it" do
       injected = {cause.name => ["x') OR 1=1) --"]}
 

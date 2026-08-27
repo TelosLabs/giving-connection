@@ -108,7 +108,12 @@ module Locations
         return "1=0" if pairs.empty?
 
         placeholders = Array.new(pairs.size, "(?, ?)").join(", ")
-        ["(#{column_a}, #{column_b}) IN (#{placeholders})", *pairs.flatten]
+        # Coerce each half to a scalar before binding. Rack param nesting can
+        # deliver a filter value as an array, and a bare `flatten` would spread
+        # it into extra binds, breaking arity against the placeholders and
+        # raising on a request the old interpolation simply failed to match.
+        binds = pairs.flat_map { |a, b| [a.to_s, b.to_s] }
+        ["(#{column_a}, #{column_b}) IN (#{placeholders})", *binds]
       end
 
       def parameterize_address_filters(address_params)
