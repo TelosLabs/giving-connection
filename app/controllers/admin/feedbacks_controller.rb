@@ -11,10 +11,13 @@ module Admin
       super.includes(:user).order(created_at: :desc)
     end
 
-    # Add a CSV export of all feedback alongside the standard index view.
+    # Add a CSV export alongside the standard index view. The export runs through
+    # the same search/filter pipeline as the HTML index (see Administrate's
+    # #index), so "Download CSV" gives the admin the rows they are looking at,
+    # not the whole table plus every submitter email.
     def index
       if request.format.csv?
-        send_data Feedback.to_csv,
+        send_data csv_export_scope.to_csv,
           filename: "feedback-#{Time.zone.today.iso8601}.csv",
           type: "text/csv"
       else
@@ -41,6 +44,13 @@ module Admin
     def mark_all_as_read
       count = Feedback.unread.update_all(read_at: Time.current)
       redirect_to admin_feedbacks_path, notice: "#{helpers.pluralize(count, "feedback entry")} marked as read."
+    end
+
+    private
+
+    def csv_export_scope
+      filter_resources(scoped_resource, search_term: params[:search].to_s.strip)
+        .unscope(:order)
     end
   end
 end

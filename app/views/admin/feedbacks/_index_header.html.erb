@@ -31,6 +31,9 @@
         data: { confirm: "Mark all #{unread_count} unread feedback as read?" }
       ) %>
     <% end %>
-    <%= link_to("Download CSV", admin_feedbacks_path(format: :csv), class: "button") %>
+    <%# Carry the active search/filter into the export so it matches the rows on screen. %>
+    <%= link_to("Download CSV",
+          admin_feedbacks_path(format: :csv, search: search_term.presence),
+          class: "button") %>
   </div>
 </header>

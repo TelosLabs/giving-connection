@@ -48,6 +48,20 @@ RSpec.describe Feedback, type: :model do
         expect(build(:feedback, page_url: url)).not_to be_valid
       end
     end
+
+    # A heavily filtered search URL runs past the column limit. page_url is
+    # telemetry we capture ourselves, so it gets clamped rather than costing the
+    # visitor the rating and comment they just wrote.
+    it "truncates an over-long page_url instead of rejecting the feedback" do
+      long_url = "https://www.example.com/search?#{"causes[]=animals&" * 300}"
+      expect(long_url.length).to be > Feedback::PAGE_URL_LIMIT
+
+      feedback = build(:feedback, page_url: long_url)
+
+      expect(feedback).to be_valid
+      expect(feedback.page_url.length).to eq(Feedback::PAGE_URL_LIMIT)
+      expect(feedback.page_url).to eq(long_url[0, Feedback::PAGE_URL_LIMIT])
+    end
   end
 
   describe "RATING_OPTIONS" do

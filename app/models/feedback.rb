@@ -33,14 +33,18 @@ class Feedback < ApplicationRecord
 
   RATING_LABELS = RATING_OPTIONS.transform_values(&:first).freeze
 
+  PAGE_URL_LIMIT = 2_048
+
   validates :rating, presence: true, inclusion: {in: 1..5}
   # category is optional (the widget lets people submit without picking one),
   # but if present it must be one of the known values. The field is a hidden
   # input a direct POST could set to anything.
   validates :category, inclusion: {in: CATEGORIES}, allow_blank: true
   validates :comment, length: {maximum: 5_000}
-  validates :context, :page_url, length: {maximum: 2_048}
+  validates :context, :page_url, length: {maximum: PAGE_URL_LIMIT}
   validates :page_url, format: {with: %r{\Ahttps?://}i}, allow_blank: true
+
+  before_validation :truncate_page_url
 
   scope :unread, -> { where(read_at: nil) }
   scope :read, -> { where.not(read_at: nil) }
@@ -103,5 +107,11 @@ class Feedback < ApplicationRecord
   def self.csv_safe(value)
     text = value.to_s
     text.match?(/\A[=+\-@\t\r]/) ? "'#{text}" : text
+  end
+
+  private
+
+  def truncate_page_url
+    self.page_url = page_url[0, PAGE_URL_LIMIT] if page_url.is_a?(String)
   end
 end

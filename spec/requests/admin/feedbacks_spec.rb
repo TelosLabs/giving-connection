@@ -69,6 +69,30 @@ RSpec.describe "Admin::Feedbacks", type: :request do
           expect(response).to have_http_status(:ok), "sorting by #{column} failed"
         end
       end
+
+      # Same hazard on the search side: Administrate builds one LIKE per
+      # searchable collection attribute, and `email` has no column behind it.
+      it "searches by term without touching the virtual columns" do
+        create(:feedback, page_url: "https://example.com/search?q=matching")
+        create(:feedback, page_url: "https://example.com/other")
+
+        get admin_feedbacks_path(search: "matching")
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("q=matching")
+        expect(response.body).not_to include("example.com/other")
+      end
+
+      it "applies the unread: collection filter" do
+        create(:feedback, page_url: "https://example.com/still-unread", read_at: nil)
+        create(:feedback, page_url: "https://example.com/already-seen", read_at: Time.current)
+
+        get admin_feedbacks_path(search: "unread:")
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("still-unread")
+        expect(response.body).not_to include("already-seen")
+      end
     end
 
     describe "GET /admin/feedbacks.csv" do
@@ -79,6 +103,31 @@ RSpec.describe "Admin::Feedbacks", type: :request do
         expect(response).to have_http_status(:ok)
         expect(response.media_type).to eq("text/csv")
         expect(response.body).to include(Feedback::CSV_HEADERS.first)
+      end
+
+      # The export has to match the rows the admin is looking at, otherwise
+      # narrowing the inbox and hitting "Download CSV" quietly dumps every row
+      # and every submitter email.
+      it "honors the active collection filter" do
+        create(:feedback, comment: "Unread one", read_at: nil)
+        create(:feedback, comment: "Read one", read_at: Time.current)
+
+        get admin_feedbacks_path(format: :csv, search: "unread:")
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("Unread one")
+        expect(response.body).not_to include("Read one")
+      end
+
+      it "honors a search term" do
+        create(:feedback, comment: "Maps were confusing")
+        create(:feedback, comment: "Everything worked")
+
+        get admin_feedbacks_path(format: :csv, search: "confusing")
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("Maps were confusing")
+        expect(response.body).not_to include("Everything worked")
       end
     end
 

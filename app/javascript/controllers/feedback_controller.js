@@ -2,12 +2,13 @@ import { Controller } from "@hotwired/stimulus"
 
 // Controls the floating feedback widget: toggling between the closed
 // trigger (button + tooltip) and the open form panel, selecting a rating
-// face, enabling the submit button, and showing a success tooltip after
-// a successful submit.
+// face and a category, and enabling the submit button. The success
+// notification itself is rendered by the server as a Turbo Stream.
 export default class extends Controller {
   static targets = [
     "trigger", "panel", "backdrop", "tooltip", "face", "ratingInput", "submit",
-    "dropdown", "dropdownMenu", "dropdownLabel", "categoryInput"
+    "dropdown", "dropdownButton", "dropdownMenu", "dropdownLabel", "option",
+    "categoryInput", "error"
   ]
 
   // exitIntent enables the "about to leave the page" behavior (nonprofit pages).
@@ -133,6 +134,13 @@ export default class extends Controller {
     }
   }
 
+  // locations/show keeps Turbo's default page caching, so an open panel (or the
+  // exit-intent modal and its backdrop) would be captured in the snapshot and
+  // painted already-open when the visitor hits Back. Collapse it first.
+  beforeCache() {
+    this.close()
+  }
+
   open(event) {
     event?.preventDefault()
     this.triggerTarget.classList.add("hidden")
@@ -169,25 +177,79 @@ export default class extends Controller {
 
   // ---------- Category dropdown ----------
 
+  get dropdownOpen() {
+    return !this.dropdownMenuTarget.classList.contains("hidden")
+  }
+
   toggleDropdown(event) {
     event?.preventDefault()
-    this.dropdownMenuTarget.classList.toggle("hidden")
+    this.dropdownOpen ? this.closeDropdown() : this.openDropdown()
+  }
+
+  openDropdown() {
+    this.dropdownMenuTarget.classList.remove("hidden")
+    this.dropdownButtonTarget.setAttribute("aria-expanded", "true")
+  }
+
+  closeDropdown() {
+    this.dropdownMenuTarget.classList.add("hidden")
+    this.dropdownButtonTarget.setAttribute("aria-expanded", "false")
   }
 
   selectCategory(event) {
     const option = event.currentTarget
     this.categoryInputTarget.value = option.dataset.value
 
-    // Mirror the option's icon + text into the trigger label.
-    this.dropdownLabelTarget.innerHTML = option.innerHTML
+    // Show the option's own icon + text in the trigger label. The nodes are
+    // cloned rather than rebuilt from an HTML string, so the label markup stays
+    // defined in one place: the server-rendered option.
+    this.dropdownLabelTarget.replaceChildren(
+      ...Array.from(option.childNodes, (node) => node.cloneNode(true))
+    )
     this.dropdownLabelTarget.classList.remove("text-gray-4")
     this.dropdownLabelTarget.classList.add("text-gray-2")
 
+    this.optionTargets.forEach((el) => el.setAttribute("aria-selected", el === option))
+
     this.closeDropdown()
+    this.dropdownButtonTarget.focus()
   }
 
-  closeDropdown() {
-    this.dropdownMenuTarget.classList.add("hidden")
+  // Escape closes the listbox, the arrow keys walk it. Enter/Space already
+  // activate an option because each one is a real <button>.
+  dropdownKeydown(event) {
+    switch (event.key) {
+      case "Escape":
+        if (!this.dropdownOpen) return
+        event.stopPropagation()
+        this.closeDropdown()
+        this.dropdownButtonTarget.focus()
+        break
+      case "ArrowDown":
+        event.preventDefault()
+        this.moveOptionFocus(1)
+        break
+      case "ArrowUp":
+        event.preventDefault()
+        this.moveOptionFocus(-1)
+        break
+    }
+  }
+
+  moveOptionFocus(step) {
+    if (!this.dropdownOpen) this.openDropdown()
+
+    const options = this.optionTargets
+    if (options.length === 0) return
+
+    const current = options.indexOf(document.activeElement)
+    // From the trigger (current === -1) ArrowDown lands on the first option and
+    // ArrowUp on the last; otherwise clamp inside the list.
+    const next = current === -1
+      ? (step > 0 ? 0 : options.length - 1)
+      : Math.min(Math.max(current + step, 0), options.length - 1)
+
+    options[next].focus()
   }
 
   closeDropdownOutside(event) {
@@ -202,16 +264,38 @@ export default class extends Controller {
     this.submitTarget.classList.add("bg-blue-dark")
   }
 
+  // Turbo Drive disables the submitter for the duration of the request, but only
+  // after its own submit-start handling; locking it here closes the window where
+  // a second click sends a second POST.
+  disableSubmit() {
+    this.submitTarget.disabled = true
+    this.hideError()
+  }
+
   // On a successful submit the server returns a Turbo Stream that shows the
   // green success notification at the top of the page; here we just tidy up
-  // the widget by clearing the form and collapsing the panel.
+  // the widget by clearing the form and collapsing the panel. On failure
+  // (Rack::Attack 429, 5xx) there is no stream to render, so the widget has to
+  // say something itself or the panel just sits there looking frozen.
   afterSubmit(event) {
-    if (!event.detail.success) return
+    if (!event.detail.success) {
+      this.showError()
+      this.enableSubmit()
+      return
+    }
 
     // Remember that feedback was sent so exit-intent no longer fires.
     this.markFeedbackSent()
     this.reset()
     this.close()
+  }
+
+  showError() {
+    if (this.hasErrorTarget) this.errorTarget.classList.remove("hidden")
+  }
+
+  hideError() {
+    if (this.hasErrorTarget) this.errorTarget.classList.add("hidden")
   }
 
   reset() {
@@ -228,7 +312,9 @@ export default class extends Controller {
     this.dropdownLabelTarget.textContent = "Select an option..."
     this.dropdownLabelTarget.classList.add("text-gray-4")
     this.dropdownLabelTarget.classList.remove("text-gray-2")
+    this.optionTargets.forEach((el) => el.setAttribute("aria-selected", "false"))
     this.closeDropdown()
+    this.hideError()
 
     this.submitTarget.disabled = true
     this.submitTarget.classList.add("bg-gray-4", "opacity-60", "cursor-not-allowed")
