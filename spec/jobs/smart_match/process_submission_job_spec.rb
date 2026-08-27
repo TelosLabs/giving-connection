@@ -67,6 +67,38 @@ RSpec.describe SmartMatch::ProcessSubmissionJob, type: :job do
     expect(Rails.cache.exist?(described_class.processing_key(attempt_token))).to be(false)
   end
 
+  # The cache claim in ResultsController#ensure_processing_enqueued is the
+  # first line of defence against a double enqueue, but it lives outside
+  # Postgres: if the cache store is down, two workers can both pass the
+  # exists? guard above and both try to INSERT. The unique index on
+  # quiz_submissions.attempt_token is what stops the duplicate landing, and
+  # the loser has nothing to report -- the winner's submission and matches are
+  # already committed.
+  it "stays quiet when a concurrent run won the insert race for this attempt" do
+    allow(SmartMatch::SubmissionProcessor).to receive(:call) do
+      create(:quiz_submission, session_id: session_id, attempt_token: attempt_token)
+      raise ActiveRecord::RecordNotUnique, "duplicate key value violates unique constraint"
+    end
+
+    expect { described_class.perform_now(**args) }.not_to raise_error
+
+    expect(Rails.cache.exist?(described_class.error_key(attempt_token))).to be(false)
+    expect(Rails.cache.exist?(described_class.processing_key(attempt_token))).to be(false)
+  end
+
+  # organization_matches carries its own unique index. A violation from THAT
+  # insert is a real failure and must not be waved through as a benign
+  # duplicate attempt -- nothing was persisted for this token.
+  it "still fails on a unique violation that left no submission behind" do
+    allow(SmartMatch::SubmissionProcessor).to receive(:call)
+      .and_raise(ActiveRecord::RecordNotUnique, "idx_org_matches_on_submission_and_org")
+
+    expect { described_class.perform_now(**args) }.to raise_error(ActiveRecord::RecordNotUnique)
+
+    expect(Rails.cache.exist?(described_class.error_key(attempt_token))).to be(true)
+    expect(Rails.cache.exist?(described_class.processing_key(attempt_token))).to be(false)
+  end
+
   it "does not re-raise a known terminal error" do
     allow(SmartMatch::SubmissionProcessor).to receive(:call)
       .and_raise(SmartMatch::EmbeddingUnavailableError)

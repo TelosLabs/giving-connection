@@ -127,7 +127,7 @@
         <p class="mb-2 text-xs font-semibold tracking-wider uppercase text-gray-4">
           <%= t("smart_match.results.card.why_matched") %>
         </p>
-        <ul class="flex flex-wrap gap-2">
+        <ul id="<%= reasons_list_id %>" class="flex flex-wrap gap-2">
           <%# The reasons past the first few render collapsed rather than being
               left out, so "+N more" can reveal them without a round trip. %>
           <% match_reason_chips.each do |reason, collapsed| %>
@@ -141,6 +141,7 @@
               <button type="button"
                       class="inline-flex items-center px-2.5 py-1 text-xs font-medium underline rounded-full text-blue-dark hover:text-blue-medium"
                       aria-expanded="false"
+                      aria-controls="<%= reasons_list_id %>"
                       data-smart-match-reasons-target="toggle"
                       data-action="smart-match-reasons#toggle">
                 <span data-smart-match-reasons-target="moreLabel">

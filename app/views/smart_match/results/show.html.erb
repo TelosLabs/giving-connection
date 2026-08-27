@@ -116,7 +116,14 @@
           The link targets its own frame, so a click swaps this region in place.
           With Turbo unavailable it degrades to a normal navigation to the same
           URL, which renders the same larger page. %>
-      <%= turbo_frame_tag "smart-match-results" do %>
+      <%# data-controller sits on the frame, not inside it: Turbo replaces the
+          frame's children on each "Show more", so anything within is torn down
+          and rebuilt, while the frame element itself persists. %>
+      <%= turbo_frame_tag "smart-match-results",
+            data: {
+              controller: "smart-match-results-focus",
+              action: "turbo:frame-load->smart-match-results-focus#focusStatus"
+            } do %>
         <%= render "criteria_panel", criteria: @criteria %>
         <%= render "service_filter", filter: @service_filter %>
 
@@ -131,13 +138,18 @@
         </div>
 
         <div class="mt-8 text-center">
-          <p class="text-sm text-gray-4" role="status" aria-live="polite">
+          <%# tabindex="-1" so smart-match-results-focus can move focus here after
+              a "Show more" swap without adding the line to the tab order. %>
+          <p class="text-sm text-gray-4 focus:outline-none" role="status" aria-live="polite"
+             tabindex="-1"
+             data-smart-match-results-focus-target="status">
             <%= t("smart_match.results.showing", count: @page.total, shown: @page.shown) %>
           </p>
           <% if @page.more? %>
             <%# Carries the active filter, or the next page would quietly drop
                 it and hand back organizations the user filtered out. %>
             <%= link_to smart_match_result_path(page: @page.next_page, services: @service_filter.selected.presence),
+                  data: { action: "smart-match-results-focus#arm" },
                   class: "inline-block mt-4 px-8 py-3 text-sm font-bold tracking-wide uppercase transition-colors border-2 rounded-md border-blue-medium text-blue-dark hover:bg-blue-pale" do %>
               <%= t("smart_match.results.show_more", count: @page.next_batch_size) %>
             <% end %>

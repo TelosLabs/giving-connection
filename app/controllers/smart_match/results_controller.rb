@@ -34,6 +34,18 @@ module SmartMatch
         reset_processing_state
         @embedding_unavailable = true
       else
+        # "?page=" can only mean anything once matches exist, so reaching here
+        # with one means there is nothing to page through yet. Send it to the
+        # unpaged URL instead of enqueuing from this branch: paged requests are
+        # throttled at the higher browsing ceiling (60/hr) precisely because
+        # they are pure reads, and letting one start the pipeline would put the
+        # expensive path behind that ceiling whenever a submission is missing --
+        # which is exactly the state a degraded embedding service leaves behind.
+        # The filter is dropped along with the page: it refines an existing
+        # result set, and the loading page this redirect lands on finishes by
+        # sending the user to the unpaged, unfiltered results anyway.
+        return redirect_to smart_match_result_path if params[:page].present?
+
         # Embedding + scoring runs off the request thread (see
         # ProcessSubmissionJob) so a slow embedding service can't block Puma.
         # Render the loading state; the page polls #status until matches land.

@@ -36,6 +36,29 @@ module SmartMatch
         attempt_token: attempt_token,
         user: (User.find_by(id: user_id) if user_id)
       )
+    rescue ActiveRecord::RecordNotUnique => e
+      # Lost the INSERT race for this attempt: the unique index on
+      # quiz_submissions.attempt_token rejected the second submission, which is
+      # exactly what it is there for. The cache claim in
+      # ResultsController#ensure_processing_enqueued normally prevents the race
+      # from starting, but it lives outside Postgres and fails with the cache
+      # store; this is the backstop. The winner committed the submission and
+      # its matches, so there is nothing left to do and nothing to report --
+      # an error flag here would show a failure page for an attempt that
+      # actually succeeded.
+      #
+      # Only benign once the attempt is genuinely on disk. organization_matches
+      # carries its own unique index, and a violation from THAT insert rolls the
+      # whole transaction back, leaving nothing for this token: that is a real
+      # failure and takes the same path as any other unexpected error.
+      unless QuizSubmission.exists?(attempt_token: attempt_token)
+        record_terminal_error(e, attempt_token)
+        raise
+      end
+
+      Rails.logger.info(
+        "[SmartMatch::ProcessSubmissionJob] attempt #{attempt_token} already persisted by a concurrent run"
+      )
     rescue SmartMatch::EmbeddingUnavailableError, SmartMatch::PermanentError,
       PG::Error, ActiveRecord::RecordInvalid, Net::HTTPFatalError => e
       # Known-terminal: retrying will not help, so record the flag and stop.

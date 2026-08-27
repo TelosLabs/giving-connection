@@ -9,8 +9,10 @@ require "rails_helper"
 # next. Misses stay in the aggregate panel; repeating them per card would
 # triple the noise without adding information.
 RSpec.describe SmartMatchCard::Component, type: :component do
-  def card_for(criteria, rule_matches: [])
-    organization = create(:organization)
+  # organization is injectable so a test can render the same card more than once
+  # -- the factory's name is not sequenced, so a second create(:organization)
+  # fails validation.
+  def card_for(criteria, rule_matches: [], organization: create(:organization))
     match = build(:organization_match,
       organization: organization,
       score: 0.5,
@@ -67,6 +69,37 @@ RSpec.describe SmartMatchCard::Component, type: :component do
     )
 
     expect(card.match_reasons.first).to eq("Mental Health")
+  end
+
+  # Scorer trims rule_matches to MAX_TRACE_ENTRIES but leaves criteria whole, so
+  # a satisfied criterion can have no trace entry left to read a contribution
+  # from and score a flat 0. Ruby's sort_by is not stable, so without a tiebreak
+  # those chips shuffle between renders of the same card.
+  it "orders equally-weighted reasons the same way every time" do
+    organization = create(:organization)
+    criteria = %w[Seniors Education Employment Health].map { |cause| criterion("causes", cause, "met") }
+
+    orderings = 5.times.map do
+      card_for(criteria.shuffle, organization: organization).match_reason_chips.map(&:first)
+    end
+
+    expect(orderings.uniq.size).to eq(1)
+  end
+
+  # A criterion whose trace entry was trimmed contributed less than every entry
+  # that survived, so reading it back as 0 puts it after them -- which is the
+  # order it belongs in anyway.
+  it "keeps a reason with a surviving trace entry ahead of one without" do
+    card = card_for(
+      [
+        criterion("causes", "Education", "met"),
+        criterion("prefs", "lgbtqia_affirming", "met")
+      ],
+      rule_matches: [{"question" => "prefs", "answer" => "lgbtqia_affirming", "contribution" => 2.0}]
+    )
+
+    expect(card.match_reasons.first)
+      .to eq(I18n.t("smart_match.quiz.steps.preferences.options.lgbtqia_affirming"))
   end
 
   # The overwhelm guard: a user who answered a lot must not get a wall of chips.

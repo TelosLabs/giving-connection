@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_10_190000) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_27_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -452,7 +452,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_10_190000) do
     t.datetime "updated_at", null: false
     t.jsonb "search_relaxations", default: [], null: false
     t.string "attempt_token"
-    t.index ["attempt_token"], name: "index_quiz_submissions_on_attempt_token"
+    t.index ["attempt_token"], name: "index_quiz_submissions_on_attempt_token", unique: true
     t.index ["session_id"], name: "index_quiz_submissions_on_session_id"
     t.index ["user_id"], name: "index_quiz_submissions_on_user_id"
   end

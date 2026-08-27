@@ -92,6 +92,46 @@ RSpec.describe "SmartMatch::Results paging", type: :request do
     expect(response.body).not_to include(smart_match_result_path(page: 2))
   end
 
+  # Replacing the frame destroys the button that was just activated, so focus
+  # falls back to <body> -- a keyboard user is dropped at the top of the
+  # document and a screen reader is told nothing, because the count line's
+  # aria-live region is itself replaced rather than updated in place.
+  # smart-match-results-focus moves focus onto the count line instead; these are
+  # the four attributes it needs to do that.
+  it "wires the frame so focus can follow a Show more into the new results" do
+    complete_quiz_with([great] * 25)
+
+    get smart_match_result_path
+    frame = Nokogiri::HTML(response.body).at_css("turbo-frame#smart-match-results")
+
+    expect(frame["data-controller"]).to include("smart-match-results-focus")
+    expect(frame["data-action"]).to include("turbo:frame-load->smart-match-results-focus#focusStatus")
+
+    status = frame.at_css("[data-smart-match-results-focus-target='status']")
+    expect(status["tabindex"]).to eq("-1")
+    expect(status["role"]).to eq("status")
+
+    expect(frame.at_css("a[data-action*='smart-match-results-focus#arm']")).to be_present
+  end
+
+  # "?page=" is throttled at the browsing ceiling (60/hr) rather than the
+  # results ceiling (10/hr), on the grounds that a paged request is a pure read
+  # of matches that already exist. That only holds if a paged request can never
+  # start the pipeline -- otherwise a session whose submission is missing (a
+  # failing embedding service, an expired error flag) could re-enqueue the
+  # expensive path at six times the intended rate.
+  it "sends a paged request with nothing to page to the unpaged URL" do
+    get smart_match_quiz_path
+    put smart_match_quiz_path, params: {user_type: "donor"}
+    put smart_match_quiz_path, params: {causes: %w[Education]}
+
+    expect {
+      get smart_match_result_path(page: 3)
+    }.not_to change { enqueued_jobs.size }
+
+    expect(response).to redirect_to(smart_match_result_path)
+  end
+
   # The cards and the "how we matched you" panel are swapped together, because
   # the panel counts how many of the SHOWN matches meet each criterion.
   it "keeps the cards and the criteria panel in the same Turbo frame" do

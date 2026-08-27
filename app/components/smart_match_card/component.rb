@@ -144,6 +144,14 @@ class SmartMatchCard::Component < ApplicationViewComponent
       hidden_match_reasons.map { |reason| [reason, true] }
   end
 
+  # aria-controls target for the "+N more" toggle. The chip list as a whole is
+  # what changes, since the collapsed chips are <li>s interleaved in the same
+  # flex-wrapped <ul> rather than sitting in a container of their own. Keyed on
+  # the organization because one card is rendered per organization per page.
+  def reasons_list_id
+    "smart-match-reasons-#{organization.id}"
+  end
+
   def top_causes
     # Array#first serves from the preloaded association cache; limit() would
     # issue a fresh SELECT with LIMIT 4 and bypass the preload.
@@ -161,9 +169,14 @@ class SmartMatchCard::Component < ApplicationViewComponent
   private
 
   # Labels for everything this organization satisfies, strongest first.
+  #
+  # Question and answer break ties. Ruby's sort_by is not stable and ties are
+  # routine here: equal-weight rules score identically, and any criterion whose
+  # trace entry fell outside Scorer::MAX_TRACE_ENTRIES reads back as a flat 0.
+  # Without the tiebreak those chips reorder between renders of the same card.
   def ordered_match_reasons
     @ordered_match_reasons ||= satisfied_criteria
-      .sort_by { |criterion| -contribution_for(criterion) }
+      .sort_by { |criterion| [-contribution_for(criterion), criterion["question"].to_s, criterion["answer"].to_s] }
       .map { |criterion| reason_label(criterion) }
   end
 
