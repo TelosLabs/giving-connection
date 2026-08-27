@@ -3,7 +3,12 @@
 # ============================================================
 # Build stage: compile gems, JS assets, and precompile Rails
 # ============================================================
+# Gemfile.next builds the Rails 8.0 side of the dual boot (staging only).
+ARG BUNDLE_GEMFILE=Gemfile
+
 FROM ruby:3.4.8-slim-bookworm AS build
+ARG BUNDLE_GEMFILE
+ENV BUNDLE_GEMFILE=$BUNDLE_GEMFILE
 
 ARG NODE_MAJOR=20
 
@@ -29,7 +34,7 @@ RUN apt-get update -qq && \
 WORKDIR /app
 
 # ---- Install Ruby dependencies ----
-COPY Gemfile Gemfile.lock ./
+COPY Gemfile Gemfile.lock Gemfile.next Gemfile.next.lock ./
 COPY gemfiles/ gemfiles/
 
 RUN bundle lock --add-platform x86_64-linux aarch64-linux && \
@@ -62,6 +67,8 @@ RUN rm -rf node_modules tmp/cache vendor/bundle/ruby/*/cache
 # Runtime stage: slim image with only what's needed to run
 # ============================================================
 FROM ruby:3.4.8-slim-bookworm AS runtime
+ARG BUNDLE_GEMFILE
+ENV BUNDLE_GEMFILE=$BUNDLE_GEMFILE
 
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \

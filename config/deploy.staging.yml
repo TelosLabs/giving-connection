@@ -30,7 +30,13 @@ proxy:
     path: /up
     timeout: 10
 
+# Staging runs the Rails 8.0 side of the dual boot until the upgrade ships.
+builder:
+  args:
+    BUNDLE_GEMFILE: Gemfile.next
+
 env:
   clear:
     RAILS_ENV: staging
+    BUNDLE_GEMFILE: Gemfile.next
     WEB_CONCURRENCY: "1"
