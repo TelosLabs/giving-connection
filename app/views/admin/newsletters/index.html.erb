@@ -6,7 +6,7 @@
   </h1>
 
   <div>
-    <% if valid_action?(:index) %>
+    <% if existing_action?(resource_class, :index) %>
       <%= link_to("All", admin_newsletters_path(filter: 'verified'), class: "button #{'bg-blue-400' if params[:filter] != 'verified'}") %>
       <%= link_to("Pending", admin_newsletters_path(filter: 'ready'), class: "button #{'bg-blue-400' if params[:filter] != 'ready'}") %>
     <% end %>
