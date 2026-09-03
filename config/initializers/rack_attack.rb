@@ -36,21 +36,24 @@ class Rack::Attack
       registration_ip: 5.minutes,      # Instead of 1 hour
       suspicious_domain: 5.minutes,    # Instead of 1 hour
       login: 20.seconds,               # Keep as is for login
-      blog_anonymous: 5.minutes
+      blog_anonymous: 5.minutes,
+      feedback: 5.minutes
     }.freeze
   elsif Rails.env.test?
     {
       registration_ip: 1.second,      # Effectively disable throttling
       suspicious_domain: 1.second,    # Effectively disable throttling
       login: 1.second,                # Effectively disable throttling
-      blog_anonymous: 1.second
+      blog_anonymous: 1.second,
+      feedback: 1.second
     }.freeze
   else
     {
       registration_ip: 1.hour,
       suspicious_domain: 1.hour,
       login: 20.seconds,
-      blog_anonymous: 1.hour
+      blog_anonymous: 1.hour,
+      feedback: 1.hour
     }.freeze
   end
 
@@ -207,6 +210,22 @@ class Rack::Attack
         req.remote_ip
       end
     end
+  end
+
+  ### Prevent Feedback Spam ###
+
+  def self.feedback_discriminator(req)
+    return unless req.path == "/feedbacks" && req.post?
+
+    user = req.env["warden"]&.user(:user)
+    discriminator = user ? "user:#{user.id}" : req.remote_ip
+
+    Rails.logger.info "[Rack::Attack] Feedback submission from: #{discriminator}" if Rails.env.development?
+    discriminator
+  end
+
+  throttle("feedbacks", limit: 10, period: THROTTLE_PERIODS[:feedback]) do |req|
+    Rack::Attack.feedback_discriminator(req)
   end
 
   ### Custom Throttle Response ###

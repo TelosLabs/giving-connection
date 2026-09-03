@@ -191,3 +191,6 @@ div class=""
       - if @location.social_media.present?
         div class="my-7 border-t border-gray-8"
         = render SocialMedia::Component.new(social_media: @location.social_media)
+
+/ Floating feedback widget (with exit-intent on nonprofit pages)
+= render "shared/feedback", context: "organization", question: "How was your experience viewing this nonprofit?", exit_intent: true
