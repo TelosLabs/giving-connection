@@ -8,7 +8,6 @@ Rails.application.routes.draw do
     resources :social_medias, only: %i[new create edit update]
     resources :services, except: %i[destroy]
     resources :causes, only: %i[new create edit update]
-    resources :categories, only: %i[new create edit update]
     resources :locations, except: %i[index]
     resources :location_services, only: %i[show create]
     resources :office_hours, except: %i[index]
