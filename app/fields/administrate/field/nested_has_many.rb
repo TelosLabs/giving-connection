@@ -46,8 +46,7 @@ module Administrate
 
       def self.permitted_attribute(attr, options = {})
         {
-          :"#{attr}_attributes" =>
-            associated_attributes(options[:resource_class], attr)
+          "#{attr}_attributes": associated_attributes(options[:resource_class], attr)
         }
       end
 
