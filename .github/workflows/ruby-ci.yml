@@ -48,16 +48,9 @@ jobs:
           bundle exec bundle-audit check --update
 
   tests:
-    name: Tests (${{ matrix.gemfile }})
-    strategy:
-      fail-fast: false
-      matrix:
-        # Dual-boot for the Rails 8.0 upgrade: Gemfile runs Rails 7.2,
-        # Gemfile.next runs Rails 8.0. Remove the matrix after the upgrade ships.
-        gemfile: [Gemfile, Gemfile.next]
+    name: Tests
     env:
       RAILS_ENV: test
-      BUNDLE_GEMFILE: ${{ matrix.gemfile }}
       BUNDLE_GEMS__CONTRIBSYS__COM: ${{ secrets.BUNDLE_GEMS__CONTRIBSYS__COM }}
 
     if: github.event.pull_request.draft == false

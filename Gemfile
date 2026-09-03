@@ -3,21 +3,11 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-def next?
-  File.basename(__FILE__) == "Gemfile.next"
-end
-
 ruby "3.4.8"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
-if next?
-  gem "rails", "~> 8.0.5"
-  gem "activerecord-postgis-adapter", "~> 11.0"
-else
-  gem "rails", "~> 7.2.3.2"
-  gem "activerecord-postgis-adapter", "~> 10.0"
-end
-gem "next_rails"
+gem "rails", "~> 8.0.5"
+gem "activerecord-postgis-adapter", "~> 11.0"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 # Use Puma as the app server
@@ -75,11 +65,7 @@ gem "net-pop", require: false
 gem "net-smtp", require: false
 
 # Use administrate admin framework
-if next?
-  gem "administrate", "~> 1.0"
-else
-  gem "administrate", "~> 0.20.0"
-end
+gem "administrate", "~> 1.0"
 gem "administrate-field-active_storage"
 gem "image_processing", "~> 1.13"
 
@@ -121,7 +107,6 @@ group :development do
   gem "listen", "~> 3.3"
   gem "rack-mini-profiler", "~> 2.0"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem "annotate" unless next?
   gem "better_errors"
   gem "binding_of_caller"
   gem "brakeman"
