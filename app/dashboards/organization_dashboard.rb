@@ -14,12 +14,12 @@ class OrganizationDashboard < Administrate::BaseDashboard
     name: Field::String,
     second_name: Field::String,
     ein_number: UniquenessWarningField,
-    irs_ntee_code: Field::SelectBasic.with_options({
-      choices: Organization::NTEE_CODE
+    irs_ntee_code: Field::Select.with_options({
+      collection: Organization::NTEE_CODE
     }),
     website: Field::String,
-    scope_of_work: Field::SelectBasic.with_options({
-      choices: Organization::SCOPE
+    scope_of_work: Field::Select.with_options({
+      collection: Organization::SCOPE
     }),
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
