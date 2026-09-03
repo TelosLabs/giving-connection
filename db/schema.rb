@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_05_14_155700) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_27_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
@@ -197,6 +197,20 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_14_155700) do
     t.index ["user_id"], name: "index_favorite_locations_on_user_id"
   end
 
+  create_table "feedbacks", force: :cascade do |t|
+    t.integer "rating", null: false
+    t.string "category"
+    t.string "context"
+    t.text "comment"
+    t.string "page_url"
+    t.bigint "user_id"
+    t.datetime "read_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["read_at"], name: "index_feedbacks_on_read_at"
+    t.index ["user_id"], name: "index_feedbacks_on_user_id"
+  end
+
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
@@ -263,8 +277,11 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_14_155700) do
     t.string "time_zone"
     t.string "slug"
     t.string "state_code", limit: 2
+    t.boolean "wheelchair_accessible"
+    t.boolean "remote_services"
     t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
     t.index ["organization_id"], name: "index_locations_on_organization_id"
+    t.index ["remote_services"], name: "index_locations_on_remote_services", where: "(remote_services = true)"
     t.index ["slug"], name: "index_locations_on_slug", unique: true
     t.index ["state_code"], name: "index_locations_on_state_code"
   end
@@ -380,13 +397,30 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_14_155700) do
     t.boolean "volunteer_availability", default: false, null: false
     t.string "volunteer_link"
     t.boolean "general_population_serving", default: false, null: false
+    t.string "in_kind_donation_link"
+    t.jsonb "in_kind_donation_items", default: [], null: false
+    t.boolean "free_or_sliding_scale"
+    t.boolean "no_id_required"
+    t.boolean "lgbtqia_affirming"
+    t.boolean "specific_project_giving"
+    t.boolean "accepts_in_kind"
+    t.boolean "recurring_giving"
+    t.boolean "fundraising_events"
+    t.boolean "partnership_opportunities"
+    t.string "languages", array: true
+    t.string "volunteer_format"
+    t.string "volunteer_frequency", array: true
+    t.string "leadership_attributes", array: true
     t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
     t.index ["ein_number"], name: "index_organizations_on_ein_number"
+    t.index ["languages"], name: "index_organizations_on_languages", using: :gin
+    t.index ["leadership_attributes"], name: "index_organizations_on_leadership_attributes", using: :gin
     t.index ["mission_statement_en"], name: "index_organizations_on_mission_statement_en"
     t.index ["name"], name: "index_organizations_on_name", unique: true
     t.index ["scope_of_work"], name: "index_organizations_on_scope_of_work"
     t.index ["tagline_en"], name: "index_organizations_on_tagline_en"
     t.index ["vision_statement_en"], name: "index_organizations_on_vision_statement_en"
+    t.index ["volunteer_frequency"], name: "index_organizations_on_volunteer_frequency", using: :gin
   end
 
   create_table "pg_search_documents", force: :cascade do |t|
@@ -416,6 +450,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_14_155700) do
     t.text "text_snapshot", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "search_relaxations", default: [], null: false
+    t.string "attempt_token"
+    t.index ["attempt_token"], name: "index_quiz_submissions_on_attempt_token", unique: true
     t.index ["session_id"], name: "index_quiz_submissions_on_session_id"
     t.index ["user_id"], name: "index_quiz_submissions_on_user_id"
   end
@@ -497,6 +534,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_14_155700) do
   add_foreign_key "favorite_blogs", "users"
   add_foreign_key "favorite_locations", "locations"
   add_foreign_key "favorite_locations", "users"
+  add_foreign_key "feedbacks", "users"
   add_foreign_key "import_logs", "admin_users"
   add_foreign_key "location_services", "locations"
   add_foreign_key "location_services", "services"

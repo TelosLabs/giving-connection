@@ -43,12 +43,26 @@ es:
     results:
       heading: "¡Tus resultados están listos!"
       subheading: "Con base en tus respuestas, te emparejamos con organizaciones sin fines de lucro que se ajustan mejor a tus preferencias. Explora las opciones abajo para conocerlas y dar el siguiente paso."
+      showing:
+        one: "Mostrando tu única coincidencia"
+        other: "Mostrando %{shown} de %{count} coincidencias"
+      show_more:
+        one: "Ver 1 más"
+        other: "Ver %{count} más"
       still_need_help: "¿Aún necesitas ayuda?"
       retake: "Volver a hacer el cuestionario"
       try_again: "Intentar de nuevo"
       processing:
         title: "Buscando tus coincidencias…"
         body: "Te estamos emparejando con organizaciones sin fines de lucro que se ajustan a tus respuestas. Esto solo toma un momento."
+      delayed:
+        title: "Esto está tardando más de lo normal"
+        body: "Todavía estamos preparando tus coincidencias. Tus respuestas están guardadas, así que puedes volver en unos minutos."
+        refresh: "Volver a consultar"
+      failed:
+        title: "Tuvimos un problema"
+        body: "No pudimos consultar el estado de tus coincidencias. Tus respuestas están guardadas: actualizar la página suele resolverlo."
+        refresh: "Actualizar"
       empty:
         title: "No se encontraron resultados"
         body: "Haz el cuestionario para recibir emparejamientos personalizados."
@@ -56,6 +70,48 @@ es:
       unavailable:
         title: "Smart Match no está disponible temporalmente"
         body: "Nuestro motor de emparejamiento está fuera de línea en este momento. Por favor inténtalo de nuevo en unos minutos."
+      card:
+        why_matched: "Por qué coincide"
+        more_reasons:
+          one: "+1 más"
+          other: "+%{count} más"
+        fewer_reasons: "Ver menos"
+      service_filter:
+        prompt: "¿Buscas un servicio específico?"
+        select: "Elegir servicios"
+        active_prompt: "Filtrado por"
+        title: "¿Buscas un servicio específico?"
+        hint: "Esto es opcional. Selecciona los servicios que necesites y mostraremos solo las opciones compatibles que los ofrezcan. El número que aparece junto a cada uno indica cuántas de tus opciones compatibles lo ofrecen."
+        selected:
+          one: "1 servicio"
+          other: "%{count} servicios"
+        apply: "Ver estas"
+        clear: "Quitar"
+        clear_cta: "Quitar filtro"
+        close: "Cerrar"
+        none:
+          title: "Nada aquí ofrece esa combinación"
+          body: "Tus coincidencias siguen guardadas. Quita el filtro para verlas todas de nuevo."
+      criteria:
+        title: "Cómo te emparejamos"
+        summary: "%{matched} de %{total} coinciden"
+        intro:
+          one: "Nos dijiste que 1 cosa importaba. Así responden estos resultados."
+          other: "Nos dijiste que %{count} cosas importaban. Así responden estos resultados."
+        not_stated: "Sin especificar"
+        unknown_note: "Algunas organizaciones aún no publican esta información. Sin especificar significa que no lo sabemos, no que la respuesta sea no. Vale la pena preguntarles directamente."
+        status:
+          met: "Coincidencia total"
+          partial: "Coincidencia parcial"
+          unmet: "Sin coincidencia"
+          unknown: "Sin especificar"
+      broadened:
+        title: "Ampliamos tu búsqueda"
+        body: "No encontramos suficientes resultados para todo lo que pediste, así que es posible que estas organizaciones no ofrezcan %{filters}."
+        filters:
+          volunteer_opportunities: "oportunidades de voluntariado"
+          donation_link: "donaciones en línea"
+          remote_services: "servicios remotos"
     quiz:
       buttons:
         back: "Regresar"

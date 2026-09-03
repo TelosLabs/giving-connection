@@ -2,12 +2,13 @@
 
 module SmartMatch
   class SubmissionProcessor < ApplicationService
-    attr_reader :session_answers, :user_type, :session_id, :user
+    attr_reader :session_answers, :user_type, :session_id, :attempt_token, :user
 
-    def initialize(session_answers:, user_type:, session_id:, user: nil)
+    def initialize(session_answers:, user_type:, session_id:, attempt_token: nil, user: nil)
       @session_answers = session_answers
       @user_type = user_type
       @session_id = session_id
+      @attempt_token = attempt_token
       @user = user
     end
 
@@ -16,16 +17,16 @@ module SmartMatch
       quiz_text = user_intent.to_embedding_text
       vector = EmbeddingClient.call(text: quiz_text)
 
-      candidates = find_candidates(vector, user_intent)
-      ranked = Scorer.call(candidates: candidates, user_intent: user_intent)
+      retrieval = find_candidates(vector, user_intent)
+      ranked = Scorer.call(candidates: retrieval.candidates, user_intent: user_intent)
 
       submission = ActiveRecord::Base.transaction do
-        s = create_submission(quiz_text, vector)
+        s = create_submission(quiz_text, vector, retrieval.relaxed)
         save_matches(s, ranked)
         s
       end
 
-      {submission: submission, results: ranked}
+      {submission: submission, results: ranked, relaxed: retrieval.relaxed}
     end
 
     private
@@ -37,14 +38,16 @@ module SmartMatch
       )
     end
 
-    def create_submission(text, vector)
+    def create_submission(text, vector, relaxations)
       QuizSubmission.create!(
         user: user,
         session_id: session_id,
         answers: session_answers,
         user_type: user_type,
         embedding: vector,
-        text_snapshot: text
+        text_snapshot: text,
+        search_relaxations: relaxations,
+        attempt_token: attempt_token
       )
     end
 
@@ -57,7 +60,8 @@ module SmartMatch
         state: user_intent.state,
         coordinates: coordinates,
         radius_miles: radius,
-        location_scope: user_intent.location_scope
+        location_scope: user_intent.location_scope,
+        user_intent: user_intent
       )
     end
 

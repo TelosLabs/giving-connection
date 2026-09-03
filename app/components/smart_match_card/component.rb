@@ -5,12 +5,12 @@ class SmartMatchCard::Component < ApplicationViewComponent
 
   CIRCLE_CIRCUMFERENCE = (2 * Math::PI * 20).round(2)
 
-  # Match-tier percentage cutoffs. A score at or above GREAT_MATCH_THRESHOLD
-  # is a "Great Match"; at or above GOOD_MATCH_THRESHOLD (but below great) is a
-  # "Good Match"; anything lower is a plain "Match". Shared by the label, label
-  # color, and circle color so the three presentations can't drift apart.
-  GREAT_MATCH_THRESHOLD = 75
-  GOOD_MATCH_THRESHOLD = 50
+  # Label, label colour and ring colour all key off OrganizationMatch#tier
+  # rather than re-deriving cutoffs here, so a card can never disagree with the
+  # tier the results page grouped it under.
+  TIER_LABELS = {great: "Great Match", good: "Good Match", match: "Match"}.freeze
+  TIER_LABEL_COLORS = {great: "text-seafoam", good: "text-blue-medium", match: "text-salmon"}.freeze
+  TIER_CIRCLE_COLORS = {great: "#9ae2e0", good: "#0782D0", match: "#fc8383"}.freeze
 
   def initialize(organization:, match:, user_type: nil)
     @organization = organization
@@ -19,23 +19,15 @@ class SmartMatchCard::Component < ApplicationViewComponent
   end
 
   def match_percentage
-    (calibrated_fraction * 100).round
+    match.display_percentage
   end
 
   def match_label
-    case match_percentage
-    when GREAT_MATCH_THRESHOLD..100 then "Great Match"
-    when GOOD_MATCH_THRESHOLD...GREAT_MATCH_THRESHOLD then "Good Match"
-    else "Match"
-    end
+    TIER_LABELS.fetch(match.tier)
   end
 
   def match_label_color
-    case match_percentage
-    when GREAT_MATCH_THRESHOLD..100 then "text-seafoam"
-    when GOOD_MATCH_THRESHOLD...GREAT_MATCH_THRESHOLD then "text-blue-medium"
-    else "text-salmon"
-    end
+    TIER_LABEL_COLORS.fetch(match.tier)
   end
 
   def circle_circumference
@@ -47,11 +39,7 @@ class SmartMatchCard::Component < ApplicationViewComponent
   end
 
   def circle_color
-    case match_percentage
-    when GREAT_MATCH_THRESHOLD..100 then "#9ae2e0"
-    when GOOD_MATCH_THRESHOLD...GREAT_MATCH_THRESHOLD then "#0782D0"
-    else "#fc8383"
-    end
+    TIER_CIRCLE_COLORS.fetch(match.tier)
   end
 
   # CTA
@@ -121,6 +109,49 @@ class SmartMatchCard::Component < ApplicationViewComponent
     organization.main_location&.phone_number&.number
   end
 
+  # Why THIS organization surfaced -- the criteria it personally satisfies.
+  #
+  # Only the positives, and only a few up front -- the rest are one click away
+  # behind the "+N more" toggle. Answers are OR'd rather than AND'd, so every
+  # result meets some subset and the useful signal is which subset; the misses
+  # are already reported once, in aggregate, by the results page panel.
+  # Repeating them per card would triple the noise for no extra information.
+  #
+  # Ordered by what actually moved the score, so the most substantive reason
+  # leads rather than whichever question happened to come first in the quiz.
+  MAX_MATCH_REASONS = 3
+
+  def match_reasons
+    ordered_match_reasons.first(MAX_MATCH_REASONS)
+  end
+
+  # The remainder, rendered collapsed behind the "+N more" toggle. They ship
+  # with the card rather than being fetched on expand: they are a handful of
+  # short strings we have already computed, and hiding them client-side keeps
+  # expanding instant and independent per card.
+  def hidden_match_reasons
+    ordered_match_reasons.drop(MAX_MATCH_REASONS)
+  end
+
+  def hidden_match_reason_count
+    hidden_match_reasons.size
+  end
+
+  # Every chip in display order, flagged with whether it starts collapsed, so
+  # the template renders one chip markup rather than two near-identical loops.
+  def match_reason_chips
+    match_reasons.map { |reason| [reason, false] } +
+      hidden_match_reasons.map { |reason| [reason, true] }
+  end
+
+  # aria-controls target for the "+N more" toggle. The chip list as a whole is
+  # what changes, since the collapsed chips are <li>s interleaved in the same
+  # flex-wrapped <ul> rather than sitting in a container of their own. Keyed on
+  # the organization because one card is rendered per organization per page.
+  def reasons_list_id
+    "smart-match-reasons-#{organization.id}"
+  end
+
   def top_causes
     # Array#first serves from the preloaded association cache; limit() would
     # issue a fresh SELECT with LIMIT 4 and bypass the preload.
@@ -137,26 +168,47 @@ class SmartMatchCard::Component < ApplicationViewComponent
 
   private
 
-  # The displayed match fraction (0.0–1.0) after presentation-only calibration.
-  # Raw scores are dominated by compressed embedding similarity; the linear
-  # rescale defined in matching_rules.yml#display_calibration stretches them
-  # onto a more intuitive band. It is monotonic, so ranking is unaffected.
-  def calibrated_fraction
-    @calibrated_fraction ||= calibrate(match.score.to_f)
+  # Labels for everything this organization satisfies, strongest first.
+  #
+  # Question and answer break ties. Ruby's sort_by is not stable and ties are
+  # routine here: equal-weight rules score identically, and any criterion whose
+  # trace entry fell outside Scorer::MAX_TRACE_ENTRIES reads back as a flat 0.
+  # Without the tiebreak those chips reorder between renders of the same card.
+  def ordered_match_reasons
+    @ordered_match_reasons ||= satisfied_criteria
+      .sort_by { |criterion| [-contribution_for(criterion), criterion["question"].to_s, criterion["answer"].to_s] }
+      .map { |criterion| reason_label(criterion) }
   end
 
-  def calibrate(raw)
-    raw = raw.clamp(0.0, 1.0)
-    cfg = SmartMatch::MATCHING_RULES["display_calibration"]
-    return raw unless cfg
+  # Criteria this organization personally satisfies.
+  def satisfied_criteria
+    @satisfied_criteria ||= Array(match.score_breakdown&.dig("criteria")).select do |criterion|
+      criterion["status"] == SmartMatch::RuleScorer::MET &&
+        SmartMatch::CriteriaSummary::HIDDEN_QUESTIONS.exclude?(criterion["question"])
+    end
+  end
 
-    floor = cfg["input_floor"].to_f
-    ceiling = cfg["input_ceiling"].to_f
-    return raw if ceiling <= floor
+  # How much this criterion earned, read back from the itemized trace.
+  def contribution_for(criterion)
+    Array(match.score_breakdown&.dig("rule_matches"))
+      .select { |entry| entry["question"] == criterion["question"] }
+      .select { |entry| criterion["answer"].blank? || entry["answer"] == criterion["answer"] }
+      .sum { |entry| entry["contribution"].to_f }
+  end
 
-    min_fraction = cfg["min_percentage"].to_f / 100.0
-    max_fraction = cfg["max_percentage"].to_f / 100.0
-    t = ((raw - floor) / (ceiling - floor)).clamp(0.0, 1.0)
-    (min_fraction + t * (max_fraction - min_fraction)).clamp(0.0, 1.0)
+  def reason_label(criterion)
+    # ApplicationController.helpers rather than the component's `helpers`
+    # proxy: the latter needs an active render, and resolving a label is a pure
+    # function of the answer plus the current locale.
+    ApplicationController.helpers.smart_match_criterion_label(
+      criterion["question"], criterion["answer"]
+    )
+  end
+
+  # The fraction the progress ring is drawn from. Taken off the displayed
+  # percentage rather than the raw score so the ring and the number in it can
+  # never round to different values.
+  def calibrated_fraction
+    match_percentage / 100.0
   end
 end

@@ -23,4 +23,27 @@ RSpec.describe QuizSubmission, type: :model do
       expect(submission.answers["causes"]).to eq(["Education"])
     end
   end
+
+  # attempt_token is ProcessSubmissionJob's idempotency key. The guards that
+  # normally enforce it -- an atomic cache claim in the controller, an exists?
+  # check in the job -- both live outside Postgres and fail together when the
+  # cache store does. The unique index is the guarantee that survives that.
+  describe "attempt_token uniqueness" do
+    it "refuses a second submission for the same attempt" do
+      token = SecureRandom.uuid
+      create(:quiz_submission, attempt_token: token)
+
+      expect { create(:quiz_submission, attempt_token: token) }
+        .to raise_error(ActiveRecord::RecordNotUnique)
+    end
+
+    # Rows predating the column hold NULL, and Postgres treats NULLs in a
+    # unique index as distinct -- so the constraint does not retroactively
+    # reject them.
+    it "allows any number of submissions with no attempt recorded" do
+      create(:quiz_submission, attempt_token: nil)
+
+      expect { create(:quiz_submission, attempt_token: nil) }.not_to raise_error
+    end
+  end
 end

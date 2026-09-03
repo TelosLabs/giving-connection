@@ -1,0 +1,55 @@
+Smart Match Answer,Field,Preset Match,Weight
+Seniors,Populations Served,Seniors,5
+,Populations Served,Retired People,3
+,Cause,Seniors,4
+,Service,Senior Services & Programs,3
+,Service,Senior Centers,3
+,NTEE,P81: Senior Centers,2
+,NTEE,L22: Senior Citizens Housing & Retirement Communities,2
+Veteran & military,Populations Served,Veterans,5
+,Populations Served,Military Personnel,5
+,Cause,Veteran & Military,4
+,Service,Veteran & Military Support Services,3
+,Service,Veteran & Military Associations/Organizations,3
+,NTEE,W30: Military & Veterans Organizations,2
+Spanish-speaking communities,No exact Population Served preset,—,—
+,Service,Language Learning Assistance,2
+,Service,Multicultural Outreach,2
+,NTEE,P84: Ethnic & Immigrant Centers,2
+BIPOC communities,Populations Served,Indigenous Peoples,5
+,Populations Served,People of African Descent,5
+,Populations Served,People of Asian Descent,5
+,Populations Served,People of Latin American Descent,5
+,Populations Served,People of Middle Eastern Descent,5
+,Populations Served,People of all Racial Minority Groups,5
+,Populations Served,Multiracial People,5
+,Cause,Race & Ethnicity,4
+,Service,Multicultural Outreach,3
+,Service,Racial Equity & Equality Advocacy,3
+,Service,Racial Justice Advocacy & Policy,3
+,NTEE,R22: Minority Rights,2
+,NTEE,R30: Intergroup & Race Relations,2
+People with disabilities,Populations Served,People with Developmental Disabilities,5
+,Populations Served,People with Physical Disabilities,5
+,Cause,Disability Services,4
+,Service,Developmental Disability Services,3
+,Service,Services to Promote the Independence of Specific Populations,3
+,NTEE,P82: Developmentally Disabled Centers,2
+,NTEE,L24: Independent Housing for People with Disabilities,2
+LGBTQIA+ community,Populations Served,LGBTQ+ People,5
+,Cause,LGBTQ+,4
+,Service,LGBTQ+ Advocacy,3
+,Service,LGBTQ+ Community Centers,3
+,NTEE,P88: LGBT Centers,2
+,NTEE,R26: Lesbian & Gay Rights,2
+Children & family,Populations Served,Children & Youth,5
+,Populations Served,Individuals Under 21,5
+,Populations Served,Non-Adults,5
+,Populations Served,Families,5
+,Populations Served,Parents,3
+,Cause,Children & Family Services,4
+,Cause,Youth Development,4
+,Service,Children & Family Services,3
+,Service,Youth Specific Services,3
+,NTEE,P30: Children & Youth Services,2
+,NTEE,P40: Family Services,2

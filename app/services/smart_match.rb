@@ -34,6 +34,9 @@ module SmartMatch
 
   MATCHING_RULES = deep_freeze(YAML.safe_load_file(Rails.root.join("config/matching_rules.yml")))
   CITY_CENTROIDS = deep_freeze(YAML.safe_load_file(Rails.root.join("config/city_centroids.yml")))
+  # Per-answer scoring table transcribed from the client's spec. See
+  # docs/smart-match-scoring/ for the source CSVs and the semantics.
+  SCORING_RULES = deep_freeze(YAML.safe_load_file(Rails.root.join("config/smart_match_scoring.yml")))
 
   # Shared upper bound for any text we hand to the BGE embedding service.
   # Referenced by UserIntent#to_embedding_text and Organization#smart_match_text

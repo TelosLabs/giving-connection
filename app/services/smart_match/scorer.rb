@@ -2,6 +2,12 @@
 
 module SmartMatch
   class Scorer < ApplicationService
+    # Cap on the itemized rule trace persisted into
+    # OrganizationMatch#score_breakdown. A broad multi-select answer set can
+    # produce dozens of matches; the jsonb column doesn't need all of them to
+    # explain a result.
+    MAX_TRACE_ENTRIES = 12
+
     attr_reader :candidates, :user_intent
 
     def initialize(candidates:, user_intent:)
@@ -16,21 +22,44 @@ module SmartMatch
     private
 
     def score_candidate(candidate)
-      dense = dense_score(candidate[:cosine_distance])
-      attribute = attribute_bonus(candidate[:organization_embedding].organization)
-      distance = distance_score(candidate[:distance_miles])
+      organization = candidate[:organization_embedding].organization
 
-      total = (weights["embedding_similarity"] * dense) +
-        (weights["attribute_bonus"] * attribute) +
-        (weights["distance"] * distance)
+      dense = dense_score(candidate[:cosine_distance])
+      attribute = attribute_bonus(organization)
+      distance = distance_score(candidate[:distance_miles])
+      rules = RuleScorer.call(organization: organization, user_intent: user_intent)
+
+      total = (weight("embedding_similarity") * dense) +
+        (weight("rule_score") * rules[:score]) +
+        (weight("attribute_bonus") * attribute) +
+        (weight("distance") * distance)
 
       {
-        organization: candidate[:organization_embedding].organization,
+        organization: organization,
         score: total.round(4),
         score_breakdown: {
           dense_similarity: dense.round(4),
+          rule_score: rules[:score],
           attribute_bonus: attribute.round(4),
-          distance_score: distance.round(4)
+          distance_score: distance.round(4),
+          # Itemized so a result can be explained, not just ranked. Trimmed
+          # because this is persisted per match; the highest-contributing
+          # rules are the ones worth showing.
+          #
+          # Ties are broken on question/answer/field so the persisted order is
+          # deterministic. Ruby's sort_by is not stable, and equal-contribution
+          # entries are common (a 5-weight population and a 5-weight cause hit
+          # the same number), so sorting on contribution alone makes the stored
+          # breakdown vary run to run for identical input.
+          rule_matches: rules[:matched]
+            .sort_by { |m| [-m[:contribution], m[:question], m[:answer], m[:field]] }
+            .first(MAX_TRACE_ENTRIES),
+          rule_points: {earned: rules[:earned], max: rules[:max]},
+          # Every answer the user gave, with whether this organization meets
+          # it. Drives the "how we matched you" panel on the results page --
+          # unlike rule_matches it is NOT trimmed, because a criterion missing
+          # from the list would read as "we ignored what you asked for".
+          criteria: rules[:criteria]
         }
       }
     end
@@ -103,6 +132,12 @@ module SmartMatch
 
     def weights
       @weights ||= SmartMatch::MATCHING_RULES["scoring"]["weights"]
+    end
+
+    # Defaults to 0 so a weight absent from matching_rules.yml disables that
+    # term rather than raising mid-request.
+    def weight(name)
+      weights.fetch(name, 0).to_f
     end
 
     def attribute_weights

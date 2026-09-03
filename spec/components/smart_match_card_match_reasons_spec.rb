@@ -1,0 +1,142 @@
+# frozen_string_literal: true
+
+require "rails_helper"
+
+# Per-card "why this match" chips.
+#
+# Answers are OR'd, not AND'd -- every result satisfies some subset of what the
+# user asked for, so naming that subset is what tells one card apart from the
+# next. Misses stay in the aggregate panel; repeating them per card would
+# triple the noise without adding information.
+RSpec.describe SmartMatchCard::Component, type: :component do
+  # organization is injectable so a test can render the same card more than once
+  # -- the factory's name is not sequenced, so a second create(:organization)
+  # fails validation.
+  def card_for(criteria, rule_matches: [], organization: create(:organization))
+    match = build(:organization_match,
+      organization: organization,
+      score: 0.5,
+      score_breakdown: {"criteria" => criteria, "rule_matches" => rule_matches})
+
+    described_class.new(organization: organization, match: match, user_type: "service_seeker")
+  end
+
+  def criterion(question, answer, status, **extra)
+    {"question" => question, "answer" => answer, "status" => status}.merge(extra.transform_keys(&:to_s))
+  end
+
+  it "names the criteria this organization satisfies" do
+    card = card_for([
+      criterion("causes", "Mental Health", "met"),
+      criterion("self_description", "senior", "met")
+    ])
+
+    expect(card.match_reasons).to contain_exactly("Mental Health", "Senior")
+  end
+
+  it "omits criteria the organization does not satisfy" do
+    card = card_for([
+      criterion("causes", "Mental Health", "met"),
+      criterion("prefs", "wheelchair_accessible", "unmet"),
+      criterion("prefs", "no_id_required", "unknown")
+    ])
+
+    expect(card.match_reasons).to eq(["Mental Health"])
+  end
+
+  it "never names age, gender or race" do
+    card = card_for([
+      criterion("causes", "Health", "met"),
+      criterion("race_ethnicity", "hispanic_latino", "met"),
+      criterion("gender_identity", "male", "met")
+    ])
+
+    expect(card.match_reasons).to eq(["Health"])
+  end
+
+  # Ordered by what actually moved the score, so the strongest reason leads
+  # rather than whichever question came first in the quiz.
+  it "leads with the highest-scoring reason" do
+    card = card_for(
+      [
+        criterion("prefs", "lgbtqia_affirming", "met"),
+        criterion("causes", "Mental Health", "met")
+      ],
+      rule_matches: [
+        {"question" => "prefs", "answer" => "lgbtqia_affirming", "contribution" => 1.0},
+        {"question" => "causes", "answer" => "Mental Health", "contribution" => 7.5}
+      ]
+    )
+
+    expect(card.match_reasons.first).to eq("Mental Health")
+  end
+
+  # Scorer trims rule_matches to MAX_TRACE_ENTRIES but leaves criteria whole, so
+  # a satisfied criterion can have no trace entry left to read a contribution
+  # from and score a flat 0. Ruby's sort_by is not stable, so without a tiebreak
+  # those chips shuffle between renders of the same card.
+  it "orders equally-weighted reasons the same way every time" do
+    organization = create(:organization)
+    criteria = %w[Seniors Education Employment Health].map { |cause| criterion("causes", cause, "met") }
+
+    orderings = 5.times.map do
+      card_for(criteria.shuffle, organization: organization).match_reason_chips.map(&:first)
+    end
+
+    expect(orderings.uniq.size).to eq(1)
+  end
+
+  # A criterion whose trace entry was trimmed contributed less than every entry
+  # that survived, so reading it back as 0 puts it after them -- which is the
+  # order it belongs in anyway.
+  it "keeps a reason with a surviving trace entry ahead of one without" do
+    card = card_for(
+      [
+        criterion("causes", "Education", "met"),
+        criterion("prefs", "lgbtqia_affirming", "met")
+      ],
+      rule_matches: [{"question" => "prefs", "answer" => "lgbtqia_affirming", "contribution" => 2.0}]
+    )
+
+    expect(card.match_reasons.first)
+      .to eq(I18n.t("smart_match.quiz.steps.preferences.options.lgbtqia_affirming"))
+  end
+
+  # The overwhelm guard: a user who answered a lot must not get a wall of chips.
+  it "caps the chips and counts the remainder" do
+    card = card_for([
+      criterion("causes", "Health", "met"),
+      criterion("causes", "Mental Health", "met"),
+      criterion("causes", "Seniors", "met"),
+      criterion("causes", "Education", "met"),
+      criterion("causes", "Employment", "met")
+    ])
+
+    expect(card.match_reasons.size).to eq(described_class::MAX_MATCH_REASONS)
+    expect(card.hidden_match_reason_count).to eq(2)
+  end
+
+  # Capped, not truncated: the remainder is rendered collapsed so "+N more" can
+  # reveal it. Nothing the user asked for is dropped from the card.
+  it "keeps the remainder available behind the toggle" do
+    reasons = ["Health", "Mental Health", "Seniors", "Education", "Employment"]
+    card = card_for(reasons.map { |cause| criterion("causes", cause, "met") })
+
+    expect(card.match_reasons + card.hidden_match_reasons).to match_array(reasons)
+    expect(card.match_reason_chips.map(&:last)).to eq([false, false, false, true, true])
+  end
+
+  it "reports no remainder when everything fits" do
+    card = card_for([criterion("causes", "Health", "met")])
+
+    expect(card.hidden_match_reason_count).to eq(0)
+    expect(card.hidden_match_reasons).to be_empty
+  end
+
+  it "shows nothing for a match with no recorded criteria" do
+    card = card_for([])
+
+    expect(card.match_reasons).to be_empty
+    expect(card.hidden_match_reason_count).to eq(0)
+  end
+end

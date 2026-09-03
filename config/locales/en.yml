@@ -72,9 +72,23 @@ en:
       still_need_help: "Still Need Help?"
       retake: "Retake Quiz"
       try_again: "Try Again"
+      showing:
+        one: "Showing your only match"
+        other: "Showing %{shown} of %{count} matches"
+      show_more:
+        one: "Show 1 more"
+        other: "Show %{count} more"
       processing:
         title: "Finding your matches…"
         body: "We're matching you with nonprofits that fit your answers. This only takes a moment."
+      delayed:
+        title: "This is taking longer than usual"
+        body: "We're still putting your matches together. Your answers are saved, so you can check back in a few minutes."
+        refresh: "Check again"
+      failed:
+        title: "We ran into an issue"
+        body: "We couldn't check on your matches just now. Your answers are saved — refreshing usually sorts it out."
+        refresh: "Refresh"
       empty:
         title: "No quiz results found"
         body: "Take the quiz to get personalized nonprofit matches."
@@ -82,6 +96,48 @@ en:
       unavailable:
         title: "Smart Match is temporarily unavailable"
         body: "Our matching engine is currently offline. Please try again in a few minutes."
+      card:
+        why_matched: "Why this match"
+        more_reasons:
+          one: "+1 more"
+          other: "+%{count} more"
+        fewer_reasons: "Show less"
+      service_filter:
+        prompt: "Looking for a specific service?"
+        select: "Select services"
+        active_prompt: "Filtered by"
+        title: "Looking for a specific service?"
+        hint: "This is optional. Select any services you need and we'll show only the matches that offer it. The number beside each one is how many of your matches provide it"
+        selected:
+          one: "1 service"
+          other: "%{count} services"
+        apply: "Show these"
+        clear: "Clear"
+        clear_cta: "Clear filter"
+        close: "Close"
+        none:
+          title: "Nothing here offers that combination"
+          body: "Your matches are still saved. Clear the filter to see all of them again."
+      criteria:
+        title: "How we matched you"
+        summary: "%{matched} of %{total} matched"
+        intro:
+          one: "You told us 1 thing mattered. Here is how these results measure up."
+          other: "You told us %{count} things mattered. Here is how these results measure up."
+        not_stated: "Not stated"
+        unknown_note: "Some organizations have not published this information yet. Not stated means we do not know, rather than that the answer is no. It is worth asking them directly."
+        status:
+          met: "Full match"
+          partial: "Partial match"
+          unmet: "Not matched"
+          unknown: "Not stated"
+      broadened:
+        title: "We broadened your search"
+        body: "We couldn't find enough matches for everything you asked for, so these results may not all offer %{filters}."
+        filters:
+          volunteer_opportunities: "volunteer opportunities"
+          donation_link: "online donations"
+          remote_services: "remote services"
     quiz:
       buttons:
         back: "Go Back"

@@ -25,6 +25,7 @@ RSpec.describe "SmartMatch Rack::Attack throttles", type: :request do
 
   around do |example|
     original_store = Rack::Attack.cache.store
+    original_enabled = Rack::Attack.enabled
     Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
     Rack::Attack.enabled = true
     travel_to(Time.utc(2026, 1, 1, 12, 0, 0)) do
@@ -32,6 +33,10 @@ RSpec.describe "SmartMatch Rack::Attack throttles", type: :request do
     end
   ensure
     Rack::Attack.cache.store = original_store
+    # Restoring `enabled` matters as much as the store: leaving it on leaked
+    # throttling into every later request spec, which then shared the global
+    # 300-req/5-min budget with this file's 60+ deliberate requests.
+    Rack::Attack.enabled = original_enabled
   end
 
   describe "smart_match/quiz throttle (60/period/IP)" do
@@ -54,6 +59,54 @@ RSpec.describe "SmartMatch Rack::Attack throttles", type: :request do
       end
 
       get smart_match_result_path, env: {"REMOTE_ADDR" => ip_a}
+      expect(response).to have_http_status(:too_many_requests)
+    end
+
+    # "Show more" re-requests this path with ?page=N. Those are reads of matches
+    # the pipeline already persisted, so they must not spend a budget sized for
+    # starting match runs -- otherwise paging through results locks the user out
+    # of their own results page.
+    it "does not spend the budget on paged requests" do
+      10.times { get smart_match_result_path(page: 2), env: {"REMOTE_ADDR" => ip_a} }
+
+      get smart_match_result_path, env: {"REMOTE_ADDR" => ip_a}
+      expect(response).not_to have_http_status(:too_many_requests)
+    end
+  end
+
+  describe "smart_match/results_page throttle (60/period/IP)" do
+    it "allows 60 paged requests then throttles the 61st from the same IP" do
+      60.times do |i|
+        get smart_match_result_path(page: 2), env: {"REMOTE_ADDR" => ip_a}
+        expect(response.status).to satisfy("be allowed on request #{i + 1}, got #{response.status}") { |s| (200..399).cover?(s) }
+      end
+
+      get smart_match_result_path(page: 2), env: {"REMOTE_ADDR" => ip_a}
+      expect(response).to have_http_status(:too_many_requests)
+    end
+  end
+
+  # The status endpoint is polled, so its ceiling has to clear one attempt's
+  # worth of polling or the throttle fires during ordinary use. This was the
+  # actual defect: at 120 the limit was below what a single slow completion
+  # could spend, the poll controller read the resulting 429 as "still
+  # processing", and its retries held the window saturated -- so the page
+  # spun forever with no way to recover.
+  describe "smart_match/result_status throttle (300/period/IP)" do
+    # smart_match_poll_controller.js: 2s interval, 120s deadline.
+    let(:polls_per_attempt) { 60 }
+
+    it "admits a full polling attempt without throttling" do
+      polls_per_attempt.times do |i|
+        get status_smart_match_result_path, env: {"REMOTE_ADDR" => ip_a}
+        expect(response.status).to satisfy("be allowed on poll #{i + 1}, got #{response.status}") { |s| s != 429 }
+      end
+    end
+
+    it "allows 300 requests then throttles the 301st from the same IP" do
+      300.times { get status_smart_match_result_path, env: {"REMOTE_ADDR" => ip_a} }
+
+      get status_smart_match_result_path, env: {"REMOTE_ADDR" => ip_a}
       expect(response).to have_http_status(:too_many_requests)
     end
   end

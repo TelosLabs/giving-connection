@@ -11,10 +11,38 @@
 // Wizard layout
 // ---------------------------------------------------------------------------
 .sm-wizard {
+  // Height of the fade over the footer. Shared with the pane's bottom clearance
+  // below so the two can't drift: the clearance exists precisely so answers can
+  // scroll out from under the fade.
+  --sm-fade-height: 4.5rem;
+
   background-color: #fff;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+
+  // The space actually left below the navbar -- NOT a whole viewport. The navbar
+  // is in normal flow above this section, so `min-height: 100vh` made the page a
+  // navbar taller than the screen, and every step ended in a blank tail you could
+  // scroll into (302px on the shorter steps). A definite height also pins the
+  // pane as the single scroller, instead of the pane and the document trading the
+  // job depending on how tall the step happened to be.
+  //
+  // --sm-wizard-offset is measured by wizard_scroll_controller; the 0 fallback
+  // means "behave as before" for the moment between first paint and Stimulus
+  // connecting.
+  height: calc(100vh - var(--sm-wizard-offset, 0px));
+  height: calc(100dvh - var(--sm-wizard-offset, 0px));
+}
+
+.sm-wizard__pane {
+  // Clearance so the last answers can scroll clear of the fade and the footer
+  // rather than coming to rest underneath them -- without it, the bottom row of
+  // options on a full step stays blurred no matter how far you scroll.
+  //
+  // wizard_scroll_controller subtracts this padding when deciding whether
+  // anything is really left below, so the cue can never point at the clearance
+  // itself.
+  padding-bottom: var(--sm-fade-height);
 }
 
 // Progress bar segments
@@ -76,6 +104,134 @@
 }
 
 // ---------------------------------------------------------------------------
+// "More below" cue
+//
+// Steps with many options run past the fold, and the sticky footer reads as the
+// end of the page -- users were missing the options underneath. These two
+// layers sit directly above the footer and let content dissolve into it rather
+// than stopping at a hard edge, which is what makes the page look finished.
+//
+// Hung off the footer rather than added as markup because the footer is already
+// sticky-bottom: bottom: 100% pins the cue to its top edge for free (see
+// wizard_scroll_controller.js).
+//
+// Both layers are opt-in via data-more-below, which the controller sets only
+// while something is genuinely left to scroll -- an always-on fade would claim
+// more content on the last screen of every step, which is the same lie in the
+// opposite direction. No JS means no cue, deliberately: a permanent gradient is
+// worse than none.
+// ---------------------------------------------------------------------------
+.sm-wizard__footer::before,
+.sm-wizard__footer::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  height: var(--sm-fade-height);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+// White wash, densest against the footer.
+.sm-wizard__footer::before {
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.9) 40%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+// Blur layer, masked so the blur itself fades out with the wash instead of
+// ending on a visible seam -- an unmasked blur strip reads as a rendering
+// artefact rather than an affordance. Kept shallow (3px): enough to suggest
+// content passing underneath, cheap enough to composite on every scroll frame.
+@supports (backdrop-filter: blur(3px)) or (-webkit-backdrop-filter: blur(3px)) {
+  .sm-wizard__footer::after {
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    -webkit-mask-image: linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0) 85%);
+    mask-image: linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0) 85%);
+  }
+}
+
+.sm-wizard[data-more-below="true"] {
+  .sm-wizard__footer::before,
+  .sm-wizard__footer::after {
+    opacity: 1;
+  }
+}
+
+// The chevron riding in the fade. The gradient alone is a soft signal -- users
+// were not scrolling at all, so this is the loud half of the cue.
+//
+// z-index lifts it above both fade layers: pseudo-elements paint in tree order,
+// so without it the ::after blur layer would sit on top and blur the chevron.
+.sm-wizard__scroll-cue {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  background-color: #fff;
+  color: #113C7B;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+  // Untargetable until the wizard says there is more below, so it cannot be
+  // clicked while invisible.
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+
+  svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  // 36px is under the 44px minimum tap target, and phones are where the fade is
+  // easiest to miss and thumbs are least precise.
+  @media (max-width: 639px) {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}
+
+.sm-wizard[data-more-below="true"] .sm-wizard__scroll-cue {
+  opacity: 1;
+  pointer-events: auto;
+  animation: sm-scroll-cue-bob 1.6s ease-in-out infinite;
+}
+
+// Keyframes carry the -50% X themselves: a transform in the animation replaces
+// the base translateX rather than combining with it, which would otherwise snap
+// the chevron to the right by half its width for the whole animation.
+@keyframes sm-scroll-cue-bob {
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+  }
+  50% {
+    transform: translate(-50%, 25%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sm-wizard[data-more-below="true"] .sm-wizard__scroll-cue {
+    animation: none;
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Card grid — flex so incomplete last rows are centered
 // ---------------------------------------------------------------------------
 [data-card-group] {
@@ -98,6 +254,47 @@
 // ---------------------------------------------------------------------------
 // Selectable icon card (desktop grid)
 // ---------------------------------------------------------------------------
+// Pill variant, used by the services step.
+//
+// The service list runs to a few dozen options across the chosen causes, which
+// is far too many for the 224px cards above — hence a compact pill. The state
+// rules mirror .sm-card-option so selection feels the same across the quiz.
+//
+// Both `.selected` (toggled by smart_match_quiz_controller#selectCard) and
+// `:has(input:checked)` are matched: the class covers the click path, the
+// :has covers server-rendered state on back-navigation and keyboard toggling
+// of the sr-only checkbox.
+.sm-pill-option {
+  background-color: #ffffff;
+  color: #113C7B;
+  border: 2px solid #C2CEDB;
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  cursor: pointer;
+  transition: background-color 150ms, border-color 150ms, box-shadow 150ms, color 150ms;
+  user-select: none;
+
+  &:hover {
+    background-color: #e2ecf7;
+    border-color: #0782D0;
+  }
+
+  &:focus-within {
+    border-color: #0782D0;
+    box-shadow: 0px 0px 0px 3px rgba(7, 130, 208, 0.25);
+  }
+
+  &.selected,
+  &:has(input:checked) {
+    background-color: #0782D0;
+    border-color: #0782D0;
+    color: #ffffff;
+    font-weight: 600;
+  }
+}
+
 .sm-card-option {
   background-color: #9AE2E0;
   color: #113C7B;
@@ -246,12 +443,30 @@ form:has(input:checked) .sm-selection-hint {
 // Category accordion ("more options")
 // ---------------------------------------------------------------------------
 .sm-category-accordion {
+  // max-height: 0 hides the extra causes but does NOT take them out of layout:
+  // measured in Chrome, a collapsed accordion still handed ~1500px of its
+  // clipped content to the scrolling pane. The step was scrollable through a
+  // screenful of nothing, which is what the scroll cue then advertised and what
+  // the chevron delivered users into. Neither `overflow: hidden` nor
+  // `overflow: clip` stops it -- only skipping the contents' layout does.
+  //
+  // content-visibility does that while keeping the element in the box tree, so
+  // the max-height animation still works. Transitioning it with allow-discrete
+  // holds the contents rendered until the closing animation finishes; browsers
+  // without allow-discrete drop that second declaration and fall back to the
+  // first, where the contents simply vanish at the start of the close.
+  //
+  // Bonus: collapsed causes are no longer focusable or announced, which they
+  // were the whole time they were merely clipped.
   overflow: hidden;
   max-height: 0;
+  content-visibility: hidden;
   transition: max-height 350ms ease;
+  transition: max-height 350ms ease, content-visibility 350ms allow-discrete;
 
   &.open {
     max-height: 2000px;
+    content-visibility: visible;
   }
 }
 
@@ -348,5 +563,33 @@ form:has(input:checked) .sm-selection-hint {
   to {
     opacity: 0;
     transform: translateX(-24px);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Results service filter dialog
+// ---------------------------------------------------------------------------
+// A native <dialog>, so the browser handles the top layer, focus trapping and
+// Escape. Only the box itself and the backdrop need styling: a closed dialog is
+// display:none by default, which is what keeps the markup inert until opened.
+// NOTE: no CSS `min()` here -- SassC resolves min() as its own function and
+// fails on a calc() argument ("is not a number for `min'"). Two properties do
+// the same job without the ambiguity.
+.sm-service-dialog {
+  width: 40rem;
+  max-width: calc(100vw - 2rem);
+  max-height: 90vh;
+  padding: 0;
+  border: 0;
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+  box-shadow: 0 20px 40px rgba(17, 60, 123, 0.25);
+
+  // The dialog's own children scroll (the options list has its own max-height),
+  // so the box must not double up a scrollbar around them.
+  overflow: hidden;
+
+  &::backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
   }
 }

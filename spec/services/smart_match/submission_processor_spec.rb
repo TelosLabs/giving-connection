@@ -36,13 +36,18 @@ RSpec.describe SmartMatch::SubmissionProcessor do
       org = create(:organization)
       create(:organization_embedding, organization: org)
 
-      allow(SmartMatch::SimilarityQuery).to receive(:call).and_return([
-        {
-          organization_embedding: OrganizationEmbedding.last,
-          cosine_distance: 0.2,
-          distance_miles: 5
-        }
-      ])
+      allow(SmartMatch::SimilarityQuery).to receive(:call).and_return(
+        SmartMatch::SimilarityQuery::Result.new(
+          candidates: [
+            {
+              organization_embedding: OrganizationEmbedding.last,
+              cosine_distance: 0.2,
+              distance_miles: 5
+            }
+          ],
+          relaxed: []
+        )
+      )
 
       result = described_class.call(
         session_answers: session_answers,
@@ -57,13 +62,18 @@ RSpec.describe SmartMatch::SubmissionProcessor do
       org = create(:organization)
       create(:organization_embedding, organization: org)
 
-      allow(SmartMatch::SimilarityQuery).to receive(:call).and_return([
-        {
-          organization_embedding: OrganizationEmbedding.last,
-          cosine_distance: 0.2,
-          distance_miles: 5
-        }
-      ])
+      allow(SmartMatch::SimilarityQuery).to receive(:call).and_return(
+        SmartMatch::SimilarityQuery::Result.new(
+          candidates: [
+            {
+              organization_embedding: OrganizationEmbedding.last,
+              cosine_distance: 0.2,
+              distance_miles: 5
+            }
+          ],
+          relaxed: []
+        )
+      )
 
       result = described_class.call(
         session_answers: session_answers,
@@ -81,7 +91,8 @@ RSpec.describe SmartMatch::SubmissionProcessor do
       org = create(:organization)
       create(:organization_embedding, organization: org)
 
-      allow(SmartMatch::SimilarityQuery).to receive(:call).and_return([])
+      allow(SmartMatch::SimilarityQuery).to receive(:call)
+        .and_return(SmartMatch::SimilarityQuery::Result.new(candidates: [], relaxed: []))
 
       result = described_class.call(
         session_answers: session_answers,

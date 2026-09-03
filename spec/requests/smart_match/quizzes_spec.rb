@@ -49,6 +49,7 @@ RSpec.describe "SmartMatch::Quizzes", type: :request do
       # location detail step, so this walks 9 visible steps to completion.
       put smart_match_quiz_path, params: {user_type: "volunteer"}
       put smart_match_quiz_path, params: {causes: ["Education"]}
+      put smart_match_quiz_path, params: {services: ["Student Educational Services"]}
       put smart_match_quiz_path, params: {volunteer_involvement: ["Teaching"]}
       put smart_match_quiz_path, params: {volunteer_type: ["In-person"]}
       put smart_match_quiz_path, params: {volunteer_format: "in_person"}

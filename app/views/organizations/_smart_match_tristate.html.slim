@@ -1,0 +1,17 @@
+/ One Smart Match capability question: Yes / No / Not specified.
+/
+/ Tri-state rather than a checkbox on purpose -- "Not specified" submits an
+/ empty string, which ActiveRecord casts back to NULL, and the scorer skips
+/ NULL rules instead of reading them as "no". See _smart_match_fields.
+fieldset class="col-span-12 lg:col-span-7 md:col-span-6 mt-2"
+  legend class="text-sm font-medium leading-4 text-gray-2"= question
+  div class="flex items-center gap-8 mt-3"
+    div class="flex items-center gap-2"
+      = f.radio_button attribute, true, class: "focus:ring-0 focus:ring-transparent"
+      = f.label "#{attribute}_true", "Yes", class: "text-sm text-black"
+    div class="flex items-center gap-2"
+      = f.radio_button attribute, false, class: "focus:ring-0 focus:ring-transparent"
+      = f.label "#{attribute}_false", "No", class: "text-sm text-black"
+    div class="flex items-center gap-2"
+      = f.radio_button attribute, "", class: "focus:ring-0 focus:ring-transparent", checked: f.object.public_send(attribute).nil?
+      = f.label "#{attribute}_", "Not specified", class: "text-sm text-gray-4"

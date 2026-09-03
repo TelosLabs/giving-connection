@@ -10,24 +10,83 @@
 # Used by SimilarityQuery for PostGIS ST_DWithin filtering.
 # Progressive expansion: if fewer than 3 results, expand to next bucket.
 # ---------------------------------------------------------------------------
+# Values match the labels users actually see in
+# config/locales/*.yml -> smart_match.quiz.steps.travel.options. They had
+# drifted from the copy (moderate was 15mi under a "5-10 miles" label, far was
+# 30mi under "10+ miles").
 radius_by_travel_bucket:
-  nearby: 5        # "Close to me"
-  moderate: 15     # "Within a short drive"
-  far: 30          # "I'll travel for the right org"
-  statewide: 100   # "Anywhere in my state"
+  nearby: 5        # "Walking distance only (under 5 miles)"
+  moderate: 10     # "Public transit or rides (5-10 miles)"
+  far: 100         # "Car or ride share available (10+ miles)"
+  # "Remote services only". The token is a leftover name -- see
+  # SmartMatch::Eligibility::REMOTE_ONLY_TRAVEL_BUCKET. This answer is now a
+  # relaxable filter on locations.remote_services rather than a radius, so the
+  # value below is only the fallback used when that filter is relaxed away
+  # (which it will be often until the field has data). Widest radius is the
+  # right fallback: someone who asked for remote services is not constrained
+  # by travel.
+  statewide: 100
 
 # ---------------------------------------------------------------------------
 # Scoring weights — must sum to 1.0
 # ---------------------------------------------------------------------------
 scoring:
   weights:
-    embedding_similarity: 0.70
-    attribute_bonus: 0.20
+    # Semantic recall -- catches good matches whose tagging is thin.
+    embedding_similarity: 0.45
+    # Deterministic per-answer scoring from config/smart_match_scoring.yml.
+    # Balanced against embedding as a starting point; the split is the open
+    # decision Q1 in docs/smart-match-scoring/05-open-questions.md and is meant
+    # to be tuned against the committed baseline with the client. Raising this
+    # favours predictable, explainable ranking; lowering it favours recall for
+    # sparsely-tagged organizations.
+    rule_score: 0.45
+    # Superseded by rule_score, which scores the same cause/beneficiary/service
+    # signals per answer instead of as four coarse booleans (two of which never
+    # fired -- see docs/smart-match-scoring/03-findings-and-gaps.md#finding-6).
+    # Kept wired at 0.0 for one release as a rollback lever, then removed.
+    attribute_bonus: 0.00
     distance: 0.10
+  # Fraction of a Populations Served rule's weight credited to an organization
+  # flagged general_population_serving when it has no exact population match.
+  #
+  # Those organizations record no beneficiary subcategories at all (the flag
+  # exists so they don't have to enumerate them), so before this they scored
+  # zero on every population rule -- ranked below any org that ticked a box,
+  # despite serving the user too. "We serve everyone" is a real but weaker
+  # signal than "we specialise in your population", hence a partial credit
+  # rather than a full match. Set to 0 to disable.
+  general_population_credit: 0.5
   # Minimum number of results to return (triggers radius expansion if not met)
   min_results: 3
-  # Maximum results to display
-  max_results: 20
+  # How deep the candidate pool goes: the most organizations SimilarityQuery
+  # will hand to the Scorer, and therefore the most OrganizationMatch rows a
+  # submission can have. This is the ceiling on everything the results page can
+  # ever page through -- see results_display below.
+  #
+  # Every extra candidate costs one RuleScorer pass in ProcessSubmissionJob and
+  # one persisted row carrying its score_breakdown, so this trades job time and
+  # storage for how many options a user can browse. Raised from 20 when the
+  # results page stopped showing a fixed three.
+  max_results: 60
+
+# ---------------------------------------------------------------------------
+# Results page paging (presentation only — does NOT affect ranking or scoring)
+#
+# The first page is the top match tier in full, rather than a fixed number of
+# cards: someone comparing options wants every organization we think is a great
+# fit. Two knobs shape that:
+#
+#   min_visible : the fewest cards a first page may show. Below this the page
+#                 reaches down into the next tier (great -> good -> match), so
+#                 a quiz with two great matches still returns a usable page.
+#   page_size   : cap on the first page, and how many more each "Show more"
+#                 adds. Keeps a 40-great-match quiz from rendering 40 cards
+#                 before the user has asked for them.
+# ---------------------------------------------------------------------------
+results_display:
+  min_visible: 6
+  page_size: 20
 
 # ---------------------------------------------------------------------------
 # Display calibration (presentation only — does NOT affect ranking)
@@ -44,9 +103,22 @@ scoring:
 #   input_ceiling : raw score mapped to max_percentage (and anything above)
 #   min_percentage / max_percentage : the displayed band, in percent
 # ---------------------------------------------------------------------------
+#
+# PROVISIONAL as of the scoring refinement. The previous 0.38–0.66 window was
+# fitted to an embedding-dominated score, where the raw value was squeezed into
+# a narrow band. Now that rule_score carries 45% of the weight and spans a full
+# 0–1, raw scores spread much wider: an excellent match lands near 0.84
+# (0.45 x ~0.65 embedding + 0.45 x 1.0 rules + 0.10 x 1.0 distance) and a weak
+# one near 0.21. Left unchanged, every strong match would clamp to 95% and
+# every weak one to 52%.
+#
+# These bounds are derived from that arithmetic, NOT fitted to production
+# results -- the committed spec baseline uses synthetic cosine distances and
+# can't stand in for real data. Refit against a sample of real submissions
+# once this is on staging.
 display_calibration:
-  input_floor: 0.38
-  input_ceiling: 0.66
+  input_floor: 0.25
+  input_ceiling: 0.80
   min_percentage: 52
   max_percentage: 95
 

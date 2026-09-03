@@ -21,6 +21,9 @@ class LocationDashboard < Administrate::BaseDashboard
     email: Field::String,
     main: Field::Boolean,
     offer_services: Field::Boolean,
+    # Smart Match, nullable: nil = not yet answered
+    wheelchair_accessible: Field::Boolean,
+    remote_services: Field::Boolean,
     time_zone: Field::Select.with_options(include_blank: true, collection: ActiveSupport::TimeZone.us_zones.map(&:name)),
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -65,6 +68,8 @@ class LocationDashboard < Administrate::BaseDashboard
     main
     images
     offer_services
+    wheelchair_accessible
+    remote_services
     time_zone
     address
     suite
@@ -92,6 +97,8 @@ class LocationDashboard < Administrate::BaseDashboard
     latitude
     longitude
     offer_services
+    wheelchair_accessible
+    remote_services
     location_services
     office_hours
   ].freeze
