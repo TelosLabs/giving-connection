@@ -82,6 +82,7 @@ class Location < ActiveRecord::Base
   before_validation :lonlat_geo_point
   before_validation :ensure_slug_uniqueness
   after_create :regenerate_org_locations_slugs, if: :multiple_locations?
+  after_commit :schedule_org_embedding_update, on: [:create, :update], if: :saved_change_to_address?
 
   delegate :social_media, to: :organization
 
@@ -165,5 +166,15 @@ class Location < ActiveRecord::Base
     return if organization.nil?
 
     organization.locations.count > 1
+  end
+
+  def schedule_org_embedding_update
+    return unless organization_id
+
+    SmartMatch::EmbedOrganizationJob.coalesce_for(organization_id)
+  rescue => e
+    # Embedding refresh is best-effort. A queue/cache (Redis) outage must not
+    # roll back or block an otherwise-valid Location save.
+    Rails.logger.error("[SmartMatch] Failed to schedule embedding update for organization #{organization_id}: #{e.class}: #{e.message}")
   end
 end

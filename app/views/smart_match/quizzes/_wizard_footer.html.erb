@@ -1,0 +1,27 @@
+<div class="sm-wizard__footer">
+  <div class="flex items-center justify-between w-full px-4 sm:w-3/4 sm:mx-auto sm:px-0">
+    <% if step > 1 %>
+      <%# type="button" (not submit) so it can never become the form's
+          implicit-submit default -- pressing Enter in a text field must
+          advance (Next), never go back. Back navigation is driven by JS,
+          which injects direction=back and submits; because the direction is
+          not carried by this button's own name/value, the submit guard can
+          safely disable it to prevent a Next-then-Back concurrent PUT. %>
+      <button type="button"
+              class="text-base font-semibold cursor-pointer text-blue-dark hover:underline disabled:opacity-60 disabled:cursor-not-allowed"
+              data-action="click->smart-match-quiz#goBack"
+              data-smart-match-quiz-target="backBtn">
+        Go Back
+      </button>
+    <% else %>
+      <div></div>
+    <% end %>
+
+    <button type="submit"
+            form="quiz-form"
+            class="px-10 py-3 text-sm font-bold tracking-wider text-white uppercase rounded-md cursor-pointer bg-blue-dark hover:bg-blue-medium disabled:bg-gray-5 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+            data-smart-match-quiz-target="submitBtn">
+      <%= is_final_step ? "FIND MY MATCHES" : "NEXT" %>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,296 @@
+# Spanish translations for Smart Match. Tone matches the bilingual content
+# convention already used in app/models/organization.rb (mission_statement_es,
+# vision_statement_es, tagline_es): direct, second-person informal ("tú"),
+# capitalized titles.
+
+es:
+  hello: "Hola mundo"
+  smart_match:
+    entry_points:
+      nav: "Smart Match"
+      cta_prompt: "¿No estás seguro de qué organización es la adecuada para ti?"
+      cta_button: "Prueba Smart Match"
+      home:
+        heading: "Prueba nuestro Smart Match Engine"
+        body: "¿No sabes por dónde empezar? Déjanos ayudarte a encontrar la organización sin fines de lucro adecuada. Responde unas preguntas sencillas y recibe recomendaciones personalizadas en minutos."
+        cta: "Encuentra tu Match"
+      search_banner:
+        heading: "¿No sabes por dónde empezar?"
+        body: "Responde unas preguntas rápidas y deja que nuestro Smart Match Engine encuentre las organizaciones adecuadas para ti."
+        cta: "Prueba Smart Match"
+    landing:
+      hero:
+        title: "Bienvenido a Smart Match"
+        body: "Una función de Giving Connection diseñada para ayudarte a identificar rápidamente organizaciones sin fines de lucro alineadas con tus metas, situación y ubicación, sin la fatiga de búsquedas interminables."
+      features:
+        time: "Toma 3-5 minutos"
+        match: "Emparejamientos personalizados con organizaciones"
+        based_on: "Basado en tus necesidades y preferencias"
+      illustration_alt: "Persona explorando organizaciones"
+      description: "Te haremos algunas preguntas sencillas sobre lo que estás buscando. Con base en tus respuestas, te recomendaremos las organizaciones más relevantes para ti."
+      cta:
+        prompt: "¿Listo para encontrar la organización indicada para ti?"
+        prompt_completed: "Tus resultados están listos y esperándote."
+        start: "COMENZAR"
+        view_results: "VER RESULTADOS"
+        retake: "VOLVER A EMPEZAR"
+    confirmation:
+      title: "¿Listo para ver tus resultados?"
+      body_lead: "¡Has completado <strong>Smart Match</strong>!"
+      body: "Con base en tus respuestas, estamos listos para mostrarte organizaciones alineadas con tus intereses y preferencias."
+      review_notice: "Esta es tu oportunidad para regresar y <strong>revisar</strong> o <strong>actualizar</strong> tus respuestas. Una vez que envíes, tendrás que volver a hacer el cuestionario para cambiar algo."
+      submit: "ENVIAR"
+    results:
+      heading: "¡Tus resultados están listos!"
+      subheading: "Con base en tus respuestas, te emparejamos con organizaciones sin fines de lucro que se ajustan mejor a tus preferencias. Explora las opciones abajo para conocerlas y dar el siguiente paso."
+      still_need_help: "¿Aún necesitas ayuda?"
+      retake: "Volver a hacer el cuestionario"
+      try_again: "Intentar de nuevo"
+      processing:
+        title: "Buscando tus coincidencias…"
+        body: "Te estamos emparejando con organizaciones sin fines de lucro que se ajustan a tus respuestas. Esto solo toma un momento."
+      empty:
+        title: "No se encontraron resultados"
+        body: "Haz el cuestionario para recibir emparejamientos personalizados."
+        cta: "Hacer el cuestionario"
+      unavailable:
+        title: "Smart Match no está disponible temporalmente"
+        body: "Nuestro motor de emparejamiento está fuera de línea en este momento. Por favor inténtalo de nuevo en unos minutos."
+    quiz:
+      buttons:
+        back: "Regresar"
+        next: "SIGUIENTE"
+        find_matches: "ENCONTRAR MIS COINCIDENCIAS"
+      subtitles:
+        single_choice: "Opción Única"
+        multiple_choice: "Opción Múltiple"
+      sections:
+        about_you: "Sobre Ti"
+        type_of_support: "Tipo de Apoyo"
+        location_access: "Ubicación y Acceso"
+        prefs_accessibility: "Preferencias y Accesibilidad"
+        volunteer_prefs: "Tus Preferencias de Voluntariado"
+        volunteer_availability: "Tu Disponibilidad y Ubicación"
+        engagement: "Dónde y Cómo Participas"
+        donor_prefs: "Tus Preferencias de Donación"
+      titles:
+        personal_details: "Detalles Personales"
+        open_text: "En tus propias palabras"
+        service_seeker:
+          step_1: "¿Cómo podemos apoyarte hoy?"
+          step_2: "¿Para quién buscas apoyo?"
+          step_3: "¿Cómo te describirías?"
+          step_4: "¿Qué categorías se ajustan mejor a tus necesidades?"
+          step_5: "¿Qué describe mejor tu situación?"
+          step_6: "¿Dónde deberíamos buscar apoyo?"
+          step_7: "¿Qué tipo de traslado es posible para ti?"
+          step_8: "¿Qué deberíamos tener en cuenta al emparejarte con servicios?"
+          location_detail: "¿Dónde te encuentras?"
+          someone_else:
+            step_3: "¿Cuál de las siguientes describe mejor a la persona para la que buscas ayuda?"
+            step_4: "¿Qué categorías se ajustan mejor a sus necesidades?"
+            step_5: "¿Qué describe mejor su situación?"
+            step_7: "¿Qué tipo de traslado es posible?"
+            step_8: "¿Qué deberíamos tener en cuenta al emparejar servicios?"
+          organization:
+            step_4: "¿Qué categorías se ajustan mejor a las necesidades de alianza de tu organización?"
+            step_5: "¿Qué describe mejor la situación?"
+        volunteer:
+          step_1: "¿Cómo podemos apoyarte hoy?"
+          step_2: "¿Qué causas están cerca de tu corazón?"
+          step_3: "¿Cómo te gustaría ayudar?"
+          step_4: "¿Qué tipo de voluntariado estás buscando?"
+          step_5: "¿Qué formato funciona mejor para ti?"
+          step_6: "¿En qué comunidad te gustaría enfocar tu contribución?"
+          step_7: "¿Cuánto tiempo tienes para dar?"
+          location_detail: "¿Dónde te encuentras?"
+        donor:
+          step_1: "¿Cómo podemos apoyarte hoy?"
+          step_2: "¿Qué causas están cerca de tu corazón?"
+          step_3: "¿Cuál es tu estilo preferido de donación?"
+          step_4: "¿Qué inspira tu generosidad hoy?"
+          step_5: "¿Hay comunidades o poblaciones específicas que te gustaría apoyar con tu donación?"
+          step_6: "¿Dónde te gustaría que tu donación haga impacto?"
+          step_7: "¿En qué comunidad te gustaría enfocar tu contribución?"
+          step_8: "¿Cómo te gustaría involucrarte?"
+          location_detail: "¿Dónde te encuentras?"
+      steps:
+        user_type:
+          options:
+            service_seeker: "Estoy buscando ayuda de una organización sin fines de lucro"
+            donor: "Quiero donar a una causa que me importa"
+            volunteer: "Quiero ofrecer mi tiempo como voluntario"
+        support_for:
+          options:
+            myself: "Para mí"
+            someone_else: "Para alguien más"
+            organization: "En nombre de una organización"
+        self_description:
+          options:
+            student: "Estudiante"
+            veteran: "Veterano o miembro de las fuerzas armadas"
+            caregiver: "Cuidador"
+            lgbtqia: "LGBTQIA+"
+            disability: "Vivo con una discapacidad"
+            senior: "Adulto mayor"
+            children_youth: "Niñez y juventud"
+            formerly_incarcerated: "Anteriormente encarcelado"
+            economically_disadvantaged: "En desventaja económica"
+            currently_unhoused: "Actualmente sin vivienda"
+            mental_health: "Vivo con problemas de salud mental"
+            substance_use: "Vivo con problemas de uso de sustancias"
+            health_issues: "Vivo con problemas de salud"
+            business_nonprofit: "Organización sin fines de lucro buscando aliarse"
+            business_partner: "Empresa buscando un aliado"
+            none: "Prefiero no decirlo / ninguna aplica"
+          hint: "Tu respuesta nos ayuda a destacar los servicios que se alinean con tus necesidades y preferencias."
+        causes:
+          more_options: "¿No encuentras una causa? Más opciones aquí."
+        situation:
+          options:
+            urgent: "Necesito servicios con urgencia"
+            long_term: "Estoy buscando apoyo a largo plazo"
+            exploring: "Estoy explorando mis opciones"
+          options_someone_else:
+            urgent: "Necesita servicios con urgencia"
+            long_term: "Busca apoyo a largo plazo"
+            exploring: "Sólo explorando opciones"
+          options_organization:
+            urgent: "Necesita una alianza con urgencia"
+            long_term: "Busca apoyo a largo plazo"
+            exploring: "Sólo explorando opciones"
+        city_selection:
+          hint: "Gracias por compartir esto. Estás más cerca de tus resultados personalizados."
+          other: "Otro lugar"
+          other_help: "Dinos dónde te encuentras y buscaremos en esa zona."
+          national: "Servicios nacionales / en línea"
+          international: "Servicios internacionales"
+          state_label: "Estado"
+          state_prompt: "Selecciona tu estado"
+          city_label: "Ciudad (opcional)"
+          city_placeholder: "Tu ciudad"
+        location_detail:
+          us: "En los Estados Unidos"
+        travel:
+          options:
+            nearby: "Sólo distancia caminable (menos de 5 millas)"
+            moderate: "Transporte público o aventones (5–10 millas)"
+            far: "Auto o viaje compartido disponible (10+ millas)"
+            statewide: "Sólo servicios remotos"
+          hint: "Compartir tus preferencias de ubicación nos ayuda a adaptar los resultados a tus necesidades."
+        preferences:
+          options:
+            free_sliding_scale: "Servicios gratuitos o con tarifa ajustable"
+            no_id_required: "No requieren identificación ni documentación"
+            multilingual: "Español u otro idioma disponible"
+            lgbtqia_affirming: "Servicios afirmativos LGBTQIA+"
+            wheelchair_accessible: "Ubicaciones accesibles en silla de ruedas"
+            women_bipoc_led: "Organizaciones lideradas por mujeres o personas BIPOC"
+            none: "Prefiero no decirlo / ninguna aplica"
+        volunteer_involvement:
+          options:
+            volunteer_time: "Ofrecer mi tiempo como voluntario"
+            attend_event: "Asistir a un evento"
+            business_partner: "Aliarme como empresa"
+            just_exploring: "Aún no estoy seguro / sólo explorando"
+        volunteer_type:
+          options:
+            kids_seniors: "Niños o adultos mayores"
+            veterans_military: "Veteranos / familias militares"
+            spanish_speaking: "Hispanohablantes"
+            grassroots_bipoc: "De base / liderado por BIPOC"
+            behind_scenes: "Detrás de escena"
+            accessible_virtual: "Accesible o virtual"
+            family_group: "Familia o grupo"
+            no_preference: "Sin preferencia"
+          hint: "Tu respuesta nos ayuda a destacar oportunidades de voluntariado que se alinean con tus intereses y preferencias."
+        volunteer_format:
+          options:
+            in_person: "Sólo en persona"
+            remote: "Sólo remoto"
+            both: "Ambos"
+        volunteer_time:
+          options:
+            one_time: "Sólo un día / evento único"
+            few_hours: "Unas pocas horas a la semana"
+            ongoing: "Un rol continuo"
+            not_sure: "Aún no estoy seguro"
+        donor_giving_style:
+          options:
+            general_donation: "Donación general"
+            specific_project: "Apoyar un proyecto específico"
+            goods_items: "Donar bienes o artículos"
+            recurring_giving: "Configurar donaciones recurrentes"
+            just_exploring: "Sólo explorando por ahora"
+        donor_giving_inspiration:
+          options:
+            local_community: "Apoyar a mi comunidad local"
+            personal_cause: "Una causa personal o cercana a mi corazón"
+            underserved_communities: "Ayudar a comunidades desatendidas o pasadas por alto"
+            honor_memory: "Donar en honor o en memoria de alguien"
+            real_impact: "Asegurarme de que mi donación tenga impacto real"
+            discovering_ways: "Descubrir formas significativas de dar"
+            values_aligned: "Donar en línea con mis valores"
+          hint: "Tus respuestas nos ayudan a identificar oportunidades de donación que mejor se ajustan a tus preferencias."
+        donor_communities:
+          options:
+            seniors: "Adultos mayores"
+            veteran_military: "Veteranos y militares"
+            spanish_speaking: "Comunidades hispanohablantes"
+            bipoc: "Comunidades BIPOC"
+            disabilities: "Personas con discapacidades"
+            lgbtqia: "Comunidad LGBTQIA+"
+            children_family: "Niños y familias"
+            no_preference: "Sin preferencia"
+        donor_impact_location:
+          options:
+            near_me: "En algún lugar cerca de mí"
+            specific_place: "Una ciudad o código postal específico"
+            anywhere: "En cualquier lugar"
+        donor_involvement:
+          options:
+            one_time_donation: "Hacer una donación única"
+            learn_updates: "Conocer más y recibir actualizaciones"
+            volunteer_events: "Ofrecer mi tiempo o asistir a eventos"
+            deeper_involvement: "Explorar una participación continua o más profunda"
+        open_text:
+          placeholder: "Escribe tu respuesta aquí…"
+          optional: "Opcional — pero cuanto más compartas, mejor podremos emparejarte."
+          service_seeker: "En tus propias palabras, describe lo que estás buscando y cualquier otra cosa que nos ayude a encontrar los mejores recursos para ti."
+          donor: "En tus propias palabras, describe las causas, comunidades o áreas de impacto que más quieres apoyar."
+          volunteer: "En tus propias palabras, describe cómo te gustaría contribuir, las causas que te importan y cualquier habilidad o experiencia que te gustaría aportar."
+        final:
+          intro: "Compartir esta información es opcional y sólo nos ayuda a mejorar la relevancia de algunos resultados. Puedes elegir \"Prefiero no decirlo\" en cualquier pregunta."
+          age_range:
+            label: "Rango de Edad"
+            prompt: "Selecciona tu rango de edad"
+            options:
+              under_18: "Menor de 18"
+              "19_24": "19–24"
+              "25_34": "25–34"
+              "35_44": "35–44"
+              "45_54": "45–54"
+              "55_64": "55–64"
+              over_65: "Mayor de 65"
+              prefer_not_to_say: "Prefiero no decirlo"
+          gender_identity:
+            label: "Identidad de Género"
+            prompt: "Selecciona tu identidad de género"
+            options:
+              female: "Femenino"
+              male: "Masculino"
+              non_binary: "No binario o género diverso"
+              other: "Otro"
+              prefer_not_to_say: "Prefiero no decirlo"
+          race_ethnicity:
+            label: "Raza o Etnicidad"
+            prompt: "Selecciona tu raza o etnicidad"
+            options:
+              black_african_american: "Afroamericano o de raza negra"
+              hispanic_latino: "Hispano o Latino/a/x"
+              white: "Blanco"
+              asian: "Asiático"
+              native_american: "Nativo americano o nativo de Alaska"
+              native_hawaiian: "Nativo hawaiano o de las islas del Pacífico"
+              middle_eastern_north_african: "De Medio Oriente o Norte de África"
+              prefer_not_to_say: "Prefiero no decirlo"

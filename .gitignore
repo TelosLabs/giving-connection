@@ -64,4 +64,8 @@ database_consistency*
 production_backup.dump
 staging_backup.dump
 
-/embedding-service/*
+# Python embedding service
+embedding-service/venv/
+embedding-service/**/__pycache__/
+embedding-service/**/*.pyc
+embedding-service/.env

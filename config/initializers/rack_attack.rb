@@ -36,21 +36,30 @@ class Rack::Attack
       registration_ip: 5.minutes,      # Instead of 1 hour
       suspicious_domain: 5.minutes,    # Instead of 1 hour
       login: 20.seconds,               # Keep as is for login
-      blog_anonymous: 5.minutes
+      blog_anonymous: 5.minutes,
+      smart_match_quiz: 5.minutes,
+      smart_match_results: 5.minutes,
+      smart_match_result_status: 5.minutes
     }.freeze
   elsif Rails.env.test?
     {
       registration_ip: 1.second,      # Effectively disable throttling
       suspicious_domain: 1.second,    # Effectively disable throttling
       login: 1.second,                # Effectively disable throttling
-      blog_anonymous: 1.second
+      blog_anonymous: 1.second,
+      smart_match_quiz: 1.second,
+      smart_match_results: 1.second,
+      smart_match_result_status: 1.second
     }.freeze
   else
     {
       registration_ip: 1.hour,
       suspicious_domain: 1.hour,
       login: 20.seconds,
-      blog_anonymous: 1.hour
+      blog_anonymous: 1.hour,
+      smart_match_quiz: 1.hour,
+      smart_match_results: 1.hour,
+      smart_match_result_status: 1.hour
     }.freeze
   end
 
@@ -206,6 +215,42 @@ class Rack::Attack
         Rails.logger.info "[Rack::Attack] Anonymous blog creation from IP: #{req.remote_ip}" if Rails.env.development?
         req.remote_ip
       end
+    end
+  end
+
+  ### Prevent Smart Match Abuse ###
+  # Quiz endpoints are public (no authentication). The final results view
+  # triggers an embedding-service call and a pgvector kNN query, so an
+  # unthrottled client can burn GPU/CPU and grow quiz_submissions /
+  # organization_matches indefinitely.
+  #
+  # Limits chosen for the no-product-input default:
+  #   - smart_match/quiz: 60/hour per IP. A normal completion is ~9 PUTs;
+  #     this allows ~6 completions/hour/IP including back-button traffic.
+  #   - smart_match/results: 10/hour per IP. Each request invokes the
+  #     embedding service + similarity query + writes.
+  # Tune in THROTTLE_PERIODS above once real traffic patterns are known.
+  throttle("smart_match/quiz", limit: 60, period: THROTTLE_PERIODS[:smart_match_quiz]) do |req|
+    if req.path.start_with?("/smart_match/quiz") && (req.put? || req.patch? || req.post?)
+      req.remote_ip
+    end
+  end
+
+  throttle("smart_match/results", limit: 10, period: THROTTLE_PERIODS[:smart_match_results]) do |req|
+    # Exact match: the "/smart_match/result/status" poll target is throttled
+    # separately below (polling would otherwise burn the 10/hour results budget).
+    if req.path == "/smart_match/result" && req.get?
+      req.remote_ip
+    end
+  end
+
+  # The loading page polls this JSON endpoint every ~2s while the embedding +
+  # scoring job runs. It touches no external service (just a cache/DB existence
+  # check), so it gets a much higher ceiling than the results page itself:
+  # ~120/hour covers several slow completions worth of polling per IP.
+  throttle("smart_match/result_status", limit: 120, period: THROTTLE_PERIODS[:smart_match_result_status]) do |req|
+    if req.path == "/smart_match/result/status" && req.get?
+      req.remote_ip
     end
   end
 

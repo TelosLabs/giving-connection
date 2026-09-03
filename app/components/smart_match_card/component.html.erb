@@ -1,0 +1,139 @@
+<article class="flex flex-col overflow-hidden bg-white rounded-lg shadow-md">
+
+  <%# Cover photo %>
+  <div class="relative h-52 bg-gradient-to-br from-blue-dark to-blue-medium flex-shrink-0">
+    <% if cover_photo_url %>
+      <%= image_tag cover_photo_url, alt: organization.name, class: "object-cover w-full h-full" %>
+    <% end %>
+  </div>
+
+  <%# Head: logo + match + org info %>
+  <div class="flex items-start gap-4 px-5 pt-4 pb-4 border-b border-gray-8">
+
+    <% logo_markup = capture do %>
+      <% if logo_url %>
+        <%= image_tag logo_url,
+              alt: "#{organization.name} logo",
+              class: "w-16 h-16 object-contain rounded" %>
+      <% else %>
+        <%= image_tag "logo-default1.png",
+              alt: "#{organization.name} logo",
+              class: "w-16 h-16 object-contain rounded" %>
+      <% end %>
+    <% end %>
+    <% if profile_url %>
+      <%= link_to logo_markup, profile_url, class: "flex-shrink-0", "aria-label": organization.name %>
+    <% else %>
+      <div class="flex-shrink-0"><%= logo_markup %></div>
+    <% end %>
+
+    <%# Right: match badge + org details %>
+    <div class="flex-1 min-w-0">
+
+      <%# Match circle + label %>
+      <div class="flex items-center gap-2 mb-2">
+        <div class="relative flex-shrink-0 w-10 h-10">
+          <svg viewBox="0 0 48 48" class="w-full h-full -rotate-90" aria-hidden="true">
+            <circle cx="24" cy="24" r="20" fill="none" stroke="#e5e7eb" stroke-width="5"/>
+            <circle cx="24" cy="24" r="20" fill="none"
+                    stroke="<%= circle_color %>"
+                    stroke-width="5"
+                    stroke-linecap="round"
+                    stroke-dasharray="<%= circle_circumference %>"
+                    stroke-dashoffset="<%= circle_dash_offset %>"/>
+          </svg>
+          <span class="absolute inset-0 flex items-center justify-center" style="font-size: 9px; font-weight: 700; color: #374151;">
+            <%= match_percentage %>%
+          </span>
+        </div>
+        <span class="text-sm font-bold <%= match_label_color %>"><%= match_label %></span>
+      </div>
+
+      <%# Org name + verified %>
+      <div class="flex items-center gap-1 mb-0.5">
+        <h3 class="text-sm font-semibold leading-snug text-gray-2 truncate">
+          <% if profile_url %>
+            <%= link_to organization.name, profile_url, class: "hover:text-blue-medium transition-colors" %>
+          <% else %>
+            <%= organization.name %>
+          <% end %>
+        </h3>
+        <% if verified? %>
+          <svg class="flex-shrink-0 w-4 h-4 text-blue-medium" viewBox="0 0 20 20" fill="currentColor" aria-label="Verified">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd"/>
+          </svg>
+        <% end %>
+      </div>
+
+      <%# Address — links to Google Maps %>
+      <% if location_address %>
+        <% if maps_url %>
+          <%= link_to location_address, maps_url, target: "_blank", rel: "noopener",
+                class: "block text-xs text-gray-4 truncate hover:text-blue-medium transition-colors" %>
+        <% else %>
+          <p class="text-xs text-gray-4 truncate"><%= location_address %></p>
+        <% end %>
+      <% end %>
+
+      <%# Phone %>
+      <% if phone_number %>
+        <a href="tel:<%= phone_number %>" class="text-xs text-gray-4 hover:text-blue-medium transition-colors">
+          <%= phone_number %>
+        </a>
+      <% end %>
+
+    </div>
+  </div>
+
+  <%# Card body %>
+  <div class="flex flex-col flex-1 px-5 pb-6">
+
+    <%# CTA button %>
+    <% if cta_url %>
+      <%= link_to cta_url, class: "flex items-center justify-center gap-2 mt-4 py-3 text-sm font-bold tracking-wide uppercase rounded-md transition-colors #{cta_classes}" do %>
+        <% if user_type == "donor" %>
+          <%= image_tag "donate-icon.svg", class: "w-5 h-5", alt: "" %>
+        <% elsif user_type == "volunteer" %>
+          <%= image_tag "volunteer-icon.svg", class: "w-5 h-5", alt: "" %>
+        <% else %>
+          <%# Heart icon (Heroicons solid) %>
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"/>
+          </svg>
+        <% end %>
+        <%= cta_text %>
+      <% end %>
+    <% end %>
+
+    <%# Actions menu — mirrors the discover card row: View Page, Save, Share,
+        Directions, Website. %>
+    <% if main_location %>
+      <div class="pt-6 mt-4 border-t border-gray-8 text-xs font-medium text-gray-4">
+        <%= render DiscoverNonprofitCard::ActionsMenu::Component.new(
+              user: helpers.current_user,
+              location: main_location
+            ) %>
+      </div>
+    <% end %>
+
+    <%# Causes %>
+    <% if top_causes.any? %>
+      <div class="pt-5 mt-4 border-t border-gray-8">
+        <p class="mb-3 text-xs font-semibold tracking-wider text-gray-4 uppercase">Causes</p>
+        <div class="flex flex-wrap gap-3">
+          <% top_causes.each do |cause| %>
+            <%= link_to discover_cause_url(cause), class: "group flex flex-col items-center gap-1 w-20 text-center" do %>
+              <%= render CauseIcon::Component.new(
+                    svg_name: "causes_categories/#{cause_svg_name(cause)}",
+                    wrapper_options: { class: "w-12 h-12 bg-blue-pale transition-colors group-hover:bg-blue-medium" },
+                    svg_options: { class: "w-1/2", aria_hidden: "true" }
+                  ) %>
+              <span class="text-xs text-gray-4 leading-tight transition-colors group-hover:text-blue-medium"><%= cause.name %></span>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+  </div>
+</article>

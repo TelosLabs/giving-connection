@@ -1,0 +1,69 @@
+<section class="flex flex-col min-h-screen bg-white sm-wizard"
+         data-controller="smart-match-quiz"
+         data-smart-match-quiz-step-value="<%= @step %>"
+         data-smart-match-quiz-total-steps-value="<%= @total_steps %>">
+
+  <%# Wizard content area %>
+  <div class="flex-1 overflow-y-auto">
+
+    <%# Section number — on desktop, slides to sit above the current progress
+        segment. The 4 segments are equal-width with a gap-2 (0.5rem) gutter,
+        so segment N's left edge is at (N-1) * (25% + 0.125rem). The bar and
+        section name below use the same offset, sandwiching the bar. The label
+        rows reserve a matching w-8 gutter on the right so their flex-1 width
+        equals the bar row's — keeping the percentage offsets aligned. %>
+    <div class="px-4 sm:w-3/4 sm:mx-auto sm:px-0 pt-2 flex items-center gap-3">
+      <div class="flex-1 min-w-0 transition-[padding] duration-500 ease-out sm:[padding-left:var(--seg-offset)]"
+           style="--seg-offset: calc(<%= @section_number - 1 %> * (25% + 0.125rem));">
+        <span class="text-base font-semibold text-blue-dark">Section <%= @section_number %></span>
+      </div>
+      <div class="w-8 shrink-0" aria-hidden="true"></div>
+    </div>
+
+    <%# Segmented progress bar with the close button to its right, so the
+        close control shares the bar's row instead of taking its own. %>
+    <div class="px-4 sm:w-3/4 sm:mx-auto sm:px-0 mt-0 flex items-center gap-3">
+      <div class="flex-1 min-w-0">
+        <%= render "smart_match/quizzes/progress_bar", step: @step, total_steps: @total_steps, section_map: @section_map, current_section_number: @section_number %>
+      </div>
+      <%= button_to smart_match_quiz_path, method: :delete,
+            params: { return_to: "home" },
+            class: "p-1 text-gray-4 hover:text-gray-2 transition-colors",
+            title: "Exit quiz",
+            form: { class: "shrink-0", data: { turbo_confirm: "Are you sure? This will reset your progress." } } do %>
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      <% end %>
+    </div>
+
+    <%# Section name — slides to sit below the current progress segment,
+        completing the sandwich (Section N · bar · name). %>
+    <div class="px-4 sm:w-3/4 sm:mx-auto sm:px-0 mt-0 flex items-center gap-3">
+      <div class="flex-1 min-w-0 transition-[padding] duration-500 ease-out sm:[padding-left:var(--seg-offset)]"
+           style="--seg-offset: calc(<%= @section_number - 1 %> * (25% + 0.125rem));">
+        <span class="text-sm font-semibold text-blue-dark"><%= @section_name %></span>
+      </div>
+      <div class="w-8 shrink-0" aria-hidden="true"></div>
+    </div>
+
+    <div class="px-4 sm:w-[56.25%] sm:mx-auto sm:px-0 py-0">
+
+      <%# Step title %>
+      <div class="mt-3 sm:mt-4 mb-2 text-center">
+        <h1 class="text-2xl sm:text-4xl font-bold text-gray-2"><%= @step_title %></h1>
+        <% if @step_subtitle %>
+          <p class="mt-1 text-sm sm:text-base text-gray-4"><%= @step_subtitle %></p>
+        <% end %>
+      </div>
+
+      <%# Step content %>
+      <turbo-frame id="quiz-step" class="block mt-6 sm-step-enter" target="_top">
+        <%= render @step_partial %>
+      </turbo-frame>
+    </div>
+  </div>
+
+  <%# Wizard footer %>
+  <%= render "smart_match/quizzes/wizard_footer", step: @step, is_final_step: @is_final_step %>
+</section>

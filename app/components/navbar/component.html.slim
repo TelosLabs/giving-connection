@@ -26,6 +26,8 @@ nav id="main-navbar" data-controller="navbar--component" class="#{non_sticky_pat
       div class="flex w-full"
         li class="navbar__option mr-1 mid:mr-5 lg:mr-8 text-base font-medium border-b-2 border-transparent #{request.env['PATH_INFO'].include?("/search") ? "text-seafoam border-seafoam navbar__option--selected" : ""}"
           = link_to 'Search', search_path
+        li class="navbar__option mr-1 mid:mr-5 lg:mr-8 text-base font-medium border-b-2 border-transparent #{request.env['PATH_INFO'].include?("/smart_match") ? "text-seafoam border-seafoam navbar__option--selected" : ""}"
+          = link_to t("smart_match.entry_points.nav"), smart_match_root_path
         li class="navbar__option mr-1 mid:mr-5 lg:mr-8 text-base font-medium border-b-2 border-transparent #{request.env['PATH_INFO'] == "/nonprofit" ? "text-seafoam border-seafoam navbar__option--selected" : ""}"
           = link_to 'Add a Nonprofit', new_nonprofit_request_path
         li class="navbar__option mr-1 mid:mr-5 lg:mr-8 text-base font-medium border-b-2 border-transparent #{request.env['PATH_INFO'] == "/about_us" ? "text-seafoam border-seafoam navbar__option--selected" : ""}"
@@ -67,6 +69,7 @@ nav id="main-navbar" data-controller="navbar--component" class="#{non_sticky_pat
         - if @signed_in
           li = link_to "My Account", my_account_path
         li = link_to "Search", search_path
+        li = link_to t("smart_match.entry_points.nav"), smart_match_root_path
         li = link_to "Add a Nonprofit", new_nonprofit_request_path
         li = link_to "About Us", about_us_path
         li = link_to 'Discover', discover_path

@@ -9,6 +9,7 @@
     turbo_action: "replace", \
     controller: 'search modal', \
     'search-target': 'form'}) do |f|
+  = render "shared/smart_match_search_banner"
   = render SearchBar::Component.new(form: f, search: @search, current_location: @current_location, locations: @locations)
   = turbo_frame_tag "search-pills" do
     = render SearchPills::Component.new(causes: @top_10_causes, services: @top_10_services, beneficiary_subcategories: @top_10_beneficiary_subcategories, params: params, current_location: @current_location)
@@ -101,8 +102,10 @@
                   div class="flex flex-col gap-4 justify-center items-center px-12 mb-16 w-full text-grey-2"
                     p class="text-xl font-bold text-center"
                       | We couldn't find any nonprofits that matched your search.
-                    p class="px-4 max-w-xs text-base text-center"
-                      | Try searching for another keyword or editing your filters.
+                    p class="px-4 max-w-sm text-base text-center"
+                      | Edit your search criteria or try 
+                      = link_to "Smart Match", smart_match_root_path, class: "font-bold text-blue-medium underline", data: { turbo_frame: "_top" }
+                      |  to help assist you with your search!
                     button class="text-sm font-bold text-blue-medium" type="submit" data-action="click->search#clearKeywordInput click->search#clearCheckedFilters click->search#clearAll"
                       | Clear Filters
 
