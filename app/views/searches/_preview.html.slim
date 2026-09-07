@@ -8,6 +8,7 @@
     turbo_action: "replace", \
     controller: 'search modal', \
     'search-target': 'form'}) do |f|
+  = render "shared/smart_match_search_banner"
   = render SearchBar::Component.new(form: f, search: @search, current_location: @current_location, locations: @locations)
   = turbo_frame_tag "search-pills", src: search_path() do
     div class="w-full bg-gray-9"

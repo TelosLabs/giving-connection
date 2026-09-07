@@ -191,3 +191,5 @@ div class=""
       - if @location.social_media.present?
         div class="my-7 border-t border-gray-8"
         = render SocialMedia::Component.new(social_media: @location.social_media)
+  div class="border-t border-gray-8"
+    = render "shared/smart_match_cta"

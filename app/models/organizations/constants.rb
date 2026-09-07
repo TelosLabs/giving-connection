@@ -4,6 +4,74 @@ module Organizations
   module Constants
     SCOPE = %w[International National Regional].freeze
 
+    # Languages an organization can deliver services in, for Smart Match.
+    #
+    # Deliberately starts at two. Adding a language is a one-line change here
+    # plus a scoring rule -- the column is a string array, so no migration is
+    # needed. Values are stored verbatim, so renaming one WOULD need a data
+    # migration; add rather than rename.
+    LANGUAGES = %w[English Spanish].freeze
+
+    # Smart Match volunteer and leadership vocabularies. Values are from the
+    # client's scoring CSV (docs/smart-match-scoring/source/scoring.csv) and are
+    # stored verbatim -- add new values rather than renaming existing ones,
+    # which would need a data migration.
+
+    # Mutually exclusive: "Hybrid" already means in person *and* remote.
+    VOLUNTEER_FORMATS = ["In person", "Remote", "Hybrid"].freeze
+
+    # Not exclusive -- an organization can run one-off events and ongoing roles.
+    VOLUNTEER_FREQUENCIES = ["One-time", "Event-based", "Weekly", "Ongoing"].freeze
+
+    # Not exclusive -- an organization can be both.
+    LEADERSHIP_ATTRIBUTES = ["Women-led", "BIPOC-led"].freeze
+
+    # The yes/no/not-specified capability questions shown on the organization
+    # edit form, in display order. Lives here rather than in the view because
+    # Slim cannot parse a multi-line Ruby literal, and because the admin
+    # dashboard and specs want the same list.
+    #
+    # Each is a nullable boolean column -- see
+    # docs/smart-match-scoring/06-phase-5-fields.md for why blank must stay
+    # distinguishable from "no".
+    #
+    # Split by WHICH VISITOR the answer matches the organization to, in the
+    # order the quiz asks (find help, volunteer, donate), because that is the
+    # only grouping that predicts anything: config/smart_match_scoring.yml
+    # scores each field on exactly one quiz path. Two of them read like giving
+    # questions but score on the volunteer path (`volunteer_involvement`), so
+    # grouping by wording would put them where they do not belong.
+    SMART_MATCH_SERVICE_QUESTIONS = {
+      free_or_sliding_scale: "Do you offer free or sliding-scale services?",
+      no_id_required: "Can people access your services without ID or documentation?",
+      lgbtqia_affirming: "Do you offer LGBTQIA+ affirming services?"
+    }.freeze
+
+    SMART_MATCH_VOLUNTEER_QUESTIONS = {
+      fundraising_events: "Do you host fundraising events?",
+      partnership_opportunities: "Do you offer partnership opportunities for businesses?"
+    }.freeze
+
+    SMART_MATCH_GIVING_QUESTIONS = {
+      specific_project_giving: "Can donors give to a specific project or campaign?",
+      accepts_in_kind: "Do you accept donations of goods or items?",
+      recurring_giving: "Can donors set up recurring giving?"
+    }.freeze
+
+    # Every capability question regardless of audience, for callers that want
+    # the whole set (imports, specs) rather than the form's grouping.
+    SMART_MATCH_CAPABILITY_QUESTIONS =
+      SMART_MATCH_SERVICE_QUESTIONS
+        .merge(SMART_MATCH_VOLUNTEER_QUESTIONS)
+        .merge(SMART_MATCH_GIVING_QUESTIONS)
+        .freeze
+
+    # Same idea, per location.
+    SMART_MATCH_LOCATION_QUESTIONS = {
+      wheelchair_accessible: "Is this location wheelchair accessible?",
+      remote_services: "Are services available remotely from this location?"
+    }.freeze
+
     NTEE_CODE = [
       "A01: Alliances & Advocacy",
       "A02: Management & Technical Assistance",
