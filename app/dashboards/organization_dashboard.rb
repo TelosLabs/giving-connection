@@ -51,7 +51,11 @@ class OrganizationDashboard < Administrate::BaseDashboard
     accepts_in_kind: Field::Boolean,
     recurring_giving: Field::Boolean,
     fundraising_events: Field::Boolean,
-    partnership_opportunities: Field::Boolean
+    partnership_opportunities: Field::Boolean,
+    languages: MultiSelectField.with_options(collection: Organizations::Constants::LANGUAGES),
+    volunteer_format: Field::Select.with_options(collection: Organizations::Constants::VOLUNTEER_FORMATS),
+    volunteer_frequency: MultiSelectField.with_options(collection: Organizations::Constants::VOLUNTEER_FREQUENCIES),
+    leadership_attributes: MultiSelectField.with_options(collection: Organizations::Constants::LEADERSHIP_ATTRIBUTES)
   }.freeze
 
   # COLLECTION_ATTRIBUTES
