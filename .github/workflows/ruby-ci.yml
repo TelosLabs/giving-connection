@@ -77,7 +77,8 @@ jobs:
             postgis/postgis:14-3.3
           until docker exec postgres pg_isready -U postgres; do sleep 1; done
           docker exec postgres bash -c "
-            apt-get update -qq \
+            sed -i '/bullseye-security/d' /etc/apt/sources.list \
+            && apt-get update -qq \
             && apt-get install -y --no-install-recommends build-essential git postgresql-server-dev-14 clang-11 llvm-11 \
             && git clone --branch v0.8.0 https://github.com/pgvector/pgvector.git /tmp/pgvector \
             && cd /tmp/pgvector && make && make install \
