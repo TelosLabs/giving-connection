@@ -42,7 +42,7 @@ class Feedback < ApplicationRecord
   validates :category, inclusion: {in: CATEGORIES}, allow_blank: true
   validates :comment, length: {maximum: 5_000}
   validates :context, :page_url, length: {maximum: PAGE_URL_LIMIT}
-  validates :page_url, format: {with: %r{\Ahttps?://}i}, allow_blank: true
+  validates :page_url, format: {with: %r{\Ahttps?://\S+\z}i}, allow_blank: true
 
   before_validation :truncate_page_url
 
