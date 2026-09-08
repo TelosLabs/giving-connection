@@ -22,7 +22,7 @@ class OrganizationsController < ApplicationController
     @organization = Organization.find(params[:id])
     authorize @organization
     if @organization.update(organization_params)
-      update_tags(@organization, JSON.parse(params["organization"]["tags_attributes"])) unless params["organization"]["tags_attributes"].strip.empty?
+      update_tags(@organization, JSON.parse(params["organization"]["tags_attributes"])) unless params["organization"]["tags_attributes"].to_s.strip.empty?
       redirect_to my_account_path
       flash[:notice] = "The Organization was successfully updated"
     else
@@ -115,6 +115,17 @@ class OrganizationsController < ApplicationController
       :volunteer_availability,
       :volunteer_link,
       :general_population_serving,
+      # Smart Match capability fields. Nullable on purpose -- leaving one blank
+      # records "not answered", which the scorer skips, rather than "no".
+      :free_or_sliding_scale,
+      :no_id_required,
+      :lgbtqia_affirming,
+      :specific_project_giving,
+      :accepts_in_kind,
+      :recurring_giving,
+      :fundraising_events,
+      :partnership_opportunities,
+      :volunteer_format,
       social_media_attributes: %i[facebook instagram twitter linkedin youtube blog id],
       tags_attributes: [],
       locations_attributes: [
@@ -129,6 +140,10 @@ class OrganizationsController < ApplicationController
         :youtube_video_link,
         :main,
         :offer_services,
+        # Smart Match, per-location: a branch can be step-free or run remote
+        # services while another site does not. Nullable = not yet answered.
+        :wheelchair_accessible,
+        :remote_services,
         :time_zone,
         :non_standard_office_hours,
         :email,
@@ -140,6 +155,10 @@ class OrganizationsController < ApplicationController
           service_ids: []
         }
       ],
+      # Array-valued Smart Match vocabularies (Organizations::Constants).
+      languages: [],
+      volunteer_frequency: [],
+      leadership_attributes: [],
       beneficiary_subcategory_ids: [],
       cause_ids: []
     )

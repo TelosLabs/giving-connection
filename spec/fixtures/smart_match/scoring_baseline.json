@@ -1,0 +1,2881 @@
+{
+  "seeker_unhoused_nashville": [
+    {
+      "organization": "Safe Harbor Shelter",
+      "score": 0.8018,
+      "breakdown": {
+        "dense_similarity": 0.75,
+        "rule_score": 0.8317,
+        "attribute_bonus": 0.6364,
+        "distance_score": 0.9,
+        "rule_matches": [
+          {
+            "question": "causes",
+            "answer": "Housing & Homelessness",
+            "field": "cause",
+            "preset": "answer",
+            "weight": 5,
+            "multiplier": 1.5,
+            "contribution": 7.5
+          },
+          {
+            "question": "self_description",
+            "answer": "currently_unhoused",
+            "field": "population",
+            "preset": "People Struggling with Homelessness",
+            "weight": 5,
+            "multiplier": 1.5,
+            "contribution": 7.5
+          },
+          {
+            "question": "self_description",
+            "answer": "economically_disadvantaged",
+            "field": "population",
+            "preset": "Economically Disadvantaged People",
+            "weight": 5,
+            "multiplier": 1.5,
+            "contribution": 7.5
+          },
+          {
+            "question": "causes",
+            "answer": "Housing & Homelessness",
+            "field": "service",
+            "preset": "cause_service",
+            "weight": 4,
+            "multiplier": 1.5,
+            "contribution": 6.0
+          },
+          {
+            "question": "self_description",
+            "answer": "currently_unhoused",
+            "field": "cause",
+            "preset": "Housing & Homelessness",
+            "weight": 4,
+            "multiplier": 1.5,
+            "contribution": 6.0
+          },
+          {
+            "question": "self_description",
+            "answer": "currently_unhoused",
+            "field": "service",
+            "preset": "Homeless Shelters",
+            "weight": 3,
+            "multiplier": 1.5,
+            "contribution": 4.5
+          },
+          {
+            "question": "self_description",
+            "answer": "currently_unhoused",
+            "field": "ntee",
+            "preset": "L41: Homeless Shelters",
+            "weight": 2,
+            "multiplier": 1.5,
+            "contribution": 3.0
+          }
+        ],
+        "rule_points": {
+          "earned": 42.0,
+          "max": 50.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Housing & Homelessness",
+            "status": "met"
+          },
+          {
+            "question": "self_description",
+            "answer": "currently_unhoused",
+            "status": "met"
+          },
+          {
+            "question": "self_description",
+            "answer": "economically_disadvantaged",
+            "status": "met"
+          },
+          {
+            "question": "prefs",
+            "answer": "free_sliding_scale",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "no_id_required",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "35_44",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Youth Futures Collective",
+      "score": 0.46,
+      "breakdown": {
+        "dense_similarity": 0.8,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 1.0,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 50.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Housing & Homelessness",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "currently_unhoused",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "economically_disadvantaged",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "free_sliding_scale",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "no_id_required",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "35_44",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Golden Years Center",
+      "score": 0.398,
+      "breakdown": {
+        "dense_similarity": 0.7,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.83,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 50.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Housing & Homelessness",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "currently_unhoused",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "economically_disadvantaged",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "free_sliding_scale",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "no_id_required",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "35_44",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Veterans Bridge Network",
+      "score": 0.3685,
+      "breakdown": {
+        "dense_similarity": 0.65,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.76,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 50.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Housing & Homelessness",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "currently_unhoused",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "economically_disadvantaged",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "free_sliding_scale",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "no_id_required",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "35_44",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Clearwater Counseling",
+      "score": 0.339,
+      "breakdown": {
+        "dense_similarity": 0.6,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.69,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 50.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Housing & Homelessness",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "currently_unhoused",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "economically_disadvantaged",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "free_sliding_scale",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "no_id_required",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "35_44",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Open Door Alliance",
+      "score": 0.3095,
+      "breakdown": {
+        "dense_similarity": 0.55,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.62,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 50.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Housing & Homelessness",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "currently_unhoused",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "economically_disadvantaged",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "free_sliding_scale",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "no_id_required",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "35_44",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Equity Forward",
+      "score": 0.28,
+      "breakdown": {
+        "dense_similarity": 0.5,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.55,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 50.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Housing & Homelessness",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "currently_unhoused",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "economically_disadvantaged",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "free_sliding_scale",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "no_id_required",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "35_44",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Riverside Arts Guild",
+      "score": 0.2505,
+      "breakdown": {
+        "dense_similarity": 0.45,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.48,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 50.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Housing & Homelessness",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "currently_unhoused",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "economically_disadvantaged",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "free_sliding_scale",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "no_id_required",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "35_44",
+            "status": "unmet"
+          }
+        ]
+      }
+    }
+  ],
+  "seeker_mental_health_veteran": [
+    {
+      "organization": "Clearwater Counseling",
+      "score": 0.6138,
+      "breakdown": {
+        "dense_similarity": 0.6,
+        "rule_score": 0.6106,
+        "attribute_bonus": 0.6364,
+        "distance_score": 0.69,
+        "rule_matches": [
+          {
+            "question": "causes",
+            "answer": "Mental Health",
+            "field": "cause",
+            "preset": "answer",
+            "weight": 5,
+            "multiplier": 1.5,
+            "contribution": 7.5
+          },
+          {
+            "question": "self_description",
+            "answer": "mental_health",
+            "field": "population",
+            "preset": "People with Mental Health Issues",
+            "weight": 5,
+            "multiplier": 1.5,
+            "contribution": 7.5
+          },
+          {
+            "question": "causes",
+            "answer": "Mental Health",
+            "field": "service",
+            "preset": "cause_service",
+            "weight": 4,
+            "multiplier": 1.5,
+            "contribution": 6.0
+          },
+          {
+            "question": "self_description",
+            "answer": "mental_health",
+            "field": "cause",
+            "preset": "Mental Health",
+            "weight": 4,
+            "multiplier": 1.5,
+            "contribution": 6.0
+          },
+          {
+            "question": "self_description",
+            "answer": "mental_health",
+            "field": "service",
+            "preset": "Mental Health Counseling",
+            "weight": 3,
+            "multiplier": 1.5,
+            "contribution": 4.5
+          },
+          {
+            "question": "self_description",
+            "answer": "mental_health",
+            "field": "ntee",
+            "preset": "F",
+            "weight": 2,
+            "multiplier": 1.5,
+            "contribution": 3.0
+          }
+        ],
+        "rule_points": {
+          "earned": 34.5,
+          "max": 56.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Mental Health",
+            "status": "met"
+          },
+          {
+            "question": "self_description",
+            "answer": "mental_health",
+            "status": "met"
+          },
+          {
+            "question": "self_description",
+            "answer": "veteran",
+            "status": "unmet"
+          },
+          {
+            "question": "age_range",
+            "answer": "45_54",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Veterans Bridge Network",
+      "score": 0.5358,
+      "breakdown": {
+        "dense_similarity": 0.65,
+        "rule_score": 0.3717,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.76,
+        "rule_matches": [
+          {
+            "question": "self_description",
+            "answer": "veteran",
+            "field": "population",
+            "preset": "Veterans",
+            "weight": 5,
+            "multiplier": 1.5,
+            "contribution": 7.5
+          },
+          {
+            "question": "self_description",
+            "answer": "veteran",
+            "field": "cause",
+            "preset": "Veteran & Military",
+            "weight": 4,
+            "multiplier": 1.5,
+            "contribution": 6.0
+          },
+          {
+            "question": "self_description",
+            "answer": "veteran",
+            "field": "service",
+            "preset": "Veteran & Military Support Services",
+            "weight": 3,
+            "multiplier": 1.5,
+            "contribution": 4.5
+          },
+          {
+            "question": "self_description",
+            "answer": "veteran",
+            "field": "ntee",
+            "preset": "W30: Military & Veterans Organizations",
+            "weight": 2,
+            "multiplier": 1.5,
+            "contribution": 3.0
+          }
+        ],
+        "rule_points": {
+          "earned": 21.0,
+          "max": 56.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Mental Health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "mental_health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "veteran",
+            "status": "met"
+          },
+          {
+            "question": "age_range",
+            "answer": "45_54",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Youth Futures Collective",
+      "score": 0.46,
+      "breakdown": {
+        "dense_similarity": 0.8,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 1.0,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 56.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Mental Health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "mental_health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "veteran",
+            "status": "unmet"
+          },
+          {
+            "question": "age_range",
+            "answer": "45_54",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Safe Harbor Shelter",
+      "score": 0.4275,
+      "breakdown": {
+        "dense_similarity": 0.75,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.9,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 56.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Mental Health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "mental_health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "veteran",
+            "status": "unmet"
+          },
+          {
+            "question": "age_range",
+            "answer": "45_54",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Golden Years Center",
+      "score": 0.398,
+      "breakdown": {
+        "dense_similarity": 0.7,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.83,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 56.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Mental Health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "mental_health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "veteran",
+            "status": "unmet"
+          },
+          {
+            "question": "age_range",
+            "answer": "45_54",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Open Door Alliance",
+      "score": 0.3095,
+      "breakdown": {
+        "dense_similarity": 0.55,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.62,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 56.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Mental Health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "mental_health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "veteran",
+            "status": "unmet"
+          },
+          {
+            "question": "age_range",
+            "answer": "45_54",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Equity Forward",
+      "score": 0.28,
+      "breakdown": {
+        "dense_similarity": 0.5,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.55,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 56.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Mental Health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "mental_health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "veteran",
+            "status": "unmet"
+          },
+          {
+            "question": "age_range",
+            "answer": "45_54",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Riverside Arts Guild",
+      "score": 0.2505,
+      "breakdown": {
+        "dense_similarity": 0.45,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.48,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 56.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Mental Health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "mental_health",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "veteran",
+            "status": "unmet"
+          },
+          {
+            "question": "age_range",
+            "answer": "45_54",
+            "status": "unmet"
+          }
+        ]
+      }
+    }
+  ],
+  "seeker_family_los_angeles": [
+    {
+      "organization": "Youth Futures Collective",
+      "score": 0.7826,
+      "breakdown": {
+        "dense_similarity": 0.8,
+        "rule_score": 0.7168,
+        "attribute_bonus": 0.6364,
+        "distance_score": 1.0,
+        "rule_matches": [
+          {
+            "question": "causes",
+            "answer": "Children & Family Services",
+            "field": "cause",
+            "preset": "answer",
+            "weight": 5,
+            "multiplier": 1.5,
+            "contribution": 7.5
+          },
+          {
+            "question": "self_description",
+            "answer": "children_youth",
+            "field": "population",
+            "preset": "Children & Youth",
+            "weight": 5,
+            "multiplier": 1.5,
+            "contribution": 7.5
+          },
+          {
+            "question": "causes",
+            "answer": "Children & Family Services",
+            "field": "service",
+            "preset": "cause_service",
+            "weight": 4,
+            "multiplier": 1.5,
+            "contribution": 6.0
+          },
+          {
+            "question": "self_description",
+            "answer": "caregiver",
+            "field": "cause",
+            "preset": "Children & Family Services",
+            "weight": 4,
+            "multiplier": 1.5,
+            "contribution": 6.0
+          },
+          {
+            "question": "self_description",
+            "answer": "children_youth",
+            "field": "cause",
+            "preset": "Children & Family Services",
+            "weight": 4,
+            "multiplier": 1.5,
+            "contribution": 6.0
+          },
+          {
+            "question": "self_description",
+            "answer": "children_youth",
+            "field": "service",
+            "preset": "Children & Family Services",
+            "weight": 3,
+            "multiplier": 1.5,
+            "contribution": 4.5
+          },
+          {
+            "question": "self_description",
+            "answer": "children_youth",
+            "field": "ntee",
+            "preset": "P30: Children & Youth Services",
+            "weight": 2,
+            "multiplier": 1.5,
+            "contribution": 3.0
+          }
+        ],
+        "rule_points": {
+          "earned": 40.5,
+          "max": 56.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Children & Family Services",
+            "status": "met"
+          },
+          {
+            "question": "self_description",
+            "answer": "children_youth",
+            "status": "met"
+          },
+          {
+            "question": "self_description",
+            "answer": "caregiver",
+            "status": "met"
+          },
+          {
+            "question": "prefs",
+            "answer": "wheelchair_accessible",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "multilingual",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "25_34",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Safe Harbor Shelter",
+      "score": 0.4275,
+      "breakdown": {
+        "dense_similarity": 0.75,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.9,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 56.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Children & Family Services",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "children_youth",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "caregiver",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "wheelchair_accessible",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "multilingual",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "25_34",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Golden Years Center",
+      "score": 0.398,
+      "breakdown": {
+        "dense_similarity": 0.7,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.83,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 56.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Children & Family Services",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "children_youth",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "caregiver",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "wheelchair_accessible",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "multilingual",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "25_34",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Veterans Bridge Network",
+      "score": 0.3685,
+      "breakdown": {
+        "dense_similarity": 0.65,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.76,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 56.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Children & Family Services",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "children_youth",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "caregiver",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "wheelchair_accessible",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "multilingual",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "25_34",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Clearwater Counseling",
+      "score": 0.339,
+      "breakdown": {
+        "dense_similarity": 0.6,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.69,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 56.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Children & Family Services",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "children_youth",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "caregiver",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "wheelchair_accessible",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "multilingual",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "25_34",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Open Door Alliance",
+      "score": 0.3095,
+      "breakdown": {
+        "dense_similarity": 0.55,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.62,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 56.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Children & Family Services",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "children_youth",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "caregiver",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "wheelchair_accessible",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "multilingual",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "25_34",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Equity Forward",
+      "score": 0.28,
+      "breakdown": {
+        "dense_similarity": 0.5,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.55,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 56.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Children & Family Services",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "children_youth",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "caregiver",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "wheelchair_accessible",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "multilingual",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "25_34",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Riverside Arts Guild",
+      "score": 0.2505,
+      "breakdown": {
+        "dense_similarity": 0.45,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.48,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 56.5
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Children & Family Services",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "children_youth",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "caregiver",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "wheelchair_accessible",
+            "status": "unknown"
+          },
+          {
+            "question": "prefs",
+            "answer": "multilingual",
+            "status": "unknown"
+          },
+          {
+            "question": "age_range",
+            "answer": "25_34",
+            "status": "unmet"
+          }
+        ]
+      }
+    }
+  ],
+  "seeker_lgbtq_nationwide": [
+    {
+      "organization": "Open Door Alliance",
+      "score": 0.7595,
+      "breakdown": {
+        "dense_similarity": 0.55,
+        "rule_score": 1.0,
+        "attribute_bonus": 0.4545,
+        "distance_score": 0.62,
+        "rule_matches": [
+          {
+            "question": "causes",
+            "answer": "LGBTQ+",
+            "field": "cause",
+            "preset": "answer",
+            "weight": 5,
+            "multiplier": 1.5,
+            "contribution": 7.5
+          },
+          {
+            "question": "self_description",
+            "answer": "lgbtqia",
+            "field": "population",
+            "preset": "LGBTQ+ People",
+            "weight": 5,
+            "multiplier": 1.5,
+            "contribution": 7.5
+          },
+          {
+            "question": "causes",
+            "answer": "LGBTQ+",
+            "field": "service",
+            "preset": "cause_service",
+            "weight": 4,
+            "multiplier": 1.5,
+            "contribution": 6.0
+          },
+          {
+            "question": "self_description",
+            "answer": "lgbtqia",
+            "field": "cause",
+            "preset": "LGBTQ+",
+            "weight": 4,
+            "multiplier": 1.5,
+            "contribution": 6.0
+          },
+          {
+            "question": "self_description",
+            "answer": "lgbtqia",
+            "field": "service",
+            "preset": "LGBTQ+ Advocacy",
+            "weight": 3,
+            "multiplier": 1.5,
+            "contribution": 4.5
+          },
+          {
+            "question": "self_description",
+            "answer": "lgbtqia",
+            "field": "ntee",
+            "preset": "P88: LGBT Centers",
+            "weight": 2,
+            "multiplier": 1.5,
+            "contribution": 3.0
+          },
+          {
+            "question": "prefs",
+            "answer": "lgbtqia_affirming",
+            "field": "service",
+            "preset": "LGBTQ+ Advocacy",
+            "weight": 3,
+            "multiplier": 0.5,
+            "contribution": 1.5
+          },
+          {
+            "question": "prefs",
+            "answer": "lgbtqia_affirming",
+            "field": "population",
+            "preset": "LGBTQ+ People",
+            "weight": 2,
+            "multiplier": 0.5,
+            "contribution": 1.0
+          }
+        ],
+        "rule_points": {
+          "earned": 37.0,
+          "max": 37.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "LGBTQ+",
+            "status": "met"
+          },
+          {
+            "question": "self_description",
+            "answer": "lgbtqia",
+            "status": "met"
+          },
+          {
+            "question": "prefs",
+            "answer": "lgbtqia_affirming",
+            "status": "met"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Youth Futures Collective",
+      "score": 0.46,
+      "breakdown": {
+        "dense_similarity": 0.8,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 1.0,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 37.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "LGBTQ+",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "lgbtqia",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "lgbtqia_affirming",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Safe Harbor Shelter",
+      "score": 0.4275,
+      "breakdown": {
+        "dense_similarity": 0.75,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.9,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 37.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "LGBTQ+",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "lgbtqia",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "lgbtqia_affirming",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Golden Years Center",
+      "score": 0.398,
+      "breakdown": {
+        "dense_similarity": 0.7,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.83,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 37.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "LGBTQ+",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "lgbtqia",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "lgbtqia_affirming",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Veterans Bridge Network",
+      "score": 0.3685,
+      "breakdown": {
+        "dense_similarity": 0.65,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.76,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 37.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "LGBTQ+",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "lgbtqia",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "lgbtqia_affirming",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Clearwater Counseling",
+      "score": 0.339,
+      "breakdown": {
+        "dense_similarity": 0.6,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.69,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 37.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "LGBTQ+",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "lgbtqia",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "lgbtqia_affirming",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Equity Forward",
+      "score": 0.28,
+      "breakdown": {
+        "dense_similarity": 0.5,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.55,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 37.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "LGBTQ+",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "lgbtqia",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "lgbtqia_affirming",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Riverside Arts Guild",
+      "score": 0.2505,
+      "breakdown": {
+        "dense_similarity": 0.45,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.48,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 37.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "LGBTQ+",
+            "status": "unmet"
+          },
+          {
+            "question": "self_description",
+            "answer": "lgbtqia",
+            "status": "unmet"
+          },
+          {
+            "question": "prefs",
+            "answer": "lgbtqia_affirming",
+            "status": "unmet"
+          }
+        ]
+      }
+    }
+  ],
+  "donor_veteran_national": [
+    {
+      "organization": "Veterans Bridge Network",
+      "score": 0.7352,
+      "breakdown": {
+        "dense_similarity": 0.65,
+        "rule_score": 0.8148,
+        "attribute_bonus": 0.6364,
+        "distance_score": 0.76,
+        "rule_matches": [
+          {
+            "question": "causes",
+            "answer": "Veteran & Military",
+            "field": "cause",
+            "preset": "answer",
+            "weight": 5,
+            "multiplier": 1.5,
+            "contribution": 7.5
+          },
+          {
+            "question": "donor_communities",
+            "answer": "veteran_military",
+            "field": "population",
+            "preset": "Veterans",
+            "weight": 5,
+            "multiplier": 1.5,
+            "contribution": 7.5
+          },
+          {
+            "question": "donor_communities",
+            "answer": "veteran_military",
+            "field": "cause",
+            "preset": "Veteran & Military",
+            "weight": 4,
+            "multiplier": 1.5,
+            "contribution": 6.0
+          },
+          {
+            "question": "causes",
+            "answer": "Veteran & Military",
+            "field": "service",
+            "preset": "cause_service",
+            "weight": 3,
+            "multiplier": 1.5,
+            "contribution": 4.5
+          },
+          {
+            "question": "donor_communities",
+            "answer": "veteran_military",
+            "field": "service",
+            "preset": "Veteran & Military Support Services",
+            "weight": 3,
+            "multiplier": 1.5,
+            "contribution": 4.5
+          },
+          {
+            "question": "donor_communities",
+            "answer": "veteran_military",
+            "field": "ntee",
+            "preset": "W30: Military & Veterans Organizations",
+            "weight": 2,
+            "multiplier": 1.5,
+            "contribution": 3.0
+          }
+        ],
+        "rule_points": {
+          "earned": 33.0,
+          "max": 40.5
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Veteran & Military",
+            "status": "met"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "veteran_military",
+            "status": "met"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Youth Futures Collective",
+      "score": 0.46,
+      "breakdown": {
+        "dense_similarity": 0.8,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 1.0,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 40.5
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Veteran & Military",
+            "status": "unmet"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "veteran_military",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Safe Harbor Shelter",
+      "score": 0.4275,
+      "breakdown": {
+        "dense_similarity": 0.75,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.9,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 40.5
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Veteran & Military",
+            "status": "unmet"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "veteran_military",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Golden Years Center",
+      "score": 0.398,
+      "breakdown": {
+        "dense_similarity": 0.7,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.83,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 40.5
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Veteran & Military",
+            "status": "unmet"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "veteran_military",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Clearwater Counseling",
+      "score": 0.339,
+      "breakdown": {
+        "dense_similarity": 0.6,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.69,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 40.5
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Veteran & Military",
+            "status": "unmet"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "veteran_military",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Open Door Alliance",
+      "score": 0.3095,
+      "breakdown": {
+        "dense_similarity": 0.55,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.62,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 40.5
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Veteran & Military",
+            "status": "unmet"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "veteran_military",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Equity Forward",
+      "score": 0.28,
+      "breakdown": {
+        "dense_similarity": 0.5,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.1818,
+        "distance_score": 0.55,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 40.5
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Veteran & Military",
+            "status": "unmet"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "veteran_military",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Riverside Arts Guild",
+      "score": 0.2505,
+      "breakdown": {
+        "dense_similarity": 0.45,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.48,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 40.5
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Veteran & Military",
+            "status": "unmet"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "veteran_military",
+            "status": "unmet"
+          }
+        ]
+      }
+    }
+  ],
+  "donor_bipoc_nashville": [
+    {
+      "organization": "Equity Forward",
+      "score": 0.6467,
+      "breakdown": {
+        "dense_similarity": 0.5,
+        "rule_score": 0.8148,
+        "attribute_bonus": 0.4545,
+        "distance_score": 0.55,
+        "rule_matches": [
+          {
+            "question": "causes",
+            "answer": "Race & Ethnicity",
+            "field": "cause",
+            "preset": "answer",
+            "weight": 5,
+            "multiplier": 1.5,
+            "contribution": 7.5
+          },
+          {
+            "question": "donor_communities",
+            "answer": "bipoc",
+            "field": "population",
+            "preset": "People of African Descent",
+            "weight": 5,
+            "multiplier": 1.5,
+            "contribution": 7.5
+          },
+          {
+            "question": "donor_communities",
+            "answer": "bipoc",
+            "field": "cause",
+            "preset": "Race & Ethnicity",
+            "weight": 4,
+            "multiplier": 1.5,
+            "contribution": 6.0
+          },
+          {
+            "question": "causes",
+            "answer": "Race & Ethnicity",
+            "field": "service",
+            "preset": "cause_service",
+            "weight": 3,
+            "multiplier": 1.5,
+            "contribution": 4.5
+          },
+          {
+            "question": "donor_communities",
+            "answer": "bipoc",
+            "field": "service",
+            "preset": "Racial Equity & Equality Advocacy",
+            "weight": 3,
+            "multiplier": 1.5,
+            "contribution": 4.5
+          },
+          {
+            "question": "donor_communities",
+            "answer": "bipoc",
+            "field": "ntee",
+            "preset": "R22: Minority Rights",
+            "weight": 2,
+            "multiplier": 1.5,
+            "contribution": 3.0
+          }
+        ],
+        "rule_points": {
+          "earned": 33.0,
+          "max": 40.5
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Race & Ethnicity",
+            "status": "met"
+          },
+          {
+            "question": "donation_style",
+            "answer": "recurring_giving",
+            "status": "unknown"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "bipoc",
+            "status": "met"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Youth Futures Collective",
+      "score": 0.46,
+      "breakdown": {
+        "dense_similarity": 0.8,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 1.0,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 40.5
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Race & Ethnicity",
+            "status": "unmet"
+          },
+          {
+            "question": "donation_style",
+            "answer": "recurring_giving",
+            "status": "unknown"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "bipoc",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Safe Harbor Shelter",
+      "score": 0.4275,
+      "breakdown": {
+        "dense_similarity": 0.75,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.9,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 40.5
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Race & Ethnicity",
+            "status": "unmet"
+          },
+          {
+            "question": "donation_style",
+            "answer": "recurring_giving",
+            "status": "unknown"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "bipoc",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Golden Years Center",
+      "score": 0.398,
+      "breakdown": {
+        "dense_similarity": 0.7,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.83,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 40.5
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Race & Ethnicity",
+            "status": "unmet"
+          },
+          {
+            "question": "donation_style",
+            "answer": "recurring_giving",
+            "status": "unknown"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "bipoc",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Veterans Bridge Network",
+      "score": 0.3685,
+      "breakdown": {
+        "dense_similarity": 0.65,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.76,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 40.5
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Race & Ethnicity",
+            "status": "unmet"
+          },
+          {
+            "question": "donation_style",
+            "answer": "recurring_giving",
+            "status": "unknown"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "bipoc",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Clearwater Counseling",
+      "score": 0.339,
+      "breakdown": {
+        "dense_similarity": 0.6,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.69,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 40.5
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Race & Ethnicity",
+            "status": "unmet"
+          },
+          {
+            "question": "donation_style",
+            "answer": "recurring_giving",
+            "status": "unknown"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "bipoc",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Open Door Alliance",
+      "score": 0.3095,
+      "breakdown": {
+        "dense_similarity": 0.55,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.62,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 40.5
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Race & Ethnicity",
+            "status": "unmet"
+          },
+          {
+            "question": "donation_style",
+            "answer": "recurring_giving",
+            "status": "unknown"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "bipoc",
+            "status": "unmet"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Riverside Arts Guild",
+      "score": 0.2505,
+      "breakdown": {
+        "dense_similarity": 0.45,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.48,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 40.5
+        },
+        "criteria": [
+          {
+            "question": "user_type",
+            "answer": "donor",
+            "status": "unmet"
+          },
+          {
+            "question": "causes",
+            "answer": "Race & Ethnicity",
+            "status": "unmet"
+          },
+          {
+            "question": "donation_style",
+            "answer": "recurring_giving",
+            "status": "unknown"
+          },
+          {
+            "question": "donor_communities",
+            "answer": "bipoc",
+            "status": "unmet"
+          }
+        ]
+      }
+    }
+  ],
+  "volunteer_seniors_nashville": [
+    {
+      "organization": "Golden Years Center",
+      "score": 0.848,
+      "breakdown": {
+        "dense_similarity": 0.7,
+        "rule_score": 1.0,
+        "attribute_bonus": 0.4545,
+        "distance_score": 0.83,
+        "rule_matches": [
+          {
+            "question": "causes",
+            "answer": "Seniors",
+            "field": "cause",
+            "preset": "answer",
+            "weight": 5,
+            "multiplier": 1.5,
+            "contribution": 7.5
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "field": "population",
+            "preset": "Seniors",
+            "weight": 5,
+            "multiplier": 1.0,
+            "contribution": 5.0
+          },
+          {
+            "question": "causes",
+            "answer": "Seniors",
+            "field": "service",
+            "preset": "cause_service",
+            "weight": 3,
+            "multiplier": 1.5,
+            "contribution": 4.5
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "field": "cause",
+            "preset": "Seniors",
+            "weight": 4,
+            "multiplier": 1.0,
+            "contribution": 4.0
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "field": "service",
+            "preset": "Senior Services & Programs",
+            "weight": 3,
+            "multiplier": 1.0,
+            "contribution": 3.0
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "field": "ntee",
+            "preset": "P81: Senior Centers",
+            "weight": 2,
+            "multiplier": 1.0,
+            "contribution": 2.0
+          }
+        ],
+        "rule_points": {
+          "earned": 26.0,
+          "max": 26.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Seniors",
+            "status": "met"
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "status": "met"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "in_person",
+            "status": "unknown"
+          },
+          {
+            "question": "volunteer_time",
+            "answer": "ongoing",
+            "status": "unknown"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Youth Futures Collective",
+      "score": 0.7023,
+      "breakdown": {
+        "dense_similarity": 0.8,
+        "rule_score": 0.5385,
+        "attribute_bonus": 0.0,
+        "distance_score": 1.0,
+        "rule_matches": [
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "field": "population",
+            "preset": "Children & Youth",
+            "weight": 5,
+            "multiplier": 1.0,
+            "contribution": 5.0
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "field": "cause",
+            "preset": "Children & Family Services",
+            "weight": 4,
+            "multiplier": 1.0,
+            "contribution": 4.0
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "field": "service",
+            "preset": "Youth Specific Services",
+            "weight": 3,
+            "multiplier": 1.0,
+            "contribution": 3.0
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "field": "ntee",
+            "preset": "P30: Children & Youth Services",
+            "weight": 2,
+            "multiplier": 1.0,
+            "contribution": 2.0
+          }
+        ],
+        "rule_points": {
+          "earned": 14.0,
+          "max": 26.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "status": "met"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "in_person",
+            "status": "unknown"
+          },
+          {
+            "question": "volunteer_time",
+            "answer": "ongoing",
+            "status": "unknown"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Safe Harbor Shelter",
+      "score": 0.4275,
+      "breakdown": {
+        "dense_similarity": 0.75,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.9,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 26.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "in_person",
+            "status": "unknown"
+          },
+          {
+            "question": "volunteer_time",
+            "answer": "ongoing",
+            "status": "unknown"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Veterans Bridge Network",
+      "score": 0.3685,
+      "breakdown": {
+        "dense_similarity": 0.65,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.76,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 26.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "in_person",
+            "status": "unknown"
+          },
+          {
+            "question": "volunteer_time",
+            "answer": "ongoing",
+            "status": "unknown"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Clearwater Counseling",
+      "score": 0.339,
+      "breakdown": {
+        "dense_similarity": 0.6,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.69,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 26.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "in_person",
+            "status": "unknown"
+          },
+          {
+            "question": "volunteer_time",
+            "answer": "ongoing",
+            "status": "unknown"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Open Door Alliance",
+      "score": 0.3095,
+      "breakdown": {
+        "dense_similarity": 0.55,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.62,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 26.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "in_person",
+            "status": "unknown"
+          },
+          {
+            "question": "volunteer_time",
+            "answer": "ongoing",
+            "status": "unknown"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Equity Forward",
+      "score": 0.28,
+      "breakdown": {
+        "dense_similarity": 0.5,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.55,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 26.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "in_person",
+            "status": "unknown"
+          },
+          {
+            "question": "volunteer_time",
+            "answer": "ongoing",
+            "status": "unknown"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Riverside Arts Guild",
+      "score": 0.2505,
+      "breakdown": {
+        "dense_similarity": 0.45,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.48,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 26.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_type",
+            "answer": "kids_seniors",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "in_person",
+            "status": "unknown"
+          },
+          {
+            "question": "volunteer_time",
+            "answer": "ongoing",
+            "status": "unknown"
+          }
+        ]
+      }
+    }
+  ],
+  "volunteer_no_preference_la": [
+    {
+      "organization": "Youth Futures Collective",
+      "score": 0.46,
+      "breakdown": {
+        "dense_similarity": 0.8,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 1.0,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 12.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Education",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "both",
+            "status": "unknown"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Safe Harbor Shelter",
+      "score": 0.4275,
+      "breakdown": {
+        "dense_similarity": 0.75,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.9,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 12.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Education",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "both",
+            "status": "unknown"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Golden Years Center",
+      "score": 0.398,
+      "breakdown": {
+        "dense_similarity": 0.7,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.83,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 12.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Education",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "both",
+            "status": "unknown"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Veterans Bridge Network",
+      "score": 0.3685,
+      "breakdown": {
+        "dense_similarity": 0.65,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.76,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 12.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Education",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "both",
+            "status": "unknown"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Clearwater Counseling",
+      "score": 0.339,
+      "breakdown": {
+        "dense_similarity": 0.6,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.69,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 12.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Education",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "both",
+            "status": "unknown"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Open Door Alliance",
+      "score": 0.3095,
+      "breakdown": {
+        "dense_similarity": 0.55,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.62,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 12.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Education",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "both",
+            "status": "unknown"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Equity Forward",
+      "score": 0.28,
+      "breakdown": {
+        "dense_similarity": 0.5,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.55,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 12.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Education",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "both",
+            "status": "unknown"
+          }
+        ]
+      }
+    },
+    {
+      "organization": "Riverside Arts Guild",
+      "score": 0.2505,
+      "breakdown": {
+        "dense_similarity": 0.45,
+        "rule_score": 0.0,
+        "attribute_bonus": 0.0,
+        "distance_score": 0.48,
+        "rule_matches": [],
+        "rule_points": {
+          "earned": 0.0,
+          "max": 12.0
+        },
+        "criteria": [
+          {
+            "question": "causes",
+            "answer": "Education",
+            "status": "unmet"
+          },
+          {
+            "question": "volunteer_format",
+            "answer": "both",
+            "status": "unknown"
+          }
+        ]
+      }
+    }
+  ]
+}

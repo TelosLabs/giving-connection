@@ -55,4 +55,76 @@ RSpec.describe Organization, type: :model do
     it { is_expected.to validate_presence_of(:scope_of_work) }
     it { is_expected.to validate_inclusion_of(:scope_of_work).in_array(Organizations::Constants::SCOPE) }
   end
+
+  describe "#smart_match_text" do
+    it "builds text from organization fields" do
+      org = create(:organization,
+        name: "Test Nonprofit",
+        mission_statement_en: "Help people",
+        vision_statement_en: "A better world",
+        tagline_en: "Making change")
+
+      result = org.smart_match_text
+
+      expect(result).to include("Test Nonprofit")
+      expect(result).to include("Help people")
+      expect(result).to include("A better world")
+      expect(result).to include("Making change")
+    end
+
+    it "includes cause names" do
+      org = create(:organization)
+
+      result = org.smart_match_text
+
+      org.causes.each { |cause| expect(result).to include(cause.name) }
+    end
+
+    # Tags cover 70% of production organizations and carry short descriptors
+    # the structured fields miss ("Food banks", "Family services"). They feed
+    # the main site search already; including them here lets the quiz's free
+    # text and cause selections reach them semantically.
+    it "includes tag names" do
+      org = create(:organization)
+      Tag.create!(organization: org, name: "Food banks")
+      Tag.create!(organization: org, name: "Family services")
+
+      result = org.reload.smart_match_text
+
+      expect(result).to include("Food banks")
+      expect(result).to include("Family services")
+    end
+
+    it "does not repeat a duplicated tag" do
+      org = create(:organization)
+      2.times { Tag.create!(organization: org, name: "Food banks") }
+
+      expect(org.reload.smart_match_text.scan("Food banks").size).to eq(1)
+    end
+
+    it "builds text for an organization with no tags" do
+      org = create(:organization)
+
+      expect(org.smart_match_text).to be_present
+    end
+
+    it "truncates at SmartMatch::EMBEDDING_TEXT_MAX_LENGTH" do
+      org = create(:organization, mission_statement_en: "A" * 2000)
+
+      expect(org.smart_match_text.length).to be <= SmartMatch::EMBEDDING_TEXT_MAX_LENGTH
+    end
+
+    it "returns nil when all embeddable fields are blank" do
+      org = build(:organization,
+        name: nil,
+        mission_statement_en: nil,
+        vision_statement_en: nil,
+        tagline_en: nil)
+      allow(org).to receive(:causes).and_return(Cause.none)
+      allow(org).to receive(:beneficiary_subcategories).and_return(BeneficiarySubcategory.none)
+      allow(org).to receive(:main_location).and_return(nil)
+
+      expect(org.smart_match_text).to be_nil
+    end
+  end
 end

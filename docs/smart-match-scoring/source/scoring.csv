@@ -1,0 +1,96 @@
+Path,Section,Question,Question Priority/Weighting,Input/Answer,Nonprofit Field,Filter,Answer Priority/Weighting,Recommendation Note
+Find Help,Section 1: About You,How can we support you today?,High (1.5) ,I'm here seeking help from a nonprofit,All nonprofits; service availability,Do you offer any services? = Yes,No score; path eligibility filter,Treat the filter separately from ranking score.
+Donor,Section 1: About You,How can we support you today?,High (1.5) ,I want to donate to a cause I care about,Donation link,None,Weight +5: Donation link = Yes,
+Volunteer,Section 1: About You,How can we support you today?,High (1.5) ,I want to volunteer my time,Volunteer opportunities available,Do you have volunteer opportunities available? = Yes,No score; path eligibility filter,Treat the filter separately from ranking score.
+Find Help,Section 1: About You,Who are you seeking support for?,Low (.5),Any selected,Information only,None,None,Do not use for preset scoring.
+Find Help,Section 2: Type of Support,How would you describe yourself?,High (1.5) ,Any selected,Populations Served; Causes; Services,None," Weight +5: Exact Populations Served match
+ Weight +4: Exact Cause match
+ Weight +3: Related Services match",See sheet titled: Row 6
+Find Help,Section 2: Type of Support,Which categories best fits your needs?,High (1.5) ,Any selected,Causes; Services,None,"Weight +5: Exact Causes match
+ Weight +4: Exact Services match
+ Weight +3: Related Services match",
+Find Help,Section 2: Type of Support,What best describes your situation?,Low (.5),Any selected,Information only / free-text context,None,"None; use for AI/context layer, not preset scoring",Do not use for preset scoring.
+Find Help,Section 3: Location & Access,Where should we look for support?,High (1.5) ,Nashville,Location Address City = Nashville; Scope of Work,Only organizations serving TN + nationwide organizations,"Weight +5: Address City = Nashville
+ Weight +3: Regional/state service coverage
+ Nationwide organizations remain eligible",Treat the filter separately from ranking score.
+Find Help,Section 3: Location & Access,Where should we look for support?,High (1.5) ,Los Angeles,Location Address City = Los Angeles; Scope of Work,Only organizations serving CA + nationwide organizations,"Weight +5: Address City = Los Angeles
+ Weight +3: Regional/state service coverage
+ Nationwide organizations remain eligible",Treat the filter separately from ranking score.
+Find Help,Section 3: Location & Access,Where should we look for support?,High (1.5) ,Atlantic City,Location Address City = Atlantic City; Scope of Work,Only organizations serving NJ + nationwide organizations,"Weight +5: Address City = Atlantic City
+ Weight +3: Regional/state service coverage
+ Nationwide organizations remain eligible",Treat the filter separately from ranking score.
+Find Help,Section 3: Location & Access,Where should we look for support?,High (1.5) ,Somewhere else,Location Address City/ZIP; Scope of Work,Only organizations serving selected state/area + nationwide organizations,"Weight +5: Exact city/ZIP proximity match
+ Weight +3: Regional/state service coverage
+ Nationwide organizations remain eligible",Treat the filter separately from ranking score.
+Find Help,Section 3: Location & Access,Where should we look for support?,High (1.5) ,Nationwide,Scope of Work = National,Scope of Work = National,Weight +2: Organization also has a location near the user,Treat the filter separately from ranking score.
+Find Help,Section 3: Location & Access,What kind of travel is possible for you?,Medium (1),Walking distance only (under 5 miles),Location coordinates / address,Radius <= 5 miles from selected search location,Weight +2: Closer organizations rank higher within radius,Treat the filter separately from ranking score.
+Find Help,Section 3: Location & Access,What kind of travel is possible for you?,Medium (1),Public transit or rides (5–10 miles),Location coordinates / address,Radius <= 10 miles from selected search location,Weight +2: Closer organizations rank higher within radius,Treat the filter separately from ranking score.
+Find Help,Section 3: Location & Access,What kind of travel is possible for you?,Medium (1),Car or ride share available (10+ miles),Location coordinates / address,Radius <= 100 miles from selected search location,Weight +2: Closer organizations rank higher within radius,Treat the filter separately from ranking score.
+Find Help,Section 3: Location & Access,What kind of travel is possible for you?,High (1.5) ,Remote services only,NEW FIELD: Remote services available? Y/N,Remote services available = Yes,No additional score; hard requirement/filter,Requires a new structured nonprofit field before this answer can reliably affect ranking.
+Find Help,Section 4: Preferences & Accessibility,What should we keep in mind when matching you to services?,Low (.5),Free or sliding-scale services,NEW FIELD: Free or sliding-scale services? Y/N,None,Weight +2: Free or sliding-scale services = Yes,Requires a new structured nonprofit field before this answer can reliably affect ranking.
+Find Help,Section 4: Preferences & Accessibility,What should we keep in mind when matching you to services?,Low (.5),No ID or documentation required,NEW FIELD: ID/documentation required? Y/N,None,Weight +2: No ID or documentation required,Requires a new structured nonprofit field before this answer can reliably affect ranking.
+Find Help,Section 4: Preferences & Accessibility,What should we keep in mind when matching you to services?,Low (.5),Spanish or another language available,NEW FIELD: Languages available,None,Weight +2: Selected language is available,Requires a new structured nonprofit field before this answer can reliably affect ranking.
+Find Help,Section 4: Preferences & Accessibility,What should we keep in mind when matching you to services?,Low (.5),LGBTQIA+ affirming services,Populations Served; consider NEW FIELD: LGBTQIA+ affirming services? Y/N,None,"Weight +2: Population Served = LGBTQ+ People
+ Future: Weight +4 for LGBTQIA+ affirming services = Yes
+ Weight +3: Related LGBTQ+ service match",Requires a new structured nonprofit field before this answer can reliably affect ranking.
+Find Help,Section 4: Preferences & Accessibility,What should we keep in mind when matching you to services?,Medium (1),Wheelchair accessible locations,NEW FIELD: Wheelchair accessible location? Y/N,None,Weight +4: Wheelchair accessible location = Yes,Requires a new structured nonprofit field before this answer can reliably affect ranking.
+Find Help,Section 4: Preferences & Accessibility,What should we keep in mind when matching you to services?,Low (.5),Women- or BIPOC-led organizations,NEW FIELD: Organization leadership attributes,None,Weight +2: Exact leadership attribute match,Requires a new structured nonprofit field before this answer can reliably affect ranking.
+Find Help,Section 4: Preferences & Accessibility,Personal Details,Low (.5),Age Range,Populations Served,None,"Weight +2: Exact age-related population match (e.g., Children & Youth, Individuals Under 21, Adults, Seniors)",
+Find Help,Section 4: Preferences & Accessibility,Personal Details,Low (.5),Gender Identity,Populations Served,None,Weight +2: Exact gender-related population match when a corresponding preset exists,
+Find Help,Section 4: Preferences & Accessibility,Personal Details,Low (.5),Race or Ethnicity,Populations Served,None,Weight +2: Exact race/ethnicity population match when a corresponding preset exists,
+Donor,Section 1: About You,What causes are close to your heart?,High (1.5) ,Any selected,Causes; Services,None,"Weight +5: Exact Cause match
+ Weight +3: Related Services match",
+Donor,Section 2: Your Donation Preferences,What is your preferred donation style?,High (1.5) ,General donation,Donation link,Donation link = Yes,No additional score; hard requirement for General donation,Treat the filter separately from ranking score.
+Donor,Section 2: Your Donation Preferences,What is your preferred donation style?,Low (.5),Support a specific project,NEW FIELD: Specific project/campaign giving available? Y/N,None,Weight +2: Specific project/campaign giving = Yes,Requires a new structured nonprofit field before this answer can reliably affect ranking.
+Donor,Section 2: Your Donation Preferences,What is your preferred donation style?,Medium (1),Donate goods or items,NEW FIELD: Accepts in-kind donations? Y/N,None,Weight +3: Accepts in-kind donations = Yes,Requires a new structured nonprofit field before this answer can reliably affect ranking.
+Donor,Section 2: Your Donation Preferences,What is your preferred donation style?,Low (.5),Set up recurring giving,NEW FIELD: Recurring giving available? Y/N,None,Weight +2: Recurring giving = Yes,Requires a new structured nonprofit field before this answer can reliably affect ranking.
+Donor,Section 2: Your Donation Preferences,What is your preferred donation style?,Low (.5),Just exploring for now,All nonprofits,None,None,
+Donor,Section 2: Your Donation Preferences,What inspires your giving today?,Low (.5),Any selected,Information only / free-text context,None,"None; use for AI/context layer, not preset scoring",Do not use for preset scoring.
+Donor,Section 2: Your Donation Preferences,Are there specific communities or populations you'd like your donation to support?,High (1.5) ,Any selected,Populations Served,None,Weight +4: Exact Population Served match,Sheet Titled: Row 34
+Donor,Section 3: Where & How You Engage,Where would you like your donation to make an impact?,High (1.5) ,Somewhere near me,Location coordinates / address,None,"Weight +5: Local geographic match
+ Weight +2: Closer organizations rank higher",
+Donor,Section 3: Where & How You Engage,Where would you like your donation to make an impact?,High (1.5) ,A specific city or zip code,Location Address City/ZIP; Scope of Work,Organizations serving selected geography + nationwide organizations,"Weight +5: Exact city/ZIP proximity match
+ Weight +3: Regional/state service coverage",Treat the filter separately from ranking score.
+Donor,Section 3: Where & How You Engage,Where would you like your donation to make an impact?,Low (.5),Anywhere,All nonprofits,None,No geographic weight,
+Donor,Section 3: Where & How You Engage,Which community would you like your giving to focus on?,High (1.5) ,Nashville,Location Address City = Nashville; Scope of Work,Only organizations serving TN + nationwide organizations,"Weight +5: Address City = Nashville
+ Weight +3: Regional/state service coverage
+ Nationwide organizations remain eligible",Treat the filter separately from ranking score.
+Donor,Section 3: Where & How You Engage,Which community would you like your giving to focus on?,High (1.5) ,Los Angeles,Location Address City = Los Angeles; Scope of Work,Only organizations serving CA + nationwide organizations,"Weight +5: Address City = Los Angeles
+ Weight +3: Regional/state service coverage
+ Nationwide organizations remain eligible",Treat the filter separately from ranking score.
+Donor,Section 3: Where & How You Engage,Which community would you like your giving to focus on?,High (1.5) ,Atlantic City,Location Address City = Atlantic City; Scope of Work,Only organizations serving NJ + nationwide organizations,"Weight +5: Address City = Atlantic City
+ Weight +3: Regional/state service coverage
+ Nationwide organizations remain eligible",Treat the filter separately from ranking score.
+Donor,Section 3: Where & How You Engage,Which community would you like your giving to focus on?,High (1.5) ,Somewhere else,Location Address City/ZIP; Scope of Work,Only organizations serving selected state/area + nationwide organizations,"Weight +5: Exact city/ZIP proximity match
+ Weight +3: Regional/state service coverage
+ Nationwide organizations remain eligible",Treat the filter separately from ranking score.
+Donor,Section 3: Where & How You Engage,Which community would you like your giving to focus on?,High (1.5) ,Nationwide,Scope of Work = National,Scope of Work = National,Weight +2: Organization also has a location near the user,Treat the filter separately from ranking score.
+Donor,Section 3: Where & How You Engage,How would you like to be involved?,Low (.5),Any selected,Information only,None,None,Do not use for preset scoring.
+Donor,Section 4: Preferences & Accessibility,Personal Details,Low (.5),Age Range,Information only,None,None,Do not use for preset scoring.
+Donor,Section 4: Preferences & Accessibility,Personal Details,Low (.5),Gender Identity,Information only,None,None,Do not use for preset scoring.
+Donor,Section 4: Preferences & Accessibility,Personal Details,Low (.5),Race or Ethnicity,Information only,None,None,Do not use for preset scoring.
+Volunteer,Section 1: About You,What causes are close to your heart?,High (1.5) ,Any selected,Causes; Services,None,"Weight +5: Exact Cause match
+ Weight +3: Related Services match",
+Volunteer,Section 2: Your Volunteering Preferences,How would you like to help?,Medium (1),Any selected,NEW FIELDS: Volunteer opportunity type; Fundraising events? Y/N; Partnership opportunities for businesses? Y/N,None,"Weight +3: Fundraising events = Yes when event selected
+Weight +3: Partnership opportunities = Yes when business partnership selected",Requires a new structured nonprofit field before this answer can reliably affect ranking.
+Volunteer,Section 2: Your Volunteering Preferences,What type of volunteering are you looking for?,Medium (1),Any selected,Populations Served; NEW FIELD: Volunteer opportunity attributes,None,"Weight +4: Exact Population Served match (Kids/Seniors/Veterans)
+Weight +3: Exact volunteer opportunity attribute match",Requires a new structured nonprofit field before this answer can reliably affect ranking. See sheet titled Row 49
+Volunteer,Section 3: Your Availability & Location,What format works best for you?,High (1.5) ,Any selected,NEW FIELD: Volunteer format (In person / Remote / Hybrid); accessibility,Remote-only selection: Remote or Hybrid required,"Weight +5: Exact format match
+ Weight +4: Accessible opportunity match when selected",Requires a new structured nonprofit field before this answer can reliably affect ranking.
+Volunteer,Section 3: Where & How You Engage,Which community would you like your giving to focus on?,High (1.5) ,Nashville,Location Address City = Nashville; Scope of Work,Only organizations serving TN + nationwide organizations,"Weight +5: Address City = Nashville
+ Weight +3: Regional/state service coverage
+ Nationwide organizations remain eligible",Treat the filter separately from ranking score.
+Volunteer,Section 3: Where & How You Engage,Which community would you like your giving to focus on?,High (1.5) ,Los Angeles,Location Address City = Los Angeles; Scope of Work,Only organizations serving CA + nationwide organizations,"Weight +5: Address City = Los Angeles
+ Weight +3: Regional/state service coverage
+ Nationwide organizations remain eligible",Treat the filter separately from ranking score.
+Volunteer,Section 3: Where & How You Engage,Which community would you like your giving to focus on?,High (1.5) ,Atlantic City,Location Address City = Atlantic City; Scope of Work,Only organizations serving NJ + nationwide organizations,"Weight +5: Address City = Atlantic City
+ Weight +3: Regional/state service coverage
+ Nationwide organizations remain eligible",Treat the filter separately from ranking score.
+Volunteer,Section 3: Where & How You Engage,Which community would you like your giving to focus on?,High (1.5) ,Somewhere else,Location Address City/ZIP; Scope of Work,Only organizations serving selected state/area + nationwide organizations,"Weight +5: Exact city/ZIP proximity match
+ Weight +3: Regional/state service coverage
+ Nationwide organizations remain eligible",Treat the filter separately from ranking score.
+Volunteer,Section 3: Where & How You Engage,Which community would you like your giving to focus on?,High (1.5) ,Nationwide,Scope of Work = National,Scope of Work = National,Weight +2: Organization also has a location near the user,Treat the filter separately from ranking score.
+Volunteer,Section 3: Your Availability & Location,How much time do you have to give?,Medium (1),Any selected,NEW FIELD: Volunteer frequency/commitment (One-time / Event-based / Weekly / Ongoing),None,Weight +3: Exact time commitment/frequency match,Requires a new structured nonprofit field before this answer can reliably affect ranking.
+Volunteer,Section 4: Preferences & Accessibility,Personal Details,Low (.5),Age Range,Information only,None,None,Do not use for preset scoring.
+Volunteer,Section 4: Preferences & Accessibility,Personal Details,Low (.5),Gender Identity,Information only,None,None,Do not use for preset scoring.
+Volunteer,Section 4: Preferences & Accessibility,Personal Details,Low (.5),Race or Ethnicity,Information only,None,None,Do not use for preset scoring.

@@ -37,7 +37,10 @@ class Rack::Attack
       suspicious_domain: 5.minutes,    # Instead of 1 hour
       login: 20.seconds,               # Keep as is for login
       blog_anonymous: 5.minutes,
-      feedback: 5.minutes
+      feedback: 5.minutes,
+      smart_match_quiz: 5.minutes,
+      smart_match_results: 5.minutes,
+      smart_match_result_status: 5.minutes
     }.freeze
   elsif Rails.env.test?
     {
@@ -45,7 +48,10 @@ class Rack::Attack
       suspicious_domain: 1.second,    # Effectively disable throttling
       login: 1.second,                # Effectively disable throttling
       blog_anonymous: 1.second,
-      feedback: 1.second
+      feedback: 1.second,
+      smart_match_quiz: 1.second,
+      smart_match_results: 1.second,
+      smart_match_result_status: 1.second
     }.freeze
   else
     {
@@ -53,7 +59,10 @@ class Rack::Attack
       suspicious_domain: 1.hour,
       login: 20.seconds,
       blog_anonymous: 1.hour,
-      feedback: 1.hour
+      feedback: 1.hour,
+      smart_match_quiz: 1.hour,
+      smart_match_results: 1.hour,
+      smart_match_result_status: 1.hour
     }.freeze
   end
 
@@ -226,6 +235,71 @@ class Rack::Attack
 
   throttle("feedbacks", limit: 10, period: THROTTLE_PERIODS[:feedback]) do |req|
     Rack::Attack.feedback_discriminator(req)
+  end
+
+  ### Prevent Smart Match Abuse ###
+  # Quiz endpoints are public (no authentication). The final results view
+  # triggers an embedding-service call and a pgvector kNN query, so an
+  # unthrottled client can burn GPU/CPU and grow quiz_submissions /
+  # organization_matches indefinitely.
+  #
+  # Limits chosen for the no-product-input default:
+  #   - smart_match/quiz: 60/hour per IP. A normal completion is ~9 PUTs;
+  #     this allows ~6 completions/hour/IP including back-button traffic.
+  #   - smart_match/results: 10/hour per IP. A first view can start a match run
+  #     (embedding service + similarity query + writes) via ProcessSubmissionJob.
+  #   - smart_match/results_page: 60/hour per IP for "?page=N" requests. Those
+  #     are pure reads of already-persisted matches -- see below.
+  # Tune in THROTTLE_PERIODS above once real traffic patterns are known.
+  throttle("smart_match/quiz", limit: 60, period: THROTTLE_PERIODS[:smart_match_quiz]) do |req|
+    if req.path.start_with?("/smart_match/quiz") && (req.put? || req.patch? || req.post?)
+      req.remote_ip
+    end
+  end
+
+  throttle("smart_match/results", limit: 10, period: THROTTLE_PERIODS[:smart_match_results]) do |req|
+    # Exact match: the "/smart_match/result/status" poll target is throttled
+    # separately below (polling would otherwise burn the 10/hour results budget).
+    #
+    # Paged requests are excluded and throttled separately: "Show more" turns one
+    # page view into several GETs of this same path, which would eat a 10/hour
+    # budget sized for starting match runs, not for browsing results.
+    if req.path == "/smart_match/result" && req.get? && req.GET["page"].blank?
+      req.remote_ip
+    end
+  end
+
+  # "Show more" on the results page re-requests it as "?page=N". By then the
+  # pipeline has already run: the controller reads persisted matches and renders
+  # cards, touching neither the embedding service nor pgvector. Paging through
+  # the full pool takes a handful of these, so they get their own higher ceiling.
+  #
+  # Passing ?page= on a first-ever visit still lands here, which is deliberate:
+  # the expensive work is enqueued once per attempt token (see
+  # ProcessSubmissionJob.processing_key) and starting a new attempt means
+  # completing the quiz again, which the 60/hour quiz throttle above bounds.
+  throttle("smart_match/results_page", limit: 60, period: THROTTLE_PERIODS[:smart_match_results]) do |req|
+    if req.path == "/smart_match/result" && req.get? && req.GET["page"].present?
+      req.remote_ip
+    end
+  end
+
+  # The loading page polls this JSON endpoint every ~2s while the embedding +
+  # scoring job runs. It touches no external service (just a cache/DB existence
+  # check), so it gets a much higher ceiling than the results page itself.
+  #
+  # The limit MUST stay above one attempt's worth of polling, or the throttle
+  # fires during ordinary use. smart_match_poll_controller.js polls every 2s for
+  # up to its 120s deadline = 60 requests for a single slow-but-healthy
+  # completion. The old limit of 120 was under that as soon as a page polled for
+  # more than ~4 minutes: it returned 429, the controller read every non-OK
+  # response as "still processing" and kept polling, and the retries held the
+  # window saturated so the page could never recover. 300 leaves room for
+  # several attempts per window while still bounding abuse.
+  throttle("smart_match/result_status", limit: 300, period: THROTTLE_PERIODS[:smart_match_result_status]) do |req|
+    if req.path == "/smart_match/result/status" && req.get?
+      req.remote_ip
+    end
   end
 
   ### Custom Throttle Response ###
