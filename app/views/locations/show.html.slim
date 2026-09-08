@@ -1,4 +1,4 @@
-= form_with model: @search, scope: :search, url: search_path, class: '', method: :get do |f|
+= form_with scope: :search, url: search_path, class: '', method: :get do |f|
   = render SearchBar::Component.new(form: f, search: @search, current_location: @current_location, locations: @locations)
 div class=""
   div class="flex flex-row justify-between w-full bg-gray-9 md:hidden"  data-controller="modal"
@@ -195,3 +195,5 @@ div class=""
         = render SocialMedia::Component.new(social_media: @location.social_media)
 
       = render "locations/in_kind_donation_needs", location: @location
+  div class="border-t border-gray-8"
+    = render "shared/smart_match_cta"

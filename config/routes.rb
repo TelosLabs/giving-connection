@@ -8,7 +8,6 @@ Rails.application.routes.draw do
     resources :social_medias, only: %i[new create edit update]
     resources :services, except: %i[destroy]
     resources :causes, only: %i[new create edit update]
-    resources :categories, only: %i[new create edit update]
     resources :locations, except: %i[index]
     resources :location_services, only: %i[show create]
     resources :office_hours, except: %i[index]
@@ -98,6 +97,15 @@ Rails.application.routes.draw do
   resource :privacy_policy, only: %i[show]
   resource :infowindow, only: :new
   resources :autocomplete, only: %i[index]
+
+  namespace :smart_match do
+    root to: "landing#show"
+    resource :quiz, only: [:show, :update, :destroy]
+    resource :confirmation, only: [:show]
+    resource :result, only: [:show] do
+      get :status, on: :member
+    end
+  end
 
   root to: "home#index"
 

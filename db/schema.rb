@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_07_30_120000) do
+ActiveRecord::Schema[7.2].define(version: 2026_08_27_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
   enable_extension "postgis"
+  enable_extension "vector"
 
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
@@ -196,6 +197,20 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_30_120000) do
     t.index ["user_id"], name: "index_favorite_locations_on_user_id"
   end
 
+  create_table "feedbacks", force: :cascade do |t|
+    t.integer "rating", null: false
+    t.string "category"
+    t.string "context"
+    t.text "comment"
+    t.string "page_url"
+    t.bigint "user_id"
+    t.datetime "read_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["read_at"], name: "index_feedbacks_on_read_at"
+    t.index ["user_id"], name: "index_feedbacks_on_user_id"
+  end
+
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
@@ -261,9 +276,14 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_30_120000) do
     t.integer "non_standard_office_hours"
     t.string "time_zone"
     t.string "slug"
+    t.string "state_code", limit: 2
+    t.boolean "wheelchair_accessible"
+    t.boolean "remote_services"
     t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
     t.index ["organization_id"], name: "index_locations_on_organization_id"
+    t.index ["remote_services"], name: "index_locations_on_remote_services", where: "(remote_services = true)"
     t.index ["slug"], name: "index_locations_on_slug", unique: true
+    t.index ["state_code"], name: "index_locations_on_state_code"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -329,6 +349,29 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_30_120000) do
     t.index ["organization_id"], name: "index_organization_causes_on_organization_id"
   end
 
+  create_table "organization_embeddings", force: :cascade do |t|
+    t.bigint "organization_id", null: false
+    t.vector "embedding", limit: 1024, null: false
+    t.text "text_snapshot", null: false
+    t.jsonb "metadata", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["embedding"], name: "idx_org_embeddings_hnsw_cosine", opclass: :vector_cosine_ops, using: :hnsw
+    t.index ["organization_id"], name: "index_organization_embeddings_on_organization_id", unique: true
+  end
+
+  create_table "organization_matches", force: :cascade do |t|
+    t.bigint "quiz_submission_id", null: false
+    t.bigint "organization_id", null: false
+    t.decimal "score", precision: 5, scale: 4, null: false
+    t.jsonb "score_breakdown", default: {}
+    t.integer "rank", null: false
+    t.datetime "created_at", null: false
+    t.index ["organization_id"], name: "index_organization_matches_on_organization_id"
+    t.index ["quiz_submission_id", "organization_id"], name: "idx_org_matches_on_submission_and_org", unique: true
+    t.index ["quiz_submission_id"], name: "index_organization_matches_on_quiz_submission_id"
+  end
+
   create_table "organizations", force: :cascade do |t|
     t.string "name", null: false
     t.string "ein_number", null: false
@@ -356,13 +399,28 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_30_120000) do
     t.boolean "general_population_serving", default: false, null: false
     t.string "in_kind_donation_link"
     t.jsonb "in_kind_donation_items", default: [], null: false
+    t.boolean "free_or_sliding_scale"
+    t.boolean "no_id_required"
+    t.boolean "lgbtqia_affirming"
+    t.boolean "specific_project_giving"
+    t.boolean "accepts_in_kind"
+    t.boolean "recurring_giving"
+    t.boolean "fundraising_events"
+    t.boolean "partnership_opportunities"
+    t.string "languages", array: true
+    t.string "volunteer_format"
+    t.string "volunteer_frequency", array: true
+    t.string "leadership_attributes", array: true
     t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
     t.index ["ein_number"], name: "index_organizations_on_ein_number"
+    t.index ["languages"], name: "index_organizations_on_languages", using: :gin
+    t.index ["leadership_attributes"], name: "index_organizations_on_leadership_attributes", using: :gin
     t.index ["mission_statement_en"], name: "index_organizations_on_mission_statement_en"
     t.index ["name"], name: "index_organizations_on_name", unique: true
     t.index ["scope_of_work"], name: "index_organizations_on_scope_of_work"
     t.index ["tagline_en"], name: "index_organizations_on_tagline_en"
     t.index ["vision_statement_en"], name: "index_organizations_on_vision_statement_en"
+    t.index ["volunteer_frequency"], name: "index_organizations_on_volunteer_frequency", using: :gin
   end
 
   create_table "pg_search_documents", force: :cascade do |t|
@@ -381,6 +439,22 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_30_120000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["location_id"], name: "index_phone_numbers_on_location_id"
+  end
+
+  create_table "quiz_submissions", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "session_id", null: false
+    t.jsonb "answers", default: {}
+    t.string "user_type", null: false
+    t.vector "embedding", limit: 1024, null: false
+    t.text "text_snapshot", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.jsonb "search_relaxations", default: [], null: false
+    t.string "attempt_token"
+    t.index ["attempt_token"], name: "index_quiz_submissions_on_attempt_token", unique: true
+    t.index ["session_id"], name: "index_quiz_submissions_on_session_id"
+    t.index ["user_id"], name: "index_quiz_submissions_on_user_id"
   end
 
   create_table "services", force: :cascade do |t|
@@ -460,6 +534,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_30_120000) do
   add_foreign_key "favorite_blogs", "users"
   add_foreign_key "favorite_locations", "locations"
   add_foreign_key "favorite_locations", "users"
+  add_foreign_key "feedbacks", "users"
   add_foreign_key "import_logs", "admin_users"
   add_foreign_key "location_services", "locations"
   add_foreign_key "location_services", "services"
@@ -470,7 +545,11 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_30_120000) do
   add_foreign_key "organization_beneficiaries", "organizations"
   add_foreign_key "organization_causes", "causes"
   add_foreign_key "organization_causes", "organizations"
+  add_foreign_key "organization_embeddings", "organizations"
+  add_foreign_key "organization_matches", "organizations", on_delete: :cascade
+  add_foreign_key "organization_matches", "quiz_submissions", on_delete: :cascade
   add_foreign_key "phone_numbers", "locations"
+  add_foreign_key "quiz_submissions", "users"
   add_foreign_key "services", "causes"
   add_foreign_key "social_medias", "organizations"
   add_foreign_key "tags", "organizations"

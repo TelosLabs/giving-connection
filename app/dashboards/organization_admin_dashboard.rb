@@ -13,8 +13,8 @@ class OrganizationAdminDashboard < Administrate::BaseDashboard
     organization: Field::BelongsTo,
     user: Field::BelongsTo.with_options(order: "email"),
     id: Field::Number,
-    role: Field::SelectBasic.with_options({
-      choices: ["admin"]
+    role: Field::Select.with_options({
+      collection: ["admin"]
     }),
     created_at: Field::DateTime,
     updated_at: Field::DateTime

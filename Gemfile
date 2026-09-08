@@ -6,7 +6,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.4.8"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
-gem "rails", "~> 7.2.3.2"
+gem "rails", "~> 8.0.5"
+gem "activerecord-postgis-adapter", "~> 11.0"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 # Use Puma as the app server
@@ -20,6 +21,7 @@ gem "cssbundling-rails"
 gem "jbuilder", "~> 2.7"
 # Use Redis adapter to run Action Cable in production
 gem "redis", "~> 4.0"
+gem "redis-session-store"
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -48,7 +50,7 @@ gem "pg_search"
 gem "pundit"
 gem "rack-attack"
 gem "rollbar"
-gem "roo", "~> 2.8.0"
+gem "roo", "~> 3.0"
 gem "scout_apm"
 gem "sidekiq", "<7"
 gem "slim-rails"
@@ -64,11 +66,8 @@ gem "net-pop", require: false
 gem "net-smtp", require: false
 
 # Use administrate admin framework
-gem "administrate", "~> 0.20.0"
+gem "administrate", "~> 1.0"
 gem "administrate-field-active_storage"
-gem "administrate-field-nested_has_many", git: "https://github.com/TelosLabs/administrate-field-nested_has_many.git", branch: "feature/stimulus-controller"
-gem "administrate-field-select", "~> 2.0", require: "administrate/field/select_basic"
-gem "administrate-field-trix"
 gem "image_processing", "~> 1.13"
 
 # Reduces boot times through caching; required in config/boot.rb
@@ -79,13 +78,18 @@ gem "timezone_finder"
 gem "momentjs-rails"
 
 # Geolocation
-gem "activerecord-postgis-adapter"
 gem "geocoder"
+
+# pgvector for Smart Match embeddings
+gem "neighbor"
 
 # Instagram feed
 gem "koala"
 
 gem "sprockets-rails", require: "sprockets/railtie"
+# Sass compilation for app/assets/**/*.scss. Was a transitive dependency of
+# administrate < 1.0; administrate 1.0 dropped it, the app still needs it.
+gem "sassc-rails"
 
 group :development, :test do
   eval_gemfile "gemfiles/rubocop.gemfile"
@@ -107,7 +111,6 @@ group :development do
   gem "listen", "~> 3.3"
   gem "rack-mini-profiler", "~> 2.0"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem "annotate"
   gem "better_errors"
   gem "binding_of_caller"
   gem "brakeman"
