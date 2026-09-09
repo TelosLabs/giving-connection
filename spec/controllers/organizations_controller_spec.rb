@@ -86,4 +86,33 @@ RSpec.describe Admin::OrganizationsController, type: :controller do
       end
     end
   end
+
+  describe "PATCH #update" do
+    before { sign_in @admin }
+
+    def patch_update(organization_attributes)
+      patch :update, params: {id: organization.id, tags_attributes: "", organization: organization_attributes}
+    end
+
+    it "collects in-kind donation items through the dashboard's permitted attributes" do
+      patch_update(in_kind_donation_items: ["", "diapers", "diapers"])
+
+      expect(organization.reload.in_kind_donation_items).to eq(["diapers"])
+    end
+
+    it "ignores in-kind donation items sent as a scalar instead of an array" do
+      organization.update!(in_kind_donation_items: ["diapers"])
+
+      patch_update(in_kind_donation_items: "shoes")
+
+      expect(organization.reload.in_kind_donation_items).to eq(["diapers"])
+    end
+
+    it "re-renders the form for an unsupported item" do
+      patch_update(in_kind_donation_items: ["not-supported"])
+
+      expect(response).to have_http_status(:unprocessable_entity)
+      expect(organization.reload.in_kind_donation_items).to eq([])
+    end
+  end
 end
