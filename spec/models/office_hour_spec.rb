@@ -19,6 +19,31 @@ RSpec.describe OfficeHour, type: :model do
     it { is_expected.to validate_presence_of(:close_time) }
   end
 
+  describe "the open-before-close invariant" do
+    let(:location) { create(:location, :with_office_hours, time_zone: "Pacific Time (US & Canada)") }
+
+    it "rejects a range that closes before it opens" do
+      inverted = build(:office_hour, location: location, day: 1, open_time: "17:00", close_time: "09:00")
+
+      expect(inverted).not_to be_valid
+      expect(inverted.errors[:close_time]).to include("must be after the opening time")
+    end
+
+    # The error used to be attached to record.location.organization, which on a
+    # later edit is a different instance from the one being saved — so inverting
+    # a persisted row saved cleanly and no validation ever caught it.
+    it "still rejects the inversion when a persisted row is edited on its own" do
+      office_hour = create(:office_hour, location: location, day: 1, open_time: "09:00", close_time: "17:00")
+
+      expect(office_hour.reload.update(open_time: "18:00", close_time: "08:30")).to be(false)
+      expect(office_hour.errors[:close_time]).to include("must be after the opening time")
+    end
+
+    it "accepts a range that closes after it opens" do
+      expect(build(:office_hour, location: location, day: 1, open_time: "09:00", close_time: "17:00")).to be_valid
+    end
+  end
+
   describe "methods" do
     describe "#time_zone" do
       it "is expected to return time zone as Time Zone object" do
