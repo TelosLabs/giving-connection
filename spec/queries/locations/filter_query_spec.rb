@@ -131,8 +131,12 @@ RSpec.describe Locations::FilterQuery do
 
     # by_cause and by_service hand back a GROUP BY relation, so give has to
     # compose with one rather than with a plain Location scope.
+    # Cause and Service both validate global name uniqueness, and CI seeds the
+    # test database (db:prepare runs populate:seed_causes_and_services), so a
+    # real cause name like "Education" is already taken there. Use names the
+    # seed list will never contain.
     it "composes give with a cause filter" do
-      cause = create(:cause, name: "Education")
+      cause = create(:cause, name: "Give Filter Cause")
       matching = location_for(donation_link: "https://example.org/donate")
       matching.organization.causes << cause
       other = location_for
@@ -140,22 +144,22 @@ RSpec.describe Locations::FilterQuery do
       location_for(donation_link: "https://example.org/donate") # right give, wrong cause
 
       ids = described_class.call(
-        {causes: ["Education"], give: [Search::GIVE_DONATION]}, Location.active
+        {causes: [cause.name], give: [Search::GIVE_DONATION]}, Location.active
       ).ids
 
       expect(ids).to contain_exactly(matching.id)
     end
 
     it "composes give with a service filter" do
-      cause = create(:cause, name: "Education")
-      service = create(:service, name: "Tutoring", cause: cause)
+      cause = create(:cause, name: "Give Filter Cause")
+      service = create(:service, name: "Give Filter Service", cause: cause)
       matching = location_for(donation_link: "https://example.org/donate")
       matching.services << service
       other = location_for
       other.services << service
 
       ids = described_class.call(
-        {services: {"Education" => ["Tutoring"]}, give: [Search::GIVE_DONATION]}, Location.active
+        {services: {cause.name => [service.name]}, give: [Search::GIVE_DONATION]}, Location.active
       ).ids
 
       expect(ids).to contain_exactly(matching.id)
@@ -177,9 +181,21 @@ RSpec.describe Locations::FilterQuery do
     end
 
     # Regression: the subcategory value was interpolated into raw SQL with no
-    # escaping, so a quote in search[beneficiary_groups][<group>][] closed the
-    # string literal. Verified against main: this payload closed the tuple,
-    # appended its own and matched the Teens location.
+    # escaping at all, so a quote in search[beneficiary_groups][<group>][] closed
+    # the string literal and the rest of the value was executed as SQL. The
+    # search page is reachable unauthenticated.
+    it "binds a subcategory that closes the IN list instead of executing it" do
+      injected = {"Youth" => ["x') OR 1=1) --"]}
+
+      expect { described_class.by_beneficiary_groups_served(Location.active, injected).ids }
+        .not_to raise_error
+      expect(described_class.by_beneficiary_groups_served(Location.active, injected).ids).to be_empty
+    end
+
+    # The same hole, weaponised without a syntax error: the payload closes the
+    # tuple and appends one of its own, so the query matched a subcategory the
+    # request never asked for. Verified against main: this returned the Teens
+    # location; with bound values it returns nothing.
     it "cannot widen the IN list to match rows the filter did not ask for" do
       payload = {"Youth" => ["x'),('Youth','Teens"]}
 
@@ -187,27 +203,46 @@ RSpec.describe Locations::FilterQuery do
         .to be_empty
     end
 
-    it "binds values containing quotes instead of interpolating them" do
-      expect {
-        described_class.by_beneficiary_groups_served(Location.active, {"Youth" => ["it's"]}).ids
-      }.not_to raise_error
-
+    it "binds a subcategory containing a quote" do
       expect(described_class.by_beneficiary_groups_served(Location.active, {"Youth" => ["it's"]}).ids)
         .to be_empty
     end
 
     it "matches nothing when a group is present with no subcategories" do
-      expect { described_class.by_beneficiary_groups_served(Location.active, {"Youth" => []}).ids }
-        .not_to raise_error
-
       expect(described_class.by_beneficiary_groups_served(Location.active, {"Youth" => []}).ids)
         .to be_empty
+    end
+
+    # The group key was escaped on main, unlike the subcategory value, so this
+    # was never the hole. It is bound now like everything else, and this pins
+    # that so a future edit cannot quietly drop the key back into raw SQL.
+    it "binds a group key that closes the IN list instead of executing it" do
+      injected = {"x') OR 1=1) --" => ["Teens"]}
+
+      expect { described_class.by_beneficiary_groups_served(Location.active, injected).ids }
+        .not_to raise_error
+      expect(described_class.by_beneficiary_groups_served(Location.active, injected).ids).to be_empty
+    end
+
+    # Rack param nesting can deliver a subcategory as an array rather than a
+    # string. Coercing to a scalar keeps the bind count matched to the
+    # placeholders instead of raising on the unauthenticated search endpoint.
+    it "does not raise when a subcategory value is a nested array" do
+      malformed = {"Youth" => [["a", "b"]]}
+
+      expect { described_class.by_beneficiary_groups_served(Location.active, malformed).ids }
+        .not_to raise_error
+      expect(described_class.by_beneficiary_groups_served(Location.active, malformed).ids).to be_empty
     end
   end
 
   describe ".by_service" do
-    let(:cause) { create(:cause, name: "Education") }
-    let(:service) { create(:service, name: "Tutoring", cause: cause) }
+    # Cause and Service both validate global name uniqueness, and CI seeds the
+    # test database (db:prepare runs populate:seed_causes_and_services), so a
+    # real cause name like "Education" is already taken there. Use names the
+    # seed list will never contain.
+    let(:cause) { create(:cause, name: "Filter Spec Cause") }
+    let(:service) { create(:service, name: "Filter Spec Service", cause: cause) }
     let!(:location) do
       location = create(:organization, name: "service org").locations.first
       location.services << service
@@ -215,22 +250,23 @@ RSpec.describe Locations::FilterQuery do
     end
 
     it "matches on a cause and service pair" do
-      expect(described_class.by_service(Location.active, {"Education" => ["Tutoring"]}).ids)
+      expect(described_class.by_service(Location.active, {cause.name => [service.name]}).ids)
         .to contain_exactly(location.id)
     end
 
-    it "binds values containing quotes instead of interpolating them" do
-      expect {
-        described_class.by_service(Location.active, {"Education" => ["it's"]}).ids
-      }.not_to raise_error
+    # Unlike by_beneficiary_groups_served, by_service already doubled quotes on
+    # both values on main, so these payloads never escaped the literal. These
+    # tests pin the bound behavior and guard against a regression to raw
+    # interpolation.
+    it "binds a service that closes the IN list instead of executing it" do
+      injected = {cause.name => ["x') OR 1=1) --"]}
+
+      expect { described_class.by_service(Location.active, injected).ids }.not_to raise_error
+      expect(described_class.by_service(Location.active, injected).ids).to be_empty
     end
 
-    # A present key with an empty list used to emit `IN ()` and 500 the page.
     it "matches nothing when a cause is present with no services" do
-      expect { described_class.by_service(Location.active, {"Education" => []}).ids }
-        .not_to raise_error
-
-      expect(described_class.by_service(Location.active, {"Education" => []}).ids).to be_empty
+      expect(described_class.by_service(Location.active, {cause.name => []}).ids).to be_empty
     end
   end
 end

@@ -115,18 +115,25 @@ module Locations
         end
       end
 
-      def parameterize_address_filters(address_params)
-        address_params.values.reject!(&:blank?).compact.map { |v| "%#{v}%" }
-      end
-
       # Builds a bound `(col_a, col_b) IN ((?, ?), ...)` predicate. Values are
       # passed as binds rather than interpolated so names containing quotes
       # cannot break out of the statement.
       def tuple_in(column_a, column_b, pairs)
+        # A present filter key with an empty list ({"Youth" => []}) would emit
+        # `IN ()` and raise PG::SyntaxError. Nothing can match it, so say so.
         return "1=0" if pairs.empty?
 
         placeholders = Array.new(pairs.size, "(?, ?)").join(", ")
-        ["(#{column_a}, #{column_b}) IN (#{placeholders})", *pairs.flatten]
+        # Coerce each half to a scalar before binding. Rack param nesting can
+        # deliver a filter value as an array, and a bare `flatten` would spread
+        # it into extra binds, breaking arity against the placeholders and
+        # raising on a request the old interpolation simply failed to match.
+        binds = pairs.flat_map { |a, b| [a.to_s, b.to_s] }
+        ["(#{column_a}, #{column_b}) IN (#{placeholders})", *binds]
+      end
+
+      def parameterize_address_filters(address_params)
+        address_params.values.reject!(&:blank?).compact.map { |v| "%#{v}%" }
       end
 
       def opened_now(scope, open_now)
