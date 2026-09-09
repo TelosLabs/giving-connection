@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-unless Rails.env.production?
+unless Rails.env.production? || Rails.env.test?
 
   # Delete old records
   Organization.destroy_all

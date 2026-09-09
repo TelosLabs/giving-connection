@@ -534,7 +534,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_120000) do
   add_foreign_key "favorite_blogs", "users"
   add_foreign_key "favorite_locations", "locations"
   add_foreign_key "favorite_locations", "users"
-  add_foreign_key "feedbacks", "users"
+  add_foreign_key "feedbacks", "users", on_delete: :nullify
+
   add_foreign_key "import_logs", "admin_users"
   add_foreign_key "location_services", "locations"
   add_foreign_key "location_services", "services"
