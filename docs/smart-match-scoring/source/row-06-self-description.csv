@@ -1,0 +1,85 @@
+Smart Match Answer,Field,Preset Match,Weight
+Children & Youth,Populations Served,Children & Youth,5
+,Populations Served,Individuals Under 21,5
+,Populations Served,Non-Adults,5
+,Cause,Children & Family Services,4
+,Cause,Youth Development,4
+,Service,Children & Family Services,3
+,Service,Youth Specific Services,3
+,NTEE,P30: Children & Youth Services,2
+,NTEE,O: Youth Development,2
+Currently Unhoused,Populations Served,People Struggling with Homelessness,5
+,Cause,Housing & Homelessness,4
+,Service,Homeless Shelters,3
+,Service,Housing Support Services,3
+,NTEE,L41: Homeless Shelters,2
+,NTEE,P85: Homeless Centers,2
+Economically Disadvantaged,Populations Served,Economically Disadvantaged People,5
+,Service,Government Benefits Assistance,3
+,Service,Emergency Assistance,3
+,NTEE,P60: Emergency Assistance,2
+Formerly Incarcerated,Populations Served,Formerly Incarcerated People,5
+,Cause,Inmate & Formerly Incarcerated,4
+,Service,Rehabilitation & Reentry Services,3
+,Service,Formerly Incarcerated Employment & Job Training,3
+,NTEE,I40: Rehabilitation Services for Offenders,2
+,NTEE,I31: Half-Way Houses for Offenders & Ex-Offenders,2
+LGBTQIA+,Populations Served,LGBTQ+ People,5
+,Cause,LGBTQ+,4
+,Service,LGBTQ+ Advocacy,3
+,Service,LGBTQ+ Community Centers,3
+,NTEE,P88: LGBT Centers,2
+,NTEE,R26: Lesbian & Gay Rights,2
+Living with Disabilities,Populations Served,People with Developmental Disabilities,5
+,Populations Served,People with Physical Disabilities,5
+,Cause,Disability Services,4
+,Service,Developmental Disability Services,3
+,Service,Services to Promote the Independence of Specific Populations,3
+,NTEE,P82: Developmentally Disabled Centers,2
+,NTEE,L24: Independent Housing for People with Disabilities,2
+Living with Health Issues,Populations Served,People with Diseases & Illnesses,5
+,Cause,Health,4
+,Service,Health Care Access,3
+,Service,Health Support Services,3
+,Service,Patient & Family Support,3
+,NTEE,E: Health Care,2
+,NTEE,G: Voluntary Health Associations & Medical Disciplines,2
+Living with Mental Health Issues,Populations Served,People with Mental Health Issues,5
+,Cause,Mental Health,4
+,Service,Mental Health Disorders Services,3
+,Service,Mental Health Counseling,3
+,Service,Community Mental Health Centers,3
+,NTEE,F: Mental Health & Crisis Intervention,2
+Living with Substance Use Issues,Populations Served,People with Substance Abuse Issues,5
+,Cause,Drug & Alcohol Treatment,4
+,Service,Addiction & Recovery Services,3
+,Service,Substance Abuse Treatment,3
+,Service,Substance Abuse Education & Prevention,3
+,NTEE,"F20: Substance Abuse Dependency, Prevention & Treatment",2
+Parents or Caregivers,Populations Served,Parents,5
+,Populations Served,Caregivers,5
+,Populations Served,Families,3
+,Cause,Children & Family Services,4
+,Service,Parenting Classes & Education,3
+,Service,Family & Friends Support Services,3
+,NTEE,P40: Family Services,2
+Senior,Populations Served,Seniors,5
+,Populations Served,Retired People,3
+,Cause,Seniors,4
+,Service,Senior Services & Programs,3
+,Service,Senior Centers,3
+,Service,Senior Support Education & Training,3
+,NTEE,P81: Senior Centers,2
+,NTEE,L22: Senior Citizens Housing & Retirement Communities,2
+Student,Populations Served,Academics,3
+,Cause,Education,4
+,Service,Student Educational Services,3
+,Service,Scholarships & Financial Aid,3
+,NTEE,B80: Student Services,2
+,NTEE,B82: Scholarships & Student Financial Aid,2
+Veteran or in the Military,Populations Served,Veterans,5
+,Populations Served,Military Personnel,5
+,Cause,Veteran & Military,4
+,Service,Veteran & Military Support Services,3
+,Service,Veteran & Military Associations/Organizations,3
+,NTEE,W30: Military & Veterans Organizations,2

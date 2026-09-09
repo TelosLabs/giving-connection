@@ -1,0 +1,10 @@
+# frozen_string_literal: true
+
+FactoryBot.define do
+  factory :feedback do
+    rating { 4 }
+    category { "search_results" }
+    comment { "Really helpful, thanks!" }
+    page_url { "https://example.com/search" }
+  end
+end

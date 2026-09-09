@@ -14,12 +14,12 @@ class OrganizationDashboard < Administrate::BaseDashboard
     name: Field::String,
     second_name: Field::String,
     ein_number: UniquenessWarningField,
-    irs_ntee_code: Field::SelectBasic.with_options({
-      choices: Organization::NTEE_CODE
+    irs_ntee_code: Field::Select.with_options({
+      collection: Organization::NTEE_CODE
     }),
     website: Field::String,
-    scope_of_work: Field::SelectBasic.with_options({
-      choices: Organization::SCOPE
+    scope_of_work: Field::Select.with_options({
+      collection: Organization::SCOPE
     }),
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -39,10 +39,25 @@ class OrganizationDashboard < Administrate::BaseDashboard
     active: Field::Boolean,
     verified: Field::Boolean,
     donation_link: Field::String,
+    in_kind_donation_link: Field::String,
+    in_kind_donation_items: InKindDonationItemsField,
     volunteer_link: Field::String,
     volunteer_availability: Field::Boolean,
     organization_causes: Field::NestedHasMany,
-    general_population_serving: ToggleCheckField
+    general_population_serving: ToggleCheckField,
+    # --- Smart Match capability fields (nullable: nil = not yet answered) ---
+    free_or_sliding_scale: Field::Boolean,
+    no_id_required: Field::Boolean,
+    lgbtqia_affirming: Field::Boolean,
+    specific_project_giving: Field::Boolean,
+    accepts_in_kind: Field::Boolean,
+    recurring_giving: Field::Boolean,
+    fundraising_events: Field::Boolean,
+    partnership_opportunities: Field::Boolean,
+    languages: MultiSelectField.with_options(collection: Organizations::Constants::LANGUAGES),
+    volunteer_format: Field::Select.with_options(collection: Organizations::Constants::VOLUNTEER_FORMATS),
+    volunteer_frequency: MultiSelectField.with_options(collection: Organizations::Constants::VOLUNTEER_FREQUENCIES),
+    leadership_attributes: MultiSelectField.with_options(collection: Organizations::Constants::LEADERSHIP_ATTRIBUTES)
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -80,8 +95,22 @@ class OrganizationDashboard < Administrate::BaseDashboard
     general_population_serving
     tags
     donation_link
+    in_kind_donation_link
+    in_kind_donation_items
     volunteer_link
     volunteer_availability
+    free_or_sliding_scale
+    no_id_required
+    lgbtqia_affirming
+    specific_project_giving
+    accepts_in_kind
+    recurring_giving
+    fundraising_events
+    partnership_opportunities
+    languages
+    volunteer_format
+    volunteer_frequency
+    leadership_attributes
     social_media
     locations
   ].freeze
@@ -109,8 +138,22 @@ class OrganizationDashboard < Administrate::BaseDashboard
     general_population_serving
     tags
     donation_link
+    in_kind_donation_link
+    in_kind_donation_items
     volunteer_availability
     volunteer_link
+    free_or_sliding_scale
+    no_id_required
+    lgbtqia_affirming
+    specific_project_giving
+    accepts_in_kind
+    recurring_giving
+    fundraising_events
+    partnership_opportunities
+    languages
+    volunteer_format
+    volunteer_frequency
+    leadership_attributes
     organization_causes
     social_media
     locations

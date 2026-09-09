@@ -1,0 +1,71 @@
+<%#
+  "How we matched you" — every answer the user gave, and how the shown results
+  measure up.
+
+  This exists for honesty about incomplete data. Most capability fields ship
+  empty and fill in only as organizations update their profiles, so a user who
+  asked for wheelchair-accessible services would otherwise have no way to tell
+  whether these results are accessible or whether nobody has said. Four states,
+  because "does not offer this" and "has not told us" are different answers and
+  only one of them means the user should look elsewhere.
+
+  Collapsed by default: it is reassurance for the people who want it, not the
+  headline. Once opened it STAYS open across "Show more" clicks, which replace
+  this panel along with the cards -- see persistent_details_controller.
+%>
+<% return if criteria.blank? %>
+
+<details class="mb-6 bg-white border rounded-lg border-gray-6 group"
+         data-controller="persistent-details"
+         data-persistent-details-key-value="smart-match-criteria"
+         data-action="toggle->persistent-details#save">
+  <summary class="flex items-center justify-between px-5 py-4 cursor-pointer list-none">
+    <span class="text-sm font-semibold text-gray-2">
+      <%= t("smart_match.results.criteria.title") %>
+    </span>
+    <span class="flex items-center gap-3">
+      <%# Counts partial matches, not just full ones. Counting only "fully
+          matched" read as 1 of 12 even when most criteria were partly met,
+          which made the engine look broken rather than selective. %>
+      <span class="text-xs font-medium text-gray-4">
+        <%= t("smart_match.results.criteria.summary",
+              matched: criteria.count(&:matched?), total: criteria.size) %>
+      </span>
+      <span class="text-gray-4 transition-transform group-open:rotate-180" aria-hidden="true">▾</span>
+    </span>
+  </summary>
+
+  <div class="px-5 pt-1 pb-5 border-t border-gray-6">
+    <p class="mt-3 mb-4 text-sm text-gray-4">
+      <%= t("smart_match.results.criteria.intro", count: criteria.size) %>
+    </p>
+
+    <ul class="space-y-2">
+      <% criteria.each do |criterion| %>
+        <% style = smart_match_criterion_style(criterion.status) %>
+        <li class="flex items-start justify-between gap-4 text-sm">
+          <span class="flex items-start gap-2">
+            <span class="<%= style[:classes] %> font-bold leading-5" aria-hidden="true"><%= style[:icon] %></span>
+            <span class="sr-only"><%= style[:aria] %></span>
+            <span class="text-gray-2">
+              <%= smart_match_criterion_label(criterion.question, criterion.answer) %>
+            </span>
+          </span>
+
+          <%# Qualitative, not "1 of 3 matches". The raw count invited the
+              reading that the engine had failed twice, when a partial match
+              across a shortlist is the normal, useful outcome. %>
+          <span class="shrink-0 text-xs text-gray-4">
+            <%= t("smart_match.results.criteria.status.#{criterion.status}") %>
+          </span>
+        </li>
+      <% end %>
+    </ul>
+
+    <% if criteria.any? { |c| c.status == "unknown" } %>
+      <p class="pt-3 mt-4 text-xs border-t text-gray-4 border-gray-6">
+        <%= t("smart_match.results.criteria.unknown_note") %>
+      </p>
+    <% end %>
+  </div>
+</details>

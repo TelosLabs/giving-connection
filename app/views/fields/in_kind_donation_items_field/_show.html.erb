@@ -1,0 +1,9 @@
+<% if field.selected_labels.any? %>
+  <ul class="list-disc list-inside">
+    <% field.selected_labels.each do |item_label| %>
+      <li><%= item_label %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <span class="text-gray-400">None selected</span>
+<% end %>
