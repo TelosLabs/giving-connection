@@ -1,0 +1,37 @@
+Smart Match Answer,Field,Preset Match,Weight
+Kids or seniors,Populations Served,Children & Youth,5
+,Populations Served,Individuals Under 21,5
+,Populations Served,Non-Adults,5
+,Populations Served,Seniors,5
+,Cause,Children & Family Services,4
+,Cause,Youth Development,4
+,Cause,Seniors,4
+,Service,Youth Specific Services,3
+,Service,Senior Services & Programs,3
+,NTEE,P30: Children & Youth Services,2
+,NTEE,P81: Senior Centers,2
+Veterans / military families,Populations Served,Veterans,5
+,Populations Served,Military Personnel,5
+,Populations Served,Families,3
+,Cause,Veteran & Military,4
+,Service,Veteran & Military Support Services,3
+,Service,Veteran Family Member Benefits,3
+,NTEE,W30: Military & Veterans Organizations,2
+Spanish-speaking,Language,Spanish,5
+Grassroots / BIPOC-led,Populations Served,Indigenous Peoples,5
+,Populations Served,People of African Descent,5
+,Populations Served,People of Asian Descent,5
+,Populations Served,People of Latin American Descent,5
+,Populations Served,People of Middle Eastern Descent,5
+,Populations Served,People of all Racial Minority Groups,5
+,Populations Served,Multiracial People,5
+,Cause,Race & Ethnicity,4
+,Service,Racial Equity & Equality Advocacy,3
+,Service,Racial Justice Advocacy & Policy,3
+,NTEE,R22: Minority Rights,2
+,NTEE,R30: Intergroup & Race Relations,2
+Behind the scenes,—,No reliable preset match,—
+Accessible or virtual,—,No reliable preset match,—
+Family or group,Populations Served,Families,3
+,Service,Volunteer Associations,2
+,Cause,Children & Family Services,2

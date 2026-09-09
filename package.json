@@ -2,7 +2,7 @@
   "name": "giving-connection",
   "private": true,
   "dependencies": {
-    "@babel/core": "^7.25.2",
+    "@babel/core": "^7.29.6",
     "@babel/preset-env": "^7.25.4",
     "@hotwired/stimulus": "^3.0.1",
     "@hotwired/stimulus-webpack-helpers": "^1.0.1",
@@ -26,7 +26,7 @@
     "flatpickr": "^4.6.13",
     "fuse.js": "^7.1.0",
     "mini-css-extract-plugin": "^2.9.1",
-    "postcss": "^8.4.45",
+    "postcss": "^8.5.23",
     "postcss-loader": "^8.1.1",
     "sass": "^1.78.0",
     "sass-loader": "^16.0.1",
