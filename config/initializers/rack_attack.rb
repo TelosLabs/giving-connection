@@ -37,6 +37,7 @@ class Rack::Attack
       suspicious_domain: 5.minutes,    # Instead of 1 hour
       login: 20.seconds,               # Keep as is for login
       blog_anonymous: 5.minutes,
+      feedback: 5.minutes,
       smart_match_quiz: 5.minutes,
       smart_match_results: 5.minutes,
       smart_match_result_status: 5.minutes
@@ -47,6 +48,7 @@ class Rack::Attack
       suspicious_domain: 1.second,    # Effectively disable throttling
       login: 1.second,                # Effectively disable throttling
       blog_anonymous: 1.second,
+      feedback: 1.second,
       smart_match_quiz: 1.second,
       smart_match_results: 1.second,
       smart_match_result_status: 1.second
@@ -57,6 +59,7 @@ class Rack::Attack
       suspicious_domain: 1.hour,
       login: 20.seconds,
       blog_anonymous: 1.hour,
+      feedback: 1.hour,
       smart_match_quiz: 1.hour,
       smart_match_results: 1.hour,
       smart_match_result_status: 1.hour
@@ -216,6 +219,22 @@ class Rack::Attack
         req.remote_ip
       end
     end
+  end
+
+  ### Prevent Feedback Spam ###
+
+  def self.feedback_discriminator(req)
+    return unless req.path == "/feedbacks" && req.post?
+
+    user = req.env["warden"]&.user(:user)
+    discriminator = user ? "user:#{user.id}" : req.remote_ip
+
+    Rails.logger.info "[Rack::Attack] Feedback submission from: #{discriminator}" if Rails.env.development?
+    discriminator
+  end
+
+  throttle("feedbacks", limit: 10, period: THROTTLE_PERIODS[:feedback]) do |req|
+    Rack::Attack.feedback_discriminator(req)
   end
 
   ### Prevent Smart Match Abuse ###

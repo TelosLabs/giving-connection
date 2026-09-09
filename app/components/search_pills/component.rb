@@ -7,11 +7,12 @@ class SearchPills::Component < ApplicationViewComponent
     @current_location = current_location
     @beneficiary_subcategories = beneficiary_subcategories
     @params = params
-    @tabs_labels = ["Causes", "Location", "Services", "Populations Served", "Hours"]
+    @tabs_labels = ["Causes", "Location", "Services", "Populations Served", "Hours", "Give"]
     @radii_in_miles = [2, 5, 15, 30, 60, 180, "Any"]
     @tooltips = {
       "Causes" => "The broad issue areas or missions that the nonprofit supports.",
-      "Services" => "The specific programs or activities the nonprofit offers to the community."
+      "Services" => "The specific programs or activities the nonprofit offers to the community.",
+      "Give" => "Ways you can support the nonprofit: donations, volunteering, or in-kind donations."
     }
   end
 

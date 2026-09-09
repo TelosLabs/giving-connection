@@ -19,12 +19,11 @@ module SelectMultiple
         class: "relative flex flex-wrap w-full mt-1 text-base border cursor-text min-h-46px rounded-6px text-gray-3",
         data: {
           controller: "#{@stimulus_controller} extend-dropdown",
-          action: "click->#{@stimulus_controller}#focus click->extend-dropdown#show click@window->extend-dropdown#hide selectmultiple:clear->#{controller}#clearAll",
+          action: "click->#{@stimulus_controller}#focus click->extend-dropdown#show click@window->extend-dropdown#hide selectmultiple:clear->#{@stimulus_controller}#clearAll",
           "search-target": "customInput",
           form_validation_target: "selectMultiple",
           "#{@stimulus_controller}-target": "container",
-          "extend-dropdown-target": "button",
-          "#{@stimulus_controller}-selected-value": @selected
+          "extend-dropdown-target": "button"
         }
       }.merge(@options) do |key, first_value, repeated_value|
         if key == :data
@@ -33,6 +32,20 @@ module SelectMultiple
           "#{new_value} #{old_value}"
         end
       end
+    end
+
+    def checked?(item)
+      return false if @stimulus_controller == "select-multiple-search"
+
+      @selected.to_a.include?(item)
+    end
+
+    def grouped_items
+      keyed_items? ? @items : @items.sort
+    end
+
+    def keyed_items?
+      @items.is_a?(Hash) && @items.each_value.any?(Hash)
     end
 
     def format_cause_name(name)

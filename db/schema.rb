@@ -457,6 +457,20 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_120000) do
     t.index ["user_id"], name: "index_quiz_submissions_on_user_id"
   end
 
+  create_table "search_terms", force: :cascade do |t|
+    t.string "keyword", null: false
+    t.string "normalized_keyword", null: false
+    t.integer "results_count", default: 0, null: false
+    t.string "origin"
+    t.string "city"
+    t.string "state"
+    t.boolean "filtered", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_search_terms_on_created_at"
+    t.index ["normalized_keyword", "created_at"], name: "index_search_terms_on_normalized_keyword_and_created_at"
+  end
+
   create_table "services", force: :cascade do |t|
     t.string "name"
     t.bigint "cause_id", null: false
@@ -534,7 +548,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_120000) do
   add_foreign_key "favorite_blogs", "users"
   add_foreign_key "favorite_locations", "locations"
   add_foreign_key "favorite_locations", "users"
-  add_foreign_key "feedbacks", "users"
+  add_foreign_key "feedbacks", "users", on_delete: :nullify
+
   add_foreign_key "import_logs", "admin_users"
   add_foreign_key "location_services", "locations"
   add_foreign_key "location_services", "services"
