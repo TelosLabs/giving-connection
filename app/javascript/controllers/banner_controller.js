@@ -5,14 +5,18 @@ export default class extends Controller {
     return ["banner"]
   }
 
+  static get values() {
+    return { key: { type: String, default: "banner-session" } }
+  }
+
   initialize() {
-    if (sessionStorage.getItem('banner-session') != 'user-closed') {
-      this.bannerTarget.classList.remove('hidden')
+    if (sessionStorage.getItem(this.keyValue) == 'user-closed') {
+      this.bannerTarget.classList.add('hidden')
     }
   }
 
   closeBanner() {
-    sessionStorage.setItem('banner-session', 'user-closed')
+    sessionStorage.setItem(this.keyValue, 'user-closed')
     this.bannerTarget.classList.add('hidden')
   }
 }

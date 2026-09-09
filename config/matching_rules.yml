@@ -1,0 +1,443 @@
+# Smart Match Engine — Matching Rules Configuration
+#
+# This file defines the rules used by the smart match engine to score and rank
+# organizations against user quiz responses.
+#
+# Cause names MUST match Organizations::Constants::CAUSES_AND_SERVICES keys exactly.
+
+# ---------------------------------------------------------------------------
+# Radius (in miles) by user-selected travel willingness
+# Used by SimilarityQuery for PostGIS ST_DWithin filtering.
+# Progressive expansion: if fewer than 3 results, expand to next bucket.
+# ---------------------------------------------------------------------------
+# Values match the labels users actually see in
+# config/locales/*.yml -> smart_match.quiz.steps.travel.options. They had
+# drifted from the copy (moderate was 15mi under a "5-10 miles" label, far was
+# 30mi under "10+ miles").
+radius_by_travel_bucket:
+  nearby: 5        # "Walking distance only (under 5 miles)"
+  moderate: 10     # "Public transit or rides (5-10 miles)"
+  far: 100         # "Car or ride share available (10+ miles)"
+  # "Remote services only". The token is a leftover name -- see
+  # SmartMatch::Eligibility::REMOTE_ONLY_TRAVEL_BUCKET. This answer is now a
+  # relaxable filter on locations.remote_services rather than a radius, so the
+  # value below is only the fallback used when that filter is relaxed away
+  # (which it will be often until the field has data). Widest radius is the
+  # right fallback: someone who asked for remote services is not constrained
+  # by travel.
+  statewide: 100
+
+# ---------------------------------------------------------------------------
+# Scoring weights — must sum to 1.0
+# ---------------------------------------------------------------------------
+scoring:
+  weights:
+    # Semantic recall -- catches good matches whose tagging is thin.
+    embedding_similarity: 0.45
+    # Deterministic per-answer scoring from config/smart_match_scoring.yml.
+    # Balanced against embedding as a starting point; the split is the open
+    # decision Q1 in docs/smart-match-scoring/05-open-questions.md and is meant
+    # to be tuned against the committed baseline with the client. Raising this
+    # favours predictable, explainable ranking; lowering it favours recall for
+    # sparsely-tagged organizations.
+    rule_score: 0.45
+    # Superseded by rule_score, which scores the same cause/beneficiary/service
+    # signals per answer instead of as four coarse booleans (two of which never
+    # fired -- see docs/smart-match-scoring/03-findings-and-gaps.md#finding-6).
+    # Kept wired at 0.0 for one release as a rollback lever, then removed.
+    attribute_bonus: 0.00
+    distance: 0.10
+  # Fraction of a Populations Served rule's weight credited to an organization
+  # flagged general_population_serving when it has no exact population match.
+  #
+  # Those organizations record no beneficiary subcategories at all (the flag
+  # exists so they don't have to enumerate them), so before this they scored
+  # zero on every population rule -- ranked below any org that ticked a box,
+  # despite serving the user too. "We serve everyone" is a real but weaker
+  # signal than "we specialise in your population", hence a partial credit
+  # rather than a full match. Set to 0 to disable.
+  general_population_credit: 0.5
+  # Minimum number of results to return (triggers radius expansion if not met)
+  min_results: 3
+  # How deep the candidate pool goes: the most organizations SimilarityQuery
+  # will hand to the Scorer, and therefore the most OrganizationMatch rows a
+  # submission can have. This is the ceiling on everything the results page can
+  # ever page through -- see results_display below.
+  #
+  # Every extra candidate costs one RuleScorer pass in ProcessSubmissionJob and
+  # one persisted row carrying its score_breakdown, so this trades job time and
+  # storage for how many options a user can browse. Raised from 20 when the
+  # results page stopped showing a fixed three.
+  max_results: 60
+
+# ---------------------------------------------------------------------------
+# Results page paging (presentation only — does NOT affect ranking or scoring)
+#
+# The first page is the top match tier in full, rather than a fixed number of
+# cards: someone comparing options wants every organization we think is a great
+# fit. Two knobs shape that:
+#
+#   min_visible : the fewest cards a first page may show. Below this the page
+#                 reaches down into the next tier (great -> good -> match), so
+#                 a quiz with two great matches still returns a usable page.
+#   page_size   : cap on the first page, and how many more each "Show more"
+#                 adds. Keeps a 40-great-match quiz from rendering 40 cards
+#                 before the user has asked for them.
+# ---------------------------------------------------------------------------
+results_display:
+  min_visible: 6
+  page_size: 20
+
+# ---------------------------------------------------------------------------
+# Display calibration (presentation only — does NOT affect ranking)
+#
+# Raw scores are dominated by embedding cosine similarity, which is naturally
+# compressed: even an excellent match rarely exceeds ~0.65. That makes the
+# headline percentage read low (a great match shows ~60%). This block linearly
+# rescales the raw score onto a more intuitive percentage band for display.
+#
+# It is a strictly monotonic transform, so the order of results and which
+# organizations are matched are completely unchanged — only the number, label,
+# and progress ring shown on the result card move. Tune the four knobs to taste:
+#   input_floor   : raw score mapped to min_percentage (and anything below)
+#   input_ceiling : raw score mapped to max_percentage (and anything above)
+#   min_percentage / max_percentage : the displayed band, in percent
+# ---------------------------------------------------------------------------
+#
+# PROVISIONAL as of the scoring refinement. The previous 0.38–0.66 window was
+# fitted to an embedding-dominated score, where the raw value was squeezed into
+# a narrow band. Now that rule_score carries 45% of the weight and spans a full
+# 0–1, raw scores spread much wider: an excellent match lands near 0.84
+# (0.45 x ~0.65 embedding + 0.45 x 1.0 rules + 0.10 x 1.0 distance) and a weak
+# one near 0.21. Left unchanged, every strong match would clamp to 95% and
+# every weak one to 52%.
+#
+# These bounds are derived from that arithmetic, NOT fitted to production
+# results -- the committed spec baseline uses synthetic cosine distances and
+# can't stand in for real data. Refit against a sample of real submissions
+# once this is on staging.
+display_calibration:
+  input_floor: 0.25
+  input_ceiling: 0.80
+  min_percentage: 52
+  max_percentage: 95
+
+# ---------------------------------------------------------------------------
+# Attribute bonus weights — applied within the 20% attribute_bonus bucket
+# Each sub-weight is relative (they are normalized internally).
+# ---------------------------------------------------------------------------
+attribute_weights:
+  cause_match: 5        # Org shares a cause the user selected
+  beneficiary_match: 3  # Org serves a beneficiary group matching user profile
+  scope_match: 2        # Org scope_of_work aligns with user travel preference
+  service_match: 1      # Org provides a specific service the user selected
+
+# ---------------------------------------------------------------------------
+# Cause synonyms
+#
+# Each cause maps to:
+#   synonyms: Alternate phrases appended to embedding text for richer matching
+# ---------------------------------------------------------------------------
+cause_mappings:
+  "Advocacy":
+    synonyms:
+      - civil rights
+      - social justice
+      - voter registration
+      - human rights advocacy
+
+  "Animals":
+    synonyms:
+      - animal welfare
+      - pet rescue
+      - wildlife protection
+      - veterinary care
+      - animal shelter
+
+  "Arts & Culture":
+    synonyms:
+      - performing arts
+      - visual arts
+      - museums
+      - cultural programs
+      - art education
+      - music
+
+  "Children & Family Services":
+    synonyms:
+      - child care
+      - foster care
+      - adoption
+      - family counseling
+      - parenting support
+      - child welfare
+
+  "Clothing & Living Essentials":
+    synonyms:
+      - clothing donation
+      - thrift store
+      - basic needs
+      - essential supplies
+      - furniture assistance
+
+  "Community & Economic Development":
+    synonyms:
+      - neighborhood development
+      - economic empowerment
+      - small business
+      - community building
+      - urban development
+
+  "Disability Services":
+    synonyms:
+      - accessibility
+      - developmental disabilities
+      - adaptive services
+      - independent living
+      - disability support
+      - group homes
+
+  "Disaster Relief & Preparedness":
+    synonyms:
+      - emergency response
+      - disaster recovery
+      - first aid
+      - search and rescue
+      - fire prevention
+
+  "Drug & Alcohol Treatment":
+    synonyms:
+      - substance abuse
+      - addiction recovery
+      - rehabilitation
+      - detox
+      - sober living
+      - recovery support
+
+  "Education":
+    synonyms:
+      - schools
+      - tutoring
+      - scholarships
+      - adult education
+      - literacy
+      - special education
+      - libraries
+
+  "Emergency & Safety":
+    synonyms:
+      - crime prevention
+      - domestic violence
+      - child abuse prevention
+      - consumer protection
+      - public safety
+
+  "Employment":
+    synonyms:
+      - job training
+      - career services
+      - vocational rehabilitation
+      - workforce development
+      - job placement
+
+  "Environment":
+    synonyms:
+      - conservation
+      - recycling
+      - climate change
+      - sustainability
+      - environmental education
+      - clean energy
+
+  "Faith-Based":
+    synonyms:
+      - religious organizations
+      - church
+      - mosque
+      - synagogue
+      - interfaith
+      - spiritual services
+
+  "Health":
+    synonyms:
+      - medical care
+      - community clinic
+      - health services
+      - primary care
+      - public health
+      - hospital
+      - nursing
+
+  "Housing & Homelessness":
+    synonyms:
+      - homeless shelter
+      - affordable housing
+      - housing assistance
+      - rental support
+      - temporary housing
+      - transitional housing
+
+  "Human & Social Services":
+    synonyms:
+      - social services
+      - community outreach
+      - emergency assistance
+      - financial counseling
+      - human services
+      - case management
+
+  "Hunger & Food Security":
+    synonyms:
+      - food bank
+      - food pantry
+      - soup kitchen
+      - nutrition
+      - meals on wheels
+      - food assistance
+
+  "Immigrant & Refugee":
+    synonyms:
+      - immigration services
+      - refugee assistance
+      - citizenship
+      - language learning
+      - multicultural services
+      - human trafficking
+
+  "Inmate & Formerly Incarcerated":
+    synonyms:
+      - reentry services
+      - prison programs
+      - rehabilitation
+      - halfway houses
+      - formerly incarcerated
+      - criminal justice reform
+
+  "International":
+    synonyms:
+      - international development
+      - foreign affairs
+      - international relief
+      - refugee services
+      - global health
+      - peace and security
+
+  "Justice & Legal Services":
+    synonyms:
+      - legal aid
+      - pro bono
+      - dispute resolution
+      - civil rights law
+      - immigration law
+      - public interest law
+
+  "LGBTQ+":
+    synonyms:
+      - LGBTQ community center
+      - LGBTQ advocacy
+      - LGBTQ health
+      - LGBTQ housing
+      - LGBTQ youth
+      - pride
+
+  "Media & Broadcasting":
+    synonyms:
+      - media education
+      - journalism
+      - broadcasting
+      - communications
+      - film and video
+
+  "Mental Health":
+    synonyms:
+      - counseling
+      - therapy
+      - psychiatric care
+      - crisis intervention
+      - suicide prevention
+      - trauma support
+      - mental wellness
+
+  "Philanthropy":
+    synonyms:
+      - grantmaking
+      - foundations
+      - nonprofit support
+      - voluntarism
+      - charitable giving
+      - community foundation
+
+  "Race & Ethnicity":
+    synonyms:
+      - racial equity
+      - diversity and inclusion
+      - anti-discrimination
+      - racial justice
+      - cultural heritage
+
+  "Research & Public Policy":
+    synonyms:
+      - public policy
+      - research institute
+      - policy analysis
+      - think tank
+
+  "Science & Technology":
+    synonyms:
+      - STEM education
+      - computer science
+      - engineering
+      - scientific research
+      - technology development
+
+  "Seniors":
+    synonyms:
+      - senior services
+      - elderly care
+      - aging services
+      - senior center
+      - hospice
+      - retirement
+      - senior housing
+
+  "Social Sciences":
+    synonyms:
+      - sociology
+      - anthropology
+      - political science
+      - economics research
+      - social research
+
+  "Sports & Recreation":
+    synonyms:
+      - youth sports
+      - recreation centers
+      - camps
+      - fitness programs
+      - adaptive sports
+      - parks
+
+  "Transportation":
+    synonyms:
+      - public transit
+      - ride services
+      - transportation assistance
+      - car donation
+
+  "Veteran & Military":
+    synonyms:
+      - veteran services
+      - military families
+      - veteran employment
+      - veteran housing
+      - veteran health
+      - VA benefits
+
+  "Youth Development":
+    synonyms:
+      - after school programs
+      - youth mentoring
+      - scouting
+      - youth clubs
+      - youth leadership
+      - teen programs

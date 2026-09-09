@@ -8,11 +8,19 @@ Rails.application.routes.draw do
     resources :social_medias, only: %i[new create edit update]
     resources :services, except: %i[destroy]
     resources :causes, only: %i[new create edit update]
-    resources :categories, only: %i[new create edit update]
     resources :locations, except: %i[index]
     resources :location_services, only: %i[show create]
     resources :office_hours, except: %i[index]
     resources :messages, only: %i[index show]
+    resources :feedbacks, only: %i[index show] do
+      member do
+        patch :mark_as_read
+        patch :mark_as_unread
+      end
+      collection do
+        patch :mark_all_as_read
+      end
+    end
     resources :organization_admins
     resources :phone_numbers, except: %i[index]
     resources :newsletters do
@@ -50,6 +58,8 @@ Rails.application.routes.draw do
 
   post "newsletter/signup", to: "newsletters#create", as: :newsletter_signup
   get "newsletter/verify/:token", to: "newsletters#verify", as: :verify_newsletter_subscription
+
+  resources :feedbacks, only: [:create]
 
   get "/nonprofit" => "nonprofit_requests#new", :as => :new_nonprofit_request
   post "/nonprofit" => "nonprofit_requests#create", :as => :create_nonprofit_request
@@ -98,6 +108,15 @@ Rails.application.routes.draw do
   resource :privacy_policy, only: %i[show]
   resource :infowindow, only: :new
   resources :autocomplete, only: %i[index]
+
+  namespace :smart_match do
+    root to: "landing#show"
+    resource :quiz, only: [:show, :update, :destroy]
+    resource :confirmation, only: [:show]
+    resource :result, only: [:show] do
+      get :status, on: :member
+    end
+  end
 
   root to: "home#index"
 
