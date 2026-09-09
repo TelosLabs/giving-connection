@@ -92,11 +92,13 @@ export default class extends Controller {
   }
 
   search(event) {
+    // Plain substring match rather than a built regex: labels contain
+    // characters like "(" (e.g. "Clothing (general)") that would make
+    // new RegExp throw on partially typed queries.
     const query = this.inputTarget.value.toLowerCase()
-    const regex = new RegExp('.*' + query + '.*', 'gmi')
 
     this.checkboxTargets.forEach(checkbox => {
-      if (this.labelFor(checkbox).search(regex) >= 0) {
+      if (this.labelFor(checkbox).toLowerCase().includes(query)) {
         checkbox.parentElement.classList.remove('hidden')
       } else {
         checkbox.parentElement.classList.add('hidden')
