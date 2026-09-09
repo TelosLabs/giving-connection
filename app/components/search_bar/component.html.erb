@@ -15,6 +15,7 @@
           data: {
             action: "input->search#displayClearKeywordButton",
             search_target: "keywordInput",
+            search_tracking_target: "keyword",
           }
         ) %>
       </div>
@@ -37,6 +38,7 @@
         <input
           type="text"
           data-geolocation-target="currentLocation"
+          data-search-tracking-target="location"
           data-autocomplete-target="input"
           value="<%= @current_location[:city]&.presence %>"
           placeholder="City or ZIP"
