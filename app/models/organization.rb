@@ -181,7 +181,7 @@ class Organization < ApplicationRecord
     validate_vocabulary(:volunteer_frequency, Organizations::Constants::VOLUNTEER_FREQUENCIES)
     validate_vocabulary(:leadership_attributes, Organizations::Constants::LEADERSHIP_ATTRIBUTES)
 
-    return if volunteer_format.nil?
+    return if volunteer_format.blank?
     return if Organizations::Constants::VOLUNTEER_FORMATS.include?(volunteer_format)
 
     errors.add(:volunteer_format, "is not a supported value")
