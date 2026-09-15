@@ -73,6 +73,33 @@ RSpec.describe "Rack::Attack configuration" do
     end
   end
 
+  describe ".feedback_discriminator" do
+    def request_for(path: "/feedbacks", method: "POST", user: nil)
+      env = {
+        "PATH_INFO" => path,
+        "REQUEST_METHOD" => method,
+        "action_dispatch.remote_ip" => "203.0.113.7"
+      }
+      env["warden"] = instance_double(Warden::Proxy, user: user) if user
+      Rack::Attack::Request.new(env)
+    end
+
+    it "buckets anonymous submissions by client IP" do
+      expect(Rack::Attack.feedback_discriminator(request_for)).to eq("203.0.113.7")
+    end
+
+    it "buckets signed-in submissions by user id" do
+      user = instance_double(User, id: 42)
+
+      expect(Rack::Attack.feedback_discriminator(request_for(user: user))).to eq("user:42")
+    end
+
+    it "ignores anything that is not a POST to /feedbacks" do
+      expect(Rack::Attack.feedback_discriminator(request_for(method: "GET"))).to be_nil
+      expect(Rack::Attack.feedback_discriminator(request_for(path: "/organizations"))).to be_nil
+    end
+  end
+
   describe "req/ip throttle path exclusions" do
     it "excludes framework-served paths that a single page load fans out into" do
       %w[/assets/app.js /rails/active_storage/blobs/x /packs/y /cable /up].each do |path|

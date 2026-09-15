@@ -1,0 +1,39 @@
+<% content_for(:title) do %>
+  <%= display_resource_name(page.resource_name) %>
+<% end %>
+
+<% unread_count = Feedback.unread.count %>
+
+<header class="main-content__header">
+  <h1 class="main-content__page-title" id="page-title">
+    <%= content_for(:title) %>
+    <% if unread_count.positive? %>
+      <span class="text-blue-medium">(<%= unread_count %> unread)</span>
+    <% end %>
+  </h1>
+
+  <% if show_search_bar %>
+    <%= render(
+      "search",
+      search_term: search_term,
+      resource_name: display_resource_name(page.resource_name)
+    ) %>
+  <% end %>
+
+  <div>
+    <% if unread_count.positive? %>
+      <%= button_to(
+        "Mark all as read",
+        mark_all_as_read_admin_feedbacks_path,
+        method: :patch,
+        class: "button",
+        form: { style: "display:inline-block" },
+        data: { confirm: "Mark all #{unread_count} unread feedback as read?" }
+      ) %>
+    <% end %>
+    <%# Carry the active search/filter into the export so it matches the rows on screen. %>
+    <%= link_to("Download CSV",
+          admin_feedbacks_path(format: :csv, search: search_term.presence),
+          class: "button") %>
+  </div>
+</header>

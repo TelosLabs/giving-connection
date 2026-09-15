@@ -57,6 +57,7 @@ class User < ApplicationRecord
   has_many :administrated_organizations, through: :organization_admin, source: :organization
 
   has_many :blogs, dependent: :nullify
+  has_many :feedbacks, dependent: :nullify
   has_many :blog_likes, dependent: :destroy
   has_many :liked_blogs, through: :blog_likes, source: :blog
   has_many :comments, dependent: :destroy

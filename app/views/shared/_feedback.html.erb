@@ -1,0 +1,157 @@
+<%#
+  Floating feedback widget.
+  Closed state: a bubble button + "Have any feedback?" tooltip.
+  Open state: the feedback form panel (rating faces + category + comment).
+  Submits to FeedbacksController#create, which persists the feedback.
+
+  Locals (all optional):
+    context     - identifies the entry point (e.g. "search", "organization", "discover")
+    question    - the rating question shown above the emoji faces
+    exit_intent - when true, the form opens automatically when the user is about
+                  to leave the page (unless they already sent feedback)
+%>
+<% context     = local_assigns.fetch(:context, "search") %>
+<% question    = local_assigns.fetch(:question, "How was your experience searching for a nonprofit?") %>
+<% exit_intent = local_assigns.fetch(:exit_intent, false) %>
+<% category_options = Feedback::CATEGORY_OPTIONS %>
+<div data-controller="feedback"
+     data-action="click@window->feedback#closeDropdownOutside turbo:before-cache@document->feedback#beforeCache"
+     data-feedback-exit-intent-value="<%= exit_intent %>"
+     class="fixed bottom-6 right-6 z-50 flex flex-col items-end motion-safe:transition-[bottom,right] motion-safe:duration-200">
+
+  <%# Dark overlay, shown only when the form opens as a centered modal (exit case) %>
+  <div data-feedback-target="backdrop" data-action="click->feedback#close"
+       class="fixed inset-0 z-40 hidden bg-black/50"></div>
+
+  <%# ---------- Closed: trigger (tooltip + button) ---------- %>
+  <div data-feedback-target="trigger" class="flex items-center gap-2">
+    <%# "Have any feedback?" prompt tooltip %>
+    <div data-feedback-target="tooltip">
+      <%= render "shared/feedback_tooltip",
+            title: "Have any feedback?",
+            dismiss_action: "click->feedback#dismissTooltip" %>
+    </div>
+
+    <%# Bubble button %>
+    <button type="button" aria-label="Give feedback" data-action="click->feedback#open"
+            class="flex h-11 w-11 items-center justify-center rounded-[8px] bg-blue-dark drop-shadow-md">
+      <%= inline_svg_tag "feedback_bubble.svg", class: "h-[30px] w-[30px]" %>
+    </button>
+  </div>
+
+  <%# ---------- Open: form panel ---------- %>
+  <%# Desktop (sm and up) renders a compact version of the panel %>
+  <div data-feedback-target="panel"
+       class="hidden w-[calc(100vw_-_2rem)] max-w-[390px] rounded-2xl border border-blue-medium bg-white px-4 py-6 drop-shadow-[0px_4px_7.5px_rgba(0,0,0,0.15)] sm:max-w-[292px] sm:rounded-xl sm:px-3 sm:py-[18px]">
+    <%= form_with url: feedbacks_path, method: :post,
+          data: { action: "turbo:submit-start->feedback#disableSubmit turbo:submit-end->feedback#afterSubmit" },
+          class: "flex flex-col gap-2 sm:gap-1.5" do |f| %>
+      <%= hidden_field_tag "feedback[rating]", "", data: { feedback_target: "ratingInput" } %>
+      <%= hidden_field_tag "feedback[context]", context %>
+      <%= hidden_field_tag "feedback[page_url]", request.original_url %>
+
+      <div class="hidden" aria-hidden="true">
+        <%= label_tag "feedback_website", "Leave this field blank" %>
+        <%# Field name is hardcoded on purpose: FeedbacksController owns the
+            matching HONEYPOT_FIELD constant, a shared view should not reach
+            into a controller for it. %>
+        <%= text_field_tag "feedback[website]", nil,
+              id: "feedback_website", tabindex: -1, autocomplete: "off" %>
+      </div>
+
+      <div class="flex items-start justify-between gap-2">
+        <h2 class="text-2xl font-bold text-blue-dark sm:text-lg">Please tell us about your experience</h2>
+        <button type="button" aria-label="Close feedback form" data-action="click->feedback#close"
+                class="-mr-1 -mt-1 shrink-0 rounded-[4px] p-1 text-gray-4 transition-colors hover:bg-gray-8 hover:text-gray-2 sm:p-0.5">
+          <%= inline_svg_tag "x-icon.svg", class: "h-3.5 w-3.5 sm:h-3 sm:w-3", aria_hidden: true %>
+        </button>
+      </div>
+
+      <%# Rating faces %>
+      <div class="flex flex-col gap-1 border-b border-gray-7 pb-4 sm:pb-3">
+        <p class="text-base font-medium leading-8 text-gray-2 sm:text-xs sm:leading-6"><%= question %></p>
+        <%# Each face gets an equal share of the row (flex-1) so they always
+            span the full width; the emoji scales down to fit on mobile. %>
+        <div class="flex items-center">
+          <% Feedback::RATING_OPTIONS.each do |rating, (label, icon)| %>
+            <button type="button" data-feedback-target="face" data-rating="<%= rating %>"
+                    data-action="click->feedback#selectRating"
+                    aria-pressed="false" aria-label="<%= label %>" title="<%= label %>"
+                    class="flex flex-1 items-center justify-center rounded-[8px] p-1 transition-colors hover:bg-gray-8 xs:p-2 sm:p-1.5">
+              <%= inline_svg_tag icon, class: "aspect-square w-full max-w-[57px] sm:max-w-[43px]" %>
+            </button>
+          <% end %>
+        </div>
+      </div>
+
+      <%# Category (custom dropdown so options can show an icon) %>
+      <div class="flex flex-col gap-1 border-b border-gray-7 pb-4 sm:pb-3">
+        <p class="text-base font-medium leading-8 text-gray-2 sm:text-xs sm:leading-6">What would you like to give feedback about?</p>
+        <%# Not a native <select> because each option carries an icon, so the
+            listbox semantics and keyboard handling are wired up by hand: the
+            trigger owns aria-expanded, feedback_controller handles Escape and
+            the arrow keys. %>
+        <div class="relative" data-feedback-target="dropdown"
+             data-action="keydown->feedback#dropdownKeydown">
+          <%= hidden_field_tag "feedback[category]", "", data: { feedback_target: "categoryInput" } %>
+          <button type="button" data-action="click->feedback#toggleDropdown"
+                  data-feedback-target="dropdownButton"
+                  aria-haspopup="listbox" aria-expanded="false"
+                  aria-controls="feedback_category_listbox"
+                  class="flex w-full items-center justify-between rounded-6px border border-gray-5 px-4 py-3 text-base sm:px-3 sm:py-[9px] sm:text-xs">
+            <span data-feedback-target="dropdownLabel" class="flex items-center gap-2 text-gray-4 sm:gap-1.5">Select an option...</span>
+            <svg class="h-5 w-5 shrink-0 text-gray-4 sm:h-4 sm:w-4" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="feedback_category_listbox" role="listbox" tabindex="-1"
+               aria-label="What would you like to give feedback about?"
+               data-feedback-target="dropdownMenu"
+               class="absolute z-10 mt-1 hidden max-h-64 w-full overflow-auto rounded-6px border border-gray-5 bg-white py-1 drop-shadow-md sm:max-h-48">
+            <% category_options.each do |value, (label, icon)| %>
+              <button type="button" role="option" aria-selected="false"
+                      data-action="click->feedback#selectCategory"
+                      data-feedback-target="option" data-value="<%= value %>"
+                      class="flex w-full items-center gap-2 px-4 py-2 text-left text-base text-gray-2 hover:bg-gray-8 focus:bg-gray-8 focus:outline-none sm:gap-1.5 sm:px-3 sm:py-1.5 sm:text-xs">
+                <% if icon %>
+                  <%= inline_svg_tag icon, class: "h-5 w-5 shrink-0 sm:h-4 sm:w-4", aria_hidden: true %>
+                <% else %>
+                  <span class="h-5 w-5 shrink-0 sm:h-4 sm:w-4" aria-hidden="true"></span>
+                <% end %>
+                <%= label %>
+              </button>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <%# Comment %>
+      <div class="flex flex-col gap-1">
+        <div class="flex items-center justify-between leading-8 sm:leading-6">
+          <p class="text-base font-medium text-gray-2 sm:text-xs">Leave a comment</p>
+          <p class="text-sm text-gray-4 sm:text-[11px]">(Optional)</p>
+        </div>
+        <%= text_area_tag "feedback[comment]", nil, rows: 4,
+              placeholder: "Tell us more about your experience...",
+              class: "h-[108px] w-full resize-y rounded-6px border border-gray-5 px-4 py-3 text-base text-gray-2 placeholder:text-gray-4 focus:border-blue-medium focus:ring-blue-medium sm:h-[81px] sm:px-3 sm:py-[9px] sm:text-xs" %>
+      </div>
+
+      <%# Shown by the controller when the POST fails (throttled or 5xx), so a
+          failed submit is never silent. %>
+      <p data-feedback-target="error" role="alert"
+         class="hidden text-sm font-medium text-red-700 sm:text-xs">
+        Something went wrong, please try again.
+      </p>
+
+      <%# Actions %>
+      <div class="flex items-center justify-end gap-2 sm:gap-1.5">
+        <button type="button" data-action="click->feedback#close"
+                class="px-1 py-1 text-base font-semibold text-blue-dark sm:text-xs">Cancel</button>
+        <button type="submit" data-feedback-target="submit" disabled
+                class="cursor-not-allowed rounded-6px bg-gray-4 px-4 py-2 text-base font-bold text-white opacity-60 disabled:cursor-not-allowed sm:px-3 sm:py-1.5 sm:text-xs">
+          Submit
+        </button>
+      </div>
+    <% end %>
+  </div>
+</div>

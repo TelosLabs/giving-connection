@@ -1,0 +1,46 @@
+<div style="margin: 0px; margin-top: 32px;">
+  <p style="margin: 0px; font-size: 22px;">Someone left feedback on Giving Connection.</p>
+</div>
+
+<div style="margin-top: 24px; padding: 24px; background-color: #EFF2F7; border-radius: 5px;">
+  <p style="margin: 0px; font-size: 16px;">
+    <strong>Rating:</strong> <%= @feedback.rating_label %> (<%= @feedback.rating %>/5)
+  </p>
+  <p style="margin: 0px; margin-top: 12px; font-size: 16px;">
+    <strong>Feedback about:</strong> <%= @feedback.category_label || "Not specified" %>
+  </p>
+  <p style="margin: 0px; margin-top: 12px; font-size: 16px;">
+    <strong>From:</strong> <%= @feedback.email.presence || "Anonymous visitor" %>
+  </p>
+  <% if @feedback.context.present? %>
+    <p style="margin: 0px; margin-top: 12px; font-size: 16px;">
+      <strong>Where:</strong> <%= @feedback.context %>
+    </p>
+  <% end %>
+  <% if @feedback.page_url.present? %>
+    <p style="margin: 0px; margin-top: 12px; font-size: 16px; word-break: break-all;">
+      <strong>Page:</strong> <a href="<%= @feedback.page_url %>" target="_blank" style="color: #0782D0;"><%= @feedback.page_url %></a>
+    </p>
+  <% end %>
+  <% if @feedback.created_at.present? %>
+    <p style="margin: 0px; margin-top: 12px; font-size: 16px;">
+      <strong>Submitted:</strong> <%= @feedback.created_at.strftime("%B %-d, %Y at %-I:%M %p %Z") %>
+    </p>
+  <% end %>
+</div>
+
+<div style="margin-top: 24px;">
+  <p style="margin: 0px; font-size: 16px; font-weight: 700;">Comment</p>
+  <% if @feedback.comment.present? %>
+    <p style="margin: 0px; margin-top: 8px; font-size: 16px; white-space: pre-wrap;"><%= @feedback.comment %></p>
+  <% else %>
+    <p style="margin: 0px; margin-top: 8px; font-size: 16px; color: #6b7280;">No comment was left.</p>
+  <% end %>
+</div>
+
+<% if @feedback.persisted? %>
+  <div style="margin-top: 32px; text-align: center;">
+    <%= link_to "VIEW IN ADMIN", admin_feedback_url(@feedback), target: "_blank",
+          style: "display: inline-block; padding: 10px 20px; font-weight: 700; text-decoration: none; white-space: nowrap; background: #0782D0; border-radius: 6px; color: white;" %>
+  </div>
+<% end %>

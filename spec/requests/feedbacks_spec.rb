@@ -1,0 +1,143 @@
+# frozen_string_literal: true
+
+require "rails_helper"
+
+RSpec.describe "Feedbacks", type: :request do
+  let(:turbo_headers) { {"Accept" => "text/vnd.turbo-stream.html"} }
+  let(:valid_params) do
+    {feedback: {rating: 5, category: "search_results", comment: "Great!", context: "search"}}
+  end
+
+  before { allow(Rack::Attack).to receive(:enabled).and_return(false) }
+
+  describe "POST /feedbacks" do
+    context "with a valid rating (turbo_stream)" do
+      it "persists the feedback and returns a success stream" do
+        expect do
+          post feedbacks_path, params: valid_params, headers: turbo_headers
+        end.to change(Feedback, :count).by(1)
+
+        expect(response).to have_http_status(:ok)
+        expect(response.media_type).to eq("text/vnd.turbo-stream.html")
+        expect(Feedback.last.rating).to eq(5)
+      end
+    end
+
+    context "with an invalid rating (turbo_stream)" do
+      it "does not persist and returns 422" do
+        expect do
+          post feedbacks_path, params: {feedback: {rating: nil}}, headers: turbo_headers
+        end.not_to change(Feedback, :count)
+
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+
+    context "html format" do
+      it "redirects back to the fallback location on success" do
+        post feedbacks_path, params: valid_params, headers: {"Referer" => "/search"}
+        expect(response).to have_http_status(:found)
+        expect(response).to redirect_to("/search")
+      end
+    end
+
+    context "page_url" do
+      it "falls back to the referer when no page_url is submitted" do
+        post feedbacks_path, params: valid_params, headers: turbo_headers.merge("Referer" => "http://www.example.com/search")
+        expect(Feedback.last.page_url).to eq("http://www.example.com/search")
+      end
+
+      it "keeps a submitted page_url pointing at this host" do
+        params = valid_params.deep_merge(feedback: {page_url: "http://www.example.com/explicit"})
+        post feedbacks_path, params: params, headers: turbo_headers
+        expect(Feedback.last.page_url).to eq("http://www.example.com/explicit")
+      end
+
+      # page_url is rendered as a link in the admin notification email, so an
+      # off-site URL would turn the widget into a phishing relay.
+      it "drops a page_url pointing at another host" do
+        params = valid_params.deep_merge(feedback: {page_url: "https://evil.example/phish"})
+        post feedbacks_path, params: params, headers: turbo_headers
+
+        expect(response).to have_http_status(:ok)
+        expect(Feedback.last.page_url).to be_nil
+      end
+
+      it "drops a referer pointing at another host" do
+        post feedbacks_path, params: valid_params, headers: turbo_headers.merge("Referer" => "https://evil.example/phish")
+        expect(Feedback.last.page_url).to be_nil
+      end
+
+      it "drops a non-http page_url" do
+        params = valid_params.deep_merge(feedback: {page_url: "javascript:alert(1)"})
+        post feedbacks_path, params: params, headers: turbo_headers
+        expect(Feedback.last.page_url).to be_nil
+      end
+    end
+
+    context "honeypot" do
+      let(:honeypot_params) do
+        valid_params.deep_merge(feedback: {FeedbacksController::HONEYPOT_FIELD => "http://spam.example"})
+      end
+
+      it "silently drops the submission when the honeypot is filled in" do
+        expect do
+          post feedbacks_path, params: honeypot_params, headers: turbo_headers
+        end.not_to change(Feedback, :count)
+      end
+
+      it "still answers with success so bots cannot detect the trap" do
+        post feedbacks_path, params: honeypot_params, headers: turbo_headers
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include(FeedbacksController::SUCCESS_MESSAGE)
+      end
+
+      it "does not email the admins" do
+        expect do
+          post feedbacks_path, params: honeypot_params, headers: turbo_headers
+        end.not_to have_enqueued_mail(FeedbackMailer, :admin_notification)
+      end
+    end
+
+    context "user association" do
+      it "associates the feedback with the signed-in user" do
+        user = create(:user)
+        login_as(user, scope: :user)
+        post feedbacks_path, params: valid_params, headers: turbo_headers
+        expect(Feedback.last.user).to eq(user)
+      end
+
+      it "leaves the user nil for anonymous submissions" do
+        post feedbacks_path, params: valid_params, headers: turbo_headers
+        expect(Feedback.last.user).to be_nil
+      end
+    end
+
+    context "admin notification" do
+      it "emails the admin when the feedback is saved" do
+        expect do
+          post feedbacks_path, params: valid_params, headers: turbo_headers
+        end.to have_enqueued_mail(FeedbackMailer, :admin_notification)
+      end
+
+      it "does not email when the feedback is invalid" do
+        expect do
+          post feedbacks_path, params: {feedback: {rating: nil}}, headers: turbo_headers
+        end.not_to have_enqueued_mail(FeedbackMailer, :admin_notification)
+      end
+
+      it "still confirms the submission when delivery cannot be enqueued" do
+        allow(FeedbackMailer).to receive(:admin_notification).and_raise(Redis::CannotConnectError)
+        allow(Rollbar).to receive(:error)
+
+        expect do
+          post feedbacks_path, params: valid_params, headers: turbo_headers
+        end.to change(Feedback, :count).by(1)
+
+        expect(response).to have_http_status(:ok)
+        expect(Rollbar).to have_received(:error)
+      end
+    end
+  end
+end

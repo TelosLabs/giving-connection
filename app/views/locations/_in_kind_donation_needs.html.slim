@@ -1,0 +1,14 @@
+- organization = location.organization.decorate
+- items = organization.in_kind_donation_items
+- donation_link = organization.in_kind_donation_link
+- if donation_link.present? || items.any?
+  div class="my-7 border-t border-gray-8"
+  h3 class="mb-3.5 text-sm font-bold uppercase"
+    | In-Kind Donation Needs
+  - if items.any?
+    ul class="mt-4 flex flex-wrap gap-2"
+      - items.each do |item|
+        li class="rounded-full bg-gray-9 px-3 py-1 text-xs font-medium text-gray-3"
+          = item
+  - if donation_link.present?
+    = link_to "View in-kind donation needs", redirect_path(target_url: donation_link), target: "_blank", rel: "noopener", class: "inline-flex items-center text-sm font-semibold text-blue-medium hover:text-blue-dark", data: {nonprofit_id: location.id, button_name: "in_kind_donation", name: location.name}

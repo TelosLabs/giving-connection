@@ -1,0 +1,25 @@
+<div class="field-unit__label">
+  <%= f.label field.attribute %>
+</div>
+
+<div class="field-unit__field">
+  <% field_name = "#{f.object_name}[#{field.attribute}][]" %>
+  <%= hidden_field_tag field_name, "" %>
+  <% field.item_groups.each do |group, items| %>
+    <fieldset class="mb-5">
+      <legend class="font-bold mb-4"><%= group %></legend>
+
+      <div class="grid gap-2 sm:grid-cols-2">
+        <% items.each do |item_key, item_label| %>
+          <% checkbox_id = "#{f.object_name}_#{field.attribute}_#{item_key}" %>
+          <span class="flex items-center gap-x-1.5">
+            <%= check_box_tag field_name, item_key, field.selected_items.include?(item_key),
+              id: checkbox_id, class: "admin-panel-population m-0" %>
+
+            <%= label_tag checkbox_id, item_label, class: "font-normal" %>
+          </span>
+        <% end %>
+      </div>
+    </fieldset>
+  <% end %>
+</div>
