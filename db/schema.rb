@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_27_120000) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_15_230000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
+  enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
-  enable_extension "plpgsql"
   enable_extension "postgis"
   enable_extension "vector"
 
@@ -411,6 +411,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_120000) do
     t.string "volunteer_format"
     t.string "volunteer_frequency", array: true
     t.string "leadership_attributes", array: true
+    t.index ["active"], name: "index_organizations_on_active"
     t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
     t.index ["ein_number"], name: "index_organizations_on_ein_number"
     t.index ["languages"], name: "index_organizations_on_languages", using: :gin
@@ -549,7 +550,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_27_120000) do
   add_foreign_key "favorite_locations", "locations"
   add_foreign_key "favorite_locations", "users"
   add_foreign_key "feedbacks", "users", on_delete: :nullify
-
   add_foreign_key "import_logs", "admin_users"
   add_foreign_key "location_services", "locations"
   add_foreign_key "location_services", "services"
