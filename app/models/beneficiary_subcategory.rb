@@ -16,6 +16,10 @@ class BeneficiarySubcategory < ApplicationRecord
 
   belongs_to :beneficiary_group
 
+  # Adding/renaming a subcategory changes the cached groups-to-subcategories hash even though
+  # the BeneficiaryGroup record itself didn't change.
+  after_commit -> { Rails.cache.delete_multi(%w[search_pills/beneficiary_groups select_multiple/beneficiary_groups_with_subcategories]) }
+
   def self.top(limit: 10)
     find(top_organization_subcategories_ids(limit: limit))
   end
