@@ -36,8 +36,7 @@ class Search
     @results = (city == "Search all") ? Location.active : geolocation_query
 
     # Filter and keyword search
-    filtered_ids = Locations::FilterQuery.call(filters, @results).ids
-    @results = Location.joins(:organization).where(id: filtered_ids)
+    @results = Location.joins(:organization).where(id: Locations::FilterQuery.call(filters, @results))
     # Order by how many "Give" pills each location matches, but only for give
     # searches with no keyword: this would otherwise outrank pg_search's
     # relevance ordering on every keyword search.
@@ -71,10 +70,9 @@ class Search
   end
 
   def geolocation_query
-    @results = Locations::GeolocationQuery.call(geo_filters)
-    # Merge with national or international locations
-    national_or_international_locations = Location.national_and_international.ids
-    Location.where(id: @results.ids + national_or_international_locations).distinct
+    nearby_ids = Locations::GeolocationQuery.call(geo_filters).ids
+    national_or_international_ids = Location.national_and_international.ids
+    Location.where(id: nearby_ids + national_or_international_ids).distinct
   end
 
   def filters

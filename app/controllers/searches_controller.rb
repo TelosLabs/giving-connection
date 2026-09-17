@@ -3,17 +3,37 @@
 class SearchesController < ApplicationController
   skip_before_action :authenticate_user!
 
+  SEARCH_PILLS_FRAME_ID = "search-pills"
+
   def show
     if !request.referrer&.include?(search_url) && params["search"].blank?
       @search = Search.new
-      render "_preview"
+
+      authorize @search
+      render "_preview" and return
     end
 
     set_search_pills_data
     @search = params["search"].present? ? Search.new(create_params.to_h.merge(location_params)) : Search.new(location_params)
+
+    # _preview's "search-pills" and "search-locations" turbo-frames both declare
+    # src: search_path() and Turbo requests each independently, so this action
+    # runs twice per cold landing regardless of what either frame actually
+    # needs. The search-pills frame only renders SearchPills::Component (built
+    # from set_search_pills_data above) -- computing and paginating the full
+    # search here too, just to have Turbo keep only the #search-pills fragment
+    # and discard the rest, doubled the cost of every cold landing.
+    if turbo_frame_request_id == SEARCH_PILLS_FRAME_ID
+      authorize @search
+      render partial: "search_pills_frame" and return
+    end
+
     @search.save
-    @all_result_ids = @search.results.pluck(:id)  # Capture all IDs before pagination
-    @pagy, @results = pagy(@search.results)
+
+    results = @search.results
+    @all_result_ids = results.pluck(:id) # Capture all IDs before pagination
+    @pagy, @results = pagy(results.includes(organization: [:causes, {logo_attachment: :blob}], phone_number: []))
+    @map_locations = results.public_address.besides_po_boxes.to_a
 
     authorize @search
 
@@ -68,22 +88,20 @@ class SearchesController < ApplicationController
 
   def set_causes
     @top_10_causes = Cause.top(limit: 10)
-    @causes = Cause.all.pluck(:name)
+    @causes = Rails.cache.fetch("search_pills/causes", expires_in: 1.day) { Cause.all.pluck(:name) }
   end
 
   def set_services
-    @services = {}
     @top_10_services = Service.top(limit: 10)
-    Cause.all.each do |cause|
-      @services[cause.name] = cause.services.map(&:name)
+    @services = Rails.cache.fetch("search_pills/services", expires_in: 1.day) do
+      Cause.all.each_with_object({}) { |cause, hash| hash[cause.name] = cause.services.map(&:name) }
     end
   end
 
   def set_beneficiary_groups
-    @beneficiary_groups = {}
     @top_10_beneficiary_subcategories = BeneficiarySubcategory.top(limit: 10)
-    BeneficiaryGroup.all.each do |group|
-      @beneficiary_groups[group.name] = group.beneficiary_subcategories.map(&:name)
+    @beneficiary_groups = Rails.cache.fetch("search_pills/beneficiary_groups", expires_in: 1.day) do
+      BeneficiaryGroup.all.each_with_object({}) { |group, hash| hash[group.name] = group.beneficiary_subcategories.map(&:name) }
     end
   end
 end
