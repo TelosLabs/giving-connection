@@ -30,6 +30,10 @@ class SearchesController < ApplicationController
 
     @search.save
 
+    # Mobile shows either the list or the map, never both (screen too narrow);
+    # desktop always shows both side by side regardless of this.
+    @mobile_tab = (params[:tab] == "map") ? "map" : "list"
+
     results = @search.results
     @all_result_ids = results.pluck(:id) # Capture all IDs before pagination
     @pagy, @results = pagy(results.includes(organization: [:causes, {logo_attachment: :blob}], phone_number: []))

@@ -16,8 +16,10 @@
   = render "shared/smart_match_search_banner"
   = render SearchBar::Component.new(form: f, search: @search, current_location: @current_location, locations: @locations)
   = render "search_pills_frame"
+  - active_tab_classes = "border-blue-dark bg-blue-dark text-white"
+  - inactive_tab_classes = "bg-white text-gray-3"
   = turbo_frame_tag "search-locations", data: { controller: "search-loading" } do
-    div class="flex flex-row justify-center w-full md:h-85vh" data-controller="tabs" data-tabs-active-tab="border-blue-dark bg-blue-dark text-white" data-tabs-inactive-tab="border-gray-6 bg-transparent text-gray-3 underline-on-hover"
+    div class="flex flex-row justify-center w-full md:h-85vh"
       div class="flex flex-row justify-center w-full min-h-full"
         div class="flex relative flex-col w-full max-w-sm md:border-r border-gray-7"
           // Loading spinner for pagination
@@ -28,12 +30,8 @@
               = render partial: 'filter', locals: { form: f, search: @search, services: @services, causes: @causes, beneficiary_groups: @beneficiary_groups }
           div class="flex flex-row justify-between p-4 w-full bg-gray-9 md:hidden"
             span class="inline-flex relative z-0 shadow-sm md:hidden rounded-6px"
-              / active bg-blue-dark.focus:text-white
-              / inactive bg-white text-gray-3
-              button class="inline-flex relative items-center px-5 py-1 text-sm border rounded-l-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-tab-name="list"
-                | List
-              button class="inline-flex relative px-5 py-1 -ml-px text-sm border itemst-center rounded-r-6px" type="button" data-tabs-target="tab" data-action="click->tabs#change" data-tab-name="map"
-                | Map
+              = link_to "List", search_path(request.query_parameters.merge(tab: "list")), class: "inline-flex relative items-center px-5 py-1 text-sm border rounded-l-6px #{(@mobile_tab == "list") ? active_tab_classes : inactive_tab_classes}", data: {turbo_frame: "search-locations", turbo_action: "replace"}
+              = link_to "Map", search_path(request.query_parameters.merge(tab: "map")), class: "inline-flex relative px-5 py-1 -ml-px text-sm border items-center rounded-r-6px #{(@mobile_tab == "map") ? active_tab_classes : inactive_tab_classes}", data: {turbo_frame: "search-locations", turbo_action: "replace"}
           // Search result cards
           = turbo_frame_tag "pagy", class: "relative" do
             div class="flex flex-col w-full bg-white md:h-85vh md:overflow-y-auto" data-search-loading-target="resultsContainer"
@@ -76,7 +74,7 @@
                       | Create Search Alert
                     span role="tooltip" id=tooltip_id class="hidden absolute right-24 z-10 px-3 py-1 mt-8 w-48 text-white bg-opacity-90 rounded-lg transform translate-x-1/2 bg-gray-2"
                       = tooltip_message
-              div class="overflow-y-auto w-full h-full md:flex md:flex-col" data-tabs-target="panel"
+              div class="overflow-y-auto w-full h-full md:flex md:flex-col #{"hidden" if @mobile_tab == "map"}"
                 - if @results.present?
                   ul class="flex flex-col divide-y divide-gray-8" id="search-results"
                     - @results.each do |result|
@@ -123,27 +121,29 @@
                         data: { turbo_stream: true } \
                       ) do
                         | Create an Alert for this Search
-          // Mobile map
-          div class="hidden w-full h-85vh md:h-0" data-tabs-target="panel" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}"
-            div class="w-full h-full" data-places-target="map"
-            // Pin card
-            div class="hidden"
-              div class="hidden" data-places-target="latitude"
-              div class="hidden" data-places-target="longitude"
-              - @map_locations&.each do |result|
-                - turbo_frame_id = "loc_#{result.id}"
-                = turbo_frame_tag(\
-                  turbo_frame_id,\
-                  src: new_infowindow_path(frame_id: turbo_frame_id),\
-                  loading: "lazy",\
-                  class: "flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px",\
-                  data: {\
-                    places_target: "marker",\
-                    latitude: "#{result.latitude}",\
-                    longitude: "#{result.longitude}",\
-                    po_box: "#{result.po_box}",\
-                  }\
-                )
+          // Mobile map -- only rendered (and its places_controller only ever
+          // connects) when the mobile Map tab was actually requested.
+          - if @mobile_tab == "map"
+            div class="w-full h-85vh md:h-0" data-controller="places" data-action="google-maps-callback@window->places#initMap" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}"
+              div class="w-full h-full" data-places-target="map"
+              // Pin card
+              div class="hidden"
+                div class="hidden" data-places-target="latitude"
+                div class="hidden" data-places-target="longitude"
+                - @map_locations&.each do |result|
+                  - turbo_frame_id = "loc_#{result.id}"
+                  = turbo_frame_tag(\
+                    turbo_frame_id,\
+                    src: new_infowindow_path(frame_id: turbo_frame_id),\
+                    loading: "lazy",\
+                    class: "flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px",\
+                    data: {\
+                      places_target: "marker",\
+                      latitude: "#{result.latitude}",\
+                      longitude: "#{result.longitude}",\
+                      po_box: "#{result.po_box}",\
+                    }\
+                  )
 
         // Desktop map
         div class="hidden relative w-full md:flex" data-controller="places result-card--component" data-action="google-maps-callback@window->places#initMap" data-places-zoom-value="10" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}" data-places-popup-url-value="/map_popup/new?location_id="
