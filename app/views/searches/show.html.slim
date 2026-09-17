@@ -131,21 +131,19 @@
               div class="hidden" data-places-target="latitude"
               div class="hidden" data-places-target="longitude"
               - @map_locations&.each do |result|
-                = cache result do
-                  - turbo_frame_id = "loc_#{result.id}"
-
-                  = turbo_frame_tag(\
-                    turbo_frame_id,\
-                    src: new_infowindow_path(frame_id: turbo_frame_id),\
-                    loading: "lazy",\
-                    class: "flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px",\
-                    data: {\
-                      places_target: "marker",\
-                      latitude: "#{result.latitude}",\
-                      longitude: "#{result.longitude}",\
-                      po_box: "#{result.po_box}",\
-                    }\
-                  )
+                - turbo_frame_id = "loc_#{result.id}"
+                = turbo_frame_tag(\
+                  turbo_frame_id,\
+                  src: new_infowindow_path(frame_id: turbo_frame_id),\
+                  loading: "lazy",\
+                  class: "flex flex-col items-center gap-2 p-3 text-center bg-white rounded-6px",\
+                  data: {\
+                    places_target: "marker",\
+                    latitude: "#{result.latitude}",\
+                    longitude: "#{result.longitude}",\
+                    po_box: "#{result.po_box}",\
+                  }\
+                )
 
         // Desktop map
         div class="hidden relative w-full md:flex" data-controller="places result-card--component" data-action="google-maps-callback@window->places#initMap" data-places-zoom-value="10" data-places-imageurl-value="#{asset_path 'markergc.png'}" data-places-clickedimageurl-value="#{asset_path 'markerinvgc.png'}" data-places-popup-url-value="/map_popup/new?location_id="
@@ -157,20 +155,18 @@
             div class="hidden" data-places-target="latitude"
             div class="hidden" data-places-target="longitude"
             - @map_locations&.each do |result|
-              = cache result do
-                - turbo_frame_id = "loc_#{result.id}"
-
-                = turbo_frame_tag(\
-                  turbo_frame_id,\
-                  src: new_infowindow_path(frame_id: turbo_frame_id),\
-                  loading: "lazy",\
-                  class: "flex flex-col items-center gap-2 px-3 pt-0 pb-3 text-center bg-white rounded-6px",\
-                  data: {\
-                    places_target: "marker",\
-                    latitude: "#{result.latitude}",\
-                    longitude: "#{result.longitude}",\
-                  }\
-                )
+              - turbo_frame_id = "loc_#{result.id}"
+              = turbo_frame_tag(\
+                turbo_frame_id,\
+                src: new_infowindow_path(frame_id: turbo_frame_id),\
+                loading: "lazy",\
+                class: "flex flex-col items-center gap-2 px-3 pt-0 pb-3 text-center bg-white rounded-6px",\
+                data: {\
+                  places_target: "marker",\
+                  latitude: "#{result.latitude}",\
+                  longitude: "#{result.longitude}",\
+                }\
+              )
 // TODO DRY map markup
 
 / Floating feedback widget (rendered outside the search form)
