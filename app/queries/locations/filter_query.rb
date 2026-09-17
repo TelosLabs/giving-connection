@@ -101,7 +101,7 @@ module Locations
       def opened_now(scope, open_now)
         return scope if open_now.nil?
 
-        today = Time.now.wday
+        today = Time.zone.now.wday
         candidates = scope.to_a
         todays_hours_by_location_id = OfficeHour.where(location_id: candidates.map(&:id), day: today)
           .index_by(&:location_id)

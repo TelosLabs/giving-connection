@@ -117,7 +117,7 @@ module PerfSeed
       tagline_en: Faker::Company.bs.capitalize,
       website: "https://#{Faker::Internet.domain_name}",
       scope_of_work: Organizations::Constants::SCOPE.sample,
-      languages: rand < 0.3 ? [Organizations::Constants::LANGUAGES.sample] : nil,
+      languages: (rand < 0.3) ? [Organizations::Constants::LANGUAGES.sample] : nil,
       active: true,
       creator: admin
     )
@@ -353,7 +353,7 @@ module PerfBenchmark
 
   def report(results)
     timestamp = Time.current.strftime("%Y%m%d_%H%M%S")
-    log_dir = Rails.root.join("tmp", "performance_benchmarks")
+    log_dir = Rails.root.join("tmp/performance_benchmarks")
     FileUtils.mkdir_p(log_dir)
     log_path = log_dir.join("#{timestamp}.log")
 
