@@ -49,6 +49,9 @@ export default class extends Controller {
       }).observe(sidebar, { subtree: true, childList: true });
     }
 
+    this.handleResize = this.handleResize.bind(this)
+    window.addEventListener("resize", this.handleResize)
+
     // More comprehensive check for Google Maps support
     if (typeof google !== "undefined" &&
         typeof google.maps !== "undefined" &&
@@ -64,8 +67,26 @@ export default class extends Controller {
       console.warn("Google Maps API not properly loaded");
       this.displayBrowserNotSupportedMessage()
     }
+  }
 
-    this.applyCityFromUrl()
+  disconnect() {
+    window.removeEventListener("resize", this.handleResize)
+  }
+
+  // The desktop map block stays in the DOM (only CSS-hidden) on a mobile
+  // list request, so Stimulus still connects this controller and the
+  // google-maps-callback event still targets it. Without this check we'd
+  // build every marker and the clusterer for a map the mobile user can't
+  // see. Re-checked on resize so switching to a desktop viewport still
+  // initializes the map on demand.
+  isVisible() {
+    return this.element.offsetParent !== null
+  }
+
+  handleResize() {
+    if (this.map || !this.isVisible()) return
+
+    this.initMap()
   }
 
   applyCityFromUrl() {
@@ -171,6 +192,8 @@ export default class extends Controller {
   }
 
   initMap() {
+    if (!this.isVisible()) return
+
     this.map = new google.maps.Map(this.mapTarget, {
       center: new google.maps.LatLng(
         this.latitudeValue || this.getCookie("latitude") || Number(this.latitudeTarget.value) || 36.16404968727089,
@@ -222,6 +245,8 @@ export default class extends Controller {
       let marker = this.mapMarkers.find((marker) => { return marker.id == selectedMarker });
       marker.setIcon(clickedImage);
     }
+
+    this.applyCityFromUrl()
   }
 
   setMarkers(map, image, clickedImage) {
