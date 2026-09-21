@@ -1,5 +1,29 @@
 import { Controller } from "@hotwired/stimulus"
+import { MarkerClusterer } from "@googlemaps/markerclusterer"
 import { useCookies } from "./mixins/useCookies"
+
+const CLUSTER_COLOR = "#113C7B"
+
+class BrandedClusterRenderer {
+  render({count, position}, stats, map) {
+    const svg = `<svg fill="${CLUSTER_COLOR}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="50" height="50">
+<circle cx="120" cy="120" opacity=".6" r="70" />
+<circle cx="120" cy="120" opacity=".3" r="90" />
+<circle cx="120" cy="120" opacity=".2" r="110" />
+<text x="50%" y="50%" style="fill:#fff" text-anchor="middle" font-size="50" dominant-baseline="middle" font-family="roboto,arial,sans-serif">${count}</text>
+</svg>`
+
+    return new google.maps.Marker({
+      position,
+      icon: {
+        url: `data:image/svg+xml;base64,${btoa(svg)}`,
+        anchor: new google.maps.Point(25, 25),
+      },
+      title: `Cluster of ${count} locations`,
+      zIndex: Number(google.maps.Marker.MAX_ZINDEX) + count,
+    })
+  }
+}
 
 export default class extends Controller {
   static targets = [ "field", "map", "latitude", "longitude", "marker", "popup" ]
@@ -25,9 +49,12 @@ export default class extends Controller {
       }).observe(sidebar, { subtree: true, childList: true });
     }
 
+    this.handleResize = this.handleResize.bind(this)
+    window.addEventListener("resize", this.handleResize)
+
     // More comprehensive check for Google Maps support
-    if (typeof google !== "undefined" && 
-        typeof google.maps !== "undefined" && 
+    if (typeof google !== "undefined" &&
+        typeof google.maps !== "undefined" &&
         typeof google.maps.Map === "function" &&
         typeof google.maps.Marker === "function") {
       try {
@@ -40,15 +67,29 @@ export default class extends Controller {
       console.warn("Google Maps API not properly loaded");
       this.displayBrowserNotSupportedMessage()
     }
-    const pagyFrame = document.getElementById("pagy")
+  }
 
-    if (pagyFrame){
-      new MutationObserver(() => {
-        const cardTitles = document.querySelectorAll('[id^="new_favorite"]');
-        this.setTitleListeners(cardTitles);
-      }).observe(pagyFrame, { subtree: true, childList: true });
-    }
+  disconnect() {
+    window.removeEventListener("resize", this.handleResize)
+  }
 
+  // The desktop map block stays in the DOM (only CSS-hidden) on a mobile
+  // list request, so Stimulus still connects this controller and the
+  // google-maps-callback event still targets it. Without this check we'd
+  // build every marker and the clusterer for a map the mobile user can't
+  // see. Re-checked on resize so switching to a desktop viewport still
+  // initializes the map on demand.
+  isVisible() {
+    return this.element.offsetParent !== null
+  }
+
+  handleResize() {
+    if (this.map || !this.isVisible()) return
+
+    this.initMap()
+  }
+
+  applyCityFromUrl() {
     const urlParams = new URLSearchParams(window.location.search);
     const city = urlParams.get('city');
 
@@ -61,7 +102,7 @@ export default class extends Controller {
 
     if (city && CITIES[city]) {
       const { latitude, longitude } = CITIES[city];
-      
+
       const alreadyReloaded = urlParams.get('reloaded');
       if (!alreadyReloaded) {
         urlParams.set('reloaded', 'true');
@@ -75,7 +116,6 @@ export default class extends Controller {
       this.map.setCenter({ lat: latitude, lng: longitude });
       this.map.setZoom(12);
     }
-
   }
 
   displayBrowserNotSupportedMessage() {
@@ -152,6 +192,8 @@ export default class extends Controller {
   }
 
   initMap() {
+    if (!this.isVisible()) return
+
     this.map = new google.maps.Map(this.mapTarget, {
       center: new google.maps.LatLng(
         this.latitudeValue || this.getCookie("latitude") || Number(this.latitudeTarget.value) || 36.16404968727089,
@@ -203,10 +245,18 @@ export default class extends Controller {
       let marker = this.mapMarkers.find((marker) => { return marker.id == selectedMarker });
       marker.setIcon(clickedImage);
     }
+
+    this.applyCityFromUrl()
   }
 
   setMarkers(map, image, clickedImage) {
-    // Adds markers to the map.
+    // Adds markers to the map, clustered instead of individually placed --
+    // a broad search can return thousands of results, and putting that many
+    // Marker + InfoWindow objects directly on the map froze the tab. Markers
+    // are built without `map:` set so MarkerClusterer controls when each one
+    // actually gets attached (grouped into a cluster icon, or shown
+    // individually once zoomed in enough); every underlying location is
+    // still represented, none are dropped, just visually grouped by density.
     let prevInfoWindow = false
     let pin = document.getElementById(sessionStorage.getItem('marker_infowindow'))
 
@@ -218,7 +268,6 @@ export default class extends Controller {
 
       const marker = new google.maps.Marker({
         position: { lat: latitudeTarget, lng: longitudeTarget },
-        map: map,
         icon: image,
         animation: google.maps.Animation.DROP,
         id: element_id
@@ -226,10 +275,16 @@ export default class extends Controller {
 
       this.mapMarkers.push(marker)
 
-      const infowindow = new google.maps.InfoWindow({
-        content: markerTarget,
-        maxWidth: 210,
-      });
+      // Built on first interaction rather than upfront for every marker --
+      // each one wraps a lazy-loading turbo-frame, and most markers in a
+      // large result set are never clicked or hovered.
+      let infowindow = null
+      const getInfoWindow = () => {
+        if (!infowindow) {
+          infowindow = new google.maps.InfoWindow({ content: markerTarget, maxWidth: 210 })
+        }
+        return infowindow
+      }
 
       marker.addListener("click", () => {
         this.mapMarkers.forEach((marker) => {
@@ -250,9 +305,9 @@ export default class extends Controller {
         }
         marker.setAnimation(null);
 
-        prevInfoWindow = infowindow
+        prevInfoWindow = getInfoWindow()
 
-        infowindow.open({
+        prevInfoWindow.open({
           anchor: marker,
           map,
           shouldFocus: false,
@@ -266,9 +321,9 @@ export default class extends Controller {
         }
         marker.setAnimation(null);
 
-        prevInfoWindow = infowindow
+        prevInfoWindow = getInfoWindow()
 
-        infowindow.open({
+        prevInfoWindow.open({
           anchor: marker,
           map,
           shouldFocus: false,
@@ -282,8 +337,8 @@ export default class extends Controller {
       });
 
       if (pin && pin.id == element.id) {
-        prevInfoWindow = infowindow
-        infowindow.open({
+        prevInfoWindow = getInfoWindow()
+        prevInfoWindow.open({
           anchor: marker,
           map,
           shouldFocus: false,
@@ -291,6 +346,8 @@ export default class extends Controller {
         this.scrollToSelectedLocation()
       }
     });
+
+    new MarkerClusterer({ map, markers: this.mapMarkers, renderer: new BrandedClusterRenderer() });
   }
 
 

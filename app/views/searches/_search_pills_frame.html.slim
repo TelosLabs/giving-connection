@@ -1,0 +1,2 @@
+= turbo_frame_tag SearchesController::SEARCH_PILLS_FRAME_ID do
+  = render SearchPills::Component.new(causes: @top_10_causes, services: @top_10_services, beneficiary_subcategories: @top_10_beneficiary_subcategories, params: params, current_location: @current_location)

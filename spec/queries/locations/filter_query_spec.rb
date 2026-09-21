@@ -10,6 +10,44 @@ RSpec.describe Locations::FilterQuery do
     create(:organization, name: "organization #{@org_counter}", **organization_attrs).locations.first
   end
 
+  describe ".opened_now" do
+    include ActiveSupport::Testing::TimeHelpers
+
+    it "returns scope untouched when open_now is nil" do
+      expect(described_class.opened_now(Location.active, nil)).to eq(Location.active)
+    end
+
+    it "matches a location within its office hours and excludes one currently closed" do
+      open_location = create(:location, :with_office_hours) # Eastern Time, 08:00-17:00 every day
+      closed_location = create(:location, :with_office_hours, organization: create(:organization, name: "opened_now closed org"))
+      closed_location.office_hours.update_all(closed: true, open_time: nil, close_time: nil)
+
+      travel_to Time.find_zone(open_location.time_zone).parse("1970-01-01 10:00:00") do
+        ids = described_class.opened_now(Location.active, true).ids
+        expect(ids).to include(open_location.id)
+        expect(ids).not_to include(closed_location.id)
+      end
+    end
+
+    it "always includes an always_open location regardless of the time or its office hours" do
+      always_open = create(:location, :always_open)
+
+      travel_to Time.find_zone("Eastern Time (US & Canada)").parse("1970-01-01 02:00:00") do
+        expect(described_class.opened_now(Location.active, true).ids).to include(always_open.id)
+      end
+    end
+
+    it "batches the office-hours lookup for multiple locations without per-row queries" do
+      open_a = create(:location, :with_office_hours)
+      open_b = create(:location, :with_office_hours, organization: create(:organization, name: "opened_now second org"))
+
+      travel_to Time.find_zone(open_a.time_zone).parse("1970-01-01 10:00:00") do
+        ids = described_class.opened_now(Location.active, true).ids
+        expect(ids).to include(open_a.id, open_b.id)
+      end
+    end
+  end
+
   describe ".by_give" do
     let!(:donation) { location_for(donation_link: "https://example.org/donate") }
     let!(:volunteer) do

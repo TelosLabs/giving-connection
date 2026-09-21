@@ -120,6 +120,26 @@ RSpec.describe "Searches", type: :request do
       end
     end
 
+    # _preview's search-pills and search-locations turbo-frames both declare
+    # src: search_path(), so Turbo requests this action once per frame on
+    # every cold landing. The search-pills frame only ever renders pill data,
+    # so computing and paginating the full search for it too -- just to have
+    # Turbo keep the #search-pills fragment and discard the rest -- silently
+    # doubled the cost of every cold landing until this was caught by a real
+    # end-to-end timing regression, not by a query-count assertion.
+    describe "GET /search with the search-pills Turbo-Frame header" do
+      it "renders the pills fragment without computing search results" do
+        expect_any_instance_of(Search).not_to receive(:save)
+
+        get "/search",
+          params: {search: {city: "Search all", lat: Locationable::DEFAULT_LATITUDE, lon: Locationable::DEFAULT_LONGITUDE}},
+          headers: {"Turbo-Frame" => "search-pills"}
+
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include('turbo-frame id="search-pills"')
+      end
+    end
+
     describe "first-party search term tracking" do
       it "records the term, its result count and where it came from" do
         expect {

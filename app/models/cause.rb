@@ -18,6 +18,11 @@ class Cause < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
+  # Cause names/services are cached for a day in SearchesController and
+  # SelectMultiple::Component; bust it immediately on
+  # write instead of leaving up to a day of staleness after an admin edit.
+  after_commit -> { Rails.cache.delete_multi(%w[search_pills/causes search_pills/services select_multiple/causes_with_services]) }
+
   def to_param
     name
   end

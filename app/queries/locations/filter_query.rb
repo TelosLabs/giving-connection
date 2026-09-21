@@ -32,87 +32,50 @@ module Locations
         opened_on_weekends(scope, params[:open_weekends])
       end
 
-      def geo_near(scope, coords, distance)
-        return scope if distance.blank? || distance.zero? || scope.empty?
-
-        scope.where(
-          "ST_DWithin(lonlat, :point, :distance)",
-          {point: coords, distance: distance * 1000} # wants meters not kms
-        )
-      end
-
-      def by_address(scope, address_params)
-        return scope if address_params.values.all?(&:blank?) || scope.empty?
-
-        address_params[:state_name] = CS.states(:us)[address_params[:state].to_sym]
-
-        scope = scope.where(
-          "address ILIKE ANY ( array[?] )",
-          ["%#{address_params[:state_name]}%", "%#{address_params[:state]}%"]
-        )
-        address_params[:state] = nil
-        address_params[:state_name] = nil
-
-        return scope if address_params.values.all?(&:blank?)
-
-        scope.where(
-          "address ILIKE ALL ( array[?] )",
-          parameterize_address_filters(address_params)
-        )
-      end
-
       def by_cause(scope, causes)
-        return scope if causes.blank? || scope.empty?
+        return scope if causes.blank?
 
         Location.joins(organization: {organization_causes: :cause})
-          .where("locations.id IN (?)", scope.ids)
+          .where(id: scope)
           .where("causes.name IN (?)", causes)
           .group("locations.id")
           .having("count(locations.id) >= ?", causes.size) # multiple filters add up with AND behavior
       end
 
       def by_service(scope, services)
-        return scope if services.blank? || scope.empty?
+        return scope if services.blank?
 
         pairs = services.flat_map do |cause, services_list|
           services_list.map { |service| [cause, service] }
         end
 
         Location.joins(location_services: {service: :cause})
-          .where("locations.id IN (?)", scope.ids)
+          .where(id: scope)
           .where(tuple_in("causes.name", "services.name", pairs))
           .group("locations.id")
           .having("count(locations.id) >= ?", pairs.size) # multiple filters add up with AND behavior
       end
 
       def by_beneficiary_groups_served(scope, beneficiary_groups_filters)
-        return scope if beneficiary_groups_filters.blank? || scope.empty?
+        return scope if beneficiary_groups_filters.blank?
 
         pairs = beneficiary_groups_filters.flat_map do |group, subcategories|
           subcategories.map { |subcategory| [group, subcategory] }
         end
 
         Location.joins(organization: {organization_beneficiaries: {beneficiary_subcategory: :beneficiary_group}})
-          .where("locations.id IN (?)", scope.ids)
+          .where(id: scope)
           .where(tuple_in("beneficiary_groups.name", "beneficiary_subcategories.name", pairs))
           .group("locations.id")
           .having("count(locations.id) >= ?", pairs.size) # multiple filters add up with AND behavior
       end
 
       def by_scope_of_work(scope, scope_of_work)
-        return scope if scope_of_work.blank? || scope.empty?
+        return scope if scope_of_work.blank?
 
         Location.joins(:organization)
-          .where("locations.id IN (?)", scope.ids)
+          .where(id: scope)
           .where("organizations.scope_of_work = ?", scope_of_work)
-      end
-
-      def starting_coordinates(lat, lon)
-        if lat.nil? || lon.nil?
-          Geo.to_wkt(Geo.point(DEFAULT_LOCATION[:longitude], DEFAULT_LOCATION[:latitude]))
-        else
-          Geo.to_wkt(Geo.point(lon, lat))
-        end
       end
 
       # Builds a bound `(col_a, col_b) IN ((?, ?), ...)` predicate. Values are
@@ -132,46 +95,48 @@ module Locations
         ["(#{column_a}, #{column_b}) IN (#{placeholders})", *binds]
       end
 
-      def parameterize_address_filters(address_params)
-        address_params.values.reject!(&:blank?).compact.map { |v| "%#{v}%" }
-      end
-
+      # Loads each matching location's own `office_hours` row for *today* in one
+      # query (instead of `Location#open_now?` -> `today_office_hours` firing a
+      # `find_by` per location.
       def opened_now(scope, open_now)
         return scope if open_now.nil?
 
-        filtered = scope.select(&:open_now?) # use instance method to filter locations
-        Location.where(id: filtered.map(&:id)) # convert array to collection
+        today = Time.zone.now.wday
+        candidates = scope.to_a
+        todays_hours_by_location_id = OfficeHour.where(location_id: candidates.map(&:id), day: today)
+          .index_by(&:location_id)
+
+        open_ids = candidates.select do |location|
+          office_hour = todays_hours_by_location_id[location.id]
+          office_hour.location = location if office_hour # avoids OfficeHour#time_zone re-querying its location
+          location.always_open? || office_hour&.open_now?
+        end.map(&:id)
+
+        Location.where(id: open_ids)
       end
 
       def opened_on_weekends(scope, open_on_weekends)
         return scope if !open_on_weekends
-        query = <<-SQL
-        SELECT *
-        FROM locations
-        WHERE id IN (
-          SELECT location_id
-          FROM office_hours oh
-          WHERE oh."day" IN (
-            #{Time::DAYS_INTO_WEEK[:saturday]},
-            #{Time::DAYS_INTO_WEEK[:sunday]}
-          )
-          GROUP BY location_id, closed
-          HAVING count(*) = 2 and closed = false
-        )
-        SQL
-        scope_as_array = scope.find_by_sql(query)
-        scope.where(id: scope_as_array.map(&:id))
+
+        weekend_days = [Time::DAYS_INTO_WEEK[:saturday], Time::DAYS_INTO_WEEK[:sunday]]
+        open_both_weekend_days = OfficeHour
+          .where(day: weekend_days, closed: false)
+          .group(:location_id)
+          .having("count(*) = ?", weekend_days.size)
+          .select(:location_id)
+
+        scope.where(id: open_both_weekend_days)
       end
 
       def by_give(scope, give_values)
-        return scope if give_values.blank? || scope.empty?
+        return scope if give_values.blank?
 
         conditions = give_conditions_for(give_values)
 
         return scope if conditions.empty?
 
         Location.joins(:organization)
-          .where("locations.id IN (?)", scope.ids)
+          .where(id: scope)
           .where(conditions.map { |c| "(#{c})" }.join(" OR "))
       end
 

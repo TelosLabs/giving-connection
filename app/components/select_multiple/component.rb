@@ -60,9 +60,9 @@ module SelectMultiple
     def collection(name)
       case @klass
       when "Beneficiary"
-        BeneficiaryGroup.find_by(name: name).beneficiary_subcategories
+        beneficiary_groups_with_subcategories[name] || []
       when "Service"
-        Cause.find_by(name: name).services
+        causes_with_services[name] || []
       end
     end
 
@@ -72,6 +72,20 @@ module SelectMultiple
         :beneficiary_subcategory_ids
       when "Service"
         :service_ids
+      end
+    end
+
+    private
+
+    def causes_with_services
+      Rails.cache.fetch("select_multiple/causes_with_services", expires_in: 1.day) do
+        Cause.includes(:services).index_with(&:services).transform_keys(&:name)
+      end
+    end
+
+    def beneficiary_groups_with_subcategories
+      Rails.cache.fetch("select_multiple/beneficiary_groups_with_subcategories", expires_in: 1.day) do
+        BeneficiaryGroup.includes(:beneficiary_subcategories).index_with(&:beneficiary_subcategories).transform_keys(&:name)
       end
     end
   end

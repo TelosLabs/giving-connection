@@ -20,6 +20,9 @@ class Service < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
+  # Adding/renaming a service changes the cached causes-to-services hash even though the Cause record itself didn't change.
+  after_commit -> { Rails.cache.delete_multi(%w[search_pills/services select_multiple/causes_with_services]) }
+
   def self.top(limit: 10)
     find(top_services_ids(limit: limit))
   end
