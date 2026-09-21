@@ -19,7 +19,7 @@ class OfficeHoursValidator < ActiveModel::Validator
     if record.open_time.nil? || record.close_time.nil?
       record.errors.add(:base, "Open time and close time must both be present")
     elsif record.open_time >= record.close_time
-      record.location.organization.errors.add(:base, "Closing time must be after opening time")
+      record.errors.add(:close_time, "must be after the opening time")
     end
   end
 end
