@@ -75,7 +75,7 @@ RSpec.describe "Searches", type: :request do
     end
   end
 
-  fdescribe "GET /search with an in-kind give filter and no results" do
+  describe "GET /search with an in-kind give filter and no results" do
     it "shows the in-kind donations disclaimer when there are no results" do
       get_search({give: [Search::GIVE_IN_KIND]})
 
