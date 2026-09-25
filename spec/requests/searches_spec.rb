@@ -75,6 +75,33 @@ RSpec.describe "Searches", type: :request do
     end
   end
 
+  describe "GET /search with an in-kind give filter and no results" do
+    it "shows the in-kind donations disclaimer when there are no results" do
+      get_search({give: [Search::GIVE_IN_KIND]})
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("We couldn't find any nonprofits that matched your search.")
+      expect(response.body).to include("In-Kind Donations is a new field, so information may not yet be available for all nonprofits. Try adjusting your search or check back as more profiles are updated.")
+      expect(response.body).not_to include("Edit your search criteria")
+    end
+
+    it "does not show the in-kind donations disclaimer for a different give filter with no results" do
+      get_search({give: [Search::GIVE_DONATION]})
+
+      expect(response.body).to include("Edit your search criteria")
+      expect(response.body).not_to include("In-Kind Donations is a new field")
+    end
+
+    it "does not show any disclaimer when in-kind results are found" do
+      location_for(in_kind_donation_link: "https://example.org/donate-goods")
+
+      get_search({give: [Search::GIVE_IN_KIND]})
+
+      expect(response.body).not_to include("In-Kind Donations is a new field")
+      expect(response.body).not_to include("Edit your search criteria")
+    end
+  end
+
   describe "GET /search pagination of a give search" do
     # Pagy 9's key is :limit. config/initializers/pagy.rb still sets the 5.x
     # :items key, so the effective page size is Pagy's own default.

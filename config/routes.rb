@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     resources :location_services, only: %i[show create]
     resources :office_hours, except: %i[index]
     resources :messages, only: %i[index show]
+    resources :search_terms, only: %i[index show]
     resources :feedbacks, only: %i[index show] do
       member do
         patch :mark_as_read
