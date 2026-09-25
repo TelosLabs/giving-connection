@@ -49,7 +49,7 @@ class SearchTerm < ApplicationRecord
           search_term.results_count,
           csv_safe(search_term.city),
           csv_safe(search_term.state),
-          search_term.created_at&.iso8601,
+          search_term.created_at&.strftime("%m/%d/%Y %-H:%M:%S"),
           search_term.filtered? ? "Yes" : "No"
         ]
       end

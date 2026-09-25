@@ -51,7 +51,7 @@ RSpec.describe SearchTerm, type: :model do
     end
 
     it "includes one row per record in the given scope with the correct column values" do
-      create(:search_term, keyword: "food pantry", results_count: 3,
+      term = create(:search_term, keyword: "food pantry", results_count: 3,
         city: "Nashville", state: "TN", filtered: false)
       rows = CSV.parse(described_class.to_csv(described_class.all), headers: true)
 
@@ -61,6 +61,7 @@ RSpec.describe SearchTerm, type: :model do
       expect(rows.first["City"]).to eq("Nashville")
       expect(rows.first["State"]).to eq("TN")
       expect(rows.first["Filtered"]).to eq("No")
+      expect(rows.first["Created At"]).to eq(term.created_at.strftime("%m/%d/%Y %-H:%M:%S"))
     end
 
     it "outputs Yes in the Filtered column for filtered terms" do

@@ -77,6 +77,49 @@ RSpec.describe "Admin::SearchTerms", type: :request do
         expect(response.body).to include("food pantry")
         expect(response.body).not_to include("legal aid")
       end
+
+      context "with date range filters" do
+        it "shows only search terms created on or after date_from" do
+          create(:search_term, keyword: "before range", created_at: Date.new(2024, 1, 5))
+          create(:search_term, keyword: "in range", created_at: Date.new(2024, 1, 15))
+
+          get admin_search_terms_path(date_from: "2024-01-10")
+
+          expect(response.body).to include("in range")
+          expect(response.body).not_to include("before range")
+        end
+
+        it "shows only search terms created on or before date_to (inclusive of that day)" do
+          create(:search_term, keyword: "in range", created_at: Date.new(2024, 1, 15))
+          create(:search_term, keyword: "after range", created_at: Date.new(2024, 1, 25))
+
+          get admin_search_terms_path(date_to: "2024-01-20")
+
+          expect(response.body).to include("in range")
+          expect(response.body).not_to include("after range")
+        end
+
+        it "applies both bounds together" do
+          create(:search_term, keyword: "too early", created_at: Date.new(2024, 1, 1))
+          create(:search_term, keyword: "in range", created_at: Date.new(2024, 1, 15))
+          create(:search_term, keyword: "too late", created_at: Date.new(2024, 2, 1))
+
+          get admin_search_terms_path(date_from: "2024-01-10", date_to: "2024-01-20")
+
+          expect(response.body).to include("in range")
+          expect(response.body).not_to include("too early")
+          expect(response.body).not_to include("too late")
+        end
+
+        it "ignores malformed date params rather than raising" do
+          create(:search_term, keyword: "food pantry")
+
+          get admin_search_terms_path(date_from: "not-a-date")
+
+          expect(response).to have_http_status(:ok)
+          expect(response.body).to include("food pantry")
+        end
+      end
     end
 
     describe "GET /admin/search_terms.csv" do
@@ -124,6 +167,38 @@ RSpec.describe "Admin::SearchTerms", type: :request do
         get admin_search_terms_path(format: :csv, search_term: {order: "keyword", direction: "asc"})
 
         expect(response.body.index("aardvark search")).to be < response.body.index("zoo search")
+      end
+
+      it "applies the date_from filter to the export" do
+        create(:search_term, keyword: "before range", created_at: Date.new(2024, 1, 5))
+        create(:search_term, keyword: "in range", created_at: Date.new(2024, 1, 15))
+
+        get admin_search_terms_path(format: :csv, date_from: "2024-01-10")
+
+        expect(response.body).to include("in range")
+        expect(response.body).not_to include("before range")
+      end
+
+      it "applies the date_to filter to the export" do
+        create(:search_term, keyword: "in range", created_at: Date.new(2024, 1, 15))
+        create(:search_term, keyword: "after range", created_at: Date.new(2024, 1, 25))
+
+        get admin_search_terms_path(format: :csv, date_to: "2024-01-20")
+
+        expect(response.body).to include("in range")
+        expect(response.body).not_to include("after range")
+      end
+
+      it "applies both date bounds together to the export" do
+        create(:search_term, keyword: "too early", created_at: Date.new(2024, 1, 1))
+        create(:search_term, keyword: "in range", created_at: Date.new(2024, 1, 15))
+        create(:search_term, keyword: "too late", created_at: Date.new(2024, 2, 1))
+
+        get admin_search_terms_path(format: :csv, date_from: "2024-01-10", date_to: "2024-01-20")
+
+        expect(response.body).to include("in range")
+        expect(response.body).not_to include("too early")
+        expect(response.body).not_to include("too late")
       end
     end
 
