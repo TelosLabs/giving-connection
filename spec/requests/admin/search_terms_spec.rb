@@ -14,6 +14,11 @@ RSpec.describe "Admin::SearchTerms", type: :request do
         expect(response).to redirect_to(new_admin_user_session_path)
       end
 
+      it "redirects the CSV export away from the admin" do
+        get admin_search_terms_path(format: :csv)
+        expect(response).not_to have_http_status(:ok)
+      end
+
       it "redirects the show page away from the admin" do
         search_term = create(:search_term)
         get admin_search_term_path(search_term)
@@ -71,6 +76,54 @@ RSpec.describe "Admin::SearchTerms", type: :request do
         expect(response).to have_http_status(:ok)
         expect(response.body).to include("food pantry")
         expect(response.body).not_to include("legal aid")
+      end
+    end
+
+    describe "GET /admin/search_terms.csv" do
+      it "returns a CSV file with the correct content type and headers" do
+        create(:search_term)
+        get admin_search_terms_path(format: :csv)
+
+        expect(response).to have_http_status(:ok)
+        expect(response.media_type).to eq("text/csv")
+        expect(response.body).to include(SearchTerm::CSV_HEADERS.first)
+      end
+
+      it "includes the record data" do
+        create(:search_term, keyword: "food pantry", city: "Nashville", state: "TN")
+        get admin_search_terms_path(format: :csv)
+
+        expect(response.body).to include("food pantry")
+        expect(response.body).to include("Nashville")
+        expect(response.body).to include("TN")
+      end
+
+      it "honors the active search filter so the download matches the visible rows" do
+        create(:search_term, keyword: "food pantry")
+        create(:search_term, keyword: "legal aid")
+
+        get admin_search_terms_path(format: :csv, search: "food")
+
+        expect(response.body).to include("food pantry")
+        expect(response.body).not_to include("legal aid")
+      end
+
+      it "orders by created_at descending by default, matching the index page" do
+        create(:search_term, keyword: "older term", created_at: 2.days.ago)
+        create(:search_term, keyword: "newer term")
+
+        get admin_search_terms_path(format: :csv)
+
+        expect(response.body.index("newer term")).to be < response.body.index("older term")
+      end
+
+      it "honors column sort params so the download matches the sorted index page" do
+        create(:search_term, keyword: "zoo search")
+        create(:search_term, keyword: "aardvark search")
+
+        get admin_search_terms_path(format: :csv, search_term: {order: "keyword", direction: "asc"})
+
+        expect(response.body.index("aardvark search")).to be < response.body.index("zoo search")
       end
     end
 
