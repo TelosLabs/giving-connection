@@ -34,6 +34,27 @@ RSpec.describe OfficeHour, type: :model do
         expect(office_hour.time_zone.name).to eql("Eastern Time (US & Canada)")
       end
     end
+
+    describe "#open_now?" do
+      it "is expected to be false when closed" do
+        office_hour.closed = true
+        expect(office_hour.open_now?).to be false
+      end
+
+      it "is expected to be false, not raise, when open_time is nil" do
+        office_hour.closed = false
+        office_hour.open_time = nil
+        office_hour.close_time = Time.zone.parse("17:00")
+        expect(office_hour.open_now?).to be false
+      end
+
+      it "is expected to be false, not raise, when close_time is nil" do
+        office_hour.closed = false
+        office_hour.open_time = Time.zone.parse("09:00")
+        office_hour.close_time = nil
+        expect(office_hour.open_now?).to be false
+      end
+    end
   end
 
   describe "callbacks" do
