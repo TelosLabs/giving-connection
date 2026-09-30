@@ -1,0 +1,56 @@
+<% content_for(:title) do %>
+  <%= display_resource_name(page.resource_name) %>
+<% end %>
+
+<%# border-bottom is moved to the date-filter div below so the dividing line
+    sits under the filters, not the title row. padding-bottom is reduced so
+    the filter row sits flush against the header row. %>
+<header class="main-content__header" style="border-bottom: none; padding-bottom: 1rem;">
+  <h1 class="main-content__page-title" id="page-title">
+    <%= content_for(:title) %>
+  </h1>
+
+  <% if show_search_bar %>
+    <%# Local _search.html.erb override carries date_from/date_to as hidden
+        fields so that typing a keyword doesn't reset the active date filter. %>
+    <%= render(
+      "search",
+      search_term: search_term,
+      resource_name: display_resource_name(page.resource_name)
+    ) %>
+  <% end %>
+
+  <%# Carry all active search/sort/date params into the export so it matches the rows on screen. %>
+  <%= link_to("Download CSV",
+        admin_search_terms_path(request.query_parameters.merge(format: :csv)),
+        class: "button") %>
+</header>
+
+<%# Same horizontal padding as .main-content__header (1rem 2rem) so the filter
+    inputs align with the title and search bar above. Border-bottom here acts
+    as the section divider. %>
+<div class="date-filter" style="padding: 0 2rem 1rem; border-bottom: 1px solid #dfe0e1;">
+  <%= form_with url: admin_search_terms_path, method: :get, class: "date-filter__form" do %>
+    <input type="hidden" name="search" value="<%= search_term %>">
+    <% (request.query_parameters["search_term"] || {}).each do |key, value| %>
+      <input type="hidden" name="search_term[<%= key %>]" value="<%= value %>">
+    <% end %>
+
+    <div style="display: inline-flex; align-items: center;">
+      <label for="date_from">From</label>
+      <input type="date" id="date_from" name="date_from" value="<%= params[:date_from] %>" style="margin-left: 6px;">
+
+      <label for="date_to" style="margin-left: 16px;">To</label>
+      <input type="date" id="date_to" name="date_to" value="<%= params[:date_to] %>" style="margin-left: 6px;">
+
+      <button type="submit" class="button" style="margin-left: 20px;">Filter</button>
+
+      <% if params[:date_from].present? || params[:date_to].present? %>
+        <%= link_to "Clear dates",
+              admin_search_terms_path(request.query_parameters.except("date_from", "date_to")),
+              class: "button",
+              style: "margin-left: 8px; background: white; color: #1976d2; border: 1px solid #1976d2;" %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
