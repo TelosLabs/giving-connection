@@ -90,7 +90,7 @@
 
     <%# CTA button %>
     <% if cta_url %>
-      <%= link_to cta_url, class: "flex items-center justify-center gap-2 mt-4 py-3 text-sm font-bold tracking-wide uppercase rounded-md transition-colors #{cta_classes}" do %>
+      <%= link_to cta_url, class: "flex items-center justify-center gap-2 mt-4 py-3 text-sm font-bold tracking-wide uppercase rounded-md transition-colors #{cta_classes}", data: { turbo_frame: "_top" } do %>
         <% if user_type == "donor" %>
           <%= image_tag "donate-icon.svg", class: "w-5 h-5", alt: "" %>
         <% elsif user_type == "volunteer" %>
