@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_15_230000) do
+ActiveRecord::Schema[8.0].define(version: 2026_10_06_221934) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_catalog.plpgsql"
@@ -279,9 +279,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_15_230000) do
     t.string "state_code", limit: 2
     t.boolean "wheelchair_accessible"
     t.boolean "remote_services"
+    t.tsvector "search_vector"
     t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
     t.index ["organization_id"], name: "index_locations_on_organization_id"
     t.index ["remote_services"], name: "index_locations_on_remote_services", where: "(remote_services = true)"
+    t.index ["search_vector"], name: "index_locations_on_search_vector", using: :gin
     t.index ["slug"], name: "index_locations_on_slug", unique: true
     t.index ["state_code"], name: "index_locations_on_state_code"
   end
