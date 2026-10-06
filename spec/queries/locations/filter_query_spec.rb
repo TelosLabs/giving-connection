@@ -145,6 +145,39 @@ RSpec.describe Locations::FilterQuery do
     end
   end
 
+  describe ".by_cause" do
+    it "returns scope untouched when causes is blank" do
+      expect(described_class.by_cause(Location.active, nil)).to eq(Location.active)
+      expect(described_class.by_cause(Location.active, [])).to eq(Location.active)
+    end
+
+    it "matches a location with any one of the selected causes, not all of them" do
+      cause_a = create(:cause, name: "By Cause Filter A")
+      cause_b = create(:cause, name: "By Cause Filter B")
+      only_a = location_for
+      only_a.organization.causes << cause_a
+      only_b = location_for
+      only_b.organization.causes << cause_b
+      neither = location_for
+
+      ids = described_class.by_cause(Location.active, [cause_a.name, cause_b.name]).ids
+
+      expect(ids).to contain_exactly(only_a.id, only_b.id)
+    end
+
+    it "does not duplicate a location matching more than one selected cause" do
+      cause_a = create(:cause, name: "By Cause Filter C")
+      cause_b = create(:cause, name: "By Cause Filter D")
+      both = location_for
+      both.organization.causes << cause_a
+      both.organization.causes << cause_b
+
+      ids = described_class.by_cause(Location.active, [cause_a.name, cause_b.name]).ids
+
+      expect(ids.count(both.id)).to eq(1)
+    end
+  end
+
   describe ".call" do
     # `call` must return the last filter in the chain. An earlier commit on this
     # branch ended it with a bare `scope`, which dropped opened_on_weekends's

@@ -37,9 +37,8 @@ module Locations
 
         Location.joins(organization: {organization_causes: :cause})
           .where(id: scope)
-          .where("causes.name IN (?)", causes)
-          .group("locations.id")
-          .having("count(locations.id) >= ?", causes.size) # multiple filters add up with AND behavior
+          .where("causes.name IN (?)", causes) # matches any selected cause (OR)
+          .distinct
       end
 
       def by_service(scope, services)
