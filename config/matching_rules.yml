@@ -252,6 +252,7 @@ cause_mappings:
   "Faith-Based":
     synonyms:
       - religious organizations
+      - religion
       - church
       - mosque
       - synagogue
@@ -267,6 +268,10 @@ cause_mappings:
       - public health
       - hospital
       - nursing
+      - pregnancy
+      - prenatal care
+      - reproductive health
+      - maternal health
 
   "Housing & Homelessness":
     synonyms:
