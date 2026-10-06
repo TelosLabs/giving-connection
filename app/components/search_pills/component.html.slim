@@ -3,7 +3,7 @@ javascript:
     const tooltip = document.getElementById(tooltipId);
     const rect = element.getBoundingClientRect();
     tooltip.style.left = (rect.left + rect.width/2 - 96) + 'px'; // 96px = half of w-48
-    tooltip.style.top = (rect.top - 45) + 'px';
+    tooltip.style.top = (rect.top - tooltip.offsetHeight + 5) + 'px';
     tooltip.style.opacity = '1';
   }
 
