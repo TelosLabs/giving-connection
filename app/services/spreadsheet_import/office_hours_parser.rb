@@ -1,160 +1,146 @@
 module SpreadsheetImport
+  # Turns a free-text "hours of operation" cell into the seven OfficeHour rows a
+  # location needs.
+  #
+  # Anything we cannot read yields *no* rows and a message on #warnings. That
+  # matters: returning a week of closed rows for an unreadable cell would
+  # publish the organization as "Closed" seven days a week and suppress the
+  # caller's "no set business hours" fallback, all without telling the operator
+  # who ran the import. A cell that says "24 hours" or "by appointment" with no
+  # weekly schedule comes back through #non_standard instead.
   class OfficeHoursParser
-    DAYS = %w[sunday monday tuesday wednesday thursday friday saturday]
+    DAYS = Hours::DaySpec::DAYS
+
+    BLANK_VALUES = ["", "na", "n/a", "n.a.", "none", "tbd", "unknown", "-", "--", "---"].freeze
+    CLOSED_CELL = /\A(?:permanently |temporarily )?closed\.?\z/i
+    ALL_DAY_HOURS = ["00:00", "23:59"].freeze
 
     def initialize(input)
       @input = input.to_s
+      @schedule = {}
+      @warnings = []
+      @non_standard = nil
+      @appointment = false
     end
 
     def call
-      return [] if blank_input?
+      @result ||= parse
+    end
 
-      parts = split_into_entries(@input)
+    # Fragments the parser could not read, phrased for the import log.
+    def warnings
+      call
+      @warnings.uniq
+    end
 
-      parsed_entries = parts.flat_map { |part| parse_single_part(part) }
-
-      full_week = normalize_to_full_week(parsed_entries)
-
-      normalize_days_to_indexes(full_week)
+    # "always_open" or "appointment_only" when the cell describes the location
+    # as a whole rather than a weekly schedule.
+    def non_standard
+      call
+      @non_standard
     end
 
     private
 
-    def normalize(str)
-      str.gsub(/[–—]/, "-")
-        .gsub(/[ ]+/, " ")
-        .gsub(/\s+/, " ")
-        .strip
+    def parse
+      return [] if blank_input?
+      return closed_week if CLOSED_CELL.match?(@input.strip)
+
+      Hours::Scanner.new(@input).call.each { |day_spec, time_spec| absorb(day_spec, time_spec) }
+      return [] if @schedule.empty?
+      return week unless appointment_only?
+
+      @non_standard ||= "appointment_only"
+      []
     end
 
-    def parse_days(day_str)
-      day_str = day_str.strip.gsub(/[:\-]+$/, "")
-      parts = day_str.split(",").map(&:strip)
-
-      parts.flat_map do |part|
-        if part.include?("-")
-          start_day, end_day = part.split("-").map { |d| standardize_day(d) }
-          days_between(start_day, end_day)
-        else
-          [standardize_day(part)]
-        end
-      end
-    end
-
-    def extract_times(time_str)
-      return [nil, nil] if time_str.strip.downcase == "closed"
-
-      times = time_str.strip.split(/[\-–]/).map(&:strip)
-      [normalize_time(times[0]), normalize_time(times[1])]
-    end
-
-    def days_between(start_day, end_day)
-      return [] unless start_day && end_day
-      start_index = DAYS.index(start_day)
-      end_index = DAYS.index(end_day)
-      return [] unless start_index && end_index
-      if start_index <= end_index
-        DAYS[start_index..end_index]
-      else
-        DAYS[start_index..] + DAYS[0..end_index]
-      end
-    end
-
-    def standardize_day(str)
-      DAYS.find { |d| d.casecmp(str.strip.capitalize).zero? }&.downcase
-    end
-
-    def normalize_time(time)
-      return nil if time.blank?
-      begin
-        # Return the local wall-clock time as written. OfficeHour converts to
-        # UTC on save (see TimeZoneConvertible), so shifting here would double
-        # the conversion.
-        Time.zone.parse(time).strftime("%H:%M")
-      rescue
-        nil
-      end
+    # A cell whose only content is "by appointment" describes the location even
+    # when it names the days it applies to, so it must not be published as a
+    # week of closed days.
+    def appointment_only?
+      @appointment && @schedule.each_value.all? { |entry| entry[:closed] }
     end
 
     def blank_input?
-      @input.strip.downcase == "na"
+      BLANK_VALUES.include?(@input.tr("–—", "-").strip.downcase)
     end
 
-    # Entries may be separated by "&" or by line breaks — spreadsheet cells with
-    # multiple day ranges frequently put each range on its own line. Split on
-    # both before normalizing so a newline can't collapse two ranges into one
-    # malformed entry.
-    def split_into_entries(input)
-      input.split(/[&\n\r]+/).map { |part| normalize(part) }.compact_blank
+    def absorb(day_spec, time_spec)
+      days = Hours::DaySpec.days_for(day_spec)
+      times = Hours::TimeSpec.new(time_spec)
+      source = "#{day_spec} #{time_spec}".strip
+      note("only the first time range was imported from", source) if times.extra_range?
+      apply(days, times.call, source)
     end
 
-    def parse_single_part(part)
-      return [] if part.blank?
-
-      day_str, time_str = split_days_and_times(part)
-      return [] unless day_str && time_str
-
-      days = parse_days(day_str) # Now returns ["monday", "tuesday", ...]
-      opens_at, closes_at = parse_times_or_247(time_str)
-
-      days.map do |day|
-        {
-          day: day,
-          open_time: opens_at,
-          close_time: closes_at,
-          closed: opens_at.nil? || closes_at.nil?
-        }
+    def apply(days, outcome, source)
+      case outcome
+      when :unparsed then unparsed(source)
+      when :all_day then all_day(days)
+      when :appointment then appointment(days)
+      when :closed then close(days)
+      else open_between(days, outcome, source)
       end
     end
 
-    # The day specification and the times can be separated by a colon
-    # ("Monday - Friday: 8:00 - 16:00") or simply by a tab/dash
-    # ("Thursday - Sunday - 10:00 - 15:00"). Splitting on ":" breaks the latter
-    # because it hits the colon inside "10:00", so instead locate where the time
-    # portion begins — the first digit, or the word "closed"/"24/7". Everything
-    # before it is the day specification; trailing separators are stripped later
-    # by parse_days.
-    def split_days_and_times(part)
-      match = part.match(/\d|closed|24\/7/i)
-      return part.split(":", 2).map(&:strip) unless match
+    def open_between(days, times, source)
+      return unparsed(source) if days.empty?
 
-      boundary = match.begin(0)
-      [part[0...boundary].strip, part[boundary..].strip]
+      write(days, open_time: times.first, close_time: times.last, closed: false)
     end
 
-    def parse_times_or_247(time_str)
-      return ["00:00", "24:00"] if time_str.downcase == "24/7"
-      extract_times(time_str)
+    # A day named as closed is real data, so it still counts as a parsed cell.
+    def close(days)
+      write(days, open_time: nil, close_time: nil, closed: true)
     end
 
-    def normalize_to_full_week(entries)
-      full_schedule = {}
+    # "Sat by appointment" closes Saturday; a whole cell of it describes the
+    # location instead.
+    def appointment(days)
+      @appointment = true
+      return @non_standard ||= "appointment_only" if days.empty?
 
-      entries.each do |entry|
-        day = entry[:day].downcase
-        full_schedule[day] = {
-          day: day,
-          open_time: entry[:open_time],
-          close_time: entry[:close_time],
-          closed: entry[:closed]
-        }
-      end
+      close(days)
+    end
 
-      DAYS.map(&:downcase).map do |day|
-        full_schedule[day] || {day: day, open_time: nil, close_time: nil, closed: true}
+    # A cell that is all-day for every day (or names no day at all) is the
+    # location's standing state. Per-day all-day hours stop one minute short of
+    # midnight because a `time` column cannot hold "24:00" — it rolls over to
+    # the next day and lands back on 00:00, storing a zero-length window.
+    def all_day(days)
+      return @non_standard ||= "always_open" if days.empty? || days.size == DAYS.size
+
+      write(days, open_time: ALL_DAY_HOURS.first, close_time: ALL_DAY_HOURS.last, closed: false)
+    end
+
+    def write(days, attributes)
+      days.each { |day| @schedule[day] = attributes.merge(day: day) }
+    end
+
+    def unparsed(source)
+      note("Hours not understood:", source)
+    end
+
+    # Fragments are reported post-normalization, so name the original cell too
+    # whenever the two have drifted apart.
+    def note(reason, source)
+      cell = @input.strip
+      suffix = (source.strip == cell) ? "" : " (from cell #{cell.inspect})"
+      @warnings << "#{reason} #{source.strip.inspect}#{suffix}"
+    end
+
+    def week
+      DAYS.each_with_index.map do |day, index|
+        (@schedule[day] || closed_day).merge(day: index)
       end
     end
 
-    def default_closed_schedule
-      DAYS.map(&:downcase).map do |day|
-        {day: day, open_time: nil, close_time: nil, closed: true}
-      end
+    def closed_week
+      DAYS.each_index.map { |index| closed_day.merge(day: index) }
     end
 
-    def normalize_days_to_indexes(entries)
-      entries.map do |entry|
-        entry.merge(day: DAYS.index(entry[:day]))
-      end
+    def closed_day
+      {day: nil, open_time: nil, close_time: nil, closed: true}
     end
   end
 end
