@@ -3,11 +3,11 @@
     div class=""
       h3 class="text-sm font-light text-left md:text-md text-gray-3"
         | Edit Page
-      div class="flex items-center"
+      div
         h2 class="text-sm font-medium md:text-xl text-gray-2"
           = @organization.name
-        - if @organization.verified?
-          = render partial: "shared/popover", locals: { copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg" } 
+          - if @organization.verified?
+            = render partial: "shared/popover", locals: { copy: "Information verified by nonprofit.", wrapper_icon: "verified_nonprofit_check.svg" }
       div class=""
         - if @organization.errors.any?
           p class="italic font-semibold text-red-500"
