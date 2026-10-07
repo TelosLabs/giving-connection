@@ -399,8 +399,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_10_06_221934) do
     t.boolean "volunteer_availability", default: false, null: false
     t.string "volunteer_link"
     t.boolean "general_population_serving", default: false, null: false
-    t.string "in_kind_donation_link"
-    t.jsonb "in_kind_donation_items", default: [], null: false
     t.boolean "free_or_sliding_scale"
     t.boolean "no_id_required"
     t.boolean "lgbtqia_affirming"
@@ -413,6 +411,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_10_06_221934) do
     t.string "volunteer_format"
     t.string "volunteer_frequency", array: true
     t.string "leadership_attributes", array: true
+    t.string "in_kind_donation_link"
+    t.jsonb "in_kind_donation_items", default: [], null: false
     t.index ["active"], name: "index_organizations_on_active"
     t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
     t.index ["ein_number"], name: "index_organizations_on_ein_number"

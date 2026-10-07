@@ -11,21 +11,28 @@ div class="overflow-x-hidden main"
         p class="text-2xl italic font-medium text-blue-dark"
           | Stories from the Heart of Giving
 
-  section class="flex flex-col max-w-5xl gap-4 px-5 mx-auto md:gap-16 md:my-20" data-controller="blog-search"
+  section class="flex flex-col max-w-5xl gap-4 px-5 mx-auto md:gap-6 md:my-20" data-controller="blog-search"
     div class="flex flex-col gap-2" id="getting-started"
-        div class="flex items-center gap-2 px-4 py-1 mt-4 md:mt-0 bg-white rounded-lg md:py-3 text-start text-gray-4 border-[1px] border-gray-5 border-solid"
-            span aria-hidden="true" = inline_svg_tag 'magnifying-glass.svg', class: "text-blue-dark"
-            input type="search" placeholder="Search blogs..." class="w-full border-0" data-blog-search-target="input" data-action="input->blog-search#onInput keydown->blog-search#onKeydown"
+        = form_with url: blogs_path, method: :get, data: { blog_search_target: "form", turbo_frame: "blog-search", turbo_action: "advance" } do |f|
+          = hidden_field_tag :blog_tag, @selected_tag
+          div class="flex items-center gap-2 px-4 py-1 mt-4 md:mt-0 bg-white rounded-lg md:py-3 text-start text-gray-4 border-[1px] border-gray-5 border-solid"
+              span aria-hidden="true" = inline_svg_tag 'magnifying-glass.svg', class: "text-blue-dark"
+              = f.search_field :q, value: @search, placeholder: "Search blogs...", class: "w-full border-0 focus:outline-none focus:ring-0", data: { blog_search_target: "input", action: "input->blog-search#onInput keydown->blog-search#onKeydown" }
 
-        div class="flex-wrap items-center hidden gap-2 md:flex"
-            = blog_filter_button('All posts', 'all', 'comment.svg')
-            = blog_filter_button('Nonprofits', 'Nonprofits', 'comment_heart.svg')
-            = blog_filter_button('Community', 'Community', 'hand_heart.svg')
-            = blog_filter_button('Staff', 'Staff', 'staff.svg')
-      
-    section class="flex flex-col gap-16 pb-8"
-        - @blogs.each do |blog|
-            = render "blog", blog: blog
+    = turbo_frame_tag "blog-search", class: "flex flex-col gap-4 md:gap-16", data: { turbo_action: "advance" } do
+      div class="flex-wrap items-center hidden gap-2 md:flex"
+          = blog_filter_button('All posts', 'all', 'comment.svg')
+          = blog_filter_button('Nonprofits', 'Nonprofits', 'comment_heart.svg')
+          = blog_filter_button('Community', 'Community', 'hand_heart.svg')
+          = blog_filter_button('Staff', 'Staff', 'staff.svg')
+
+      section class="flex flex-col gap-16 pb-8"
+          - if @blogs.empty?
+            p class="text-center text-gray-4"
+              = @search.present? ? "No blog posts match your search." : "No blog posts yet."
+          - else
+            - @blogs.each do |blog|
+                = render "blog", blog: blog
 
 div class="relative flex flex-col px-8 py-10 overflow-hidden bg-center bg-contain sm:bg-cover" style="background-image: url(#{asset_path('star-footer.png')});"
   div class="relative z-10 flex flex-col items-center w-full max-w-4xl mx-auto text-center text-white"
