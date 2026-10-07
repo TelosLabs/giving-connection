@@ -145,6 +145,26 @@ input#search-keyword-input {
   animation-iteration-count: infinite;
 }
 
+// Loading indicator for search/blog results (search_loading_controller.js).
+// A separate class rather than reusing .spinner: tom-select.css also
+// targets .spinner (.ts-dropdown .spinner) for its own unrelated dropdown
+// loading state, and would inherit any properties changed here.
+.spinner-heart {
+  animation: blink 1s ease-in-out infinite;
+}
+
+// Opacity pulse, not a hard on/off blink: ~1Hz is the standard safe rate for
+// a "pulsing" indicator, well under WCAG's 3Hz seizure-risk flash threshold.
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.35;
+  }
+}
+
 @keyframes spin {
   from {
     transform: rotate(0);

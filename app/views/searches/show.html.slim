@@ -24,7 +24,7 @@
         div class="flex relative flex-col w-full max-w-sm md:border-r border-gray-7"
           // Loading spinner for pagination
           div class="flex hidden absolute inset-0 z-10 justify-center items-center bg-white bg-opacity-70" data-search-loading-target="spinner"
-            div class="spinner"
+            = inline_svg_tag 'heart.svg', class: "spinner-heart w-12 h-12 text-red", aria_hidden: "true"
           div class="flex hidden overflow-y-auto fixed inset-0 justify-center items-center min-h-screen animated fadeIn" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" data-modal-target="container" style=("z-index: 9999;")
             div class="relative w-full max-h-full max-w-375px"
               = render partial: 'filter', locals: { form: f, search: @search, services: @services, causes: @causes, beneficiary_groups: @beneficiary_groups }

@@ -28,7 +28,7 @@ div class="overflow-x-hidden main"
 
       section class="relative flex flex-col gap-16 pb-8" data-search-loading-target="resultsContainer"
           div class="flex hidden absolute inset-0 z-10 justify-center items-center bg-white bg-opacity-70" data-search-loading-target="spinner"
-            div class="spinner"
+            = inline_svg_tag 'heart.svg', class: "spinner-heart w-12 h-12 text-red", aria_hidden: "true"
           - if @blogs.empty?
             p class="text-center text-gray-4"
               = @search.present? ? "No blog posts match your search." : "No blog posts yet."

@@ -158,7 +158,7 @@ RSpec.describe Locations::FilterQuery do
       only_a.organization.causes << cause_a
       only_b = location_for
       only_b.organization.causes << cause_b
-      neither = location_for
+      location_for
 
       ids = described_class.by_cause(Location.active, [cause_a.name, cause_b.name]).ids
 
