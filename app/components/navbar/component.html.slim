@@ -39,7 +39,7 @@ nav id="main-navbar" data-controller="navbar--component" class="#{non_sticky_pat
             div class='mr-2'
               | Donate
             div class='flex items-center'
-              = inline_svg_tag 'heart.svg', size:'9*9', class:'mt-1 fill-current text-red'
+              = inline_svg_tag 'heart.svg', size:'9*9', class:'fill-current text-red'
     ul class='flex items-center'
       - if @signed_in
         li = link_to "My Account", my_account_path, class:"navbar__option text-lg font-bold mr-1 lg:mr-6 border-b-2 border-transparent md:text-base #{request.env['PATH_INFO'] == "/my_account" ? "text-seafoam border-seafoam navbar__option--selected" : ""}"

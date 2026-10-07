@@ -19,14 +19,16 @@ div class="overflow-x-hidden main"
               span aria-hidden="true" = inline_svg_tag 'magnifying-glass.svg', class: "text-blue-dark"
               = f.search_field :q, value: @search, placeholder: "Search blogs...", class: "w-full border-0 focus:outline-none focus:ring-0", data: { blog_search_target: "input", action: "input->blog-search#onInput keydown->blog-search#onKeydown" }
 
-    = turbo_frame_tag "blog-search", class: "flex flex-col gap-4 md:gap-16", data: { turbo_action: "advance" } do
+    = turbo_frame_tag "blog-search", class: "flex flex-col gap-4 md:gap-16", data: { controller: "search-loading", turbo_action: "advance" } do
       div class="flex-wrap items-center hidden gap-2 md:flex"
           = blog_filter_button('All posts', 'all', 'comment.svg')
           = blog_filter_button('Nonprofits', 'Nonprofits', 'comment_heart.svg')
           = blog_filter_button('Community', 'Community', 'hand_heart.svg')
           = blog_filter_button('Staff', 'Staff', 'staff.svg')
 
-      section class="flex flex-col gap-16 pb-8"
+      section class="relative flex flex-col gap-16 pb-8" data-search-loading-target="resultsContainer"
+          div class="flex hidden absolute inset-0 z-10 justify-center items-center bg-white bg-opacity-70" data-search-loading-target="spinner"
+            div class="spinner"
           - if @blogs.empty?
             p class="text-center text-gray-4"
               = @search.present? ? "No blog posts match your search." : "No blog posts yet."
