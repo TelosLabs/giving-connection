@@ -70,11 +70,11 @@ module SmartMatch
 
     def quiz_params
       params.permit(:user_type, :support_for, :situation, :city_selection, :location_scope_choice, :state, :city, :travel_bucket,
-        :language_input, :direction, :target_step, :impact_location, :donor_involvement,
+        :language_input, :direction, :target_step, :impact_location,
         :volunteer_format, :volunteer_time,
         :age_range, :gender_identity, :race_ethnicity,
         self_description: [], causes: [], prefs: [], donation_style: [], giving_inspiration: [], donor_communities: [],
-        volunteer_involvement: [], volunteer_type: [])
+        volunteer_involvement: [], volunteer_type: [], donor_involvement: [])
     end
 
     def current_step

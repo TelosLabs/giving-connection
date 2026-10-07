@@ -85,9 +85,9 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       expect(request.session[:smart_match_city_choice]).to eq("Nashville")
       expect(request.session[:smart_match_step]).to eq(9)
 
-      # Step 9 -> 10: donor_involvement (single)
-      put smart_match_quiz_path, params: {donor_involvement: "active"}
-      expect(request.session[:smart_match_donor_involvement]).to eq("active")
+      # Step 9 -> 10: donor_involvement (multi-select)
+      put smart_match_quiz_path, params: {donor_involvement: ["active"]}
+      expect(request.session[:smart_match_donor_involvement]).to eq(["active"])
       expect(request.session[:smart_match_step]).to eq(10)
 
       # Step 10 -> 11: personal details (optional demographics)
@@ -248,7 +248,7 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       put smart_match_quiz_path, params: {donor_communities: %w[veterans]}
       put smart_match_quiz_path, params: {impact_location: "local"}
       put smart_match_quiz_path, params: {city_selection: "Nashville"}
-      put smart_match_quiz_path, params: {donor_involvement: "active"}
+      put smart_match_quiz_path, params: {donor_involvement: ["active"]}
       put smart_match_quiz_path, params: {
         age_range: "25-34", gender_identity: "prefer_not_to_say",
         race_ethnicity: "prefer_not_to_say",
@@ -306,7 +306,7 @@ RSpec.describe "SmartMatch quiz flow", type: :request do
       expect(answers["donation_style"]).to eq(%w[one_time])
       expect(answers["giving_inspiration"]).to eq(%w[personal_story])
       expect(answers["impact_location"]).to eq("local")
-      expect(answers["donor_involvement"]).to eq("active")
+      expect(answers["donor_involvement"]).to eq(["active"])
       expect(answers["age_range"]).to eq("25-34")
       expect(answers["language_input"]).to eq("Support education in Nashville.")
       expect(answers["city"]).to eq("Nashville")

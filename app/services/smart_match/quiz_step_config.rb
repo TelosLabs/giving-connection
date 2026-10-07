@@ -56,7 +56,7 @@ module SmartMatch
         6 => {number: 3, section_key: :engagement, title_key: "donor.step_6", subtitle: :single},
         7 => {number: 3, section_key: :engagement, title_key: "donor.step_7", subtitle: :single},
         8 => {number: 3, section_key: :engagement, title_key: "donor.location_detail", subtitle: :none},
-        9 => {number: 3, section_key: :engagement, title_key: "donor.step_8", subtitle: :single},
+        9 => {number: 3, section_key: :engagement, title_key: "donor.step_8", subtitle: :multiple},
         10 => {number: 4, section_key: :prefs_accessibility, title_key: :personal_details, subtitle: :none},
         11 => {number: 4, section_key: :prefs_accessibility, title_key: :open_text, subtitle: :none}
       }.freeze

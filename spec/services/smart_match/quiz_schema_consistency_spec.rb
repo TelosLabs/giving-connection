@@ -46,6 +46,33 @@ RSpec.describe "SmartMatch quiz step schema consistency" do
       .to eq("smart_match/quizzes/steps/preferences")
   end
 
+  # Fourth duplicated schema: each STEP_STRUCTURES entry hand-declares
+  # subtitle: :single/:multiple/:none (rendered as the "Single Choice" /
+  # "Multiple Choice" badge), independently of what the step's own partial
+  # actually renders (data-select-mode="single"/"multiple" on its cards).
+  # Converting a question's select mode (e.g. radio_button -> checkbox) means
+  # updating the partial, UserIntent::QUIZ_ANSWERS (caught by the arity spec
+  # above), AND this subtitle flag -- which nothing else catches, since it
+  # doesn't affect submitted params or scoring, only the on-screen label.
+  it "declares each step's subtitle kind to match its partial's actual select mode" do
+    %w[service_seeker volunteer donor].each do |user_type|
+      SmartMatch::QuizStepConfig.section_map_for(user_type).each do |step, structure|
+        next if structure[:subtitle] == :none
+
+        partial_name = SmartMatch::QuizStepConfig.partial_for(user_type, step)
+        path = Rails.root.join("app/views/#{File.dirname(partial_name)}/_#{File.basename(partial_name)}.html.erb")
+        next unless path.exist?
+
+        modes = path.read.scan(/data-select-mode="(single|multiple)"/).flatten.uniq
+        next if modes.empty? # no card group on this partial -- not a select-mode step
+
+        expect(modes).to eq([structure[:subtitle].to_s]),
+          "#{user_type} step #{step} (#{partial_name}) declares subtitle: :#{structure[:subtitle]} " \
+          "but its partial's cards use data-select-mode=#{modes.inspect}"
+      end
+    end
+  end
+
   # Third duplicated schema: QuizNavigator writes answers into the session, and
   # UserIntent reads them back out. For most of the engine's life these two
   # disagreed silently -- the navigator stored 20 answers and UserIntent

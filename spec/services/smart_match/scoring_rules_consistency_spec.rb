@@ -219,11 +219,11 @@ RSpec.describe "Smart Match scoring rules consistency" do
           currently_unhoused mental_health substance_use health_issues
           business_nonprofit business_partner none],
         "prefs" => %w[free_sliding_scale no_id_required multilingual lgbtqia_affirming
-          wheelchair_accessible women_bipoc_led none],
+          wheelchair_accessible women_bipoc_led none no_preference],
         "donor_communities" => %w[seniors veteran_military spanish_speaking bipoc
           disabilities lgbtqia children_family no_preference],
         "volunteer_type" => %w[kids_seniors veterans_military spanish_speaking
-          grassroots_bipoc behind_scenes accessible_virtual family_group no_preference],
+          grassroots bipoc_led behind_scenes accessible_virtual family_group no_preference],
         "donation_style" => %w[general_donation specific_project goods_items
           recurring_giving just_exploring],
         "volunteer_involvement" => %w[volunteer_time attend_event business_partner just_exploring],
