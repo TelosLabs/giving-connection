@@ -119,9 +119,8 @@ class Location < ActiveRecord::Base
 
   def self.sort_by_more_services(locations)
     locations
-      .joins(:services)
-      .group(:id)
-      .order("count(services.id) DESC")
+      .where(id: LocationService.select(:location_id))
+      .order(Arel.sql("(SELECT COUNT(*) FROM location_services WHERE location_services.location_id = locations.id) DESC"))
   end
 
   private

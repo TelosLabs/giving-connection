@@ -1,7 +1,7 @@
 class SaveButton::Component < ApplicationViewComponent
   include ActionButtonHelper
 
-  def initialize(user:, location:, simplified: false, tooltip_position: "")
+  def initialize(user:, location:, simplified: false, tooltip_position: "left-0")
     @user = user
     @location = location
     @simplified = simplified
@@ -50,6 +50,11 @@ class SaveButton::Component < ApplicationViewComponent
   def btn_selector
     selector = "save-location-#{@location.id}-btn"
     selector << "__simplified" if @simplified
+    selector << "__#{tooltip_anchor}" if @simplified
     selector
+  end
+
+  def tooltip_anchor
+    @tooltip_position.to_s.include?("right") ? "right" : "left"
   end
 end

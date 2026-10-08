@@ -11,10 +11,16 @@ class BlogsController < ApplicationController
     # and calls params.dig("search", "lat"), which raises on a plain string.
     @search = params[:q].to_s.strip
 
-    @blogs = blogs_for_tag(@selected_tag)
+    searched = apply_search(policy_scope(Blog), @search)
+    @blogs = ((@selected_tag == "all") ? searched : searched.where(blog_tag: @selected_tag)).order(created_at: :desc)
+
     # Every tab's count, filtered by the current search term, so switching
     # tabs mid-search shows accurate counts instead of the unfiltered total.
-    @tag_counts = (["all"] + Blog::BLOG_TAG_OPTIONS).index_with { |tag| blogs_for_tag(tag).count }
+    # One grouped query instead of one ILIKE-scan-plus-joins query per tag.
+    counts_by_tag = searched.group(:blog_tag).count
+    @tag_counts = (["all"] + Blog::BLOG_TAG_OPTIONS).index_with { |tag|
+      (tag == "all") ? counts_by_tag.values.sum : counts_by_tag.fetch(tag, 0)
+    }
   end
 
   def show
@@ -67,12 +73,6 @@ class BlogsController < ApplicationController
   end
 
   private
-
-  def blogs_for_tag(tag)
-    scope = policy_scope(Blog).order(created_at: :desc)
-    scope = scope.where(blog_tag: tag) unless tag == "all"
-    apply_search(scope, @search)
-  end
 
   # ILIKE across the same fields the old client-side Fuse.js search covered
   # (title, content, topic, author), now server-side so the per-tab counts

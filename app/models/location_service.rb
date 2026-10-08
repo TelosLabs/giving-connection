@@ -29,5 +29,6 @@ class LocationService < ApplicationRecord
     # Search indexing is best-effort. A queue/cache (Redis) outage must not
     # roll back or block an otherwise-valid save.
     Rails.logger.error("[Search] Failed to schedule search_vector update for location_service #{id}: #{e.class}: #{e.message}")
+    Rollbar.error(e, "Failed to schedule search_vector update for location_service #{id}")
   end
 end

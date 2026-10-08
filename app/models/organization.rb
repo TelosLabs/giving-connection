@@ -228,6 +228,7 @@ class Organization < ApplicationRecord
     # Search indexing is best-effort. A queue/cache (Redis) outage must not
     # roll back or block an otherwise-valid Organization save.
     Rails.logger.error("[Search] Failed to schedule search_vector update for organization #{id}: #{e.class}: #{e.message}")
+    Rollbar.error(e, "Failed to schedule search_vector update for organization #{id}")
   end
 
   def attach_logo_and_cover

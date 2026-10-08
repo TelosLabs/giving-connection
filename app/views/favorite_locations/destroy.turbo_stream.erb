@@ -1,5 +1,11 @@
-<%= turbo_stream.replace_all(".save-location-#{@location.id}-btn__simplified") do %>
+<%# Card context (e.g. result_card): tooltip anchored right so it doesn't overflow the card. %>
+<%= turbo_stream.replace_all(".save-location-#{@location.id}-btn__simplified__right") do %>
   <%= render SaveButton::Component.new(user: @user, location: @location, simplified: true, tooltip_position: "right-0 mt-2") %>
+<% end %>
+
+<%# Map popup / location detail page context: tooltip anchored left (default). %>
+<%= turbo_stream.replace_all(".save-location-#{@location.id}-btn__simplified__left") do %>
+  <%= render SaveButton::Component.new(user: @user, location: @location, simplified: true) %>
 <% end %>
 
 <%= turbo_stream.replace_all(".save-location-#{@location.id}-btn") do %>
