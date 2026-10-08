@@ -195,4 +195,32 @@ RSpec.describe Organization, type: :model do
       expect(org.smart_match_text).to be_nil
     end
   end
+
+  describe "search index sync" do
+    it "enqueues a search_vector refresh on create" do
+      allow(Locations::RefreshSearchVectorJob).to receive(:coalesce_for_organization)
+
+      org = create(:organization)
+
+      expect(Locations::RefreshSearchVectorJob).to have_received(:coalesce_for_organization).with(org.id)
+    end
+
+    it "enqueues a search_vector refresh when a search-relevant field changes" do
+      org = create(:organization)
+      allow(Locations::RefreshSearchVectorJob).to receive(:coalesce_for_organization)
+
+      org.update!(mission_statement_en: "A brand new mission statement")
+
+      expect(Locations::RefreshSearchVectorJob).to have_received(:coalesce_for_organization).with(org.id)
+    end
+
+    it "does not enqueue when no search-relevant field changes" do
+      org = create(:organization, active: false)
+      allow(Locations::RefreshSearchVectorJob).to receive(:coalesce_for_organization)
+
+      org.update!(active: true)
+
+      expect(Locations::RefreshSearchVectorJob).not_to have_received(:coalesce_for_organization)
+    end
+  end
 end

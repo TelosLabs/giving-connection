@@ -88,6 +88,7 @@ module SpreadsheetImport
         else
           @import_log&.increment!(:success_count)
           attach_media(org_import_result.ids, entry[:org_row])
+          refresh_search_vectors(org_import_result.ids)
           @imported_names.add(org.name) if org.name.present?
           Rails.logger.info "Import SUCCESSFUL for organization at row #{row_number} (name: #{org.name})"
         end
@@ -113,6 +114,19 @@ module SpreadsheetImport
       end
     rescue => e
       Rails.logger.warn "Failed to attach logo/cover for #{org_ids.inspect}: #{e.message}"
+    end
+
+    # activerecord-import skips ActiveRecord callbacks, so the after_commit
+    # hooks that would normally keep locations.search_vector fresh (on
+    # Organization/OrganizationCause/Location/Tag/SocialMedia) never fire for
+    # bulk-imported orgs either. Without this, an imported org stays
+    # unfindable by keyword search until the nightly reconciliation pass
+    # (Locations::RefreshAllSearchVectorsJob, config/clock.rb) catches it.
+    def refresh_search_vectors(org_ids)
+      location_ids = Location.where(organization_id: org_ids).ids
+      Location.refresh_search_vector!(location_ids)
+    rescue => e
+      Rails.logger.warn "Failed to refresh search_vector for #{org_ids.inspect}: #{e.message}"
     end
 
     def attach_remote_logo(org, logo_url)

@@ -8,13 +8,13 @@
       ["volunteer_events",   "smart_match/teamwork.svg",      "text-blue-dark"],
       ["deeper_involvement", "smart_match/recurrent.svg",     "text-blue-dark"]
     ].each do |value, icon, icon_class| %>
-      <label class="sm-card-option <%= 'selected' if @session_answers[:donor_involvement] == value %>"
+      <label class="sm-card-option <%= 'selected' if @session_answers[:donor_involvement].include?(value) %>"
              data-action="click->smart-match-quiz#selectCard"
-             data-select-mode="single">
-        <%= f.radio_button :donor_involvement, value,
-              class: "sr-only",
-              checked: @session_answers[:donor_involvement] == value,
-              data: { smart_match_quiz_target: "radio" } %>
+             data-select-mode="multiple">
+        <input type="checkbox" name="donor_involvement[]" value="<%= value %>"
+               class="sr-only"
+               <%= "checked" if @session_answers[:donor_involvement].include?(value) %>
+               data-smart-match-quiz-target="causeCheckbox" />
         <span class="text-base font-bold text-center"><%= t("smart_match.quiz.steps.donor_involvement.options.#{value}") %></span>
         <%= inline_svg_tag icon, class: "w-20 h-20 mt-2 #{icon_class}", aria_hidden: "true" %>
       </label>

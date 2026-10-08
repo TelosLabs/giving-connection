@@ -286,6 +286,7 @@ questions:
         - {field: leadership_attributes, match: answer_vocabulary, weight: 2}
 
       none: []
+      no_preference: []
 
   # ---------------------------------------------------------------------------
   # Personal Details -- Find Help only.
@@ -536,7 +537,11 @@ questions:
       spanish_speaking:
         - {field: languages, preset: "Spanish", weight: 5}
 
-      grassroots_bipoc:
+      # Split out of a single "grassroots_bipoc" option -- Grassroots (org
+      # structure/size) and BIPOC-led (leadership demographic) are different
+      # concepts, so the former combined label scored "grassroots" as
+      # BIPOC-related, which was never actually true of it.
+      bipoc_led:
         - {field: population, preset: "Indigenous Peoples", weight: 5}
         - {field: population, preset: "People of African Descent", weight: 5}
         - {field: population, preset: "People of Asian Descent", weight: 5}
@@ -549,6 +554,12 @@ questions:
         - {field: service, preset: "Racial Justice Advocacy & Policy", weight: 3}
         - {field: ntee, preset: "R22: Minority Rights", weight: 2}
         - {field: ntee, preset: "R30: Intergroup & Race Relations", weight: 2}
+
+      # No organization field captures "grassroots" (org size/structure) --
+      # Organizations::Constants::LEADERSHIP_ATTRIBUTES only has Women-led and
+      # BIPOC-led. Left empty deliberately, same convention as behind_scenes/
+      # accessible_virtual below, rather than guessing a proxy field.
+      grassroots: []
 
       # Row 49 records "No reliable preset match" for both. Left empty
       # deliberately so nobody later "fixes" them with a guess.

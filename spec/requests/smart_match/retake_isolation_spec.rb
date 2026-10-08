@@ -41,7 +41,7 @@ RSpec.describe "SmartMatch retake isolation", type: :request do
     put smart_match_quiz_path, params: {donor_communities: %w[seniors]}
     put smart_match_quiz_path, params: {impact_location: "local"}
     put smart_match_quiz_path, params: {city_selection: "Nashville"}
-    put smart_match_quiz_path, params: {donor_involvement: "active"}
+    put smart_match_quiz_path, params: {donor_involvement: ["active"]}
     put smart_match_quiz_path, params: {age_range: "over_65"}
     put smart_match_quiz_path, params: {language_input: "x"}
 

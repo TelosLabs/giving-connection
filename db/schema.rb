@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_15_230000) do
+ActiveRecord::Schema[8.0].define(version: 2026_10_06_221934) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
   enable_extension "pg_catalog.plpgsql"
@@ -279,9 +279,11 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_15_230000) do
     t.string "state_code", limit: 2
     t.boolean "wheelchair_accessible"
     t.boolean "remote_services"
+    t.tsvector "search_vector"
     t.index ["lonlat"], name: "index_locations_on_lonlat", using: :gist
     t.index ["organization_id"], name: "index_locations_on_organization_id"
     t.index ["remote_services"], name: "index_locations_on_remote_services", where: "(remote_services = true)"
+    t.index ["search_vector"], name: "index_locations_on_search_vector", using: :gin
     t.index ["slug"], name: "index_locations_on_slug", unique: true
     t.index ["state_code"], name: "index_locations_on_state_code"
   end
@@ -397,8 +399,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_15_230000) do
     t.boolean "volunteer_availability", default: false, null: false
     t.string "volunteer_link"
     t.boolean "general_population_serving", default: false, null: false
-    t.string "in_kind_donation_link"
-    t.jsonb "in_kind_donation_items", default: [], null: false
     t.boolean "free_or_sliding_scale"
     t.boolean "no_id_required"
     t.boolean "lgbtqia_affirming"
@@ -411,6 +411,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_15_230000) do
     t.string "volunteer_format"
     t.string "volunteer_frequency", array: true
     t.string "leadership_attributes", array: true
+    t.string "in_kind_donation_link"
+    t.jsonb "in_kind_donation_items", default: [], null: false
     t.index ["active"], name: "index_organizations_on_active"
     t.index ["creator_type", "creator_id"], name: "index_organizations_on_creator"
     t.index ["ein_number"], name: "index_organizations_on_ein_number"

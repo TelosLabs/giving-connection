@@ -229,6 +229,14 @@ RSpec.describe UserIntent do
       expect(text).not_to include("none")
     end
 
+    it "excludes the 'no_preference' pref escape hatch from the embedding text" do
+      intent = described_class.new(user_type: "service_seeker", state: "TN",
+        causes_selected: ["Education"], prefs_selected: ["multilingual", "no_preference"])
+      text = intent.to_embedding_text
+      expect(text).to include("multilingual")
+      expect(text).not_to include("no_preference")
+    end
+
     it "places language_input at the front, before structured parts" do
       intent = described_class.new(user_type: "volunteer", state: "TN", city: "Nashville",
         causes_selected: ["Education"], language_input: "FREETEXT_SENTINEL")

@@ -23,6 +23,14 @@ module Clockwork
     end
   end
 
+  # Self-healing backstop for locations.search_vector. The per-model
+  # callbacks keep it fresh in the normal request path, but bulk imports
+  # (activerecord-import) bypass those callbacks -- see
+  # Locations::RefreshAllSearchVectorsJob for the full rationale.
+  every(1.day, "Refresh Location Search Vectors", at: "03:00") do
+    Locations::RefreshAllSearchVectorsJob.perform_later
+  end
+
   # every(3.hours, "Fetch Instagram Media Posts") do
   #   Instagram::FetchMediaPostsJob.perform_later
   # end

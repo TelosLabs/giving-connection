@@ -13,10 +13,10 @@ div class=""
         div
           - url = @location.website || @location.organization.website
           - if @location.organization.verified?
-            div class="flex justify-center items-center mb-2.5"
-              h5 class="flex mb-1 text-lg font-bold text-center pop-out"
+            div class="mb-2.5"
+              h5 class="mb-1 text-lg font-bold text-center pop-out"
                 = link_to @location.name, url, target: url.present? ? "_blank" : "", class: "text-black"
-              = render "shared/popover", wrapper_icon: "verified_nonprofit_check.svg", copy: "Information verified by nonprofit."
+                = render "shared/popover", wrapper_icon: "verified_nonprofit_check.svg", copy: "Information verified by nonprofit."
             p class="text-xs text-center font-base text-gray-4"
               = "This nonprofit has verified the listed information."
           - else

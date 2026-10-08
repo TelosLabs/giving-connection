@@ -33,18 +33,28 @@ section class="mx-auto mt-8 mb-44 w-5/6 max-w-6xl md:mt-20"
     = f.hidden_field :lat, value: @current_location[:latitude], data: { geolocation_target: "formLatitude" }
     = f.hidden_field :lon, value: @current_location[:longitude], data: { geolocation_target: "formLongitude" }
 
-    - if @locations_by_services.empty?
-      div class="flex flex-col items-center mt-5"
-        = inline_svg_tag 'empty_state_4.svg', class: "w-80", aria_hidden: true
-        div class="-mt-5 w-60 text-center"
-          h3 class="mb-5 text-lg font-bold leading-6"
-            | We currently don’t have any nonprofits that match this cause.
-          p class="mb-10 text-sm"
-            | We are constantly adding new nonprofits to our platform, please check back soon!
-          = link_to "Go Back to Discover", discover_path, class: "text-blue-medium"
-    - else
-      div class="grid gap-7 justify-items-stretch mt-12 grid-cols-auto-fill-18"
-        - @locations_by_services.each do |location|
-          = render DiscoverNonprofitCard::Component.new(user: current_user, location: location)
+    = turbo_frame_tag "causes_locations", data: { controller: "search-loading" } do
+      div class="relative" data-search-loading-target="resultsContainer"
+        div class="flex hidden absolute inset-0 z-10 justify-center items-center bg-white bg-opacity-70" data-search-loading-target="spinner"
+          = inline_svg_tag 'heart.svg', class: "spinner-heart w-12 h-12 text-red", aria_hidden: "true"
+        - if @locations_by_services.empty?
+          div class="flex flex-col items-center mt-5"
+            = inline_svg_tag 'empty_state_4.svg', class: "w-80", aria_hidden: true
+            div class="-mt-5 w-60 text-center"
+              h3 class="mb-5 text-lg font-bold leading-6"
+                | We currently don’t have any nonprofits that match this cause.
+              p class="mb-10 text-sm"
+                | We are constantly adding new nonprofits to our platform, please check back soon!
+              = link_to "Go Back to Discover", discover_path, class: "text-blue-medium"
+        - else
+          div class="grid gap-7 justify-items-stretch mt-12 grid-cols-auto-fill-18"
+            - @locations_by_services.each do |location|
+              = render DiscoverNonprofitCard::Component.new(user: current_user, location: location)
+
+          - if @pagy.pages > 1
+            div class="mt-7"
+              p class="mb-5 text-sm text-gray-3"
+                = "Showing results #{@pagy.from} - #{@pagy.to} of #{@pagy.count}"
+              == render partial: 'pagy/nav', locals: { pagy: @pagy, turbo_frame: "causes_locations" }
 
 = render "shared/smart_match_cta"

@@ -5,13 +5,22 @@ class BlogsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index, :show, :new, :create]
 
   def index
-    @blogs = policy_scope(Blog).order(created_at: :desc)
+    @selected_tag = Blog::BLOG_TAG_OPTIONS.include?(params[:blog_tag]) ? params[:blog_tag] : "all"
+    # Named :q, not :search -- Locationable (included globally) treats a
+    # top-level `search` param as a {lat:, lon:, city:} hash for geolocation
+    # and calls params.dig("search", "lat"), which raises on a plain string.
+    @search = params[:q].to_s.strip
 
-    if params[:blog_tag].present? && params[:blog_tag] != "all"
-      @blogs = @blogs.where(blog_tag: params[:blog_tag])
-    end
+    searched = apply_search(policy_scope(Blog), @search)
+    @blogs = ((@selected_tag == "all") ? searched : searched.where(blog_tag: @selected_tag)).order(created_at: :desc)
 
-    @selected_tag = params[:blog_tag] || "all"
+    # Every tab's count, filtered by the current search term, so switching
+    # tabs mid-search shows accurate counts instead of the unfiltered total.
+    # One grouped query instead of one ILIKE-scan-plus-joins query per tag.
+    counts_by_tag = searched.group(:blog_tag).count
+    @tag_counts = (["all"] + Blog::BLOG_TAG_OPTIONS).index_with { |tag|
+      (tag == "all") ? counts_by_tag.values.sum : counts_by_tag.fetch(tag, 0)
+    }
   end
 
   def show
@@ -64,6 +73,20 @@ class BlogsController < ApplicationController
   end
 
   private
+
+  # ILIKE across the same fields the old client-side Fuse.js search covered
+  # (title, content, topic, author), now server-side so the per-tab counts
+  # and the rendered list always agree. Blog volume is small enough that a
+  # plain scan needs no index/tsvector investment.
+  def apply_search(scope, term)
+    return scope if term.blank?
+
+    scope.left_joins(:user, :rich_text_content).where(
+      "blogs.title ILIKE :term OR blogs.topic ILIKE :term OR blogs.name ILIKE :term " \
+      "OR users.name ILIKE :term OR action_text_rich_texts.body ILIKE :term",
+      term: "%#{term.gsub(/[\\%_]/) { |c| "\\#{c}" }}%"
+    )
+  end
 
   def set_blog
     @blog = Blog.find(params[:id])

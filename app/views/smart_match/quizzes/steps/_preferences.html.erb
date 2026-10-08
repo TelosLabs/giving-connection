@@ -9,7 +9,8 @@
       ["lgbtqia_affirming",    "smart_match/rainbow_pride.svg", ""],
       ["wheelchair_accessible","smart_match/disability2.svg",   ""],
       ["women_bipoc_led",      "smart_match/women.svg",         ""],
-      ["none",                 nil,                             ""]
+      ["none",                 nil,                             ""],
+      ["no_preference",        nil,                             ""]
     ].each do |value, icon, icon_class| %>
       <label class="sm-card-option <%= 'selected' if @session_answers[:prefs].include?(value) %>"
              data-action="click->smart-match-quiz#selectCard"

@@ -67,6 +67,7 @@ class Organization < ApplicationRecord
 
   after_create :attach_logo_and_cover
   after_commit :schedule_embedding_update, on: [:create, :update]
+  after_commit :schedule_search_vector_update, on: [:create, :update]
 
   accepts_nested_attributes_for :social_media, allow_destroy: true
   accepts_nested_attributes_for :locations, allow_destroy: true
@@ -209,6 +210,25 @@ class Organization < ApplicationRecord
     # Embedding refresh is best-effort. A queue/cache (Redis) outage must not
     # roll back or block an otherwise-valid Organization save.
     Rails.logger.error("[SmartMatch] Failed to schedule embedding update for organization #{id}: #{e.class}: #{e.message}")
+  end
+
+  # Every organization-level field Locations::Searchable::TSVECTOR_SQL reads.
+  SEARCH_VECTOR_FIELDS = %w[
+    name second_name scope_of_work website ein_number irs_ntee_code
+    mission_statement_en vision_statement_en tagline_en
+    mission_statement_es vision_statement_es tagline_es
+    in_kind_donation_items
+  ].freeze
+
+  def schedule_search_vector_update
+    return unless previously_new_record? || previous_changes.keys.intersect?(SEARCH_VECTOR_FIELDS)
+
+    Locations::RefreshSearchVectorJob.coalesce_for_organization(id)
+  rescue => e
+    # Search indexing is best-effort. A queue/cache (Redis) outage must not
+    # roll back or block an otherwise-valid Organization save.
+    Rails.logger.error("[Search] Failed to schedule search_vector update for organization #{id}: #{e.class}: #{e.message}")
+    Rollbar.error(e, "Failed to schedule search_vector update for organization #{id}")
   end
 
   def attach_logo_and_cover

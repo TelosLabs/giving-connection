@@ -243,6 +243,7 @@ es:
             wheelchair_accessible: "Ubicaciones accesibles en silla de ruedas"
             women_bipoc_led: "Organizaciones lideradas por mujeres o personas BIPOC"
             none: "Prefiero no decirlo / ninguna aplica"
+            no_preference: "Sin preferencia"
         volunteer_involvement:
           options:
             volunteer_time: "Ofrecer mi tiempo como voluntario"
@@ -254,7 +255,8 @@ es:
             kids_seniors: "Niños o adultos mayores"
             veterans_military: "Veteranos / familias militares"
             spanish_speaking: "Hispanohablantes"
-            grassroots_bipoc: "De base / liderado por BIPOC"
+            grassroots: "De base"
+            bipoc_led: "Liderado por BIPOC"
             behind_scenes: "Detrás de escena"
             accessible_virtual: "Accesible o virtual"
             family_group: "Familia o grupo"

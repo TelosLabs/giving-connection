@@ -145,6 +145,9 @@ cause_mappings:
       - social justice
       - voter registration
       - human rights advocacy
+      - activism
+      - community organizing
+      - lobbying
 
   "Animals":
     synonyms:
@@ -153,6 +156,10 @@ cause_mappings:
       - wildlife protection
       - veterinary care
       - animal shelter
+      - pets
+      - dogs
+      - cats
+      - humane society
 
   "Arts & Culture":
     synonyms:
@@ -162,15 +169,21 @@ cause_mappings:
       - cultural programs
       - art education
       - music
+      - theater
+      - dance
+      - gallery
 
   "Children & Family Services":
     synonyms:
       - child care
+      - childcare
       - foster care
       - adoption
       - family counseling
       - parenting support
       - child welfare
+      - daycare
+      - babysitting
 
   "Clothing & Living Essentials":
     synonyms:
@@ -179,6 +192,9 @@ cause_mappings:
       - basic needs
       - essential supplies
       - furniture assistance
+      - diapers
+      - hygiene products
+      - household items
 
   "Community & Economic Development":
     synonyms:
@@ -187,6 +203,9 @@ cause_mappings:
       - small business
       - community building
       - urban development
+      - entrepreneurship
+      - financial literacy
+      - microloans
 
   "Disability Services":
     synonyms:
@@ -196,6 +215,10 @@ cause_mappings:
       - independent living
       - disability support
       - group homes
+      - autism
+      - special needs
+      - wheelchair
+      - disabled
 
   "Disaster Relief & Preparedness":
     synonyms:
@@ -204,6 +227,9 @@ cause_mappings:
       - first aid
       - search and rescue
       - fire prevention
+      - hurricane relief
+      - flood relief
+      - wildfire relief
 
   "Drug & Alcohol Treatment":
     synonyms:
@@ -213,6 +239,9 @@ cause_mappings:
       - detox
       - sober living
       - recovery support
+      - drug rehab
+      - opioid recovery
+      - alcoholism
 
   "Education":
     synonyms:
@@ -223,6 +252,9 @@ cause_mappings:
       - literacy
       - special education
       - libraries
+      - preschool
+      - early childhood education
+      - GED
 
   "Emergency & Safety":
     synonyms:
@@ -231,6 +263,9 @@ cause_mappings:
       - child abuse prevention
       - consumer protection
       - public safety
+      - domestic abuse
+      - sexual assault
+      - abuse shelter
 
   "Employment":
     synonyms:
@@ -239,6 +274,9 @@ cause_mappings:
       - vocational rehabilitation
       - workforce development
       - job placement
+      - resume help
+      - job search
+      - apprenticeship
 
   "Environment":
     synonyms:
@@ -248,15 +286,29 @@ cause_mappings:
       - sustainability
       - environmental education
       - clean energy
+      - pollution
+      - green energy
+      - water quality
 
   "Faith-Based":
     synonyms:
       - religious organizations
+      - religion
       - church
       - mosque
       - synagogue
       - interfaith
       - spiritual services
+      - temple
+      - ministry
+      - parish
+      - christian
+      - catholic
+      - jewish
+      - muslim
+      - islamic
+      - buddhist
+      - hindu
 
   "Health":
     synonyms:
@@ -267,6 +319,16 @@ cause_mappings:
       - public health
       - hospital
       - nursing
+      - pregnancy
+      - pregnant
+      - prenatal care
+      - reproductive health
+      - maternal health
+      - healthcare
+      - dental care
+      - vision care
+      - free clinic
+      - doctor
 
   "Housing & Homelessness":
     synonyms:
@@ -276,6 +338,10 @@ cause_mappings:
       - rental support
       - temporary housing
       - transitional housing
+      - eviction prevention
+      - rent assistance
+      - homeless
+      - section 8
 
   "Human & Social Services":
     synonyms:
@@ -285,6 +351,8 @@ cause_mappings:
       - financial counseling
       - human services
       - case management
+      - utility assistance
+      - welfare
 
   "Hunger & Food Security":
     synonyms:
@@ -294,6 +362,9 @@ cause_mappings:
       - nutrition
       - meals on wheels
       - food assistance
+      - SNAP
+      - WIC
+      - groceries
 
   "Immigrant & Refugee":
     synonyms:
@@ -303,6 +374,10 @@ cause_mappings:
       - language learning
       - multicultural services
       - human trafficking
+      - ESL
+      - asylum
+      - visa
+      - undocumented
 
   "Inmate & Formerly Incarcerated":
     synonyms:
@@ -312,6 +387,9 @@ cause_mappings:
       - halfway houses
       - formerly incarcerated
       - criminal justice reform
+      - parole
+      - probation
+      - ex-offender
 
   "International":
     synonyms:
@@ -321,6 +399,8 @@ cause_mappings:
       - refugee services
       - global health
       - peace and security
+      - humanitarian aid
+      - overseas relief
 
   "Justice & Legal Services":
     synonyms:
@@ -330,6 +410,9 @@ cause_mappings:
       - civil rights law
       - immigration law
       - public interest law
+      - lawyer
+      - attorney
+      - court assistance
 
   "LGBTQ+":
     synonyms:
@@ -339,6 +422,12 @@ cause_mappings:
       - LGBTQ housing
       - LGBTQ youth
       - pride
+      - gay
+      - lesbian
+      - transgender
+      - bisexual
+      - queer
+      - trans
 
   "Media & Broadcasting":
     synonyms:
@@ -347,6 +436,9 @@ cause_mappings:
       - broadcasting
       - communications
       - film and video
+      - radio
+      - television
+      - news
 
   "Mental Health":
     synonyms:
@@ -357,6 +449,11 @@ cause_mappings:
       - suicide prevention
       - trauma support
       - mental wellness
+      - depression
+      - anxiety
+      - PTSD
+      - therapist
+      - crisis hotline
 
   "Philanthropy":
     synonyms:
@@ -366,6 +463,8 @@ cause_mappings:
       - voluntarism
       - charitable giving
       - community foundation
+      - donations
+      - fundraising
 
   "Race & Ethnicity":
     synonyms:
@@ -374,6 +473,12 @@ cause_mappings:
       - anti-discrimination
       - racial justice
       - cultural heritage
+      - minority
+      - Black
+      - Hispanic
+      - Latino
+      - Asian American
+      - Native American
 
   "Research & Public Policy":
     synonyms:
@@ -381,6 +486,8 @@ cause_mappings:
       - research institute
       - policy analysis
       - think tank
+      - legislation
+      - government reform
 
   "Science & Technology":
     synonyms:
@@ -389,6 +496,8 @@ cause_mappings:
       - engineering
       - scientific research
       - technology development
+      - coding
+      - robotics
 
   "Seniors":
     synonyms:
@@ -399,6 +508,10 @@ cause_mappings:
       - hospice
       - retirement
       - senior housing
+      - elderly
+      - nursing home
+      - assisted living
+      - Medicare
 
   "Social Sciences":
     synonyms:
@@ -407,6 +520,8 @@ cause_mappings:
       - political science
       - economics research
       - social research
+      - humanities
+      - social studies
 
   "Sports & Recreation":
     synonyms:
@@ -416,6 +531,8 @@ cause_mappings:
       - fitness programs
       - adaptive sports
       - parks
+      - summer camp
+      - outdoor recreation
 
   "Transportation":
     synonyms:
@@ -423,6 +540,8 @@ cause_mappings:
       - ride services
       - transportation assistance
       - car donation
+      - medical transportation
+      - bus
 
   "Veteran & Military":
     synonyms:
@@ -432,6 +551,8 @@ cause_mappings:
       - veteran housing
       - veteran health
       - VA benefits
+      - active duty
+      - combat veteran
 
   "Youth Development":
     synonyms:
@@ -441,3 +562,5 @@ cause_mappings:
       - youth clubs
       - youth leadership
       - teen programs
+      - mentorship
+      - after-school care

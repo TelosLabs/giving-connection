@@ -54,11 +54,11 @@
         // Search result cards (mobile)
         div class="flex flex-col w-full bg-white md:h-85vh md:overflow-y-auto md:hidden" data-tabs-target="panel"
           div class="flex justify-center items-center h-full"
-            div class="spinner"
+            = inline_svg_tag 'heart.svg', class: "spinner-heart w-12 h-12 text-red", aria_hidden: "true"
         // Search result cards
         div class="hidden w-full bg-white md:h-85vh md:flex md:flex-col md:overflow-y-auto"
           div class="flex justify-center items-center h-full"
-            div class="spinner"
+            = inline_svg_tag 'heart.svg', class: "spinner-heart w-12 h-12 text-red", aria_hidden: "true"
 
       //Map mobile
       div class="relative w-full md:hidden"

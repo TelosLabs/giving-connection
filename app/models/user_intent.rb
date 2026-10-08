@@ -32,7 +32,7 @@ class UserIntent
     giving_inspiration: :multiple,
     donor_communities: :multiple,
     impact_location: :single,
-    donor_involvement: :single,
+    donor_involvement: :multiple,
     volunteer_involvement: :multiple,
     volunteer_type: :multiple,
     volunteer_format: :single,
@@ -177,11 +177,8 @@ class UserIntent
     [cause] + synonyms
   end
 
-  # "none" is the "prefer not to say / none apply" escape hatch. It is a UI
-  # affordance only and carries no semantic signal, so keep it out of the
-  # embedding text.
   def prefs
-    Array(prefs_selected).compact_blank - ["none"]
+    Array(prefs_selected).compact_blank - ["none", "no_preference"]
   end
 
   def location_text

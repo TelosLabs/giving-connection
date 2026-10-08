@@ -17,12 +17,24 @@ class CausesController < ApplicationController
       lon: @current_location[:longitude],
       causes: [@cause.name]
     )
-    @locations_by_services = if @search.save
+    locations = if @search.save
       @search.results
     else
       filtered_locations = Location.locations_with(@cause)
       Location.sort_by_more_services(filtered_locations)
     end
+
+    # An explicit order is required for stable LIMIT/OFFSET pagination --
+    # Postgres doesn't guarantee row order otherwise, so pages could show
+    # duplicate or skipped locations across requests.
+    @pagy, @locations_by_services = pagy(
+      locations.includes(
+        organization: [:causes, {logo_attachment: :blob}, {cover_photo_attachment: :blob}],
+        phone_number: [],
+        images_attachments: :blob
+      ).order(:id),
+      items: 20
+    )
 
     authorize @cause
   end

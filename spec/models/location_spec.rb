@@ -108,4 +108,42 @@ RSpec.describe Location, type: :model do
       expect(SmartMatch::EmbedOrganizationJob).not_to have_received(:coalesce_for)
     end
   end
+
+  describe "search index sync" do
+    it "enqueues a search_vector refresh when a location with an address is created" do
+      organization = create(:organization)
+      allow(Locations::RefreshSearchVectorJob).to receive(:coalesce_for_organization)
+
+      create(:location, non_standard_office_hours: :always_open, organization: organization, address: "123 Main St")
+
+      expect(Locations::RefreshSearchVectorJob).to have_received(:coalesce_for_organization).with(organization.id)
+    end
+
+    it "enqueues a search_vector refresh when the name changes" do
+      location = create(:location, non_standard_office_hours: :always_open, address: "123 Main St")
+      allow(Locations::RefreshSearchVectorJob).to receive(:coalesce_for_organization)
+
+      location.update!(name: "Renamed Location")
+
+      expect(Locations::RefreshSearchVectorJob).to have_received(:coalesce_for_organization).with(location.organization_id)
+    end
+
+    it "enqueues a search_vector refresh when the address changes" do
+      location = create(:location, non_standard_office_hours: :always_open, address: "123 Main St")
+      allow(Locations::RefreshSearchVectorJob).to receive(:coalesce_for_organization)
+
+      location.update!(address: "456 Oak Ave")
+
+      expect(Locations::RefreshSearchVectorJob).to have_received(:coalesce_for_organization).with(location.organization_id)
+    end
+
+    it "does not enqueue when neither name nor address changes" do
+      location = create(:location, non_standard_office_hours: :always_open, address: "123 Main St", website: "https://example.org")
+      allow(Locations::RefreshSearchVectorJob).to receive(:coalesce_for_organization)
+
+      location.update!(website: "https://example.org/new")
+
+      expect(Locations::RefreshSearchVectorJob).not_to have_received(:coalesce_for_organization)
+    end
+  end
 end
