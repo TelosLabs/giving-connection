@@ -1,6 +1,7 @@
 import './components/table'
 import './components/date_time_picker'
 import './components/associative'
+import './components/belongs_to_search'
 import { Application } from "@hotwired/stimulus"
 import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"
 import "controllers"

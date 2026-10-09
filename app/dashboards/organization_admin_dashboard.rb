@@ -19,7 +19,7 @@ class OrganizationAdminDashboard < Administrate::BaseDashboard
       org_id = field.resource&.organization_id
       org_id ? Organization.where(id: org_id) : Organization.all
     }),
-    user: Field::BelongsTo.with_options(order: "email"),
+    user: BelongsToSearchField,
     id: Field::Number,
     role: Field::Select.with_options({
       collection: ["admin"]

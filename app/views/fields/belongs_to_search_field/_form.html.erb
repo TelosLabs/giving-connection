@@ -1,0 +1,25 @@
+<%#
+# BelongsToSearchField Form Partial
+
+Renders a <select> with at most the current value pre-loaded. The rest are
+found via Selectize search (see app/javascript/administrate/components/belongs_to_search.js),
+which queries the association's own index action for matches instead of
+preloading every row.
+
+## Local variables:
+
+- `f`: the Rails form builder.
+- `field`: a BelongsToSearchField wrapping the association.
+%>
+
+<div class="field-unit__label">
+  <%= f.label field.attribute, for: "#{f.object_name}_#{field.permitted_attribute}" %>
+</div>
+<div class="field-unit__field">
+  <%= f.select(
+    field.permitted_attribute,
+    options_for_select(field.associated_resource_options, field.selected_option),
+    {include_blank: field.include_blank_option},
+    data: {url: polymorphic_path([namespace, field.associated_class], format: :json)}
+  ) %>
+</div>
