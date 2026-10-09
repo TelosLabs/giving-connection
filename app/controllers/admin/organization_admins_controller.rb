@@ -2,13 +2,17 @@
 
 module Admin
   class OrganizationAdminsController < Admin::ApplicationController
-    # Overwrite any of the RESTful controller actions to implement custom behavior
-    # For example, you may want to send an email after a foo is updated.
-    #
-    # def update
-    #   super
-    #   send_foo_updated_email(requested_resource)
-    # end
+    # Linked from the organization show page ("Associate admin user") with
+    # ?organization_id=<id> so the form opens pre-scoped to that one
+    # organization instead of making the admin pick one out of 5000+ (see
+    # OrganizationAdminDashboard's organization field).
+    def new
+      resource = new_resource(organization_id: params[:organization_id])
+      authorize_resource(resource)
+      render locals: {
+        page: Administrate::Page::Form.new(dashboard, resource)
+      }
+    end
 
     # Override this method to specify custom lookup behavior.
     # This will be used to set the resource for the `show`, `edit`, and `update`

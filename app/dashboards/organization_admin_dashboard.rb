@@ -10,7 +10,15 @@ class OrganizationAdminDashboard < Administrate::BaseDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    organization: Field::BelongsTo,
+    # Organization has 5000+ rows. When we already know which one (arriving
+    # from the organization's own show page via "Associate admin user", or
+    # editing an existing record), scope the dropdown to just that one so the
+    # form doesn't render 5000+ <option>s. Falls back to the full list only
+    # for the rare direct-URL case where no organization is known yet.
+    organization: Field::BelongsTo.with_options(scope: lambda { |field|
+      org_id = field.resource&.organization_id
+      org_id ? Organization.where(id: org_id) : Organization.all
+    }),
     user: Field::BelongsTo.with_options(order: "email"),
     id: Field::Number,
     role: Field::Select.with_options({
