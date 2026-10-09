@@ -1,0 +1,110 @@
+// Field::Select, BelongsTo, and HasMany fields are progressively enhanced by
+// the "select" stimulus controller (app/javascript/.../select_controller.js),
+// which replaces the native <select> with Selectize's own markup. Selectize
+// ships with no CSS in this app, so those controls render with no border and
+// no visual indicator at all -- regardless of whether an option is selected.
+// This gives the generated markup the same look as the plain inputs/selects
+// styled in _forms.scss.
+
+.selectize-control {
+  position: relative;
+  width: 100%;
+}
+
+.selectize-input {
+  background-color: $white;
+  border: $base-border;
+  border-radius: $base-border-radius;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0.5em 2em 0.5em 0.5em;
+  transition: border-color $base-duration $base-timing;
+  width: 100%;
+
+  &.dropdown-active {
+    border-radius: $base-border-radius $base-border-radius 0 0;
+  }
+
+  &:hover {
+    border-color: mix($black, $base-border-color, 20%);
+  }
+
+  &.focus {
+    border-color: $action-color;
+  }
+
+  &.disabled {
+    background-color: mix($black, $white, 5%);
+    cursor: not-allowed;
+  }
+
+  > input {
+    background: none;
+    border: 0 none;
+    box-shadow: none;
+    font-family: inherit;
+    font-size: inherit;
+    margin: 0;
+    min-width: 4em;
+    padding: 0 !important;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.selectize-control.single .selectize-input {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237B808C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-position: right 0.6em top 50%;
+  background-repeat: no-repeat;
+  background-size: 0.9em auto;
+}
+
+.selectize-control.multi .selectize-input > div {
+  background-color: $grey-0;
+  border: 1px solid $base-border-color;
+  border-radius: $base-border-radius * 0.5;
+  color: $base-font-color;
+  margin: 0 0.25em 0.25em 0;
+  padding: 0.1em 0.5em;
+
+  &.active {
+    background-color: $grey-1;
+  }
+}
+
+.selectize-dropdown {
+  background-color: $white;
+  border: $base-border;
+  border-top: 0 none;
+  border-radius: 0 0 $base-border-radius $base-border-radius;
+  box-shadow: 0 2px 4px transparentize($black, 0.9);
+  box-sizing: border-box;
+  margin-top: -1px;
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+
+  .optgroup-header {
+    color: $hint-grey;
+    font-weight: $bold-font-weight;
+    padding: 0.5em;
+  }
+
+  .option {
+    cursor: pointer;
+    padding: 0.5em;
+
+    &.active {
+      background-color: $light-blue;
+    }
+
+    &[data-disabled] {
+      cursor: default;
+      opacity: 0.5;
+    }
+  }
+}

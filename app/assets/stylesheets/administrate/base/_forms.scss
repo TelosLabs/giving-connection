@@ -46,6 +46,7 @@ textarea {
 [type="url"],
 [type="week"],
 input:not([type]),
+select,
 textarea {
   appearance: none;
   background-color: $white;
@@ -93,13 +94,16 @@ textarea {
 }
 
 select {
-  width: 100%;
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237B808C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-position: right 0.6em top 50%;
+  background-repeat: no-repeat;
+  background-size: 0.9em auto;
+  padding-right: 2em;
 }
 
 [type="checkbox"],
 [type="radio"],
-[type="file"],
-select {
+[type="file"] {
   &:focus {
     outline: $focus-outline;
     outline-offset: $focus-outline-offset;
